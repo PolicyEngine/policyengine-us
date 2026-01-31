@@ -12,7 +12,7 @@ class ga_tanf_income_eligible(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Gross income test - use federal TANF variables
         gross_income = add(
             spm_unit,

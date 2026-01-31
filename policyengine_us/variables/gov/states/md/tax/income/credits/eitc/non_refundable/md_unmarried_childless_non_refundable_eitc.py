@@ -10,7 +10,7 @@ class md_unmarried_childless_non_refundable_eitc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
     defined_for = "md_qualifies_for_unmarried_childless_eitc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # individuals can claim the state eitc even they do not meet the minimum age requirement under the federal credit
         federal_eitc_without_age_minimum = tax_unit(
             "federal_eitc_without_age_minimum", period

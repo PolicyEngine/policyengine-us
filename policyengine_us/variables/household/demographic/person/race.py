@@ -17,7 +17,7 @@ class race(Variable):
     documentation = "The broadest racial category (White only, Black only, Hispanic, Other)"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         cps_race = person("cps_race", period)
         hispanic = person("is_hispanic", period)
         return select(

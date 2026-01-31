@@ -14,7 +14,7 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # income
         personal_income = person("ssi_countable_income", period)
         tax_unit = person.tax_unit

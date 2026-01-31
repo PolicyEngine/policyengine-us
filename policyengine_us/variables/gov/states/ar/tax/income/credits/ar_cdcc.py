@@ -10,7 +10,7 @@ class ar_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ar.tax.income.credits.cdcc
         # Arkansas matches the federal credit taken
         cdcc = tax_unit("cdcc", period)

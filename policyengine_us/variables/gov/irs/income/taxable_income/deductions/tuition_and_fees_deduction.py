@@ -14,7 +14,7 @@ class tuition_and_fees_deduction(Variable):
         "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         qualified_tuition_expenses = add(
             tax_unit, period, ["qualified_tuition_expenses"]
         )

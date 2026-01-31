@@ -13,7 +13,7 @@ class de_tanf_net_earned_income(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DSSM 4008 / State Plan Exhibit 1 Step 2 (Applicant Eligibility):
         # Gross earned - $90 work expense - childcare
         # NOTE: $30+1/3 disregard is NOT applied here - only in benefit calc

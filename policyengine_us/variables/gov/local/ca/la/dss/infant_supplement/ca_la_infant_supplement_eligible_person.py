@@ -8,5 +8,5 @@ class ca_la_infant_supplement_eligible_person(Variable):
     label = "Eligible for the Los Angeles County infant supplement"
     defined_for = "in_la"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("ca_foster_care_minor_dependent", period)

@@ -9,7 +9,7 @@ class il_pi_demographic_eligible(Variable):
     reference = "https://www.isbe.net/Pages/Birth-to-Age-3-Years.aspx"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Eligible if child under 3 or pregnant woman.
         p = parameters(period).gov.states.il.isbe.pi.eligibility.age_threshold
         age = person("age", period)

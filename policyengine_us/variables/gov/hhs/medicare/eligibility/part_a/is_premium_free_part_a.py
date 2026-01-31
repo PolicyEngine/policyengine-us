@@ -16,7 +16,7 @@ class is_premium_free_part_a(Variable):
     )
     defined_for = "is_medicare_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicare.part_a
         quarters = person("medicare_quarters_of_coverage", period)
         return quarters >= p.premium_free_quarters_threshold

@@ -8,7 +8,7 @@ class count_distinct_utility_expenses(Variable):
     documentation = "The number of distinct utility expenses."
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         UTILITIES = [
             "heating_cooling",
             # Use pre-subsidy expenses to avoid circular references

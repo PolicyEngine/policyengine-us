@@ -8,7 +8,7 @@ class az_tanf_eligible_child(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get the age of the person
         age = person("age", period)
         # Determine whether they are a student

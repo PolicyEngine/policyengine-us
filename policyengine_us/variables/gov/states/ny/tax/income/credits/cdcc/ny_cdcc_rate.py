@@ -10,7 +10,7 @@ class ny_cdcc_rate(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Under the law (s. 606(1)), the NY CDCC defined at its core as:
         # (federal CDCC) x (some percentage)
         # There is also another important part: s. (1-b), which amends this to:

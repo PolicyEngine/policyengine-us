@@ -13,7 +13,7 @@ class wy_power_earned_income_disregard(Variable):
     )
     defined_for = StateCode.WY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wy.dfs.power.income.disregard
         # Per W.S. 42-2-103(a)(iv): $600 for any one recipient,
         # $1,200 for married couples

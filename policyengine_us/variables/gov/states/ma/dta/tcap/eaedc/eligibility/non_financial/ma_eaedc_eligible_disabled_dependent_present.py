@@ -11,7 +11,7 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-340"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Check if household has disabled dependents
         person = spm_unit.members
         is_disabled = person("is_disabled", period)

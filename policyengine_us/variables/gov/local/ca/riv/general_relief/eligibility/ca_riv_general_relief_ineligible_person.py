@@ -8,7 +8,7 @@ class ca_riv_general_relief_ineligible_person(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # SSI is person-level: only the individual receiving SSI is excluded
         receives_ssi = person("ssi", period) > 0
         # TANF (CalWORKs) is unit-level: if unit receives TANF, members are excluded

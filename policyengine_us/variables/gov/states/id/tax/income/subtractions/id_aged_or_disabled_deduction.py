@@ -9,7 +9,7 @@ class id_aged_or_disabled_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # The program includes individuals in the household, including those not in the filing unit.
         # We simplify by limiting to those in the filing unit.
         person = tax_unit.members

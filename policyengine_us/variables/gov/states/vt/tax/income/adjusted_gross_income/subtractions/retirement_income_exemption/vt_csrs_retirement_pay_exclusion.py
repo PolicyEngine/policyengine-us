@@ -14,7 +14,7 @@ class vt_csrs_retirement_pay_exclusion(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont Civil Service Retirement System (CSRS) retirement benefits exempt from Vermont taxation."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(
             period

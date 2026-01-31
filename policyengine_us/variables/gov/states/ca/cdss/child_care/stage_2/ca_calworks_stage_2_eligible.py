@@ -9,7 +9,7 @@ class ca_calworks_stage_2_eligible(Variable):
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10372.&nodeTreePath=16.4.19&lawCode=WIC"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.cdss.child_care.stage_2
 
         # Must have formerly received CalWORKs

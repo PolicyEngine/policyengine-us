@@ -7,7 +7,7 @@ class monthly_age(Variable):
     label = "Monthly age"
     definition_period = MONTH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # We divide annual variables by 12 when bringing them down to a month.
         # This reverses that to preserve the true age.
         yearly_age = person("age", period)

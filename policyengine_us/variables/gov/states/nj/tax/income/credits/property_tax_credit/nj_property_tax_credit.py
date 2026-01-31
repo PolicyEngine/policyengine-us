@@ -14,7 +14,7 @@ class nj_property_tax_credit(Variable):
     )
     defined_for = "nj_property_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate credit amount
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

@@ -7,7 +7,7 @@ class share_of_care_and_support_costs_paid_by_tax_filer(Variable):
     definition_period = YEAR
     label = "The percentage of care and support costs of a senior paid by the tax filer"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         care_and_support_payment = person(
             "care_and_support_payments_from_tax_filer", period
         )

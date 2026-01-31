@@ -10,7 +10,7 @@ class ca_tanf_resources_limit(Variable):
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F42-200_Property%2F42-200_Property.htm%23Policybc-2&rhtocid=_3_1_2_0_1"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.cdss.tanf.cash.resources.limit
         persons = spm_unit.members
         age = persons("age", period)

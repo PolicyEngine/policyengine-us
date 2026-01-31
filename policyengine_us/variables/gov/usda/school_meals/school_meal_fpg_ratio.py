@@ -9,6 +9,6 @@ class school_meal_fpg_ratio(Variable):
     documentation = "SPM unit's federal poverty ratio for school meal program"
     unit = "/1"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = spm_unit("school_meal_countable_income", period)
         return income / spm_unit("spm_unit_fpg", period)

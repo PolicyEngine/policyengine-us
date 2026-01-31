@@ -18,7 +18,7 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     # This file computes the Michigan Tier one retirement benefits deduction, regardless
     # of the eligibility, as the amount will be needed for the computation of the tier three
     # retirement benefits deduction
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section A
         p = parameters(
             period

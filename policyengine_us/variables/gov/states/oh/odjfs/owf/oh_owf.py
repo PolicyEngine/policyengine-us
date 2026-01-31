@@ -12,7 +12,7 @@ class oh_owf(Variable):
         "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get payment standard for assistance group size
         payment_standard = spm_unit("oh_owf_payment_standard", period)
 

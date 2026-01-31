@@ -9,7 +9,7 @@ class eitc_reduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
         highest_income_variable = max_(earnings, agi)

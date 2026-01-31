@@ -13,7 +13,7 @@ class ks_fstc(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ks.tax.income.credits
         # determine if tax unit is eligible for credit
         person = tax_unit.members

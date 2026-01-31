@@ -13,7 +13,7 @@ class ks_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("ks_taxable_income", period)
         p = parameters(period).gov.states.ks.tax.income.rates

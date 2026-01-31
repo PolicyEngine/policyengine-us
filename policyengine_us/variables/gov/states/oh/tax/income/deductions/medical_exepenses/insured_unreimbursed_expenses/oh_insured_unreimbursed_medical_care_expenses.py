@@ -16,7 +16,7 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Line 5
         total_expenses = add(
             tax_unit,

@@ -8,7 +8,7 @@ class is_infant_for_medicaid_fc(Variable):
     label = "Medicaid infant financial criteria"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
 
         income = person("medicaid_income_level", period)

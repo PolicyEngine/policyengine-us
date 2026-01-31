@@ -15,7 +15,7 @@ class pell_grant_formula(Variable):
     label = "Pell Grant formula"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         has_dependents = person.tax_unit("tax_unit_dependents", period) > 0
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)

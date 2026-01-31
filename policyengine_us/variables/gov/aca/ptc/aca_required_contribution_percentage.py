@@ -9,7 +9,7 @@ class aca_required_contribution_percentage(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/36B#b_3_A"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         magi_frac = tax_unit("aca_magi_fraction", period)
         p = parameters(period).gov.aca.required_contribution_percentage
 

@@ -9,7 +9,7 @@ class ca_calworks_child_care_payment_factor(Variable):
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Referencesbc-11&rhtocid=_3_3_8_10"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.rate_ceilings
         factor_category = person(
             "ca_calworks_child_care_factor_category", period

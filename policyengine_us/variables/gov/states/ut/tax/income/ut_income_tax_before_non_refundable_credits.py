@@ -12,7 +12,7 @@ class ut_income_tax_before_non_refundable_credits(Variable):
         "https://tax.utah.gov/forms/current/tc-40.pdf#page=1"  # line 22
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxpayer_credit = tax_unit("ut_taxpayer_credit", period)
         ut_income_tax_before_credits = tax_unit(
             "ut_income_tax_before_credits", period

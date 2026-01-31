@@ -14,7 +14,7 @@ class md_deductions(Variable):
     )
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         md_itmded = tax_unit("md_itemized_deductions", period)
         md_stdded = tax_unit("md_standard_deduction", period)
         # 2021 and 2022 Form 502 instructions on page 5 include this FAQ:

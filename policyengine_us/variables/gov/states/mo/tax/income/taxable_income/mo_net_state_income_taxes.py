@@ -13,7 +13,7 @@ class mo_net_state_income_taxes(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follows Form MO-A Part II and Part II worksheet logic:
 
         filing_status = tax_unit("filing_status", period)

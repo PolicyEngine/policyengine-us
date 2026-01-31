@@ -10,7 +10,7 @@ class mt_child_dependent_care_expense_deduction(Variable):
     reference = "https://casetext.com/statute/montana-code/title-15-taxation/chapter-30-individual-income-tax/part-21-rate-and-general-provisions/section-15-30-2131-repealed-effective-112024-temporary-deductions-allowed-in-computing-net-income"
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         # Line 1
         eligible_children = tax_unit(

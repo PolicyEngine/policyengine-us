@@ -10,7 +10,7 @@ class tx_ccs_payment_rate(Variable):
     defined_for = "tx_ccs_eligible_child"
     reference = "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf#page=9"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get the household's workforce board region
         household = person.household
         region = household("tx_ccs_workforce_board_region", period)

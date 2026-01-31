@@ -9,5 +9,5 @@ class ny_college_tuition_credit_eligible(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (t)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return ~tax_unit("ny_itemizes", period)

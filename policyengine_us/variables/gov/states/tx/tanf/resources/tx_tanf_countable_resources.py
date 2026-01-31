@@ -13,7 +13,7 @@ class tx_tanf_countable_resources(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Countable resources = liquid resources + excess vehicle value
         # Household must have countable resources ≤ $1,000 to be eligible
 

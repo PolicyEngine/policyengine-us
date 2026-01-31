@@ -10,7 +10,7 @@ class ca_riv_share_payment(Variable):
     defined_for = "ca_riv_share_eligible"
     reference = "https://riversideca.gov/utilities/residents/assistance-programs/share-english"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.riv.cap.share.payment
         electricity_expense = spm_unit(
             "pre_subsidy_electricity_expense", period

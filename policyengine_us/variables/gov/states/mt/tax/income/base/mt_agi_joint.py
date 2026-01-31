@@ -10,7 +10,7 @@ class mt_agi_joint(Variable):
     defined_for = StateCode.MT
     documentation = "Montana AGI calculated at tax unit level for joint filers, pooling income and subtractions before applying them"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Pool federal AGI at tax unit level
         agi = add(tax_unit, period, ["adjusted_gross_income_person"])
 

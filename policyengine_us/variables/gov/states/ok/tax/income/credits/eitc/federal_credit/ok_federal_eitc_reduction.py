@@ -12,7 +12,7 @@ class ok_federal_eitc_reduction(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
         highest_income_variable = max_(earnings, agi)

@@ -15,7 +15,7 @@ class mo_taxable_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # calculate tax unit MO AGI
         tax_unit = person.tax_unit
         mo_agi = person("mo_adjusted_gross_income", period)

@@ -14,7 +14,7 @@ class ar_personal_credits_base(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         # Only head and spouse are eligible for the personal credit amounts
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

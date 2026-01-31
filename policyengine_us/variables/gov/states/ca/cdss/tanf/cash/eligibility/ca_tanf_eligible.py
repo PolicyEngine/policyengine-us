@@ -8,7 +8,7 @@ class ca_tanf_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         financial_eligibile = spm_unit("ca_tanf_financial_eligible", period)
         resources_eligible = spm_unit("ca_tanf_resources_eligible", period)

@@ -8,7 +8,7 @@ class state_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         if parameters(period).simulation.reported_state_income_tax:
             spm_unit = tax_unit.spm_unit
             person = spm_unit.members

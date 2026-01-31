@@ -10,7 +10,7 @@ class ut_ss_benefits_credit_max(Variable):
     defined_for = StateCode.UT
     reference = "https://incometax.utah.gov/credits/ss-benefits"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         This credit essentially makes social security tax-exempt for people earning
         under a threshold, and taxes it back after that.

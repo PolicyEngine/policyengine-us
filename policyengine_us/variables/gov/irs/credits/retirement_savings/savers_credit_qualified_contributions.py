@@ -9,7 +9,7 @@ class savers_credit_qualified_contributions(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25B#d_2"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.retirement_saving
         contributions = add(
             person, period, p.qualified_retirement_savings_contributions

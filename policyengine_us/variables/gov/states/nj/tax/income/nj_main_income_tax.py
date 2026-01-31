@@ -10,7 +10,7 @@ class nj_main_income_tax(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-2-1/"
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("nj_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

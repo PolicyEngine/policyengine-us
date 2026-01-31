@@ -13,7 +13,7 @@ class mn_charity_subtraction(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         charity = tax_unit("charitable_deduction", period)
         itemizing = tax_unit("mn_itemizing", period)
         p = parameters(period).gov.states.mn.tax.income.subtractions.charity

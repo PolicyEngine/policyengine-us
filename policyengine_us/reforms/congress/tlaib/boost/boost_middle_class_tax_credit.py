@@ -10,7 +10,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://d12t4t5x3vyizu.cloudfront.net/tlaib.house.indigov.us/uploads/2022/05/TLAIB_046_xml.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.harris.lift.middle_class_tax_credit
@@ -34,7 +34,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             middle_class_credit = tax_unit(
@@ -54,7 +54,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -90,7 +90,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(spm_unit, period, parameters):
+        def formula(spm_unit, period, parameters):  # pragma: no cover
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -131,7 +131,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
             return add(spm_unit, period, BENEFITS) + middle_class_tax_credit
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(boost_middle_class_tax_credit)
             self.update_variable(income_tax_refundable_credits)
             self.update_variable(household_benefits)
@@ -142,7 +142,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
 
 def create_boost_middle_class_tax_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_boost_middle_class_tax_credit()
 

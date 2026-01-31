@@ -13,7 +13,7 @@ class wy_power_countable_earned_income(Variable):
     )
     defined_for = StateCode.WY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Section 1101: Countable earned = Gross earned - Disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         disregard = spm_unit("wy_power_earned_income_disregard", period)

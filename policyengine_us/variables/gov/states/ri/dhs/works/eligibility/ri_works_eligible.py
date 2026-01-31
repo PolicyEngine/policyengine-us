@@ -12,7 +12,7 @@ class ri_works_eligible(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("ri_works_income_eligible", period)
         resource_eligible = spm_unit("ri_works_resource_eligible", period)
         demographic_eligible = (

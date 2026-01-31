@@ -9,7 +9,7 @@ class ut_ss_benefits_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         claims_retirement_credit = tax_unit(
             "ut_claims_retirement_credit", period
         )

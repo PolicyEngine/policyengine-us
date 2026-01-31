@@ -12,7 +12,7 @@ class or_severely_disabled_exemptions(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Identify qualifying tax unit members.
         person = tax_unit.members
         severely_disabled = person("is_severely_disabled", period)

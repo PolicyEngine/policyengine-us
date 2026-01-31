@@ -10,7 +10,7 @@ class ca_ala_general_assistance_base_amount(Variable):
     defined_for = "ca_ala_general_assistance_eligible_person"
     reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=28"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.ala.general_assistance.amount
         eligible_persons = spm_unit.members(
             "ca_ala_general_assistance_eligible_person", period

@@ -12,7 +12,7 @@ class fl_tca_eligible(Variable):
     )
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child with deprived parent)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 

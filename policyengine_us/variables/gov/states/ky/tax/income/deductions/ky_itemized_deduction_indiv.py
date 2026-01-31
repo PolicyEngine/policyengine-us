@@ -13,7 +13,7 @@ class ky_itemized_deductions_indiv(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         ky_agi = person("ky_agi", period) * head_or_spouse
         ky_agi_sum = person.tax_unit.sum(ky_agi)

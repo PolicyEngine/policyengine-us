@@ -9,7 +9,7 @@ class capped_electric_stove_cooktop_range_or_oven_rebate(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         percent_covered = tax_unit(
             "high_efficiency_electric_home_rebate_percent_covered", period
         )

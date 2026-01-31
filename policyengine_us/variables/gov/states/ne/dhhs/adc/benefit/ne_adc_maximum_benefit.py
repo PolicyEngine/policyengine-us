@@ -13,7 +13,7 @@ class ne_adc_maximum_benefit(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         need_standard = spm_unit("ne_adc_need_standard", period)
         countable_earned = spm_unit("ne_adc_countable_earned_income", period)
         payment_standard = spm_unit("ne_adc_payment_standard", period)

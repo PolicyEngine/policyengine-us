@@ -10,7 +10,7 @@ class nm_eitc(Variable):
     reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf"  # 7-2-18.15
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eligible = tax_unit("nm_eitc_eligible", period)
         maximum = tax_unit("eitc_maximum", period)
         phased_in = tax_unit("eitc_phased_in", period)

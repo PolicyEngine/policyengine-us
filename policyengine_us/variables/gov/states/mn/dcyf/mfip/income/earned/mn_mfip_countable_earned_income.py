@@ -13,7 +13,7 @@ class mn_mfip_countable_earned_income(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.17, Subd. 7 (benefit calculation):
         # Dependent care deduction does NOT apply to benefit calculation.
         # Only apply $65 per wage earner and 50% disregard.

@@ -12,7 +12,7 @@ class nc_military_retirement_deduction_eligible(Variable):
         "https://law.justia.com/codes/north-carolina/chapter-105/article-4/section-105-153-5/",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nc.tax.income.deductions.military_retirement

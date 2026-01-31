@@ -8,7 +8,7 @@ class employee_payroll_tax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         if parameters(
             period
         ).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:

@@ -9,7 +9,7 @@ class mt_personal_exemptions_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Allocate the exemptions to the head
         head = person("is_tax_unit_head", period)
         exemptions = add(

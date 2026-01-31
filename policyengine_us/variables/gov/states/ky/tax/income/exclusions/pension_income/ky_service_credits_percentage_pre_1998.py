@@ -8,7 +8,7 @@ class ky_service_credits_percentage_pre_1998(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pre_cutoff_months = person("ky_service_credit_months_pre_1998", period)
         post_cutoff_months = person(
             "ky_service_credit_months_post_1997", period

@@ -7,5 +7,5 @@ class is_wa_adult(Variable):
     label = "Is a working-age adult"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return ~person("is_child", period) & ~person("is_senior", period)

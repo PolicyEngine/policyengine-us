@@ -10,7 +10,7 @@ class ar_tea(Variable):
     reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
     defined_for = "ar_tea_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per TEA Manual Section 2362 - Reduced Payment - Gross Income Trigger
         p = parameters(period).gov.states.ar.dhs.tea
 

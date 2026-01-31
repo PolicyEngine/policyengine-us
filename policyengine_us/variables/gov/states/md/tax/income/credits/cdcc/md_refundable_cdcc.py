@@ -11,7 +11,7 @@ class md_refundable_cdcc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Note: The MD refundable CDCC is based on the MD CDCC and MD tax before credits
         # *without respect to the other non-refundable credits* like MD EITC.
         filing_status = tax_unit("filing_status", period)

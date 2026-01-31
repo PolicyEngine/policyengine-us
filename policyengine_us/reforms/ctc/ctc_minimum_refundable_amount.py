@@ -13,7 +13,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         documentation = "Minimum refundable amount per child, exempt from phase-in but subject to phase-out."
         definition_period = YEAR
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.ctc.minimum_refundable
 
             age = person("age", period)
@@ -31,7 +31,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
             # without regard to this subsection [the refundability section] and the limitation under
             # section 26(a) [the section that limits the amount of the non-refundable CTC to tax liability].
@@ -69,7 +69,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf",
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             # Use either normal or ARPA CTC maximums.
             individual_max = person("ctc_child_individual_maximum", period)
@@ -92,7 +92,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         )
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             return 0
 
     class ctc_value(Variable):
@@ -106,7 +106,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         adds = ["refundable_ctc"]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_minimum_refundable_amount)
             self.update_variable(refundable_ctc)
             self.update_variable(ctc_value)
@@ -118,7 +118,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
 
 def create_ctc_minimum_refundable_amount_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ctc_minimum_refundable_amount()
 

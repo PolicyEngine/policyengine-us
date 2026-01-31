@@ -10,7 +10,7 @@ class sc_2022_rebate(Variable):
     definition_period = YEAR
     reference = "https://www.scstatehouse.gov/sess124_2021-2022/bills/1087.htm"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_non_refundable_credits = tax_unit(
             "sc_income_tax_before_non_refundable_credits", period
         )

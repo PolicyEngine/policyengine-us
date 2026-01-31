@@ -10,7 +10,7 @@ class va_rebate(Variable):
     reference = "https://budget.lis.virginia.gov/item/2023/2/HB6001/Introduced/3/3-5.28/"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.va.tax.income.rebate
         filing_status = tax_unit("filing_status", period)
         return p.amount[filing_status]

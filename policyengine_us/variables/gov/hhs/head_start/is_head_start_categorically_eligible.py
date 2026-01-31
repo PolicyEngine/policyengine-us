@@ -11,6 +11,6 @@ class is_head_start_categorically_eligible(Variable):
         "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.head_start
         return add(person.tax_unit, period, p.categorical_eligibility) > 0

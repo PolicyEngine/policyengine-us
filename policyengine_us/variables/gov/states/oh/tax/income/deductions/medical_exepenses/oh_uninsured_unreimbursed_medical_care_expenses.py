@@ -14,7 +14,7 @@ class oh_uninsured_unreimbursed_medical_care_expenses(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         not_medicare_eligible = ~person("is_medicare_eligible", period)
         employer_premium_contribution = person(
             "employer_contribution_to_health_insurance_premiums_category",

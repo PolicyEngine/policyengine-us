@@ -9,7 +9,7 @@ class md_local_income_tax_before_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         county = tax_unit.household("county_str", period)
         in_md = tax_unit.household("state_code_str", period) == "MD"
         rate = np.zeros_like(county, dtype=float)

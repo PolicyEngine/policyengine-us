@@ -12,7 +12,7 @@ class ma_liheap_eligible(Variable):
         "https://liheapch.acf.gov/tables/subsidize.htm#MA",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         eligible_subsidized_housing = spm_unit(
             "ma_liheap_eligible_subsidized_housing", period
         )

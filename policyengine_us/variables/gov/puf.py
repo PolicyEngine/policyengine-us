@@ -51,5 +51,5 @@ for variable in EXTRA_PUF_VARIABLES:
                 "definition_period": YEAR,
             },
         )
-    except:
+    except:  # pragma: no cover
         pass

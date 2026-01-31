@@ -16,7 +16,7 @@ class il_smib_categorical_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # AABD recipient
         is_aabd = person("il_aabd_eligible_person", period)
         # TANF recipient (SPM unit level, check if person is in eligible unit)

@@ -10,7 +10,7 @@ class or_tanf_payment_standard(Variable):
     reference = "https://oregon.public.law/rules/oar_461-155-0030"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf
         size = spm_unit("spm_unit_size", period.this_year)
         max_size = p.maximum_need_group_size

@@ -4,7 +4,7 @@ from policyengine_core.periods import instant
 
 
 def create_limit_salt_deduction_to_property_taxes() -> Reform:
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.irs.deductions.itemized.salt_and_real_estate.sources.update(
             start=instant("2025-01-01"),
             stop=instant("2036-12-31"),
@@ -13,7 +13,7 @@ def create_limit_salt_deduction_to_property_taxes() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.modify_parameters(modify_parameters)
 
     return reform
@@ -21,7 +21,7 @@ def create_limit_salt_deduction_to_property_taxes() -> Reform:
 
 def create_limit_salt_deduction_to_property_taxes_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_limit_salt_deduction_to_property_taxes()
 

@@ -9,7 +9,8 @@ class taxsim_sage(Variable):
     documentation = "Age of spouse (zero if unknown or not a joint return). It is an error to specify a non-zero spouse age for an unmarried taxpayer."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_head = person("is_tax_unit_spouse", period)
         age = person("age", period)

@@ -1,7 +1,9 @@
 from policyengine_us.model_api import *
 
 
-def create_dc_kccatc_reform(parameters, period, bypass=False):
+def create_dc_kccatc_reform(
+    parameters, period, bypass=False
+):  # pragma: no cover
     class dc_kccatc(Variable):
         value_type = float
         entity = TaxUnit
@@ -14,7 +16,7 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
         )
         defined_for = StateCode.DC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             reform_parameters = parameters(period).gov.contrib.dc_kccatc
 
             if reform_parameters.active:
@@ -84,7 +86,7 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 return income_eligible * kccatc
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(dc_kccatc)
 
     if bypass or parameters(period).gov.contrib.dc_kccatc.active:

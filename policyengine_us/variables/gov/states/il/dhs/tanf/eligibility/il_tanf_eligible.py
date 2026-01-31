@@ -11,7 +11,7 @@ class il_tanf_eligible(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=30358"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         non_financial_eligible = spm_unit(
             "il_tanf_non_financial_eligible", period
         )

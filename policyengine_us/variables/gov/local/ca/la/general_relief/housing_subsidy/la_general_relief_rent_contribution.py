@@ -10,7 +10,7 @@ class la_general_relief_rent_contribution(Variable):
     defined_for = "la_general_relief_eligible"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         married = add(spm_unit, period, ["is_married"])
         p = parameters(period).gov.local.ca.la.general_relief
         # If filers are receiving the housing subsidy

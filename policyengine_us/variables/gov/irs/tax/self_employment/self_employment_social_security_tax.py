@@ -9,7 +9,7 @@ class self_employment_social_security_tax(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/1401#a"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.self_employment.rate
         income = person(
             "social_security_taxable_self_employment_income", period

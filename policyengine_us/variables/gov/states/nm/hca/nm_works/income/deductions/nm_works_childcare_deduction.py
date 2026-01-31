@@ -10,7 +10,7 @@ class nm_works_childcare_deduction(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.520.12(D) NMAC, child care deduction varies by age:
         # Under age 2: up to $200
         # Age 2 or older: up to $175

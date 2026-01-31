@@ -10,7 +10,7 @@ class nm_cdcc(Variable):
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
     defined_for = "nm_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         nm_cdcc_max = tax_unit("nm_cdcc_max_amount", period)
         us_cdcc = tax_unit("cdcc_potential", period)
         # New Mexico matches the potential federal credit

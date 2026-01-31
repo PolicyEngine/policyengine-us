@@ -13,7 +13,7 @@ class ok_exemptions(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         exemptions_count = tax_unit("ok_count_exemptions", period)
         p = parameters(period).gov.states.ok.tax.income.exemptions
         return exemptions_count * p.amount

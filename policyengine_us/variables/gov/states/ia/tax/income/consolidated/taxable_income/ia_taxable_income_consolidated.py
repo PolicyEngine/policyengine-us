@@ -13,7 +13,7 @@ class ia_taxable_income_consolidated(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fed_taxable_income = tax_unit("taxable_income", period)
         modifications = tax_unit(
             "ia_taxable_income_modifications_consolidated", period

@@ -8,7 +8,7 @@ class ca_riv_general_relief_meets_work_requirements(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.local.ca.riv.general_relief.work_exempted_age

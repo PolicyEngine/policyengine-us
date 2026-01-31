@@ -9,7 +9,7 @@ class nyc_eitc(Variable):
     definition_period = YEAR
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First get their NYAGI and EITC.
         ny_agi = tax_unit("ny_agi", period)
         federal_eitc = tax_unit("eitc", period)

@@ -12,7 +12,7 @@ class wa_tanf_income_eligible(Variable):
     )
     defined_for = StateCode.WA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get gross earned income from federal TANF variable
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 

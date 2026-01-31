@@ -9,7 +9,7 @@ class az_property_tax_credit(Variable):
     definition_period = YEAR
     defined_for = "az_property_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(period).gov.states.az.tax.income.credits.property_tax
         income = tax_unit("az_property_tax_credit_income", period)

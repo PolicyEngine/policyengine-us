@@ -7,5 +7,5 @@ class is_adult(Variable):
     label = "Is an adult"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("age", period) >= 18

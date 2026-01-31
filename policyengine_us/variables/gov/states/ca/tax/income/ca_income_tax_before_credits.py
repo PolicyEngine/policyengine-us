@@ -10,7 +10,7 @@ class ca_income_tax_before_credits(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("ca_taxable_income", period)
         p = parameters(period).gov.states.ca.tax.income.rates

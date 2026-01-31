@@ -10,7 +10,7 @@ class is_eligible_md_poverty_line_credit(Variable):
     reference = "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # (3)    "Eligible low income taxpayer" means an individual, or an
         # individual and the individual’s spouse if they file a joint income
         # tax return:

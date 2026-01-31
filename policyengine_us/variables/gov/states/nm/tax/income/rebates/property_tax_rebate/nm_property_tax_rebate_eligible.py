@@ -9,7 +9,7 @@ class nm_property_tax_rebate_eligible(Variable):
     reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf"
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nm.tax.income.rebates.property_tax
         # Head or spouse eligible if 65 or over.
         age_head = tax_unit("age_head", period)

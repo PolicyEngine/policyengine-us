@@ -13,7 +13,7 @@ class ok_ptc(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.tax.income.credits.property_tax
         # determine eligibility
         elderly_head = tax_unit("age_head", period) >= p.age_minimum

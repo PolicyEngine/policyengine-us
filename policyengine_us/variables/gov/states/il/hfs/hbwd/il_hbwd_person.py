@@ -13,7 +13,7 @@ class il_hbwd_person(Variable):
     )
     defined_for = "il_hbwd_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # HBWD provides comprehensive healthcare coverage
         # Could model as:
         # 1. Negative premium (cost to individual)

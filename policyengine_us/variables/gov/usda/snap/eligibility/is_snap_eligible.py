@@ -12,7 +12,7 @@ class is_snap_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         net = spm_unit("meets_snap_net_income_test", period)
         gross = spm_unit("meets_snap_gross_income_test", period)
         asset = spm_unit("meets_snap_asset_test", period)

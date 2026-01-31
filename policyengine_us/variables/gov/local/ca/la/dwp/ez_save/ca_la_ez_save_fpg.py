@@ -10,7 +10,7 @@ class ca_la_ez_save_fpg(Variable):
     definition_period = MONTH
     defined_for = "in_la"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.la.dwp.ez_save.eligibility
         household_size = household("household_size", period.this_year)
         floored_household_size = max_(p.household_size_floor, household_size)

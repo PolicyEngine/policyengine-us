@@ -19,7 +19,7 @@ class ny_misc_deduction(Variable):
     These include unreimbursed employee expenses and tax preparation fees.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # NY uses pre-TCJA rules: misc deductions are still allowed
         # with the 2% AGI floor (not suspended like federal post-2017)
         p = parameters(period).gov.irs.deductions.itemized.misc

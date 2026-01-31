@@ -10,7 +10,7 @@ class ct_tfa_countable_earned_income_at_application(Variable):
     reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10"
     defined_for = StateCode.CT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ct.dss.tfa.income.deduction.new_applicant

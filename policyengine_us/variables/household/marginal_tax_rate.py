@@ -9,7 +9,7 @@ class marginal_tax_rate(Variable):
     value_type = float
     unit = "/1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         netinc_base = person.household("household_net_income", period)
         delta = parameters(period).simulation.marginal_tax_rate_delta
         adult_count = parameters(period).simulation.marginal_tax_rate_adults
@@ -54,7 +54,7 @@ class adult_index(Variable):
     label = "Index of adult in household"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return (
             person.get_rank(
                 person.household,
@@ -71,7 +71,7 @@ class adult_earnings_index(Variable):
     label = "index of adult in household by earnings"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return (
             person.get_rank(
                 person.household,

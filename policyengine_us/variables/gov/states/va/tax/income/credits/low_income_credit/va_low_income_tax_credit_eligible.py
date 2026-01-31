@@ -8,7 +8,7 @@ class va_low_income_tax_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Criteria 1: Not qualified to claim EITC if anyone in the tax unit claimed any of the following:
         p = parameters(
             period

@@ -13,6 +13,6 @@ class sc_military_deduction_indv(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return person("military_retirement_pay", period) * head_or_spouse

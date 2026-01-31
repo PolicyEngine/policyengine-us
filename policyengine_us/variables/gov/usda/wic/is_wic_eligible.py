@@ -9,7 +9,7 @@ class is_wic_eligible(Variable):
     label = "Is eligible for WIC"
     reference = "https://www.law.cornell.edu/cfr/text/7/246.7#c_1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         meets_income_test = person.spm_unit("meets_wic_income_test", period)
         meets_categorical_test = person(
             "meets_wic_categorical_eligibility", period

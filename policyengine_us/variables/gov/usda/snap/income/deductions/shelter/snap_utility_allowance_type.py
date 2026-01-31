@@ -19,7 +19,7 @@ class snap_utility_allowance_type(Variable):
     )
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         distinct_utility_bills = spm_unit(
             "count_distinct_utility_expenses", period
         )

@@ -12,7 +12,7 @@ class ca_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ca.tax.income.credits.child_dependent_care

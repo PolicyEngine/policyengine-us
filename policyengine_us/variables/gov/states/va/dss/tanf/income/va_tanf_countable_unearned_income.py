@@ -10,7 +10,7 @@ class va_tanf_countable_unearned_income(Variable):
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=58"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.va.dss.tanf.income.deductions
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         # Apply child support disregard

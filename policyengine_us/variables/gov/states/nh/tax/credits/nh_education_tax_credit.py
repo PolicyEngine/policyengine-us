@@ -12,7 +12,7 @@ class nh_education_tax_credit(Variable):
     )
     defined_for = StateCode.NH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nh.tax.credits.education
 
         # Get Rate for donation

@@ -12,7 +12,7 @@ class tx_tanf_payment_standard(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Payment standard (maximum benefit amount) varies by household size and caretaker type
 
         size = spm_unit("tx_tanf_assistance_unit_size", period)

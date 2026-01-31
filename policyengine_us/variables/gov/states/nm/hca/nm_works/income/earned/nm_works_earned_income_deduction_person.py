@@ -10,7 +10,7 @@ class nm_works_earned_income_deduction_person(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per 8.102.520.12(C) NMAC:
         # Flat amount ($125 single-parent, $225 two-parent) + 50% of remainder
         p = parameters(

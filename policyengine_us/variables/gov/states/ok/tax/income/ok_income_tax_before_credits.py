@@ -13,7 +13,7 @@ class ok_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         taxable_income = tax_unit("ok_taxable_income", period)

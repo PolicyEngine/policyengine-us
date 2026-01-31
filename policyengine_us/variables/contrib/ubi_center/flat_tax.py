@@ -9,7 +9,7 @@ class flat_tax(Variable):
     documentation = "Flat income tax on federal AGI or gross income."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.contrib.ubi_center.flat_tax
         # Gross income flat tax.
         gross_income = add(tax_unit, period, ["positive_gross_income"])

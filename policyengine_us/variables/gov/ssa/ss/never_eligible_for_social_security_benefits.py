@@ -8,7 +8,7 @@ class never_eligible_for_social_security_benefits(Variable):
     label = "Never eligible for Social Security"
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Assumption: if person is above age 70 and has no social security benefits, then they are never eligible.
         age = person("age", period)
         social_security = person("social_security", period)

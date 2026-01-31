@@ -9,7 +9,7 @@ class nc_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.nc.tax.income
         return p.deductions.standard.amount[filing_status]

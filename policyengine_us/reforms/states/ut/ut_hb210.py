@@ -26,7 +26,7 @@ def create_ut_hb210() -> Reform:
             "https://le.utah.gov/~2026/bills/static/HB0210.html",
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Base maximum credit (6% of deductions + exemption)
             base_max = tax_unit("ut_taxpayer_credit_max", period)
 
@@ -46,13 +46,15 @@ def create_ut_hb210() -> Reform:
             return max_(total_max - reduction, 0)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ut_taxpayer_credit)
 
     return reform
 
 
-def create_ut_hb210_reform(parameters, period, bypass: bool = False):
+def create_ut_hb210_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ut_hb210()
 

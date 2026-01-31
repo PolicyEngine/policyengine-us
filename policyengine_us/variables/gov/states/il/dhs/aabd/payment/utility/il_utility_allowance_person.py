@@ -12,7 +12,7 @@ class il_aabd_utility_allowance_person(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.259",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         utility_allowance = person.spm_unit(
             "il_aabd_utility_allowance", period
         )

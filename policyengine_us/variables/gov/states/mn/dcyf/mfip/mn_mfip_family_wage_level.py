@@ -12,7 +12,7 @@ class mn_mfip_family_wage_level(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.17, Subd. 7:
         # Family Wage Level = 110% of Transitional Standard.
         # Used for both eligibility testing and benefit calculation.

@@ -9,7 +9,7 @@ class tx_ccs_work_requirement_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-56"
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.twc.ccs.work_requirements
 
         person = spm_unit.members

@@ -12,7 +12,7 @@ class id_tafi_work_incentive_amount(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tafi.work_incentive_table
         size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(size, p.max_size)

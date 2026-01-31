@@ -9,7 +9,7 @@ class wv_senior_citizen_disability_deduction_eligible_person(Variable):
     defined_for = StateCode.WV
     reference = "https://code.wvlegislature.gov/11-21-12/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction

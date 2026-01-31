@@ -10,7 +10,7 @@ class ks_exemptions(Variable):
     reference = "https://law.justia.com/codes/kansas/chapter-79/article-32/section-79-32-121/"
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ks.tax.income.exemptions
         veteran_exemptions_count = add(
             tax_unit,

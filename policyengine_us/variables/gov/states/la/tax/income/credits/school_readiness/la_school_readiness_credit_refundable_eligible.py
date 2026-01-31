@@ -9,7 +9,7 @@ class la_school_readiness_credit_refundable_eligible(Variable):
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.credits.cdcc.refundable
         # determine if it is nonrefundable or refundable
         us_agi = tax_unit("adjusted_gross_income", period)

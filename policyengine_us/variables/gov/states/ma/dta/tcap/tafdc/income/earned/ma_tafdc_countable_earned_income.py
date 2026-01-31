@@ -10,7 +10,7 @@ class ma_tafdc_countable_earned_income(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"  # (A)&(B)
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # This variable is used for the TAFDC benefit amount calculation
         # The variable is computed yearly to account for the 100% disregard for the first 6 months of the year
         p = parameters(

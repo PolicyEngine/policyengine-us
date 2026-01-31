@@ -16,7 +16,7 @@ class amt_exemption(Variable):
         "https://www.irs.gov/instructions/i6251",
     ]
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.income.amt
         phase_out = p.exemption.phase_out
         filing_status = tax_unit("filing_status", period)

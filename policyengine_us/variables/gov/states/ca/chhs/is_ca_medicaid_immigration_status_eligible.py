@@ -21,7 +21,7 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     """
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.chhs
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

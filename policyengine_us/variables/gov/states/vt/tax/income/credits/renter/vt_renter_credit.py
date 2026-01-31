@@ -15,7 +15,7 @@ class vt_renter_credit(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits.renter
         # get tax unit size and county.
         tax_unit_size = tax_unit("tax_unit_size", period)

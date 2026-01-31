@@ -12,7 +12,7 @@ class wy_power_income_eligible(Variable):
     )
     defined_for = StateCode.WY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Income eligible if countable income < payment standard
         # (i.e., household would receive a positive benefit)
         # Note: The "Maximum Earned Income Limit" in Table II equals

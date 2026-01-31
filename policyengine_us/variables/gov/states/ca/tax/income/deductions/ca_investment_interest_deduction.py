@@ -13,7 +13,7 @@ class ca_investment_interest_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Line 1
         investment_interest_expense = add(
             tax_unit, period, ["investment_interest_expense"]

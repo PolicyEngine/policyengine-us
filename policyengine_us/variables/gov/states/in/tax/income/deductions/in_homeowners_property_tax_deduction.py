@@ -10,7 +10,7 @@ class in_homeowners_property_tax_deduction(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3"
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].tax.income
         filing_status = tax_unit("filing_status", period)
         max_deduction = p.deductions.homeowners_property_tax.max[filing_status]

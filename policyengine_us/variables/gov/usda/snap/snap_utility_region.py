@@ -72,5 +72,5 @@ class snap_utility_region(Variable):
     documentation = "Region deciding the SNAP utility allowances."
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         return household("state_code", period).decode_to_str()

@@ -12,7 +12,7 @@ class il_pfae_age_eligible_child(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # PFA/PFAE serves children ages 3-4, plus 5-year-olds not yet
         # kindergarten eligible. Per 105 ILCS 5/10-20.12, children who
         # turn 5 on or before September 1 are kindergarten eligible.

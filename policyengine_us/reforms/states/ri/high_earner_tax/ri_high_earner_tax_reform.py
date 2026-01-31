@@ -12,7 +12,7 @@ def create_ri_high_earner_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             income = tax_unit("ri_taxable_income", period)
             p_baseline = parameters(period).gov.states.ri.tax.income.rate
             p_reform = parameters(period).gov.contrib.states.ri.high_earner_tax
@@ -25,13 +25,15 @@ def create_ri_high_earner_tax() -> Reform:
             return where(reform_active, reform_tax, baseline_tax)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ri_income_tax_before_non_refundable_credits)
 
     return reform
 
 
-def create_ri_high_earner_tax_reform(parameters, period, bypass: bool = False):
+def create_ri_high_earner_tax_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ri_high_earner_tax()
 

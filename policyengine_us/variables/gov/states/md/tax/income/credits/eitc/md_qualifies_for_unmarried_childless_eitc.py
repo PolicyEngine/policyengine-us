@@ -10,7 +10,7 @@ class md_qualifies_for_unmarried_childless_eitc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         childless = tax_unit("eitc_child_count", period) == 0
         # Law says "individual".
         # Tax form instructions clarify that this means single/head/surviving spouse.

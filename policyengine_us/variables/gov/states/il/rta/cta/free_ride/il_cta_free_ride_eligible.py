@@ -11,7 +11,7 @@ class il_cta_free_ride_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.transitchicago.com/reduced-fare-programs/#free"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.rta.cta.free_ride_program.age_threshold

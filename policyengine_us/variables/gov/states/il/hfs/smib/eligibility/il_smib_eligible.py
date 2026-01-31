@@ -18,7 +18,7 @@ class il_smib_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Must be Medicare eligible (or meet other SMIB criteria)
         is_medicare = person("is_medicare_eligible", period.this_year)
         # Check categorical eligibility (AABD, TANF, SSI)

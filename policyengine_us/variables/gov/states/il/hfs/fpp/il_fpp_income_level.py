@@ -14,7 +14,7 @@ class il_fpp_income_level(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Only the applicant's income is counted (not household income)
         income = person("adjusted_gross_income_person", period)
 

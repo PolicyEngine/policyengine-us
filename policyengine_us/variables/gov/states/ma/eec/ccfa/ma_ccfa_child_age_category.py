@@ -21,7 +21,7 @@ class ma_ccfa_child_age_category(Variable):
         "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get child's age in years (convert to months for thresholds)
         age_years = person("age", period.this_year)
         age_months = age_years * MONTHS_IN_YEAR

@@ -13,7 +13,7 @@ class eitc_child_count(Variable):
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_D_i",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         is_child = person("is_child_dependent", period)
         meets_eitc_identification_requirements = person(

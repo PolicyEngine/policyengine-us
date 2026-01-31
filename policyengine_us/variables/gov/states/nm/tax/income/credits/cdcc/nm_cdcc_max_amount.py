@@ -10,7 +10,7 @@ class nm_cdcc_max_amount(Variable):
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
     defined_for = "nm_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # allocate unit's childcare expenses across eligible children
         person = tax_unit.members
         expenses = person.tax_unit("tax_unit_childcare_expenses", period)

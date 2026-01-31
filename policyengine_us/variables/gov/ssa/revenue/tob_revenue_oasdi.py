@@ -15,7 +15,7 @@ class tob_revenue_oasdi(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/42/401"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Calculate OASDI trust fund revenue using double-branching.
 

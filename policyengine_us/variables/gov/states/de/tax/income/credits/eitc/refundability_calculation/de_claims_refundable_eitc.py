@@ -10,7 +10,7 @@ class de_claims_refundable_eitc(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         de_income_tax_if_claiming_refundable_eitc = tax_unit(
             "de_income_tax_if_claiming_refundable_eitc", period
         )

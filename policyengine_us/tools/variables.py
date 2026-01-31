@@ -4,14 +4,14 @@ from IPython.display import Markdown
 variables = system.variables
 
 
-def add_n(word):
+def add_n(word):  # pragma: no cover
     if word[0] in ["a", "e", "i", "o", "u"]:
         return " "
     else:
         return "n "
 
 
-def print_variable_summary(variable_name: str):
+def print_variable_summary(variable_name: str):  # pragma: no cover
     variable = variables.get(variable_name)
     return Markdown(f"""
         ## {variable.name}

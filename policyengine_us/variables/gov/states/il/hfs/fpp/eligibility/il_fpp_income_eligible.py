@@ -12,7 +12,7 @@ class il_fpp_income_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.fpp.eligibility
         income_level = person("il_fpp_income_level", period)
         return income_level <= p.income_limit

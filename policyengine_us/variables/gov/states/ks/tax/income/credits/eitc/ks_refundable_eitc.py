@@ -13,7 +13,7 @@ class ks_refundable_eitc(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         total_eitc = tax_unit("ks_total_eitc", period)
         nonrefundable_eitc = tax_unit("ks_nonrefundable_eitc", period)
         return max_(0, total_eitc - nonrefundable_eitc)

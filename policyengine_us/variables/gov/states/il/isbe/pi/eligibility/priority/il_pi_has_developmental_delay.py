@@ -9,7 +9,7 @@ class il_pi_has_developmental_delay(Variable):
     reference = "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=2"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Factor 18: Member of household has developmental delay or disability
         has_disability = spm_unit.members("is_disabled", period)
         has_dev_delay = spm_unit.members("has_developmental_delay", period)

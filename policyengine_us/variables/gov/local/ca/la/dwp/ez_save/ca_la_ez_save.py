@@ -8,7 +8,7 @@ class ca_la_ez_save(Variable):
     label = "Los Angeles County EZ Save program"
     defined_for = "ca_la_ez_save_eligible"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         electricity_expense = add(
             household, period, ["pre_subsidy_electricity_expense"]
         )

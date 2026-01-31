@@ -9,7 +9,7 @@ class pr_low_income_credit_eligible_person(Variable):
     reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30212-credit-for-low-income-individuals-older-than-sixty-five-65-years-of-age"
     defined_for = StateCode.PR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.territories.pr.tax.income.credits.low_income
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

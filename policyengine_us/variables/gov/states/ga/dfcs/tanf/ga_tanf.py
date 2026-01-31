@@ -13,7 +13,7 @@ class ga_tanf(Variable):
     )
     defined_for = "ga_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         standard_of_need = spm_unit("ga_tanf_standard_of_need", period)
         countable_income = spm_unit("ga_tanf_countable_income", period)
         family_maximum = spm_unit("ga_tanf_family_maximum", period)

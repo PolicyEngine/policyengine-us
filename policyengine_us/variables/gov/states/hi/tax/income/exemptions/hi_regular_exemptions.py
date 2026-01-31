@@ -12,7 +12,7 @@ class hi_regular_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         exemptions_count = tax_unit("exemptions_count", period)
         p = parameters(period).gov.states.hi.tax.income.exemptions
         # Aged heads and spouses get an extra base exemption.

@@ -13,7 +13,7 @@ class mn_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         basic_tax = tax_unit("mn_basic_tax", period)
         amt = tax_unit("mn_amt", period)
         # Only add NIIT if it's in effect

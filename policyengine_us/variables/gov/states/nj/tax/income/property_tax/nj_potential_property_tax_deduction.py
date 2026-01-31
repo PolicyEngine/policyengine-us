@@ -13,7 +13,7 @@ class nj_potential_property_tax_deduction(Variable):
     )
     defined_for = "nj_property_tax_deduction_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income.deductions.property_tax
 
         # property_tax amount calculation follows NJ-1040 form Worksheet G

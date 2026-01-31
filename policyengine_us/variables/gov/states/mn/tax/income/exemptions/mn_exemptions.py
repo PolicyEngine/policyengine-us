@@ -16,7 +16,7 @@ class mn_exemptions(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dependents = tax_unit("tax_unit_dependents", period)
         p = parameters(period).gov.states.mn.tax.income.exemptions
         exemptions = p.amount * dependents

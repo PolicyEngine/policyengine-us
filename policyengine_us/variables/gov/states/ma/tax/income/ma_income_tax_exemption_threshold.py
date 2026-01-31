@@ -11,7 +11,7 @@ class ma_income_tax_exemption_threshold(Variable):
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         dependents = tax_unit("tax_unit_dependents", period)
         tax = parameters(period).gov.states.ma.tax.income

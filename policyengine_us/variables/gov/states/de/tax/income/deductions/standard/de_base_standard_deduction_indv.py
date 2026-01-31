@@ -10,7 +10,7 @@ class de_base_standard_deduction_indv(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=8"
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,

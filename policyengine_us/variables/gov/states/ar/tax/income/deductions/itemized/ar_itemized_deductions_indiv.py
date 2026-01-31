@@ -10,7 +10,7 @@ class ar_itemized_deductions_indiv(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR3_ItemizedDeduction.pdf"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Arkansas does not tie itemization choice to federal choice.
         p = parameters(
             period

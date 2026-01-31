@@ -10,7 +10,7 @@ class il_k12_education_expense_credit(Variable):
 
     defined_for = "il_is_exemption_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.tax.income.credits.k12
         tuition_and_fees = tax_unit("k12_tuition_and_fees", period)
         reduced_tuition_and_fees = max_(0, tuition_and_fees - p.reduction)

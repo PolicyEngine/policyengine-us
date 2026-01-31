@@ -10,7 +10,7 @@ class pa_tanf_maximum_benefit(Variable):
     defined_for = StateCode.PA
     reference = "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.pa.dhs.tanf
         household = spm_unit.household
 

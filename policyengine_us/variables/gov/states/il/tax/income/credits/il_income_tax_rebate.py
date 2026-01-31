@@ -10,7 +10,7 @@ class il_income_tax_rebate(Variable):
     definition_period = YEAR
     reference = "https://codes.findlaw.com/il/chapter-35-revenue/il-st-sect-35-5-212-1.html"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.tax.income.credits.income_tax_rebate

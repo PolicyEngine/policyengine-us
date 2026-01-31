@@ -9,7 +9,7 @@ class mt_old_age_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.subtractions.old_age
         # Aged taxpayers are eligible for a subtraction amount
         age = person("age", period)

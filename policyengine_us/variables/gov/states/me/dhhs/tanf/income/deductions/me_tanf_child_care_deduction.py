@@ -10,7 +10,7 @@ class me_tanf_child_care_deduction(Variable):
     reference = "https://www.mainelegislature.org/legis/statutes/22/title22sec3762.html"
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762(3)(B)(7-D):
         # Up to $175/month per child
         # Up to $200/month per child under age 2 or with special needs

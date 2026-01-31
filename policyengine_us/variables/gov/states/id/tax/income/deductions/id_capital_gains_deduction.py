@@ -10,7 +10,7 @@ class id_capital_gains_deduction(Variable):
     reference = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022h/"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.capital_gains

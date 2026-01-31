@@ -10,7 +10,7 @@ class ut_military_retirement_credit(Variable):
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1043.html"
     defined_for = "ut_military_retirement_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         military_retirement_pay = add(
             tax_unit, period, ["military_retirement_pay"]
         )

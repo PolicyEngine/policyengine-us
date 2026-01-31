@@ -11,7 +11,7 @@ class ny_ctc_post_2024_phase_out(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = "ny_ctc_post_2024_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)

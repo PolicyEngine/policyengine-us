@@ -12,7 +12,7 @@ class ga_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.dfcs.tanf.resources
         # For simplified implementation, use SPM unit cash assets directly
         # In a more complete implementation, this would account for

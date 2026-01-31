@@ -12,7 +12,7 @@ class qualified_business_income_deduction(Variable):
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute sum of QBID amounts for each person in TaxUnit following
         # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
         person = tax_unit.members

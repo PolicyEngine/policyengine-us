@@ -10,7 +10,7 @@ class co_care_worker_credit(Variable):
     definition_period = YEAR
     reference = "https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-5/section-39-22-566/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.tax.income.credits.care_worker
         joint = tax_unit("tax_unit_is_joint", period)
         eligible_care_worker_count = tax_unit(

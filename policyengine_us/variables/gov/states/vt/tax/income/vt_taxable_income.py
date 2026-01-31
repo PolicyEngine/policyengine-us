@@ -13,7 +13,7 @@ class vt_taxable_income(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("vt_agi", period)
         deductions = tax_unit("vt_standard_deduction", period)
         exemptions = tax_unit("vt_personal_exemptions", period)

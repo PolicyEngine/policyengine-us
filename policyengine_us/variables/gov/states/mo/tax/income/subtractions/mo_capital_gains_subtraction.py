@@ -12,7 +12,7 @@ class mo_capital_gains_subtraction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         net_capital_gain = max_(0, tax_unit("net_capital_gain", period))
         p = parameters(
             period

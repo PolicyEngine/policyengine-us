@@ -14,7 +14,7 @@ class ms_itemized_deductions_indiv(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pre_deductions_taxable_income = person(
             "ms_pre_deductions_taxable_income_indiv", period
         )

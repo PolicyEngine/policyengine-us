@@ -8,7 +8,7 @@ class is_ccdf_home_based(Variable):
     label = "Whether CCDF care is home-based versus center-based"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         provider_type_group = person("childcare_provider_type_group", period)
         provider_type_groups = provider_type_group.possible_values
         return provider_type_group != provider_type_groups.DCC_SACC

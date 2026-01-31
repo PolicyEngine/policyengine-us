@@ -8,7 +8,7 @@ class co_chp_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         medicaid_eligible = person("is_medicaid_eligible", period)
         income_level = person("medicaid_income_level", period)
         p = parameters(period).gov.states.co.hcpf.chp

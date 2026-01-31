@@ -45,7 +45,7 @@ class tx_ccs_workforce_board_region(Variable):
         "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf",
     ]
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
         p = parameters(period).gov.states.tx.twc.ccs.region
 

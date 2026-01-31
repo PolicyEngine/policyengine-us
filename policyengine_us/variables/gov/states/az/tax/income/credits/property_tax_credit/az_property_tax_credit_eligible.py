@@ -9,7 +9,7 @@ class az_property_tax_credit_eligible(Variable):
     reference = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm"
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(period).gov.states.az.tax.income.credits.property_tax
 

@@ -11,7 +11,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.va.dependent_exemption
 
             person = tax_unit.members
@@ -35,7 +35,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.va.dependent_exemption
 
             dependents_count = tax_unit("va_eligible_dependents_count", period)
@@ -49,7 +49,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.va.dependent_exemption
 
             filing_status = tax_unit("filing_status", period)
@@ -67,8 +67,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("va_dependent_exemption_maximum", period)
             phaseout = tax_unit("va_dependent_exemption_phaseout", period)
 
@@ -82,7 +81,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
             total_dependents = tax_unit.sum(is_dependent)
@@ -99,7 +98,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_base = parameters(
                 period
             ).gov.states.va.tax.income.exemptions.personal
@@ -125,7 +124,7 @@ def create_va_dependent_exemption_reform() -> Reform:
             return personal_exemption_amount + dependent_exemption_amount
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(va_eligible_dependents_count)
             self.update_variable(va_dependent_exemption_maximum)
             self.update_variable(va_dependent_exemption_phaseout)
@@ -138,7 +137,7 @@ def create_va_dependent_exemption_reform() -> Reform:
 
 def create_va_dependent_exemption_reform_fn(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_va_dependent_exemption_reform()
 

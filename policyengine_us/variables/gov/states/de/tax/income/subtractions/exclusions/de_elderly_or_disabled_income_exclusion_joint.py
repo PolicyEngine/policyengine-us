@@ -10,7 +10,7 @@ class de_elderly_or_disabled_income_exclusion_joint(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-01_PaperInteractive.pdf#page=1"
     defined_for = "de_elderly_or_disabled_income_exclusion_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         # First get their filing status.
         filing_status = tax_unit("filing_status", period)

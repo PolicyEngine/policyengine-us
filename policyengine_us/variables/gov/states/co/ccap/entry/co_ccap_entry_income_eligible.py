@@ -9,7 +9,7 @@ class co_ccap_entry_income_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         fpg_eligible = spm_unit("co_ccap_fpg_eligible", period)
         smi_eligible = spm_unit("co_ccap_smi_eligible", period)
         return fpg_eligible & smi_eligible

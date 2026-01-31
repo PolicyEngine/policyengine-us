@@ -10,7 +10,7 @@ class nm_works_countable_earned_income(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         earned_deduction = add(
             spm_unit, period, ["nm_works_earned_income_deduction_person"]

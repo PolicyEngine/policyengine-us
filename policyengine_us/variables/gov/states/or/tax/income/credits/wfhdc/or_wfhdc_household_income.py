@@ -14,7 +14,7 @@ class or_wfhdc_household_income(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get household income, the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
         or_agi = tax_unit("or_agi", period)

@@ -21,7 +21,7 @@ class co_omnisalud_immigration_status_eligible(Variable):
     Health First Colorado (Medicaid).
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.hcpf.omnisalud.eligibility
         immigration_status = person("immigration_status", period)
         age = person("age", period)

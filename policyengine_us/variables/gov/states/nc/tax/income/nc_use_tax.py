@@ -9,7 +9,7 @@ class nc_use_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.nc.tax.use_tax
         # Compute base amount, a dollar amount based on NC AGI.

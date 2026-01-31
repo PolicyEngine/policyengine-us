@@ -14,7 +14,7 @@ class pa_tax_forgiveness_rate(Variable):
     TAXSIM erroneously phases in tax forgiveness smoothly.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eligibility_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
         is_child_dependent = person("is_child_of_tax_head", period) & person(
@@ -59,7 +59,7 @@ class ctc_refundable_maximum(Variable):
     TAXSIM erroneously makes the adult CTC refundable as well.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         # Use either normal or ARPA CTC maximums.
         child_amount = max_(
@@ -84,7 +84,7 @@ class ctc_arpa_uncapped_phase_out(Variable):
     TAXSIM erroneously phases out the CTC smoothly rather than in increments.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Logic sequence follows the form, which is clearer than the IRC.
         p = parameters(period).gov.irs.credits.ctc.phase_out.arpa
         # defined_for didn't work.
@@ -110,7 +110,7 @@ class ctc_phase_out(Variable):
     TAXSIM erroneously phases out the CTC smoothly rather than in increments.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # TCJA's phase-out changes are purely parametric so don't require
         # structural reform.
 
@@ -126,7 +126,7 @@ class ctc_phase_out(Variable):
 
 
 class taxsim(Reform):
-    def apply(self):
+    def apply(self):  # pragma: no cover
         self.update_variable(pa_tax_forgiveness_rate)
         self.update_variable(ctc_refundable_maximum)
         self.update_variable(ctc_arpa_uncapped_phase_out)

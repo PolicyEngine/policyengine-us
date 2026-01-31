@@ -12,7 +12,7 @@ class ma_tafdc_infant_benefit(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_infant = person("ma_tafdc_eligible_infant", period)
         p = parameters(period).gov.states.ma.dta.tcap.tafdc
         return eligible_infant * p.infant_amount

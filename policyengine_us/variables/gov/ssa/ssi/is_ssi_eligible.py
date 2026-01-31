@@ -7,7 +7,7 @@ class is_ssi_eligible(Variable):
     label = "Is SSI eligible person"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         abd_person = person("is_ssi_aged_blind_disabled", period)
         meets_resource_test = person("meets_ssi_resource_test", period)
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)

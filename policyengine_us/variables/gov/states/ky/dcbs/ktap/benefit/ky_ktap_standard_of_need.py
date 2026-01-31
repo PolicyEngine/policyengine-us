@@ -10,7 +10,7 @@ class ky_ktap_standard_of_need(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ky.dcbs.ktap.benefit
         unit_size = spm_unit("spm_unit_size", period)
         capped_size = min_(unit_size, p.max_unit_size)

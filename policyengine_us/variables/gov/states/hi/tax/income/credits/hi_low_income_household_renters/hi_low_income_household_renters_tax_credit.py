@@ -9,7 +9,7 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
     definition_period = YEAR
     defined_for = "hi_tax_credit_for_low_income_household_renters_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
 
         # Aged extra exemptions

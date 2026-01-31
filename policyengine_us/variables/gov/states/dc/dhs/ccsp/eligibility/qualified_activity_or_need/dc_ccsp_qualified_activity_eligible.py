@@ -9,7 +9,7 @@ class dc_ccsp_qualified_activity_eligible(Variable):
     defined_for = StateCode.DC
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_working = (

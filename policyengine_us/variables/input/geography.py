@@ -23,7 +23,7 @@ class state_name(Variable):
     label = "State"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         fips = household("state_fips", period)
         return (
             pd.Series(fips)
@@ -94,7 +94,7 @@ class medicaid_rating_area(Variable):
     definition_period = YEAR
     hidden_input = True
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         three_digit_zip_code = household("three_digit_zip_code", period)
         county = household("county_str", period)
         # Try a lookup on zip code, fill missing values with a lookup on county, fill missing with zero.

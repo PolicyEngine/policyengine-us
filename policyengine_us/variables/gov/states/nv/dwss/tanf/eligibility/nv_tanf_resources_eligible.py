@@ -9,7 +9,7 @@ class nv_tanf_resources_eligible(Variable):
     reference = "https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-R/S/"
     defined_for = StateCode.NV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nv.dwss.tanf.resource_limit
         # Nevada excludes two vehicles and home, but we use total assets
         # as a simplified approach

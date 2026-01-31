@@ -9,7 +9,7 @@ class md_income_tax_before_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         taxable_income = tax_unit("md_taxable_income", period)

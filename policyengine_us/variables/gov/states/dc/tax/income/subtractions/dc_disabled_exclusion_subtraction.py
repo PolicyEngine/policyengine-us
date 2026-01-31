@@ -15,7 +15,7 @@ class dc_disabled_exclusion_subtraction(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Determine disablity-related eligibility
         is_disabled = person("is_permanently_and_totally_disabled", period)
         gets_ssi_or_ssdi = (

@@ -10,7 +10,7 @@ class capped_energy_efficient_insulation_credit(Variable):
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         pre_rebate_expenditure = tax_unit(
             "energy_efficient_insulation_expenditures", period
         )

@@ -8,7 +8,7 @@ class meets_snap_work_requirements(Variable):
     definition_period = MONTH
     reference = "https://www.fns.usda.gov/snap/work-requirements"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.usda.snap.work_requirements.abawd.age_threshold

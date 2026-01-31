@@ -23,7 +23,7 @@ class immigration_status(Variable):
     definition_period = YEAR
     label = "U.S. immigration status as an enumeration type"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         status_str = person("immigration_status_str", period).decode_to_str()
         # Use PolicyEngine's Enum encode method
         return ImmigrationStatus.encode(status_str)

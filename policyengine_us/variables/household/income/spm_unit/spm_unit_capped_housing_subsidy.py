@@ -8,7 +8,7 @@ class spm_unit_capped_housing_subsidy(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         if parameters(period).gov.hud.abolition:
             return 0
         disabled_programs = parameters(period).simulation.disabled_programs

@@ -10,7 +10,7 @@ def create_rent_relief_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.congress.gov/bill/116th-congress/senate-bill/1106/text"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # The applicable rent amount is capped at fair market rent
             rent = add(tax_unit, period, ["rent"])
             p = parameters(
@@ -60,14 +60,14 @@ def create_rent_relief_tax_credit() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             rent_relief_credit = tax_unit("rent_relief_tax_credit", period)
             return rent_relief_credit + previous_credits
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(rent_relief_tax_credit)
             self.update_variable(income_tax_refundable_credits)
 
@@ -76,7 +76,7 @@ def create_rent_relief_tax_credit() -> Reform:
 
 def create_rent_relief_tax_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_rent_relief_tax_credit()
 

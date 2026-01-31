@@ -16,7 +16,7 @@ class vt_retirement_income_exemption(Variable):
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
     defined_for = "vt_retirement_income_exemption_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Filer can choose from one of Social Security,
         # Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems

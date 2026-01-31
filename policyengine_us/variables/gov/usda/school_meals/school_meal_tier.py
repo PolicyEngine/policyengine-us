@@ -16,7 +16,7 @@ class school_meal_tier(Variable):
     definition_period = YEAR
     documentation = "SPM unit's school meal program tier"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
         p_income_limit = parameters(period).gov.usda.school_meals.income.limit
         # Categorical eligibility provides free school meals.

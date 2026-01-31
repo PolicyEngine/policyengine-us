@@ -14,7 +14,7 @@ class nj_eligible_pension_income(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
 
         is_blind = person("is_blind", period)

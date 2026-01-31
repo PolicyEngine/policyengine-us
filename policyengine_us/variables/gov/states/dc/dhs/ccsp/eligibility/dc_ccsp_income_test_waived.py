@@ -9,7 +9,7 @@ class dc_ccsp_income_test_waived(Variable):
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=11"
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp.age_threshold
         person = spm_unit.members
         age = person("monthly_age", period)

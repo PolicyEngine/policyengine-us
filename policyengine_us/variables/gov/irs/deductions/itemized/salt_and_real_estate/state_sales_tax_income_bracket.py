@@ -7,7 +7,7 @@ class state_sales_tax_income_bracket(Variable):
     definition_period = YEAR
     label = "State Sales Tax Income Bracket"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table

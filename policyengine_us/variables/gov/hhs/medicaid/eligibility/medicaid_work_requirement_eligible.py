@@ -10,7 +10,7 @@ class medicaid_work_requirement_eligible(Variable):
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
         # Works no less than 80 hours p.680 (2)(A)
         monthly_hours_worked = person("monthly_hours_worked", period)

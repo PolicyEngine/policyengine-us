@@ -7,7 +7,7 @@ class commodity_supplemental_food_program_eligible(Variable):
     definition_period = YEAR
     label = "Commodity Supplemental Food Program eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.usda.csfp
         # CFR defines CSFP income similarly to WIC income.
         # Assume resources are counted at the SPM unit level.

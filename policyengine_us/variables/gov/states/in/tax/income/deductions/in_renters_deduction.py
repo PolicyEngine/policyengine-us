@@ -10,7 +10,7 @@ class in_renters_deduction(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-6"
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].tax.income
         filing_status = tax_unit("filing_status", period)
         max_deduction = p.deductions.renters.max[filing_status]

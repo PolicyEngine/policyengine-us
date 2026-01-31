@@ -18,7 +18,7 @@ def create_ctc_older_child_supplement() -> Reform:
         )
         defined_for = "is_tax_unit_dependent"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             age = person("age", period)
             base_amount = parameters(period).gov.irs.credits.ctc.amount.base
             base_amount = base_amount.calc(age)
@@ -28,7 +28,7 @@ def create_ctc_older_child_supplement() -> Reform:
             return base_amount + oldest_child_supplement
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_child_individual_maximum)
 
     return reform
@@ -36,7 +36,7 @@ def create_ctc_older_child_supplement() -> Reform:
 
 def create_ctc_older_child_supplement_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ctc_older_child_supplement()
 

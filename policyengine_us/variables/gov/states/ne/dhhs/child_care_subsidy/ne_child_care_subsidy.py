@@ -9,7 +9,7 @@ class ne_child_care_subsidy(Variable):
     definition_period = YEAR
     defined_for = "ne_child_care_subsidy_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period

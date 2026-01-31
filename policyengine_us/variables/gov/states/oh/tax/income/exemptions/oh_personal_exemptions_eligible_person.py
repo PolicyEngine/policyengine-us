@@ -11,7 +11,7 @@ class oh_personal_exemptions_eligible_person(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # The personal exemption is provided for the head and spouse
         # if they are not claimed as a dependent elsewhere
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

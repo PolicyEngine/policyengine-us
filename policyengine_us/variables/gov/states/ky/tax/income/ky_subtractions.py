@@ -16,7 +16,7 @@ class ky_subtractions(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ky.tax.income
         total_subtractions = add(person, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

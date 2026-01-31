@@ -12,7 +12,7 @@ class mo_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf.resource_limit
         resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= p.amount

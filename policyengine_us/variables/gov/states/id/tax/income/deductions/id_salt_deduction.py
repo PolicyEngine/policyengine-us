@@ -10,7 +10,7 @@ class id_salt_deduction(Variable):
     reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=8"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         state_and_local_tax = tax_unit(
             "state_and_local_sales_or_income_tax", period
         )

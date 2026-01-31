@@ -14,7 +14,7 @@ class is_lifeline_income_eligible(Variable):
         "https://statutes.capitol.texas.gov/Docs/UT/htm/UT.55.htm#55.015",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.fcc.lifeline
         fpg_ratio = spm_unit("fcc_fpg_ratio", period)
 

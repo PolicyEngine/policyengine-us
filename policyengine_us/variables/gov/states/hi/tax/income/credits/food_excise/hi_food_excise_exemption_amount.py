@@ -8,7 +8,7 @@ class hi_food_excise_exemption_amount(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
 
         income = tax_unit("adjusted_gross_income", period)

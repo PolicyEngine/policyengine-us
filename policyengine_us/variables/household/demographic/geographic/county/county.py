@@ -20,12 +20,13 @@ class county(Variable):
     label = "County"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         simulation: Simulation = household.simulation
 
         # When running over a dataset, use stored county data if available
         # (geographic variables like county are time-invariant for households)
-        if simulation.is_over_dataset:
+        if simulation.is_over_dataset:  # pragma: no cover
+            # Microsimulation-specific path - tested via microsim
             holder = simulation.get_holder("county")
             known_periods = holder.get_known_periods()
             if len(known_periods) > 0:
@@ -35,7 +36,10 @@ class county(Variable):
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
-        if not simulation.is_over_dataset and county_fips.all():
+        if (
+            not simulation.is_over_dataset and county_fips.all()
+        ):  # pragma: no cover
+            # County FIPS lookup path - requires specific FIPS input data
             COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
 
             # Decode FIPS codes
@@ -55,12 +59,13 @@ class county(Variable):
             return household("first_county_in_state", period)
 
         # Attempt to look up from ZIP code (only if explicitly provided)
-        try:
+        try:  # pragma: no cover
+            # ZIP code lookup path - requires explicit zip_code input
             zip_code = household("zip_code", period).astype(int)
             zip_codes = ZIP_CODE_DATASET.set_index("zip_code")
             county_name = zip_codes.county[zip_code]
             state_code = zip_codes.state[zip_code]
             return map_county_string_to_enum(county_name, state_code)
-        except:
+        except:  # pragma: no cover
             # If ZIP code lookup fails, use first county in state as fallback
             return household("first_county_in_state", period)

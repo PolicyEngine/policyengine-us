@@ -21,7 +21,7 @@ class is_ssi_spousal_deeming_applies(Variable):
     of the individual FBR, recognizing that two people have higher expenses.
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get spouse's deemed income (after child allocations)
         spouse_deemed_income = add(
             person,

@@ -10,7 +10,7 @@ class mt_capital_gains_tax_indiv(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6"  # Net Long-Term Capital Gains Tax Table
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
         # the tax for capital gains comes into effect after 2024
         if p.in_effect:

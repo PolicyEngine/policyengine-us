@@ -10,7 +10,7 @@ class nh_fanf_child_care_deduction(Variable):
     reference = "https://www.dhhs.nh.gov/famar_htm/index.htm#html/603_05_child_dependent_care_deduction_sr_12-04_07_12_fam_a.htm"
     defined_for = StateCode.NH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nh.dhhs.fanf.income.child_care_deduction

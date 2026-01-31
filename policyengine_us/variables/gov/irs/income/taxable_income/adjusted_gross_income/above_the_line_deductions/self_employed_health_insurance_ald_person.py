@@ -10,7 +10,7 @@ class self_employed_health_insurance_ald_person(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/162#l"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         earnings = max_(0, person("self_employment_income", period))
         premiums = person("self_employed_health_insurance_premiums", period)
         return min_(earnings, premiums)

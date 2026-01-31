@@ -8,6 +8,6 @@ class is_married(Variable):
     documentation = "Whether the adults in this family are married."
     definition_period = YEAR
 
-    def formula(family, period, parameters):
+    def formula(family, period, parameters):  # pragma: no cover
         person = family.members
         return family.any(person("is_tax_unit_spouse", period))

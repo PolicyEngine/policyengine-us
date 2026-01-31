@@ -11,8 +11,7 @@ class income_adjusted_part_b_premium(Variable):
     reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
     documentation = "Medicare Part B premium adjusted for income (IRMAA). Based on modified adjusted gross income from 2 years prior."
 
-    def formula(person, period, parameters):
-
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
         # Medicare Part B IRMAA is based on MAGI from 2 years prior

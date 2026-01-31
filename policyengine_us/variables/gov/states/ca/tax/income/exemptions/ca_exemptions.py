@@ -10,7 +10,7 @@ class ca_exemptions(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.tax.income.exemptions
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)

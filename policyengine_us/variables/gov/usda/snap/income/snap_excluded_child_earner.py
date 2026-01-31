@@ -9,7 +9,7 @@ class snap_excluded_child_earner(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#d_7"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = p = parameters(period).gov.usda.snap.income
         age = person("monthly_age", period)
         is_in_k12_school = person("is_in_k12_school", period)

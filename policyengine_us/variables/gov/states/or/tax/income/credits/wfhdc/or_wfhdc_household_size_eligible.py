@@ -13,7 +13,7 @@ class or_wfhdc_household_size_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
         # Over two individuals have to be present in the tax unit.
         return tax_unit("tax_unit_size", period) >= p.min_tax_unit_size

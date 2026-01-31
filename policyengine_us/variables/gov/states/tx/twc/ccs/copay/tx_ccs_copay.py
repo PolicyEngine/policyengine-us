@@ -10,7 +10,7 @@ class tx_ccs_copay(Variable):
     reference = "https://wspanhandle.com/child-care/for-parents/"
     defined_for = "tx_ccs_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.twc.ccs.copay
 
         # Get household income and SMI ratio

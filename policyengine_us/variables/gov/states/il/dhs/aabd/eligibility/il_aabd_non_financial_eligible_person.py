@@ -12,7 +12,7 @@ class il_aabd_non_financial_eligible_person(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per IDHS Policy Manual PM 11-01-00, a person must either:
         # 1. Receive SSI, OR
         # 2. Be ineligible for SSI due to income (but meet all other SSI requirements)

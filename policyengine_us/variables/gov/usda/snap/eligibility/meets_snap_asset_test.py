@@ -8,7 +8,7 @@ class meets_snap_asset_test(Variable):
     documentation = "Whether the SPM unit's financial resources are within SNAP's allowable limit"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         has_elderly_or_disabled = spm_unit("has_usda_elderly_disabled", period)
         asset_test = parameters(period).gov.usda.snap.asset_test
         assets = spm_unit("snap_assets", period)

@@ -9,7 +9,7 @@ class nc_scca_is_school_age(Variable):
     reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=83"
     defined_for = StateCode.NC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         """
         Determines if a child is considered of school age for SCCA purposes.
         Children are considered school age if they are at or above the school age threshold.

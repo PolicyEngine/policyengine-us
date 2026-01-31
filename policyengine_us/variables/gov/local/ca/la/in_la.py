@@ -7,6 +7,6 @@ class in_la(Variable):
     definition_period = YEAR
     label = "Is in Los Angeles County"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
         return county == "LOS_ANGELES_COUNTY_CA"

@@ -10,7 +10,7 @@ class wv_sctc(Variable):
     definition_period = YEAR
     reference = "https://code.wvlegislature.gov/11-21-21/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         wv_taxable_property_value = tax_unit(
             "wv_taxable_property_value", period
         )

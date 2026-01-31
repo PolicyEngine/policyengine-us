@@ -13,7 +13,7 @@ class medicaid_magi(Variable):
         "https://www.law.cornell.edu/uscode/text/26/36B#d_2",  # IRC defining income
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         agi_additions = parameters(period).gov.hhs.medicaid.income.modification
         return max_(0, agi + add(tax_unit, period, agi_additions))

@@ -9,7 +9,7 @@ class meets_ssi_resource_test(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Assign individuals SSI pass rate probabilistically in microsimulation.
         # Apply policy logic in individual simulation.
         p = parameters(period).gov.ssa.ssi

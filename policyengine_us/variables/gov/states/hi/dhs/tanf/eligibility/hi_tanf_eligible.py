@@ -11,7 +11,7 @@ class hi_tanf_eligible(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0

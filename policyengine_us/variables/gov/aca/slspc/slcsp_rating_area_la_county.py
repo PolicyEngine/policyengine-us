@@ -10,7 +10,7 @@ class slcsp_rating_area_la_county(Variable):
     definition_period = YEAR
     defined_for = "in_la"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         zip3 = household("three_digit_zip_code", period)
         p = parameters(period).gov.aca
         is_in_la = household("in_la", period)

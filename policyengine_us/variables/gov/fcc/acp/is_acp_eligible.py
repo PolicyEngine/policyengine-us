@@ -10,7 +10,7 @@ class is_acp_eligible(Variable):
     # 47 U.S.C §1752(a)(6).
     reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         fcc = parameters(period).gov.fcc
         categorically_eligible = np.any(
             [

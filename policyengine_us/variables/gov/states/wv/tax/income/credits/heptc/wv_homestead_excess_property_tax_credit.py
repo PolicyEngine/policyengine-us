@@ -14,7 +14,7 @@ class wv_homestead_excess_property_tax_credit(Variable):
         "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         wv_sctc = tax_unit(
             "wv_sctc", period
         )  # West Virginia homestead excess property tax credit

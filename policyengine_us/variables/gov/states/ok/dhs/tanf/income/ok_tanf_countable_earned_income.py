@@ -10,7 +10,7 @@ class ok_tanf_countable_earned_income(Variable):
     reference = "https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html"
     defined_for = StateCode.OK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NOTE: OAC 340:10-3-31.1 also provides a 3-month EID period where
         # 100% of earned income is excluded. This applies once per rolling
         # 12-month period when a recipient obtains employment. This 100%

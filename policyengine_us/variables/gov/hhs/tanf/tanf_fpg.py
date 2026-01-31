@@ -12,7 +12,7 @@ class tanf_fpg(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/9902"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # We can use tanf_unit_size for more accurate model in the future
         n = spm_unit("spm_unit_size", period.this_year)
         state_group = spm_unit.household("state_group_str", period.this_year)

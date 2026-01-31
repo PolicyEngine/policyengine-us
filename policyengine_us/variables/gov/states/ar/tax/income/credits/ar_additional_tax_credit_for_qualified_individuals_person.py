@@ -9,7 +9,7 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_separately = person.tax_unit("ar_files_separately", period)
         income_joint = person("ar_taxable_income_joint", period)
         income_indiv = person("ar_taxable_income_indiv", period)

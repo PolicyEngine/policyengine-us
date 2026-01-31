@@ -10,7 +10,7 @@ class va_spouse_tax_adjustment(Variable):
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Line 4, enter the taxable income

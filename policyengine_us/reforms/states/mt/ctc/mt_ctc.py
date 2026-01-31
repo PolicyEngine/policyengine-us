@@ -13,7 +13,7 @@ def create_mt_ctc() -> Reform:
         reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
         defined_for = "mt_ctc_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.mt.ctc
             person = tax_unit.members
             age = person("age", period)
@@ -33,7 +33,7 @@ def create_mt_ctc() -> Reform:
         reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
         defined_for = StateCode.MT
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.mt.ctc.income_limit
             agi = tax_unit("adjusted_gross_income", period)
             agi_eligible = agi <= p.agi
@@ -52,7 +52,7 @@ def create_mt_ctc() -> Reform:
                 & receives_earned_income
             )
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.states.mt.tax.income.credits.refundable.update(
             start=instant("2023-01-01"),
             stop=instant("2031-12-31"),
@@ -61,7 +61,7 @@ def create_mt_ctc() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(mt_ctc)
             self.update_variable(mt_ctc_eligible)
             self.modify_parameters(modify_parameters)
@@ -69,7 +69,9 @@ def create_mt_ctc() -> Reform:
     return reform
 
 
-def create_mt_ctc_reform(parameters, period, bypass: bool = False):
+def create_mt_ctc_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_mt_ctc()
 

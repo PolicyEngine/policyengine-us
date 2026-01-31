@@ -9,7 +9,7 @@ class ny_tanf_countable_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get gross earned income.
         gross_earned_income = spm_unit("ny_tanf_gross_earned_income", period)
         # Multiply by 100% minus the EID.

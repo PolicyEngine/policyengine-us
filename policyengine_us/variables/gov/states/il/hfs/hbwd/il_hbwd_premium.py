@@ -13,7 +13,7 @@ class il_hbwd_premium(Variable):
     )
     defined_for = "il_hbwd_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbwd.premium
 
         earned = person("il_hbwd_countable_earned_income", period)

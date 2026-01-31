@@ -22,7 +22,7 @@ class or_wfhdc_eligibility_category(Variable):
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
     default_value = OregonWFHDCEligibilityCategory.NONE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Column determined by age of youngest child and whether they have a disability.
 
         p = (

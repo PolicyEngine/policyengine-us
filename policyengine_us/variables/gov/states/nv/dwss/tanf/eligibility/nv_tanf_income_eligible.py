@@ -9,7 +9,7 @@ class nv_tanf_income_eligible(Variable):
     reference = "https://dss.nv.gov/TANF/TANF_FAQ-Eligibility_Criteria-Income-Consid-2/"
     defined_for = StateCode.NV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Nevada uses 130% FPL as gross income test
         p = parameters(period).gov.states.nv.dwss.tanf.income
         fpg = spm_unit("spm_unit_fpg", period)

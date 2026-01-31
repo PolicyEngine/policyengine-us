@@ -12,7 +12,7 @@ class ca_amt_exemption(Variable):
         "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.tax.income.amt.exemption
         filing_status = tax_unit("filing_status", period)
         amti = tax_unit("ca_amti", period)

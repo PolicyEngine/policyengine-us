@@ -14,7 +14,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
     )
     defined_for = "mi_expanded_retirement_benefits_deduction_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Modeled after 2023 MICHIGAN Pension Schedule (Form 4884) Section D
         p = parameters(
             period

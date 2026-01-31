@@ -11,7 +11,7 @@ class meets_snap_parent_exception(Variable):
         "https://www.law.cornell.edu/uscode/text/7/2015#e_8"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Exception 5: Parent with responsibility for dependent child under 6,
         # Or child 6-11 when adequate child care is not available (not modeled)
         # Exception 8: Single parent enrolled full-time with responsibility

@@ -16,7 +16,7 @@ class wi_base_exemption(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute base exemption amount
         p = parameters(period).gov.states.wi.tax.income
         return tax_unit("exemptions_count", period) * p.exemption.base

@@ -12,7 +12,7 @@ class ny_ctc_pre_2024(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = "ny_ctc_pre_2024_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)

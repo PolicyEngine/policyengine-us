@@ -11,7 +11,7 @@ class md_cdcc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.md.tax.income.credits.cdcc

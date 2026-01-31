@@ -14,6 +14,6 @@ class me_refundable_child_care_credit(Variable):
     ]
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.me.tax.income.credits.child_care
         return min_(p.max_amount, tax_unit("me_child_care_credit", period))

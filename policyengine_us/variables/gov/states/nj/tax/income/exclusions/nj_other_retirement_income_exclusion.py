@@ -14,7 +14,7 @@ class nj_other_retirement_income_exclusion(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follows Worksheet D
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
 

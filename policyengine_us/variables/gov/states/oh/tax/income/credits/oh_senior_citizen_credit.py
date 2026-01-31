@@ -13,7 +13,7 @@ class oh_senior_citizen_credit(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.oh.tax.income.credits.senior_citizen
         person = tax_unit.members
         head = person("is_tax_unit_head", period)

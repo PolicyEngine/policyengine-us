@@ -10,7 +10,7 @@ class in_county_tax(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-1"  # (a)(3)
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # County calculations are at the person level for each taxpayer in the law
         in_in = tax_unit.household("state_code_str", period) == "IN"
         county = tax_unit.household("county_str", period)

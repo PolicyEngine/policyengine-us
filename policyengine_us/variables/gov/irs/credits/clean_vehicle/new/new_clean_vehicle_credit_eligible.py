@@ -11,7 +11,7 @@ class new_clean_vehicle_credit_eligible(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/30D"
     defined_for = "purchased_qualifying_new_clean_vehicle"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Capacity limit applies with and without the Inflation Reduction Act.
         capacity = tax_unit("new_clean_vehicle_battery_capacity", period)
         p = parameters(period).gov.irs.credits.clean_vehicle.new.eligibility

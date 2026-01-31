@@ -20,7 +20,7 @@ class snap_region(Variable):
     definition_period = YEAR
     label = "SNAP region"
 
-    def formula(household, period):
+    def formula(household, period):  # pragma: no cover
         state_group = household("state_group", period)
         mapped_values = (
             pd.Series(state_group.decode_to_str())

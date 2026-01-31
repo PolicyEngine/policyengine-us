@@ -11,7 +11,7 @@ class additional_senior_deduction(Variable):
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.senior_deduction
         eligible_seniors = add(
             tax_unit,

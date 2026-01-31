@@ -9,7 +9,7 @@ class alternative_minimum_tax(Variable):
     unit = USD
     documentation = "Alternative Minimum Tax (AMT) liability"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Line 7 consists of 3 parts:
         # 1. Tax on Foreign income (not modelled)
         # 2. Tax on capital gains (Part III)

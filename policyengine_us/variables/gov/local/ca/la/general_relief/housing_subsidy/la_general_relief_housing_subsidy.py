@@ -10,7 +10,7 @@ class la_general_relief_housing_subsidy(Variable):
     defined_for = "la_general_relief_housing_subsidy_eligible"
     reference = "https://dpss.lacounty.gov/en/cash/gr/housing.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         married = add(spm_unit, period, ["is_married"])
         p = parameters(period).gov.local.ca.la.general_relief.housing_subsidy
         subsidy_amount = where(married, p.amount.married, p.amount.single)

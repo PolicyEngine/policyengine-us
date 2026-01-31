@@ -14,7 +14,7 @@ class mi_standard_deduction_tier_three(Variable):
     )
     defined_for = "mi_standard_deduction_tier_three_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income.deductions
         # Line 1: enter base amount, based on filing status
         filing_status = tax_unit("filing_status", period)

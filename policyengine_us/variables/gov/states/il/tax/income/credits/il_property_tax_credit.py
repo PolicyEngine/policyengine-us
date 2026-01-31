@@ -10,7 +10,7 @@ class il_property_tax_credit(Variable):
 
     defined_for = "il_is_exemption_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ptax_paid = add(tax_unit, period, ["real_estate_taxes"])
         pre_credit_tax = tax_unit(
             "il_income_tax_before_non_refundable_credits", period

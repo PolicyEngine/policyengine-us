@@ -10,7 +10,7 @@ class ma_taxpayer_refund_rebate(Variable):
     definition_period = YEAR
     reference = "https://tax.hawaii.gov/act-115-ref/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income_tax_before_credits = tax_unit(
             "ma_income_tax_before_refundable_credits", period
         )

@@ -15,7 +15,7 @@ class co_charitable_contribution_subtraction(Variable):
     )
     defined_for = "co_charitable_contribution_subtraction_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution

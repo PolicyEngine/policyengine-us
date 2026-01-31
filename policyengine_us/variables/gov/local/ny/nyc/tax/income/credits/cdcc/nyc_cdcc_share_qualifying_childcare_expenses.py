@@ -10,7 +10,7 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
     unit = "/1"
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the total expenses for children that qualify towards the NYC CDCC.
         # Line 23 on Form IT-216.
         childcare_expenses_for_children_under_four = tax_unit(

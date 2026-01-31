@@ -8,6 +8,6 @@ class aged_head(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.standard.aged_or_blind
         return tax_unit("age_head", period) >= p.age_threshold

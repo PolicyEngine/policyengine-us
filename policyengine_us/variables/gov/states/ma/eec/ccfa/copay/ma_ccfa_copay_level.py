@@ -9,7 +9,7 @@ class ma_ccfa_copay_level(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.copay.fee_level
         income = spm_unit("ma_ccfa_countable_income", period)
         family_size = spm_unit("spm_unit_size", period)

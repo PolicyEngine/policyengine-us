@@ -10,7 +10,7 @@ class va_child_dependent_care_expense_deduction(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=29"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         expenses = tax_unit("tax_unit_childcare_expenses", period)
         cdcc_limit = tax_unit(
             "va_child_dependent_care_deduction_cdcc_limit", period

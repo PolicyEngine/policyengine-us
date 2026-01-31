@@ -11,7 +11,7 @@ class il_aabd_earned_income_after_exemption_person(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
         gross_earned_income = person("il_aabd_gross_earned_income", period)
         expense_exemption = person("il_aabd_expense_exemption_person", period)

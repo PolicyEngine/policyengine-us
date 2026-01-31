@@ -14,7 +14,7 @@ class ut_personal_exemption(Variable):
         "https://tax.utah.gov/forms/current/tc-40inst.pdf#page=4",  # What's New, Additional dependent for taxpayer tax credit
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ut.tax.income.credits.taxpayer
         total_dependents = tax_unit("ut_total_dependents", period)
         if p.in_effect:

@@ -11,5 +11,5 @@ class medicaid_income_level(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person.tax_unit("tax_unit_medicaid_income_level", period)

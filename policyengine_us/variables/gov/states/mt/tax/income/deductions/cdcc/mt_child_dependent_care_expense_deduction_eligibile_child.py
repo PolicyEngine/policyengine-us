@@ -10,7 +10,7 @@ class mt_child_dependent_care_expense_deduction_eligible_child(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mt.tax.income.deductions.child_dependent_care_expense

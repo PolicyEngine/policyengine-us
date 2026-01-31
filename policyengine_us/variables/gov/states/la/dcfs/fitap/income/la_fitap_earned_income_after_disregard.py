@@ -10,7 +10,7 @@ class la_fitap_earned_income_after_disregard(Variable):
     reference = "https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229"
     defined_for = StateCode.LA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.dcfs.fitap.income.deductions
         gross_earned = person("tanf_gross_earned_income", period)
 

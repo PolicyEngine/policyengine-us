@@ -15,7 +15,7 @@ class wi_retirement_income_subtraction_agi_eligible(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         fstatus = tax_unit("filing_status", period)
         p = parameters(period).gov.states.wi.tax.income

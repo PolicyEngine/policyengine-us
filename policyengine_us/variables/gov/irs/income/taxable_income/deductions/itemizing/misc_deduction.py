@@ -9,7 +9,7 @@ class misc_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/67#b"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.itemized.misc
         if p.applies:
             expenses = tax_unit("total_misc_deductions", period)

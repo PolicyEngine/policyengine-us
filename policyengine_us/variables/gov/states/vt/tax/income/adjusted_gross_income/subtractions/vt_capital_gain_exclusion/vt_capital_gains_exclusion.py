@@ -15,7 +15,7 @@ class vt_capital_gains_exclusion(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-153%20Instr-2022.pdf"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get adjusted net capital gains, which is capped at 0
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period

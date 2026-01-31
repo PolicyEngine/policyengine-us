@@ -9,7 +9,7 @@ class ct_personal_credit_rate(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

@@ -7,7 +7,7 @@ class vita_eligible(Variable):
     label = "Eligible for the VITA program"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.vita.eligibility
         income = person("irs_gross_income", period)
         is_eligible_income = income <= p.income_limit

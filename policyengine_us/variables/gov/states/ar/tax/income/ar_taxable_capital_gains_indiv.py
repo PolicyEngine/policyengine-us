@@ -13,7 +13,7 @@ class ar_taxable_capital_gains_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Line 1-3 - long term capital gain or loss
         lt_capital_gains = person("long_term_capital_gains", period)
         # Line 4-6 - short term capital loss

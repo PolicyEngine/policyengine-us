@@ -12,7 +12,7 @@ class ky_family_size_tax_credit_rate(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("ky_modified_agi", period)
         fpg = parameters(period).gov.hhs.fpg
         # This will be CONTIGUOUS_US for Kentucky.

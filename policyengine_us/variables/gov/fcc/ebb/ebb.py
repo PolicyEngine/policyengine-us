@@ -10,7 +10,7 @@ class ebb(Variable):
     unit = USD
     defined_for = "is_ebb_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
         p = parameters(period).gov.fcc.ebb

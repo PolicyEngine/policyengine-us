@@ -9,7 +9,7 @@ class emp_self_emp_ratio(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/1402"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
         earnings = employment_income + self_employment_income

@@ -14,7 +14,7 @@ class mo_pension_and_ss_or_ssd_deduction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         # Section C, SS or SSD Amounts
         # We start with section C because, in situations where someone receives both a pension and taxable

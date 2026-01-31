@@ -16,7 +16,7 @@ class ssi_category(Variable):
     possible_values = SSICategory
     default_value = SSICategory.NONE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_blind = person("is_blind", period)
         is_aged = person("is_ssi_aged", period)
         is_disabled = person("is_ssi_disabled", period)

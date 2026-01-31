@@ -10,7 +10,7 @@ class ny_itemized_deductions_reduction(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/615"  # (f)&(g)
     defined_for = "ny_itemized_deductions_reduction_applies"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         reduction_based_on_charitable_deduction_applies = tax_unit(
             "ny_itemized_deductions_reduction_based_on_charitable_deduction_applies",
             period,

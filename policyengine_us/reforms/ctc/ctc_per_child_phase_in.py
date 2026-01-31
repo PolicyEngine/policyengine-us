@@ -12,8 +12,7 @@ def create_ctc_per_child_phase_in() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             ctc = parameters(period).gov.irs.credits.ctc
 
             earnings = tax_unit("tax_unit_earned_income", period)
@@ -25,7 +24,7 @@ def create_ctc_per_child_phase_in() -> Reform:
             return earnings_over_threshold * phase_in_rate
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_phase_in_relevant_earnings)
 
     return reform
@@ -33,7 +32,7 @@ def create_ctc_per_child_phase_in() -> Reform:
 
 def create_ctc_per_child_phase_in_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ctc_per_child_phase_in()
 

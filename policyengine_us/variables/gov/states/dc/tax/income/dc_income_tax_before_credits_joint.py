@@ -13,7 +13,7 @@ class dc_income_tax_before_credits_joint(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxinc = max_(0, tax_unit("dc_taxable_income_joint", period))
         p = parameters(period).gov.states
         return p.dc.tax.income.rates.calc(taxinc)

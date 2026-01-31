@@ -13,7 +13,7 @@ class ks_taxable_income(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         std_ded = tax_unit("ks_standard_deduction", period)
         itm_ded = tax_unit("ks_itemized_deductions", period)
         deductions = where(itm_ded > std_ded, itm_ded, std_ded)

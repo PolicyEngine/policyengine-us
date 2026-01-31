@@ -12,7 +12,7 @@ class ma_tafdc_earned_income_after_deductions(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # The 50% disregard only applies the unit has received TAFDC in the past 4 months and
         # is re-applying due to temporary ineligibility
         gross_earned_income = add(

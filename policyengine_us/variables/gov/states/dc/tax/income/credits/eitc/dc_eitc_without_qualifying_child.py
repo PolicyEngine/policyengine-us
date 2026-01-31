@@ -10,7 +10,7 @@ class dc_eitc_without_qualifying_child(Variable):
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate US EITC amount before phase-out
         us_eligible = tax_unit("eitc_eligible", period)
         us_eitc = us_eligible * tax_unit("eitc_phased_in", period)

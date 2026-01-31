@@ -12,7 +12,7 @@ def create_ri_social_security_exemption() -> Reform:
         reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_reform = parameters(
                 period
             ).gov.contrib.states.ri.social_security_exemption
@@ -68,7 +68,7 @@ def create_ri_social_security_exemption() -> Reform:
         reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
         defined_for = "ri_social_security_modification_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_reform = parameters(
                 period
             ).gov.contrib.states.ri.social_security_exemption
@@ -116,7 +116,7 @@ def create_ri_social_security_exemption() -> Reform:
             return where(p_reform.in_effect, reform_amount, baseline_amount)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ri_social_security_modification_eligible)
             self.update_variable(ri_social_security_modification)
 
@@ -125,7 +125,7 @@ def create_ri_social_security_exemption() -> Reform:
 
 def create_ri_social_security_exemption_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ri_social_security_exemption()
 

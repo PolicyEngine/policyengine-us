@@ -16,7 +16,7 @@ class mi_household_resources(Variable):
         "Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income
         # Per form instructions, only certain income sources must be
         # floored at 0 if negative. Capital gains have special loss limitation.

@@ -8,7 +8,8 @@ class taxsim_sbusinc(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         qbi = person("qualified_business_income", period)
         is_spouse = person("is_tax_unit_spouse", period)

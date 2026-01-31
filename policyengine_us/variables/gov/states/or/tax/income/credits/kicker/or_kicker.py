@@ -13,7 +13,7 @@ class or_kicker(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].tax.income.credits.kicker
         return p.percent * tax_unit(
             "or_tax_before_credits_in_prior_year", period

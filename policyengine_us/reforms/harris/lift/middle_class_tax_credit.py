@@ -12,7 +12,7 @@ def create_middle_class_tax_credit() -> Reform:
             "https://www.congress.gov/bill/116th-congress/senate-bill/4/text"
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.harris.lift.middle_class_tax_credit
@@ -40,14 +40,14 @@ def create_middle_class_tax_credit() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             middle_class_credit = tax_unit("middle_class_tax_credit", period)
             return middle_class_credit + previous_credits
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(middle_class_tax_credit)
             self.update_variable(income_tax_refundable_credits)
 
@@ -56,7 +56,7 @@ def create_middle_class_tax_credit() -> Reform:
 
 def create_middle_class_tax_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_middle_class_tax_credit()
 

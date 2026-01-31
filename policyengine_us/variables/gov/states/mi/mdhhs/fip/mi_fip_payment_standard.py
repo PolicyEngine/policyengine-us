@@ -13,7 +13,7 @@ class mi_fip_payment_standard(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.mdhhs.fip.payment_standard
 
         # Determine household size

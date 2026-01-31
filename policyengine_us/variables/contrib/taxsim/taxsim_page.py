@@ -9,7 +9,8 @@ class taxsim_page(Variable):
     documentation = "Age of primary taxpayer December 31st of the tax year (or zero). Taxpayer and spouse age variables determine eligibility for additional standard deductions, personal exemption, EITC and AMT exclusions."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         age = person("age", period)

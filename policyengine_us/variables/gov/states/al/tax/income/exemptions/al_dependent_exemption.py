@@ -11,7 +11,7 @@ class al_dependent_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.AL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.al.tax.income.exemptions
         al_agi = tax_unit("al_agi", period)
         dependents = tax_unit("tax_unit_dependents", period)

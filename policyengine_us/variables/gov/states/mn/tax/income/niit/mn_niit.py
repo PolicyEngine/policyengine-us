@@ -13,7 +13,7 @@ class mn_niit(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Computes Minnesota's net investment income tax using a bracket structure.
         Currently, the brackets are defined such that:

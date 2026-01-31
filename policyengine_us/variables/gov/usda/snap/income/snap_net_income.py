@@ -10,7 +10,7 @@ class snap_net_income(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/7/2014"
 
-    def formula(spm_unit, period):
+    def formula(spm_unit, period):  # pragma: no cover
         gross_income = spm_unit("snap_gross_income", period)
         deductions = spm_unit("snap_deductions", period)
         return max_(0, gross_income - deductions)

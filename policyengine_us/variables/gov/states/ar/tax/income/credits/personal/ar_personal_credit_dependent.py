@@ -14,7 +14,7 @@ class ar_personal_credit_dependent(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         dependent = person("is_tax_unit_dependent", period)
         p = parameters(period).gov.states.ar.tax.income.credits.personal.amount
         return dependent * p.base

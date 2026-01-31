@@ -10,7 +10,7 @@ class pha_payment_standard(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/982.503"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Only Los Angeles County for now.
         # https://www.lacda.org/docs/librariesprovider25/section-8-program/shared-document---payment-standard---vash/hcv-ehv-vash-payment-standards.pdf
         household_bedrooms = household("bedrooms", period)

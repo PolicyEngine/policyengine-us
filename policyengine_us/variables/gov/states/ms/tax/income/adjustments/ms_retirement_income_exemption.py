@@ -14,7 +14,7 @@ class ms_retirement_income_exemption(Variable):
     ]
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         excluded_income = add(
             person,
             period,

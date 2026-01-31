@@ -12,7 +12,7 @@ class nc_scca_parent_fee(Variable):
     defined_for = StateCode.NC
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=2"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.scca
         parent_fee_rate = p.parent_fee_rate.value
 

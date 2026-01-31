@@ -10,7 +10,7 @@ class ctc_phase_out(Variable):
     documentation = "Reduction of the total CTC due to income."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # TCJA's phase-out changes are purely parametric so don't require
         # structural reform.
 

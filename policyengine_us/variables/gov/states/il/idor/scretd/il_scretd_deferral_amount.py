@@ -13,7 +13,7 @@ class il_scretd_deferral_amount(Variable):
         "https://tax.illinois.gov/research/publications/pio-64.html",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Note: This is a loan, not a benefit. The deferred amount accrues
         # interest (3% simple for 2023+, 6% prior) and must be repaid upon
         # sale, transfer, or death. Interest accumulation is not modeled.

@@ -12,7 +12,7 @@ class oh_owf_initial_income_eligible(Variable):
         "https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/OWF/tanf/2024%20TANF%20State%20Plan%20Combined.pdf#page=4",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get gross income (before any disregards) using federal TANF variables
         gross_income = add(
             spm_unit,

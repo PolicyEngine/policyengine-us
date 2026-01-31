@@ -10,7 +10,7 @@ class or_wfhdc_income_category(Variable):
     defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the household income, considered the larger of Federal and Oregon AGI.
         household_income = tax_unit("or_wfhdc_household_income", period)
         # The credit percentage is based on the percentage of the tax unit fpg

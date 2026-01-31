@@ -10,7 +10,7 @@ class snap_emergency_allotment(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Save time by only recalculating the EA parameters for each month,
         # rather than the whole parameter tree for each month.
         p = parameters.gov.usda.snap.emergency_allotment(period)

@@ -12,7 +12,7 @@ class mn_mfip_child_support_income_exclusion(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 256P.06, Subd. 3:
         # Child support up to $100 (1 child) or $200 (2+ children) is excluded.
         p = parameters(

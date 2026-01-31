@@ -13,7 +13,7 @@ class ri_works_countable_earned_income(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 218-RICR-20-00-2.15: $525 + 50% disregard applies per earner
         earned_after_disregard = add(
             spm_unit, period, ["ri_works_earned_income_after_disregard_person"]

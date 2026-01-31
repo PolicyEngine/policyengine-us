@@ -12,7 +12,7 @@ class il_pfae_has_highest_priority_factor(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Highest priority selection factors (50 points each):
         # 1. Homeless (McKinney-Vento)
         # 2. Child welfare involvement (foster care, Ward of State)

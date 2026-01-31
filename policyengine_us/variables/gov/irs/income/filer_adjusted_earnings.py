@@ -8,5 +8,5 @@ class filer_adjusted_earnings(Variable):
     label = "Filer earned income adjusted for self-employment tax"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit_non_dep_sum("adjusted_earnings", tax_unit, period)

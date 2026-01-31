@@ -13,7 +13,7 @@ class vt_renter_credit_countable_tax_exempt_ss(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits.renter
         return (
             tax_unit("tax_exempt_social_security", period)

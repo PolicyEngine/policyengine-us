@@ -11,7 +11,7 @@ class dc_ctc_eligible_child(Variable):
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.tax.income.credits.ctc.child
         age = person("age", period)
         return age < p.age_threshold

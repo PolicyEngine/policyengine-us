@@ -9,7 +9,7 @@ class wv_works_eligible(Variable):
     reference = "https://code.wvlegislature.gov/9-9/"
     defined_for = StateCode.WV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("wv_works_income_eligible", period)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         resources_eligible = spm_unit("wv_works_resources_eligible", period)

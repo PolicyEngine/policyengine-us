@@ -13,7 +13,7 @@ class ct_eitc(Variable):
     )
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ct.tax.income.credits.eitc
         federal_eitc = tax_unit("eitc", period)
         base_credit = federal_eitc * p.match

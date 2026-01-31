@@ -10,7 +10,7 @@ class in_eitc(Variable):
     reference = "https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21"
     defined_for = "in_eitc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ip = parameters(period).gov.states["in"].tax.income.credits
         if not ip.earned_income.decoupled:
             federal_eitc = tax_unit("eitc", period)

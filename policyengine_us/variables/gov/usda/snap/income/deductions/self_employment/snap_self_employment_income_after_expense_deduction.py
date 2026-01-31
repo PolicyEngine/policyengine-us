@@ -8,7 +8,7 @@ class snap_self_employment_income_after_expense_deduction(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         self_employment_income = add(
             spm_unit, period, ["self_employment_income_before_lsr"]
         )

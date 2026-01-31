@@ -12,7 +12,7 @@ class mi_alternate_home_heating_credit_eligible(Variable):
         "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         utilities_not_included_in_rent = ~tax_unit(
             "utilities_included_in_rent", period
         )

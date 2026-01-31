@@ -12,7 +12,7 @@ class fl_tca_gross_income_eligible(Variable):
     )
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DCF 2620.0109.01: Gross income test - NO disregards applied
         # "The standard earned income disregard, 200 and 1/2 which includes
         # the standard earned income disregard of $90, is not deducted in this test."

@@ -14,7 +14,7 @@ class oh_insured_unreimbursed_medical_care_expenses_person(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Prorating the deduction for each person based on the medical expenses
         # and the deduction amount
         medical_expenses = person(

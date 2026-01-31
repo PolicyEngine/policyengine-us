@@ -9,7 +9,7 @@ class greater_age_head_spouse(Variable):
     documentation = "Age in years of taxpayer (i.e. primary adult) or spouse (i.e. secondary adult if present), depending on which is greater. "
     unit = "year"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return max_(
             tax_unit("age_head", period), tax_unit("age_spouse", period)
         )

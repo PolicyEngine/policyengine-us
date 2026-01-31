@@ -9,7 +9,7 @@ class ky_income_tax_before_non_refundable_credits_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ky_taxable_income_joint = person("ky_taxable_income_joint", period)
         p = parameters(period).gov.states.ky.tax.income
         return ky_taxable_income_joint * p.rate

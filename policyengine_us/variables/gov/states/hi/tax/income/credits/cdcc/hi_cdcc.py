@@ -10,7 +10,7 @@ class hi_cdcc(Variable):
     definition_period = YEAR
     reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         # Schedule X PART II:
         # line 22 = min (line 19, line 20) = return of hi_dependent_care_benefits

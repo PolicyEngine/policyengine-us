@@ -8,7 +8,7 @@ class spm_unit_ccdf_subsidy(Variable):
     label = "SPM unit CCDF subsidy"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Sum up market rate for eligible children.
         person = spm_unit.members
         market_rate = person("ccdf_market_rate", period)

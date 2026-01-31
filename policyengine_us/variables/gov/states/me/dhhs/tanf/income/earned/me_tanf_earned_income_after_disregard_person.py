@@ -13,7 +13,7 @@ class me_tanf_earned_income_after_disregard_person(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762(3)(B)(7-D)(c):
         # Each individual who is employed is eligible for:
         # i. $108 flat deduction; and

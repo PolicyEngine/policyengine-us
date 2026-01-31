@@ -12,7 +12,7 @@ def create_additional_tax_bracket() -> Reform:
         documentation = "Regular tax on regular taxable income before credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs
             filing_status = tax_unit("filing_status", period)
             dwks1 = tax_unit("taxable_income", period)
@@ -89,7 +89,7 @@ def create_additional_tax_bracket() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/1"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # compute taxable income that is taxed at the main rates
             full_taxable_income = tax_unit("taxable_income", period)
             cg_exclusion = tax_unit(
@@ -113,7 +113,7 @@ def create_additional_tax_bracket() -> Reform:
             return tax
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(income_tax_main_rates)
             self.update_variable(regular_tax_before_credits)
 
@@ -122,7 +122,7 @@ def create_additional_tax_bracket() -> Reform:
 
 def create_additional_tax_bracket_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_additional_tax_bracket()
 

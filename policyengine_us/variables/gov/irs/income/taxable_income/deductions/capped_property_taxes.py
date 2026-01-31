@@ -9,7 +9,7 @@ class capped_property_taxes(Variable):
     documentation = "Local real estate taxes limited by the federal SALT cap."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         p = parameters(period).gov.irs.deductions.itemized
         cap = p.salt_and_real_estate.cap[tax_unit("filing_status", period)]

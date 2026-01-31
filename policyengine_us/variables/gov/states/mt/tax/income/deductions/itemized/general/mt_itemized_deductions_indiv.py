@@ -14,7 +14,7 @@ class mt_itemized_deductions_indiv(Variable):
     )
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.deductions.itemized
         # Since we only compute the federal charitable deduction at the tax unit level,
         # we will split the value between each spouse

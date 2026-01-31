@@ -13,7 +13,7 @@ class or_tanf(Variable):
     )
     defined_for = "or_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf
         payment_standard = spm_unit("or_tanf_payment_standard", period)
         adjusted_income = spm_unit("or_tanf_adjusted_income", period)

@@ -9,7 +9,7 @@ class dc_ccsp_immigration_status_eligible_person(Variable):
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

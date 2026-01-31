@@ -12,7 +12,7 @@ class spm_unit_oecd_equiv_net_income(Variable):
         "https://www.oecd.org/economy/growth/OECD-Note-EquivalenceScales.pdf"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         number_of_people = spm_unit.nb_persons()
         net_income = spm_unit("spm_unit_net_income", period)
         return net_income / (number_of_people**0.5)

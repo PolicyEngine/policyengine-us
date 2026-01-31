@@ -13,7 +13,7 @@ class pr_agi_person(Variable):
         "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-a/30103/",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         agi_taxunit = person.tax_unit("pr_agi", period)

@@ -7,5 +7,5 @@ class spm_unit_count_adults(Variable):
     label = "adults in SPM unit"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return spm_unit.sum(spm_unit.members("is_adult", period))

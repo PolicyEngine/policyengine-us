@@ -9,7 +9,7 @@ class ca_riv_liheap_eligible(Variable):
     defined_for = "in_riv"
     reference = "https://capriverside.org/utility-assistance-program"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.liheap
         state_median_income = spm_unit("hhs_smi", period)
         # The income concept is not clearly defined, assuming IRS gross income

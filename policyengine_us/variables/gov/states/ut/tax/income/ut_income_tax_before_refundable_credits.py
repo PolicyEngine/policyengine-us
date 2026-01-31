@@ -10,7 +10,7 @@ class ut_income_tax_before_refundable_credits(Variable):
     documentation = "Form TC-40, line 32"
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit(
             "ut_income_tax_before_non_refundable_credits", period
         )

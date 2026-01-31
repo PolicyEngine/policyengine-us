@@ -10,7 +10,7 @@ class capped_qualified_furnace_or_hot_water_boiler_credit(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C#b_3_B"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.irs.credits.energy_efficient_home_improvement

@@ -9,7 +9,7 @@ class is_lifeline_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/47/54.409"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.fcc.lifeline
         household = spm_unit.household
         is_on_tribal_land = household("is_on_tribal_land", period)

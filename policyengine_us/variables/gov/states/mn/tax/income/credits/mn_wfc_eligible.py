@@ -12,7 +12,7 @@ class mn_wfc_eligible(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mn.tax.income.credits.cwfc
         person = tax_unit.members
         # determine demographic eligibility using WFC rules

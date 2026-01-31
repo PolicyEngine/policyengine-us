@@ -11,7 +11,7 @@ class il_pi_risk_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Eligible if priority score meets minimum (50 points).
         p = parameters(period).gov.states.il.isbe.pi.eligibility.risk_factors
         priority_score = person("il_pi_priority_score", period)

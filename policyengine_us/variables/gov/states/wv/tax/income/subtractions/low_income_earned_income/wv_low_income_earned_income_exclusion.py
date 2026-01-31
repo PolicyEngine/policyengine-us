@@ -14,7 +14,7 @@ class wv_low_income_earned_income_exclusion(Variable):
         "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_agi = tax_unit("adjusted_gross_income", period)
         earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)

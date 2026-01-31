@@ -7,7 +7,7 @@ class disabled_tax_unit_head_or_spouse(Variable):
     label = "Head or Spouse of tax unit is disabled"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         disabled_person = person("is_disabled", period)

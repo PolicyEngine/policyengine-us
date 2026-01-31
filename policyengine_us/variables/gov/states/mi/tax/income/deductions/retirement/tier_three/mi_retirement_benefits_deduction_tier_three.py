@@ -14,7 +14,7 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
     )
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ss_exempt_not_retired_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired",
             period,

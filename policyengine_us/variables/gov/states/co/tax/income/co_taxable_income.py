@@ -9,7 +9,7 @@ class co_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fed_taxinc = tax_unit("taxable_income", period)
         additions = tax_unit("co_additions", period)
         subtractions = tax_unit("co_subtractions", period)

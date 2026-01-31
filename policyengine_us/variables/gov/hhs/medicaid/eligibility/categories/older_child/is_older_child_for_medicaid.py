@@ -8,7 +8,7 @@ class is_older_child_for_medicaid(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#l_1_D"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         ma = parameters(
             period

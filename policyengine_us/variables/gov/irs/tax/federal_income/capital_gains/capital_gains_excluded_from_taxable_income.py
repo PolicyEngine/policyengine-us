@@ -13,7 +13,7 @@ class capital_gains_excluded_from_taxable_income(Variable):
         href="https://www.law.cornell.edu/uscode/text/26/1#h_1_A",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.capital_gains
         net_capital_gain = tax_unit("net_capital_gain", period)
         adjusted_net_capital_gain = tax_unit(

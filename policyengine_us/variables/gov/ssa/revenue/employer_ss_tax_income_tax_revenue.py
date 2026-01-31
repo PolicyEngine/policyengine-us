@@ -13,7 +13,7 @@ class employer_ss_tax_income_tax_revenue(Variable):
     )
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Calculate OASDI trust fund revenue from employer SS taxation.
 

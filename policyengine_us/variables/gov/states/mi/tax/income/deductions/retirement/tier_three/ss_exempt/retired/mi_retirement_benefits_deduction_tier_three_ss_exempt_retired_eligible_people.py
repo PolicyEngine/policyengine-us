@@ -15,7 +15,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_peo
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired

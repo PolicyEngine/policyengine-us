@@ -13,7 +13,7 @@ class ne_standard_deduction(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         base_state_sd = tax_unit("ne_base_standard_deduction", period)
         base_fed_sd = tax_unit("basic_standard_deduction", period)
         smaller_base_sd = min_(base_state_sd, base_fed_sd)

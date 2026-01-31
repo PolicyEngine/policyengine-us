@@ -11,7 +11,7 @@ class mt_standard_deduction_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # ▸ MT legacy parameter table (only relevant pre-2024)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
 

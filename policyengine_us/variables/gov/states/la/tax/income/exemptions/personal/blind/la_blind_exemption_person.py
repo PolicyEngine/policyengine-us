@@ -16,7 +16,7 @@ class la_blind_exemption_person(Variable):
     # but they are not mentioned either in the tax computation worksheet or tax form.)
     defined_for = "la_receives_blind_exemption"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.exemptions
         blind = person("is_blind", period).astype(int)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

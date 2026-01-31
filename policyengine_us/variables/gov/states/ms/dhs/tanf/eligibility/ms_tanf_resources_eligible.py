@@ -13,7 +13,7 @@ class ms_tanf_resources_eligible(Variable):
         "https://www.mdhs.ms.gov/help/tanf/",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ms.dhs.tanf.resources
         household_assets = spm_unit("spm_unit_assets", period.this_year)
         return household_assets <= p.limit

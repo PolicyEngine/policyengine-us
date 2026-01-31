@@ -15,7 +15,7 @@ class ne_agi_subtractions(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.agi.subtractions
         total_subtractions = add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

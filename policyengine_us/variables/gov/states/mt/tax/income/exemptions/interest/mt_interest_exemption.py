@@ -10,7 +10,7 @@ class mt_interest_exemption(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25"
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.exemptions
 
         if p.applies:

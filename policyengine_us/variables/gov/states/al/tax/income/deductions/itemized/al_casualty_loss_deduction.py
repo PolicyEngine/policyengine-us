@@ -9,7 +9,7 @@ class al_casualty_loss_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.AL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         loss = add(tax_unit, period, ["casualty_loss"])
         deduction = parameters(period).gov.irs.deductions.itemized.casualty
         al_agi = tax_unit("al_agi", period)

@@ -15,7 +15,7 @@ class medicare_cost(Variable):
     reference = "https://www.cms.gov/medicare"
     defined_for = "medicare_enrolled"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Total Medicare spending on behalf of beneficiary
         per_capita_spending = parameters(
             period

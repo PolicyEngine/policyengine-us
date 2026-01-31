@@ -9,7 +9,7 @@ class ky_tuition_tax_credit(Variable):
     definition_period = YEAR
     defined_for = "ky_tuition_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # We do not currently model the limitation to undergraduate studies at Kentucky institutions.
         tentative_tax_credit = add(
             tax_unit,

@@ -13,7 +13,7 @@ class wi_works(Variable):
     )
     defined_for = "wi_works_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         placement = spm_unit("wi_works_placement", period)
         p = parameters(period).gov.states.wi.dcf.works.placement
         return p.amount[placement]

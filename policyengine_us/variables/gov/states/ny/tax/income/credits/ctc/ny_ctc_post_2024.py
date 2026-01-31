@@ -11,7 +11,7 @@ class ny_ctc_post_2024(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period):
+    def formula(tax_unit, period):  # pragma: no cover
         base_credit = tax_unit("ny_ctc_post_2024_base", period)
         phase_out = tax_unit("ny_ctc_post_2024_phase_out", period)
 

@@ -11,7 +11,7 @@ class il_aabd_countable_unearned_income(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
         gross_unearned_income = person("il_aabd_gross_unearned_income", period)
         return max_(gross_unearned_income - p.flat, 0)

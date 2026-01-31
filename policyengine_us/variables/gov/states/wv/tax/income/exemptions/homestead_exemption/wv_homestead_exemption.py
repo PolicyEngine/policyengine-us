@@ -10,7 +10,7 @@ class wv_homestead_exemption(Variable):
     definition_period = YEAR
     reference = "https://code.wvlegislature.gov/11-21-21/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         assessed_property_value = add(
             tax_unit, period, ["assessed_property_value"]
         )

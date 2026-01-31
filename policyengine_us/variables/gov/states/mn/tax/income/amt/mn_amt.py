@@ -13,7 +13,7 @@ class mn_amt(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxinc = tax_unit("mn_amt_taxable_income", period)
         # calculate gross AMT amount
         filing_status = tax_unit("filing_status", period)

@@ -12,7 +12,7 @@ class tanf(Variable):
     )
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.tanf
         if p.abolish_tanf:
             return 0

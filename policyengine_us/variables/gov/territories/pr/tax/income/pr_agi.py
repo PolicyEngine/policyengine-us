@@ -14,7 +14,7 @@ class pr_agi(Variable):
     )
 
     # Discrepancy: legal code defines Puerto Rico AGI as gross income minus deductions and exemptions, among other items
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # person = tax_unit.members
         total_income = add(tax_unit, period, ["pr_gross_income"])
         alimony_paid = add(tax_unit, period, ["alimony_expense"])

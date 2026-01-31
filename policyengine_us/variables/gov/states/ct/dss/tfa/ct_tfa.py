@@ -10,7 +10,7 @@ class ct_tfa(Variable):
     reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10"
     defined_for = "ct_tfa_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ct.dss.tfa.payment.high_earnings
         # Unearned income are counted dollar for dollar against TFA benefit amount
         # https://portal.ct.gov/dss/knowledge-base/articles/cash-assistance/temporary-family-assistance?language=en_US

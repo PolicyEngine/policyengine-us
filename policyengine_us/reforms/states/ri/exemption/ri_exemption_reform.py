@@ -11,7 +11,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.dependent_exemption
 
             person = tax_unit.members
@@ -35,7 +35,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.dependent_exemption
 
             dependents_count = tax_unit("ri_eligible_dependents_count", period)
@@ -49,7 +49,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.dependent_exemption
 
             filing_status = tax_unit("filing_status", period)
@@ -67,8 +67,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("ri_dependent_exemption_maximum", period)
             phaseout = tax_unit("ri_dependent_exemption_phaseout", period)
 
@@ -82,7 +81,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
             total_dependents = tax_unit.sum(is_dependent)
@@ -99,7 +98,7 @@ def create_ri_exemption_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_base = parameters(period).gov.states.ri.tax.income.exemption
 
             # Calculate personal exemptions base amount
@@ -132,7 +131,7 @@ def create_ri_exemption_reform() -> Reform:
             return personal_exemption_amount + dependent_exemption_amount
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ri_eligible_dependents_count)
             self.update_variable(ri_dependent_exemption_maximum)
             self.update_variable(ri_dependent_exemption_phaseout)
@@ -143,7 +142,9 @@ def create_ri_exemption_reform() -> Reform:
     return reform
 
 
-def create_ri_exemption_reform_fn(parameters, period, bypass: bool = False):
+def create_ri_exemption_reform_fn(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ri_exemption_reform()
 

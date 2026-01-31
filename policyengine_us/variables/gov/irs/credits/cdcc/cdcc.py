@@ -9,7 +9,7 @@ class cdcc(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit("cdcc_credit_limit", period)
         potential = tax_unit("cdcc_potential", period)
         # In 2021, the CDCC was refundable

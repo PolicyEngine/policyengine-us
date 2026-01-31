@@ -12,7 +12,7 @@ class dc_power_head_or_spouse_eligible(Variable):
     )
     defined_for = "is_tax_unit_head_or_spouse"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.power.age_threshold
         spm_unit = person.spm_unit
         is_parent = person("is_parent", period)

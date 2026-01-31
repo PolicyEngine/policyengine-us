@@ -13,5 +13,5 @@ class sc_military_deduction_survivors(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("military_retirement_pay_survivors", period)

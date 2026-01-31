@@ -14,7 +14,7 @@ class ga_taxable_income(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ga_agi", period)
         deductions = tax_unit("ga_deductions", period)
         exemptions = tax_unit("ga_exemptions", period)

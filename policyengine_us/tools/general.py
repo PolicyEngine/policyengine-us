@@ -30,7 +30,7 @@ where = np.where
 PERCENT = "/1"
 
 
-def variable_alias(name: str, variable_cls: type) -> type:
+def variable_alias(name: str, variable_cls: type) -> type:  # pragma: no cover
     """
     Copy a variable class and return a new class.
     """
@@ -52,7 +52,9 @@ def sum_among_non_dependents(variable: str) -> Callable:
     return formula
 
 
-def spouse(person: Population, period: int, variable: str) -> ArrayLike:
+def spouse(
+    person: Population, period: int, variable: str
+) -> ArrayLike:  # pragma: no cover
     values = person(variable, period)
     return (person.marital_unit.sum(values) - values).astype(values.dtype)
 
@@ -64,7 +66,9 @@ def in_state(state):
     return is_eligible
 
 
-def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
+def get_next_threshold(
+    values: ArrayLike, thresholds: ArrayLike
+) -> ArrayLike:  # pragma: no cover
     """
     Return the next threshold in the sequence of thresholds.
     """

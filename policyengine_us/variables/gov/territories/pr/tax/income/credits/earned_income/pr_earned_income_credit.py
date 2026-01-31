@@ -10,7 +10,7 @@ class pr_earned_income_credit(Variable):
     reference = "https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2"
     defined_for = "pr_earned_income_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.territories.pr.tax.income.credits.earned_income

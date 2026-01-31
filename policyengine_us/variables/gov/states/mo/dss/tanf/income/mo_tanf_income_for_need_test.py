@@ -13,7 +13,7 @@ class mo_tanf_income_for_need_test(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])

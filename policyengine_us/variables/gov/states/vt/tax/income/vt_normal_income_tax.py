@@ -14,7 +14,7 @@ class vt_normal_income_tax(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1",  # Vermont 2022 Income Tax Return Booklet Forms and Instructions
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("vt_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

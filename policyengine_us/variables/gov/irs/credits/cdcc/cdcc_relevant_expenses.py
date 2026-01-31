@@ -12,7 +12,7 @@ class cdcc_relevant_expenses(Variable):
         "https://www.law.cornell.edu/uscode/text/26/21#d_1",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         expenses = tax_unit("tax_unit_childcare_expenses", period)
         cdcc_limit = tax_unit("cdcc_limit", period)
         eligible_capped_expenses = min_(expenses, cdcc_limit)

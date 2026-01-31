@@ -11,7 +11,7 @@ class il_pi_is_deep_poverty(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         spm_unit = person.spm_unit
         # Factor 4 (50 pts): Family income at or below 50% FPL and/or receiving TANF.
         p = parameters(period).gov.states.il.isbe.pi.eligibility.income

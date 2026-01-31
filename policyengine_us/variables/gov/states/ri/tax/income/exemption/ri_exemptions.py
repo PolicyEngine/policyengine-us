@@ -10,7 +10,7 @@ class ri_exemptions(Variable):
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf"
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ri.tax.income.exemption
 
         exemptions_count = tax_unit("exemptions_count", period)

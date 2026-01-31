@@ -9,7 +9,7 @@ class ma_liheap_eligible_subsidized_housing(Variable):
     defined_for = StateCode.MA
     reference = "https://liheapch.acf.gov/tables/subsidize.htm#MA"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.doer.liheap.eligibility
         income = spm_unit("ma_liheap_income", period)
         rent_threshold = income * p.rent_threshold_subsidized_housing

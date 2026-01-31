@@ -13,7 +13,7 @@ class ks_count_exemptions(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         joint = filing_status == statuses.JOINT

@@ -9,8 +9,7 @@ class tax_unit_itemizes(Variable):
     documentation = "Whether tax unit elects to itemize deductions rather than claim the standard deduction."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability
             tax_liability_if_itemizing = tax_unit(

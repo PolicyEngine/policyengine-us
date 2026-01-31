@@ -8,7 +8,7 @@ class is_person_demographic_tanf_eligible(Variable):
     label = "Person demographic eligibility for TANF"
     documentation = "Whether this person meets the demographic requirements for TANF eligibility"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Federal age limits for TANF eligibility
         # Get age for the year, not the month
         age = person("age", period.this_year)

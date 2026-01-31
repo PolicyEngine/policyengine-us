@@ -12,7 +12,7 @@ class in_tanf_payment_eligible(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable = spm_unit("in_tanf_countable_income_for_payment", period)
         payment_standard = spm_unit("in_tanf_payment_standard", period)
         return countable < payment_standard

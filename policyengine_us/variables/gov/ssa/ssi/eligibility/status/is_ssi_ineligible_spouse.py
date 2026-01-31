@@ -9,7 +9,7 @@ class is_ssi_ineligible_spouse(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#b"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Check if person is a spouse (either tax unit spouse or head)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 

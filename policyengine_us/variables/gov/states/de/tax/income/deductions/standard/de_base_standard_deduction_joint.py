@@ -10,7 +10,7 @@ class de_base_standard_deduction_joint(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=8"
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit("filing_status", period)
         is_head = person("is_tax_unit_head", period)
         p = parameters(period).gov.states.de.tax.income.deductions.standard

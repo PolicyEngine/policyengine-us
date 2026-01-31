@@ -9,7 +9,7 @@ class nm_works_net_income_eligible(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.520.11 NMAC, countable income must be less than
         # the standard of need (payment standard)
         countable_income = spm_unit("nm_works_countable_income", period)

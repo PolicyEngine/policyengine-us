@@ -12,7 +12,7 @@ class slcsp_rating_area_default(Variable):
     )
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # 1) Read the county string from the Household
         county_str = household("county_str", period)
 

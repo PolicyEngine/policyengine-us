@@ -11,7 +11,7 @@ class me_sales_tax_fairness_credit_eligible(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

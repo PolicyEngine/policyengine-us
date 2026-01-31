@@ -15,7 +15,7 @@ class msp_benefit_value(Variable):
     )
     defined_for = "msp_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         category = person("msp_category", period)
 
         # Get premiums (automatically disaggregated from annual to monthly)

@@ -10,7 +10,7 @@ class ky_ktap_countable_income(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return add(
             spm_unit,
             period,

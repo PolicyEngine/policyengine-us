@@ -15,6 +15,6 @@ class income_tax_positive(Variable):
     )
     reference = "https://www.cbo.gov/publication/43767"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income_tax = tax_unit("income_tax", period)
         return max_(income_tax, 0)

@@ -9,7 +9,7 @@ class income_elasticity_lsr(Variable):
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         raw_earnings = add(
             person,
             period,

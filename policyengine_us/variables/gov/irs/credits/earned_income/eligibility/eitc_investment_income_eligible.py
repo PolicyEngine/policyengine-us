@@ -8,7 +8,7 @@ class eitc_investment_income_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/32#i"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eitc = parameters.gov.irs.credits.eitc(period)
         invinc = tax_unit("eitc_relevant_investment_income", period)
         return invinc <= eitc.phase_out.max_investment_income

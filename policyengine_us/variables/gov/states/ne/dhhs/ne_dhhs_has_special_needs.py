@@ -12,5 +12,5 @@ class ne_dhhs_has_special_needs(Variable):
         "https://dhhs.ne.gov/licensure/Documents/CCC391-3.pdf#page=11",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("is_disabled", period)

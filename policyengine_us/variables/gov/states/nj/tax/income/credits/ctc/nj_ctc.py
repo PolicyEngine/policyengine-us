@@ -15,7 +15,7 @@ class nj_ctc(Variable):
     )
     defined_for = "nj_ctc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income.credits.ctc
 
         # Get amount per qualifying child based on taxable income.

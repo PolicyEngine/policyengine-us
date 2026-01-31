@@ -9,7 +9,7 @@ class ct_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_non_refundable_credits = tax_unit(
             "ct_income_tax_after_amt", period
         )

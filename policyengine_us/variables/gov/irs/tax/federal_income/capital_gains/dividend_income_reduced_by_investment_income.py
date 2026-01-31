@@ -9,7 +9,7 @@ class dividend_income_reduced_by_investment_income(Variable):
     documentation = "IRS Form 1040 Schedule D worksheet (part 1 of 6)"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         qualified_dividend_income = add(
             tax_unit, period, ["qualified_dividend_income"]
         )

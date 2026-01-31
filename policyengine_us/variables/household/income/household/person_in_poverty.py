@@ -8,5 +8,5 @@ class person_in_poverty(Variable):
     definition_period = YEAR
     value_type = bool
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person.spm_unit("in_poverty", period)

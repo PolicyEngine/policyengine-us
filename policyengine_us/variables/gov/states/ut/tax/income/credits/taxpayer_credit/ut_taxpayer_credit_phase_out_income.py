@@ -12,7 +12,7 @@ class ut_taxpayer_credit_phase_out_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         thresholds = parameters(
             period

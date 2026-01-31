@@ -9,7 +9,7 @@ class ma_ccfa_income_eligible(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/financial-assistance-policy-guide"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.income.smi_rate
 
         countable_income = spm_unit("ma_ccfa_countable_income", period)

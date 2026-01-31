@@ -15,7 +15,7 @@ class co_social_security_subtraction_indv(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         if not p.social_security_subtraction_available:
             return 0

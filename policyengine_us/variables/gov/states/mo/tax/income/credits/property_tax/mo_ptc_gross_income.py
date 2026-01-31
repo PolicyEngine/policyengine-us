@@ -14,7 +14,7 @@ class mo_ptc_gross_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # line numbers in comments below refer to 2021 Form MO-PTS
         person = tax_unit.members
         # compute core person-level income included in PTC gross income

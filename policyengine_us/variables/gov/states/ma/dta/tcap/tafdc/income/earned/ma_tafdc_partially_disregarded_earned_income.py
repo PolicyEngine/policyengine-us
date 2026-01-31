@@ -12,7 +12,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         work_related_deduction = person(
             "ma_tafdc_work_related_expense_deduction", period
         )

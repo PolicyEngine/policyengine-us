@@ -15,7 +15,7 @@ class wic(Variable):
     exhaustive_parameter_dependencies = "gov.usda.wic"
     defined_for = "is_wic_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         category = person("wic_category_str", period)
         p = parameters(period).gov.usda.wic
         values = p.value

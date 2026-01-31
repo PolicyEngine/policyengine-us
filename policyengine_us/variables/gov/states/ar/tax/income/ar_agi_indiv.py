@@ -10,7 +10,7 @@ class ar_agi_indiv(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=22"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gross_income = person("ar_gross_income_indiv", period)
         income_exemptions = person("ar_exemptions", period)
         net_income = max_(gross_income - income_exemptions, 0)

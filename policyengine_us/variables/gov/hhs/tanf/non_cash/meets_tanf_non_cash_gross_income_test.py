@@ -8,7 +8,7 @@ class meets_tanf_non_cash_gross_income_test(Variable):
     documentation = "Income eligibility (gross income as a percent of the poverty line) for TANF non-cash benefit for SNAP BBCE"
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         state = spm_unit.household("state_code_str", period)
         # All limits and incomes here expressed as % of FPG.
         limits = parameters(period).gov.hhs.tanf.non_cash.income_limit

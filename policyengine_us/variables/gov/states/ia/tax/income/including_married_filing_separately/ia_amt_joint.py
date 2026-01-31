@@ -15,7 +15,7 @@ class ia_amt_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # compute Iowa AMT taxable income
         p = parameters(period).gov.states.ia.tax.income
         amt = p.alternative_minimum_tax

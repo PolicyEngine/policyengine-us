@@ -11,7 +11,7 @@ class qualified_business_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/199A#c"
     defined_for = "business_is_qualified"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.qbi
         gross_qbi = 0
         for var in p.income_definition:

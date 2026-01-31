@@ -9,7 +9,7 @@ class amt_income_less_exemptions(Variable):
     unit = USD
     documentation = "Alternative Minimum Tax (AMT) income less exemptions"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Form 6251, Part I
         # Line 4
         amt_income = tax_unit("amt_income", period)

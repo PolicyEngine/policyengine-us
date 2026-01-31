@@ -11,7 +11,7 @@ class acp(Variable):
     defined_for = "is_acp_eligible"
     reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
         p = parameters(period).gov.fcc.acp

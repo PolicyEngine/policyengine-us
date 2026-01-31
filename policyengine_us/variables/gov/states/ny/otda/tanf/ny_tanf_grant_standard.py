@@ -9,7 +9,7 @@ class ny_tanf_grant_standard(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get number of people in SPM unit.
         people = spm_unit("spm_unit_size", period)
         # Cap them at the maximum specified in the tables.

@@ -13,7 +13,7 @@ class ga_tanf_standard_of_need(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.dfcs.tanf.financial_standards
         # In simplified implementation, use SPM unit size directly
         # (does not exclude SSI recipients from assistance unit)

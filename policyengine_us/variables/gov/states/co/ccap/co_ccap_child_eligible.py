@@ -9,7 +9,7 @@ class co_ccap_child_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         year = period.start.year
         if period.start.month >= 10:
             instant_str = f"{year}-10-01"

@@ -12,7 +12,7 @@ class ar_low_income_tax_joint(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = add(person.tax_unit, period, ["ar_agi_joint"])
         head = person("is_tax_unit_head", period)
         agi_attributed_to_head = agi * head

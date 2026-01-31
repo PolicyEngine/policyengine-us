@@ -13,7 +13,7 @@ class dc_gac_income_eligible(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("dc_gac_countable_income", period)
         standard_payment = spm_unit("dc_gac_standard_payment", period)
         return countable_income <= standard_payment

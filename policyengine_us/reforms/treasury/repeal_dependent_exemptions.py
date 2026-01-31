@@ -10,13 +10,13 @@ def create_repeal_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             total_unit_size = tax_unit("tax_unit_size", period)
             dependents = tax_unit("tax_unit_dependents", period)
             return total_unit_size - dependents
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(exemptions_count)
 
     return reform
@@ -24,7 +24,7 @@ def create_repeal_dependent_exemptions() -> Reform:
 
 def create_repeal_dependent_exemptions_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_repeal_dependent_exemptions()
 

@@ -9,7 +9,7 @@ class il_cta_children_reduced_fare_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.transitchicago.com/reduced-fare-programs/#kids"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.rta.cta.reduced_fare_program.age_threshold

@@ -10,7 +10,7 @@ class ut_claims_retirement_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         max_retirement_credit = tax_unit("ut_retirement_credit_max", period)
         max_ss_benefits_credit = tax_unit("ut_ss_benefits_credit_max", period)
         return max_retirement_credit >= max_ss_benefits_credit

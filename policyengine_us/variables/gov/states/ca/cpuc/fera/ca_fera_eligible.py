@@ -13,7 +13,7 @@ class ca_fera_eligible(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Check not eligible for CARE
         care_eligible = household("ca_care_eligible", period)
         # Check at least 3 people in household

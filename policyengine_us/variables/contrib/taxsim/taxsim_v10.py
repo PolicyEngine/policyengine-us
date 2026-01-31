@@ -9,5 +9,6 @@ class taxsim_v10(Variable):
     documentation = "TAXSIM federal AGI"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         return tax_unit("adjusted_gross_income", period)

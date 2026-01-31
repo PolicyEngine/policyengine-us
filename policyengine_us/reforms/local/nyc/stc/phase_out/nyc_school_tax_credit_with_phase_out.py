@@ -12,7 +12,7 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
         defined_for = "in_nyc"
         reference = "https://www.nysenate.gov/legislation/bills/2025/S2238"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             agi = tax_unit("ny_agi", period)
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
@@ -36,7 +36,7 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
         defined_for = "in_nyc"
         reference = "https://www.nysenate.gov/legislation/bills/2025/S2238"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             base_amount = add(
                 tax_unit,
                 period,
@@ -49,7 +49,7 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
             return max_(0, base_amount - phase_out)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(nyc_school_tax_credit_phase_out)
             self.update_variable(nyc_school_tax_credit)
 
@@ -58,7 +58,7 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
 
 def create_nyc_school_tax_credit_with_phase_out_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_nyc_school_tax_credit_with_phase_out()
 

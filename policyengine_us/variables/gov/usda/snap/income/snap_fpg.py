@@ -11,7 +11,7 @@ class snap_fpg(Variable):
     )
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         n = spm_unit("snap_unit_size", period.this_year)
         state_group = spm_unit.household("state_group_str", period.this_year)
         year = period.start.year

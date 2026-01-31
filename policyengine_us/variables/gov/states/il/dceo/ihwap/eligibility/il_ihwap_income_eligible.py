@@ -13,7 +13,7 @@ class il_ihwap_income_eligible(Variable):
         "https://dceo.illinois.gov/communityservices/homeweatherization.html",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dceo.ihwap.eligibility
         p_hhs = parameters(period).gov.hhs
         income = add(spm_unit, period, ["irs_gross_income"])

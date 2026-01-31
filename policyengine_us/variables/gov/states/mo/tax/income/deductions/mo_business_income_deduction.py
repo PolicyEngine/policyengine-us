@@ -13,7 +13,7 @@ class mo_business_income_deduction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mo.tax.income.deductions.business_income

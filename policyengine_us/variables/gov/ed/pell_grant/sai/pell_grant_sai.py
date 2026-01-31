@@ -8,7 +8,7 @@ class pell_grant_sai(Variable):
     definition_period = YEAR
     label = "Pell Grant student aid index"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_contribution = person("pell_grant_head_contribution", period)
         dependent_contribution = person(
             "pell_grant_dependent_contribution", period

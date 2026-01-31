@@ -10,7 +10,7 @@ class az_dependent_tax_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(
             period

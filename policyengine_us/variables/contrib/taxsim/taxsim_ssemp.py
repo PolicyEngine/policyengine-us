@@ -8,7 +8,8 @@ class taxsim_ssemp(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_primary = person("is_tax_unit_spouse", period)
         semp = person("self_employment_income", period)

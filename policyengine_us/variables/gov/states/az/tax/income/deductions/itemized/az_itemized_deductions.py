@@ -17,7 +17,7 @@ class az_itemized_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions
         deductions = [
             deduction

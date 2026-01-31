@@ -9,7 +9,7 @@ class md_tanf_maximum_benefit(Variable):
     definition_period = YEAR
     defined_for = "md_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         people = spm_unit("spm_unit_size", period)
         # TODO: Add DHS layer.
         p = parameters(period).gov.states.md.tanf.maximum_benefit

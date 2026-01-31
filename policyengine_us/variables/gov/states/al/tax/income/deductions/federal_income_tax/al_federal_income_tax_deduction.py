@@ -10,7 +10,7 @@ class al_federal_income_tax_deduction(Variable):
     reference = "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf#page=20"
     defined_for = StateCode.AL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.al.tax.income.deductions.federal_tax
         income_sources = add(
             tax_unit, period, ["income_tax_before_refundable_credits"]

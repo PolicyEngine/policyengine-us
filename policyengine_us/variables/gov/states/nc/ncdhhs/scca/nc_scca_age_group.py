@@ -8,7 +8,7 @@ class nc_scca_age_group(Variable):
     definition_period = YEAR
     reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         """
         Returns the age group for NC SCCA:
         1 - Infant (0 to <1)

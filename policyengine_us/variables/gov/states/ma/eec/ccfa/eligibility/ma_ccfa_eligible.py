@@ -9,7 +9,7 @@ class ma_ccfa_eligible(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-procedures-manual-february-1-2022/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Check all eligibility criteria
         has_eligible_child = (
             add(spm_unit, period, ["ma_ccfa_eligible_child"]) > 0

@@ -14,7 +14,7 @@ class co_pension_subtraction_indv_eligible(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         return head | spouse

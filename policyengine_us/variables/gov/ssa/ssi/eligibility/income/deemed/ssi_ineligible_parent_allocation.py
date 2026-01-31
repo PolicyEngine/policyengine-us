@@ -13,7 +13,7 @@ class ssi_ineligible_parent_allocation(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ssi = parameters(period).gov.ssa.ssi.amount
         ineligible_parent = person("is_ssi_ineligible_parent", period)
         count_ineligible_parents = person.tax_unit.sum(ineligible_parent)

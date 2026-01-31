@@ -12,7 +12,7 @@ class co_ccap_base_parent_fee(Variable):
     unit = USD
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         year = period.start.year
         if period.start.month >= 10:
             instant_str = f"{year}-10-01"

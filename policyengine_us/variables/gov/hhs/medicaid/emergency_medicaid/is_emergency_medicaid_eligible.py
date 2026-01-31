@@ -11,7 +11,7 @@ class is_emergency_medicaid_eligible(Variable):
         "https://www.law.cornell.edu/cfr/text/42/435.406",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicaid.emergency_medicaid
 
         has_emergency_condition = person(

@@ -15,7 +15,7 @@ class mn_deductions(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         std_ded = tax_unit("mn_standard_deduction", period)
         itm_ded = tax_unit("mn_itemized_deductions", period)
         itemizing = tax_unit("mn_itemizing", period)

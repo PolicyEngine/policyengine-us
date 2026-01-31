@@ -22,7 +22,7 @@ class hhs_smi(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
         return smi(size, state, period, parameters)

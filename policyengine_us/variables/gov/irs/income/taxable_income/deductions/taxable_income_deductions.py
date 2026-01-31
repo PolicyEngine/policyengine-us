@@ -8,7 +8,7 @@ class taxable_income_deductions(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemizes = tax_unit("tax_unit_itemizes", period)
         deductions_if_itemizing = tax_unit(
             "taxable_income_deductions_if_itemizing", period

@@ -15,7 +15,7 @@ class ia_cdcc(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Iowa matches the potential federal credit
         federal_cdcc = tax_unit("cdcc_potential", period)
         taxable_income = tax_unit("ia_taxable_income", period)

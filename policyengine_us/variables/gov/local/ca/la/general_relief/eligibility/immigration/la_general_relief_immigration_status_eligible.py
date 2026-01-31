@@ -10,7 +10,7 @@ class la_general_relief_immigration_status_eligible(Variable):
     defined_for = "in_la"
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FGR%2FGR%2F42-404_Immigrant_Eligibility_Chart%2F42-404_Immigrant_Eligibility_Chart.htm"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         eligible_person = person(
             "la_general_relief_immigration_status_eligible_person", period

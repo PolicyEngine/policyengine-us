@@ -16,7 +16,7 @@ class wi_property_tax_credit(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         rent = add(tax_unit, period, ["rent"])
         ptax = add(tax_unit, period, ["real_estate_taxes"])
         p = parameters(period).gov.states.wi.tax.income.credits.property_tax

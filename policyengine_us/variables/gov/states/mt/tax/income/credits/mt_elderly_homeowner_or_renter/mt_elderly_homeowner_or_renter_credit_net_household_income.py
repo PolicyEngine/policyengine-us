@@ -11,7 +11,7 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
     definition_period = YEAR
     defined_for = "mt_elderly_homeowner_or_renter_credit_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter

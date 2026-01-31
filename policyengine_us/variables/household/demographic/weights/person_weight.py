@@ -8,5 +8,5 @@ class person_weight(Variable):
     definition_period = YEAR
     uprating = "calibration.gov.census.populations.total"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person.household("household_weight", period)

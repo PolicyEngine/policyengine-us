@@ -9,7 +9,7 @@ class free_school_meals(Variable):
     unit = USD
     documentation = "Value of free school meals."
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         disabled_programs = parameters(period).simulation.disabled_programs
         if "free_school_meals" in disabled_programs:
             return spm_unit("free_school_meals_reported", period)

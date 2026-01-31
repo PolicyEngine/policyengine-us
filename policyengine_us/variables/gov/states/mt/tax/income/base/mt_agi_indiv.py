@@ -9,7 +9,7 @@ class mt_agi_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("adjusted_gross_income_person", period)
         additions = person("mt_additions", period)
         subtractions = person("mt_subtractions", period)

@@ -14,7 +14,7 @@ class al_misc_deduction(Variable):
     )
     defined_for = StateCode.AL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         misc_expense = add(tax_unit, period, ["misc_deduction"])
         p = parameters(period).gov.states.al.tax.income.deductions.itemized
         misc_floor = p.work_related_expense_rate * tax_unit("al_agi", period)

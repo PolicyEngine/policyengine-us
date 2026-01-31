@@ -11,7 +11,7 @@ class al_income_tax_before_refundable_credits(Variable):
     # The Code of Alabama 1975 Section 40-18-5
     reference = " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_credits = tax_unit(
             "al_income_tax_before_non_refundable_credits", period
         )

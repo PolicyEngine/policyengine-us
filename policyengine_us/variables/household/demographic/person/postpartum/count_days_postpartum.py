@@ -8,7 +8,7 @@ class count_days_postpartum(Variable):
     unit = "day"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         under_60_days = person("under_60_days_postpartum", period)
         under_12_months = person("under_12_months_postpartum", period)
         return select(

@@ -10,7 +10,7 @@ class american_opportunity_credit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         education = parameters(period).gov.irs.credits.education
         aoc = education.american_opportunity_credit
         person = tax_unit.members

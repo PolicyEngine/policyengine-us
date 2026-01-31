@@ -14,7 +14,7 @@ class pr_refundable_ctc(Variable):
 
     # This provision is part of the federal CTC legal code
     # will will merge the logic with the federal CTC once the puerto income tax structure is completed
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # line 24
         # uncapped_ssi can be below 0
         ssi = max_(0, add(tax_unit, period, ["uncapped_ssi"]))

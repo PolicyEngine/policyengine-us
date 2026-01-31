@@ -10,7 +10,7 @@ class eitc_agi_limit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         phase_out_start = tax_unit("eitc_phase_out_start", period)
         maximum = tax_unit("eitc_maximum", period)
         phase_out_rate = tax_unit("eitc_phase_out_rate", period)

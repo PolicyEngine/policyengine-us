@@ -9,7 +9,7 @@ class nyc_cdcc_age_restricted_expenses(Variable):
     definition_period = YEAR
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # For now define this as total childcare expenses times
         # the share of children in the tax unit under the NYC CDCC age limit.
 

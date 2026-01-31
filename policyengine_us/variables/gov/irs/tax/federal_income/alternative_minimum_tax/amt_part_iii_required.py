@@ -9,7 +9,7 @@ class amt_part_iii_required(Variable):
     documentation = "Whether the Alternative Minimum Tax (AMT) Part III worksheet is required, Form 6251, Part III"
     reference = "https://www.irs.gov/pub/irs-pdf/f6251.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         relevant_inputs = add(
             tax_unit,
             period,

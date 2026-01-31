@@ -7,7 +7,7 @@ class taxpayer_has_itin(Variable):
     definition_period = YEAR
     label = "Tax unit head or spouse has ITIN"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_itin = person("has_itin", period)

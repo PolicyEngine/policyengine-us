@@ -8,7 +8,8 @@ class taxsim_age2(Variable):
     unit = "year"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)

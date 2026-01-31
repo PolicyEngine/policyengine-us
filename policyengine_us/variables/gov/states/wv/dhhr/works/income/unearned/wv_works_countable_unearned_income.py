@@ -10,7 +10,7 @@ class wv_works_countable_unearned_income(Variable):
     reference = "https://bfa.wv.gov/media/2766/download?inline#page=587"
     defined_for = StateCode.WV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wv.dhhr.works.income
         # Step 4-5: Child support disregard ($100 for 1 child, $200 for 2+)
         child_support = add(spm_unit, period, ["child_support_received"])

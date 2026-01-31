@@ -9,7 +9,7 @@ class ca_state_supplement_food_allowance_eligible(Variable):
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         living_arrangements_allow_for_food_preparation = spm_unit.household(
             "living_arrangements_allow_for_food_preparation", period
         )

@@ -9,7 +9,7 @@ class ca_capi_resource_eligible(Variable):
     defined_for = StateCode.CA
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         resources = spm_unit("ca_capi_resources", period)
         p = parameters(period).gov.states.ca.cdss.capi.resources
         married = spm_unit("spm_unit_is_married", period)

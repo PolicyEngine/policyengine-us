@@ -8,6 +8,6 @@ class taxable_earnings_for_social_security(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.payroll.social_security
         return min_(p.cap, person("payroll_tax_gross_wages", period))

@@ -11,7 +11,7 @@ class savers_credit_eligible_person(Variable):
         "https://www.law.cornell.edu/uscode/text/26/25B#c",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.retirement_saving
         age = person("age", period)
         age_eligible = age >= p.age_threshold

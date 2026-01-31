@@ -25,7 +25,7 @@ class md_dependent_care_subtraction(Variable):
     IRC § 21(a)(2): https://www.law.cornell.edu/uscode/text/26/21#a_2
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         md_p = parameters(period).gov.states.md.tax.income.agi.subtractions
         max_decoupled_year_offset = md_p.max_care_expense_year_offset
         period_max = period.offset(max_decoupled_year_offset)

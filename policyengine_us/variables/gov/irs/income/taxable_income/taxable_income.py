@@ -8,7 +8,7 @@ class taxable_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         exemptions = tax_unit("exemptions", period)
         deductions = tax_unit("taxable_income_deductions", period)

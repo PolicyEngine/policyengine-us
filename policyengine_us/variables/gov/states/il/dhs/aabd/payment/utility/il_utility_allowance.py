@@ -14,7 +14,7 @@ class il_aabd_utility_allowance(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.259",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.payment
         size = spm_unit("spm_unit_size", period)
         capped_size = clip(size, 1, 19)

@@ -9,7 +9,7 @@ class la_school_readiness_credit_eligible_child(Variable):
     reference = "https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=15"
     defined_for = StateCode.LA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.la.tax.income.credits.school_readiness

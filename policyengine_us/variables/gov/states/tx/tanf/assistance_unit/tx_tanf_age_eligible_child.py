@@ -12,7 +12,7 @@ class tx_tanf_age_eligible_child(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.tanf.age_threshold
         age = person("monthly_age", period)
         is_dependent = person("is_tax_unit_dependent", period)

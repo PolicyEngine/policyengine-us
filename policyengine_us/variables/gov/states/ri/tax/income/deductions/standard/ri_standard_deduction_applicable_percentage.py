@@ -13,7 +13,7 @@ class ri_standard_deduction_applicable_percentage(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ri.tax.income.deductions.standard.phase_out

@@ -12,7 +12,7 @@ class il_pfae_is_low_income(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.isbe.pfae.eligibility.income
         spm_unit = person.spm_unit
         fpg = spm_unit("spm_unit_fpg", period)

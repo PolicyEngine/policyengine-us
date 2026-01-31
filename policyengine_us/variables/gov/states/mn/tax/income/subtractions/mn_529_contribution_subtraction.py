@@ -13,7 +13,7 @@ class mn_529_contribution_subtraction(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mn.tax.income.subtractions.education_savings

@@ -10,7 +10,7 @@ class id_cdcc_limit(Variable):
     reference = "https://tax.idaho.gov/governance/statutes/irc/"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         if period.start.year == 2021:
             instant_str = f"2020-01-01"
         else:

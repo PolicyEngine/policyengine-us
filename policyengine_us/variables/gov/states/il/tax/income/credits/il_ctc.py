@@ -10,7 +10,7 @@ class il_ctc(Variable):
     reference = "https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session="
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)

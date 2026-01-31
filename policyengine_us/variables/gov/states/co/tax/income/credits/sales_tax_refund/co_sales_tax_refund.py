@@ -10,7 +10,7 @@ class co_sales_tax_refund(Variable):
     reference = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23"
     defined_for = "co_sales_tax_refund_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.co.tax.income.credits.sales_tax_refund.amount

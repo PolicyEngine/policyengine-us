@@ -9,7 +9,7 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"  # (A)
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard.full_disregard

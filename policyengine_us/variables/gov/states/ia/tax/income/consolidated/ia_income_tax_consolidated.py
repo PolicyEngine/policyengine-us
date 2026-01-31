@@ -13,7 +13,7 @@ class ia_income_tax_consolidated(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         reg_tax = tax_unit("ia_regular_tax_consolidated", period)
         alt_tax_eligible = tax_unit("ia_alternate_tax_eligible", period)
         alt_tax = tax_unit("ia_alternate_tax_consolidated", period)

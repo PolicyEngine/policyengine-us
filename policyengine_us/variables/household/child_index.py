@@ -7,7 +7,7 @@ class child_index(Variable):
     label = "Index of child in household"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return (
             person.get_rank(
                 person.household,

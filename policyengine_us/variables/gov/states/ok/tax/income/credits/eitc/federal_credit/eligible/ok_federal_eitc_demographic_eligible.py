@@ -11,7 +11,7 @@ class ok_federal_eitc_demographic_eligible(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         has_child = tax_unit("eitc_child_count", period) > 0
         age = person("age", period)

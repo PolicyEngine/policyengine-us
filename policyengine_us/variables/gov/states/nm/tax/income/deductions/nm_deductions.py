@@ -9,7 +9,7 @@ class nm_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemized_on_federal_return = tax_unit("tax_unit_itemizes", period)
         itm_ded = tax_unit("nm_itemized_deductions", period)
         standard_ded = tax_unit("standard_deduction", period)

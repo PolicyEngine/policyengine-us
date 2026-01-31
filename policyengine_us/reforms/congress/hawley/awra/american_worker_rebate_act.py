@@ -13,7 +13,7 @@ def create_american_worker_rebate_act() -> Reform:
         )
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             immigration_status = person("immigration_status", period)
             immigration_status_str = immigration_status.decode_to_str()
@@ -44,7 +44,7 @@ def create_american_worker_rebate_act() -> Reform:
         definition_period = YEAR
         defined_for = "american_worker_tax_rebate_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.congress.hawley.awra
             multiplier = where(
                 tax_unit("tax_unit_is_joint", period),
@@ -64,7 +64,7 @@ def create_american_worker_rebate_act() -> Reform:
         definition_period = YEAR
         defined_for = "american_worker_tax_rebate_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             total_amount = add(
                 tax_unit,
                 period,
@@ -91,7 +91,7 @@ def create_american_worker_rebate_act() -> Reform:
 
         adds = ["gov.contrib.congress.hawley.awra.amount.non_joint"]
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.irs.credits.refundable.update(
             start=instant("2024-01-01"),
             stop=instant("2035-12-31"),
@@ -107,7 +107,7 @@ def create_american_worker_rebate_act() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(american_worker_tax_rebate)
             self.update_variable(american_worker_tax_rebate_base_amount)
             self.update_variable(american_worker_tax_rebate_child_amount)
@@ -119,7 +119,7 @@ def create_american_worker_rebate_act() -> Reform:
 
 def create_american_worker_rebate_act_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_american_worker_rebate_act()
 

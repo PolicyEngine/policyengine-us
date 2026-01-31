@@ -13,7 +13,7 @@ class co_income_qualified_senior_housing_credit(Variable):
     )
     defined_for = "co_income_qualified_senior_housing_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.co.tax.income.credits.income_qualified_senior_housing

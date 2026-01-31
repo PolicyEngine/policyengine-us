@@ -10,7 +10,7 @@ class pr_eligible_dependent_for_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.PR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         student_eligible = person("pr_exemptions_is_eligible_student", period)
         non_student_eligible = person(
             "pr_exemptions_is_eligible_nonstudent", period

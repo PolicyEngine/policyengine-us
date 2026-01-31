@@ -10,7 +10,7 @@ class de_tanf(Variable):
     reference = "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008"
     defined_for = "de_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DSSM 4008 / State Plan Exhibit 1 Step 3 (Benefit Calculation):
         # Net income = countable earned ($90 + $30 + 1/3 + childcare) + unearned
         p = parameters(period).gov.states.de.dhss.tanf

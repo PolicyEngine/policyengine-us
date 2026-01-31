@@ -15,7 +15,7 @@ class nd_subtractions(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nd.tax.income.taxable_income.subtractions

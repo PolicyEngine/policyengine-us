@@ -10,7 +10,7 @@ class va_itemized_deductions(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-2021.pdf"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)

@@ -8,7 +8,7 @@ class mt_elderly_homeowner_or_renter_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter

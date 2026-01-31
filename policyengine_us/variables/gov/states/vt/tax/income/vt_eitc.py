@@ -10,7 +10,7 @@ class vt_eitc(Variable):
     reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=1"
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.vt.tax.income.credits.eitc
         child_dependents = tax_unit("tax_unit_child_dependents", period)

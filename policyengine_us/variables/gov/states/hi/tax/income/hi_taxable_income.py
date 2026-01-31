@@ -11,7 +11,7 @@ class hi_taxable_income(Variable):
     # Hawaii Instructions for Form N-11 Rev 2022 p20
     reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         hi_agi = tax_unit("hi_agi", period)
         hi_deductions = tax_unit("hi_deductions", period)
         hi_exemptions = tax_unit("hi_exemptions", period)

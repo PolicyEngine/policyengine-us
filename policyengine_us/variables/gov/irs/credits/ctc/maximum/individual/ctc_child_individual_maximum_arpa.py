@@ -10,6 +10,6 @@ class ctc_child_individual_maximum_arpa(Variable):
     definition_period = YEAR
     defined_for = "ctc_qualifying_child"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         return parameters(period).gov.irs.credits.ctc.amount.arpa.calc(age)

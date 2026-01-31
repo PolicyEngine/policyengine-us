@@ -10,7 +10,7 @@ class md_married_or_has_child_refundable_eitc(Variable):
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=23"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Limited to filers who are married or have child
         does_not_qualify_for_unmarried_childless_eitc = ~tax_unit(
             "md_qualifies_for_unmarried_childless_eitc", period

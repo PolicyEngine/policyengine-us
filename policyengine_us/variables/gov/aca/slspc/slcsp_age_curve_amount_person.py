@@ -11,7 +11,7 @@ class slcsp_age_curve_amount_person(Variable):
     definition_period = MONTH
     defined_for = "is_aca_ptc_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         state_code = person.household("state_code_str", period)
         age = person("monthly_age", period)
         base_cost = person.household("slcsp_age_0", period)

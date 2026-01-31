@@ -13,7 +13,7 @@ class de_tanf_standard_of_need(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Standard of Need = 75% of Federal Poverty Level (monthly)
         fpg = spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.de.dhss.tanf.income

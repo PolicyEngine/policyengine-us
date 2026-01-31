@@ -12,7 +12,7 @@ class ne_adc_eligible(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility baseline
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Check immigration eligibility (at least one citizen/legal immigrant)

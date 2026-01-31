@@ -9,7 +9,7 @@ class ctc_phase_in(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ctc = parameters(period).gov.irs.credits.ctc
         relevant_earnings = tax_unit("ctc_phase_in_relevant_earnings", period)
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]

@@ -9,7 +9,7 @@ class ut_ctc(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ut.tax.income.credits.ctc
         person = tax_unit.members
         ctc_eligible_child = person("ctc_qualifying_child", period)

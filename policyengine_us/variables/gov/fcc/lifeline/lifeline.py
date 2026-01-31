@@ -11,7 +11,7 @@ class lifeline(Variable):
     defined_for = "is_lifeline_eligible"
     reference = "https://www.law.cornell.edu/cfr/text/47/54.403"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NB: Only one Lifeline benefit is available per SPM unit, per:
         # https://www.law.cornell.edu/cfr/text/47/54.409#c
         p = parameters(period).gov

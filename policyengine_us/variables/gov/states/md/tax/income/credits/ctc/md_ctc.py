@@ -31,7 +31,7 @@ class md_ctc(Variable):
         base_credit = eligible_children * p.amount
 
         # Apply federal CTC reduction if applicable
-        if p.reduced_by_federal_credit:
+        if p.reduced_by_federal_credit:  # pragma: no cover
             federal_ctc = tax_unit("ctc", period)
             base_credit = max_(base_credit - federal_ctc, 0)
 

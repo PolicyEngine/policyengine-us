@@ -10,7 +10,7 @@ class ky_taxable_income_indiv(Variable):
     defined_for = StateCode.KY
     reference = "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ky_agi = person("ky_agi", period)
         deductions = person("ky_deductions_indiv", period)
 

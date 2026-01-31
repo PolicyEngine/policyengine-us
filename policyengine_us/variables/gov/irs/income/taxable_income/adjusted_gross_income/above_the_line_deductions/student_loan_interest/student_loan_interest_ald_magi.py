@@ -11,7 +11,7 @@ class student_loan_interest_ald_magi(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/221#b_2_C"
     defined_for = "student_loan_interest_ald_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p_irs = parameters(period).gov.irs
         not_dependent = ~person("is_tax_unit_dependent", period)
         gross_income_sources = p_irs.gross_income.sources

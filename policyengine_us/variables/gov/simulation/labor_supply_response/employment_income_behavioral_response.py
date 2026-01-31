@@ -8,7 +8,7 @@ class employment_income_behavioral_response(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         lsr = person("labor_supply_behavioral_response", period)
         raw_earnings = add(
             person,

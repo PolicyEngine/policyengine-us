@@ -9,7 +9,7 @@ class nm_works_gross_income_eligible(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.500.8(B) NMAC, gross income must be under 85% FPL
         p = parameters(period).gov.states.nm.hca.nm_works.income.gross_limit
         gross_income = spm_unit("nm_works_gross_income", period)

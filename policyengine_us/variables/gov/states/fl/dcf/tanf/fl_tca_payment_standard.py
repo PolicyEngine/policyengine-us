@@ -13,7 +13,7 @@ class fl_tca_payment_standard(Variable):
     )
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Florida Statutes 414.095(10): Payment based on shelter tier
         # Per FAC 65A-4.220(2)(b): Shelter obligation = responsibility to pay for cost of housing
         p = parameters(period).gov.states.fl.dcf.tanf

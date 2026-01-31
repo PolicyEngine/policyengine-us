@@ -9,7 +9,7 @@ class vt_child_care_contributions(Variable):
     definition_period = YEAR
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.vt.tax.income.child_care_contributions

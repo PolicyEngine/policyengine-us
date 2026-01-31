@@ -13,7 +13,7 @@ class mo_tanf_child_care_deduction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf.child_care_deduction
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)

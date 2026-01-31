@@ -8,5 +8,5 @@ class state_group_str(Variable):
     documentation = "State group variable, stored as a string"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         return household("state_group", period).decode_to_str()

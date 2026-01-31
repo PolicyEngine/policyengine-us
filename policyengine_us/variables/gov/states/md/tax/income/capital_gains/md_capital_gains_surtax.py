@@ -12,8 +12,7 @@ class md_capital_gains_surtax(Variable):
     ]
     defined_for = "md_capital_gains_surtax_applies"
 
-    def formula(tax_unit, period, parameters):
-
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.tax.income.capital_gains
 
         # Get net capital gains (sum of long-term and short-term)

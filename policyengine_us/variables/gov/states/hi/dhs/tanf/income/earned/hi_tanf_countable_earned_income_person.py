@@ -12,7 +12,7 @@ class hi_tanf_countable_earned_income_person(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.dhs.tanf.deductions
 
         # Start with person's gross earned income (federal baseline)

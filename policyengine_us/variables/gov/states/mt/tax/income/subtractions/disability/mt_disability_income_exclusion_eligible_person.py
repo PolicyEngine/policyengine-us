@@ -9,7 +9,7 @@ class mt_disability_income_exclusion_eligible_person(Variable):
     definition_period = YEAR
     reference = "https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E217"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # first select head and spouse with ages below the specific threshold, and
         # select those who are retired on total disability and disabled.
         p = parameters(

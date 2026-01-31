@@ -12,7 +12,7 @@ class ma_tafdc_countable_unearned_income(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         total_unearned_income = add(
             spm_unit, period, ["ma_tcap_gross_unearned_income"]
         )

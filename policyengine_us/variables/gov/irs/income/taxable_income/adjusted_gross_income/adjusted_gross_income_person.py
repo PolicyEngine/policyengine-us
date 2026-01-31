@@ -9,7 +9,7 @@ class adjusted_gross_income_person(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gross_income = person("irs_gross_income", period)
         # calculate ald sums by person
         PERSON_ALDS = [

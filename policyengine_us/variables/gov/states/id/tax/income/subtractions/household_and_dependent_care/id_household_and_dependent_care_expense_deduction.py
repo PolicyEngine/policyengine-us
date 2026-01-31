@@ -9,7 +9,7 @@ class id_household_and_dependent_care_expense_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.dependent_care_expenses

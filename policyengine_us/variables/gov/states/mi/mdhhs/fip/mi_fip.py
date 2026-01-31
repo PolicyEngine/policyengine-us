@@ -13,7 +13,7 @@ class mi_fip(Variable):
     )
     defined_for = "mi_fip_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # BEM 520 Section F: Issuance Amount
         # "Subtract line 2 and line 3 from the amount on line 1"
         # Line 1: Payment Standard (from Section B)

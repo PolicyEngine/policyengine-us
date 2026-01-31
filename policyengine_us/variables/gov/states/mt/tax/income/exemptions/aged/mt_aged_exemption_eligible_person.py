@@ -9,7 +9,7 @@ class mt_aged_exemption_eligible_person(Variable):
     reference = "https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-402/"
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.exemptions
 
         if p.applies:

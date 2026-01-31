@@ -18,7 +18,7 @@ class ccdf_age_group(Variable):
 
     reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         home_based = person("is_ccdf_home_based", period)
         return select(

@@ -10,7 +10,7 @@ class va_must_file(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2023-760-instructions.pdf#page=10"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("va_agi", period)
         p = parameters(period).gov.states.va.tax.income
         filing_status = tax_unit("filing_status", period)

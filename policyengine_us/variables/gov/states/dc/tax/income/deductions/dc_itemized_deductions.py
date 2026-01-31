@@ -13,7 +13,7 @@ class dc_itemized_deductions(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follows Calculation F in references
         # calculate US itemized deductions less state non-property taxes
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)

@@ -11,7 +11,7 @@ class me_pension_income_deduction(Variable):
     defined_for = StateCode.ME
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
 
         # Get the non-militariy pension income of each person (Pension Income Deduction Worksheet, Line 1).

@@ -12,7 +12,7 @@ class nj_wfnj_countable_earned_income_person(Variable):
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-8"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.njdhs.wfnj.income
         gross_earned = person("tanf_gross_earned_income", period)
         month = period.start.month

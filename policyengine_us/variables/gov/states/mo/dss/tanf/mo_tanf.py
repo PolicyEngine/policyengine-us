@@ -13,7 +13,7 @@ class mo_tanf(Variable):
     )
     defined_for = "mo_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         maximum_benefit = spm_unit("mo_tanf_maximum_benefit", period)
         countable_income = spm_unit("mo_tanf_countable_income", period)
         benefit = max_(maximum_benefit - countable_income, 0)

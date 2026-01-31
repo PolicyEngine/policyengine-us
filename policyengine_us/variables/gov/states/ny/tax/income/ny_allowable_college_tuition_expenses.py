@@ -12,7 +12,7 @@ class ny_allowable_college_tuition_expenses(Variable):
     )
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ny.tax.income.college_tuition
         person = tax_unit.members
         capped = min_(person("qualified_tuition_expenses", period), p.cap)

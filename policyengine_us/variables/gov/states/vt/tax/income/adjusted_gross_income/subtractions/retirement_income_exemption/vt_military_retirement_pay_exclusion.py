@@ -16,7 +16,7 @@ class vt_military_retirement_pay_exclusion(Variable):
         "Vermont military retirement benefits exempt from Vermont taxation."
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption

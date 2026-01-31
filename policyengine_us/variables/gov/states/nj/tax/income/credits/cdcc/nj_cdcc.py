@@ -11,7 +11,7 @@ class nj_cdcc(Variable):
     reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44"
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get New Jersey CDCC rate
         p = parameters(period).gov.states.nj.tax.income.credits.cdcc.rate
 

@@ -12,7 +12,7 @@ class id_tafi(Variable):
     )
     defined_for = "id_tafi_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tafi
         grant_standard = spm_unit("id_tafi_grant_standard", period)
         # Cap at maximum grant

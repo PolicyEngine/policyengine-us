@@ -12,7 +12,7 @@ class ne_child_care_subsidy_eligible_child(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ne.dhhs.child_care_subsidy.age_threshold

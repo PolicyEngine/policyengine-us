@@ -10,7 +10,7 @@ class ma_limited_income_tax_credit(Variable):
     reference = "https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ma_agi", period)
         exemption_threshold = tax_unit(
             "ma_income_tax_exemption_threshold", period

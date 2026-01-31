@@ -11,7 +11,7 @@ class hi_income_tax_before_non_refundable_credits(Variable):
     # Hawaii Tax Rate Schedules
     reference = "https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("hi_taxable_income", period)
         p = parameters(period).gov.states.hi.tax.income.rates

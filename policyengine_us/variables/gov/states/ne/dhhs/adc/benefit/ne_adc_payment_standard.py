@@ -12,7 +12,7 @@ class ne_adc_payment_standard(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.dhhs.adc
         need_standard = spm_unit("ne_adc_need_standard", period)
         # Per Neb. Rev. Stat. 43-512: payment is 55% of standard of need

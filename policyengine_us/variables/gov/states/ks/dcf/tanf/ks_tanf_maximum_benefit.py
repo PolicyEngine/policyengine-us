@@ -13,7 +13,7 @@ class ks_tanf_maximum_benefit(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per K.A.R. 30-4-100 and K.A.R. 30-4-101:
         # Payment standard = Basic allowance + Shelter allowance
         # Using High Population Counties (Group III) rates for Non-shared Living

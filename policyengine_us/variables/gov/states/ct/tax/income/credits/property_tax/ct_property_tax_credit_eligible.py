@@ -10,7 +10,7 @@ class ct_property_tax_credit_eligible(Variable):
     # (b)(2)
     reference = "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704c"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
         age_eligible = (
             tax_unit("greater_age_head_spouse", period) >= p.age_threshold

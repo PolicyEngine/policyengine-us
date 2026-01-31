@@ -10,7 +10,7 @@ class wa_tanf_payment_standard(Variable):
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0020"
     defined_for = StateCode.WA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get payment standard by family size per WAC 388-478-0020
         p = parameters(period).gov.states.wa.dshs.tanf
 

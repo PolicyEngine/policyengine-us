@@ -14,7 +14,7 @@ class mo_ptc_net_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         gross_income = tax_unit("mo_ptc_gross_income", period)
         income_offset = tax_unit("mo_ptc_income_offset", period)
         return max_(0, gross_income - income_offset)  # Form MO-PTS, line 10

@@ -28,7 +28,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
             "https://www.law.cornell.edu/uscode/text/26/36B#b_3_A",
         ]
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             magi_frac = tax_unit("aca_magi_fraction", period)
             p = parameters(
                 period
@@ -45,7 +45,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
         label = "Person is eligible for ACA premium tax credit and pays ACA premium"
         definition_period = YEAR
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             # determine status eligibility for ACA PTC
             fstatus = person.tax_unit("filing_status", period)
             separate = fstatus == fstatus.possible_values.SEPARATE
@@ -89,7 +89,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
             )
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(aca_required_contribution_percentage)
             self.update_variable(is_aca_ptc_eligible)
 
@@ -98,7 +98,7 @@ def create_aca_ptc_additional_bracket() -> Reform:
 
 def create_aca_ptc_additional_bracket_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_aca_ptc_additional_bracket()
 

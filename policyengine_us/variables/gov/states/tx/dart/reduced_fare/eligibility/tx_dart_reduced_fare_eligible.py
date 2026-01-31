@@ -13,7 +13,7 @@ class tx_dart_reduced_fare_eligible(Variable):
         "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Eligible due to age
         age_eligible = person("tx_dart_reduced_fare_age_eligible", period)
         # Disability

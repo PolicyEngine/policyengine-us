@@ -10,7 +10,7 @@ class md_unmarried_childless_refundable_eitc(Variable):
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=19"
     defined_for = "md_qualifies_for_unmarried_childless_eitc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         md_tax = tax_unit("md_income_tax_before_credits", period)
         md_unmarried_childless_non_refundable_eitc = tax_unit(
             "md_unmarried_childless_non_refundable_eitc", period

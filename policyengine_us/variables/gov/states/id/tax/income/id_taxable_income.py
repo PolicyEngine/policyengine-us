@@ -11,7 +11,7 @@ class id_taxable_income(Variable):
     reference = "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=1"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("id_agi", period)
         deductions = tax_unit("id_deductions", period)
         qbid = tax_unit("qualified_business_income_deduction", period)

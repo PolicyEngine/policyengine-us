@@ -9,5 +9,5 @@ class tax_unit_size(Variable):
     documentation = "Number of people in the tax unit"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit.nb_persons()

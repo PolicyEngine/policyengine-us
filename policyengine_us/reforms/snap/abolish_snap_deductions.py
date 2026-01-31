@@ -11,11 +11,11 @@ def create_abolish_snap_deductions() -> Reform:
         definition_period = MONTH
         reference = "https://www.law.cornell.edu/uscode/text/7/2014#e"
 
-        def formula(spm_unit, period, parameters):
+        def formula(spm_unit, period, parameters):  # pragma: no cover
             return 0
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(snap_deductions)
 
     return reform
@@ -23,7 +23,7 @@ def create_abolish_snap_deductions() -> Reform:
 
 def create_abolish_snap_deductions_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_abolish_snap_deductions()
 

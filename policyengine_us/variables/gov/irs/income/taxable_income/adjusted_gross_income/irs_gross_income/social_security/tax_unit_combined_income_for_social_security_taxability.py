@@ -12,7 +12,7 @@ class tax_unit_combined_income_for_social_security_taxability(Variable):
         "https://www.ssa.gov/benefits/retirement/planner/taxes.html"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 

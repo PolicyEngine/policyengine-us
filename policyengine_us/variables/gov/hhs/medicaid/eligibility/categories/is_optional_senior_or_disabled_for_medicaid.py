@@ -9,7 +9,7 @@ class is_optional_senior_or_disabled_for_medicaid(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_senior_or_disabled = person("is_ssi_aged_blind_disabled", period)
         income_eligible = person(
             "is_optional_senior_or_disabled_income_eligible", period

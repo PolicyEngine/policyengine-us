@@ -13,7 +13,7 @@ class wi_unemployment_compensation_subtraction(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_tuc = add(tax_unit, period, ["taxable_unemployment_compensation"])
         us_agi = tax_unit("adjusted_gross_income", period)
         wi = parameters(period).gov.states.wi.tax.income

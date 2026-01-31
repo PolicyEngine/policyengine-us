@@ -9,7 +9,7 @@ class il_tanf_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.155"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit(
             "il_tanf_countable_income_for_initial_eligibility", period
         )

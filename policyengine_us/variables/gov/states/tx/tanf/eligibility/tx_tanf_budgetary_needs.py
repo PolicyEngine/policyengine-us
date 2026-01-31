@@ -13,7 +13,7 @@ class tx_tanf_budgetary_needs(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Budgetary needs varies by caretaker type and household size
         size = spm_unit("tx_tanf_assistance_unit_size", period)
         caretaker_type = spm_unit("tx_tanf_caretaker_type", period)

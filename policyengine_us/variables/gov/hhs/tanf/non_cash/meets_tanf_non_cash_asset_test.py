@@ -8,7 +8,7 @@ class meets_tanf_non_cash_asset_test(Variable):
     documentation = "Asset eligibility for TANF non-cash benefit for SNAP BBCE"
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         assets = spm_unit("snap_assets", period)
         state = spm_unit.household("state_code_str", period)
         limits = parameters(period).gov.hhs.tanf.non_cash

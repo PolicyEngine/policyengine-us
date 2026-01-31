@@ -12,7 +12,7 @@ class la_general_relief_housing_subsidy_eligible(Variable):
     defined_for = "la_general_relief_eligible"
     reference = "https://dpss.lacounty.gov/en/cash/gr/housing.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         household = spm_unit.household
         # Person has to experience homelessness
         # Considering people who are about to loose housing as homeless

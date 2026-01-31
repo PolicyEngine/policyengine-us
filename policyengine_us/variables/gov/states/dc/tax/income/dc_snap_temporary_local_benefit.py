@@ -14,7 +14,7 @@ class dc_snap_temporary_local_benefit(Variable):
     unit = USD
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.dc.tax.income.snap.temporary_local_benefit

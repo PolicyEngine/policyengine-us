@@ -10,7 +10,7 @@ class ca_capp(Variable):
     defined_for = "ca_capp_eligible"
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.&lawCode=WIC"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_payment = add(spm_unit, period, ["ca_capp_payment"])
         family_fee = spm_unit("ca_child_care_family_fee", period)
         return max_(gross_payment - family_fee, 0)

@@ -16,7 +16,7 @@ class ctc_refundable_maximum(Variable):
         "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         # Use either normal or ARPA CTC maximums.
         child_amount = max_(

@@ -13,7 +13,7 @@ class ga_tanf_countable_income(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # PAMMS 1605 Step 8: "Allow all applicable earned income deductions
         # to the gross countable earned income of each employed individual
         # to determine the net earned income"

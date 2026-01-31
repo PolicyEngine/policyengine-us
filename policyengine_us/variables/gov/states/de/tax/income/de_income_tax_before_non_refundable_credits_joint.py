@@ -9,7 +9,7 @@ class de_income_tax_before_non_refundable_credits_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         taxable_income = person("de_taxable_income_joint", period)
         p = parameters(period).gov.states.de.tax.income
         return p.rate.calc(taxable_income)

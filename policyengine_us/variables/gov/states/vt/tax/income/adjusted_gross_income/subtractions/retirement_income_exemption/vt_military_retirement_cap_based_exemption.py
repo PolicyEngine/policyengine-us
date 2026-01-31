@@ -11,7 +11,7 @@ class vt_military_retirement_cap_based_exemption(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont military retirement benefits exempt from Vermont taxation up to cap amount (pre-2025)."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.military_retirement

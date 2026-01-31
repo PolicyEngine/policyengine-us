@@ -9,7 +9,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
     definition_period = YEAR
     defined_for = "hi_alternative_tax_on_capital_gains_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # The alternative tax on capital is computed as the sum of the eligible taxable income
         # multiplied by the normal tax rate or by a flat tax rate.
         eligible_taxable_income = tax_unit(

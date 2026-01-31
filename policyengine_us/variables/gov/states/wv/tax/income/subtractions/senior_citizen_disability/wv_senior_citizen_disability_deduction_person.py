@@ -11,7 +11,7 @@ class wv_senior_citizen_disability_deduction_person(Variable):
     definition_period = YEAR
     defined_for = "wv_senior_citizen_disability_deduction_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction

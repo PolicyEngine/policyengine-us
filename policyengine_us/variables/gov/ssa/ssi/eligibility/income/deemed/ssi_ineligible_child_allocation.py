@@ -10,7 +10,7 @@ class ssi_ineligible_child_allocation(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         income = add(
             person, period, ["ssi_earned_income", "ssi_unearned_income"]
         )

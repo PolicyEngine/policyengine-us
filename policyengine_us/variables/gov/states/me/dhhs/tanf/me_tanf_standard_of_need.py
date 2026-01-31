@@ -13,7 +13,7 @@ class me_tanf_standard_of_need(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
         p = parameters(period).gov.states.me.dhhs.tanf
 

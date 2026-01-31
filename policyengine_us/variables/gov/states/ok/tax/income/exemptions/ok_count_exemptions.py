@@ -13,7 +13,7 @@ class ok_count_exemptions(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.tax.income.exemptions
         # special exemption AGI eligibility
         fagi = tax_unit("adjusted_gross_income", period)

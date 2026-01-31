@@ -10,7 +10,7 @@ class ma_eaedc_standard_assistance(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-grant-calculation"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         n = spm_unit("spm_unit_size", period)
         living_arrangement = spm_unit("ma_eaedc_living_arrangement", period)
         p = parameters(

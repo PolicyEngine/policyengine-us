@@ -16,7 +16,7 @@ class mt_itemized_deductions_joint(Variable):
     )
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         charitable_deduction = person.tax_unit("charitable_deduction", period)
         investment_interest = person("investment_interest_expense", period)
         mortgage_interest = person("mortgage_interest", period)

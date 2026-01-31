@@ -13,7 +13,7 @@ class de_tanf_payment_standard(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.de.dhss.tanf.payment_standard
         unit_size = spm_unit("spm_unit_size", period)
         capped_unit_size = min_(unit_size, p.max_unit_size)

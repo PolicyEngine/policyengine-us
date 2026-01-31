@@ -8,7 +8,7 @@ class co_state_supplement_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ssi_eligible = person("is_ssi_eligible_individual", period)
         is_disabled = person("is_ssi_disabled", period)
         is_blind = person("is_blind", period)

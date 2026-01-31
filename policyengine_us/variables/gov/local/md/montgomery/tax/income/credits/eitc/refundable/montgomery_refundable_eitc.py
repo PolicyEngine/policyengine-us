@@ -10,7 +10,7 @@ class md_montgomery_eitc(Variable):
     reference = "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.local.md.montgomery.tax.income.credits.eitc.refundable

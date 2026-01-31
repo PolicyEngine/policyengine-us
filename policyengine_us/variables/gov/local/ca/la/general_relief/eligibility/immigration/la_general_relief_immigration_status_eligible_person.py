@@ -10,7 +10,7 @@ class la_general_relief_immigration_status_eligible_person(Variable):
     defined_for = "in_la"
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FGR%2FGR%2F42-404_Immigrant_Eligibility_Chart%2F42-404_Immigrant_Eligibility_Chart.htm"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Undocumented, DACA, and TPS classified applicants/participants are ineligible for GR
         istatus = person("immigration_status", period)
         daca = istatus == istatus.possible_values.DACA

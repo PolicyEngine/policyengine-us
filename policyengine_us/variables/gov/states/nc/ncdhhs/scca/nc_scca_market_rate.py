@@ -12,7 +12,7 @@ class nc_scca_market_rate(Variable):
     definition_period = MONTH
     defined_for = "nc_scca_child_age_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.scca
         county = person.household("county_str", period)
         age_group = person("nc_scca_age_group", period)

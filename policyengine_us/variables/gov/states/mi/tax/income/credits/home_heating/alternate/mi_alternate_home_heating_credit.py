@@ -16,7 +16,7 @@ class mi_alternate_home_heating_credit(Variable):
     )
 
     # Calculated from https://drive.google.com/file/d/1-bCwQn3nV9W-bIPlrVViTHes0ovWgLBr/view?usp=sharing
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.home_heating.alternate

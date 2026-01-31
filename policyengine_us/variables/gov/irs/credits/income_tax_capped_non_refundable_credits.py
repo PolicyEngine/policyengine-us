@@ -20,7 +20,7 @@ class income_tax_unavailable_non_refundable_credits(Variable):
     documentation = "Total value of non-refundable tax credits that were not available to the filer due to having too low income tax."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return -min_(
             tax_unit("income_tax_before_credits", period),
             tax_unit("income_tax_non_refundable_credits", period),

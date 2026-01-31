@@ -13,7 +13,7 @@ class vt_veteran_tax_credit(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont veteran tax credit providing $250 refundable credit for low-income veterans as part of S.51 (2025) tax relief package."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Check if anyone in tax unit is a veteran
         person = tax_unit.members
         is_veteran = person("is_veteran", period)

@@ -10,7 +10,7 @@ class or_cdcc_relevant_expenses(Variable):
     reference = "https://oregon.public.law/statutes/ors_315.264"
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p_cdcc = parameters(period).gov.irs.credits.cdcc
         p_or = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 

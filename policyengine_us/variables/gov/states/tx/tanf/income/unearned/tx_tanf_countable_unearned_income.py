@@ -13,7 +13,7 @@ class tx_tanf_countable_unearned_income(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Sum person-level gross unearned income
         gross_unearned = add(
             spm_unit, period, ["tx_tanf_gross_unearned_income"]

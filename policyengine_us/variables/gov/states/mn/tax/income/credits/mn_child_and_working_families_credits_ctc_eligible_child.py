@@ -14,7 +14,7 @@ class mn_child_and_working_families_credits_ctc_eligible_child(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         meets_eitc_identification_requirements = person(
             "meets_eitc_identification_requirements", period

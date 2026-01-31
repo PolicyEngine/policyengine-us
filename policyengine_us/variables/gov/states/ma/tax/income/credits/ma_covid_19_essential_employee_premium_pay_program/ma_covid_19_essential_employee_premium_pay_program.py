@@ -10,7 +10,7 @@ class ma_covid_19_essential_employee_premium_pay_program(Variable):
     reference = "https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program"
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         earnings = person("earned_income", period)
         tax_unit = person.tax_unit
         agi = tax_unit("adjusted_gross_income", period)

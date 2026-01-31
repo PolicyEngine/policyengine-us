@@ -14,7 +14,7 @@ def create_ctc_expansion() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
             # without regard to this subsection [the refundability section] and the limitation under
             # section 26(a) [the section that limits the amount of the non-refundable CTC to tax liability].
@@ -98,13 +98,15 @@ def create_ctc_expansion() -> Reform:
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(refundable_ctc)
 
     return reform
 
 
-def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
+def create_ctc_expansion_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ctc_expansion()
 

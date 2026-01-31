@@ -9,7 +9,7 @@ class ca_ala_general_assistance_eligible_person(Variable):
     defined_for = "in_ala"
     reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=19"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age_eligible = person("ca_ala_general_assistance_age_eligible", period)
         personal_property_eligible = person.spm_unit(
             "ca_ala_general_assistance_personal_property_eligible", period

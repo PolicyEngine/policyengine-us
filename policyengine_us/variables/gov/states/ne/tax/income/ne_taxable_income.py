@@ -13,7 +13,7 @@ class ne_taxable_income(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ne_agi", period)
         # 2021 (2022) Form 1040N instructions on page 7 (page 8) say this:
         #   If you use the standard deduction on the federal return,

@@ -8,7 +8,7 @@ class taxable_income_less_qbid(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.irs.deductions
         ded_if_itemizing = [

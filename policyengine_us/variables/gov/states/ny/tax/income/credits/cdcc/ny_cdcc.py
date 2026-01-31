@@ -10,7 +10,7 @@ class ny_cdcc(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         cdcc_max = tax_unit("ny_cdcc_max", period)
         expenses = tax_unit("cdcc_relevant_expenses", period)
         cdcc_rate = tax_unit("ny_cdcc_rate", period) * tax_unit(

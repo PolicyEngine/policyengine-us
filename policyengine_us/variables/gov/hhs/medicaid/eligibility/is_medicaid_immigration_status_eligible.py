@@ -12,7 +12,7 @@ class is_medicaid_immigration_status_eligible(Variable):
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants/",
     ]
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicaid.eligibility
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

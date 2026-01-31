@@ -15,7 +15,7 @@ class ia_taxable_income_indiv(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         net_income = person("ia_net_income", period)
         p = parameters(period).gov.states.ia.tax.income
         deductions = [

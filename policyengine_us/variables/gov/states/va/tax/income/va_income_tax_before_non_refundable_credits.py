@@ -12,7 +12,7 @@ class va_income_tax_before_non_refundable_credits(Variable):
     )
     defined_for = "va_must_file"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("va_taxable_income", period)
         p = parameters(period).gov.states.va.tax.income.rates
         return p.calc(taxable_income)

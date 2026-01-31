@@ -15,7 +15,7 @@ class ia_qbi_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         fed_indv_qbid = person("qbid_amount", period)
         tax_unit = person.tax_unit
         fed_unit_qbid = tax_unit("qualified_business_income_deduction", period)

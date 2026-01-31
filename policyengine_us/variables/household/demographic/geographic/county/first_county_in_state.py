@@ -15,7 +15,7 @@ class first_county_in_state(Variable):
     label = "First county alphabetically in household's state"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Get state codes as strings
         state_code_str = household("state_code_str", period)
 

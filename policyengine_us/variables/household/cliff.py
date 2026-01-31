@@ -8,7 +8,7 @@ class cliff_evaluated(Variable):
     documentation = "Whether this person's cliff has been simulated. If not, the cliff gap is assumed to be zero."
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         adult_index_values = person("adult_index", period)
         mtr_adult_count = parameters(
             period
@@ -25,7 +25,7 @@ class cliff_gap(Variable):
     documentation = "Amount of income lost if this person's employment income increased by delta amount."
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         delta = parameters(period).simulation.marginal_tax_rate_delta
         mtr = person("marginal_tax_rate", period)
         return max_(0, (mtr - 1) * delta)
@@ -38,5 +38,5 @@ class is_on_cliff(Variable):
     documentation = "Whether this person would be worse off if their employment income were higher."
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("cliff_gap", period) > 0

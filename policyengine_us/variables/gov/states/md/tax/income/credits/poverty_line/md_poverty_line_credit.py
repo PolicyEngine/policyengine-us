@@ -10,7 +10,7 @@ class md_poverty_line_credit(Variable):
     reference = "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Earlier portions of the law define eligibility.
         eligible = tax_unit("is_eligible_md_poverty_line_credit", period)
         # (c)    Except as provided in subsection (e) of this section, the

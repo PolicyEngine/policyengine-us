@@ -12,7 +12,7 @@ class il_ipass_assist_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("il_ipass_assist_income_eligible", period)
         categorical_eligible = spm_unit(
             "il_ipass_assist_categorical_eligible", period

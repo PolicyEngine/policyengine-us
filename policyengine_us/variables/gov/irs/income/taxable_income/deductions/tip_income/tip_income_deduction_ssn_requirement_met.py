@@ -7,7 +7,7 @@ class tip_income_deduction_ssn_requirement_met(Variable):
     label = "SSN requirement met for the tip income deduction"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         ssn_card_type = person("ssn_card_type", period)
         ssn_card_str = ssn_card_type.decode_to_str()

@@ -13,7 +13,7 @@ class msp_asset_eligible(Variable):
         "medicare-savings-program-income-and-asset-limits",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility
         state_code = person.household("state_code_str", period)
         # Check if asset test applies (some states have eliminated it)

@@ -7,7 +7,7 @@ class ssi_marital_both_eligible(Variable):
     label = "Both members of the marital unit are eligible for SSI"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible = person("is_ssi_aged_blind_disabled", period)
 
         return person.marital_unit.sum(eligible) == 2

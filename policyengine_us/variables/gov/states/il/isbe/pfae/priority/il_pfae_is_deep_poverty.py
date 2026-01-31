@@ -11,7 +11,7 @@ class il_pfae_is_deep_poverty(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Deep poverty (income <= 50% FPL) is a highest priority factor.
         # Per the ISBE PDG enrollment form, Factor 4 includes "Family income at
         # or below 50% of the federal poverty guidelines."

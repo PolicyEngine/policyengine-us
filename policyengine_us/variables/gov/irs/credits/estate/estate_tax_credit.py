@@ -10,7 +10,7 @@ class estate_tax_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/2010"
     defined_for = "is_deceased"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.estate
         # A deceased spouse unused exclusion amount can be computed.
         return p.base

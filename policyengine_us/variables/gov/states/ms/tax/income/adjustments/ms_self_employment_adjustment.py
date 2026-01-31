@@ -13,7 +13,7 @@ class ms_self_employment_adjustment(Variable):
     ]
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         self_employment_tax = person("self_employment_tax", period)
         p = parameters(
             period

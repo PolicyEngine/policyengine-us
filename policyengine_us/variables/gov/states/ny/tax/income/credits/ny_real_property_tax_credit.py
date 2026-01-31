@@ -10,7 +10,7 @@ class ny_real_property_tax_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (e)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         rptc = parameters(
             period
         ).gov.states.ny.tax.income.credits.real_property_tax

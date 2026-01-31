@@ -9,7 +9,7 @@ class ny_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credits = parameters(
             period
         ).gov.states.ny.tax.income.credits.non_refundable

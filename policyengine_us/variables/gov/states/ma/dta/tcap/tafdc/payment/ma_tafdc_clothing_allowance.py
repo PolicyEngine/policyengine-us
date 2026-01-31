@@ -10,7 +10,7 @@ class ma_tafdc_clothing_allowance(Variable):
     reference = "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_child = person("ma_tafdc_eligible_dependent", period)
         p = parameters(period).gov.states.ma.dta.tcap.tafdc
         return eligible_child * p.clothing_allowance

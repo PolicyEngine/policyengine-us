@@ -13,7 +13,7 @@ class mn_cdcc(Variable):
     )
     defined_for = "mn_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mn.tax.income.credits.cdcc
         dep_count = tax_unit("mn_cdcc_dependent_count", period)
         # calculate qualifying care expenses

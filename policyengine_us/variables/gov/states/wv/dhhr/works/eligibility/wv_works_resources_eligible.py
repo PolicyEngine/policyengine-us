@@ -9,7 +9,7 @@ class wv_works_resources_eligible(Variable):
     reference = "https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/726/726%20ch11_1.pdf"
     defined_for = StateCode.WV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wv.dhhr.works.resources
         # spm_unit_assets is a YEAR variable
         countable_resources = spm_unit("spm_unit_assets", period.this_year)

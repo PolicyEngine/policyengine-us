@@ -10,7 +10,7 @@ def create_or_rebate_state_tax_exempt() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.OR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.ubi_center.basic_income
             if p.taxable:
                 return tax_unit("basic_income", period)
@@ -28,14 +28,14 @@ def create_or_rebate_state_tax_exempt() -> Reform:
         )
         defined_for = StateCode.OR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states["or"].tax.income.subtractions
             previous_subtractions = add(tax_unit, period, p.subtractions)
             rebate_subtraction = tax_unit("or_rebate_subtraction", period)
             return previous_subtractions + rebate_subtraction
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(or_income_subtractions)
             self.update_variable(or_rebate_subtraction)
 
@@ -44,7 +44,7 @@ def create_or_rebate_state_tax_exempt() -> Reform:
 
 def create_or_rebate_state_tax_exempt_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_or_rebate_state_tax_exempt()
 

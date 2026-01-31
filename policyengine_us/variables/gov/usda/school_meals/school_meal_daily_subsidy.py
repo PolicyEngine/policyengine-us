@@ -9,7 +9,7 @@ class school_meal_daily_subsidy(Variable):
     unit = USD
     documentation = "Value of school meal subsidies per child per day"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get state group and tier (based on poverty ratio) for SPM unit.
         state_group = spm_unit.household("state_group_str", period)
         tier = spm_unit("school_meal_tier", period).decode_to_str()

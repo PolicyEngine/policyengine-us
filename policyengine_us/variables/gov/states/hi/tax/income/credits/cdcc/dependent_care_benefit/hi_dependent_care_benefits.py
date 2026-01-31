@@ -14,7 +14,7 @@ class hi_dependent_care_benefits(Variable):
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits

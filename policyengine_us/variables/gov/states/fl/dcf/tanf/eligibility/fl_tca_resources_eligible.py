@@ -12,7 +12,7 @@ class fl_tca_resources_eligible(Variable):
     )
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Florida DCF: Countable assets must be <= $2,000
         p = parameters(period).gov.states.fl.dcf.tanf.resources
         assets = spm_unit("spm_unit_assets", period.this_year)

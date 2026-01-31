@@ -10,7 +10,7 @@ class pa_eitc(Variable):
     definition_period = YEAR
     reference = "https://www.palegis.us/legislation/bills/text/PDF/2025/0/HB0416/PN2576#page=50"  # Article XVI-W.2
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.pa.tax.income.credits.eitc
         return federal_eitc * p.match

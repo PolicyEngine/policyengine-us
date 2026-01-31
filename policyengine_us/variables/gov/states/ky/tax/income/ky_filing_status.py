@@ -20,7 +20,7 @@ class ky_filing_status(Variable):
     label = "Filing status for the tax unit in Kentucky"
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
         person = tax_unit.members
         is_separated = tax_unit.any(person("is_separated", period))

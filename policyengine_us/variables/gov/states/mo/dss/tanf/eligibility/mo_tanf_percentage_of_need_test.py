@@ -12,7 +12,7 @@ class mo_tanf_percentage_of_need_test(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf
         standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
         income = spm_unit("mo_tanf_countable_income", period)

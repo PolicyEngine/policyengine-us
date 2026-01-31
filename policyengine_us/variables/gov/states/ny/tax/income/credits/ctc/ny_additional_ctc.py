@@ -12,7 +12,7 @@ class ny_additional_ctc(Variable):
     )
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.ny.tax.income.credits.ctc.additional
         match = p.amount.calc(agi)

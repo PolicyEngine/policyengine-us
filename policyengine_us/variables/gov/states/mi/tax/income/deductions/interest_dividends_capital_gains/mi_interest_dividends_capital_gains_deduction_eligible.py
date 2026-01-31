@@ -14,7 +14,7 @@ class mi_interest_dividends_capital_gains_deduction_eligible(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.interest_dividends_capital_gains

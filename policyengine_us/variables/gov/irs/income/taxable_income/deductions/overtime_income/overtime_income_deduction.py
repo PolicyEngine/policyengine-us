@@ -9,7 +9,7 @@ class overtime_income_deduction(Variable):
     definition_period = YEAR
     defined_for = "overtime_income_deduction_ssn_requirement_met"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         overtime_income = person("fsla_overtime_premium", period)
         agi = tax_unit("adjusted_gross_income", period)

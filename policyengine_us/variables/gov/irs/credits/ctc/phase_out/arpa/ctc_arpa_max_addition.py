@@ -13,7 +13,7 @@ class ctc_arpa_max_addition(Variable):
     # Defined on Line 5 worksheet of 2021 Instructions for Schedule 8812.
     reference = "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Logic sequence follows the form, which is clearer than the IRC.
         p = parameters(period).gov.irs.credits.ctc.phase_out
         # defined_for didn't work.

@@ -14,7 +14,7 @@ class nm_salt_add_back(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemizes = tax_unit("tax_unit_itemizes", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions

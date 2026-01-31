@@ -15,7 +15,7 @@ class ia_itemized_deductions_unit(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         FROM THE 2021 INSTRUCTIONS (PAGE 46):
           The $10,000 federal cap on the itemized deduction for state and

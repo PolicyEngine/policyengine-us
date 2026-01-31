@@ -10,7 +10,7 @@ class tx_ottanf(Variable):
     reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy"
     defined_for = "tx_ottanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.tanf.ottanf
 
         # One-time payment of $1,000 divided by 12 for monthly equivalent

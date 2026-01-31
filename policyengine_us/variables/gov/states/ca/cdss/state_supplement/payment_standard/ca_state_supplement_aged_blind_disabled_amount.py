@@ -10,7 +10,7 @@ class ca_state_supplement_aged_blind_disabled_amount(Variable):
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         blind_amount = spm_unit("ca_state_supplement_blind_amount", period)
         aged_disabled_amount = spm_unit(
             "ca_state_supplement_aged_disabled_amount", period

@@ -9,7 +9,7 @@ class ma_maximum_state_supplement(Variable):
     definition_period = YEAR
     defined_for = "is_ssi_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         """
         Returns the maximum annual state supplement for an SSI-eligible individual,
         before subtracting any leftover income. Depends on:

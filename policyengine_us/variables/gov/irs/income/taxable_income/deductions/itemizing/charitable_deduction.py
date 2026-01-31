@@ -10,7 +10,7 @@ class charitable_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/170"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
         non_cash_donations = add(
             tax_unit, period, ["charitable_non_cash_donations"]

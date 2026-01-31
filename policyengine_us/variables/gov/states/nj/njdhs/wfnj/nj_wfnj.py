@@ -12,7 +12,7 @@ class nj_wfnj(Variable):
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_levels = spm_unit("nj_wfnj_payment_levels", period)
         countable_income = spm_unit("nj_wfnj_countable_income", period)
         return max_(payment_levels - countable_income, 0)

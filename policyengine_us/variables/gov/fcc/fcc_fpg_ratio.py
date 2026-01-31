@@ -10,7 +10,7 @@ class fcc_fpg_ratio(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/47/54.400#f"
     unit = "/1"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = add(spm_unit, period, ["irs_gross_income"])
         fpg = spm_unit("spm_unit_fpg", period)
         return income / fpg

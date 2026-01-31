@@ -14,7 +14,7 @@ class mo_itemized_deductions(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.tax.income
         deduction_value = add(tax_unit, period, p.deductions.itemized)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)

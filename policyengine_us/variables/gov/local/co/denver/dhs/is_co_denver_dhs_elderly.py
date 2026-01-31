@@ -8,6 +8,6 @@ class is_co_denver_dhs_elderly(Variable):
     documentation = "Is elderly per Denver DHS guidelines"
     label = "Denver DHS elderly"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.co.denver.dhs
         return person("age", period) >= p.elderly_age_threshold

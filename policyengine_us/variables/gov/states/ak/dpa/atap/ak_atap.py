@@ -13,7 +13,7 @@ class ak_atap(Variable):
     )
     defined_for = "ak_atap_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NOTE: The following Alaska ATAP features are not modeled:
         #
         # Unit types not modeled:

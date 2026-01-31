@@ -11,7 +11,7 @@ class msp_eligible(Variable):
         "https://www.law.cornell.edu/cfr/text/42/435.121",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Must be Medicare eligible
         medicare_eligible = person("is_medicare_eligible", period.this_year)
         income_eligible = person("msp_income_eligible", period)

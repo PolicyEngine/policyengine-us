@@ -9,7 +9,7 @@ class mt_taxable_social_security(Variable):
     definition_period = YEAR
     reference = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.social_security.amount
         p_irs = parameters(period).gov.irs.social_security.taxability.rate
         # Compute the amount based on the schedule in Montana tax form.

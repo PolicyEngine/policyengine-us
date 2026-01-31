@@ -8,7 +8,7 @@ class is_snap_ineligible_student(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Base rule: Students enrolled at least half-time in higher education
         # are ineligible (K-12 students are not affected by this rule)
         is_higher_ed_student = person("is_snap_higher_ed_student", period)

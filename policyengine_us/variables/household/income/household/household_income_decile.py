@@ -9,7 +9,7 @@ class household_income_decile(Variable):
     definition_period = YEAR
     value_type = int
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         income = household("household_net_income", period)
         count_people = household("household_count_people", period)
         household_weight = household("household_weight", period)

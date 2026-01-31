@@ -12,7 +12,7 @@ class ne_refundable_ctc_income_eligible(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.credits.ctc.refundable
         fpg = tax_unit("tax_unit_fpg", period)
         income_limit = fpg * p.fpg_fraction

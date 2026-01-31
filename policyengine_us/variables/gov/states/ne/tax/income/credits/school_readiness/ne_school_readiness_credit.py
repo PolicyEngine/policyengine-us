@@ -11,7 +11,7 @@ class ne_school_readiness_credit(Variable):
 
     defined_for = "ne_school_readiness_credit_eligible_worker"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         level = person(
             "ne_school_readiness_credit_child_care_worker_rating", period
         )

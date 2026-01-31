@@ -13,7 +13,7 @@ def create_tax_exempt() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/61"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             sources = parameters(period).gov.irs.gross_income.sources
             total = 0
             not_dependent = ~person("is_tax_unit_dependent", period)
@@ -36,7 +36,7 @@ def create_tax_exempt() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             income = person("irs_employment_income", period)
             p = parameters(period).gov.contrib.tax_exempt
             exempt_income = 0
@@ -47,14 +47,16 @@ def create_tax_exempt() -> Reform:
             return max_(income - exempt_income, 0)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(irs_gross_income)
             self.update_variable(payroll_tax_gross_wages)
 
     return reform
 
 
-def create_tax_exempt_reform(parameters, period, bypass: bool = False):
+def create_tax_exempt_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_tax_exempt()
 

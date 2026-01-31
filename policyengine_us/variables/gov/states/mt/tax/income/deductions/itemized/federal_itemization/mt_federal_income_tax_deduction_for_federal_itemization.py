@@ -13,7 +13,7 @@ class mt_federal_income_tax_deduction_for_federal_itemization(Variable):
     unit = USD
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period

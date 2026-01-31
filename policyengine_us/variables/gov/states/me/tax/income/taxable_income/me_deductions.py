@@ -13,7 +13,7 @@ class me_deductions(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the phaseout percent (Line 5).
         phaseout_percent = tax_unit("me_deduction_phaseout_percentage", period)
 

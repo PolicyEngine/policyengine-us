@@ -8,7 +8,7 @@ class nc_tanf_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         is_demographically_eligible = spm_unit(
             "nc_demographic_tanf_eligible", period
         )

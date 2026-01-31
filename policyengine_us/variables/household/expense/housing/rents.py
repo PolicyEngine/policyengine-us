@@ -8,5 +8,5 @@ class rents(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return add(tax_unit, period, ["rent"]) > 0

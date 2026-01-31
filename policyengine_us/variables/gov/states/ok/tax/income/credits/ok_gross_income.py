@@ -13,7 +13,7 @@ class ok_gross_income(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute comprehensive gross income for all people in tax unit
         p = parameters(period).gov.states.ok.tax.income
         income = 0

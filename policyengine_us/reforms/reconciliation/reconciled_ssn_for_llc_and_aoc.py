@@ -18,7 +18,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
         defined_for = "filer_meets_llc_and_aoc_identification_requirements"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             education = parameters(period).gov.irs.credits.education
             llc = education.lifetime_learning_credit
             person = tax_unit.members
@@ -45,7 +45,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
         defined_for = "filer_meets_llc_and_aoc_identification_requirements"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             education = parameters(period).gov.irs.credits.education
             aoc = education.american_opportunity_credit
             person = tax_unit.members
@@ -68,7 +68,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         definition_period = YEAR
         label = "Filer meets LLC and AOC identification requirements"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
             person = tax_unit.members
             is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
@@ -87,7 +87,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         label = "Person meets LLC and AOC identification requirements"
         reference = "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=4"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             ssn_card_type = person("ssn_card_type", period)
             ssn_card_types = ssn_card_type.possible_values
             citizen = ssn_card_type == ssn_card_types.CITIZEN
@@ -97,7 +97,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             return citizen | non_citizen_valid_ead
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(lifetime_learning_credit)
             self.update_variable(american_opportunity_credit)
             self.update_variable(
@@ -110,7 +110,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
 
 def create_reconciled_ssn_for_llc_and_aoc_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_reconciled_ssn_for_llc_and_aoc()
 

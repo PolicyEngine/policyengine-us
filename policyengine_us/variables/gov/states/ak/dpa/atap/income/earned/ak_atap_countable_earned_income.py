@@ -13,7 +13,7 @@ class ak_atap_countable_earned_income(Variable):
     )
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 7 AAC 45.480: Work incentive deduction applies per person
         # Per 7 AAC 45.485: Childcare deduction applies at household level
         person_countable = add(

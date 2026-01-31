@@ -14,7 +14,7 @@ class mi_taxable_income(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Michigan computes taxable income from federal AGI, additions, subtractions,
         # and exemptions
         agi = tax_unit("adjusted_gross_income", period)

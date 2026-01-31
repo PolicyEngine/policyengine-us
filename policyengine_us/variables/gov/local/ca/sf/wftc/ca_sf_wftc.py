@@ -10,7 +10,7 @@ class ca_sf_wftc(Variable):
     reference = "https://www.sfhsa.org/sites/default/files/media/document/2024-01/form_wfc_english_1.26.24.pdf#page=4"
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.sf.wftc
         county = tax_unit.household("county_str", period)
         in_sf = county == "SAN_FRANCISCO_COUNTY_CA"

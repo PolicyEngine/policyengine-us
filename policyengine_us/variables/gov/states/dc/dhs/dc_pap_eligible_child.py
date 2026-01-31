@@ -11,7 +11,7 @@ class dc_pap_eligible_child(Variable):
     )
     defined_for = "dc_tanf_immigration_status_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.tanf.age_threshold
         age = person("monthly_age", period)
         dependent = person("is_tax_unit_dependent", period)

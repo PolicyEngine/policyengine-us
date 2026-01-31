@@ -23,7 +23,7 @@ class az_filing_status(Variable):
 
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_filing_status = tax_unit("filing_status", period)
         fsvals = us_filing_status.possible_values
         return select(

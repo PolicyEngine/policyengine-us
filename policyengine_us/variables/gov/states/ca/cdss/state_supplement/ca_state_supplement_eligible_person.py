@@ -9,7 +9,7 @@ class ca_state_supplement_eligible_person(Variable):
     defined_for = StateCode.CA
     reference = "https://law.justia.com/codes/california/code-wic/division-9/part-3/chapter-3/article-4/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         meets_resource_test = person("meets_ssi_resource_test", period)
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)

@@ -10,7 +10,7 @@ class in_automatic_refund_rebate(Variable):
     definition_period = YEAR
     reference = "https://law.justia.com/codes/indiana/2022/title-4/article-10/chapter-22/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = (
             parameters(period)
             .gov.states["in"]

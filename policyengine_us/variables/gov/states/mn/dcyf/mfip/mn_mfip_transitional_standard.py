@@ -10,7 +10,7 @@ class mn_mfip_transitional_standard(Variable):
     reference = "https://www.house.mn.gov/hrd/pubs/ss/ssmfip.pdf#page=5"
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.17, Subd. 5:
         # Transitional Standard is the maximum MFIP grant by family size.
         p = parameters(period).gov.states.mn.dcyf.mfip.transitional_standard

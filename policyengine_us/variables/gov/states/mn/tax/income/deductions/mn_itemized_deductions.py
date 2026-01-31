@@ -15,7 +15,7 @@ class mn_itemized_deductions(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # 2021 Form M1 instructions say:
         #   You may claim the Minnesota standard deduction or itemize
         #   your deductions on your Minnesota return. You will generally

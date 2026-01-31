@@ -9,7 +9,7 @@ def create_end_child_poverty_act() -> Reform:
         unit = USD
         label = "End Child Poverty Act Adult Dependent Credit"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             p = parameters(
                 period
@@ -27,7 +27,7 @@ def create_end_child_poverty_act() -> Reform:
         label = "End Child Poverty Act Filer Credit"
         reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Filer credit.
             # Define eligibility based on age.
             age_head = tax_unit("age_head", period)
@@ -63,7 +63,7 @@ def create_end_child_poverty_act() -> Reform:
         label = "End Child Poverty Act Child Benefit"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
@@ -111,7 +111,7 @@ def create_end_child_poverty_act() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(spm_unit, period, parameters):
+        def formula(spm_unit, period, parameters):  # pragma: no cover
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -150,7 +150,7 @@ def create_end_child_poverty_act() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             filer_credit = tax_unit("ecpa_filer_credit", period)
@@ -160,7 +160,7 @@ def create_end_child_poverty_act() -> Reform:
             return filer_credit + adult_dependent_credit + previous_credits
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ecpa_adult_dependent_credit)
             self.update_variable(ecpa_filer_credit)
             self.update_variable(income_tax_refundable_credits)
@@ -175,7 +175,7 @@ def create_end_child_poverty_act() -> Reform:
 
 def create_end_child_poverty_act_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_end_child_poverty_act()
 

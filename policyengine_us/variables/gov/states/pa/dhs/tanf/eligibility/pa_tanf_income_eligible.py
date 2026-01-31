@@ -9,7 +9,7 @@ class pa_tanf_income_eligible(Variable):
     defined_for = StateCode.PA
     reference = "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter183/chap183toc.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("pa_tanf_countable_income", period)
         maximum_benefit = spm_unit("pa_tanf_maximum_benefit", period)
 

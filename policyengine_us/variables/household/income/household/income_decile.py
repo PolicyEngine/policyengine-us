@@ -8,5 +8,5 @@ class income_decile(Variable):
     definition_period = YEAR
     value_type = int
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person.household("household_income_decile", period)

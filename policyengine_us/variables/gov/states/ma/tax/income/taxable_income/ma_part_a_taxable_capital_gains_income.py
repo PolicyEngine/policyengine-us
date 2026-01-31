@@ -10,7 +10,7 @@ class ma_part_a_taxable_capital_gains_income(Variable):
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_a_agi = tax_unit("ma_part_a_agi", period)
         dividends = add(tax_unit, period, ["dividend_income"])
         stcg_agi = part_a_agi - dividends

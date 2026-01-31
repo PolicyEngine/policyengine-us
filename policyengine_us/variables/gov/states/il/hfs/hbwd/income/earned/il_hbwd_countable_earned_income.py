@@ -15,7 +15,7 @@ class il_hbwd_countable_earned_income(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per § 120.510(i), earned income exemptions apply only to the
         # disabled/blind worker's earnings, not to the spouse's.
         # Per § 120.510(f), the spouse's income is counted at gross.

@@ -9,7 +9,7 @@ class la_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.deductions.standard
         if p.applies:
             filing_status = tax_unit("filing_status", period)

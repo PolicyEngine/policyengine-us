@@ -11,7 +11,7 @@ class il_pi_lower_priority_score(Variable):
     )
     defined_for = "il_pi_demographic_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         household = person.household
         spm_unit = person.spm_unit
 

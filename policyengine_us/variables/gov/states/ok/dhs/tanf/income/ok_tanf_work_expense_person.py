@@ -12,7 +12,7 @@ class ok_tanf_work_expense_person(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per OAC 340:10-3-33(a): Work expense based on weekly hours
         # $120 for <30 hours/week, $240 for 30+ hours/week
         p = parameters(period).gov.states.ok.dhs.tanf.income

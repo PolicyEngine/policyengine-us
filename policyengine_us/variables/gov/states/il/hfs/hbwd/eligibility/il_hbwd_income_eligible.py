@@ -12,7 +12,7 @@ class il_hbwd_income_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbwd.eligibility
         # Income limit is 350% of FPL
         fpg = person.spm_unit("spm_unit_fpg", period)

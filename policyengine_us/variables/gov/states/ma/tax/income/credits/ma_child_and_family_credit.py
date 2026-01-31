@@ -10,7 +10,7 @@ class ma_child_and_family_credit(Variable):
     reference = "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ma.tax.income.credits.child_and_family

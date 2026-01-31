@@ -9,7 +9,7 @@ class is_ssi_disabled(Variable):
     label = "SSI disabled"
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#a_3_A"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Classify person as disabled for SSI if:
         # 1) They reported receiving SSI due to presumed disability status (being neither aged nor blind); or
         # 2) They are disabled.

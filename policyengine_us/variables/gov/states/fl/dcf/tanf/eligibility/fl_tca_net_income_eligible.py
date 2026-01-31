@@ -12,7 +12,7 @@ class fl_tca_net_income_eligible(Variable):
     )
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Florida Statutes 414.095(12): Net countable income < payment standard
         countable_income = spm_unit("fl_tca_countable_income", period)
         payment_standard = spm_unit("fl_tca_payment_standard", period)

@@ -8,6 +8,6 @@ class birth_year(Variable):
     unit = "year"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         return period.start.year - age

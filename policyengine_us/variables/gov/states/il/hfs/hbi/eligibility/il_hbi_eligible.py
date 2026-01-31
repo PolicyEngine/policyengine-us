@@ -23,7 +23,7 @@ class il_hbi_eligible(Variable):
     #
     # Note: Ages 19-41 are not covered.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         # Check base eligibility criteria

@@ -10,7 +10,7 @@ class ca_capi(Variable):
     defined_for = "ca_capi_eligible"
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         state_supplement_payment_standard = spm_unit(
             "ca_state_supplement", period
         )

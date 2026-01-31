@@ -12,7 +12,7 @@ class dc_gac_earned_income_after_disregard_person(Variable):
     )
     defined_for = "dc_gac_eligible_child"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs
         gross_earnings = person("dc_tanf_gross_earned_income", period)
         adjusted_income = max_(

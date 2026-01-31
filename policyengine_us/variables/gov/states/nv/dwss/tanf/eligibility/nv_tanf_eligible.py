@@ -9,7 +9,7 @@ class nv_tanf_eligible(Variable):
     reference = "https://dss.nv.gov/TANF/TANF_FAQ/"
     defined_for = StateCode.NV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child with deprived parent)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 

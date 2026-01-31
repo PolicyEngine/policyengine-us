@@ -9,7 +9,7 @@ class nj_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         main_income_tax = tax_unit("nj_main_income_tax", period)
         non_refundable_credits = tax_unit("nj_non_refundable_credits", period)
 

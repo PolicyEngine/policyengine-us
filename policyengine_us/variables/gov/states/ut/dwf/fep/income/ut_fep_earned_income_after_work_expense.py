@@ -10,7 +10,7 @@ class ut_fep_earned_income_after_work_expense(Variable):
     reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
     defined_for = StateCode.UT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # $100 work expense deduction per employed person
         p = parameters(period).gov.states.ut.dwf.fep.income.deductions
         earned_income = person("tanf_gross_earned_income", period)

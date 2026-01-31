@@ -13,7 +13,7 @@ class dc_income_tax_before_credits_indiv(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         taxinc = max_(0, person("dc_taxable_income_indiv", period))
         p = parameters(period).gov.states

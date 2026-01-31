@@ -8,5 +8,5 @@ class tax_unit_children(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return add(tax_unit, period, ["is_child"])

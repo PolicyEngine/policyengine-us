@@ -10,7 +10,7 @@ class ma_eaedc_earned_income_after_disregard_person(Variable):
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B) step 2
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard

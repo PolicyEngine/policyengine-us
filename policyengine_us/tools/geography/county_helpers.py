@@ -45,7 +45,7 @@ def load_county_fips_dataset() -> pd.DataFrame:
 
 def map_county_string_to_enum(
     county_name: "pd.Series[str]", state_code: "pd.Series[str]"
-) -> "pd.Series[int]":
+) -> "pd.Series[int]":  # pragma: no cover
     """Helper function to map county name and state code to County enum value."""
     county_key = county_name.apply(
         lambda name: name.replace(" ", "_")

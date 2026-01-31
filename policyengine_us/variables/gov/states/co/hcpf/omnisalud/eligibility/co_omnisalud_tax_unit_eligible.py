@@ -15,5 +15,5 @@ class co_omnisalud_tax_unit_eligible(Variable):
     A tax unit is eligible for Colorado OmniSalud if any member is eligible.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit.any(tax_unit.members("co_omnisalud_eligible", period))

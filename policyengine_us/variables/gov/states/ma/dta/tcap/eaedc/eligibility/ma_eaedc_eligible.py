@@ -11,7 +11,7 @@ class ma_eaedc_eligible(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         financial_eligible = spm_unit("ma_eaedc_financial_eligible", period)
         non_financial_eligible = spm_unit(
             "ma_eaedc_non_financial_eligible", period

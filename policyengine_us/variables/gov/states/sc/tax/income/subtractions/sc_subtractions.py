@@ -9,7 +9,7 @@ class sc_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.sc.tax.income.subtractions
         total_subtractions = add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

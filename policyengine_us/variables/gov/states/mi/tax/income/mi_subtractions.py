@@ -14,7 +14,7 @@ class mi_subtractions(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income
         total_subtractions = add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

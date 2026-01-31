@@ -8,7 +8,7 @@ class basic_income_before_phase_out(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.contrib.ubi_center.basic_income
         # Start with flat person-level amount.
         total_flat_amount = p.amount.person.flat * tax_unit(

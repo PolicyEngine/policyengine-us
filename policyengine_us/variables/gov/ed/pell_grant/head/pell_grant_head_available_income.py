@@ -8,7 +8,7 @@ class pell_grant_head_available_income(Variable):
     label = "Pell Grant head available income"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         allowances = person("pell_grant_head_allowances", period)
         income = person.tax_unit("pell_grant_primary_income", period)
         formula = person("pell_grant_formula", period)

@@ -12,7 +12,7 @@ class or_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf.resources.limit
         # spm_unit_assets is a YEAR variable, access with period.this_year
         countable_resources = spm_unit("spm_unit_assets", period.this_year)

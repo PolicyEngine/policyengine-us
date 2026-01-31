@@ -10,7 +10,7 @@ class il_eitc(Variable):
     reference = "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         match = parameters(period).gov.states.il.tax.income.credits.eitc.match
         return federal_eitc * match

@@ -9,7 +9,7 @@ class nc_scca(Variable):
     definition_period = MONTH
     defined_for = "nc_scca_entry_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         parent_fee = spm_unit("nc_scca_parent_fee", period)
         childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period

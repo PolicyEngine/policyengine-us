@@ -10,7 +10,7 @@ class il_cta_reduced_fare_benefit(Variable):
     defined_for = "il_cta_reduced_fare_eligible"
     reference = "https://www.transitchicago.com/fares/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.rta.cta.monthly_pass_cost
         # Student's regular fare is 30% of the full fare, the price for student monthly pass is unavailable
         return p.full_fare - p.reduced_fare

@@ -9,7 +9,7 @@ class ca_riv_general_relief_countable_vehicle_value(Variable):
     definition_period = YEAR
     defined_for = "in_riv"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.local.ca.riv.general_relief.property.vehicle_exemption

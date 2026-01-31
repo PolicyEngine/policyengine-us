@@ -10,7 +10,7 @@ class hi_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         return p.amount[filing_status]

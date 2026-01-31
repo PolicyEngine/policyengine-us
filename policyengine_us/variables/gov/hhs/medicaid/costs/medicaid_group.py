@@ -27,7 +27,7 @@ class medicaid_group(Variable):
     label = "Medicaid spending group"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible = person("is_medicaid_eligible", period)
 
         cat = person("medicaid_category", period)

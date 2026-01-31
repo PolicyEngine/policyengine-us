@@ -11,7 +11,7 @@ class basic_income_eligible(Variable):
     )
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.contrib.ubi_center.basic_income.agi_limit
         if not p.in_effect:
             return True

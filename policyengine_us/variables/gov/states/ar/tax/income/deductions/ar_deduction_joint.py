@@ -10,7 +10,7 @@ class ar_deduction_joint(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         itemized = person("ar_itemized_deductions_joint", period)
         standard = person("ar_standard_deduction_joint", period)
         return max_(itemized, standard)

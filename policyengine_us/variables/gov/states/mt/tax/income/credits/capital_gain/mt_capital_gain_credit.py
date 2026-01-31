@@ -10,7 +10,7 @@ class mt_capital_gain_credit(Variable):
     reference = "https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E4%2E502"
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.credits.capital_gain
 
         net_capital_gain = person("capital_gains", period)

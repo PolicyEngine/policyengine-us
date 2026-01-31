@@ -11,7 +11,7 @@ class va_agi_person(Variable):
     reference = "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5"
     defined_for = StateCode.VA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         total_agi = person.tax_unit("va_agi", period)
         person_agi = person("adjusted_gross_income_person", period)
         total_federal_agi = person.tax_unit.sum(person_agi)

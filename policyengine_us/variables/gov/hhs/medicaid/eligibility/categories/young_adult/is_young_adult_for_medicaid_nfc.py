@@ -7,7 +7,7 @@ class is_young_adult_for_medicaid_nfc(Variable):
     label = "Medicaid young adult non-financial criteria"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ma = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.young_adult

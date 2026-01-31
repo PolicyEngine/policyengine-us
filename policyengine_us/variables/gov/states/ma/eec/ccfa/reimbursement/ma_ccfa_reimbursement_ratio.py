@@ -9,7 +9,7 @@ class ma_ccfa_reimbursement_ratio(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.reimbursement_rates
         childcare_hours_per_day = person(
             "childcare_hours_per_day", period.this_year

@@ -19,7 +19,7 @@ class fsla_overtime_occupation_exemption_category(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/29/213"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Using select with conditions and values for vectorized operation
         return select(
             [

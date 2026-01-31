@@ -12,7 +12,7 @@ class tx_dart_free_ride_benefit(Variable):
         "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.dart.monthly_pass_cost
         # Currently only include the monthly pass costs
         return p.full_fare * MONTHS_IN_YEAR

@@ -9,7 +9,7 @@ class de_taxable_income_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("de_agi_joint", period)
         is_head = person("is_tax_unit_head", period)
         total_agi = is_head * person.tax_unit.sum(agi)

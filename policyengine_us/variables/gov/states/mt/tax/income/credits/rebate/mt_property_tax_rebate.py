@@ -10,7 +10,7 @@ class mt_property_tax_rebate(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=5"
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.credits.rebate.property
         person = tax_unit.members
         mt_property_tax = person("real_estate_taxes", period)

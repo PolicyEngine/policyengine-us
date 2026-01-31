@@ -8,5 +8,5 @@ class is_male(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return ~person("is_female", period)

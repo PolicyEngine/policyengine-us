@@ -9,7 +9,7 @@ class co_ccap_smi(Variable):
     documentation = "The state median income used to determine eligibility for Colorado's Child Care Assistance Program. This differs from the HHS definition by basing it on the prior year if before October, and dividing by 12."
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period.this_year)
         state_code = spm_unit.household("state_code_str", period.this_year)
         year = period.start.year

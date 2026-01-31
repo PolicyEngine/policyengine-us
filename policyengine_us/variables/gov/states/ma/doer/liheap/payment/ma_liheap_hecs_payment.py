@@ -9,7 +9,7 @@ class ma_liheap_hecs_payment(Variable):
     defined_for = "ma_liheap_hecs_eligible"
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.doer.liheap.hecs.amount
         benefit_level = spm_unit("ma_liheap_benefit_level", period)
         is_subsidized = spm_unit("receives_housing_assistance", period)

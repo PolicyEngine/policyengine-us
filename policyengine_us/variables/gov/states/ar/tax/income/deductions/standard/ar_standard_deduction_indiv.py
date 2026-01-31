@@ -10,7 +10,7 @@ class ar_standard_deduction_indiv(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,

@@ -9,7 +9,7 @@ class mi_eitc(Variable):
     definition_period = YEAR
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.mi.tax.income.credits.eitc
         return federal_eitc * p.match

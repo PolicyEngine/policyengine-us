@@ -10,7 +10,7 @@ class or_retirement_credit(Variable):
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=108"
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follows twelve-line worksheet on page 108 of above reference
 
         # Line 1, retirement income

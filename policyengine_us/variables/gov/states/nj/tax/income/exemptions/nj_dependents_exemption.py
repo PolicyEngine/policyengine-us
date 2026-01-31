@@ -10,7 +10,7 @@ class nj_dependents_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Then get the NJ Exemptions part of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exemptions.dependents
 

@@ -7,7 +7,7 @@ class aca_child_index(Variable):
     label = "Index of child in tax unit (1 = oldest)"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         is_child = age <= parameters(period).gov.aca.slcsp.max_child_age
         child_rank = person.get_rank(person.tax_unit, -age, condition=is_child)

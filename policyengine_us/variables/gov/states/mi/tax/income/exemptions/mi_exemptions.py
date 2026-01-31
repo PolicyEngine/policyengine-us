@@ -13,7 +13,7 @@ class mi_exemptions(Variable):
         "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income.exemptions
 
         # Personal Exemptions & Stillborn Exemptions

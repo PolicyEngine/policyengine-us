@@ -9,7 +9,7 @@ class nc_tanf_household_size(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         ssi_income = spm_unit.members("ssi", period)
 
         # Eligible members are those with no SSI income

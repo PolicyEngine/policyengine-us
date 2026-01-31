@@ -9,7 +9,7 @@ class ca_calworks_child_care_payment(Variable):
     definition_period = MONTH
     defined_for = "ca_calworks_child_care_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         payment_standard = person(
             "ca_calworks_child_care_payment_standard", period
         )

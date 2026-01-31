@@ -10,7 +10,7 @@ class in_military_service_deduction(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (a)(1)
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = (
             parameters(period)

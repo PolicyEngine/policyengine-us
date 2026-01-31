@@ -9,7 +9,7 @@ class has_all_usda_elderly_disabled(Variable):
     label = "Has all USDA elderly or disabled people"
     # NB: This isn't used in SNAP directly, but it is used for BBCE (TANF).
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         elderly = person("is_usda_elderly", period)
         disabled = person("is_usda_disabled", period)

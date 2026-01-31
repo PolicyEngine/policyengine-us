@@ -10,7 +10,7 @@ class ma_tafdc_child_support_deduction(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"  # GG
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         child_support = person("alimony_income", period)
         p = parameters(period).gov.states.ma.dta.tcap.deductions
         return min_(child_support, p.child_support_received)

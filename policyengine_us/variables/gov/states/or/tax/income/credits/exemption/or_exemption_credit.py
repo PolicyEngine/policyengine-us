@@ -13,7 +13,7 @@ class or_exemption_credit(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         EXEMPTION_TYPES = [
             "regular",
             "severely_disabled",

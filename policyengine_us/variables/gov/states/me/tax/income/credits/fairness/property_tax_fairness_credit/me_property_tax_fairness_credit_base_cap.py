@@ -9,7 +9,7 @@ class me_property_tax_fairness_credit_base_cap(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.me.tax.income.credits.fairness.property_tax

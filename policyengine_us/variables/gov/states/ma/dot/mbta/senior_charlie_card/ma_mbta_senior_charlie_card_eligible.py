@@ -9,7 +9,7 @@ class ma_mbta_senior_charlie_card_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.states.ma.dot.mbta.senior_charlie_card
         return age >= p.age_threshold

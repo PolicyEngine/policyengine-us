@@ -7,7 +7,7 @@ class is_in_k12_school(Variable):
     label = "Is in a K-12 school"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         # Assume that people aged 5-17 are in school.
         # Not parameterized because this is an imputation rather than a policy

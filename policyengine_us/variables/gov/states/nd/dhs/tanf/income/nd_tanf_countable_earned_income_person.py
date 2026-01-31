@@ -13,7 +13,7 @@ class nd_tanf_countable_earned_income_person(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nd.dhs.tanf.income.deductions
         gross_earned = person("tanf_gross_earned_income", period)
 

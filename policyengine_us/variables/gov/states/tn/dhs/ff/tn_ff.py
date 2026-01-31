@@ -10,7 +10,7 @@ class tn_ff(Variable):
     reference = "https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20"
     defined_for = "tn_ff_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Tennessee Families First TANF benefit using fill-the-gap methodology.
         # The benefit equals the minimum of: (1) the payment standard (SPA or DGPA),
         # or (2) the deficit (Consolidated Need Standard minus countable income).

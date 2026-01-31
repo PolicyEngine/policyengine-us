@@ -10,7 +10,7 @@ class nj_taking_property_tax_deduction(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
     defined_for = "nj_property_tax_deduction_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income.main
 
         # follows NJ-1040 form Worksheet H

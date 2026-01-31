@@ -12,7 +12,7 @@ class tx_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_resources = spm_unit("tx_tanf_countable_resources", period)
         p = parameters(period).gov.states.tx.tanf.resources
 

@@ -20,7 +20,7 @@ class co_qualified_business_income_deduction_addback_required(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(

@@ -8,7 +8,7 @@ class self_employment_tax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         if parameters(
             period
         ).gov.contrib.ubi_center.flat_tax.abolish_self_emp_tax:

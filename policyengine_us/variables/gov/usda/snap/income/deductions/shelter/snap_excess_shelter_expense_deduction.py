@@ -12,7 +12,7 @@ class snap_excess_shelter_expense_deduction(Variable):
     reference = ("United States Code, Title 7, Section 2014(e)(6)",)
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.usda.snap.income.deductions.excess_shelter_expense

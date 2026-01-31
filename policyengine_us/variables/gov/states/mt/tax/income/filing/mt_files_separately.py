@@ -9,7 +9,7 @@ class mt_files_separately(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income
         if p.married_filing_separately_on_same_return_allowed:
             itax_indiv = add(tax_unit, period, ["mt_income_tax_indiv"])

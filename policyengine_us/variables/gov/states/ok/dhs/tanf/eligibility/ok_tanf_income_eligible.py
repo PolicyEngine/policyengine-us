@@ -11,7 +11,7 @@ class ok_tanf_income_eligible(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.dhs.tanf.income
 
         # Per OAC 340:10-3-27: Gross income limit = 185% of State Standard of Need

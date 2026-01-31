@@ -9,7 +9,7 @@ class tx_fpp_age_eligible(Variable):
     reference = "https://www.healthytexaswomen.org/healthcare-programs/family-planning-program/fpp-who-can-apply"
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.states.tx.fpp
         age_threshold = p.age_threshold

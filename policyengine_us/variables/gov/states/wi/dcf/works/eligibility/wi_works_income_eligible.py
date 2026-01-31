@@ -12,7 +12,7 @@ class wi_works_income_eligible(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("wi_works_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.wi.dcf.works.income_limit

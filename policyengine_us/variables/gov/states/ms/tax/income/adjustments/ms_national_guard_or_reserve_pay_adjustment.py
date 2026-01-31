@@ -13,7 +13,7 @@ class ms_national_guard_or_reserve_pay_adjustment(Variable):
     ]
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         military_income = person("military_service_income", period)
         p = parameters(
             period

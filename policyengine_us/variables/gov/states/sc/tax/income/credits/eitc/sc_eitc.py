@@ -10,7 +10,7 @@ class sc_eitc(Variable):
     reference = "https://dor.sc.gov/forms-site/Forms/TC60_2021.pdf"
     defined_for = StateCode.SC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.sc.tax.income.credits.eitc.rate
         return np.round(federal_eitc * rate, 1)

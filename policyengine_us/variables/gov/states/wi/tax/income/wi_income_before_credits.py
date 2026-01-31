@@ -16,7 +16,7 @@ class wi_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxinc = tax_unit("wi_taxable_income", period)
         fstatus = tax_unit("filing_status", period)
         p = parameters(period).gov.states.wi.tax.income

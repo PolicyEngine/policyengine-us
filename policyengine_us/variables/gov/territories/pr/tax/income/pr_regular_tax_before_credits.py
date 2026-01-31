@@ -10,7 +10,7 @@ class pr_regular_tax_before_credits(Variable):
     defined_for = StateCode.PR
     reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=19"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.territories.pr.tax.income.regular_tax
         gross_income = tax_unit("pr_gross_income", period)
         total_normal_tax = add(

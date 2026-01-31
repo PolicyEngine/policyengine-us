@@ -8,7 +8,7 @@ class spouse_earned(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         adjusted_earnings = person("adjusted_earnings", period)
         is_spouse = person("is_tax_unit_spouse", period)

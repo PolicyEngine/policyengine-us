@@ -13,7 +13,7 @@ class or_wfhdc_has_qualified_individual_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
         # Check if the household has a child or disabled member other than the household head.

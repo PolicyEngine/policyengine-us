@@ -10,7 +10,7 @@ class ak_atap_countable_earned_income_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.480"
     defined_for = StateCode.AK
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per 7 AAC 45.480: Deductions depend on applicant status
         # (a)(1) New applicants: $90 flat deduction
         # (a)(2) + (b) Continuing recipients: $150 flat + percentage

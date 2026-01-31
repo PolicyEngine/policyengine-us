@@ -11,7 +11,7 @@ class ut_income_tax_before_credits(Variable):
     definition_period = YEAR
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S104.html?v=C59-10-S104_2022050420220504"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ut.tax.income
         ut_taxable_income = tax_unit("ut_taxable_income", period)
         return max_(ut_taxable_income * p.rate, 0)

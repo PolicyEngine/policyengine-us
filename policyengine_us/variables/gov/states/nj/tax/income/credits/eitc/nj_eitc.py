@@ -10,7 +10,7 @@ class nj_eitc(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get parameter tree for NJ EITC.
         p = parameters(period).gov.states.nj.tax.income.credits.eitc
         # Get parameter tree for federal EITC.

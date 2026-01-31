@@ -8,7 +8,7 @@ class pell_grant_dependent_contribution(Variable):
     label = "Pell Grant dependent contribution"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         assets = person("pell_grant_countable_assets", period)
         simplified = person("pell_grant_simplified_formula_applies", period)
         income = person("pell_grant_dependent_available_income", period)

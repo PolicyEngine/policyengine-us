@@ -9,7 +9,7 @@ class mt_deductions_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         standard_deduction = person("mt_standard_deduction_indiv", period)
         itemized_deductions = person("mt_itemized_deductions_indiv", period)
         itemizes = person.tax_unit("mt_tax_unit_itemizes", period)

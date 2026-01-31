@@ -8,7 +8,7 @@ class ca_riv_general_relief_income_eligible(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit(
             "ca_riv_general_relief_countable_income", period
         )

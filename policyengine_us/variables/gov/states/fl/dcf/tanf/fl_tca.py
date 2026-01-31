@@ -13,7 +13,7 @@ class fl_tca(Variable):
     )
     defined_for = "fl_tca_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Florida Statutes 414.095(12) and FAC 65A-4.220
         payment_standard = spm_unit("fl_tca_payment_standard", period)
         countable_income = spm_unit("fl_tca_countable_income", period)

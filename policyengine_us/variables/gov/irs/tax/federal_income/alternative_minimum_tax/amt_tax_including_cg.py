@@ -10,7 +10,7 @@ class amt_tax_including_cg(Variable):
     documentation = "Alternative Minimum Tax (AMT) liability computed using the capital gains rates, Form 6251, Part III"
     reference = "https://www.irs.gov/pub/irs-pdf/f6251.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Line 12
         reduced_income = tax_unit("amt_income_less_exemptions", period)
         # Line 13 - schedule D line 13

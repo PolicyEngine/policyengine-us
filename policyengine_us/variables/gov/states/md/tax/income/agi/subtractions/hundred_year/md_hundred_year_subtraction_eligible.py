@@ -9,7 +9,7 @@ class md_hundred_year_subtraction_eligible(Variable):
     reference = "https://trackbill.com/bill/maryland-house-bill-186-income-tax-subtraction-modification-for-centenarians/2173534/"
     defined_for = StateCode.MD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(
             period

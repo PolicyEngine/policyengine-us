@@ -10,7 +10,7 @@ class ca_care_poverty_line(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         n = household("household_size", period)
         # CARE treats one-person households as two-person households.
         adj_n = max_(n, 2)

@@ -9,7 +9,7 @@ class mt_income_tax_before_refundable_credits_unit(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income_tax_before_credits_indiv = add(
             tax_unit, period, ["mt_income_tax_before_refundable_credits_indiv"]
         )

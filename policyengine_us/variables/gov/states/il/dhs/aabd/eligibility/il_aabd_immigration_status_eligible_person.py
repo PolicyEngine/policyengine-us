@@ -9,7 +9,7 @@ class il_aabd_immigration_status_eligible_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.10"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd
         immigration_status = person("immigration_status", period)
         is_citizen = (

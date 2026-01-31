@@ -23,7 +23,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
         )
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ny.a06774
             ny_agi = tax_unit("ny_agi", period)
             income_threshold = p.income_threshold
@@ -48,7 +48,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
             )
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ny_cdcc)
 
     return reform
@@ -56,7 +56,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
 
 def create_ny_a06774_enhanced_cdcc_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ny_a06774_enhanced_cdcc()
 

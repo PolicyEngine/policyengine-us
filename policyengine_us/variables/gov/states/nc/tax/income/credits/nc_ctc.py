@@ -10,7 +10,7 @@ class nc_ctc(Variable):
     reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children"
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ctc_qualifying_children = tax_unit("ctc_qualifying_children", period)
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)

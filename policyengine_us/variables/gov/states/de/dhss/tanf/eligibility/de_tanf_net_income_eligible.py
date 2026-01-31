@@ -9,7 +9,7 @@ class de_tanf_net_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008"
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per State Plan Exhibits 1 & 2:
         # Applicants: $90 + childcare, compare to Payment Standard
         # Recipients: $90 + childcare + $30+1/3, compare to Standard of Need

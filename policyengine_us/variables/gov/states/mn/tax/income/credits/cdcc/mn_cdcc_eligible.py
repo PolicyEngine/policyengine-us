@@ -14,7 +14,7 @@ class mn_cdcc_eligible(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mn.tax.income.credits.cdcc
         if p.separate_filers_excluded:
             filing_status = tax_unit("filing_status", period)

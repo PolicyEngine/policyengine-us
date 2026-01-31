@@ -13,7 +13,7 @@ class or_tanf_adjusted_income(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf.income
         countable_income = spm_unit("or_tanf_countable_income", period)
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])

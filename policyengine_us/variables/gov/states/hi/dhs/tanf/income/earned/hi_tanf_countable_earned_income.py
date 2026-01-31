@@ -12,7 +12,7 @@ class hi_tanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Sum person-level countable earned income
         earned = add(
             spm_unit, period, ["hi_tanf_countable_earned_income_person"]

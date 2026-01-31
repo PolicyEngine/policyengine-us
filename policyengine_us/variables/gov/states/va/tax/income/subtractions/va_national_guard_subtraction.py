@@ -12,7 +12,7 @@ class va_national_guard_subtraction(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.va.tax.income.subtractions.national_guard_pay

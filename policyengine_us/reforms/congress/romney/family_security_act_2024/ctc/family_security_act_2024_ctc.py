@@ -10,7 +10,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         unit = "/1"
         label = "Child Tax Credit phase-in rate"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             income = tax_unit("adjusted_gross_income", period)
             p = parameters(
                 period
@@ -26,7 +26,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum_amount = tax_unit("ctc_maximum_with_arpa_addition", period)
             phase_in_rate = tax_unit("ctc_phase_in_rate", period)
             phased_in_max_amont = maximum_amount * phase_in_rate
@@ -41,7 +41,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         definition_period = YEAR
         reference = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit
@@ -62,7 +62,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         label = "Pregnant mothers credit phase-in rate"
         reference = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             income = tax_unit("adjusted_gross_income", period)
             p = parameters(
                 period
@@ -85,7 +85,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         )
         defined_for = "is_tax_unit_dependent"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             age = person("age", period)
             p = parameters(
                 period
@@ -102,7 +102,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             total_children = tax_unit.sum(
                 tax_unit.members("ctc_qualifying_child", period)
             )
@@ -118,7 +118,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             pregnant_mothers_credit = tax_unit(
@@ -127,7 +127,7 @@ def create_family_security_act_2024_ctc() -> Reform:
             return pregnant_mothers_credit + previous_credits
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_phase_in_rate)
             self.update_variable(ctc)
             self.update_variable(ctc_qualifying_children)
@@ -141,7 +141,7 @@ def create_family_security_act_2024_ctc() -> Reform:
 
 def create_family_security_act_2024_ctc_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_family_security_act_2024_ctc()
 

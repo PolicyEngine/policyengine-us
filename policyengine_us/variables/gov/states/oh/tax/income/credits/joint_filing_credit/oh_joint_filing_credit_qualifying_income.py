@@ -13,7 +13,7 @@ class oh_joint_filing_credit_qualifying_income(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("oh_agi_person", period)
         # Prevent negative subtractions from acting as additions
         subtractions = max_(

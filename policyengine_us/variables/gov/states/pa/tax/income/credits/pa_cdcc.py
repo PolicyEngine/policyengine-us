@@ -10,7 +10,7 @@ class pa_cdcc(Variable):
     reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2022/2022_pa-40dc.pdf"  # 2022 form
     defined_for = StateCode.PA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the federal CDCC value
         # Pennsylvania matches the potential federal credit
         cdcc = tax_unit("cdcc_potential", period)

@@ -12,7 +12,7 @@ class qualified_business_income_deduction_person(Variable):
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Allocate the business income deduction to each person in the tax unit
         # based on their share of per cap qualified business income deduction amount
         qbid_amt = person("qbid_amount", period)

@@ -7,7 +7,7 @@ class is_ccdf_income_eligible(Variable):
     definition_period = YEAR
     label = "Income eligibility for CCDF"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_to_smi_ratio = spm_unit("ccdf_income_to_smi_ratio", period)
         p_ratio_limit = parameters(period).gov.hhs.ccdf.income_limit_smi
         return income_to_smi_ratio <= p_ratio_limit

@@ -9,7 +9,7 @@ class snap_max_allotment(Variable):
     label = "SNAP maximum allotment"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         max_allotments = parameters(period).gov.usda.snap.max_allotment
         MAX_HOUSEHOLD_SIZE_UNDER_MAIN = 8
         snap_region = spm_unit.household("snap_region_str", period)

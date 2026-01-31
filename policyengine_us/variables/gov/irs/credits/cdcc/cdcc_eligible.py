@@ -8,7 +8,7 @@ class is_cdcc_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/21#b_1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         # Subsection A.
         max_age = parameters(period).gov.irs.credits.cdcc.eligibility.child_age

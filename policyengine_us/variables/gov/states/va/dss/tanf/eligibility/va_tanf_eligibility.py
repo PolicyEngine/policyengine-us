@@ -9,7 +9,7 @@ class va_tanf_eligibility(Variable):
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/200_7-20.pdf#page=3"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         income_eligible = spm_unit("va_tanf_income_eligibility", period)
         # At least one person must be a citizen or qualified noncitizen

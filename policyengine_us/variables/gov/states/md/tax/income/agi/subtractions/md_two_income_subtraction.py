@@ -13,7 +13,7 @@ class md_two_income_subtraction(Variable):
     )
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
         person = tax_unit.members

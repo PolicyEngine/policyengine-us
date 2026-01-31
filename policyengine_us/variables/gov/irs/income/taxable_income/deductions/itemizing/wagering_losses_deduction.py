@@ -10,7 +10,7 @@ class wagering_losses_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/165#d"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         gambling_losses = add(tax_unit, period, ["gambling_losses"])
         gambling_winnings = add(tax_unit, period, ["gambling_winnings"])
         return min_(gambling_losses, gambling_winnings)

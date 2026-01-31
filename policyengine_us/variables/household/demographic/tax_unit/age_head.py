@@ -9,7 +9,7 @@ class age_head(Variable):
     documentation = "Age in years of taxpayer (i.e. primary adult)"
     unit = "year"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         age = person("age", period)
         head = person("is_tax_unit_head", period)

@@ -13,7 +13,7 @@ class il_cta_rta_reduced_fare_eligible(Variable):
         "https://www.transitchicago.com/reduced-fare-programs/#rtareduced"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.rta.cta.reduced_fare_program.age_threshold

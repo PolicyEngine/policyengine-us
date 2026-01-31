@@ -13,7 +13,7 @@ class mo_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         taxable_income = person("mo_taxable_income", period)
         rates = parameters(period).gov.states.mo.tax.income.rates
         exempt = person("mo_income_tax_exempt", period)

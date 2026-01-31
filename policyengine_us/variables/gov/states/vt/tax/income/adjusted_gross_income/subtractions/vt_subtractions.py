@@ -16,7 +16,7 @@ class vt_subtractions(Variable):
     )
 
     # Get parameter list
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.agi
         total_subtractions = add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

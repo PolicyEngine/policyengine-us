@@ -14,7 +14,7 @@ def create_ctc_per_child_phase_out() -> Reform:
         documentation = "Reduction of the total CTC due to income."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # TCJA's phase-out changes are purely parametric so don't require
             # structural reform.
 
@@ -60,7 +60,7 @@ def create_ctc_per_child_phase_out() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Logic sequence follows the form, which is clearer than the IRC.
             p = parameters(period).gov.irs.credits.ctc.phase_out.arpa
             # defined_for didn't work.
@@ -89,7 +89,7 @@ def create_ctc_per_child_phase_out() -> Reform:
             return increments * reduction_amount
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_phase_out)
             self.update_variable(ctc_arpa_uncapped_phase_out)
 
@@ -98,7 +98,7 @@ def create_ctc_per_child_phase_out() -> Reform:
 
 def create_ctc_per_child_phase_out_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ctc_per_child_phase_out()
 

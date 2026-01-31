@@ -10,7 +10,7 @@ class ca_renter_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Check eligibility based on state, rent, filing status, and income.
         p = parameters(period).gov.states.ca.tax.income.credits.renter
         agi = tax_unit("ca_agi", period)

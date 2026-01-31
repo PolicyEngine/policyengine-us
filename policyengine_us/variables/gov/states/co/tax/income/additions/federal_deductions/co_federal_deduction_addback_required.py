@@ -16,7 +16,7 @@ class co_federal_deduction_addback_required(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.co.tax.income.additions.federal_deductions

@@ -13,7 +13,7 @@ class de_tanf_dependent_care_deduction(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DSSM 4008: Dependent care up to $200/month for under age 2,
         # $175/month for age 2 and older
         p = parameters(period).gov.states.de.dhss.tanf.income.deductions

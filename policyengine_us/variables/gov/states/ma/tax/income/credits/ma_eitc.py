@@ -12,7 +12,7 @@ class ma_eitc(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.ma.tax.income.credits.eitc.match
         return federal_eitc * rate

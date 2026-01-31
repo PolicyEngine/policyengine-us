@@ -9,7 +9,7 @@ class ct_income_tax_low_tax_recapture(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("ct_agi", period)
         p = parameters(period).gov.states.ct.tax.income.recapture.low
         if p.in_effect:

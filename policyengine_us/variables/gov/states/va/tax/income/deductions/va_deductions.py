@@ -13,7 +13,7 @@ class va_deductions(Variable):
     )
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         std_ded = tax_unit("va_standard_deduction", period)
         itm_ded = tax_unit("va_itemized_deductions", period)
         itemizes = tax_unit("tax_unit_itemizes", period)

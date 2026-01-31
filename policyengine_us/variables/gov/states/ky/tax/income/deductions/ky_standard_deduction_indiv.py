@@ -9,7 +9,7 @@ class ky_standard_deduction_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ky.tax.income.deductions
         return head_or_spouse * p.standard

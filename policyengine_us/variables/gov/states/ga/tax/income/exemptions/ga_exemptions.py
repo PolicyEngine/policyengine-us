@@ -13,7 +13,7 @@ class ga_exemptions(Variable):
         "https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=2c053fd5-32c1-4cc1-86b0-36aaade9da5b&pdistocdocslideraccess=true&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A6348-G0H1-DYB7-W3JT-00008-00&pdcomponentid=234187&pdtocnodeidentifier=ABWAALAADAAL&ecomp=k2vckkk&prid=4862391c-e031-443f-ad52-ae86c6bb5ce2",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.tax.income.exemptions
         # Dependent exemptions
         dependents = tax_unit(

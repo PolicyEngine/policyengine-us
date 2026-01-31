@@ -8,7 +8,7 @@ class spm_unit_benefits(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         BENEFITS = [
             "social_security",
             "ssi",

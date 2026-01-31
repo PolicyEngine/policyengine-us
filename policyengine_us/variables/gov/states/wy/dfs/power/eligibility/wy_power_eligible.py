@@ -9,7 +9,7 @@ class wy_power_eligible(Variable):
     reference = "https://dfs.wyo.gov/about/policy-manuals/snap-and-power-policy-manual/"
     defined_for = StateCode.WY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child or pregnant)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Per Section 606: Must meet citizenship/alien status requirements

@@ -15,7 +15,7 @@ class nd_ltcg_subtraction(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ltcg = add(tax_unit, period, ["long_term_capital_gains"])
         stcg = add(tax_unit, period, ["short_term_capital_gains"])
         net_ltcg = min_(ltcg, ltcg + stcg)

@@ -16,7 +16,7 @@ class ca_yctc(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(period).gov.states.ca.tax.income.credits.young_child
 

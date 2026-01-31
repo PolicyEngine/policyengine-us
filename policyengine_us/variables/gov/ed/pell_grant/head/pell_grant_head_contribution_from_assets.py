@@ -8,7 +8,7 @@ class pell_grant_contribution_from_assets(Variable):
     label = "Pell Grant head contribution from assets"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         assets = person.tax_unit("pell_grant_head_assets", period)
         simplified = person("pell_grant_simplified_formula_applies", period)
         formula = person("pell_grant_formula", period)

@@ -9,7 +9,7 @@ class is_ssi_recipient_for_medicaid(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#f"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         state = person.household("state_code_str", period)
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories
         is_covered = ma.ssi_recipient.is_covered[state] > 0

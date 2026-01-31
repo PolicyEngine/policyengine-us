@@ -9,7 +9,7 @@ class nm_social_security_income_exemption(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # This is the amount of Social Security included in AGI.
         social_security_income = tax_unit(
             "tax_unit_taxable_social_security", period

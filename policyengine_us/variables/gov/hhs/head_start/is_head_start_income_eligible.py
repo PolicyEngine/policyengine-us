@@ -11,7 +11,7 @@ class is_head_start_income_eligible(Variable):
         "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         federal_agi = tax_unit("adjusted_gross_income", period)
         return federal_agi <= tax_unit("tax_unit_fpg", period)

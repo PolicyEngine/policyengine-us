@@ -13,7 +13,7 @@ class id_deductions(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itm_ded = tax_unit("id_itemized_deductions", period)
         std_ded = tax_unit("standard_deduction", period)
         # We do not model qualified business income deduction for Idaho

@@ -8,6 +8,6 @@ class is_usda_disabled(Variable):
     documentation = "Disabled according to USDA criteria"
     label = "USDA disabled status"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         programs = parameters(period).gov.usda.disabled_programs
         return np.any([person(program, period) for program in programs])

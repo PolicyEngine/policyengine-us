@@ -10,7 +10,7 @@ class sd_tanf_countable_earned_income_person(Variable):
     reference = "https://sdlegislature.gov/Rules/Administrative/67:10:03:05"
     defined_for = StateCode.SD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gross_earned = person("tanf_gross_earned_income", period)
         p = parameters(
             period

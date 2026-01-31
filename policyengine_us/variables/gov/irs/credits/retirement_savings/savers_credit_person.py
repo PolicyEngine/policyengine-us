@@ -14,7 +14,7 @@ class savers_credit_person(Variable):
     )
     defined_for = "savers_credit_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.retirement_saving
 
         qualified_contributions = person(

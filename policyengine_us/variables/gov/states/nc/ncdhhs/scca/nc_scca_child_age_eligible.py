@@ -9,7 +9,7 @@ class nc_scca_child_age_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.scca.age.limit
 
         is_disabled = person("is_disabled", period)

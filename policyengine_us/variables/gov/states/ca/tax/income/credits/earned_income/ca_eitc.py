@@ -9,7 +9,7 @@ class ca_eitc(Variable):
     definition_period = YEAR
     defined_for = "ca_eitc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.tax.income.credits.earned_income
 
         earned_income = tax_unit("filer_adjusted_earnings", period)

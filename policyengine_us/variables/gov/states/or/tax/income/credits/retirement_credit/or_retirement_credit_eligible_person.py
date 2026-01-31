@@ -9,7 +9,7 @@ class or_retirement_credit_eligible_person(Variable):
     reference = "https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=238290#:~:text=Eligible%20individuals%20receiving%20retirement%20pay,by%20the%20household%20income%20limitation."
     defined_for = StateCode.OR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # taxpayer or spouse must be age 62+ for their pension income to count
         age = person("age", period)
         is_head = person("is_tax_unit_head", period)

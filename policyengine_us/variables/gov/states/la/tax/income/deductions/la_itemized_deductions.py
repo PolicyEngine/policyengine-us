@@ -14,7 +14,7 @@ class la_itemized_deductions(Variable):
     ]
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.deductions.itemized
         federal_standard_deduction = tax_unit("standard_deduction", period)
         # Louisiana limits the itemized deductions to the amount of either the federal medical

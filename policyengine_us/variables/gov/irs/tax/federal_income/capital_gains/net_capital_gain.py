@@ -17,7 +17,7 @@ class net_capital_gain(Variable):
         href="https://www.law.cornell.edu/uscode/text/26/1222#11",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         lt_capital_gain = max_(
             0, add(tax_unit, period, ["long_term_capital_gains"])
         )

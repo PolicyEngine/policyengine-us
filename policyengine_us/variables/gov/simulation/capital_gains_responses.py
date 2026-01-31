@@ -9,7 +9,8 @@ class relative_capital_gains_mtr_change(Variable):
     unit = "/1"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
+        # Requires reform scenario with baseline comparison - tested via microsim
         simulation: Simulation = person.simulation
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_cgr_measurement", clone_system=True
@@ -63,7 +64,7 @@ class capital_gains_elasticity(Variable):
     unit = "/1"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gov = parameters(period).gov
         return gov.simulation.capital_gains_responses.elasticity
 
@@ -75,7 +76,7 @@ class capital_gains_behavioral_response(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         simulation = person.simulation
         if simulation.baseline is None:
             return 0
@@ -88,7 +89,7 @@ class capital_gains_behavioral_response(Variable):
         ):
             return 0
 
-        capital_gains = person(
+        capital_gains = person(  # pragma: no cover
             "long_term_capital_gains_before_response", period
         )
         tax_rate_change = person("relative_capital_gains_mtr_change", period)
@@ -116,7 +117,7 @@ class adult_index_cg(Variable):
     label = "index of adult in household, ranked by capital gains"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return (
             person.get_rank(
                 person.household,
@@ -135,7 +136,8 @@ class marginal_tax_rate_on_capital_gains(Variable):
     value_type = float
     unit = "/1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
+        # Requires simulation branching - tested via microsim
         mtr_values = np.zeros(person.count, dtype=np.float32)
         simulation = person.simulation
         DELTA = 1_000

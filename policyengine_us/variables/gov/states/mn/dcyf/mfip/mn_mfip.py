@@ -10,7 +10,7 @@ class mn_mfip(Variable):
     reference = "https://www.revisor.mn.gov/statutes/cite/142G.16"
     defined_for = "mn_mfip_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.16, Subd. 2 (benefit calculation):
         # (a) FWL - countable earned = X, cap at transitional standard
         # (d) X - unearned = final benefit

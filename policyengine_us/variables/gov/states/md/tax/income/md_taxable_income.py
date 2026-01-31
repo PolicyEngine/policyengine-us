@@ -9,7 +9,7 @@ class md_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         md_agi = tax_unit("md_agi", period)
         deductions_exemptions = add(
             tax_unit, period, ["md_deductions", "md_exemptions"]

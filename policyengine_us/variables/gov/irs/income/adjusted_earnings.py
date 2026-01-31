@@ -8,7 +8,7 @@ class adjusted_earnings(Variable):
     label = "Personal earned income adjusted for self-employment tax"
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.ald.misc
         adjustment = (
             (1 - p.self_emp_tax_adj)

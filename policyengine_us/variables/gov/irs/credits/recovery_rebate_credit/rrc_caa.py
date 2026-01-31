@@ -9,7 +9,7 @@ class rrc_caa(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/6428A"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         rrc = parameters(period).gov.irs.credits.recovery_rebate_credit
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)

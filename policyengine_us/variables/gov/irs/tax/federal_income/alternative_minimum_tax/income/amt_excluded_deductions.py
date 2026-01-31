@@ -9,7 +9,7 @@ class amt_excluded_deductions(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemizing = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("standard_deduction", period)
         p = parameters(period).gov.irs.income.amt

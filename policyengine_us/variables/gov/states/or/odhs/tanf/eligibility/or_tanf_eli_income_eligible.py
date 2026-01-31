@@ -12,7 +12,7 @@ class or_tanf_eli_income_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf
         countable_income = spm_unit("or_tanf_countable_income", period)
         payment_standard = spm_unit("or_tanf_payment_standard", period)

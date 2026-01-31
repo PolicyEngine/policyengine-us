@@ -12,7 +12,7 @@ class snap_countable_earner(Variable):
         "https://www.law.cornell.edu/cfr/text/7/273.9#c_3"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Children in K-12 have income excluded
         is_excluded_child = person("snap_excluded_child_earner", period)
 

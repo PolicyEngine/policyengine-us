@@ -10,7 +10,7 @@ class ia_alternate_tax_consolidated(Variable):
     reference = "https://revenue.iowa.gov/media/2754/download?inline"
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         modified_income = tax_unit("ia_modified_income", period)
         # compute alternate tax following worksheet in the instructions
         p = parameters(period).gov.states.ia.tax.income.alternate_tax

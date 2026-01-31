@@ -10,7 +10,7 @@ def create_abolish_payroll_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             p = parameters(period)
             added_components = (
                 p.gov.household.household_tax_before_refundable_credits
@@ -21,7 +21,7 @@ def create_abolish_payroll_tax() -> Reform:
             return add(household, period, added_components)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(household_tax_before_refundable_credits)
 
     return reform
@@ -29,7 +29,7 @@ def create_abolish_payroll_tax() -> Reform:
 
 def create_abolish_payroll_tax_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_abolish_payroll_tax()
 

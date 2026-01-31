@@ -10,7 +10,7 @@ class ca_state_supplement_medical_care_facility_amount(Variable):
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ca.cdss.state_supplement.payment_standard

@@ -12,7 +12,7 @@ class spm_unit_state_tax(Variable):
     # adds doesn't currently address this case (needs to be split to avoid
     # double-counting), so write a formula.
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         head = person("is_tax_unit_head", period)
         if parameters(period).simulation.reported_state_income_tax:

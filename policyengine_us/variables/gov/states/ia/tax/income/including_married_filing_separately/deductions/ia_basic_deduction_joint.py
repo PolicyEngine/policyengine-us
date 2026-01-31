@@ -15,7 +15,7 @@ class ia_basic_deduction_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         """
         FROM THE 2021 INSTRUCTIONS (PAGE 46):
           You may itemize deductions or claim the Iowa standard deduction,

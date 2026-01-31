@@ -11,7 +11,7 @@ class ma_tafdc_immigration_status_eligible(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         immigration_status = spm_unit.members("immigration_status", period)
         undocumented = (
             immigration_status

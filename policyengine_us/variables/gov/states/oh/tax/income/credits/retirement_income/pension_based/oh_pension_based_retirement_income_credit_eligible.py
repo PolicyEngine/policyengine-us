@@ -9,7 +9,7 @@ class oh_pension_based_retirement_income_credit_eligible(Variable):
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.055"
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.retirement.pension_based

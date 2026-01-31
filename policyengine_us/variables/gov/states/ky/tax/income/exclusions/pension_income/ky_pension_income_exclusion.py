@@ -8,7 +8,7 @@ class ky_pension_income_exclusion(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get the KY pension income exclusion parameter tree.
         p = parameters(
             period

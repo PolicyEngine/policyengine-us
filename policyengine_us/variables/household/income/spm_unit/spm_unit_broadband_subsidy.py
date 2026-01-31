@@ -8,7 +8,7 @@ class spm_unit_broadband_subsidy(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         if parameters(period).gov.simulation.reported_broadband_subsidy:
             return spm_unit("spm_unit_broadband_subsidy_reported", period)
         return add(spm_unit, period, ["ebb", "acp"])

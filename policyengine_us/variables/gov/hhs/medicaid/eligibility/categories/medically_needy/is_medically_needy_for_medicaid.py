@@ -8,7 +8,7 @@ class is_medically_needy_for_medicaid(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         in_category = person("is_in_medicaid_medically_needy_category", period)
         personal_income = person("ssi_countable_income", period)
         medical_expenses = person("medical_out_of_pocket_expenses", period)

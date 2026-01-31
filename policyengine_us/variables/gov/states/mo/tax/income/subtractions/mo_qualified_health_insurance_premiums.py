@@ -14,7 +14,7 @@ class mo_qualified_health_insurance_premiums(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Variable involves person- and tax unit-level variables.
         tax_unit = person.tax_unit
 

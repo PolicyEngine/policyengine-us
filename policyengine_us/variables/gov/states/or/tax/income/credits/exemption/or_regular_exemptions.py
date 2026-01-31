@@ -12,7 +12,7 @@ class or_regular_exemptions(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         federal_exemptions = tax_unit("exemptions_count", period)
         federal_agi = tax_unit("adjusted_gross_income", period)

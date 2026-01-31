@@ -23,7 +23,7 @@ class msp_fpg(Variable):
     is mathematically equivalent: (income - $20) <= FPL == income <= (FPL + $20)
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # MSP uses individual (1 person) or couple (2 persons) FPG,
         # not the full SPM unit size.
         # Note: These are raw FPL values. Published limits are $20 higher

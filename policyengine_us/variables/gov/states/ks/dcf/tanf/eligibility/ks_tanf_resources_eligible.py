@@ -12,7 +12,7 @@ class ks_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per KEESM 5110: Resource limit is $3,000
         p = parameters(period).gov.states.ks.dcf.tanf.resource_limit
         resources = spm_unit("spm_unit_cash_assets", period.this_year)

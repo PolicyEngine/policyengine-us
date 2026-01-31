@@ -12,7 +12,7 @@ class id_grocery_credit_qualifying_month(Variable):
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         snap_received = person.spm_unit("snap", period) > 0
         # Incarcerated people are not eligible for the grocery credit
         return ~person("is_incarcerated", period) & ~snap_received

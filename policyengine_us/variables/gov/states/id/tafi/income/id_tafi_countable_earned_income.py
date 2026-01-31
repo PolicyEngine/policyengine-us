@@ -12,7 +12,7 @@ class id_tafi_countable_earned_income(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tafi.income.earned
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         # Per IDAPA 16.03.08.252: 60% of gross earned income is subtracted

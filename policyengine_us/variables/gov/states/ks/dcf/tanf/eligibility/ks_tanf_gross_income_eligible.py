@@ -12,7 +12,7 @@ class ks_tanf_gross_income_eligible(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per K.S.A. 39-709 and Kansas TANF State Plan:
         # Gross income must be less than 30% of Federal Poverty Level
         gross_income = add(

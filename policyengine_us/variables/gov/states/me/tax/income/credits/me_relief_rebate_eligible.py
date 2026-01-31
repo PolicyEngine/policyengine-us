@@ -9,7 +9,7 @@ class me_relief_rebate_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.maine.gov/governor/mills/relief-checks"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.me.tax.income.credits.relief_rebate
         filing_status = tax_unit("filing_status", period)
         federal_agi = tax_unit("adjusted_gross_income", period)

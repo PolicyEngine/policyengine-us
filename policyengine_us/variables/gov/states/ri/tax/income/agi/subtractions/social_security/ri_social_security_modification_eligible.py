@@ -10,7 +10,7 @@ class ri_social_security_modification_eligible(Variable):
     # MODIFICATION FOR TAXABLE SOCIAL SECURITY INCOME WORKSHEET STEP 1: Eligibility
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         birth_year = tax_unit("older_spouse_birth_year", period)

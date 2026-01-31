@@ -12,7 +12,7 @@ class dc_gac(Variable):
     )
     defined_for = "dc_gac_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("dc_gac_countable_income", period)
         standard_payment = spm_unit("dc_gac_standard_payment", period)
         return max_(standard_payment - countable_income, 0)

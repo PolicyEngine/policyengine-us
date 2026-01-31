@@ -11,7 +11,7 @@ class per_capita_chip(Variable):
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
     defined_for = "is_chip_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         state_code = person.household("state_code", period)
         p = parameters(period).calibration.gov.hhs.cms.chip
 

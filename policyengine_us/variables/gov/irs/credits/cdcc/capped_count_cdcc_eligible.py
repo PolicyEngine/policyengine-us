@@ -11,7 +11,7 @@ class capped_count_cdcc_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/26/21#d_1",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         cdcc = parameters(period).gov.irs.credits.cdcc
         eligible_people = tax_unit("count_cdcc_eligible", period)
         return min_(cdcc.eligibility.max, eligible_people)

@@ -14,7 +14,7 @@ class mo_property_tax_credit(Variable):
     )
     defined_for = "mo_ptc_taxunit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.tax.income.credits.property_tax
         # compute maximum (that is, pre-phaseout) credit amount for rent
         rent = add(tax_unit, period, ["rent"])

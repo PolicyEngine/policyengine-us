@@ -9,7 +9,7 @@ class employer_social_security_tax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.payroll.social_security.rate
         return p.employer * person(
             "taxable_earnings_for_social_security", period

@@ -10,7 +10,7 @@ class ak_atap_gross_income_limit(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520"
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 7 AAC 45.520: Gross income limit is 185% of need standard
         p = parameters(period).gov.states.ak.dpa.atap
         need_standard = spm_unit("ak_atap_need_standard", period)

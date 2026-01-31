@@ -13,7 +13,7 @@ class ky_itemized_deductions_joint(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # If filing a joint return, only one standard deduction is allowed
         is_head = person("is_tax_unit_head", period)
         itemized_deductions = person.tax_unit(

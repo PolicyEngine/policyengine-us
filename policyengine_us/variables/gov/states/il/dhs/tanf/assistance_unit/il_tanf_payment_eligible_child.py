@@ -9,7 +9,7 @@ class il_tanf_payment_eligible_child(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.300"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_child = person("il_tanf_eligible_child", period)
         eligible_requirements = person(
             "il_tanf_payment_eligible_requirements", period

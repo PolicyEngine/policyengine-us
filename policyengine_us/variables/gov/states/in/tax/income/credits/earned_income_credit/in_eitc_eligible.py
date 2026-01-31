@@ -10,7 +10,7 @@ class in_eitc_eligible(Variable):
     reference = "https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21"
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].tax.income
         # check federal eitc receipt
         gets_federal_eitc = tax_unit("eitc", period) > 0

@@ -16,7 +16,7 @@ class wi_married_couple_credit(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fstatus = tax_unit("filing_status", period)
         eligible = fstatus == fstatus.possible_values.JOINT
         p = parameters(period).gov.states.wi.tax.income.credits

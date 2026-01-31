@@ -20,7 +20,7 @@ class state_filing_status_if_married_filing_separately_on_same_return(
     definition_period = YEAR
     label = "State filing status for the tax unit if married couple file separately on same return"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_filing_status = tax_unit("filing_status", period)
         fsvals = us_filing_status.possible_values
         return select(

@@ -13,7 +13,7 @@ class nc_standard_or_itemized_deductions(Variable):
     )
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # From above instructions for Line 11:
         #   You may deduct from federal adjusted gross income either
         #   the N.C. standard deduction or N.C. itemized deductions.

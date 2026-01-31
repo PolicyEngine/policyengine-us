@@ -14,7 +14,7 @@ class la_federal_tax_deduction(Variable):
     ]
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
         )

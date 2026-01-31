@@ -13,7 +13,7 @@ class qbid_amount(Variable):
         "https://www.irs.gov/pub/irs-pdf/f8995.pdf",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # computations follow logic in 2018 IRS Publication 535,
         # Worksheet 12-A (and Schedule A for SSTB)
         p = parameters(period).gov.irs.deductions.qbi

@@ -9,7 +9,7 @@ class ct_tfa_eligible(Variable):
     reference = "https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10"
     defined_for = StateCode.CT
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_status_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0

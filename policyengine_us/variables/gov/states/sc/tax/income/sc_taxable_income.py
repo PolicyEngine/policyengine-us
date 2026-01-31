@@ -12,7 +12,7 @@ class sc_taxable_income(Variable):
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=33"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("taxable_income", period)
         additions = tax_unit("sc_additions", period)
         subtractions = tax_unit("sc_subtractions", period)

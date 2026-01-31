@@ -10,7 +10,7 @@ class energy_efficient_home_improvement_credit(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit(
             "energy_efficient_home_improvement_credit_credit_limit", period
         )

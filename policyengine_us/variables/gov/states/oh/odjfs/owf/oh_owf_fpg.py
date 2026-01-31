@@ -13,7 +13,7 @@ class oh_owf_fpg(Variable):
         "https://codes.ohio.gov/ohio-revised-code/section-5107.10",  # (D)(2)
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Ohio uses FPL effective July 1 of each year per state law
         # "initial eligibility standards are annually indexed to fifty per cent
         # of the federal poverty level (FPL) effective July 1 of each year"

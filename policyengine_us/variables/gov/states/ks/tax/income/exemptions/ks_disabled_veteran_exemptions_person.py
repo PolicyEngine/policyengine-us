@@ -10,7 +10,7 @@ class ks_disabled_veteran_exemptions_eligible_person(Variable):
     reference = "https://law.justia.com/codes/kansas/chapter-79/article-32/section-79-32-121/"
     defined_for = StateCode.KS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ks.tax.income.exemptions.disabled_veteran

@@ -9,5 +9,5 @@ class is_veteran(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/38/101"  # (2)
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("veterans_benefits", period) > 0

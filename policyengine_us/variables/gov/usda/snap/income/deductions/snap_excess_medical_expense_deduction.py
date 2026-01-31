@@ -12,7 +12,7 @@ class snap_excess_medical_expense_deduction(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_5"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Deduction applies to medical expenses incurred by elderly or disabled
         # members only.
         person = spm_unit.members

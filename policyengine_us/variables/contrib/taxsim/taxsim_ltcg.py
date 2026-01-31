@@ -8,5 +8,6 @@ class taxsim_ltcg(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         return add(tax_unit, period, ["long_term_capital_gains"])

@@ -11,7 +11,7 @@ class il_pi_is_poverty(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         spm_unit = person.spm_unit
         # Factor 36 (10 pts): Child/Family experiencing poverty (200% FPL).
         p = parameters(period).gov.states.il.isbe.pi.eligibility.income

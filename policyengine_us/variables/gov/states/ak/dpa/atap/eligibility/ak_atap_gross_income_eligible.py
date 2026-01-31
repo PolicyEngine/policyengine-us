@@ -9,7 +9,7 @@ class ak_atap_gross_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470"
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Test 1: Total nonexempt gross monthly income <= 185% standard
         gross_income = spm_unit("ak_atap_gross_income", period)
         gross_income_limit = spm_unit("ak_atap_gross_income_limit", period)

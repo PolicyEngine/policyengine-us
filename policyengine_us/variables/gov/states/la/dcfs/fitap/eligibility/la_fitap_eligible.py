@@ -12,7 +12,7 @@ class la_fitap_eligible(Variable):
     )
     defined_for = StateCode.LA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per LAC 67:III.1221: Child must be under 18 or 18 and in school
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 

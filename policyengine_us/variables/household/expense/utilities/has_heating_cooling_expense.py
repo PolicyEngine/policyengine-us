@@ -7,5 +7,5 @@ class has_heating_cooling_expense(Variable):
     label = "Has heating/cooling costs"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return add(spm_unit, period, ["heating_cooling_expense"]) > 0

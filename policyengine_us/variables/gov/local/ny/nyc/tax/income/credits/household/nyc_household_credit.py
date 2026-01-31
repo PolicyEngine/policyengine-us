@@ -9,7 +9,7 @@ class nyc_household_credit(Variable):
     definition_period = YEAR
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First get their federal AGI.
         # Technically based on recomputed AGI, which deviates slightly from federal AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)

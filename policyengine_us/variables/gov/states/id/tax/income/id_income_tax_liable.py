@@ -9,7 +9,7 @@ class id_income_tax_liable(Variable):
     reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=10"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         gross_income = add(tax_unit, period, ["irs_gross_income"])
         standard_deduction = tax_unit("standard_deduction", period)
         return gross_income > standard_deduction

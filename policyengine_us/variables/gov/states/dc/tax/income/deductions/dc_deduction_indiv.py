@@ -13,7 +13,7 @@ class dc_deduction_indiv(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit_deduction = person.tax_unit("dc_deduction_joint", period)
         # The above references say the following:
         # "You may allocate this [tax-unit deduction] amount as you wish."

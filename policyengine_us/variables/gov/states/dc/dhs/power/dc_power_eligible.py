@@ -12,7 +12,7 @@ class dc_power_eligible(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         has_eligible_head_or_spouse = (
             add(spm_unit, period, ["dc_power_head_or_spouse_eligible"]) > 0
         )

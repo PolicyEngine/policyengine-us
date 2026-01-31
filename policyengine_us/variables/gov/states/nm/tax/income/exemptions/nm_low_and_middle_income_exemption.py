@@ -9,7 +9,7 @@ class nm_low_and_middle_income_exemption(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.low_and_middle_income

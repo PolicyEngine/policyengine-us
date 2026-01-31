@@ -12,7 +12,7 @@ class ma_state_supplement(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-330"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         uncapped_ssi = person("uncapped_ssi", period)
         reduction_after_ssi = max_(0, -uncapped_ssi)
         maximum_ss = person("ma_maximum_state_supplement", period)

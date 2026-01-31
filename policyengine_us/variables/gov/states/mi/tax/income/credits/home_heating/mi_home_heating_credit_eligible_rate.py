@@ -8,7 +8,7 @@ class mi_home_heating_credit_eligible_rate(Variable):
     definition_period = YEAR
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_unit_size = tax_unit("tax_unit_size", period)
         person = tax_unit.members
         dependent_elsewhere = person(

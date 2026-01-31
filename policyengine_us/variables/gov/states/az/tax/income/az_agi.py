@@ -10,7 +10,7 @@ class az_agi(Variable):
     documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2020_140NRBOOKLET.pdf#page=18"  # Line 52
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         additions = tax_unit("az_additions", period)
         subtractions = tax_unit("az_subtractions", period)

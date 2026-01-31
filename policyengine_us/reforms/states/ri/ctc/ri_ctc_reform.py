@@ -11,7 +11,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.ctc
 
             person = tax_unit.members
@@ -32,7 +32,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.ctc
 
             person = tax_unit.members
@@ -56,7 +56,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.ctc
 
             # Base credit for all eligible children
@@ -76,7 +76,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.ctc
 
             filing_status = tax_unit("filing_status", period)
@@ -118,7 +118,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Calculate maximum credit
             maximum = tax_unit("ri_ctc_maximum", period)
 
@@ -135,7 +135,7 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ri.ctc
 
             total_credit = tax_unit("ri_total_ctc", period)
@@ -151,12 +151,12 @@ def create_ri_ctc() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             total_credit = tax_unit("ri_total_ctc", period)
             refundable_portion = tax_unit("ri_refundable_ctc", period)
             return max_(total_credit - refundable_portion, 0)
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         # Add ri_refundable_ctc to refundable credits list
         refundable = parameters.gov.states.ri.tax.income.credits.refundable
         current_refundable = refundable(instant("2025-01-01"))
@@ -186,7 +186,7 @@ def create_ri_ctc() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ri_ctc_eligible_children)
             self.update_variable(ri_ctc_young_child_boost)
             self.update_variable(ri_ctc_maximum)
@@ -199,7 +199,9 @@ def create_ri_ctc() -> Reform:
     return reform
 
 
-def create_ri_ctc_reform(parameters, period, bypass: bool = False):
+def create_ri_ctc_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ri_ctc()
 

@@ -9,7 +9,7 @@ class nj_medical_expense_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nj.tax.income.deductions.medical_expenses

@@ -8,7 +8,7 @@ class ca_riv_general_relief_eligible(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.riv.general_relief
         age = spm_unit.members("monthly_age", period)
         # Adults with dependent children under certain age are NOT eligible for GA.

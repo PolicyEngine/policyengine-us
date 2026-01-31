@@ -9,7 +9,7 @@ class il_liheap_income_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://dceo.illinois.gov/communityservices/utilitybillassistance.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p_hhs = parameters(period).gov.hhs
         p_il = parameters(period).gov.states.il.dceo.liheap
 

@@ -13,7 +13,7 @@ class ri_tuition_saving_program_contribution_subtraction(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         investment_amount = tax_unit("investment_in_529_plan", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(

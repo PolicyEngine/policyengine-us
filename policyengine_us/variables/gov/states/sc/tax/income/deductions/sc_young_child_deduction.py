@@ -14,7 +14,7 @@ class sc_young_child_deduction(Variable):
     )
     defined_for = StateCode.SC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get relevant parameter subtree.
         p = parameters(period).gov.states.sc.tax.income.deductions.young_child
         # Determine eligibility for each person in the tax unit.

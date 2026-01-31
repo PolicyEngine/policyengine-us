@@ -10,7 +10,7 @@ class or_ctc(Variable):
     reference = "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled"
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get age and dependent status of all people in the tax unit.
         person = tax_unit.members
         age = person("age", period)

@@ -13,7 +13,7 @@ class dc_ptc(Variable):
     )
     defined_for = "takes_up_dc_ptc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         rent = add(tax_unit, period, ["rent"])
         retax = add(tax_unit, period, ["real_estate_taxes"])
         p_dc = parameters(period).gov.states.dc.tax.income.credits

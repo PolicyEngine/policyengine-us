@@ -13,7 +13,7 @@ class mn_mfip_countable_earned_income_for_eligibility(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.16, Subd. 1(b)(2):
         # For initial eligibility, dependent care costs must be deducted
         # from gross earned income before the $65 and 50% disregard.

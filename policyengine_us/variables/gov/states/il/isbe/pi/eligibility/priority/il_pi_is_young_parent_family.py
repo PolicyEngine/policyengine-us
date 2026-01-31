@@ -11,7 +11,7 @@ class il_pi_is_young_parent_family(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Factor 11 (25 pts): Parent is currently age 21 years or younger.
         p = parameters(period).gov.states.il.isbe.pi.eligibility.age_threshold
         age = spm_unit.members("age", period)

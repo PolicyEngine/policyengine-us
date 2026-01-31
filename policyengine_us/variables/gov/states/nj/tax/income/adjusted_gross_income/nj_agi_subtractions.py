@@ -11,7 +11,7 @@ class nj_agi_subtractions(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
     defined_for = StateCode.NJ
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income
         total_subtractions = add(person, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

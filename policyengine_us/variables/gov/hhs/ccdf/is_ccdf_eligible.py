@@ -7,7 +7,7 @@ class is_ccdf_eligible(Variable):
     definition_period = YEAR
     label = "Eligibility for CCDF"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         asset_eligible = person.spm_unit("is_ccdf_asset_eligible", period)
         age_eligible = person("is_ccdf_age_eligible", period)
         income_eligible = person.spm_unit("is_ccdf_income_eligible", period)

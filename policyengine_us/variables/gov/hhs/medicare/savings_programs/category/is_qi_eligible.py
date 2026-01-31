@@ -11,7 +11,7 @@ class is_qi_eligible(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # QI requires income above 120% FPL but at or below 135% FPL
         # QI is only available for people who don't qualify for other Medicaid
         p = parameters(

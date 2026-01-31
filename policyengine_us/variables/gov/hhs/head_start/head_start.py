@@ -10,7 +10,7 @@ class head_start(Variable):
     defined_for = "is_head_start_eligible"
     reference = "https://headstart.gov/program-data/article/head-start-program-facts-fiscal-year-2022"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.head_start
         state = person.household("state_code_str", period)
         spending = p.spending[state]

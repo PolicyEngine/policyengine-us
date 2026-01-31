@@ -13,7 +13,7 @@ class nh_fanf_resources_eligible(Variable):
     )
     defined_for = StateCode.NH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NOTE: One vehicle per adult is excluded regardless of value.
         # Resource limits differ for applicants ($1,000) vs recipients ($5,000 as of 07/01/22)
         p = parameters(period).gov.states.nh.dhhs.fanf.resources

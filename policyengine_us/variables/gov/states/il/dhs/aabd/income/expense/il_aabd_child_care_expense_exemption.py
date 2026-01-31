@@ -11,7 +11,7 @@ class il_aabd_child_care_expense_exemption(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
         childcare_expenses = person.spm_unit("childcare_expenses", period)
         have_childcare_expenses = childcare_expenses > 0

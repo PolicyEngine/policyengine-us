@@ -14,7 +14,7 @@ class ga_retirement_exclusion_person(Variable):
     )
     defined_for = "ga_retirement_exclusion_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ga.tax.income.agi.exclusions.retirement

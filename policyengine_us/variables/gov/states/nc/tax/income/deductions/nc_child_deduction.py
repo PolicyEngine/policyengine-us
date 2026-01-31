@@ -9,7 +9,7 @@ class nc_child_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate deduction amount per eligible child
         federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)

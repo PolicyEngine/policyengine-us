@@ -10,7 +10,7 @@ class me_dependent_exemption_credit_amount_person(Variable):
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         dependent = person("is_tax_unit_dependent", period)
         p = parameters(
             period

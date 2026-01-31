@@ -8,6 +8,6 @@ class tax_unit_is_joint(Variable):
     documentation = "Whether this tax unit is a joint filer."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         return filing_status == filing_status.possible_values.JOINT

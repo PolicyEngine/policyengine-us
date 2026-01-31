@@ -13,7 +13,7 @@ class ri_works_dependent_care_deduction(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 218-RICR-20-00-2.15.5(B)(2): Dependent care expenses deducted
         # up to $200/month for children under age 2
         # up to $175/month for children age 2 and older

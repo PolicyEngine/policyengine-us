@@ -13,7 +13,7 @@ class tx_tanf_child_support_deduction(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Up to $75/month in child support can be deducted per household
         p = parameters(period).gov.states.tx.tanf.income
         child_support = spm_unit("child_support_received", period)

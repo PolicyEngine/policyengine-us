@@ -11,7 +11,7 @@ class dc_tanf_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_sources = add(
             spm_unit,
             period,

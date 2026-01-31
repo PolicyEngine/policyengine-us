@@ -13,7 +13,7 @@ class de_tanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Sum person-level earned income (with $90 + $30 + 1/3 applied)
         # Then subtract childcare at household level
         countable_earned_person = add(

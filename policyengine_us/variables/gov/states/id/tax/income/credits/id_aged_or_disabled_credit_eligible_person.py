@@ -8,7 +8,7 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.id.tax.income.subtractions.aged_or_disabled

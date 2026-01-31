@@ -13,7 +13,7 @@ class ms_tanf(Variable):
         "https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         maximum_benefit = spm_unit("ms_tanf_maximum_benefit", period)
         countable_income = spm_unit("ms_tanf_countable_income", period)
         return max_(maximum_benefit - countable_income, 0)

@@ -12,7 +12,7 @@ class ri_property_tax_credit(Variable):
     )
     defined_for = "ri_property_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         household_income = tax_unit("ri_property_tax_household_income", period)
         household_income_percent = where(

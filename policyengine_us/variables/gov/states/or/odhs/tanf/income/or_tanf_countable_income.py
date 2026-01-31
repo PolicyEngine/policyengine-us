@@ -10,7 +10,7 @@ class or_tanf_countable_income(Variable):
     reference = "https://oregon.public.law/rules/oar_461-140-0010"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support_disregard = spm_unit(

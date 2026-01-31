@@ -8,7 +8,7 @@ class surviving_spouse_eligible(Variable):
     label = "Qualifies for surviving spouse filing status"
     reference = "https://www.law.cornell.edu/uscode/text/26/2#a"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # The surviving spouse filing status should only apply to surviving spouse heads
         # who maintain a household for at least one dependent
         person = tax_unit.members

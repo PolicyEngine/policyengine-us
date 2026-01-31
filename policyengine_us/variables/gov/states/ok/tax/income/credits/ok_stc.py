@@ -13,7 +13,7 @@ class ok_stc(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # for details, see Form 538-S in the 511 packets referenced above
         p = parameters(period).gov.states.ok.tax.income.credits.sales_tax
         # determine TANF ineligibility

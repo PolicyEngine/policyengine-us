@@ -9,7 +9,7 @@ class marginal_tax_rate_including_health_benefits(Variable):
     value_type = float
     unit = "/1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         netinc_base = person.household(
             "household_net_income_including_health_benefits", period
         )

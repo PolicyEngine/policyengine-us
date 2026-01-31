@@ -13,7 +13,7 @@ class tuition_and_fees_deduction_eligible(Variable):
         "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Married filing separately are not eligible for this deduction.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

@@ -13,7 +13,7 @@ class ne_cdcc_nonrefundable(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.credits
         # determine AGI eligibility
         eligible = ~tax_unit("ne_cdcc_refundable_eligible", period)

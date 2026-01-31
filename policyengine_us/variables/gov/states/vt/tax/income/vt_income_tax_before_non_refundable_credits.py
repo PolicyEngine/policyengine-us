@@ -14,7 +14,7 @@ class vt_income_tax_before_non_refundable_credits(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1",  # Vermont 2022 Income Tax Return Booklet Forms and Instructions
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         vt_amt = tax_unit("vt_amt", period)
         vt_normal_income_tax = tax_unit("vt_normal_income_tax", period)
         return max_(vt_normal_income_tax, vt_amt)

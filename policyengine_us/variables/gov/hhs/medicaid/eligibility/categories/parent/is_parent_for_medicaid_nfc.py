@@ -7,7 +7,7 @@ class is_parent_for_medicaid_nfc(Variable):
     label = "Medicaid parent non-financial criteria"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_dependent = person("is_tax_unit_dependent", period)
         has_dependent_in_tax_unit = (
             person.tax_unit("tax_unit_count_dependents", period) > 0

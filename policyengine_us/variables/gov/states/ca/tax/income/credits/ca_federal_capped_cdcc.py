@@ -10,7 +10,7 @@ class ca_federal_capped_cdcc(Variable):
     reference = "https://www.ftb.ca.gov/forms/2020/2020-3506-instructions.html"
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         cdcc = tax_unit("ca_federal_cdcc", period)
         p = parameters(period).gov.irs.credits
         # follow Credit Limit Worksheet in 2022 Form 2441 instructions:

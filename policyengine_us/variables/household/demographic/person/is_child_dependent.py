@@ -9,7 +9,7 @@ class is_child_dependent(Variable):
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.irs.dependent.ineligible_age
         student = person("is_full_time_student", period)

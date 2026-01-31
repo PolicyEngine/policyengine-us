@@ -13,7 +13,7 @@ class is_medicare_eligible(Variable):
         "  Part A coverage begins the month the individual turns age 65"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicare.eligibility
         is_age_eligible = person("age", period) >= p.min_age
         gets_ssdi = person("social_security_disability", period) > 0

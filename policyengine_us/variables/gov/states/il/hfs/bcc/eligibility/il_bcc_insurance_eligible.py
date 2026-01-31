@@ -12,7 +12,7 @@ class il_bcc_insurance_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per PM 06-20-02, persons are eligible if they are "uninsured".
         # A person is NOT uninsured (thus ineligible) if they have:
         # - Medicaid eligibility through another pathway

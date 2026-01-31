@@ -8,7 +8,7 @@ class has_qdiv_or_ltcg(Variable):
     documentation = "Whether this tax unit has qualified dividend income or long-term capital gains income"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # negatives amounts cannot offset other income sources
         INCOME_SOURCES = [
             "loss_limited_net_capital_gains",

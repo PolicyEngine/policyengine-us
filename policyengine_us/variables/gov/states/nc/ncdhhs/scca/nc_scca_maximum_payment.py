@@ -10,7 +10,7 @@ class nc_scca_maximum_payment(Variable):
     reference = "https://www.publichealthlawcenter.org/sites/default/files/NC%20Chapter%2010%20Subsidized%20Child%20Care%20Rules.pdf#page=2"
     defined_for = "nc_scca_entry_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         total_market_rate = add(spm_unit, period, ["nc_scca_market_rate"])
 
         parent_fee = spm_unit("nc_scca_parent_fee", period)

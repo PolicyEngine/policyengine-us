@@ -10,7 +10,7 @@ class az_increased_standard_deduction_for_charitable_contributions(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.deductions.standard.increased

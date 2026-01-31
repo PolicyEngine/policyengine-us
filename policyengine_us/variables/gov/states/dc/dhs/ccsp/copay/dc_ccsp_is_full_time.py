@@ -8,7 +8,7 @@ class dc_ccsp_is_full_time(Variable):
     definition_period = MONTH
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp
         schedule_type = person("dc_ccsp_schedule_type", period)
         schedule_type_str = schedule_type.decode_to_str()

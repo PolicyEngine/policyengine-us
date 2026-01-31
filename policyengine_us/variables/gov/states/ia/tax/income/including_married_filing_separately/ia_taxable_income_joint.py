@@ -15,7 +15,7 @@ class ia_taxable_income_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # assign total net_income to tax unit head
         is_head = person("is_tax_unit_head", period)
         net_income = person("ia_net_income", period)

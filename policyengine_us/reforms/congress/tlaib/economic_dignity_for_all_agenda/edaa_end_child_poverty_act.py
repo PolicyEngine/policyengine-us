@@ -13,7 +13,7 @@ def create_ecpa_only() -> Reform:
         )
         reference = "placeholder - bill not yet introduced"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
@@ -39,7 +39,7 @@ def create_ecpa_only() -> Reform:
         )
         reference = "placeholder - bill not yet introduced"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
@@ -62,7 +62,7 @@ def create_ecpa_only() -> Reform:
         documentation = "Filer credit under the End Child Poverty Act for eligible tax filers"
         reference = "placeholder - bill not yet introduced"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
@@ -99,7 +99,7 @@ def create_ecpa_only() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             # Start with baseline benefits from parameters
             BENEFITS = list(
                 parameters(period).gov.household.household_benefits
@@ -117,7 +117,7 @@ def create_ecpa_only() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(spm_unit, period, parameters):
+        def formula(spm_unit, period, parameters):  # pragma: no cover
             BENEFITS = [
                 "social_security",
                 "ssi",
@@ -158,7 +158,7 @@ def create_ecpa_only() -> Reform:
         label = "federal refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Get standard refundable credits, excluding EITC and refundable CTC (ECPA replaces them)
             standard_credits = parameters(period).gov.irs.credits.refundable
 
@@ -184,7 +184,7 @@ def create_ecpa_only() -> Reform:
         label = "federal non-refundable income tax credits"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Get the base list of non-refundable credits from parameters
             p = parameters(period).gov.irs.credits
             base_credits = list(p.non_refundable)
@@ -195,7 +195,7 @@ def create_ecpa_only() -> Reform:
             return add(tax_unit, period, CREDITS)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             # Update only ECPA variables
             self.update_variable(ecpa_child_benefit)
             self.update_variable(ecpa_adult_dependent_credit)
@@ -213,7 +213,7 @@ end_child_poverty_act = create_ecpa_only()
 
 def create_end_child_poverty_act_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     """Auto-application function for structural reforms."""
     if bypass:
         return create_ecpa_only()

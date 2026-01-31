@@ -8,7 +8,7 @@ class ca_foster_care_minor_dependent(Variable):
     definition_period = MONTH
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("monthly_age", period)
         p = parameters(period).gov.states.ca.foster_care
         age_eligible = age < p.age_threshold

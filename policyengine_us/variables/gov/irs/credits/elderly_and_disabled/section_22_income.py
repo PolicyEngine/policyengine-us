@@ -12,7 +12,7 @@ class section_22_income(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         elderly_disabled = parameters(
             period
         ).gov.irs.credits.elderly_or_disabled

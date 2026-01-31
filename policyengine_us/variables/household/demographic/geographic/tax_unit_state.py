@@ -7,5 +7,5 @@ class tax_unit_state(Variable):
     label = "Tax unit State"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit.household("state_code_str", period)

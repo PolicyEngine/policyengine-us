@@ -10,7 +10,7 @@ class ga_low_income_credit(Variable):
     reference = "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download"
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # We follow the legal code, which says (in addition to head and spouse):
         # "multiplied by the number of dependents which the taxpayer is entitled to claim."
         # The tax form excludes adult dependents:

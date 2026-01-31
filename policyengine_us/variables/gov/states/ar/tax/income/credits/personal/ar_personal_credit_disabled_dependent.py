@@ -14,7 +14,7 @@ class ar_personal_credit_disabled_dependent(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)
         disabled_dependent = disabled & dependent

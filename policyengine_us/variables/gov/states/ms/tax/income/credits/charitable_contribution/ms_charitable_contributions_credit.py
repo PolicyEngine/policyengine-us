@@ -13,7 +13,7 @@ class ms_charitable_contributions_credit(Variable):
         "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=3",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ms.tax.income.credits.charitable_contribution

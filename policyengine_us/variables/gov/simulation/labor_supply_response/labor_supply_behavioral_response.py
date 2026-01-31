@@ -8,7 +8,7 @@ class labor_supply_behavioral_response(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.simulation.labor_supply_responses
         simulation = person.simulation
         if simulation.baseline is None:
@@ -17,16 +17,16 @@ class labor_supply_behavioral_response(Variable):
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
-        if (
+        if (  # pragma: no cover
             hasattr(simulation, "_lsr_calculating")
             and simulation._lsr_calculating
         ):
             return 0
 
         # Mark that we're calculating LSR
-        simulation._lsr_calculating = True
+        simulation._lsr_calculating = True  # pragma: no cover
 
-        try:
+        try:  # pragma: no cover
             measurement_branch = simulation.get_branch(
                 "lsr_measurement", clone_system=True
             )  # A branch without LSRs

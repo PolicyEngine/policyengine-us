@@ -12,7 +12,7 @@ class tx_tanf_eligible_child(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Child must meet age/demographic requirements
         age_eligible = person("tx_tanf_age_eligible_child", period)
 

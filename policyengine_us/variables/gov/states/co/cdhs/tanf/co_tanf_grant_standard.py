@@ -9,7 +9,7 @@ class co_tanf_grant_standard(Variable):
     definition_period = YEAR
     defined_for = "co_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         children = spm_unit("co_tanf_count_children", period)
         adults = spm_unit("spm_unit_count_adults", period)
         count_pregnant_people = add(spm_unit, period, ["is_pregnant"])

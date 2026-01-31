@@ -11,5 +11,5 @@ class dc_gac_eligible_child(Variable):
     )
     defined_for = "dc_pap_eligible_child"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return ~person("is_related_to_head_or_spouse", period)

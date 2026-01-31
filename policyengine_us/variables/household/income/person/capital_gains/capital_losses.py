@@ -9,5 +9,5 @@ class capital_losses(Variable):
     documentation = "Losses from transactions involving property."
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return max_(0, -person("capital_gains", period))

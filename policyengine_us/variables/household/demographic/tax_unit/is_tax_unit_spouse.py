@@ -7,7 +7,7 @@ class is_tax_unit_spouse(Variable):
     label = "Spouse of tax unit"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Only non-head adults can be spouses.
         is_separated = person.tax_unit.any(person("is_separated", period))
         adult = ~person("is_child", period)

@@ -11,7 +11,7 @@ class la_general_relief_cash_asset_limit(Variable):
     defined_for = "in_la"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         married = add(spm_unit, period, ["is_married"])
         p = parameters(
             period

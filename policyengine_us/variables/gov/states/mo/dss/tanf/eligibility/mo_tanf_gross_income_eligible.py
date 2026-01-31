@@ -12,7 +12,7 @@ class mo_tanf_gross_income_eligible(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf
         gross_income = add(
             spm_unit,

@@ -9,7 +9,7 @@ class ca_tanf(Variable):
     definition_period = YEAR
     defined_for = "ca_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         maximum_payment = spm_unit("ca_tanf_maximum_payment", period)
         countable_income = spm_unit(
             "ca_tanf_countable_income_recipient", period

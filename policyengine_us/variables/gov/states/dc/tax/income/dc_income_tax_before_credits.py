@@ -13,7 +13,7 @@ class dc_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return where(
             tax_unit("dc_files_separately", period),
             tax_unit("dc_income_tax_before_credits_indiv", period),

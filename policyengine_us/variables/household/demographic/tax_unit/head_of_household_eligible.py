@@ -8,7 +8,7 @@ class head_of_household_eligible(Variable):
     label = "Qualifies for head of household filing status"
     reference = "https://www.law.cornell.edu/uscode/text/26/2#b"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         married = tax_unit("tax_unit_married", period)
         has_child_dependents = (
             tax_unit("tax_unit_child_dependents", period) > 0

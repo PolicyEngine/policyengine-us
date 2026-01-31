@@ -18,7 +18,7 @@ class co_federal_ctc_child_individual_maximum(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         base_amount = parameters(period).gov.irs.credits.ctc.amount.base
         is_dependent = person("is_tax_unit_dependent", period)

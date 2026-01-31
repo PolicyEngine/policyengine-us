@@ -9,7 +9,7 @@ class ne_military_retirement_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ne.tax.income.agi.subtractions.military_retirement

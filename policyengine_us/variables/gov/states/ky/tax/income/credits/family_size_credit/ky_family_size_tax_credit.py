@@ -12,7 +12,7 @@ class ky_family_size_tax_credit(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         rate = tax_unit("ky_family_size_tax_credit_rate", period)
         income = tax_unit(
             "ky_income_tax_before_non_refundable_credits_unit", period

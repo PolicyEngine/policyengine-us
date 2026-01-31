@@ -7,7 +7,7 @@ class is_ccdf_asset_eligible(Variable):
     definition_period = YEAR
     label = "Asset eligibility for CCDF"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         assets = spm_unit("spm_unit_assets", period)
         p_asset_limit = parameters(period).gov.hhs.ccdf.asset_limit
         return assets <= p_asset_limit

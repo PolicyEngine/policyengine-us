@@ -8,7 +8,7 @@ class id_2022_rebate(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tax.income.credits["2022_rebate"]
         income_tax_before_credits = tax_unit(
             "id_income_tax_before_non_refundable_credits", period

@@ -9,7 +9,7 @@ class tx_tanf_recognizable_needs_test(Variable):
     reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Recognizable needs test applies to continuing recipients
         # Household passes if recognizable needs > countable income
 

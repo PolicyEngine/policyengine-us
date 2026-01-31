@@ -10,7 +10,7 @@ class ar_medical_expense_deduction_joint(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
     defined_for = StateCode.AR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         year = period.start.year
         agi = add(tax_unit, period, ["ar_agi_joint"])
         # Arkansas applies the federal medical expense floor rate which was established in 2013

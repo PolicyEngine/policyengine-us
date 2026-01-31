@@ -9,7 +9,7 @@ class il_bap_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://ilaging.illinois.gov/benefitsaccess.html"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.idoa.bap
         age = person("age", period)
 

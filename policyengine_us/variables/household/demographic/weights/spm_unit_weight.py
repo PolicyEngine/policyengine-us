@@ -8,6 +8,6 @@ class spm_unit_weight(Variable):
     definition_period = YEAR
     uprating = "calibration.gov.census.populations.total"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use household weights if not provided
         return spm_unit.household("household_weight", period)

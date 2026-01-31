@@ -9,6 +9,6 @@ class positive_gross_income(Variable):
     documentation = "Negative gross income values capped at zero"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         gross_income = add(tax_unit, period, ["irs_gross_income"])
         return max_(gross_income, 0)

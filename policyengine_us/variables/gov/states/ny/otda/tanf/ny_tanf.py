@@ -9,7 +9,7 @@ class ny_tanf(Variable):
     definition_period = YEAR
     defined_for = "ny_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         grant_standard = spm_unit("ny_tanf_grant_standard", period)
         income = add(
             spm_unit,

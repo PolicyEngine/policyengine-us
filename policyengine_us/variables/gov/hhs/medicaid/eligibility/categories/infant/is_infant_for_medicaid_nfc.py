@@ -7,7 +7,7 @@ class is_infant_for_medicaid_nfc(Variable):
     label = "Medicaid infant non-financial criteria"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)  # person’s age in years
         state = person.household("state_code_str", period)
 

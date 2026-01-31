@@ -12,7 +12,7 @@ class me_tanf_resources_eligible(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762 and P.L. 2023 Ch. 366:
         # Resource limit is $10,000 per family
         # One vehicle per licensed driver is exempt

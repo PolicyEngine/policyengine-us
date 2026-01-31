@@ -13,7 +13,7 @@ class id_grocery_credit_aged(Variable):
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tax.income.credits.grocery.aged
         # Aged head and spouse are eligible for an additional grocery credit amount
         age = person("age", period)

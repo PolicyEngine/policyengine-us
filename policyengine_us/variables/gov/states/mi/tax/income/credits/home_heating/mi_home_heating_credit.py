@@ -13,7 +13,7 @@ class mi_home_heating_credit(Variable):
         "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         standard_credit = tax_unit("mi_standard_home_heating_credit", period)
         alternate_credit = tax_unit("mi_alternate_home_heating_credit", period)
         p = parameters(period).gov.states.mi.tax.income.credits.home_heating

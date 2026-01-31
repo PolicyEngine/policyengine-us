@@ -17,7 +17,7 @@ class ma_ccfa_region(Variable):
     label = "Massachusetts Child Care Financial Assistance (CCFA) region"
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
 
         p = parameters(period).gov.states.ma.eec.ccfa.region

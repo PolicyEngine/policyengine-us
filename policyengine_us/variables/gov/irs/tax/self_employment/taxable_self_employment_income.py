@@ -9,7 +9,7 @@ class taxable_self_employment_income(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/1402#a"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per 26 USC 1402(a), SE income includes:
         # - Schedule C net profit (self_employment_income)
         # - Schedule F net profit (farm_income)

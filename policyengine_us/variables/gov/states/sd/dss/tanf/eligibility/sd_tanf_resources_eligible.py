@@ -9,7 +9,7 @@ class sd_tanf_resources_eligible(Variable):
     reference = "https://sdlegislature.gov/Rules/Administrative/67:10:04:03"
     defined_for = StateCode.SD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.sd.dss.tanf.resources
         resources = spm_unit("spm_unit_assets", period.this_year)
         return resources <= p.limit

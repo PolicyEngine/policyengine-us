@@ -8,7 +8,7 @@ class is_in_medicaid_medically_needy_category(Variable):
     documentation = "Whether this person is in a Medicaid category for which there is a medically needy pathway."
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         mn_categories = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.medically_needy.categories

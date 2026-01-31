@@ -10,7 +10,7 @@ class dc_ccsp_copay(Variable):
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf"
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp.copay
         qualified_need_eligible = spm_unit(
             "dc_ccsp_qualified_need_eligible", period

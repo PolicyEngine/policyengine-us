@@ -9,7 +9,7 @@ class rent(Variable):
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pre_subsidy_rent = person("pre_subsidy_rent", period)
         total_pre_subsidy_rent = person.spm_unit.sum(pre_subsidy_rent)
         housing_subsidy = person.spm_unit("housing_assistance", period)

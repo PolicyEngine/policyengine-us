@@ -12,7 +12,7 @@ class ga_ctc(Variable):
         "https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=2",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)

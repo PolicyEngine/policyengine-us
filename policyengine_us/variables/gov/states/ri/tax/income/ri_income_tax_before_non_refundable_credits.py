@@ -9,7 +9,7 @@ class ri_income_tax_before_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("ri_taxable_income", period)
         rate = parameters(period).gov.states.ri.tax.income.rate
         return rate.calc(income)

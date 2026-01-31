@@ -8,7 +8,7 @@ class il_tanf_assistance_unit_fpg(Variable):
     definition_period = MONTH
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         n = spm_unit("il_tanf_assistance_unit_size", period)
         state_group = spm_unit.household("state_group_str", period)
         p_fpg = parameters(period).gov.hhs.fpg

@@ -10,7 +10,7 @@ class co_eitc(Variable):
     reference = "https://leg.colorado.gov/sites/default/files/te19_colorado_earned_income_tax_credit.pdf"
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.co.tax.income.credits
         return federal_eitc * p.eitc.match

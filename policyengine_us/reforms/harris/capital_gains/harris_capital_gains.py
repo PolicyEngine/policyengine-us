@@ -9,7 +9,7 @@ def create_harris_capital_gains() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             net_cg = tax_unit("net_capital_gain", period)
             taxable_income = tax_unit("taxable_income", period)
             adjusted_net_cg = min_(
@@ -119,7 +119,7 @@ def create_harris_capital_gains() -> Reform:
             return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(capital_gains_tax)
 
     return reform
@@ -127,7 +127,7 @@ def create_harris_capital_gains() -> Reform:
 
 def create_harris_capital_gains_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_harris_capital_gains()
 

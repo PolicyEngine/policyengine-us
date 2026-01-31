@@ -9,7 +9,7 @@ class nm_additional_2021_income_rebate(Variable):
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503710/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsHHgEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA"
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.nm.tax.income.rebates["2021_income"]
         filing_status = tax_unit("filing_status", period)

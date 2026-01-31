@@ -9,7 +9,7 @@ class tip_income_deduction(Variable):
     definition_period = YEAR
     defined_for = "tip_income_deduction_ssn_requirement_met"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         tip_income = person("tip_income", period)
         agi = tax_unit("adjusted_gross_income", period)

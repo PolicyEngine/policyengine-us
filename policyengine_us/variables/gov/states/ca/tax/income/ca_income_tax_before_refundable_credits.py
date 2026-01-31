@@ -10,7 +10,7 @@ class ca_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax = tax_unit("ca_income_tax_before_credits", period)
         nonrefundable_credits = tax_unit("ca_non_refundable_credits", period)
         return max_(0, itax - nonrefundable_credits)

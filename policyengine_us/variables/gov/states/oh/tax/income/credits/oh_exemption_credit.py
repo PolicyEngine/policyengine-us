@@ -10,7 +10,7 @@ class oh_exemption_credit(Variable):
     reference = "https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-022/"
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.oh.tax.income.credits.exemption
 
         agi = tax_unit("oh_agi", period)

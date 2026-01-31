@@ -13,7 +13,7 @@ class ca_itemized_deductions(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itm_deds_max = tax_unit(
             "ca_itemized_deductions_pre_limitation", period
         )

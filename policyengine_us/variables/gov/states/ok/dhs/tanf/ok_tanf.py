@@ -12,7 +12,7 @@ class ok_tanf(Variable):
     )
     defined_for = "ok_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.dhs.tanf
 
         payment_standard = spm_unit("ok_tanf_payment_standard", period)

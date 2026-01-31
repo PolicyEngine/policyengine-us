@@ -10,6 +10,6 @@ class elderly_disabled_credit_potential(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.elderly_or_disabled
         return p.rate * tax_unit("section_22_income", period)

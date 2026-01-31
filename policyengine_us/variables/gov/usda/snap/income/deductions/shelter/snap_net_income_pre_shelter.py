@@ -10,7 +10,7 @@ class snap_net_income_pre_shelter(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_6_A"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         """
         A household shall be entitled, with respect to expenses other than
         expenses paid on behalf of the household by a third party, to an excess

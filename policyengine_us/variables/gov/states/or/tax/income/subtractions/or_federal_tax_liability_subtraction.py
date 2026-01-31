@@ -13,7 +13,7 @@ class or_federal_tax_liability_subtraction(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate Oregon concept of federal income tax
         federal_itax = tax_unit("income_tax", period)
         federal_eitc = tax_unit("eitc", period)

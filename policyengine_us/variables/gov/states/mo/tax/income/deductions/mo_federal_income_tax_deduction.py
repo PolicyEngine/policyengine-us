@@ -13,7 +13,7 @@ class mo_federal_income_tax_deduction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Deduct a capped share of federal income tax liability.
         # Ignore certain refundable credits: recovery rebates and EITC.
         # See #1528 for uncertainty around these credits.

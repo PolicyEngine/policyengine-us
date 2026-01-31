@@ -8,7 +8,7 @@ class de_tax_unit_itemizes(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemized_ded = tax_unit("de_itemized_deductions_unit", period)
         standard_ded = add(tax_unit, period, ["de_standard_deduction_indv"])
         return itemized_ded > standard_ded

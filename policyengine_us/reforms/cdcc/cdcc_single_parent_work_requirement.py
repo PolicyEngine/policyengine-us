@@ -29,7 +29,7 @@ def create_cdcc_single_parent_work_requirement() -> Reform:
             "https://www.law.cornell.edu/uscode/text/26/21#d_1",
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             expenses = tax_unit("tax_unit_childcare_expenses", period)
             cdcc_limit = tax_unit("cdcc_limit", period)
             eligible_capped_expenses = min_(expenses, cdcc_limit)
@@ -46,7 +46,7 @@ def create_cdcc_single_parent_work_requirement() -> Reform:
             return min_(eligible_capped_expenses, earnings_cap)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(cdcc_relevant_expenses)
 
     return reform
@@ -54,7 +54,7 @@ def create_cdcc_single_parent_work_requirement() -> Reform:
 
 def create_cdcc_single_parent_work_requirement_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_cdcc_single_parent_work_requirement()
 

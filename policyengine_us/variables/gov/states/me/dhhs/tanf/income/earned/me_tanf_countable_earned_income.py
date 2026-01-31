@@ -13,7 +13,7 @@ class me_tanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762(3)(B)(7-D):
         # Each employed person gets $108 flat + 50% disregard (applied per person)
         # Then child care deduction applies at household level

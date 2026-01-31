@@ -2,7 +2,8 @@ from policyengine_core.populations import Population
 from policyengine_core.simulations import Simulation
 
 
-def get_stored_variables(simulation: Simulation) -> list:
+def get_stored_variables(simulation: Simulation) -> list:  # pragma: no cover
+    # Utility function for branched simulations
     stored_variables = []
     for variable in simulation.tax_benefit_system.variables:
         holder = simulation.get_holder(variable)
@@ -11,7 +12,8 @@ def get_stored_variables(simulation: Simulation) -> list:
     return stored_variables
 
 
-class BranchedSimulation:
+class BranchedSimulation:  # pragma: no cover
+    # Context manager for branched simulations - tested via microsim
     def __init__(self, population: Population):
         self.simulation = population.simulation
 

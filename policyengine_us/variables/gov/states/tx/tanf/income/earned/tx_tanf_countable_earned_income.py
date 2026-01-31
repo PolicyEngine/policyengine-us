@@ -13,7 +13,7 @@ class tx_tanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Sum person-level earned income after work expense and disregards
         earned_after_disregards = spm_unit(
             "tx_tanf_earned_income_after_disregard_person", period

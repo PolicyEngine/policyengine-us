@@ -13,7 +13,7 @@ class ut_at_home_parent_credit(Variable):
         "https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=23",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)

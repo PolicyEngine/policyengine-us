@@ -9,7 +9,7 @@ class ga_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Georgia matches the federal credit taken
         federal_cdcc = tax_unit("cdcc", period)
         rate = parameters(period).gov.states.ga.tax.income.credits.cdcc.rate

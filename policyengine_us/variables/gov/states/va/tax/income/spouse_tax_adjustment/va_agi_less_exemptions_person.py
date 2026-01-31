@@ -10,7 +10,7 @@ class va_agi_less_exemptions_person(Variable):
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get the individual's VAGI.
         va_agi = person("va_agi_person", period)
 

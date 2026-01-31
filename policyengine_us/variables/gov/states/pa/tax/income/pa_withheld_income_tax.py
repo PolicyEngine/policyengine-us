@@ -9,7 +9,7 @@ class pa_withheld_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("adjusted_gross_income_person", period)
         # Pennsylvania does not have standard deductions, personal exemptions, or itemized deductions.
         # Also, They do not use the federal standard deduction amounts.

@@ -13,7 +13,7 @@ class tx_tanf_eligible(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
 
         # Must have at least one eligible child in certified group

@@ -13,7 +13,7 @@ class ne_cdcc_refundable(Variable):
     )
     defined_for = "ne_cdcc_refundable_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.credits.cdcc.refundable
         us_agi = tax_unit("adjusted_gross_income", period)
         max_match_percentage = p.match

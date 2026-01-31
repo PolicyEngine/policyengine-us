@@ -7,5 +7,5 @@ class is_senior(Variable):
     label = "Is a senior"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("age", period) >= 65

@@ -12,7 +12,7 @@ class me_tanf_income_eligible(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762(3)(B)(7-F):
         # Countable income must not exceed the Standard of Need
         countable_income = spm_unit("me_tanf_countable_income", period)

@@ -14,7 +14,7 @@ class nj_other_retirement_special_exclusion(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # If filer (and spouse, if joint) are never eligible for social security benefits, they are eligible for special exclusion.
         # Get the pension/retirement exclusion portion of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement

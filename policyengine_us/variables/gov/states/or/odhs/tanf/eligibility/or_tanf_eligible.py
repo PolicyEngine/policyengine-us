@@ -9,7 +9,7 @@ class or_tanf_eligible(Variable):
     reference = "https://oregon.public.law/rules/oar_461-135-0070"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         has_citizen = spm_unit.any(

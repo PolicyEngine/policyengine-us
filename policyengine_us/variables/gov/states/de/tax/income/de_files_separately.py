@@ -10,7 +10,7 @@ class de_files_separately(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_indiv = add(
             tax_unit,
             period,

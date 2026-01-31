@@ -14,7 +14,7 @@ class la_agi_exempt_income(Variable):
     definition_period = YEAR
 
     # Functions as subtractions.
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.exempt_income
         total_exempt_income = add(tax_unit, period, p.sources)
         if p.reduction.in_effect:

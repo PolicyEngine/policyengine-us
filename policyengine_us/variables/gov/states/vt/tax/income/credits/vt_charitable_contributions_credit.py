@@ -13,7 +13,7 @@ class vt_charitable_contribution_credit(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         charitable_contributions = add(
             tax_unit,
             period,

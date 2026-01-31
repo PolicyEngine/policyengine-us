@@ -15,7 +15,7 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

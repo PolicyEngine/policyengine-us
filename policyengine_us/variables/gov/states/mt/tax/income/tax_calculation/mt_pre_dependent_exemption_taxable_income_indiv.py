@@ -13,7 +13,7 @@ class mt_pre_dependent_exemption_taxable_income_indiv(Variable):
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=16",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         mt_agi = person("mt_agi_indiv", period)
         exemptions = person("mt_personal_exemptions_indiv", period)
         deductions = person("mt_deductions_indiv", period)

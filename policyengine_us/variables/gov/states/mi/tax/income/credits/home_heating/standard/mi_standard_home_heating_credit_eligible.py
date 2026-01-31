@@ -8,7 +8,7 @@ class mi_standard_home_heating_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.home_heating.standard

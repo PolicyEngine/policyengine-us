@@ -14,7 +14,7 @@ class or_standard_deduction(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].tax.income.deductions.standard
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)

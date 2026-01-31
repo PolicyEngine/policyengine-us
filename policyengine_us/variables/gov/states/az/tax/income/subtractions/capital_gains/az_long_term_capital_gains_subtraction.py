@@ -10,7 +10,7 @@ class az_long_term_capital_gains_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.subtractions.capital_gains

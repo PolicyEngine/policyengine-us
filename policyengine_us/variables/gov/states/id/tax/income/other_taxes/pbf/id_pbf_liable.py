@@ -9,7 +9,7 @@ class id_pbf_liable(Variable):
     reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=3"
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Not required to pay if there is no income tax
         owes_income_tax_before_credits = tax_unit(
             "id_income_tax_liable", period

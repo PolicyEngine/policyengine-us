@@ -9,7 +9,7 @@ class nm_eitc_eligible(Variable):
     reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf"  # 7-2-18.15
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Use federal EITC eligibility, but replace demographic eligibility
         # with NM version.
         eitc = parameters.gov.irs.credits.eitc(period)

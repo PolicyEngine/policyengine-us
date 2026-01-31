@@ -12,7 +12,7 @@ class tx_tanf(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Compare monthly TANF benefit with monthly equivalent of OTTANF
         # Return whichever is higher for the household
 

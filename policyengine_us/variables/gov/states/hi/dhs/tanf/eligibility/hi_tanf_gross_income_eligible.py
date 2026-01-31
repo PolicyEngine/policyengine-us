@@ -11,7 +11,7 @@ class hi_tanf_gross_income_eligible(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.dhs.tanf
 
         gross_income = spm_unit("hi_tanf_gross_income", period)

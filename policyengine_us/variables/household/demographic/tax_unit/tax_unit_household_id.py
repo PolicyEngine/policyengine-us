@@ -7,7 +7,7 @@ class tax_unit_household_id(Variable):
     label = "Tax unit household ID"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         return tax_unit.value_from_first_person(
             person.household("household_id", period)

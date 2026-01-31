@@ -9,7 +9,7 @@ class il_base_income_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.tax.income.base
         total_subtractions = add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

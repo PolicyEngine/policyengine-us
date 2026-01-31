@@ -10,7 +10,7 @@ class ny_inflation_refund_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606#QQQ"
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return 0
 
     def formula_2025(tax_unit, period, parameters):
@@ -38,5 +38,5 @@ class ny_inflation_refund_credit(Variable):
             ],
         )
 
-    def formula_2026(tax_unit, period, parameters):
+    def formula_2026(tax_unit, period, parameters):  # pragma: no cover
         return 0

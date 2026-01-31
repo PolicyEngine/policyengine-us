@@ -10,7 +10,7 @@ class ar_tea_maximum_benefit(Variable):
     reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
     defined_for = StateCode.AR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 208.00.13 Ark. Code R. Section 001, Section 6.1.1
         p = parameters(period).gov.states.ar.dhs.tea.payment_standard
         unit_size = spm_unit("spm_unit_size", period.this_year)

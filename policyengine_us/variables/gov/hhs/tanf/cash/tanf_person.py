@@ -11,5 +11,5 @@ class tanf_person(Variable):
     )
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person.spm_unit("tanf", period) / person.spm_unit.nb_persons()

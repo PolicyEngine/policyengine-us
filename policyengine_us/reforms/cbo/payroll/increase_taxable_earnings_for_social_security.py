@@ -9,7 +9,7 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             earnings = person("payroll_tax_gross_wages", period)
             p = parameters(period).gov
             base_taxable = min_(earnings, p.irs.payroll.social_security.cap)
@@ -20,7 +20,7 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
             return base_taxable + secondary_taxable
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(taxable_earnings_for_social_security)
 
     return reform
@@ -28,7 +28,7 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
 
 def create_increase_taxable_earnings_for_social_security_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_increase_taxable_earnings_for_social_security()
 

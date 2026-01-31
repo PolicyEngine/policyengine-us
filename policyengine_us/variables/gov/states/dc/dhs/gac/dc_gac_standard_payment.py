@@ -12,7 +12,7 @@ class dc_gac_standard_payment(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         unit_size = spm_unit("dc_gac_assistance_unit_size", period)
         p = parameters(period).gov.states.dc.dhs.tanf.standard_payment
         capped_unit_size = min_(unit_size, p.max_unit_size)

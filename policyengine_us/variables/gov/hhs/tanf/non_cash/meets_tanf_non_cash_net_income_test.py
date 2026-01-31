@@ -8,7 +8,7 @@ class meets_tanf_non_cash_net_income_test(Variable):
     documentation = "Income eligibility (net income as a percent of the poverty line) for TANF non-cash benefit for SNAP BBCE"
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Determine if the net income limit applies to the household.
         applies = parameters(
             period

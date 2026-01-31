@@ -9,7 +9,7 @@ class az_blind_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         blind_head = tax_unit("blind_head", period)

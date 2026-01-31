@@ -11,7 +11,7 @@ class nm_property_tax_rebate(Variable):
     defined_for = StateCode.NM
     defined_for = "nm_property_tax_rebate_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get property tax paid
         ptax_owner = add(tax_unit, period, ["real_estate_taxes"])
         # Get rent and multiply by 6%

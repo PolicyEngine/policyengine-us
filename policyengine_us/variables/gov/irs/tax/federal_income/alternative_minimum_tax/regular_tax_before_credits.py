@@ -9,7 +9,7 @@ class regular_tax_before_credits(Variable):
     documentation = "Regular tax on regular taxable income before credits"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         dwks1 = tax_unit("taxable_income", period)

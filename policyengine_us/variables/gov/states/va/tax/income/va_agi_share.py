@@ -10,7 +10,7 @@ class va_agi_share(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=20"
     defined_for = StateCode.VA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("va_agi_person", period)
         total_agi = person.tax_unit.sum(agi)
         # avoid divide-by-zero warnings

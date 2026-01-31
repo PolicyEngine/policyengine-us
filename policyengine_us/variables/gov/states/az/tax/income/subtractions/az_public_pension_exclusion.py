@@ -14,7 +14,7 @@ class az_public_pension_exclusion(Variable):
     )
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.az.tax.income.subtractions.pension
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

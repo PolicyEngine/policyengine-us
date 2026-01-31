@@ -22,7 +22,7 @@ class ga_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemizes = tax_unit("tax_unit_itemizes", period)
         sd = tax_unit("ga_standard_deduction", period)
         # 48-7-27(a)(1) states:

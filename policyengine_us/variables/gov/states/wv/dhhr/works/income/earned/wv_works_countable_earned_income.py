@@ -10,7 +10,7 @@ class wv_works_countable_earned_income(Variable):
     reference = "https://bfa.wv.gov/media/2766/download?inline#page=586"
     defined_for = StateCode.WV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wv.dhhr.works.income
         # Step 1: Add together the countable gross earned income
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])

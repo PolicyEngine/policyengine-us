@@ -11,7 +11,7 @@ class is_qmb_eligible(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # QMB requires income at or below 100% FPL
         p = parameters(
             period

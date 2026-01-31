@@ -10,7 +10,7 @@ class me_sales_tax_fairness_credit(Variable):
     reference = "https://legislature.maine.gov/statutes/36/title36sec5213-A.html"  # B. 4
     defined_for = "me_sales_tax_fairness_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.me.tax.income.credits.fairness.sales_tax

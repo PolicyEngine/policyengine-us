@@ -9,7 +9,7 @@ class mt_applicable_ald_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ald_deductions = person.tax_unit("above_the_line_deductions", period)
         total_deductions = ald_deductions / person.tax_unit(
             "head_spouse_count", period

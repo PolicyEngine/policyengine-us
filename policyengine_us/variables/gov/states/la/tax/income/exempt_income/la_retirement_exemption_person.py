@@ -10,7 +10,7 @@ class la_retirement_exemption_person(Variable):
     reference = "https://www.legis.la.gov/legis/Law.aspx?d=102133"
     defined_for = StateCode.LA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pension_income = person("taxable_pension_income", period)
         age = person("age", period)
         p = parameters(

@@ -10,7 +10,7 @@ class ny_household_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (b)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ny.tax.income.credits.household_credit

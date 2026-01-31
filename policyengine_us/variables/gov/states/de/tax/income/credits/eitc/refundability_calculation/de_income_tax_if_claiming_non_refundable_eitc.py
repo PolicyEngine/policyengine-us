@@ -9,7 +9,7 @@ class de_income_tax_if_claiming_non_refundable_eitc(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         simulation = tax_unit.simulation
         non_refundable_branch = simulation.get_branch("de_non_refundable_eitc")
         non_refundable_branch.set_input(

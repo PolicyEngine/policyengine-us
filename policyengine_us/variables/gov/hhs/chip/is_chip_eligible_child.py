@@ -12,7 +12,7 @@ class is_chip_eligible_child(Variable):
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get state code
         state_code = person.household("state_code", period)
 

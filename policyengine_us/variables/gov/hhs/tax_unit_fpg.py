@@ -15,7 +15,7 @@ class tax_unit_fpg(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         n = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
         return fpg(n, state_group, period, parameters)

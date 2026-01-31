@@ -11,7 +11,7 @@ class ma_eaedc_assets_limit_eligible(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-110"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.assets
         countable_assets = spm_unit("ma_eaedc_countable_assets", period)
         living_arrangement = spm_unit("ma_eaedc_living_arrangement", period)

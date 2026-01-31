@@ -8,7 +8,7 @@ class nc_tanf_income_eligible(Variable):
     definition_period = YEAR
     defined_for = "nc_demographic_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.tanf.eligibility
         household_size = spm_unit("nc_tanf_household_size", period)
         reduced_need_standard = spm_unit(

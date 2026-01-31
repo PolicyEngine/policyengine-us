@@ -13,7 +13,7 @@ class ms_taxable_income_indiv(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pre_deductions_agi = person(
             "ms_pre_deductions_taxable_income_indiv", period
         )

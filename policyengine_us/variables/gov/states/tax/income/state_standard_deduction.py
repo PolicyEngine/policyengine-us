@@ -8,7 +8,7 @@ class state_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # States that adopt the federal standard deduction
         # Based on comments in state_standard_deductions.yaml
         FEDERAL_STANDARD_DEDUCTION_STATES = [

@@ -13,7 +13,7 @@ class adjusted_net_capital_gain(Variable):
         href="https://www.law.cornell.edu/uscode/text/26/1#h_3",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         net_capital_gain = tax_unit("net_capital_gain", period)
         # The law actually uses the original definition of 'net capital gain' which does not include
         # qualified dividend income, but separately adds qualified dividends here. The definition of

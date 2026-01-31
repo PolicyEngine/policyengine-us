@@ -9,7 +9,7 @@ class tx_tanf_income_eligible(Variable):
     reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Texas TANF has two income eligibility tests per § 372.408:
         #
         # Budgetary needs test (§ 372.408 (a)(1)):

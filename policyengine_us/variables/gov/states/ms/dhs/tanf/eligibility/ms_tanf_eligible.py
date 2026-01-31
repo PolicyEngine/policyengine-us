@@ -13,7 +13,7 @@ class ms_tanf_eligible(Variable):
         "https://www.law.cornell.edu/regulations/mississippi/Miss-Code-tit-18-pt-19",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility baseline
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
 

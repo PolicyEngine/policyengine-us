@@ -13,7 +13,7 @@ class mn_amt_taxable_income(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fagi = tax_unit("adjusted_gross_income", period)
         itemizing = tax_unit("mn_itemizing", period)
         SOME_DEDUCTIONS = [

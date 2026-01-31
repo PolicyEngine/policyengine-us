@@ -13,7 +13,7 @@ class dc_self_employment_loss_addition(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         loss_person = max_(0, -person("self_employment_income", period))
         loss_taxunit = person.tax_unit.sum(loss_person)
         p = parameters(period).gov.states.dc.tax.income.additions

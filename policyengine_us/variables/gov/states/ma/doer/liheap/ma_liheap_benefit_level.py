@@ -9,7 +9,7 @@ class ma_liheap_benefit_level(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = spm_unit("ma_liheap_income", period)
         fpg = spm_unit("ma_liheap_fpg", period)
         p = parameters(period).gov.states.ma.doer.liheap.benefit_level

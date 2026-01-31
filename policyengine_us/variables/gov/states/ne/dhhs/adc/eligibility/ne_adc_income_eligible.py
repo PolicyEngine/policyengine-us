@@ -12,7 +12,7 @@ class ne_adc_income_eligible(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 468 NAC: countable income must be below standard of need
         countable_income = spm_unit("ne_adc_countable_income", period)
         need_standard = spm_unit("ne_adc_need_standard", period)

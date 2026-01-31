@@ -13,7 +13,7 @@ class ne_adc(Variable):
     )
     defined_for = "ne_adc_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         maximum_benefit = spm_unit("ne_adc_maximum_benefit", period)
         unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         return max_(maximum_benefit - unearned, 0)

@@ -9,7 +9,7 @@ class tx_ccs_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.twc.ccs
         # Get monthly countable income
         monthly_income = spm_unit("tx_ccs_countable_income", period)

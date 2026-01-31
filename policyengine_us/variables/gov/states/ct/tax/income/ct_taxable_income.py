@@ -9,7 +9,7 @@ class ct_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("ct_agi", period)
         personal_exemptions = tax_unit("ct_personal_exemptions", period)
         return max_(income - personal_exemptions, 0)

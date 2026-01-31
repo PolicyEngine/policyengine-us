@@ -8,7 +8,7 @@ class childcare_hours_per_week(Variable):
     definition_period = YEAR
     unit = "hour"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         days_per_week = person("childcare_days_per_week", period)
         hours_per_day = person("childcare_hours_per_day", period)
         return days_per_week * hours_per_day

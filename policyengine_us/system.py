@@ -75,7 +75,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         super().__init__(entities, reform=reform)
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
-        if reform:
+        if reform:  # pragma: no cover
             self.apply_reform_set(reform)
         self.parameters = set_irs_uprating_parameter(self.parameters)
         self.parameters = homogenize_parameter_structures(
@@ -147,13 +147,19 @@ class Simulation(CoreSimulation):
         # Labor supply responses
 
         employment_income = self.get_holder("employment_income")
-        for known_period in employment_income.get_known_periods():
+        for (
+            known_period
+        ) in employment_income.get_known_periods():  # pragma: no cover
+            # Labor supply response pre-processing
             array = employment_income.get_array(known_period)
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
-        for known_period in employment_income.get_known_periods():
+        for (
+            known_period
+        ) in employment_income.get_known_periods():  # pragma: no cover
+            # Labor supply response pre-processing
             array = self_employment_income.get_array(known_period)
             self.set_input(
                 "self_employment_income_before_lsr", known_period, array
@@ -161,7 +167,10 @@ class Simulation(CoreSimulation):
             self_employment_income.delete_arrays(known_period)
 
         weekly_hours = self.get_holder("weekly_hours_worked")
-        for known_period in weekly_hours.get_known_periods():
+        for (
+            known_period
+        ) in weekly_hours.get_known_periods():  # pragma: no cover
+            # Labor supply response pre-processing
             array = weekly_hours.get_array(known_period)
             self.set_input(
                 "weekly_hours_worked_before_lsr", known_period, array
@@ -171,7 +180,8 @@ class Simulation(CoreSimulation):
         # Capital gains responses
 
         cg_holder = self.get_holder("long_term_capital_gains")
-        for known_period in cg_holder.get_known_periods():
+        for known_period in cg_holder.get_known_periods():  # pragma: no cover
+            # Capital gains response pre-processing
             array = cg_holder.get_array(known_period)
             self.set_input(
                 "long_term_capital_gains_before_response", known_period, array

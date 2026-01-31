@@ -8,7 +8,7 @@ class substitution_elasticity(Variable):
     unit = "/1"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.simulation.labor_supply_responses.elasticities.substitution

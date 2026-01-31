@@ -14,7 +14,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mo.tax.income.deductions.social_security_and_public_pension

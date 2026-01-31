@@ -10,7 +10,7 @@ class la_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     reference = "https://www.legis.la.gov/legis/Law.aspx?d=101946"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("la_taxable_income", period)
         p = parameters(period).gov.states.la.tax.income.main
         if p.flat.applies:

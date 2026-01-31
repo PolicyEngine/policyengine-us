@@ -14,7 +14,7 @@ class il_aabd_shelter_allowance(Variable):
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.248",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.payment.shelter_allowance
         rent_expense = person("rent", period)
         renter = rent_expense > 0

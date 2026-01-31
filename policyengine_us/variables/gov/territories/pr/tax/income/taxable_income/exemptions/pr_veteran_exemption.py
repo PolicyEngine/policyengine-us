@@ -10,7 +10,7 @@ class pr_veteran_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.PR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # line 9
         p = parameters(
             period

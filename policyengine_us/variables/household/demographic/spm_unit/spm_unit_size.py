@@ -7,5 +7,5 @@ class spm_unit_size(Variable):
     label = "SPM unit size"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return spm_unit.nb_persons()

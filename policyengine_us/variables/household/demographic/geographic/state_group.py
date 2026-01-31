@@ -19,7 +19,7 @@ class state_group(Variable):
     label = "State group"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         NON_CONTIGUOUS_STATES = ("AK", "HI", "GU", "PR", "VI")
         state_code = household("state_code", period).decode_to_str()
         is_non_contiguous = np.isin(state_code, NON_CONTIGUOUS_STATES)

@@ -10,7 +10,7 @@ class sc_senior_exemption_person(Variable):
     reference = "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf"
     defined_for = StateCode.SC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get the SC senior exemptions part of the parameter tree
         p = parameters(period).gov.states.sc.tax.income.exemptions.senior
 

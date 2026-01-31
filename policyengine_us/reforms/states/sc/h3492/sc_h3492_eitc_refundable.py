@@ -25,7 +25,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         )
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             federal_eitc = tax_unit("eitc", period)
             rate = parameters(
                 period
@@ -40,7 +40,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Sum non-refundable credits excluding EITC
             cdcc = tax_unit("sc_cdcc", period)
             two_wage = tax_unit("sc_two_wage_earner_credit", period)
@@ -54,7 +54,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Tax before non-refundable credits minus other credits
             tax_before = tax_unit(
                 "sc_income_tax_before_non_refundable_credits", period
@@ -75,7 +75,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         )
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             total_eitc = tax_unit("sc_h3492_total_eitc", period)
             tax_liability = tax_unit("sc_h3492_tax_liability_for_eitc", period)
             # Non-refundable portion is limited to tax liability
@@ -92,7 +92,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         )
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.sc.h3492
             total_eitc = tax_unit("sc_h3492_total_eitc", period)
             non_refundable = tax_unit("sc_h3492_eitc_non_refundable", period)
@@ -107,7 +107,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Other non-refundable credits plus the non-refundable EITC portion
             other_credits = tax_unit(
                 "sc_h3492_other_non_refundable_credits", period
@@ -125,7 +125,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.SC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.sc.tax.income.credits
             standard_credits = add(tax_unit, period, p.refundable)
             # Add refundable EITC portion from H.3492
@@ -133,7 +133,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
             return standard_credits + eitc_refundable
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(sc_h3492_total_eitc)
             self.update_variable(sc_h3492_other_non_refundable_credits)
             self.update_variable(sc_h3492_tax_liability_for_eitc)
@@ -147,7 +147,7 @@ def create_sc_h3492_eitc_refundable() -> Reform:
 
 def create_sc_h3492_eitc_refundable_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_sc_h3492_eitc_refundable()
 

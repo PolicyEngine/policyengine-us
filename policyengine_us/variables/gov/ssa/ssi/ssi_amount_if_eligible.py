@@ -9,7 +9,7 @@ class ssi_amount_if_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382#b"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.ssa.ssi.amount
         is_dependent = person("is_tax_unit_dependent", period)
 

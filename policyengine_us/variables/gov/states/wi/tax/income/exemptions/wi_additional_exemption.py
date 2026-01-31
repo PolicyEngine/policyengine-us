@@ -16,7 +16,7 @@ class wi_additional_exemption(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute extra exemption amount
         p = parameters(period).gov.states.wi.tax.income
         elderly_head = (

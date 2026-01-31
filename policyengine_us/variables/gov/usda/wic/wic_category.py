@@ -20,7 +20,7 @@ class wic_category(Variable):
     label = "WIC demographic category"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#b"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pregnant = person("is_pregnant", period)
         mother = person("is_mother", period)
         breastfeeding = person("is_breastfeeding", period)

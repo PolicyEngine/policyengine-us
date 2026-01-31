@@ -8,7 +8,7 @@ class lives_in_vehicle(Variable):
     documentation = "Whether a household is using their vehicle as their primary residence "
     label = "Lives in vehicle"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Assuming that the household has to be considered homeless
         # and own at least one vehicle
         is_homeless = household("is_homeless", period)

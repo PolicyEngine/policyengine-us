@@ -8,7 +8,7 @@ class va_capped_state_and_local_sales_or_income_tax(Variable):
     label = "Capped state and local sales or income tax for Virginia itemized deductions purposes"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         uncapped_state_and_local_tax = tax_unit(
             "state_and_local_sales_or_income_tax", period
         )

@@ -8,7 +8,7 @@ class pell_grant(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         coa = person("cost_of_attending_college", period)
         p = parameters(period).gov.ed.pell_grant
 

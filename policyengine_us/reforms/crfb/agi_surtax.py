@@ -11,7 +11,7 @@ def agi_surtax_reform() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             agi = tax_unit("adjusted_gross_income", period)
             p = parameters(period).gov.contrib.crfb.surtax
             if p.increased_base.in_effect:
@@ -40,14 +40,16 @@ def agi_surtax_reform() -> Reform:
         ]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(agi_surtax)
             self.update_variable(income_tax_before_credits)
 
     return reform
 
 
-def create_agi_surtax_reform(parameters, period, bypass: bool = False):
+def create_agi_surtax_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform

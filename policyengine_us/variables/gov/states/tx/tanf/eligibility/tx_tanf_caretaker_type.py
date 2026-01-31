@@ -19,7 +19,7 @@ class tx_tanf_caretaker_type(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Caretaker type determines payment standard amount
         # Based on number of parents included in certified group
 

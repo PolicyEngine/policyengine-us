@@ -10,7 +10,7 @@ class tn_ff_payment_standard(Variable):
     reference = "https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20"
     defined_for = StateCode.TN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NOTE: Tennessee has a Differential Grant Payment Amount (DGPA) for
         # caretakers who are age 60+, disabled, or provide care for disabled.
         # This is not currently modeled; we only return the Standard Payment

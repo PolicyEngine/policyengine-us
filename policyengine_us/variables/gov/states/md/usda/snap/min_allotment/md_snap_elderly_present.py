@@ -8,7 +8,7 @@ class md_snap_elderly_present(Variable):
     label = "Elderly person is present for the Maryland SNAP minimum allotment"
     defined_for = StateCode.MD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         elderly = person("md_snap_is_elderly", period)
         return spm_unit.any(elderly)

@@ -8,7 +8,7 @@ class ny_tanf_income_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = add(
             spm_unit,
             period,

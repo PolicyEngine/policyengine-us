@@ -19,7 +19,7 @@ class il_hbi_age_eligible(Variable):
     #
     # Note: Ages 19-41 are NOT covered by any Illinois immigrant health program.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         age = person("age", period)

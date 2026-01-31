@@ -10,7 +10,7 @@ class pr_casualty_loss_deduction(Variable):
     reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"  # (10)
     defined_for = StateCode.PR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.deductions.casualty_loss

@@ -14,7 +14,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         ind_mo_agi = person("mo_adjusted_gross_income", period)
         unit_mo_agi = tax_unit.sum(ind_mo_agi)

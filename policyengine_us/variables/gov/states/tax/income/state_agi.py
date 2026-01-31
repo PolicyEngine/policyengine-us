@@ -9,7 +9,7 @@ class state_agi(Variable):
     definition_period = YEAR
     adds = "gov.states.household.state_agis"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # States that adopt the federal AGI
         # Based on comments in state_agis.yaml
         FEDERAL_AGI_STATES = [

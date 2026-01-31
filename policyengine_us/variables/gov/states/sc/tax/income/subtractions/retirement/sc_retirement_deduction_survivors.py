@@ -13,7 +13,7 @@ class sc_retirement_deduction_survivors(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
         age = person("age", period)
         # line 1

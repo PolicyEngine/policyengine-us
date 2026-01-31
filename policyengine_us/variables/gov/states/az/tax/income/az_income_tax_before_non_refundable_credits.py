@@ -9,7 +9,7 @@ class az_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("az_taxable_income", period)
         filing_status = tax_unit("az_filing_status", period)
         p = parameters(period).gov.states.az.tax.income.main

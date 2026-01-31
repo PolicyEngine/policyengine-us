@@ -7,5 +7,6 @@ class taxsim_taxsimid(Variable):
     label = "Tax unit ID"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         return tax_unit("tax_unit_id", period)

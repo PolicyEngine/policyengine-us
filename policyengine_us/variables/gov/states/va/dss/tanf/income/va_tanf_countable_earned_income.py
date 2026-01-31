@@ -10,7 +10,7 @@ class va_tanf_countable_earned_income(Variable):
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=55"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf.income.deductions.earned

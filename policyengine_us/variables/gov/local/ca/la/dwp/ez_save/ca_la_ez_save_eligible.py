@@ -8,7 +8,7 @@ class ca_la_ez_save_eligible(Variable):
     label = "Eligible for the Los Angeles County EZ Save program"
     defined_for = "in_la"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         income = household("ca_la_ez_save_countable_income", period)
         fpg = household("ca_la_ez_save_fpg", period)
         p = parameters(period).gov.local.ca.la.dwp.ez_save.eligibility

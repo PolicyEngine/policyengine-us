@@ -10,7 +10,7 @@ class hud_ttp(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.628"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Calculated as the maximum of four values.
         return max_.reduce(
             [

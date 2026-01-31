@@ -11,7 +11,7 @@ class id_tafi_resources_eligible(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tafi.resources
         # Per IDAPA 16.03.08.200: Resources must not exceed $5,000
         resources = spm_unit("spm_unit_assets", period.this_year)

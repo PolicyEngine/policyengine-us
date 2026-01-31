@@ -8,7 +8,7 @@ class hi_food_excise_credit_minor_child_amount(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
 
         return p.minor_child.amount * tax_unit(

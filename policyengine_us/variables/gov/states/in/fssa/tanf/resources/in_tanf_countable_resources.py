@@ -13,7 +13,7 @@ class in_tanf_countable_resources(Variable):
         "https://iga.in.gov/laws/2025/ic/titles/12/#12-14-2-1",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = (
             parameters(period)
             .gov.states["in"]

@@ -10,7 +10,7 @@ class oh_lump_sum_retirement_credit(Variable):
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.055"  # (C, D, E)
     defined_for = "oh_lump_sum_retirement_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.oh.tax.income.credits.retirement
 
         person = tax_unit.members

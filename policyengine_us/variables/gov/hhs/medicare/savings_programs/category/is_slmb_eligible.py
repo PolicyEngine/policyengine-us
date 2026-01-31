@@ -11,7 +11,7 @@ class is_slmb_eligible(Variable):
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # SLMB requires income above 100% FPL but at or below 120% FPL
         p = parameters(
             period

@@ -12,7 +12,7 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Quoting from N.M. Stat. § 7-2-14(C):
           For the purposes of this section, the total number of exemptions

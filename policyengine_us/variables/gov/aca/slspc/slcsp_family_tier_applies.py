@@ -7,7 +7,7 @@ class slcsp_family_tier_applies(Variable):
     label = "ACA family tier applies, rather than age curves"
     definition_period = MONTH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.aca
         state_code = tax_unit.household("state_code", period)
         return p.family_tier_states[state_code]

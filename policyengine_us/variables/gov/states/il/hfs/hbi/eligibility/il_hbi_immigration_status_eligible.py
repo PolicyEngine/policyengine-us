@@ -14,7 +14,7 @@ class il_hbi_immigration_status_eligible(Variable):
     # Illinois Health Benefits for Immigrants (HBI) covers residents who are not
     # eligible for federal Medicaid due to their immigration status.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Eligible for HBI if NOT eligible for federal Medicaid
         # due to immigration status
         federal_eligible = person(

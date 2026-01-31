@@ -9,7 +9,7 @@ class capped_heat_pump_water_heater_rebate(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         percent_covered = tax_unit(
             "high_efficiency_electric_home_rebate_percent_covered", period
         )

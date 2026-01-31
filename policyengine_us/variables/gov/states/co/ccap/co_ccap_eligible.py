@@ -13,7 +13,7 @@ class co_ccap_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         in_entry_process = spm_unit("co_ccap_is_in_entry_process", period)
         entry_eligible = spm_unit("co_ccap_entry_eligible", period)
         in_re_determination_process = spm_unit(

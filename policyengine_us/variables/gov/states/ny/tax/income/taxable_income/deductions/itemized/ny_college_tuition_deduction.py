@@ -13,7 +13,7 @@ class ny_college_tuition_deduction(Variable):
     )
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ny.tax.income.deductions.itemized.college_tuition

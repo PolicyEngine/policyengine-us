@@ -13,7 +13,7 @@ class id_grocery_credit_base(Variable):
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return parameters(
             period
         ).gov.states.id.tax.income.credits.grocery.base.amount

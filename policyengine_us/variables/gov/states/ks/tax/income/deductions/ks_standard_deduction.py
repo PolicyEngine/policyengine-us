@@ -13,7 +13,7 @@ class ks_standard_deduction(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ks.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         base_amt = p.base_amount[filing_status]

@@ -9,7 +9,7 @@ class nh_disabled_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.NH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Then get the NH disabled exemptions part of the parameter tree.
         p = parameters(period).gov.states.nh.tax.income.exemptions
 

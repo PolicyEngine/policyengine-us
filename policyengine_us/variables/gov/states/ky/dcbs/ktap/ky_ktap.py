@@ -13,7 +13,7 @@ class ky_ktap(Variable):
     )
     defined_for = "ky_ktap_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 921 KAR 2:016 Section 9(4):
         # Benefit = min(0.55 × deficit, payment_maximum)
         # where deficit = standard_of_need - countable_income

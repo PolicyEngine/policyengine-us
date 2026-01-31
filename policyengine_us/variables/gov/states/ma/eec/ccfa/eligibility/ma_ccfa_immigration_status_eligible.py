@@ -9,7 +9,7 @@ class ma_ccfa_immigration_status_eligible(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=26"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

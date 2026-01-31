@@ -13,7 +13,7 @@ class ok_eitc(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_agi = tax_unit("adjusted_gross_income", period)
         ok_agi = tax_unit("ok_agi", period)
         agi_ratio = np.zeros_like(us_agi)

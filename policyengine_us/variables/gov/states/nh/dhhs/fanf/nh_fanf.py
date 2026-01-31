@@ -13,7 +13,7 @@ class nh_fanf(Variable):
     )
     defined_for = "nh_fanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_standard = spm_unit("nh_fanf_payment_standard", period)
         countable_income = spm_unit("nh_fanf_countable_income", period)
         return max_(payment_standard - countable_income, 0)

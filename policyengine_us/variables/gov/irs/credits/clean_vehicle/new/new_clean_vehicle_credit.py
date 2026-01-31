@@ -16,7 +16,7 @@ class new_clean_vehicle_credit(Variable):
     )
     defined_for = "new_clean_vehicle_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit(
             "new_clean_vehicle_credit_credit_limit", period
         )

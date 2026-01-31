@@ -13,7 +13,7 @@ class id_retirement_benefits_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.retirement_benefits

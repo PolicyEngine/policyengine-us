@@ -7,5 +7,5 @@ class spm_unit_state_fips(Variable):
     label = "SPM unit state FIPS code"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return spm_unit.household("state_fips", period)

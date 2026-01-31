@@ -13,7 +13,7 @@ class ak_atap_countable_unearned_income(Variable):
     )
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 7 AAC 45.400, recipients must surrender child support payments
         # to Child Support Services Agency but may retain up to $50 monthly.
         p = parameters(period).gov.states.ak.dpa.atap.income

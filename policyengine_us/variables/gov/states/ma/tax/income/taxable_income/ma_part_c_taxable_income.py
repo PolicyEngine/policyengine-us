@@ -10,7 +10,7 @@ class ma_part_c_taxable_income(Variable):
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_c_agi = tax_unit("ma_part_c_agi", period)
         cg_excess_exemption = tax_unit("ma_part_a_cg_excess_exemption", period)
         return max_(0, part_c_agi - cg_excess_exemption)

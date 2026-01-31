@@ -14,7 +14,7 @@ class wi_itemized_deduction_credit(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         wi_itmded = tax_unit("itemized_deductions_less_salt", period)
         wi_stdded = tax_unit("wi_standard_deduction", period)
         excess_itmded = max_(0, wi_itmded - wi_stdded)

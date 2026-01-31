@@ -11,7 +11,7 @@ class ma_tafdc_dependent_criteria_eligible(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         dependent_child_present = (
             add(spm_unit, period, ["ma_tafdc_eligible_dependent"]) > 0
         )

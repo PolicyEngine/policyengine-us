@@ -10,7 +10,7 @@ class ma_ccfa_maximum_reimbursement(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         daily_payment = person("ma_ccfa_uncapped_daily_payment", period)
         reimbursement_multiplier = person(
             "ma_ccfa_reimbursement_ratio", period

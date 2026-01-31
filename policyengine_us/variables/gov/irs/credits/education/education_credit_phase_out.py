@@ -9,7 +9,7 @@ class education_credit_phase_out(Variable):
     documentation = "Percentage of the American Opportunity and Lifetime Learning credits which are phased out"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         education = parameters(period).gov.irs.credits.education
         agi = tax_unit("adjusted_gross_income", period)
         is_joint = tax_unit("tax_unit_is_joint", period)

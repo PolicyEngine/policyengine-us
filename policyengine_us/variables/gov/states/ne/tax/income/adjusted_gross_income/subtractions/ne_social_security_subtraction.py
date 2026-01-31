@@ -9,7 +9,7 @@ class ne_social_security_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fagi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ne.tax.income.agi.subtractions

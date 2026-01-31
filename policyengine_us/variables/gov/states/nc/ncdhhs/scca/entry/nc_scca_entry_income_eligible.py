@@ -9,7 +9,7 @@ class nc_scca_entry_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         family_total_income = spm_unit("nc_scca_countable_income", period)
         rounded_family_total_income = np.round(family_total_income, 2)
 

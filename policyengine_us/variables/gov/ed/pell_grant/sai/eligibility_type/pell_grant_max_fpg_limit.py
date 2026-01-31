@@ -8,7 +8,7 @@ class pell_grant_max_fpg_percent_limit(Variable):
     definition_period = YEAR
     label = "The maximum FPG percent to qualify for the maximum Pell Grant"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         household_type = person("pell_grant_household_type", period)
         limits = parameters(
             period

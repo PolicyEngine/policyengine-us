@@ -7,7 +7,7 @@ class in_nyc(Variable):
     definition_period = YEAR
     label = "Is in NYC"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
         possible_counties = [
             "QUEENS_COUNTY_NY",

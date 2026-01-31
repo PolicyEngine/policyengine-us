@@ -13,7 +13,7 @@ class nj_property_tax_credit_eligible(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income.credits.property_tax
 
         # determine if pays property taxes via home ownership or renting

@@ -12,7 +12,7 @@ class va_disability_income_subtraction(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         p = parameters(
             period

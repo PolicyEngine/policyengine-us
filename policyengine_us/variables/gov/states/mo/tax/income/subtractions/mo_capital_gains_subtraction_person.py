@@ -12,7 +12,7 @@ class mo_capital_gains_subtraction_person(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         # Get the tax unit level capital gains subtraction
         tax_unit_subtraction = tax_unit("mo_capital_gains_subtraction", period)

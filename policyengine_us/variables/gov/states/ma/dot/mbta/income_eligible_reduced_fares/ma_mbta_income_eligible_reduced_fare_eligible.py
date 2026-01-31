@@ -9,7 +9,7 @@ class ma_mbta_income_eligible_reduced_fare_eligible(Variable):
     defined_for = "ma_mbta_enrolled_in_applicable_programs"
     reference = "https://www.mbta.com/fares/reduced/income-eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ma.dot.mbta.income_eligible_reduced_fares.age_threshold

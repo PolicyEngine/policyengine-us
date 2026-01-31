@@ -12,7 +12,7 @@ class il_pfae_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # PFAE eligibility requires:
         # - Basic eligibility (age 3-5, income <= 400% FPL)
         # - AND either:

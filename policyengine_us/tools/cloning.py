@@ -1,7 +1,8 @@
 from policyengine_core.simulations import Simulation
 
 
-def get_stored_variables(simulation: Simulation) -> list:
+def get_stored_variables(simulation: Simulation) -> list:  # pragma: no cover
+    # Utility function for simulation cloning
     stored_variables = []
     for variable in simulation.tax_benefit_system.variables:
         holder = simulation.get_holder(variable)

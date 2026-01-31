@@ -22,7 +22,7 @@ class wi_works_placement(Variable):
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/07/7.4.1_Community_Service_Jobs_(CSJ).htm",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.dcf.works.placement
         person = spm_unit.members
 

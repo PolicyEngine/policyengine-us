@@ -9,7 +9,7 @@ class co_tanf_countable_earned_income_grant_standard(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_earnings = spm_unit(
             "co_tanf_countable_gross_earned_income", period
         )

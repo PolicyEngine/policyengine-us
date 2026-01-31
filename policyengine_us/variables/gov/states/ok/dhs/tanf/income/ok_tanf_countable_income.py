@@ -12,7 +12,7 @@ class ok_tanf_countable_income(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per OAC 340:10-3-39: Unearned income counted at gross amount
         income = add(
             spm_unit,

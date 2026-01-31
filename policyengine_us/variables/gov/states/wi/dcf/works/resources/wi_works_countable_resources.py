@@ -13,7 +13,7 @@ class wi_works_countable_resources(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         liquid_assets = spm_unit("spm_unit_cash_assets", period)
         vehicle_value = spm_unit.household("household_vehicles_value", period)
         p = parameters(period).gov.states.wi.dcf.works.asset

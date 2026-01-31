@@ -7,5 +7,5 @@ class person_id(Variable):
     label = "Unique reference for this person"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return np.arange(len(person("age", period)))

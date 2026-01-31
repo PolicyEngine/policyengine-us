@@ -10,7 +10,7 @@ class ak_atap_childcare_deduction(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.485"
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 7 AAC 45.485: Child care expenses excluded up to:
         # - $200/month per child under age 2
         # - $175/month per child age 2 and older

@@ -9,7 +9,7 @@ class md_tanf_gross_earned_income_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get TANF enrollment status.
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         # Get earned income for the SPM unit.

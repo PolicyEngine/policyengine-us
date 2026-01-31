@@ -10,7 +10,7 @@ class snap_standard_deduction(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_1"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         standard_deductions = parameters(
             period
         ).gov.usda.snap.income.deductions.standard

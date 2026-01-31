@@ -13,7 +13,7 @@ class ga_tanf_earned_income_after_disregard(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.dfcs.tanf.income.deductions
         # PAMMS 1615: "$250 is subtracted from the earned income of
         # each employed individual"

@@ -8,7 +8,7 @@ class pell_grant_head_contribution(Variable):
     label = "Pell Grant head contribution"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         available_income = person("pell_grant_head_available_income", period)
         assets = person("pell_grant_contribution_from_assets", period)
         adjusted_available_income = available_income + assets

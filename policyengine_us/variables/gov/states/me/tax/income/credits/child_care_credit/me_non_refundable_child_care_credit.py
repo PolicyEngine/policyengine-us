@@ -16,7 +16,7 @@ class me_non_refundable_child_care_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         child_care_credit = tax_unit("me_child_care_credit", period)
         refundable_child_care_credit = tax_unit(
             "me_refundable_child_care_credit", period

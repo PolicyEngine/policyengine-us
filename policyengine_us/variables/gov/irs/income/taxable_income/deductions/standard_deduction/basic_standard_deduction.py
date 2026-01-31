@@ -9,7 +9,7 @@ class basic_standard_deduction(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/63#c_2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)

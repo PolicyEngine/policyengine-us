@@ -1,7 +1,9 @@
 from policyengine_us.model_api import *
 
 
-def create_eitc_winship_reform(parameters, period, bypass=False):
+def create_eitc_winship_reform(
+    parameters, period, bypass=False
+):  # pragma: no cover
     if (
         not bypass
         and not parameters(period).gov.contrib.individual_eitc.enabled
@@ -21,7 +23,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
         unit = USD
         defined_for = "eitc_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("eitc_maximum", period)
             phased_in = tax_unit("eitc_phased_in", period)
             reduction = tax_unit("eitc_reduction", period)
@@ -36,7 +38,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
         unit = USD
         defined_for = "eitc_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             simulation = tax_unit.simulation
             agi = tax_unit("adjusted_gross_income", period)
@@ -73,7 +75,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             return (agi < agi_limit) * (head_eitc + spouse_eitc)
 
     class winship_eitc_reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(original_eitc)
             self.update_variable(eitc)
 

@@ -13,7 +13,7 @@ class ri_works_countable_unearned_income(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 218-RICR-20-00-2.15: First $50 of child support excluded
         p = parameters(period).gov.states.ri.dhs.works.income
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])

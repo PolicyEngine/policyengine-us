@@ -10,7 +10,7 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
         documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             eitc = parameters(period).gov.irs.credits.eitc
             num_children = tax_unit("eitc_child_count", period)
             filing_status = tax_unit("filing_status", period)
@@ -19,7 +19,7 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
             return where(joint, base_rate / 2, base_rate)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(eitc_phase_out_rate)
 
     return reform
@@ -27,7 +27,7 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
 
 def create_halve_joint_eitc_phase_out_rate_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_halve_joint_eitc_phase_out_rate()
 

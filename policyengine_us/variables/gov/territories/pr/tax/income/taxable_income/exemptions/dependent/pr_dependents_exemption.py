@@ -10,7 +10,7 @@ class pr_dependents_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.PR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # line 8
         dependents = add(
             tax_unit, period, ["pr_eligible_dependent_for_exemption"]

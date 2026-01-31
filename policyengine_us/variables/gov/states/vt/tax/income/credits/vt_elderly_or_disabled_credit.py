@@ -15,7 +15,7 @@ class vt_elderly_or_disabled_credit(Variable):
     # The Investment Tax Credit and Vermont Farm Income Averaging Credit are also subject to the match
     # these are currently not included
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits
         us_elderly_disabled_credit = tax_unit(
             "elderly_disabled_credit", period

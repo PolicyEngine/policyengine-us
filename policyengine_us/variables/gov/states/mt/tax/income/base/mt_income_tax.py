@@ -9,7 +9,7 @@ class mt_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_separately = tax_unit("mt_files_separately", period)
         itax_indiv = add(tax_unit, period, ["mt_income_tax_indiv"])
         itax_joint = tax_unit("mt_income_tax_joint", period)

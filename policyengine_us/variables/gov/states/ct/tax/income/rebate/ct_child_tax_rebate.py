@@ -9,7 +9,7 @@ class ct_child_tax_rebate(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.rebate

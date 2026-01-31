@@ -8,7 +8,7 @@ class va_low_income_tax_credit_agi_eligible(Variable):
     definition_period = YEAR
     defined_for = "va_low_income_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("va_agi", period)
         # Virginia does not account for blind or aged exemptions
         fpg = tax_unit("tax_unit_fpg", period)

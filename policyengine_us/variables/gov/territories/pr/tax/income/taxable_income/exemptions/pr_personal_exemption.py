@@ -10,7 +10,7 @@ class pr_personal_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.PR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # line 7
         p = parameters(
             period

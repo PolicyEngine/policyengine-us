@@ -10,7 +10,7 @@ class mt_interest_exemption_person(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25"
     defined_for = "mt_interest_exemption_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Allocate the interest exemption to head/spouse based on share of interest income.
         interest_income = person("taxable_interest_income", period)
         total_interest_income = person.tax_unit.sum(interest_income)

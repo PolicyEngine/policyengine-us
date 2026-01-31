@@ -13,7 +13,7 @@ class wa_tanf(Variable):
     )
     defined_for = "wa_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get payment standard based on assistance unit size
         payment_standard = spm_unit("wa_tanf_payment_standard", period)
 

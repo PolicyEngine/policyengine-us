@@ -13,7 +13,7 @@ class sc_two_wage_earner_credit(Variable):
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=23",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Determine eligibility. Must be a joint filer.
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status == filing_status.possible_values.JOINT

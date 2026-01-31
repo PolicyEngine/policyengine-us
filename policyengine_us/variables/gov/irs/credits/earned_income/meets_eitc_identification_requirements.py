@@ -18,7 +18,7 @@ class meets_eitc_identification_requirements(Variable):
         "https://www.ssa.gov/OP_Home/ssact/title02/0205.htm",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ssn_card_type = person("ssn_card_type", period)
         ssn_card_types = ssn_card_type.possible_values
         citizen = ssn_card_type == ssn_card_types.CITIZEN

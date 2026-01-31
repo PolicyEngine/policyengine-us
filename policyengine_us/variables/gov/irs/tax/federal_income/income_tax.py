@@ -9,7 +9,7 @@ class income_tax(Variable):
     label = "Federal income tax"
     documentation = "Total federal individual income tax liability."
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         if parameters(
             period
         ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:

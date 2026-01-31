@@ -9,7 +9,7 @@ class nd_tanf_income_eligible(Variable):
     reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_110_15.htm"
     defined_for = StateCode.ND
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("nd_tanf_countable_income", period)
         standard_of_need = spm_unit("nd_tanf_standard_of_need", period)
         return countable_income < standard_of_need

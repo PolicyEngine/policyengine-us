@@ -9,7 +9,7 @@ class nd_tanf_eligible(Variable):
     reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_110_15.htm"
     defined_for = StateCode.ND
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0

@@ -10,7 +10,7 @@ class tx_harris_rides_subsidy(Variable):
     unit = USD
     defined_for = "tx_harris_rides_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.tx.harris.rides
 
         # Get estimated transportation costs

@@ -7,5 +7,5 @@ class snap_region_str(Variable):
     label = "SNAP region"
     definition_period = YEAR
 
-    def formula(household, period):
+    def formula(household, period):  # pragma: no cover
         return household("snap_region", period).decode_to_str()

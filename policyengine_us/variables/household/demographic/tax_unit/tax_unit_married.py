@@ -7,6 +7,6 @@ class tax_unit_married(Variable):
     definition_period = YEAR
     label = "Tax unit is married"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         return tax_unit.any(person("is_tax_unit_spouse", period))

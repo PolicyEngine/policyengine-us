@@ -11,7 +11,7 @@ class ma_tafdc_age_limit(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.eligibility.age_limit

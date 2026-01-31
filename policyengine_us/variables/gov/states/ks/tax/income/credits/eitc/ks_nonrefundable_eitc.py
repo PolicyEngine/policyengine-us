@@ -13,7 +13,7 @@ class ks_nonrefundable_eitc(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         total_eitc = tax_unit("ks_total_eitc", period)
         pre_credit_tax = tax_unit("ks_income_tax_before_credits", period)
         p = parameters(period).gov.states.ks.tax.income

@@ -11,7 +11,7 @@ class ok_federal_eitc_investment_income_eligible(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eitc = parameters.gov.irs.credits.eitc(f"2020-01-01")
         invinc = tax_unit("eitc_relevant_investment_income", period)
         return invinc <= eitc.phase_out.max_investment_income

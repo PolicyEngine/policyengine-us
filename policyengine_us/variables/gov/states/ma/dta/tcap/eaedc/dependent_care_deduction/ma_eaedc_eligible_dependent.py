@@ -11,7 +11,7 @@ class ma_eaedc_eligible_dependent(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.age_threshold
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)

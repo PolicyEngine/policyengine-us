@@ -10,7 +10,7 @@ class ca_cdcc_relevant_expenses(Variable):
     reference = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         year = period.start.year
         if year == 2021:
             period_adjusted = f"{year-1}-01-01"

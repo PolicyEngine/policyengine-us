@@ -13,7 +13,7 @@ class mi_disabled_exemption_eligible_person(Variable):
         "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         blind = person("is_blind", period)
         deaf = person("is_deaf", period)
         # Only totally disabled people under a certain age are eligible

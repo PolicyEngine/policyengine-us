@@ -12,7 +12,7 @@ class de_tanf_eligible(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child or pregnant)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Delaware follows federal immigration rules

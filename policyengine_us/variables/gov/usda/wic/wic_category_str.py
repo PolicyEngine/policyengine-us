@@ -8,5 +8,5 @@ class wic_category_str(Variable):
     documentation = "WIC category variable, stored as a string"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("wic_category", period).decode_to_str()

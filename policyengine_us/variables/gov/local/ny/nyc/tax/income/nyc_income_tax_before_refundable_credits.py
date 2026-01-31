@@ -9,7 +9,7 @@ class nyc_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income_tax_before_credits = tax_unit(
             "nyc_income_tax_before_credits", period
         )

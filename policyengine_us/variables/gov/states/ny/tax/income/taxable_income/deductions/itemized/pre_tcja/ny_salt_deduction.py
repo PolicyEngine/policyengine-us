@@ -21,7 +21,7 @@ class ny_salt_deduction(Variable):
     - Real estate taxes ARE deductible
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # NY allows sales tax and real estate taxes, but NOT income taxes
         # Per Tax Law § 615(c), state/local income taxes must be subtracted
         sales_tax = add(

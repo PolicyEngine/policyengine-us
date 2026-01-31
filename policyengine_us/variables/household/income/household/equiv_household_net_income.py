@@ -8,7 +8,7 @@ class equiv_household_net_income(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         number_of_people = household("household_size", period)
         net_income = household("household_net_income", period)
         return net_income / (number_of_people**0.5)

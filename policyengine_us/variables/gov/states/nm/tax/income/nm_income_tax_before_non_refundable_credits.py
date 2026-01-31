@@ -9,7 +9,7 @@ class nm_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("nm_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

@@ -11,7 +11,7 @@ class nj_taxable_income(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3-1/"
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get taxable income before property tax deduction or credit.
         taxable_income_before_deduction = tax_unit(
             "nj_taxable_income_before_property_tax_deduction", period

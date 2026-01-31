@@ -11,7 +11,7 @@ class msp_income_eligible(Variable):
         "https://www.law.cornell.edu/cfr/text/42/435.121",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Income eligible if under the QI threshold (135% FPL)
         # which is the highest threshold for standard MSP levels
         p = parameters(

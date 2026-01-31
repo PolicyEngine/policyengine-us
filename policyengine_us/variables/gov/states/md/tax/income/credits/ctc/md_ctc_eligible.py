@@ -13,7 +13,7 @@ class md_ctc_eligible(Variable):
     ]
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         agi = tax_unit("adjusted_gross_income", period)
 

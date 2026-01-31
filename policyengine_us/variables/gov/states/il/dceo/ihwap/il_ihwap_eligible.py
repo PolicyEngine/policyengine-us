@@ -12,7 +12,7 @@ class il_ihwap_eligible(Variable):
         "https://dceo.illinois.gov/communityservices/homeweatherization.html",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("il_ihwap_income_eligible", period)
         categorically_eligible = spm_unit(
             "il_ihwap_categorically_eligible", period

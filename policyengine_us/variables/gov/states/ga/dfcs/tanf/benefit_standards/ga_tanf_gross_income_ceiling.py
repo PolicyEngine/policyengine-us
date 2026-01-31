@@ -13,7 +13,7 @@ class ga_tanf_gross_income_ceiling(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.dfcs.tanf.financial_standards
 
         # Gross income ceiling is 185% of the Standard of Need

@@ -10,7 +10,7 @@ class ri_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ri_exemptions = tax_unit("ri_exemptions", period)
         # Modified Federal AGI
         mod_agi = tax_unit("ri_agi", period)

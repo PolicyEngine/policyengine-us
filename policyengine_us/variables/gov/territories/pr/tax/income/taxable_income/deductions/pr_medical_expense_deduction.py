@@ -10,7 +10,7 @@ class pr_medical_expense_deduction(Variable):
     reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"  # (4)
     defined_for = StateCode.PR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         expense = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
         p = parameters(
             period

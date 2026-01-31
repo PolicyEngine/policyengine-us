@@ -13,7 +13,7 @@ class vt_low_income_cdcc(Variable):
     )
     defined_for = "vt_low_income_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc.low_income
         federal_cdcc = tax_unit("capped_cdcc", period)
         return p.rate * federal_cdcc

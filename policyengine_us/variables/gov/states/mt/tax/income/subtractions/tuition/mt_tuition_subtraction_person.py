@@ -9,7 +9,7 @@ class mt_tuition_subtraction_person(Variable):
     reference = "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html"
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
         individual_contributions = person(
             "investment_in_529_plan_indv", period

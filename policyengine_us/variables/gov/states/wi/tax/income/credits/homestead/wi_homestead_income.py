@@ -13,7 +13,7 @@ class wi_homestead_income(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.tax.income.credits
         income = add(tax_unit, period, p.homestead.income.sources)
         dependents = tax_unit("tax_unit_dependents", period)

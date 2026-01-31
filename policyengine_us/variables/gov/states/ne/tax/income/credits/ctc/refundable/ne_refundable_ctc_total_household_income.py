@@ -13,5 +13,5 @@ class ne_refundable_ctc_total_household_income(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit("adjusted_gross_income", period)

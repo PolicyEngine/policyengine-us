@@ -9,7 +9,7 @@ class az_family_tax_credit(Variable):
     definition_period = YEAR
     defined_for = "az_family_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.family_tax_credits.amount

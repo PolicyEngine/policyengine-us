@@ -7,7 +7,7 @@ class is_father(Variable):
     label = "Is a father"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # In the absence of relationship identifiers, check if the person is
         # male and has some children in their own household (provided in the
         # CPS).

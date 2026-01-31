@@ -1,6 +1,15 @@
 [run]
-disable_warnings = couldnt-parse
+source = policyengine_us
+omit =
+    */tests/*
+    */tools/add_plotly_to_book.py
+    */tools/documentation.py
+    */tools/variables.py
 
 [report]
-# Include only variables related to taxes and benefits:
-include = */variables/*
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass

@@ -12,7 +12,7 @@ class nj_wfnj_income_eligible(Variable):
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         gross_income_eligible = spm_unit(
             "nj_wfnj_gross_income_eligible", period

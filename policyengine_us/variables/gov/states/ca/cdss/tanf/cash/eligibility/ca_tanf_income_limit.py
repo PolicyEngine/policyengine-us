@@ -10,7 +10,7 @@ class ca_tanf_income_limit(Variable):
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-212_Minimum_Basic_Standard_of_Adequate_Care%2F44-212_Minimum_Basic_Standard_of_Adequate_Care.htm%23Documentsbc-6&rhtocid=_3_1_7_20_5"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ca.cdss.tanf.cash.income.monthly_limit

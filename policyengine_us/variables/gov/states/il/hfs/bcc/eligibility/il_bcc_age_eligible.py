@@ -9,7 +9,7 @@ class il_bcc_age_eligible(Variable):
     reference = ("https://www.dhs.state.il.us/page.aspx?item=33528",)
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.bcc.eligibility
         age = person("age", period)
         return age < p.age

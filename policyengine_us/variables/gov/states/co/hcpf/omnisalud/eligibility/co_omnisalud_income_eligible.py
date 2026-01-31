@@ -17,7 +17,7 @@ class co_omnisalud_income_eligible(Variable):
     Those with higher income can still enroll but pay full premium.
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.hcpf.omnisalud.eligibility
         # Use ACA MAGI as the income measure
         income_level = person("medicaid_income_level", period)

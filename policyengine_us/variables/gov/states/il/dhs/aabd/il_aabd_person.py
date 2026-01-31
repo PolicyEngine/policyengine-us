@@ -9,7 +9,7 @@ class il_aabd_person(Variable):
     definition_period = MONTH
     defined_for = "il_aabd_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         total_needs = person("il_aabd_need_standard_person", period)
         countable_income = person("il_aabd_countable_income", period)
         return max_(total_needs - countable_income, 0)

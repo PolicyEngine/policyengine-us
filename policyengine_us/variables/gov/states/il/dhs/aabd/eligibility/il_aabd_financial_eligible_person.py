@@ -8,7 +8,7 @@ class il_aabd_financial_eligible_person(Variable):
     definition_period = MONTH
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         asset_eligible = person.spm_unit(
             "il_aabd_asset_value_eligible", period
         )

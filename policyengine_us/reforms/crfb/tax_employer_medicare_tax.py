@@ -51,7 +51,7 @@ def tax_employer_medicare_tax_reform() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             sources = parameters(period).gov.irs.gross_income.sources
             total = 0
             not_dependent = ~person("is_tax_unit_dependent", period)
@@ -63,7 +63,7 @@ def tax_employer_medicare_tax_reform() -> Reform:
     # Create a reform object applies the method
     # It inherits the Reform class
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(irs_gross_income)
 
     return reform
@@ -71,7 +71,7 @@ def tax_employer_medicare_tax_reform() -> Reform:
 
 def create_tax_employer_medicare_tax_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform

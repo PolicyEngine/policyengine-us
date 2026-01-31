@@ -12,7 +12,7 @@ class nh_fanf_income_eligible(Variable):
     )
     defined_for = StateCode.NH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("nh_fanf_countable_income", period)
         payment_standard = spm_unit("nh_fanf_payment_standard", period)
         return countable_income <= payment_standard

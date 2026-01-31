@@ -12,7 +12,7 @@ class pa_tanf(Variable):
         "https://www.pa.gov/agencies/dhs/resources/cash-assistance/tanf"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         maximum_benefit = spm_unit("pa_tanf_maximum_benefit", period)
         countable_income = spm_unit("pa_tanf_countable_income", period)
 

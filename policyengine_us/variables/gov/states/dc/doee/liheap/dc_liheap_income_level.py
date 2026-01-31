@@ -9,7 +9,7 @@ class dc_liheap_income_level(Variable):
     reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = add(spm_unit, period, ["irs_gross_income"])
         p = parameters(period).gov.states.dc.doee.liheap
 

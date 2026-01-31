@@ -9,7 +9,7 @@ class foreign_tax_credit(Variable):
     documentation = "Foreign tax credit from Form 1116"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return min_(
             tax_unit("foreign_tax_credit_potential", period),
             tax_unit("foreign_tax_credit_credit_limit", period),

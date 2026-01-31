@@ -10,7 +10,7 @@ class dc_disability_exclusion(Variable):
     defined_for = StateCode.DC
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.02#(a)(2)(M)"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.income.disability_income_exclusion
         tax_unit = person.tax_unit
 

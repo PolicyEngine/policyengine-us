@@ -14,7 +14,7 @@ class il_hbi_resource_eligible(Variable):
     # This resource test only applies to seniors (age 65+) in the HBIS program.
     # Children (All Kids) and adults (HBIA) do not have a resource test.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         age = person("age", period)

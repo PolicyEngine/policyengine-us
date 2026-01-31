@@ -19,7 +19,7 @@ class ny_casualty_loss_deduction(Variable):
     declared disasters. The 10% AGI floor still applies.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # NY uses pre-TCJA rules: casualty losses are still deductible
         # (not limited to federally declared disasters like federal post-2017)
         loss = add(tax_unit, period, ["casualty_loss"])

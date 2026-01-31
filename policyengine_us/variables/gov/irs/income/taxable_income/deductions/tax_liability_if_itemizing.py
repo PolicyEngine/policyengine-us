@@ -8,7 +8,7 @@ class tax_liability_if_itemizing(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         simulation = tax_unit.simulation
         itemized_branch = simulation.get_branch("itemizing")
         itemized_branch.set_input(

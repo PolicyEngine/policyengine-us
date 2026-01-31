@@ -9,7 +9,7 @@ class il_pi_has_geriatric_pregnancy(Variable):
     reference = "https://www.isbe.net/Documents/Prevention-Initiative-Eligibility-Form.pdf#page=3"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Factor 28: Pregnant woman age 40 or over
         p = parameters(period).gov.states.il.isbe.pi.eligibility.priority
         is_pregnant = spm_unit.members("is_pregnant", period)

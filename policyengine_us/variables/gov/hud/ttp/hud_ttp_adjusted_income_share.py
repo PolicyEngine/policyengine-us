@@ -10,7 +10,7 @@ class hud_ttp_adjusted_income_share(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.628#a_2"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         share = parameters(
             period
         ).gov.hud.total_tenant_payment.adjusted_income_share

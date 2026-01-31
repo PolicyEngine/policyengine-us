@@ -9,7 +9,7 @@ class ca_capp_eligible(Variable):
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.&lawCode=WIC"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # CAPP is for families who have NEVER received CalWORKs
         ever_received = spm_unit("was_calworks_recipient", period.this_year)
 

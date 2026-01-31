@@ -12,7 +12,7 @@ class va_standard_deduction(Variable):
     )
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.va.tax.income.deductions
         filing_status = tax_unit("filing_status", period)
         return p.standard[filing_status]

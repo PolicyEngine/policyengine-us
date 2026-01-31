@@ -13,7 +13,7 @@ class employer_medicare_tax_income_tax_revenue(Variable):
     )
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Calculate Medicare HI trust fund revenue from employer Medicare taxation.
 

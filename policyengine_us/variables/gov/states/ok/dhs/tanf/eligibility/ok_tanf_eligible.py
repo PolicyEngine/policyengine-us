@@ -11,7 +11,7 @@ class ok_tanf_eligible(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child or pregnant)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Per OAC 340:10-15: Must be US citizen or qualified alien

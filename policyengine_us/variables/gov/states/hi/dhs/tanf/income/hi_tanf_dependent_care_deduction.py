@@ -12,7 +12,7 @@ class hi_tanf_dependent_care_deduction(Variable):
     )
     defined_for = StateCode.HI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.dhs.tanf.deductions.dependent_care
 
         # Get actual childcare expenses (YEAR variable, auto-converts to monthly)

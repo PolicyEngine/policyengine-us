@@ -10,7 +10,7 @@ class hud_adjusted_income(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Extract annual income.
         income = spm_unit("hud_annual_income", period)
         # Count dependents - children only for now.

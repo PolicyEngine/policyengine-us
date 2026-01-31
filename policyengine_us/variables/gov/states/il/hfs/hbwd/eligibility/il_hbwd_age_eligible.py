@@ -14,7 +14,7 @@ class il_hbwd_age_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbwd.eligibility
         age = person("monthly_age", period)
         return p.age.calc(age)

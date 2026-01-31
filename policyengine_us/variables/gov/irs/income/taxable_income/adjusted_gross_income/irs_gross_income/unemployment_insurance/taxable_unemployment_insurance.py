@@ -8,7 +8,7 @@ class taxable_unemployment_compensation(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # The taxable amount of unemployment compensation is decided at the tax unit level, but
         # gross income (which contains taxable UI) is person-level. Therefore, we include the
         # taxable UI in gross income by assigning it to the head of the tax unit: this will be

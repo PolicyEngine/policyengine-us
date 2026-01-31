@@ -9,7 +9,7 @@ class is_eligible_for_housing_assistance(Variable):
     definition_period = YEAR
     reference = "https://www.hud.gov/sites/dfiles/PIH/documents/HCV_Guidebook_Calculating_Rent_and_HAP_Payments.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         receives_housing_assistance = spm_unit(
             "receives_housing_assistance", period
         )

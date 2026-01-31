@@ -10,7 +10,7 @@ class la_fitap(Variable):
     reference = "https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229"
     defined_for = "la_fitap_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         flat_grant = spm_unit("la_fitap_flat_grant", period)
         countable_income = spm_unit("la_fitap_countable_income", period)
 

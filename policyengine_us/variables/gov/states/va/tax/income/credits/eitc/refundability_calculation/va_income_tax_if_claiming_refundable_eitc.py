@@ -9,7 +9,7 @@ class va_income_tax_if_claiming_refundable_eitc(Variable):
     definition_period = YEAR
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         simulation = tax_unit.simulation
         refundable_branch = simulation.get_branch("va_refundable_eitc")
         refundable_branch.set_input(

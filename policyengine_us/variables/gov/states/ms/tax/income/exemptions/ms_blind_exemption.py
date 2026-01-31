@@ -9,7 +9,7 @@ class ms_blind_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First get their filing status.
         filing_status = tax_unit("filing_status", period)
 

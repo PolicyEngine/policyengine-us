@@ -12,7 +12,7 @@ class il_ipass_assist_categorical_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # IL Tollway: eligible if "currently participating in SNAP or TANF"
         snap = spm_unit("snap", period) > 0
         tanf = spm_unit("il_tanf", period) > 0

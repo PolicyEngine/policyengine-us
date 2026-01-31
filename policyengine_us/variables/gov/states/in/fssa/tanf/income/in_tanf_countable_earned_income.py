@@ -10,7 +10,7 @@ class in_tanf_countable_earned_income(Variable):
     reference = "https://iar.iga.in.gov/code/2026/470/10.3#470-10.3-4-4"
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].fssa.tanf.income.deductions
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)

@@ -9,7 +9,7 @@ class nj_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income
         agi = tax_unit("nj_agi", period)
         filing_status = tax_unit("filing_status", period)

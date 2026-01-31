@@ -9,7 +9,7 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
     definition_period = YEAR
     reference = "https://library.municode.com/co/denver/codes/code_of_ordinances?nodeId=TITIIREMUCO_CH53TAMIRE_ARTXIREPRTAASELLCOPROWTE_S53-492DE"  # 53-495 (d)
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.co.denver.dhs
         pays_property_taxes = add(spm_unit, period, ["real_estate_taxes"]) > 0
         has_elderly_or_disabled = spm_unit(

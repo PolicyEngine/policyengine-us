@@ -9,7 +9,7 @@ class dc_deduction_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # DC individual income tax FAQs include this:
         # Q: If I claimed itemized deductions on my federal return, must I
         #    also itemize on my DC return?

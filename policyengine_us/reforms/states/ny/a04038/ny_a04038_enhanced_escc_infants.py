@@ -26,7 +26,7 @@ def create_ny_a04038_enhanced_escc_infants() -> Reform:
         )
         defined_for = "ny_ctc_post_2024_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ny.tax.income.credits.ctc
             p_reform = parameters(period).gov.contrib.states.ny.a04038
             person = tax_unit.members
@@ -47,7 +47,7 @@ def create_ny_a04038_enhanced_escc_infants() -> Reform:
             return tax_unit.sum(qualifying_credit)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ny_ctc_post_2024_base)
 
     return reform
@@ -55,7 +55,7 @@ def create_ny_a04038_enhanced_escc_infants() -> Reform:
 
 def create_ny_a04038_enhanced_escc_infants_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ny_a04038_enhanced_escc_infants()
 

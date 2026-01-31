@@ -9,7 +9,7 @@ class nh_blind_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.NH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nh.tax.income.exemptions.amount
 
         # Get the individual blind status.

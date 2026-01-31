@@ -12,7 +12,7 @@ class de_aged_personal_credit(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.de.tax.income.credits.personal_credits

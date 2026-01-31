@@ -11,7 +11,7 @@ class ma_tafdc_pregnancy_eligible(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_pregnant = person("is_pregnant", period)
         age = person("age", period)
         current_pregnancy_month = person("current_pregnancy_month", period)

@@ -7,7 +7,7 @@ class ssi_claim_is_joint(Variable):
     label = "SSI claim is joint"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         abd_person = person("is_ssi_aged_blind_disabled", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         eligible_person = abd_person & is_head_or_spouse

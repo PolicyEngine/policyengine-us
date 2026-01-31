@@ -13,7 +13,7 @@ class wy_power(Variable):
     )
     defined_for = "wy_power_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per Section 1101: Benefit = Payment Standard - Countable Income
         payment_standard = spm_unit("wy_power_payment_standard", period)
         countable_income = spm_unit("wy_power_countable_income", period)

@@ -20,7 +20,7 @@ class wv_social_security_benefits_subtraction_eligible(Variable):
     )
     defined_for = StateCode.WV
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(

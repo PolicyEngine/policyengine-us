@@ -8,7 +8,7 @@ class ca_la_expectant_parent_payment_eligible(Variable):
     label = "Eligible for the Los Angeles County expectant parent payment"
     defined_for = "in_la"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pregnancy_month = person("current_pregnancy_month", period)
         p = parameters(period).gov.local.ca.la.dss.expectant_parent_payment
         eligible_based_on_pregnancy_month = (

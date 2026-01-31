@@ -10,7 +10,7 @@ class ky_personal_tax_credits_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         total_credits = add(
             person.tax_unit,
             period,

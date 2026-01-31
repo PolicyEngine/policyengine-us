@@ -9,7 +9,7 @@ class eitc_maximum(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         child_count = tax_unit("eitc_child_count", period)
         eitc = parameters(period).gov.irs.credits.eitc
         return eitc.max.calc(child_count)

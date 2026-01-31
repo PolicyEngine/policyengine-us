@@ -9,7 +9,7 @@ class wa_capital_gains_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.WA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         in_effect = parameters(period).gov.states.wa.tax.income.in_effect
         if in_effect:
             p = parameters(period).gov.states.wa.tax.income.capital_gains

@@ -15,7 +15,7 @@ class wv_sctc_eligible(Variable):
 
     # The senior citizens tax credit is used to calculate the Homestead access property tax credit
     # and provides a credit against property taxes as opposed to income taxes
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_agi = tax_unit("adjusted_gross_income", period)
         wv_homestead_exemption = tax_unit("wv_homestead_exemption", period)
 

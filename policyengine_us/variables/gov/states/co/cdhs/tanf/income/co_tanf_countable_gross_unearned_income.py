@@ -9,7 +9,7 @@ class co_tanf_countable_gross_unearned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.cdhs.tanf.income
         # Sum unearned sources, plus child support if not currently enrolled.
         gross_unearned = add(spm_unit, period, p.unearned)

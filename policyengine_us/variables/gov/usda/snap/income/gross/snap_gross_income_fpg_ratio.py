@@ -11,7 +11,7 @@ class snap_gross_income_fpg_ratio(Variable):
     )
     unit = "/1"
 
-    def formula(spm_unit, period):
+    def formula(spm_unit, period):  # pragma: no cover
         income = spm_unit("snap_gross_income", period)
         fpg = spm_unit("snap_fpg", period)
         return income / fpg

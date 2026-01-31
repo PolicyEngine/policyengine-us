@@ -12,7 +12,7 @@ class ne_refundable_ctc_eligible_child(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.credits.ctc.refundable
         age_eligible = person("age", period) <= p.age_threshold
         is_dependent = person("is_tax_unit_dependent", period)

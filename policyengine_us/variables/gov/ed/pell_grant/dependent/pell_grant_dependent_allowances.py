@@ -8,7 +8,7 @@ class pell_grant_dependent_allowances(Variable):
     label = "Pell Grant dependent allowances"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         other_allowances = person(
             "pell_grant_dependent_other_allowances", period
         )

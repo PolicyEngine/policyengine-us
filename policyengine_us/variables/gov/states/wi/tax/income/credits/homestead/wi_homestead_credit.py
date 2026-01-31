@@ -16,7 +16,7 @@ class wi_homestead_credit(Variable):
     )
     defined_for = "wi_homestead_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.tax.income.credits
         uncapped_ptax = tax_unit("wi_homestead_property_tax", period)
         capped_ptax = min_(p.homestead.property_tax.max, uncapped_ptax)

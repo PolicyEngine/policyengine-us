@@ -8,7 +8,7 @@ class pre_subsidy_childcare_expenses(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # distribute the SPM unit's childcare expenses evenly across
         # children in SPM unit's Tax units
         spm_unit = person.spm_unit

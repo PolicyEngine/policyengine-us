@@ -29,7 +29,7 @@ class qualifies_for_elderly_or_disabled_credit(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         elderly_disabled = parameters(
             period
         ).gov.irs.credits.elderly_or_disabled

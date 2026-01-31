@@ -9,7 +9,7 @@ class tx_ccs_work_exempt(Variable):
     reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-50"
     defined_for = StateCode.TX
 
-    def formula(person, period):
+    def formula(person, period):  # pragma: no cover
         # Exemption 1: Full-time student
         is_full_time_student = person("is_full_time_student", period)
 

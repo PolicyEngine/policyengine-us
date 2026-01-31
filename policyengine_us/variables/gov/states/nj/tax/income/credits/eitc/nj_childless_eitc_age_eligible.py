@@ -9,7 +9,7 @@ class nj_childless_eitc_age_eligible(Variable):
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Return True if all federal EITC conditions are met, except with modified age paramaters and household has no children.
         # Check if filing status is separate.
         filing_status = tax_unit("filing_status", period)

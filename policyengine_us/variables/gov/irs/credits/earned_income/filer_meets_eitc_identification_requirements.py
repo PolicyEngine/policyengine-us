@@ -11,7 +11,7 @@ class filer_meets_eitc_identification_requirements(Variable):
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_E",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the EITC
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)

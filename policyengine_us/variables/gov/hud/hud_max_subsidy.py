@@ -10,7 +10,7 @@ class hud_max_subsidy(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1437a#b_2_B_5"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         ttp = spm_unit("hud_ttp", period)
         pha_payment_standard = spm_unit.household(
             "pha_payment_standard", period

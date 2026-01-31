@@ -7,6 +7,6 @@ class is_retired(Variable):
     label = "Is retired"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Conventional assumption that retirement begins at age 65.
         return person("age", period) >= 65

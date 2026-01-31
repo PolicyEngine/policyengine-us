@@ -15,7 +15,7 @@ class md_itemized_deductions(Variable):
     ]
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Base itemized deductions (federal itemized deductions less SALT plus capped property taxes)
         base_itemized = add(
             tax_unit,

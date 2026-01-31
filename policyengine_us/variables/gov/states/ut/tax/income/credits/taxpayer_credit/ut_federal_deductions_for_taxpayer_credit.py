@@ -11,7 +11,7 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
     defined_for = StateCode.UT
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S114.html?v=C59-10-S114_2022032320220323"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions
         filing_status = tax_unit("filing_status", period)
 

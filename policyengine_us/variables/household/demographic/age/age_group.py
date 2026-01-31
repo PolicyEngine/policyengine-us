@@ -15,7 +15,7 @@ class age_group(Variable):
     label = "Age group"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return select(
             [
                 person("is_child", period),

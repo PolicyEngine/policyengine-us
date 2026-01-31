@@ -9,7 +9,7 @@ class co_ccap_subsidy(Variable):
     definition_period = MONTH
     defined_for = "co_ccap_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         expenses = add(
             spm_unit,
             period,

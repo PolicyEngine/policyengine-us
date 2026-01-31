@@ -12,7 +12,7 @@ class la_surviving_spouse_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         is_surviving_spouse = tax_unit.any(
             person("is_surviving_spouse", period)

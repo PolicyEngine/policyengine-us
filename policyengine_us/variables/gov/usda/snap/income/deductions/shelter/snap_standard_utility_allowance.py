@@ -9,7 +9,7 @@ class snap_standard_utility_allowance(Variable):
     documentation = "The standard utility allowance deduction for SNAP"
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.usda.snap.income.deductions.utility.standard
         allowance_type = spm_unit("snap_utility_allowance_type", period)
         allowance_types = allowance_type.possible_values

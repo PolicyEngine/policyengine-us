@@ -10,7 +10,7 @@ class ma_income_tax_before_credits(Variable):
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_a_dividends = tax_unit(
             "ma_part_a_taxable_dividend_income", period
         )

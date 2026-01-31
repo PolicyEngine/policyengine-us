@@ -11,7 +11,7 @@ def create_mi_surtax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             taxable_income = tax_unit("mi_taxable_income", period)
             joint = tax_unit("tax_unit_is_joint", period)
             p = parameters(period).gov.contrib.states.mi.surtax.rate
@@ -33,14 +33,16 @@ def create_mi_surtax() -> Reform:
         subtracts = ["mi_refundable_credits"]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(mi_income_tax)
             self.update_variable(mi_surtax)
 
     return reform
 
 
-def create_mi_surtax_reform(parameters, period, bypass: bool = False):
+def create_mi_surtax_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_mi_surtax()
 

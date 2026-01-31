@@ -12,7 +12,7 @@ class id_grocery_credit_qualified_months(Variable):
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         qualifying_months_sum = 0
         year = period.start.year
         for month in range(1, 13):

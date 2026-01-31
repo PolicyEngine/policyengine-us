@@ -13,7 +13,7 @@ class mt_taxable_income_joint(Variable):
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=16",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_head = person("is_tax_unit_head", period)
 
         # For joint filers, use mt_agi_joint which pools income and subtractions

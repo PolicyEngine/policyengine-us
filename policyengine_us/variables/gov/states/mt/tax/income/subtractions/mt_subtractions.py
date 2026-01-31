@@ -13,7 +13,7 @@ class mt_subtractions(Variable):
     )
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.subtractions
         total_subtractions = add(person, period, p.subtractions)
         # Prevent negative subtractions from acting as additions

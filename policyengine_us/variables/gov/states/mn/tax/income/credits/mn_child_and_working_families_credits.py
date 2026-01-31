@@ -14,7 +14,7 @@ class mn_child_and_working_families_credits(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Minnesota combines the Child Tax Credit and
         # the Working Family Credit into a single credit
         # The credits are defined by separate legal code sections

@@ -12,7 +12,7 @@ class mi_fip_resources_eligible(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.mdhhs.fip
 
         # Get total household assets

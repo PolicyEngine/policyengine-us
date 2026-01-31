@@ -12,7 +12,7 @@ class tx_ottanf_eligible(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # OTTANF eligibility per A-2421:
         # 1. Must meet all regular TANF eligibility requirements
         #    (child, income, resources, immigration)

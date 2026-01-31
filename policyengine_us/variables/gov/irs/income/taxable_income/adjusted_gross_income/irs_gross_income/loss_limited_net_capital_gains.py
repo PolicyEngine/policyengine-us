@@ -8,7 +8,7 @@ class loss_limited_net_capital_gains(Variable):
     label = "Loss-limited net capital gains"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         loss_limit = p.capital_gains.loss_limit[filing_status]

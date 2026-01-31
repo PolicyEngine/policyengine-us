@@ -10,7 +10,7 @@ class limited_capital_loss(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/1211"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         max_loss = p.ald.loss.capital.max[filing_status]

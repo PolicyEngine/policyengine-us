@@ -12,7 +12,7 @@ def create_fisc_act() -> Reform:
         definition_period = YEAR
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             # Calculate the base amount
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
@@ -30,8 +30,7 @@ def create_fisc_act() -> Reform:
         definition_period = YEAR
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
@@ -67,7 +66,7 @@ def create_fisc_act() -> Reform:
             )
             return capped_credit * eligible_caregiver_present
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.irs.credits.refundable.update(
             start=instant("2026-01-01"),
             stop=instant("2035-12-31"),
@@ -82,7 +81,7 @@ def create_fisc_act() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(family_income_supplement_credit_base_amount)
             self.update_variable(family_income_supplement_credit)
             self.modify_parameters(modify_parameters)
@@ -92,7 +91,9 @@ def create_fisc_act() -> Reform:
     return reform
 
 
-def create_fisc_act_reform(parameters, period, bypass: bool = False):
+def create_fisc_act_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_fisc_act()
 

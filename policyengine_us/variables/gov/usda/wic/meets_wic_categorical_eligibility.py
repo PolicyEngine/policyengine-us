@@ -11,7 +11,7 @@ class meets_wic_categorical_eligibility(Variable):
     label = "Meets WIC categorical (program participation) eligibility"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         spm_unit = person.spm_unit
         # https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_ii
         receives_snap_or_tanf = add(spm_unit, period, ["snap", "tanf"]) > 0

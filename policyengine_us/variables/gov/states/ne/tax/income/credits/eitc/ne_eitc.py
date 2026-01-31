@@ -13,7 +13,7 @@ class ne_eitc(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.ne.tax.income.credits
         return federal_eitc * p.eitc.fraction

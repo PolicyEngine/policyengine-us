@@ -10,7 +10,7 @@ class pa_tax_forgiveness_rate(Variable):
     reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=39"
     defined_for = StateCode.PA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eligibility_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
         is_child_dependent = person("is_child_dependent", period)

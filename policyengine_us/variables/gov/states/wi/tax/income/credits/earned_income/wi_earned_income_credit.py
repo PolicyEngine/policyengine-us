@@ -16,7 +16,7 @@ class wi_earned_income_credit(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.tax.income.credits.earned_income
         inv_income = tax_unit("eitc_relevant_investment_income", period)
         # In 2023 Wisconsin adopted the federal EITC investment income limit

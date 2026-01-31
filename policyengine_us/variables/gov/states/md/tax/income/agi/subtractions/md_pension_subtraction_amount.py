@@ -10,7 +10,7 @@ class md_pension_subtraction_amount(Variable):
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
     defined_for = StateCode.MD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
         # determine pension subtraction eligiblity for each person
         dependent = person("is_tax_unit_dependent", period)

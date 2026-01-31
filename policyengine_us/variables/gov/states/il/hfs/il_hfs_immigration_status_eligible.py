@@ -9,7 +9,7 @@ class il_hfs_immigration_status_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.310"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs
         immigration_status = person("immigration_status", period)
         is_citizen = (

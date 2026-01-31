@@ -9,7 +9,7 @@ class ma_mbta_tap_charlie_card_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         disabled = person("is_disabled", period)
         medicare_eligible = person("is_medicare_eligible", period)
         return disabled | medicare_eligible

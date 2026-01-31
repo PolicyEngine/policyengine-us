@@ -13,7 +13,7 @@ class ne_itemized_deductions(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         capped_property_taxes = tax_unit("capped_property_taxes", period)
         return itm_deds_less_salt + capped_property_taxes

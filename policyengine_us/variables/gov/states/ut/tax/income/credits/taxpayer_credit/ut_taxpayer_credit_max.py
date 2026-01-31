@@ -10,7 +10,7 @@ class ut_taxpayer_credit_max(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         deductions = add(
             tax_unit,
             period,

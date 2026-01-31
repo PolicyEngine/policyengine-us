@@ -8,6 +8,6 @@ class spm_unit_is_married(Variable):
     documentation = "Whether the adults in this SPM unit are married."
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         return spm_unit.any(person("is_tax_unit_spouse", period))

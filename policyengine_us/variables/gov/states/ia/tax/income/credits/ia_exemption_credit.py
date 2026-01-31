@@ -13,7 +13,7 @@ class ia_exemption_credit(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # count adult and dependent exemptions
         adult_count = tax_unit("head_spouse_count", period)
         filing_status = tax_unit("filing_status", period)

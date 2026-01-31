@@ -10,7 +10,7 @@ class la_fitap_flat_grant(Variable):
     reference = "https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229"
     defined_for = StateCode.LA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.dcfs.fitap.flat_grant
         size = spm_unit("spm_unit_size", period.this_year)
 

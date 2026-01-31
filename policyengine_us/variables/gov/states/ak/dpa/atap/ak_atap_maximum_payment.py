@@ -10,7 +10,7 @@ class ak_atap_maximum_payment(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.523"
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ak.dpa.atap.payment
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)

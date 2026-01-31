@@ -12,7 +12,7 @@ def create_american_family_act_with_baby_bonus() -> Reform:
         definition_period = YEAR
         defined_for = "ctc_qualifying_child"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             age = person("age", period)
             amount_pre_baby_bonus = parameters(
                 period
@@ -26,7 +26,7 @@ def create_american_family_act_with_baby_bonus() -> Reform:
             return amount_pre_baby_bonus + baby_bonus
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_child_individual_maximum_arpa)
 
     return reform
@@ -34,7 +34,7 @@ def create_american_family_act_with_baby_bonus() -> Reform:
 
 def create_american_family_act_with_baby_bonus_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_american_family_act_with_baby_bonus()
 

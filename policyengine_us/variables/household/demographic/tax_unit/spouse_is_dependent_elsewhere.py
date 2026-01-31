@@ -8,7 +8,7 @@ class spouse_is_dependent_elsewhere(Variable):
     label = "Tax-unit spouse is dependent elsewhere"
     documentation = "Whether the spouse of the filer for this tax unit is claimed as a dependent in another tax unit."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         claimed_on_another_return = person(
             "claimed_as_dependent_on_another_return", period

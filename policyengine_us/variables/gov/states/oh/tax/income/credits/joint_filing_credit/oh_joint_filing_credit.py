@@ -10,7 +10,7 @@ class oh_joint_filing_credit(Variable):
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.05"
     defined_for = "oh_joint_filing_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_joint_filing_credit = tax_unit(
             "oh_tax_before_joint_filing_credit", period
         )

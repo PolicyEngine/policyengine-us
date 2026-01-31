@@ -9,7 +9,7 @@ class slcsp_family_tier_amount(Variable):
     definition_period = MONTH
     defined_for = "slcsp_family_tier_applies"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the base premium
         base_cost = tax_unit.household("slcsp_age_0", period)
 

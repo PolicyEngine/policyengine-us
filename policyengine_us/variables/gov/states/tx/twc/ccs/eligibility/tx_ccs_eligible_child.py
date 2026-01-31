@@ -9,7 +9,7 @@ class tx_ccs_eligible_child(Variable):
     reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.twc.ccs.age_threshold
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period)

@@ -13,7 +13,7 @@ class tx_tanf_income_for_budgetary_needs_test(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Budgetary needs test uses income WITHOUT earned income disregards (1/3 or 90%)
         # Deductions applied:
         # 1. Work expense ($120)

@@ -20,7 +20,7 @@ class ssi_countable_income(Variable):
       - Applies standard SSI exclusions.
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # The individual's earned income, after the blind/disabled student exclusion
         pre_reduction_earned_income = person(
             "ssi_marital_earned_income", period

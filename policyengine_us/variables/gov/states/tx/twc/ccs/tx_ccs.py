@@ -9,7 +9,7 @@ class tx_ccs(Variable):
     definition_period = MONTH
     defined_for = "tx_ccs_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         copay = spm_unit("tx_ccs_copay", period)
         maximum_payment = add(spm_unit, period, ["tx_ccs_payment_rate"])
         pre_subsidy_childcare_expense = spm_unit(

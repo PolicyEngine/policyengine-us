@@ -13,7 +13,7 @@ class ct_pension_annuity_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

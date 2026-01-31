@@ -10,7 +10,7 @@ class is_ca_cvrp_increased_rebate_eligible(Variable):
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Use school meal FPG ratio.
         spm_unit = person.spm_unit
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)

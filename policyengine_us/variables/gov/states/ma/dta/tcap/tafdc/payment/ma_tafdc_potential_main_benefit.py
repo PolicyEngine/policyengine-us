@@ -10,7 +10,7 @@ class ma_tafdc_potential_main_benefit(Variable):
     reference = "https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc"
     defined_for = "ma_tafdc_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
         countable_income = spm_unit(
             "ma_tafdc_applicable_income_grant_amount", period

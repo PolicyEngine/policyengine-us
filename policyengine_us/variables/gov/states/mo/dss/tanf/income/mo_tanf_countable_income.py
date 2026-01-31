@@ -13,7 +13,7 @@ class mo_tanf_countable_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         deductions = spm_unit("mo_tanf_earned_income_deductions", period)

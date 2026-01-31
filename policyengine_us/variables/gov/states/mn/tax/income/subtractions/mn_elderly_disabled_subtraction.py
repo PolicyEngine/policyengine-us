@@ -13,7 +13,7 @@ class mn_elderly_disabled_subtraction(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         mn_itax = parameters(period).gov.states.mn.tax.income
         p = mn_itax.subtractions.elderly_disabled
         filing_status = tax_unit("filing_status", period)

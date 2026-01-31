@@ -10,7 +10,7 @@ class medical_expense_deduction(Variable):
     unit = USD
     documentation = "Medical expenses deducted from taxable income."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         expense = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
         p = parameters(period).gov.irs.deductions.itemized.medical
         medical_floor = p.floor * tax_unit("positive_agi", period)

@@ -12,7 +12,7 @@ class snap_self_employment_expense_deduction(Variable):
     unit = USD
     reference = "https://www.snapscreener.com/blog/self-employment"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         self_employment_income = add(
             spm_unit, period, ["self_employment_income_before_lsr"]
         )

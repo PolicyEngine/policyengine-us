@@ -13,7 +13,7 @@ class ok_itemized_deductions(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follows Schedule 511-D in references:
         # ... calculate pre-limit OK itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)

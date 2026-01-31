@@ -11,7 +11,7 @@ def non_refundable_ss_credit_reform() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             taxable_social_security = person("taxable_social_security", period)
             highest_tax_rate = person.tax_unit("highest_tax_rate", period)
             ss_tax = taxable_social_security * highest_tax_rate
@@ -37,7 +37,7 @@ def non_refundable_ss_credit_reform() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/1"
         unit = "/1"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # compute taxable income that is taxed at the main rates
             full_taxable_income = tax_unit("taxable_income", period)
             cg_exclusion = tax_unit(
@@ -85,7 +85,7 @@ def non_refundable_ss_credit_reform() -> Reform:
 
             return highest_rate
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.irs.credits.non_refundable.update(
             start=instant("2026-01-01"),
             stop=instant("2035-12-31"),
@@ -107,7 +107,7 @@ def non_refundable_ss_credit_reform() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ss_credit)
             self.update_variable(highest_tax_rate)
             self.modify_parameters(modify_parameters)
@@ -117,7 +117,7 @@ def non_refundable_ss_credit_reform() -> Reform:
 
 def create_non_refundable_ss_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform

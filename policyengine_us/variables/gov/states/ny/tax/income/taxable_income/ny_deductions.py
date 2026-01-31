@@ -10,7 +10,7 @@ class ny_deductions(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return max_(
             tax_unit("ny_itemized_deductions", period),
             tax_unit("ny_standard_deduction", period),

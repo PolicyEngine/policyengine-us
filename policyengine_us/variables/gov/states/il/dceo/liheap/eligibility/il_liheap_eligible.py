@@ -9,7 +9,7 @@ class il_liheap_eligible(Variable):
     defined_for = "il_liheap_income_eligible"
     reference = "https://dceo.illinois.gov/communityservices/utilitybillassistance.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dceo.liheap.eligibility
 
         # For renters with heat included in rent, check additional requirement

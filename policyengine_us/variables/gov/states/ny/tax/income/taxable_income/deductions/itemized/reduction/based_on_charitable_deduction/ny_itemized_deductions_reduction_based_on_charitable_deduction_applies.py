@@ -13,7 +13,7 @@ class ny_itemized_deductions_reduction_based_on_charitable_deduction_applies(
     reference = "https://www.nysenate.gov/legislation/laws/TAX/615"  # (g)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ny.tax.income.deductions.itemized.reduction

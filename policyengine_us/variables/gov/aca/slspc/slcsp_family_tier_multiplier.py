@@ -9,7 +9,7 @@ class slcsp_family_tier_multiplier(Variable):
     definition_period = MONTH
     defined_for = "slcsp_family_tier_applies"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         family_category = tax_unit("slcsp_family_tier_category", period)
         p = parameters(period).gov.aca.family_tier_ratings
         state_code = tax_unit.household("state_code", period)

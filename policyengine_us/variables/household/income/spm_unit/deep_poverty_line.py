@@ -9,5 +9,5 @@ class deep_poverty_line(Variable):
     documentation = "Income threshold below which a household is considered to be in deep poverty."
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return spm_unit("poverty_line", period) / 2

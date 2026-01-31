@@ -14,7 +14,7 @@ class co_charitable_contribution_subtraction_eligible(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Only available to filers who do not itemize on their federal tax return.
         # The tax form instructions also limit to filers who do not deduct charitable deductions,
         # but this is a redundant criterion.

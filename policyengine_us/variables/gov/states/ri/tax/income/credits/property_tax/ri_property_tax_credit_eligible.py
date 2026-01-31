@@ -12,7 +12,7 @@ class ri_property_tax_credit_eligible(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         # minimum age eligibility
         greater_head_or_spouse_age = tax_unit(

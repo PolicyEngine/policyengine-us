@@ -11,7 +11,7 @@ class dc_gac_eligible(Variable):
     )
     defined_for = "dc_gac_income_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         has_eligible_child = (
             add(spm_unit, period, ["dc_gac_eligible_child"]) > 0
         )

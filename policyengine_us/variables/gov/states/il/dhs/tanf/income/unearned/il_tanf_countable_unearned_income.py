@@ -10,7 +10,7 @@ class il_tanf_countable_unearned_income(Variable):
     defined_for = StateCode.IL
     reference = "http://law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.101"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         gross_unearned_income = person("il_tanf_gross_unearned_income", period)

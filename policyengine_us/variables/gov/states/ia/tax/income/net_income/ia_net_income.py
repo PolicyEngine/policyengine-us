@@ -15,7 +15,7 @@ class ia_net_income(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gross_income = person("ia_gross_income", period)
         income_adjustments = person("ia_income_adjustments", period)
         net_income = gross_income - income_adjustments

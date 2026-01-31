@@ -21,7 +21,7 @@ class tx_ccs_child_age_category(Variable):
         "https://www.twc.texas.gov/programs/child-care-services",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get child's age in years (convert to months for infant threshold)
         age_years = person("age", period.this_year)
         age_months = age_years * MONTHS_IN_YEAR

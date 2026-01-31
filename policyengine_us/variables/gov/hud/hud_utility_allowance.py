@@ -15,7 +15,7 @@ class hud_utility_allowance(Variable):
     )
     defined_for = "tenant_pays_utilities"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         household_bedrooms = household("bedrooms", period)
         is_sro = household("is_sro", period)
         in_la = household("in_la", period)

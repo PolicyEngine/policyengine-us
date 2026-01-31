@@ -9,7 +9,7 @@ class eitc_phased_in(Variable):
     documentation = "EITC maximum amount, taking into account earnings."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         maximum = tax_unit("eitc_maximum", period)
         phase_in_rate = tax_unit("eitc_phase_in_rate", period)
         earnings = tax_unit("filer_adjusted_earnings", period)

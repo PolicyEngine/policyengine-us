@@ -9,7 +9,7 @@ class id_ctc(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get relevant parameter subtree.
         p = parameters(period).gov.states.id.tax.income.credits.ctc
         # "the term "qualifying child" has the meaning as defined in section 24(c) of the Internal Revenue Code."

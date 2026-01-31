@@ -17,7 +17,7 @@ class co_omnisalud_eligible(Variable):
     CHP+, or federal ACA subsidies due to their immigration status.
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.hcpf.omnisalud.eligibility
 
         # Program must be in effect

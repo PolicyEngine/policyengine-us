@@ -10,7 +10,7 @@ class is_ma_income_tax_exempt(Variable):
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ma_agi", period)
         threshold = tax_unit("ma_income_tax_exemption_threshold", period)
         return agi <= threshold

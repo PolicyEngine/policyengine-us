@@ -13,7 +13,7 @@ class il_hbwd_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age_eligible = person("il_hbwd_age_eligible", period)
         disability_eligible = person("il_hbwd_disability_eligible", period)
         employment_eligible = person("il_hbwd_employment_eligible", period)

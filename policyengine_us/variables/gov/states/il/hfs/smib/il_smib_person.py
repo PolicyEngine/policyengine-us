@@ -18,7 +18,7 @@ class il_smib_person(Variable):
     )
     defined_for = "il_smib_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # SMIB pays the Part B premium
         # base_part_b_premium is annual, convert to monthly
         return person("base_part_b_premium", period.this_year) / MONTHS_IN_YEAR

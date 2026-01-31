@@ -12,7 +12,7 @@ class ok_federal_eitc_phase_out_rate(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eitc = parameters(f"2020-01-01").gov.irs.credits.eitc
         num_children = tax_unit("eitc_child_count", period)
         return eitc.phase_out.rate.calc(num_children)

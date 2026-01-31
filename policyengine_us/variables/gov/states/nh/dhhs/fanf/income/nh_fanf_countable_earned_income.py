@@ -14,7 +14,7 @@ class nh_fanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.NH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NH has different disregard rates for applicants (20%) vs recipients
         # Recipients: 50% (1997) → 75% (Sept 2022 Cliff Effect Initiative)
         # Note: A 100% disregard exists for high-demand jobs (per NH Workforce

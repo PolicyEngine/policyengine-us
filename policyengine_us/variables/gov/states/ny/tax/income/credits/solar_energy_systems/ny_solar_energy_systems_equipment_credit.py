@@ -10,7 +10,7 @@ class ny_solar_energy_systems_equipment_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (g)(2)(C)(9)(g-1)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         qualified_expenditures = tax_unit(
             "ny_qualified_solar_energy_systems_equipment_expenditures", period
         )

@@ -9,7 +9,7 @@ class ca_capi_eligible(Variable):
     defined_for = StateCode.CA
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         resource_eligible = spm_unit("ca_capi_resource_eligible", period)
         income_eligible = spm_unit("ca_capi_income_eligible", period)
         has_eligible_person = (

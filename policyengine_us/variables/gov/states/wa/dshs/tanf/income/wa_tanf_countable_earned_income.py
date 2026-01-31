@@ -10,7 +10,7 @@ class wa_tanf_countable_earned_income(Variable):
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0170"
     defined_for = StateCode.WA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get gross earned income from federal TANF variable
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 

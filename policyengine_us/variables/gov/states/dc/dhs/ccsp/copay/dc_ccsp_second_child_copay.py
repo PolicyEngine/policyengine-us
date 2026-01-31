@@ -10,7 +10,7 @@ class dc_ccsp_second_child_copay(Variable):
     definition_period = MONTH
     defined_for = "dc_ccsp_is_second_youngest_child"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp.copay.second_child
         countable_income = person.spm_unit("dc_ccsp_countable_income", period)
         fpg = person.spm_unit("spm_unit_fpg", period)

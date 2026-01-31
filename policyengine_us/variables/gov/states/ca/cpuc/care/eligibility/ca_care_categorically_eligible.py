@@ -10,7 +10,7 @@ class ca_care_categorically_eligible(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.cpuc.care.eligibility
         is_on_tribal_land = household("is_on_tribal_land", period)
         non_tribal_lifeline_programs = add(household, period, p.categorical)

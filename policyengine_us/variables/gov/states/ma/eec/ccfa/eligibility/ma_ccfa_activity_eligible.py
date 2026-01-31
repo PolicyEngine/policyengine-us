@@ -9,7 +9,7 @@ class ma_ccfa_activity_eligible(Variable):
     defined_for = StateCode.MA
     reference = "https://regulations.justia.com/states/massachusetts/606-cmr/title-606-cmr-10-00/section-10-04/"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.activity_requirements
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)

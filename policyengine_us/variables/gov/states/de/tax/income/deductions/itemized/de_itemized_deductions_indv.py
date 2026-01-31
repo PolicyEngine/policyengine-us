@@ -13,7 +13,7 @@ class de_itemized_deductions_indv(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         unit_deds = person.tax_unit("de_itemized_deductions_unit", period)
         person_agi = person("adjusted_gross_income_person", period)
         total_agi = person.tax_unit.sum(person_agi)

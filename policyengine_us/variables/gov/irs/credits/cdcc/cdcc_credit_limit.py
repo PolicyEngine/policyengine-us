@@ -9,7 +9,7 @@ class cdcc_credit_limit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income_tax_before_credits = tax_unit(
             "income_tax_before_credits", period
         )

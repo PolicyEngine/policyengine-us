@@ -14,7 +14,7 @@ class ks_tanf_countable_earned_income(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per K.A.R. 30-4-110, KEESM 7110, and KEESM 7224:
         # Sum person-level earned income after $90 and 60% deductions,
         # then subtract dependent care expenses.

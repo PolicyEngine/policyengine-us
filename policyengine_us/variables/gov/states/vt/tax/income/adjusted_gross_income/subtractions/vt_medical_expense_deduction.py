@@ -14,7 +14,7 @@ class vt_medical_expense_deduction(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont medical expenses deducted from taxable income."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get federal medical expense deduction (Worksheet line 1a).
         # This points to federal Form 1040, Schedule A, Line 4, which is the deduction itself
         # (not the expenses).

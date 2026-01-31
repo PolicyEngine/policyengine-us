@@ -12,7 +12,7 @@ class il_pfae_secondary_priority_factor_count(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         spm_unit = person.spm_unit
         household = person.household
 

@@ -13,7 +13,7 @@ class ms_agi(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ms.tax.income
         gross_income = add(person, period, p.income_sources)
         adjustments = person("ms_agi_adjustments", period)

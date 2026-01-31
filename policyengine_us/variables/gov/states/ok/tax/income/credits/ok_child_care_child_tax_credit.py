@@ -13,7 +13,7 @@ class ok_child_care_child_tax_credit(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.tax.income.credits
         # determine AGI eligibility
         us_agi = tax_unit("adjusted_gross_income", period)

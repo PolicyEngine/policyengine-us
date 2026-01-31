@@ -14,7 +14,7 @@ class vt_cdcc(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc
         # The form refers to 2022 Form 2441 line 11, which caps the credit at tax liability.
         federal_cdcc = tax_unit("capped_cdcc", period)

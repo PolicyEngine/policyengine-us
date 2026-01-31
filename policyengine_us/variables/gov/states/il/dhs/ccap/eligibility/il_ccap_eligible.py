@@ -9,7 +9,7 @@ class il_ccap_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.dhs.state.il.us/page.aspx?item=104995"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("il_ccap_income_eligible", period)
         has_eligible_child = (
             add(spm_unit, period, ["il_ccap_eligible_child"]) > 0

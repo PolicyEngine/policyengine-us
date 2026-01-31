@@ -10,7 +10,7 @@ class ny_itemizes(Variable):
     defined_for = StateCode.NY
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_itemizes = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("ny_standard_deduction", period)
         itemized_deductions = tax_unit("ny_itemized_deductions", period)

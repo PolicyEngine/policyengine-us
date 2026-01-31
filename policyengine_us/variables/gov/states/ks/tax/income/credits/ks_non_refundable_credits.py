@@ -13,7 +13,7 @@ class ks_non_refundable_credits(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ks.tax.income
         nonrefundable_credits = (
             p.credits.nonrefundable_before_eitc

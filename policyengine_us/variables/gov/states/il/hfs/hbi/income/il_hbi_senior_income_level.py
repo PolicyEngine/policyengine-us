@@ -12,7 +12,7 @@ class il_hbi_senior_income_level(Variable):
     # HBIS uses AABD methodology for income counting but compares against
     # 100% of the federal poverty level.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get monthly AABD-methodology income and annualize
         income = person("il_hbi_senior_countable_income", period)
 

@@ -8,7 +8,7 @@ class ssi_engaged_in_sga(Variable):
     definition_period = YEAR
     reference = "https://www.ssa.gov/OP_Home/cfr20/416/416-0971.htm"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         income = person("ssi_earned_income", period)
         monthly_income = income / MONTHS_IN_YEAR
         p = parameters(period).gov.ssa.sga

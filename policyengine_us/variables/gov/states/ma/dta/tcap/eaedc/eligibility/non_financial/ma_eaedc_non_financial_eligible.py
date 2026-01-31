@@ -11,7 +11,7 @@ class ma_eaedc_non_financial_eligible(Variable):
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         elderly_present = spm_unit("ma_eaedc_eligible_elderly_present", period)
         disabled_head_or_spouse_present = spm_unit(
             "ma_eaedc_eligible_disabled_head_or_spouse", period

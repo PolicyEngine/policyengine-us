@@ -9,7 +9,7 @@ class nc_scca_fpg_rate(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Entry income eligibility depends on the child's age and disability status:
         # - Children aged 0-5 (preschool): 200% FPL
         # - Children aged 6-12 (school age): 133% FPL

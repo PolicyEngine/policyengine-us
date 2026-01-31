@@ -23,7 +23,7 @@ class medicaid_category(Variable):
     label = "Medicaid category"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         categories = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.covered

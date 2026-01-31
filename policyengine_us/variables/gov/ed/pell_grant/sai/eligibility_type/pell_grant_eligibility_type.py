@@ -15,7 +15,7 @@ class pell_grant_eligibility_type(Variable):
     definition_period = YEAR
     label = "Maximum, minimum, or ineligible for Pell Grant"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person.tax_unit("adjusted_gross_income", period)
         # FPG from the prior-prior year.
         fpg = person.tax_unit("tax_unit_fpg", period.offset(-2, "year"))

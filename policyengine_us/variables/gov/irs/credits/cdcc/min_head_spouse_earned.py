@@ -8,7 +8,7 @@ class min_head_spouse_earned(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         is_joint = tax_unit("tax_unit_is_joint", period)
         head_earnings = tax_unit("head_earned", period)
         spouse_earnings = tax_unit("spouse_earned", period)

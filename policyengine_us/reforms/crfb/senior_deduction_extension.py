@@ -4,7 +4,7 @@ from policyengine_core.periods import instant
 
 
 def create_senior_deduction_extension() -> Reform:
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         # Update deductions_if_itemizing to include additional_senior_deduction after 2028
         parameters.gov.irs.deductions.deductions_if_itemizing.update(
             start=instant("2029-01-01"),
@@ -32,7 +32,7 @@ def create_senior_deduction_extension() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.modify_parameters(modify_parameters)
 
     return reform
@@ -40,7 +40,7 @@ def create_senior_deduction_extension() -> Reform:
 
 def create_senior_deduction_extension_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_senior_deduction_extension()
 

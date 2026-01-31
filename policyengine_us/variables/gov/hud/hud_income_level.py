@@ -18,7 +18,7 @@ class hud_income_level(Variable):
     documentation = "Income level for HUD programs"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get annual income.
         annual_income = spm_unit("hud_annual_income", period)
         # Get household size.

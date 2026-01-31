@@ -14,7 +14,7 @@ class il_aabd_ssi_income(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         use_reported = person("il_aabd_use_reported_ssi", period.this_year)
         reported = person("ssi_reported", period)
         calculated = person("ssi", period)

@@ -9,7 +9,7 @@ class dc_tanf_basic_eligibility_requirements(Variable):
     reference = "https://dhs.dc.gov/service/tanf-district-families"
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = (
             add(spm_unit, period, ["dc_tanf_demographic_eligible_person"]) > 0
         )

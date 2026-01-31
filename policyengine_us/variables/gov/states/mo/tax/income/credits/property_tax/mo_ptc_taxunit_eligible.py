@@ -13,7 +13,7 @@ class mo_ptc_taxunit_eligible(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # check age
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)

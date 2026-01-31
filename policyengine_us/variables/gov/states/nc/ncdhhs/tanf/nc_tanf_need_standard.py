@@ -9,7 +9,7 @@ class nc_tanf_need_standard(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.tanf.need_standard
         household_size = spm_unit("nc_tanf_household_size", period)
         capped_household_size = clip(

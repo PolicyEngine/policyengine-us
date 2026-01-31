@@ -13,7 +13,7 @@ class ne_adc_need_standard(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.dhhs.adc
         size = spm_unit("spm_unit_size", period.this_year)
         # Parameter table defines sizes 1-10; for larger sizes, add increment per person

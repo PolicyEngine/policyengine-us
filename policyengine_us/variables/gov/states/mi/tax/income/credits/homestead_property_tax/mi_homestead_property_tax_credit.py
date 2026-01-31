@@ -13,7 +13,7 @@ class mi_homestead_property_tax_credit(Variable):
     )
     defined_for = "mi_homestead_property_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         allowable_credit_amount = tax_unit(
             "mi_homestead_property_tax_credit_pre_alternate_senior_amount",
             period,

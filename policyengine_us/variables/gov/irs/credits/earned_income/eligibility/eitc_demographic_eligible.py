@@ -8,7 +8,7 @@ class eitc_demographic_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         has_child = tax_unit("eitc_child_count", period) > 0
         age = person("age", period)

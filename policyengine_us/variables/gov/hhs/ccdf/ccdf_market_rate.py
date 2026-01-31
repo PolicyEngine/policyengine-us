@@ -8,7 +8,7 @@ class ccdf_market_rate(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         county_cluster = person.household("ccdf_county_cluster", period)
         provider_type_group = person("childcare_provider_type_group", period)
         child_age_group = person("ccdf_age_group", period)

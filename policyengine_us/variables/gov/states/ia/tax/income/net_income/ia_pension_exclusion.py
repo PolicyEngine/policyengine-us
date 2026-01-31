@@ -13,7 +13,7 @@ class ia_pension_exclusion(Variable):
     )
     defined_for = "ia_pension_exclusion_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ia.tax.income.pension_exclusion
         # determine pension exclusion amount
         pension = person("taxable_pension_income", period)

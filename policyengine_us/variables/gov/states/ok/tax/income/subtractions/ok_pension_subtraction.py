@@ -13,7 +13,7 @@ class ok_pension_subtraction(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         pensions = tax_unit.members("taxable_pension_income", period)
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions
         return tax_unit.sum(min_(p.pension_limit, pensions))

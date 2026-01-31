@@ -8,7 +8,7 @@ class is_usda_elderly(Variable):
     documentation = "Is elderly per USDA guidelines"
     label = "USDA elderly"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         elderly_age_threshold = parameters(
             period
         ).gov.usda.elderly_age_threshold

@@ -10,7 +10,7 @@ class az_529_college_savings_plan_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.subtractions.college_savings

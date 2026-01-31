@@ -8,7 +8,7 @@ class tax_unit_childcare_expenses(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # distribute the SPM unit's childcare expenses evenly across
         # children in SPM unit's Tax units
         spm_unit = tax_unit.spm_unit

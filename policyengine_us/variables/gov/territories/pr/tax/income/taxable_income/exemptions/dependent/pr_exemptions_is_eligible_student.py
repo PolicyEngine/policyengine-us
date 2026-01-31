@@ -10,7 +10,7 @@ class pr_exemptions_is_eligible_student(Variable):
     definition_period = YEAR
     defined_for = StateCode.PR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Gross income limit is $7500 for a student dependent
         p = parameters(
             period

@@ -8,7 +8,7 @@ class amt_kiddie_tax_applies(Variable):
     label = "Alternative Minimum Tax kiddie tax applies"
     documentation = "Whether the kiddie tax applies to the tax unit"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         age_head = tax_unit("age_head", period)
         p = parameters(period).gov.irs.dependent.ineligible_age
         young_head = (age_head != 0) & (age_head < p.non_student)

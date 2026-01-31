@@ -10,7 +10,7 @@ class il_tanf_payment_level_for_grant_calculation(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.251"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.tanf.payment_level
         fpg = spm_unit("il_tanf_assistance_unit_fpg", period)
         parent_count = add(

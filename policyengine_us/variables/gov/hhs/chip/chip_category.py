@@ -22,7 +22,7 @@ class chip_category(Variable):
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_child_eligible = person("is_chip_eligible_child", period)
         is_chip_eligible_standard_pregnant_person = person(
             "is_chip_eligible_standard_pregnant_person", period

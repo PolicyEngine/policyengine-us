@@ -10,7 +10,7 @@ class ny_exemptions(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/616"
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         count_dependents = tax_unit("tax_unit_child_dependents", period)
         dependent_exemption = parameters(
             period

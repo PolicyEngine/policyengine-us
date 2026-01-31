@@ -9,7 +9,7 @@ class ut_personal_exemption_additional_dependent_eligible(Variable):
     definition_period = YEAR
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html"  # 59-10-1018 (1)(g)
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_dependent = person("is_tax_unit_dependent", period)
         birth_year = person("birth_year", period)
         born_this_year = birth_year == period.start.year

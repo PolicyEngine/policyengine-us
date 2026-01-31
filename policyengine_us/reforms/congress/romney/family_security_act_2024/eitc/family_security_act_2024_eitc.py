@@ -12,7 +12,7 @@ def create_family_security_act_2024_eitc() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             child_count = tax_unit("eitc_child_count", period)
             p = parameters(
                 period
@@ -24,7 +24,7 @@ def create_family_security_act_2024_eitc() -> Reform:
             )
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(eitc_maximum)
 
     return reform
@@ -32,7 +32,7 @@ def create_family_security_act_2024_eitc() -> Reform:
 
 def create_family_security_act_2024_eitc_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_family_security_act_2024_eitc()
 

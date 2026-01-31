@@ -15,7 +15,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont filers use below criteria to check whether the tax unit is eligible for vermont retirement income exemption."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Filer can choose from one of Social Security,
         # Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems to determine eligibility

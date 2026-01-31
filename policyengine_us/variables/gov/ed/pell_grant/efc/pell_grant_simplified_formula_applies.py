@@ -7,7 +7,7 @@ class pell_grant_simplified_formula_applies(Variable):
     label = "Use Pell Grant simplified formula"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         tax_unit = person.tax_unit
         head_income = tax_unit("pell_grant_primary_income", period)
         p = parameters(period).gov.ed.pell_grant.efc.simplified

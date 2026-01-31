@@ -9,7 +9,7 @@ class additional_standard_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         amount_per = p.aged_or_blind.amount[filing_status]

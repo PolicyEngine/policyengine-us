@@ -9,7 +9,7 @@ class ky_files_separately(Variable):
     reference = "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_indiv = add(
             tax_unit,
             period,

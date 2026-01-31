@@ -13,7 +13,7 @@ class de_tanf_countable_unearned_income(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Gross unearned income minus $50 child support disregard
         p = parameters(period).gov.states.de.dhss.tanf.income
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])

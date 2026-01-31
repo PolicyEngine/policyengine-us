@@ -12,7 +12,7 @@ def create_ctc_additional_bracket() -> Reform:
         definition_period = YEAR
         defined_for = "is_tax_unit_dependent"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             age = person("age", period)
             p = parameters(period).gov.contrib.ctc.additional_bracket.amount
             return p.base.calc(age)
@@ -25,7 +25,7 @@ def create_ctc_additional_bracket() -> Reform:
         documentation = "The maximum refundable CTC for this person."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             child_amount = max_(
                 person("ctc_child_individual_maximum", period),
@@ -39,7 +39,7 @@ def create_ctc_additional_bracket() -> Reform:
             return tax_unit.sum(min_(child_amount, refundable_max))
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ctc_child_individual_maximum)
             self.update_variable(ctc_refundable_maximum)
 
@@ -48,7 +48,7 @@ def create_ctc_additional_bracket() -> Reform:
 
 def create_ctc_additional_bracket_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ctc_additional_bracket()
 

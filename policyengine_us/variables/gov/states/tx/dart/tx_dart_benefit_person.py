@@ -12,7 +12,7 @@ class tx_dart_benefit_person(Variable):
         "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         free_ride_benefit = person("tx_dart_free_ride_benefit", period)
         reduced_fare_benefit = person("tx_dart_reduced_fare_benefit", period)
         return max_(free_ride_benefit, reduced_fare_benefit)

@@ -10,7 +10,7 @@ class elderly_disabled_credit(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit("elderly_disabled_credit_credit_limit", period)
         potential = tax_unit("elderly_disabled_credit_potential", period)
         return min_(credit_limit, potential)

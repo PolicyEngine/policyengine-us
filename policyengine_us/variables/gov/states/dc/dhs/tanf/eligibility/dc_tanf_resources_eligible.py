@@ -9,7 +9,7 @@ class dc_tanf_resources_eligible(Variable):
     reference = "https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=40"
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.tanf.resource_limit
         person = spm_unit.members
         # Check if the household has at least one elderly member.

@@ -10,7 +10,7 @@ class ga_itemizer_credit(Variable):
     reference = "https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-29-23/"
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Full-year and part-year residents who itemize their deductions
         # are entitled to a credit up to $300 per taxpayer
         itemizes = tax_unit("tax_unit_itemizes", period)

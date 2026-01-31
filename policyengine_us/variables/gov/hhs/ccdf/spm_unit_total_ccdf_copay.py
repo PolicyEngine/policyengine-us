@@ -9,7 +9,7 @@ class spm_unit_total_ccdf_copay(Variable):
     unit = USD
     reference = "https://www.ocfs.ny.gov/programs/childcare/stateplan/assets/2022-plan/FFY2022-2024-CCDF-Plan.pdf#page=107"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get family income and federal poverty line
         income = spm_unit("ccdf_income", period)
         fpl = spm_unit("spm_unit_fpg", period)

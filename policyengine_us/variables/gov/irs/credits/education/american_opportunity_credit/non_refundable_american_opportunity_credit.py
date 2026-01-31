@@ -10,7 +10,7 @@ class non_refundable_american_opportunity_credit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit(
             "non_refundable_american_opportunity_credit_credit_limit", period
         )

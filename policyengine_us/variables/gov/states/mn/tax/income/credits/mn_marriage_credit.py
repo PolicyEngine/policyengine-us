@@ -13,7 +13,7 @@ class mn_marriage_credit(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         mn_itax = parameters(period).gov.states.mn.tax.income
         p = mn_itax.credits.marriage
         # determine filing status eligibility

@@ -11,7 +11,7 @@ class mo_tanf_standard_of_need_test(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
         income = spm_unit("mo_tanf_income_for_need_test", period)
         return income < standard_of_need

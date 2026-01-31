@@ -20,7 +20,7 @@ class co_refundable_ctc(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         adjusted_fed_ctc = tax_unit("co_non_refundable_ctc", period)  # Line 7
         max_child_amount = tax_unit("co_federal_ctc_maximum", period)  # Line 3

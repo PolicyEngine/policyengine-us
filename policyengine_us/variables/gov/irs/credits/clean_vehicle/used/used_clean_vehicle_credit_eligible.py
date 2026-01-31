@@ -11,7 +11,7 @@ class used_clean_vehicle_credit_eligible(Variable):
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=370"
     defined_for = "purchased_qualifying_used_clean_vehicle"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.clean_vehicle.used
         # Income eligibility based on lesser of MAGI in current and prior year.
         # Assume AGI in current year for now.

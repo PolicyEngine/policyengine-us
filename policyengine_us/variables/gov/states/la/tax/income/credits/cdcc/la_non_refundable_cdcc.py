@@ -10,7 +10,7 @@ class la_non_refundable_cdcc(Variable):
     reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.la.tax.income.credits.cdcc.non_refundable

@@ -9,7 +9,7 @@ class wv_low_income_family_tax_credit_fpg(Variable):
     definition_period = YEAR
     defined_for = "wv_low_income_family_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit

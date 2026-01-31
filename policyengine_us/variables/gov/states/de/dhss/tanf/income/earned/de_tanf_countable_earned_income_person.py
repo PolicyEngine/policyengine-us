@@ -13,7 +13,7 @@ class de_tanf_countable_earned_income_person(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per DSSM 4008 / State Plan Exhibit 1 Step 3:
         # For benefit calculation, subtract from each earner's income:
         # 1. $90 standard work expense

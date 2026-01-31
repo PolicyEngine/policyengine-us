@@ -11,7 +11,7 @@ class used_clean_vehicle_credit_potential(Variable):
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=370"
     defined_for = "used_clean_vehicle_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.clean_vehicle.used
         sale_price = tax_unit("used_clean_vehicle_sale_price", period)
         # Amount is lesser of $4,000 and 30% of sale price.

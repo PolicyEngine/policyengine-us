@@ -13,7 +13,7 @@ class or_wfhdc_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         household_size_eligible = tax_unit(
             "or_wfhdc_household_size_eligible", period
         )

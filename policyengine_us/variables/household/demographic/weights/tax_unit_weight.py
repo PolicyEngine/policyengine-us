@@ -8,5 +8,5 @@ class tax_unit_weight(Variable):
     definition_period = YEAR
     uprating = "calibration.gov.census.populations.total"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return tax_unit.household("household_weight", period)

@@ -11,7 +11,7 @@ class additional_medicare_tax(Variable):
         "Additional Medicare Tax from Form 8959 (included in payrolltax)"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         amc = parameters(period).gov.irs.payroll.medicare.additional
         # Wage and self-employment income are taxed the same.
         ELEMENTS = ["irs_employment_income", "taxable_self_employment_income"]

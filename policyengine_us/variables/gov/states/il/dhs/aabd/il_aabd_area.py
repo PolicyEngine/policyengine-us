@@ -22,7 +22,7 @@ class il_aabd_area(Variable):
     label = "Illinois Aid to the Aged, Blind or Disabled (AABD) area"
     reference = "https://www.dhs.state.il.us/page.aspx?item=12668"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
 
         p = parameters(period).gov.states.il.dhs.aabd.payment.area

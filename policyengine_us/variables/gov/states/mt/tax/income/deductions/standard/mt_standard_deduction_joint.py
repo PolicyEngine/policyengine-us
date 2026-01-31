@@ -11,7 +11,7 @@ class mt_standard_deduction_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Montana’s legacy parameter block (only applies through TY-2023)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
 

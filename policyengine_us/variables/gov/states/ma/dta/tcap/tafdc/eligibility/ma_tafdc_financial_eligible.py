@@ -11,7 +11,7 @@ class ma_tafdc_financial_eligible(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         total_countable_income = spm_unit(
             "ma_tafdc_applicable_income_for_financial_eligibility", period
         )

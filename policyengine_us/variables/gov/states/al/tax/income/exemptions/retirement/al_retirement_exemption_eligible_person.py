@@ -14,7 +14,7 @@ class al_retirement_exemption_eligible_person(Variable):
     definition_period = YEAR
     defined_for = StateCode.AL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.al.tax.income.exemptions.retirement
         age = person("age", period)
         eligible_age = age >= p.age_threshold

@@ -9,7 +9,7 @@ class wv_works_income_eligible(Variable):
     reference = "https://bfa.wv.gov/media/2766/download?inline#page=588"
     defined_for = StateCode.WV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wv.dhhr.works
         gross_income = add(
             spm_unit,

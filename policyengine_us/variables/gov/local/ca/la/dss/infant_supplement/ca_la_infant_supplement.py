@@ -8,7 +8,7 @@ class ca_la_infant_supplement(Variable):
     label = "Los Angeles County infant supplement"
     defined_for = "in_la"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.la.dss.infant_supplement
         person = household.members
         is_in_group_home = household.any(

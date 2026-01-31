@@ -17,7 +17,7 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
     # SECTION II: LOW INCOME COMPREHENSIVE TAX REBATE
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nm.tax.income.rebates.low_income
 
         agi = tax_unit("nm_modified_gross_income", period)

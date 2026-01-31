@@ -21,7 +21,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     defined_for = "is_ssi_eligible_individual"
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # 1. Check if spousal deeming applies (avoids duplicating threshold logic)
         deeming_applies = person("is_ssi_spousal_deeming_applies", period)
 

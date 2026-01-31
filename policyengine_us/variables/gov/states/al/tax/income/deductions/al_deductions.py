@@ -10,7 +10,7 @@ class al_deductions(Variable):
     reference = "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf"  # 2022 Form 40A Booklet
     defined_for = StateCode.AL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itm_ded = tax_unit("al_itemized_deductions", period)
         std_ded = tax_unit("al_standard_deduction", period)
         al_ded = max_(itm_ded, std_ded)

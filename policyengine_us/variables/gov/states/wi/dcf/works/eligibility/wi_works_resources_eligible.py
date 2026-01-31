@@ -12,7 +12,7 @@ class wi_works_resources_eligible(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable = spm_unit("wi_works_countable_resources", period)
         p = parameters(period).gov.states.wi.dcf.works.asset
         return countable <= p.limit

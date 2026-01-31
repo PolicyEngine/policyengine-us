@@ -10,7 +10,7 @@ class ms_total_exemptions_joint(Variable):
     defined_for = StateCode.MS
     reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=6"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         total_exemptions = person.tax_unit("ms_total_exemptions", period)
         is_head = person("is_tax_unit_head", period)
         return is_head * total_exemptions

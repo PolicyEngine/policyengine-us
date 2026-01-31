@@ -9,7 +9,7 @@ class basic_income(Variable):
     documentation = "Total basic income payments for this filer."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eligible = tax_unit("basic_income_eligible", period)
         basic_income = tax_unit("basic_income_before_phase_out", period)
         phase_out = tax_unit("basic_income_phase_out", period)

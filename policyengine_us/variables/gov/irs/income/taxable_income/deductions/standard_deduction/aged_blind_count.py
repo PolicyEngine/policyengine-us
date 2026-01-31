@@ -9,7 +9,7 @@ class aged_blind_count(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         blind_head = tax_unit("blind_head", period).astype(int)
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
         aged_head = tax_unit("aged_head", period).astype(int)

@@ -15,7 +15,7 @@ class nd_qdiv_subtraction(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         qdiv = add(tax_unit, period, ["qualified_dividend_income"])
         p = parameters(period).gov.states.nd.tax.income
         return qdiv * p.taxable_income.subtractions.qdiv_fraction

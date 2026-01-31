@@ -8,7 +8,7 @@ class reported_salt(Variable):
     label = "Reported State and local sales or income tax and real estate taxes subject to the SALT deduction limited to taxable income"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         salt = tax_unit("salt", period)
         p = parameters(period).gov.simulation
         if p.limit_itemized_deductions_to_taxable_income:

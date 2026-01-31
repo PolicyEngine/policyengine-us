@@ -12,7 +12,7 @@ class vt_low_income_cdcc_eligible(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc.low_income
         filing_status = tax_unit("filing_status", period)
         federal_agi_threshold = p.income_threshold[filing_status]

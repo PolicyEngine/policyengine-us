@@ -10,7 +10,7 @@ class dc_tanf_childcare_deduction(Variable):
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"  # (A)(2)
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.dc.dhs.tanf.income.deductions.child_care

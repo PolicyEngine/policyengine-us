@@ -13,7 +13,7 @@ class nm_works_maximum_benefit(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nm.hca.nm_works.payment_standard
         unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_table_size)

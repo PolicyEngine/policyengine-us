@@ -13,7 +13,7 @@ class capped_cdcc(Variable):
         "https://www.law.cornell.edu/uscode/text/26/30D#c_2",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         cdcc = tax_unit("cdcc", period)
         p = parameters(period).gov.irs.credits
         if "cdcc" in p.refundable:

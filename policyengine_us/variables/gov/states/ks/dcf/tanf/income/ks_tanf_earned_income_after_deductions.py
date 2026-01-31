@@ -14,7 +14,7 @@ class ks_tanf_earned_income_after_deductions(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per KEESM 7211 and K.A.R. 30-4-111:
         # Step 1: Deduct $90 work expense per employed person
         # Step 2: Apply 60% disregard to remainder

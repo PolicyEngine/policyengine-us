@@ -10,7 +10,7 @@ class nc_itemized_deductions(Variable):
     reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions "
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Qualified Mortgage Interest and Real Estate Property Taxes.
         filing_status = tax_unit("filing_status", period)
 

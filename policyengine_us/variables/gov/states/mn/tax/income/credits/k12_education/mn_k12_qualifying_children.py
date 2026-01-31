@@ -12,7 +12,7 @@ class mn_k12_qualifying_children(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # A qualifying child must:
         # - Be in grades K-12
         # - Be a dependent

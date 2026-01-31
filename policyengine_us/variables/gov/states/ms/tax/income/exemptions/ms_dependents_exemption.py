@@ -9,7 +9,7 @@ class ms_dependents_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Then get the MS Exemptions part of the parameter tree.
         p = parameters(period).gov.states.ms.tax.income.exemptions.dependents
 

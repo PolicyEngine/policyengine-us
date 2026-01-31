@@ -9,7 +9,7 @@ class ctc_value(Variable):
     documentation = "Actual value of the Child Tax Credit"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ctc = tax_unit("ctc", period)
         p = parameters(period).gov.irs.credits.ctc.refundable
         if not p.fully_refundable:

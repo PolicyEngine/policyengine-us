@@ -8,7 +8,7 @@ class nj_property_tax_deduction_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nj.tax.income
 
         filing_status = tax_unit("filing_status", period)

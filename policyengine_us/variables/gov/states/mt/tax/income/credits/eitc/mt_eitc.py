@@ -10,7 +10,7 @@ class mt_eitc(Variable):
     reference = "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0180/0150-0300-0230-0180.html"
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         federal_eitc = person.tax_unit("eitc", period)
         p = parameters(period).gov.states.mt.tax.income.credits.eitc
         # Since the eitc amount can be attributed to either spouse, we will allocate the

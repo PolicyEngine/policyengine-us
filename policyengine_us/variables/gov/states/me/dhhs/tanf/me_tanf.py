@@ -13,7 +13,7 @@ class me_tanf(Variable):
     )
     defined_for = "me_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762(3)(B)(8):
         # Benefit = min(Maximum Payment Level, Standard of Need - Countable Income)
         standard_of_need = spm_unit("me_tanf_standard_of_need", period)

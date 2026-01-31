@@ -10,7 +10,7 @@ class capped_home_energy_audit_credit(Variable):
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=366"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.irs.credits.energy_efficient_home_improvement

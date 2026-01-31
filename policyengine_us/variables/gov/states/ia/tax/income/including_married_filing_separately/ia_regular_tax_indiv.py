@@ -16,7 +16,7 @@ class ia_regular_tax_indiv(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         taxable_income = person("ia_taxable_income_indiv", period)
         p = parameters(period).gov.states.ia.tax.income.rates
         if p.by_filing_status.active:

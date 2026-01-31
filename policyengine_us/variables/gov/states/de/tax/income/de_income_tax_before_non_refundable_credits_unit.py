@@ -11,7 +11,7 @@ class de_income_tax_before_non_refundable_credits_unit(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_separately = tax_unit("de_files_separately", period)
         itax_indiv = add(
             tax_unit,

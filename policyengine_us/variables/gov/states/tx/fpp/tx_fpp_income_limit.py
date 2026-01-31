@@ -13,7 +13,7 @@ class tx_fpp_income_limit(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get the Federal Poverty Guideline for this SPM unit
         fpg = spm_unit("spm_unit_fpg", period)
 

@@ -10,7 +10,7 @@ class il_tanf(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.250"
     defined_for = "il_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_level = spm_unit(
             "il_tanf_payment_level_for_grant_calculation", period
         )

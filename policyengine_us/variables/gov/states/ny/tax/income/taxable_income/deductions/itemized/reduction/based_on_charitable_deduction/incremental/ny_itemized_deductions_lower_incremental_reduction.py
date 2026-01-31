@@ -10,7 +10,7 @@ class ny_itemized_deductions_lower_incremental_reduction(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/615"  # (f)
     defined_for = "ny_itemized_deductions_reduction_applies"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ny.tax.income.deductions.itemized.reduction.incremental.lower

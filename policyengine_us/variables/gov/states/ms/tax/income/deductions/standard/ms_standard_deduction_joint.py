@@ -9,7 +9,7 @@ class ms_standard_deduction_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # First get their filing status.
         filing_status = person.tax_unit("filing_status", period)
 

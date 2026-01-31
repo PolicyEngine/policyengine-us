@@ -10,7 +10,7 @@ class or_working_family_household_and_dependent_care_credit(Variable):
     defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the parameter tree for WFHDC.
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 

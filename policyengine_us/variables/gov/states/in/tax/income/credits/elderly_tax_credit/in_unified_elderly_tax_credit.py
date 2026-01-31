@@ -13,7 +13,7 @@ class in_unified_elderly_tax_credit(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states["in"].tax.income.credits
         head_age = tax_unit("age_head", period)

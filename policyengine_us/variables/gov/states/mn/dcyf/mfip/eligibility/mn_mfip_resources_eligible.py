@@ -11,7 +11,7 @@ class mn_mfip_resources_eligible(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 256P.02, Subd. 2:
         # Assets must not exceed $10,000.
         p = parameters(period).gov.states.mn.dcyf.mfip.resources

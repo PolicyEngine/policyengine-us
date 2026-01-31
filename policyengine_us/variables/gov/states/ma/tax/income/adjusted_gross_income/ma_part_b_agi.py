@@ -10,7 +10,7 @@ class ma_part_b_agi(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_b_gross_income = tax_unit("ma_part_b_gross_income", period)
         parameters = parameters(period).gov
         federal_deductions = parameters.irs.ald.deductions

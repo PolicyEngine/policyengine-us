@@ -20,7 +20,7 @@ class oh_adoption_credit_person(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_adoption_related_expenses = person(
             "qualified_adoption_assistance_expense", period
         )

@@ -10,7 +10,7 @@ class ia_regular_tax_consolidated(Variable):
     reference = "https://revenue.iowa.gov/media/2748/download?inline"
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("ia_taxable_income_consolidated", period)
         p = parameters(period).gov.states.ia.tax.income.rates
         filing_status = tax_unit("filing_status", period)

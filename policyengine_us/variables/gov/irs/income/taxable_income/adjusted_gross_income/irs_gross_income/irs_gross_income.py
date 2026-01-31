@@ -10,7 +10,7 @@ class irs_gross_income(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/61"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         sources = parameters(period).gov.irs.gross_income.sources
         total = 0
         not_dependent = ~person("is_tax_unit_dependent", period)

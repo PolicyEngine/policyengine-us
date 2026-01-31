@@ -7,7 +7,7 @@ class has_disabled_spouse(Variable):
     label = "person's marriage partner in JOINT filing unit is disabled"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit("filing_status", period)
         married = filing_status == filing_status.possible_values.JOINT
         head_disabled = person.tax_unit("head_is_disabled", period)

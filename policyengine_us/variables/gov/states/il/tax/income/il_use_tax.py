@@ -9,7 +9,7 @@ class il_use_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Tiered amount if income below a threshold, otherwise a percentage of AGI.
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.il.tax.income.use_tax

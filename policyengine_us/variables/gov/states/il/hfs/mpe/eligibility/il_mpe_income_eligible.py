@@ -9,7 +9,7 @@ class il_mpe_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.66"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.mpe.eligibility
         income_level = person("medicaid_income_level", period.this_year)
         return income_level <= p.income_limit

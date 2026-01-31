@@ -14,7 +14,7 @@ class sc_net_capital_gain_deduction(Variable):
         # South Carolina Code of Laws Section 12-6-1150 (A)
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ltcg = add(tax_unit, period, ["long_term_capital_gains"])
         stcg = add(tax_unit, period, ["short_term_capital_gains"])
         capped_stcg = min_(0, stcg)

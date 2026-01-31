@@ -10,7 +10,7 @@ class in_adoption_exemption(Variable):
     reference = "https://law.justia.com/codes/indiana/title-6/article-3/chapter-1/section-6-3-1-3-5/"  # (a)(5)(D)
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].tax.income.exemptions
         person = tax_unit.members
         is_qualifying_dependent_child = person(

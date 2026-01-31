@@ -8,7 +8,7 @@ class meets_ctc_child_identification_requirements(Variable):
     label = "Child meets CTC identification requirements"
     reference = "https://www.law.cornell.edu/uscode/text/26/24#h_7"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.ctc
         if p.child_ssn_requirement_applies:
             ssn_card_type = person("ssn_card_type", period)

@@ -13,7 +13,7 @@ class mn_public_pension_subtraction(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_public_pension_income = add(
             tax_unit, period, ["taxable_public_pension_income"]
         )

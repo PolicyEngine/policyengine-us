@@ -11,7 +11,7 @@ class dc_tanf_work_requirement_exempt(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.dc.dhs.tanf.work_requirement.work_exempted

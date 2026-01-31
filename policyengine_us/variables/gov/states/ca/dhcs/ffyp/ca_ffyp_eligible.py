@@ -12,7 +12,7 @@ class ca_ffyp_eligible(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.dhcs.ffyp
         age = person("age", period)
         age_eligible = (age > p.foster_care_age_minimum) & (

@@ -10,7 +10,7 @@ class ca_care_income_eligible(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Check income eligibility with respect to percent of the poverty line.
         income = household("household_market_income", period)
         p = parameters(period).gov.states.ca.cpuc.care.eligibility

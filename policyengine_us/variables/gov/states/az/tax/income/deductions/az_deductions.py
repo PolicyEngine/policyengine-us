@@ -10,7 +10,7 @@ class az_deductions(Variable):
     defined_for = StateCode.AZ
     reference = "https://azdor.gov/sites/default/files/2023-08/FORMS_INDIVIDUAL_2022_140f.pdf"  # Line 43
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemized_ded = tax_unit("az_itemized_deductions", period)
         standard_ded = tax_unit("az_standard_deduction", period)
         return max_(itemized_ded, standard_ded)

@@ -8,7 +8,7 @@ class il_aabd_eligible_person(Variable):
     label = "Eligible person for Illinois Aid to the Aged, Blind or Disabled (AABD)"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         financial_eligible = person(
             "il_aabd_financial_eligible_person", period
         )

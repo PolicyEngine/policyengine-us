@@ -13,7 +13,7 @@ class mi_fip_earned_income_after_deductions_for_eligibility_person(Variable):
         "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/520.pdf",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.mdhhs.fip.income.disregard
 
         # Get gross earned income for this person

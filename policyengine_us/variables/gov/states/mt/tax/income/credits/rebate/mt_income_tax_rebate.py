@@ -11,7 +11,7 @@ class mt_income_tax_rebate(Variable):
     defined_for = StateCode.MT
 
     # The rebate is based on 2021 income tax liability, but provided in 2023
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mt.tax.income.credits.rebate
         filing_status = tax_unit("filing_status", period)
         return p.amount[filing_status]

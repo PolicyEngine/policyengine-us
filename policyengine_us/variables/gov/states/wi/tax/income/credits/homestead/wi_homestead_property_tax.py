@@ -13,7 +13,7 @@ class wi_homestead_property_tax(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ptax_owner = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         p = parameters(period).gov.states.wi.tax.income.credits

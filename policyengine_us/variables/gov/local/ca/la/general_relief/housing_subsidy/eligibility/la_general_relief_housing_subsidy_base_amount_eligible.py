@@ -10,7 +10,7 @@ class la_general_relief_housing_subsidy_base_amount_eligible(Variable):
     defined_for = "la_general_relief_eligible"
     reference = "https://dpss.lacounty.gov/en/cash/gr/housing.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # General relief cannot be under the rent subsidy amounts
         gr_base_amount = spm_unit("la_general_relief_base_amount", period)
         p = parameters(

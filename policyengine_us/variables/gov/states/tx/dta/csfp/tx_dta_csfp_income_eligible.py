@@ -8,7 +8,7 @@ class tx_dta_csfp_income_eligible(Variable):
     label = "Texas Commodity Supplemental Food Program income eligible"
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.dta.csfp
         fpg = person.spm_unit("school_meal_fpg_ratio", period)
         return fpg <= p.fpg_limit

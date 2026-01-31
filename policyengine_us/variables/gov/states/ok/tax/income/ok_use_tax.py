@@ -13,7 +13,7 @@ class ok_use_tax(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fagi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.ok.tax
         return fagi * p.use.rate

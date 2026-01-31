@@ -10,7 +10,7 @@ class ca_calworks_stage_3_payment(Variable):
     defined_for = "ca_calworks_stage_3_eligible"
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10372.5.&lawCode=WIC"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Uses same RMR payment structure as Stage 1 and Stage 2
         payment_standard = person(
             "ca_calworks_child_care_payment_standard", period

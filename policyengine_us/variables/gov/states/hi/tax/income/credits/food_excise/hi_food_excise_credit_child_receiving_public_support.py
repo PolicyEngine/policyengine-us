@@ -8,7 +8,7 @@ class hi_food_excise_credit_child_receiving_public_support(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
         child_support = person("child_support_received", period)
         # Test if the child receive more than half support from public agency

@@ -9,7 +9,7 @@ class nc_scca_entry_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("nc_scca_entry_income_eligible", period)
         has_eligible_children = spm_unit("nc_scca_has_eligible_child", period)
 

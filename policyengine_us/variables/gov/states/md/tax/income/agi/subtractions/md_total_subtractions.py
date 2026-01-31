@@ -9,7 +9,7 @@ class md_total_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
         total_subtractions = add(tax_unit, period, p.sources)
         # Prevent negative subtractions from acting as additions

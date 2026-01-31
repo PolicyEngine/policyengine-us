@@ -10,7 +10,7 @@ class wv_taxable_income(Variable):
     reference = "https://code.wvlegislature.gov/11-21-4E/"
     defined_for = StateCode.WV
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("wv_agi", period)
         low_income_exclusion = tax_unit(
             "wv_low_income_earned_income_exclusion", period

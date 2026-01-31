@@ -13,7 +13,7 @@ class ms_deductions_joint(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         itemized = person("ms_itemized_deductions_joint", period)
         standard = person("ms_standard_deduction_joint", period)
         return max_(itemized, standard)

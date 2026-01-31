@@ -9,6 +9,6 @@ class ca_is_qualifying_child_for_caleitc(Variable):
     reference = "https://www.ftb.ca.gov/file/personal/credits/EITC-calculator/Help/QualifyingChildren"
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # CalEITC uses federal EITC rules regarding qualifying children
         return person("is_child_dependent", period)

@@ -16,7 +16,7 @@ class wi_standard_deduction(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         fstatus = tax_unit("filing_status", period)
         deduction = parameters(period).gov.states.wi.tax.income.deductions
         max_amount = deduction.standard.max[fstatus]

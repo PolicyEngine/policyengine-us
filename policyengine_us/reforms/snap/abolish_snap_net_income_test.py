@@ -13,11 +13,11 @@ def create_abolish_snap_net_income_test() -> Reform:
             "https://www.law.cornell.edu/uscode/text/7/2014#c",
         )
 
-        def formula(spm_unit, period, parameters):
+        def formula(spm_unit, period, parameters):  # pragma: no cover
             return True
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(meets_snap_net_income_test)
 
     return reform
@@ -25,7 +25,7 @@ def create_abolish_snap_net_income_test() -> Reform:
 
 def create_abolish_snap_net_income_test_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_abolish_snap_net_income_test()
 

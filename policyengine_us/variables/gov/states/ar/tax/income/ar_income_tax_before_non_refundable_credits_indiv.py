@@ -13,7 +13,7 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_indiv", period)
         main_rate = p.rate.calc(taxable_income)

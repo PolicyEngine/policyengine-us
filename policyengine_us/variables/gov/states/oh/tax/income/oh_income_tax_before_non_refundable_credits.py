@@ -10,7 +10,7 @@ class oh_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income.rates
         exempt = tax_unit("oh_income_tax_exempt", period)

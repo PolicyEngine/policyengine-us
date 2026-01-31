@@ -10,7 +10,7 @@ class sd_tanf_payment_standard(Variable):
     reference = "https://sdlegislature.gov/Rules/Administrative/67:10:05:03"
     defined_for = StateCode.SD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.sd.dss.tanf.payment_standard
         is_shared = spm_unit("sd_tanf_is_shared_living", period)

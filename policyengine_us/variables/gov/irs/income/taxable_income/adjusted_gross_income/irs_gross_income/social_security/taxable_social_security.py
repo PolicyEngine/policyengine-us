@@ -8,7 +8,7 @@ class taxable_social_security(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         unit_tss = person.tax_unit("tax_unit_taxable_social_security", period)
         # allocate unit_tss to head and spouse in proportion to social_security
         ind_socsec = person("social_security", period)

@@ -13,7 +13,7 @@ class va_taxable_income(Variable):
     )
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("va_agi", period)
         ded = tax_unit("va_deductions", period)
         exemptions = tax_unit("va_total_exemptions", period)

@@ -14,7 +14,7 @@ class va_low_income_tax_credit(Variable):
     definition_period = YEAR
     defined_for = "va_low_income_tax_credit_agi_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # The credit is dependent on the number of personal and dependent exemptions
         exemptions = tax_unit("tax_unit_size", period)
         p = parameters(

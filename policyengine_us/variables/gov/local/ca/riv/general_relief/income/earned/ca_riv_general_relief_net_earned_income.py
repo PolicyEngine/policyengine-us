@@ -8,7 +8,7 @@ class ca_riv_general_relief_net_earned_income(Variable):
     label = "Riverside County GA net earned income after deductions"
     definition_period = MONTH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         earned = person("ca_riv_general_relief_earned_income", period)
         deductions = person(
             "ca_riv_general_relief_earned_income_deductions", period

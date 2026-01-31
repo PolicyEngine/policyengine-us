@@ -13,7 +13,7 @@ class mi_homestead_property_tax_credit_eligible(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.homestead_property_tax

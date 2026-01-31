@@ -9,7 +9,7 @@ class ms_prorate_fraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("ms_agi", period)
         total_agi = person.tax_unit.sum(agi)
         # avoid divide-by-zero warnings when using where() function

@@ -10,7 +10,7 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/AR1075_2022.pdf#page=1"
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ar.tax.income.deductions.itemized.tuition

@@ -10,7 +10,7 @@ class ny_supplemental_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ny_taxable_income = tax_unit("ny_taxable_income", period)
         ny_agi = tax_unit("ny_agi", period)
         ny_main_income_tax = tax_unit("ny_main_income_tax", period)

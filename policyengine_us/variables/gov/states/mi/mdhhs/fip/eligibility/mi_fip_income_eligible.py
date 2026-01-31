@@ -12,7 +12,7 @@ class mi_fip_income_eligible(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # BEM 518 Page 3: Financial need exists when the group passes
         # the Qualifying Deficit Test (initial) or Issuance Deficit Test (ongoing)
 

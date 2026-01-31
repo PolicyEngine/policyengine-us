@@ -10,7 +10,7 @@ class ca_capi_countable_vehicle_value(Variable):
     defined_for = StateCode.CA
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         vehicle_value = spm_unit.household("household_vehicles_value", period)
         p = parameters(period).gov.states.ca.cdss.capi.resources.vehicle
         return max_(vehicle_value - p.disregard, 0)

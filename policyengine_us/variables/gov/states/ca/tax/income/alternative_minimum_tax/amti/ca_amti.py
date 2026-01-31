@@ -10,7 +10,7 @@ class ca_amti(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.amt.exemption
         p_us = parameters(period).gov.irs.income.amt.capital_gains

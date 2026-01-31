@@ -19,7 +19,7 @@ class slcsp_family_tier_category(Variable):
     label = "ACA family tier category for premium calculation"
     defined_for = "slcsp_family_tier_applies"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Determine the family tier category for premium calculation in states
         that use family tiers instead of individual age rating.

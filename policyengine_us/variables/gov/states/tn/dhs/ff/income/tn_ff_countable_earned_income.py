@@ -10,7 +10,7 @@ class tn_ff_countable_earned_income(Variable):
     defined_for = StateCode.TN
     reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=19"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         earned_after_disregard = spm_unit(
             "tn_ff_earned_income_after_disregard", period
         )

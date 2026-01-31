@@ -10,7 +10,7 @@ class va_non_refundable_eitc_if_claimed(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.va.tax.income.credits.eitc.match
         # The filer can either claim the non-refundable EITC or the low income credit.

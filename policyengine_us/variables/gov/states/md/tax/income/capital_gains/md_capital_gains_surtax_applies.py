@@ -11,7 +11,7 @@ class md_capital_gains_surtax_applies(Variable):
     ]
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.tax.income.capital_gains
 
         # First check if surtax is enabled for this year

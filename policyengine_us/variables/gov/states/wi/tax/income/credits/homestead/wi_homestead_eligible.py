@@ -9,7 +9,7 @@ class wi_homestead_eligible(Variable):
     reference = "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7"
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.tax.income.credits
         # minimum age eligibility
         head_age = tax_unit("age_head", period)

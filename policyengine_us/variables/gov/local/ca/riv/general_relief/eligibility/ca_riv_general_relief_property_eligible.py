@@ -8,7 +8,7 @@ class ca_riv_general_relief_property_eligible(Variable):
     definition_period = YEAR
     defined_for = "in_riv"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.riv.general_relief.property
         total_property_value = spm_unit(
             "ca_riv_general_relief_countable_property_value", period

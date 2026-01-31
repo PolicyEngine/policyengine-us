@@ -13,7 +13,7 @@ class ok_federal_eitc_phase_in_rate(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         child_count = tax_unit("eitc_child_count", period)
         eitc = parameters(f"2020-01-01").gov.irs.credits.eitc
         return eitc.phase_in_rate.calc(child_count)

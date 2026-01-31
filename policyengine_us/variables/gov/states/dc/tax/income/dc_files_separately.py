@@ -9,7 +9,7 @@ class dc_files_separately(Variable):
     reference = ()
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_indiv = tax_unit("dc_income_tax_before_credits_indiv", period)
         itax_joint = tax_unit("dc_income_tax_before_credits_joint", period)
         if parameters(period).gov.states.dc.tax.income.joint_separately_option:

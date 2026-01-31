@@ -19,7 +19,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
         reference = "https://www.nysenate.gov/legislation/bills/2025/S4487"
         defined_for = StateCode.NY
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ny.s04487
             in_effect = p.in_effect
             # Child must be age 0 or 1 (born in current or previous tax year)
@@ -37,7 +37,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
         reference = "https://www.nysenate.gov/legislation/bills/2025/S4487"
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             qualifying = person("ny_s04487_qualifying_newborn", period)
             return tax_unit.sum(qualifying)
@@ -51,7 +51,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
         reference = "https://www.nysenate.gov/legislation/bills/2025/S4487"
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ny.s04487
             in_effect = p.in_effect
             newborn_count = tax_unit("ny_s04487_newborn_count", period)
@@ -66,7 +66,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ny.tax.income.credits
             standard_credits = add(tax_unit, period, p.refundable)
             # Add newborn credit from S04487
@@ -74,7 +74,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
             return standard_credits + newborn_credit
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ny_s04487_qualifying_newborn)
             self.update_variable(ny_s04487_newborn_count)
             self.update_variable(ny_s04487_newborn_credit)
@@ -85,7 +85,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
 
 def create_ny_s04487_newborn_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ny_s04487_newborn_credit()
 

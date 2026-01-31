@@ -10,7 +10,7 @@ class amt_higher_base_tax(Variable):
     documentation = "Alternative Minimum Tax (AMT) base tax, Form 6251 Part II Line 7 'All Others' - higher bracket"
     reference = "https://www.irs.gov/pub/irs-pdf/f6251.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         reduced_income = tax_unit("amt_income_less_exemptions", period)

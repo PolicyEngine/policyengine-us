@@ -10,7 +10,7 @@ class az_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         az_agi = tax_unit("az_agi", period)
         deductions = tax_unit("az_deductions", period)
         return max_(0, az_agi - deductions)

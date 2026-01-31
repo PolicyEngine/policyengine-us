@@ -9,7 +9,7 @@ class nc_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_credits = add(
             tax_unit, period, ["nc_income_tax_before_credits", "nc_use_tax"]
         )

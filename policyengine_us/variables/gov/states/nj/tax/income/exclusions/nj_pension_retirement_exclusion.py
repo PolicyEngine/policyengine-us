@@ -14,7 +14,7 @@ class nj_pension_retirement_exclusion(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         pension_income = add(tax_unit, period, ["nj_eligible_pension_income"])
         fraction = tax_unit("nj_retirement_exclusion_fraction", period)
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement

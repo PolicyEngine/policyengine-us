@@ -15,7 +15,7 @@ class ia_fedtax_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Iowa allows a deduction of federal income taxes from Iowa net
         # income, but federal payroll taxes (FICA and SECA and Additional
         # Medicare) cannot be used to reduced Iowa net income.

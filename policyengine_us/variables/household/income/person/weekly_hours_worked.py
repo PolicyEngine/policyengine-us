@@ -30,7 +30,7 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
     unit = "hour"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         original = person("weekly_hours_worked_before_lsr", period)
         lsr = person("labor_supply_behavioral_response", period)
 
@@ -63,7 +63,7 @@ class weekly_hours_worked_behavioural_response_substitution_elasticity(
     unit = "hour"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         original = person("weekly_hours_worked_before_lsr", period)
         lsr = person("labor_supply_behavioral_response", period)
         if (lsr != 0).any():

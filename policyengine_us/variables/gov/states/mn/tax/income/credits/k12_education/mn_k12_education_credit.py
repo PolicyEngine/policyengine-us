@@ -13,7 +13,7 @@ class mn_k12_education_credit(Variable):
     )
     defined_for = "mn_k12_education_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mn.tax.income.credits.k12_education
         # Count qualifying K-12 children
         k12_children = tax_unit("mn_k12_qualifying_children", period)

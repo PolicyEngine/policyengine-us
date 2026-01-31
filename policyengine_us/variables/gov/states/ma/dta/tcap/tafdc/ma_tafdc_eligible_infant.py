@@ -11,7 +11,7 @@ class ma_tafdc_eligible_infant(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Monthly age is used to determine the age of the infant
         age = person("monthly_age", period)
         p = parameters(

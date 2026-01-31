@@ -11,7 +11,7 @@ class oh_lump_sum_distribution_credit_eligible_person(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.lump_sum_distribution

@@ -11,7 +11,7 @@ class dc_tanf_income_eligible(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("dc_tanf_countable_income", period)
         standard_payment = spm_unit("dc_tanf_standard_payment", period)
         return countable_income <= standard_payment

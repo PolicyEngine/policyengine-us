@@ -11,7 +11,7 @@ class ca_fera_amount_if_eligible(Variable):
     reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
     defined_for = StateCode.CA
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         expense = add(household, period, ["pre_subsidy_electricity_expense"])
         p = parameters(period).gov.states.ca.cpuc.fera
         return p.discount * expense

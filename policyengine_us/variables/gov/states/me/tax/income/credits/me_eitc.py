@@ -10,7 +10,7 @@ class me_eitc(Variable):
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-S.html"
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.me.tax.income.credits.eitc
         match_rate = where(

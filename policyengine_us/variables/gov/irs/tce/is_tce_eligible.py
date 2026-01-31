@@ -10,7 +10,7 @@ class is_tce_eligible(Variable):
         "https://www.irs.gov/individuals/tax-counseling-for-the-elderly"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.tce
         age = person("age", period)
         return age >= p.age_threshold

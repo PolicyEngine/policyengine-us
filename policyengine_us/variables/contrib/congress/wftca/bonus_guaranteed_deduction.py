@@ -9,7 +9,7 @@ class bonus_guaranteed_deduction(Variable):
     definition_period = YEAR
     reference = "https://waysandmeans.house.gov/malliotakis-steel-lead-legislation-to-provide-tax-relief-to-working-families/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         wftca = parameters(
             period

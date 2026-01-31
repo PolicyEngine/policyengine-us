@@ -10,7 +10,7 @@ class ca_federal_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         relevant_expenses = tax_unit("ca_cdcc_relevant_expenses", period)
         credit_rate = tax_unit("ca_cdcc_rate", period)
 

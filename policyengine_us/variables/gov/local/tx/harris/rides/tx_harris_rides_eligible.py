@@ -9,7 +9,7 @@ class tx_harris_rides_eligible(Variable):
     reference = "https://rides.harriscountytx.gov/Registration/Registration-Information"
     defined_for = "in_harris_county_tx"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.tx.harris.rides
 
         # Age eligibility

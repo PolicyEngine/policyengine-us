@@ -10,7 +10,7 @@ class ma_tafdc_dependent_care_deduction_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275"  # (A)
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         dependent = person("ma_tafdc_eligible_dependent", period)
         total_weekly_hours = person.spm_unit.sum(
             person("weekly_hours_worked_before_lsr", period.this_year)

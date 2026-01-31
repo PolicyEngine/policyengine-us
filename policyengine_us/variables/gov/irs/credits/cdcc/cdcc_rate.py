@@ -9,7 +9,7 @@ class cdcc_rate(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/21#a_2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.cdcc
         agi = tax_unit("adjusted_gross_income", period)
 

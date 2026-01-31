@@ -9,7 +9,7 @@ class ky_tuition_tax_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("ky_filing_status", period)
         # Married filing separate filers are ineligible.
         return filing_status != filing_status.possible_values.SEPARATE

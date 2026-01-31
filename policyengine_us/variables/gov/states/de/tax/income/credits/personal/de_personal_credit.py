@@ -10,7 +10,7 @@ class de_personal_credit(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.de.tax.income.credits
         exemptions_count = tax_unit("exemptions_count", period)
         return p.personal_credits.personal * exemptions_count

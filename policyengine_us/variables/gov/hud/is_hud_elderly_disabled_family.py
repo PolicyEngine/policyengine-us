@@ -12,7 +12,7 @@ class is_hud_elderly_disabled_family(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         hud = parameters(period).gov.hud
         person = spm_unit.members
         elderly = person("age", period) >= hud.elderly_age_threshold

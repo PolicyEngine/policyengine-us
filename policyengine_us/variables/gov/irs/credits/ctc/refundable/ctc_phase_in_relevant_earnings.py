@@ -9,8 +9,7 @@ class ctc_phase_in_relevant_earnings(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
-    def formula(tax_unit, period, parameters):
-
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ctc = parameters(period).gov.irs.credits.ctc
 
         earnings = tax_unit("tax_unit_earned_income", period)

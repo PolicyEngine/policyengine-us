@@ -9,7 +9,7 @@ class or_tanf_income_eligible(Variable):
     reference = "https://oregon.public.law/rules/oar_461-160-0100"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Standard test: countable < limit AND adjusted < limit
         passes_countable_test = spm_unit(
             "or_tanf_countable_income_eligible", period

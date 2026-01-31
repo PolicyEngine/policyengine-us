@@ -13,7 +13,7 @@ class mo_tanf_standard_of_need(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mo.dss.tanf.standard_of_need
         size = spm_unit("spm_unit_size", period)
         table_size = min_(size, p.base_table_max_size)

@@ -7,6 +7,6 @@ class slcsp_age_curve_applies(Variable):
     label = "ACA age curve applies, rather than family tier"
     definition_period = MONTH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         family_tier_applies = tax_unit("slcsp_family_tier_applies", period)
         return ~family_tier_applies

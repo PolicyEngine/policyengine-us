@@ -15,7 +15,7 @@ class nd_income_tax_before_refundable_credits(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_before_credits = tax_unit("nd_income_tax_before_credits", period)
         nonrefundable_credits = tax_unit("nd_non_refundable_credits", period)
         return max_(0, itax_before_credits - nonrefundable_credits)

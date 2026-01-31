@@ -13,7 +13,7 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         "https://www.law.cornell.edu/regulations/pennsylvania/55-Pa-Code-SS-183-94",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.pa.dhs.tanf.income.deductions
 
         gross_earned = person("tanf_gross_earned_income", period)

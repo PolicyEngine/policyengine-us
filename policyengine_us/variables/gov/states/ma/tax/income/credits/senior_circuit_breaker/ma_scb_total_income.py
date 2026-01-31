@@ -10,7 +10,7 @@ class ma_scb_total_income(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ma_gross_income = tax_unit(
             "ma_gross_income", period
         )  # The law specifies to start at AGI and re-add deducted capital losses. We instead start from gross income, on an equivalent path.

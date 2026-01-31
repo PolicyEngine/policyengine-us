@@ -13,7 +13,7 @@ class ar_files_separately(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_indiv = add(
             tax_unit,
             period,

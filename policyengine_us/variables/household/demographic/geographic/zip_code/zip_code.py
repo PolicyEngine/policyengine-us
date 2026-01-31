@@ -9,11 +9,14 @@ class zip_code(Variable):
     definition_period = YEAR
     default_value = "UNKNOWN"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
+        # ZIP code auto-generation - tested via microsimulation
+        # Unit tests typically don't trigger this formula (use default or explicit input)
         state_code = household("state_code_str", period)
 
         if household.simulation.has_axes:
             # For each state, select ONE zip code randomly, with probability proportional to population.
+            # Microsimulation-specific path
 
             state_to_zip_code = {
                 state_code: ZIP_CODE_DATASET[

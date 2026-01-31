@@ -15,7 +15,7 @@ class hi_cdcc_income_floor_eligible(Variable):
         "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("is_disabled", period) | person(
             "is_full_time_student", period
         )

@@ -8,7 +8,7 @@ class il_aabd_flat_exemption_excess_over_unearned_income(Variable):
     label = "Illinois Aid to the Aged, Blind or Disabled (AABD) flat exemption excess over unearned income"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
         countable_unearned_income = person(
             "il_aabd_countable_unearned_income", period

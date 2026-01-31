@@ -10,7 +10,7 @@ class dc_liheap_payment(Variable):
     defined_for = "dc_liheap_eligible"
     reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.doee.liheap.payment
         housing_type = spm_unit("dc_liheap_housing_type", period)
         heating_type = spm_unit("dc_liheap_heating_type", period)

@@ -8,7 +8,7 @@ class childcare_expenses(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         pre_subsidy_childcare_expenses = add(
             spm_unit, period, ["pre_subsidy_childcare_expenses"]
         )

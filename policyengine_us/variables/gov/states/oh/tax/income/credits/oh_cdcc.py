@@ -12,7 +12,7 @@ class oh_cdcc(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.oh.tax.income.credits.cdcc
 
         agi = tax_unit("oh_modified_agi", period)

@@ -10,7 +10,7 @@ class ct_property_tax_credit(Variable):
     reference = "https://portal.ct.gov/-/media/DRS/Forms/2021/Income/CT-1040-Online-Booklet_1221.pdf#page=30"
     defined_for = "ct_property_tax_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax

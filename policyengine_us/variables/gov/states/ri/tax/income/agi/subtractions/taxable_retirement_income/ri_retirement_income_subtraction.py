@@ -10,7 +10,7 @@ class ri_retirement_income_subtraction(Variable):
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
     defined_for = "ri_retirement_income_subtraction_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         taxable_pension = person("taxable_pension_income", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

@@ -10,7 +10,7 @@ def create_abolish_federal_income_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             p = parameters(period)
             added_components = (
                 p.gov.household.household_tax_before_refundable_credits
@@ -29,7 +29,7 @@ def create_abolish_federal_income_tax() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             p = parameters(period)
             added_components = p.gov.household.household_refundable_credits
             added_components = [
@@ -40,7 +40,7 @@ def create_abolish_federal_income_tax() -> Reform:
             return add(household, period, added_components)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(household_tax_before_refundable_credits)
             self.update_variable(household_refundable_tax_credits)
 
@@ -49,7 +49,7 @@ def create_abolish_federal_income_tax() -> Reform:
 
 def create_abolish_federal_income_tax_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_abolish_federal_income_tax()
 

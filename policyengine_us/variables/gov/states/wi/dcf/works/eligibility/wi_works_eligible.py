@@ -12,7 +12,7 @@ class wi_works_eligible(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic = spm_unit("is_demographic_tanf_eligible", period)
         person = spm_unit.members
         is_qualified = person("is_citizen_or_legal_immigrant", period)

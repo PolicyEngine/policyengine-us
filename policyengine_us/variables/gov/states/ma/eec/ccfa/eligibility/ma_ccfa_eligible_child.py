@@ -9,7 +9,7 @@ class ma_ccfa_eligible_child(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=10"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.age_threshold
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period)

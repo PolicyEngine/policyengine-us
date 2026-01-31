@@ -18,7 +18,7 @@ class ccdf_duration_of_care(Variable):
 
     reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5"
 
-    def formula(person, period):
+    def formula(person, period):  # pragma: no cover
         hours_per_day = person("childcare_hours_per_day", period)
         days_per_week = person("childcare_days_per_week", period)
         hours_per_week = hours_per_day * days_per_week

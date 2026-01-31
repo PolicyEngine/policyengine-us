@@ -8,7 +8,7 @@ class me_property_tax_fairness_credit_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Separate filers are ineligible
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values

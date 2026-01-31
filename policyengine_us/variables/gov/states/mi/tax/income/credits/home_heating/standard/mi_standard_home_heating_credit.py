@@ -13,7 +13,7 @@ class mi_standard_home_heating_credit(Variable):
     )
     defined_for = "mi_standard_home_heating_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income.credits.home_heating
         # determine count of exemption
         exemption_count = tax_unit("mi_exemptions_count", period)

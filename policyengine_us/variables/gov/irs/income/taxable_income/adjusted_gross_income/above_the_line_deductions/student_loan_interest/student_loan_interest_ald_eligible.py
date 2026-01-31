@@ -8,7 +8,7 @@ class student_loan_interest_ald_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/221"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         filing_status = person.tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

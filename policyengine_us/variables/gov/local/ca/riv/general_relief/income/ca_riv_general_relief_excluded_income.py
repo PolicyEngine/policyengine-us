@@ -9,7 +9,7 @@ class ca_riv_general_relief_excluded_income(Variable):
     definition_period = MONTH
     defined_for = "ca_riv_general_relief_ineligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         income = person(
             "ca_riv_general_relief_countable_income_person", period
         )

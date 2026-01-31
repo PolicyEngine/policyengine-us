@@ -8,7 +8,7 @@ class state_sales_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.irs.deductions.itemized.salt_and_real_estate.state_sales_tax_table

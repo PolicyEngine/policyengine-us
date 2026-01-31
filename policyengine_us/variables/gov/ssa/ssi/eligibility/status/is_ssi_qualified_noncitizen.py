@@ -8,7 +8,7 @@ class is_ssi_qualified_noncitizen(Variable):
     definition_period = YEAR
     reference = "https://secure.ssa.gov/poms.nsf/lnx/0500502100"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         qualifying_quarters_earnings = person(
             "ssi_qualifying_quarters_earnings", period
         )

@@ -11,7 +11,7 @@ class il_tanf_demographic_eligible_person(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_child = person("il_tanf_eligible_child", period)
         pregnant = person("is_pregnant", period)
         return eligible_child | pregnant

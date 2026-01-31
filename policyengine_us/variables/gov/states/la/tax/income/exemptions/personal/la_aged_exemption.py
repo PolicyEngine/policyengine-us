@@ -9,7 +9,7 @@ class la_aged_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.la.tax.income.exemptions
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)

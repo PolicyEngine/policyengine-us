@@ -15,7 +15,7 @@ class in_tanf_countable_earned_income_for_eligibility(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # NOTE: The $30 and 1/3 disregard only applies for the first 4 months
         # of continuing eligibility. This simplified implementation always
         # applies the $30 and 1/3 disregard.

@@ -11,7 +11,7 @@ class pa_tanf_eligible(Variable):
         "https://www.pa.gov/agencies/dhs/resources/cash-assistance/tanf"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
 
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)

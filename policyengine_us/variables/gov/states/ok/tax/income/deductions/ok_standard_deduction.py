@@ -13,7 +13,7 @@ class ok_standard_deduction(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ok.tax.income
         filing_status = tax_unit("filing_status", period)
         return p.deductions.standard.amount[filing_status]

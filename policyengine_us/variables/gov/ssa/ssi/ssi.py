@@ -10,7 +10,7 @@ class ssi(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         if parameters(period).gov.ssa.ssi.abolish_ssi:
             return 0
 

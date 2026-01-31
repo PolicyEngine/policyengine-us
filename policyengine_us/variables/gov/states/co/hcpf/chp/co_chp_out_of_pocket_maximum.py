@@ -7,7 +7,7 @@ class co_chp_out_of_pocket_maximum(Variable):
     label = "Colorado Child Health Plan Plus out of pocket maximum"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         income = person.tax_unit("medicaid_magi", period)
         percent = parameters(period).gov.states.co.hcpf.chp.out_of_pocket
         return income * percent

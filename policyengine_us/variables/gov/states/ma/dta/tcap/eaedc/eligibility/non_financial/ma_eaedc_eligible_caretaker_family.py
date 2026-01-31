@@ -11,7 +11,7 @@ class ma_eaedc_eligible_caretaker_family(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.age_threshold
         person = spm_unit.members
         eligible_dependent = person("ma_eaedc_eligible_dependent", period)

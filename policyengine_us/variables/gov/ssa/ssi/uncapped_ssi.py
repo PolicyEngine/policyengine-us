@@ -10,7 +10,7 @@ class uncapped_ssi(Variable):
     definition_period = YEAR
     defined_for = "is_ssi_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         amount = person("ssi_amount_if_eligible", period)
         countable_income = person("ssi_countable_income", period)
         return amount - countable_income

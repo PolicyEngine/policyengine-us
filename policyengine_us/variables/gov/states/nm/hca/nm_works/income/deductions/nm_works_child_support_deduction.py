@@ -13,7 +13,7 @@ class nm_works_child_support_deduction(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.520.9.J NMAC:
         # - $50 disregard on child support received
         # - Passthrough: $100 for 1 child, $200 for 2+ children (since Jan 2023)

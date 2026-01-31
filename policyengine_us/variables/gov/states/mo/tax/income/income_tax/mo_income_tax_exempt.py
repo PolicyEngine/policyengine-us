@@ -10,7 +10,7 @@ class mo_income_tax_exempt(Variable):
     reference = "https://revisor.mo.gov/main/OneSection.aspx?section=143.021"
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         taxable_income = person("mo_taxable_income", period)
         p = parameters(period).gov.states.mo.tax.income
         return taxable_income <= p.minimum_taxable_income

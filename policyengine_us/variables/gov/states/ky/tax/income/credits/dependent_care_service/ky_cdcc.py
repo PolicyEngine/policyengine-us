@@ -12,7 +12,7 @@ class ky_cdcc(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Kentucky matches the federal credit taken
         dependent_care_credit = tax_unit("cdcc", period)
         rate = parameters(

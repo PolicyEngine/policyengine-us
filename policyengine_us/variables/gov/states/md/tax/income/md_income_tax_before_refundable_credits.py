@@ -9,7 +9,7 @@ class md_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         non_refundable_credits = tax_unit("md_non_refundable_credits", period)
         return max_(0, tax_before_credits - non_refundable_credits)

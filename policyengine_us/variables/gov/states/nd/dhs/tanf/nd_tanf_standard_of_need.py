@@ -10,7 +10,7 @@ class nd_tanf_standard_of_need(Variable):
     reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm"
     defined_for = StateCode.ND
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nd.dhs.tanf.benefit
         person = spm_unit.members
 

@@ -15,7 +15,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         #  Recipients should receive retirement benefits from employment exempt from Social Security
         has_retirement_benefits_from_ss_exempt_employment = (

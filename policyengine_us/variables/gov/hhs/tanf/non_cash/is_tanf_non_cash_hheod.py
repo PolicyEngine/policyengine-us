@@ -8,7 +8,7 @@ class is_tanf_non_cash_hheod(Variable):
     documentation = "Whether the household is considered elderly or disabled for TANF non-cash benefit for SNAP BBCE"
     definition_period = MONTH
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         state = spm_unit.household("state_code_str", period)
         bbce = parameters(period).gov.hhs.tanf.non_cash
         requires_all = bbce.requires_all_for_hheod[state]

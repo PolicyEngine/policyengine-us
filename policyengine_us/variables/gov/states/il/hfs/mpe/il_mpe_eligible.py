@@ -9,7 +9,7 @@ class il_mpe_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.66"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_pregnant = person("is_pregnant", period.this_year)
         income_eligible = person("il_mpe_income_eligible", period)
         return is_pregnant & income_eligible

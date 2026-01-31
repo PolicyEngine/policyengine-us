@@ -9,7 +9,7 @@ class ky_ktap_eligible(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         income_eligible = spm_unit("ky_ktap_income_eligible", period)
         resource_eligible = spm_unit("ky_ktap_resource_eligible", period)

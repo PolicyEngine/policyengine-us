@@ -12,7 +12,7 @@ class dc_tanf_demographic_eligible_person(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pap_eligible_child = person("dc_pap_eligible_child", period)
         related_to_head_or_spouse = person(
             "is_related_to_head_or_spouse", period

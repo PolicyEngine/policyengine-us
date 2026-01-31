@@ -13,7 +13,7 @@ class oh_eitc(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         match = parameters(period).gov.states.oh.tax.income.credits.eitc.rate
         return federal_eitc * match

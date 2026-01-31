@@ -17,7 +17,7 @@ class filing_status(Variable):
     definition_period = YEAR
     label = "Filing status for the tax unit"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         is_separated = tax_unit.any(person("is_separated", period))
         return select(

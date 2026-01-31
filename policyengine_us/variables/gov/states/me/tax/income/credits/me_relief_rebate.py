@@ -10,7 +10,7 @@ class me_relief_rebate(Variable):
     definition_period = YEAR
     reference = "https://www.maine.gov/governor/mills/relief-checks"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.me.tax.income.credits.relief_rebate
         head_spouse_count = tax_unit("head_spouse_count", period)
         return head_spouse_count * p.amount

@@ -9,7 +9,7 @@ class meets_wic_income_test(Variable):
     label = "Meets WIC income test"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_i"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Must be below the school meal reduced price tier.
         # We can't use school_meal_tier, because pregnant women have an
         # additional person for defining the poverty line

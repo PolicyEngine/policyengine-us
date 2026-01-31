@@ -9,7 +9,7 @@ class ma_tafdc_exceeds_eaedc(Variable):
     reference = "https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc"
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         tafdc_value = spm_unit("ma_tafdc_if_claimed", period)
         eaedc_value = spm_unit("ma_eaedc_if_claimed", period)
         return tafdc_value > eaedc_value

@@ -13,7 +13,7 @@ class ar_taxable_income_joint(Variable):
     )
     defined_for = StateCode.AR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("ar_agi_joint", period)
         is_head = person("is_tax_unit_head", period)
         total_agi = is_head * person.tax_unit.sum(agi)

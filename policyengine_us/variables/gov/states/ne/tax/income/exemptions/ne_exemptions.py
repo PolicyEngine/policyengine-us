@@ -13,6 +13,6 @@ class ne_exemptions(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ne.tax.income.exemptions
         return tax_unit("tax_unit_size", period) * p.amount

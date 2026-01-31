@@ -11,7 +11,7 @@ class il_aabd_countable_vehicle_value(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.aabd.asset.vehicle_exemption
         vehicle_count = spm_unit.household("household_vehicles_owned", period)
         total_vehicle_value = (

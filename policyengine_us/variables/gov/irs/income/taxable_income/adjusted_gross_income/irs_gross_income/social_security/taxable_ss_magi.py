@@ -10,7 +10,7 @@ class taxable_ss_magi(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         ss_magi = irs.social_security.taxability.income

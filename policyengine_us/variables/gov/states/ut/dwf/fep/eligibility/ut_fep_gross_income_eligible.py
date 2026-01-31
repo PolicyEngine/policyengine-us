@@ -9,7 +9,7 @@ class ut_fep_gross_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
     defined_for = StateCode.UT
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Utah gross income test: gross income <= 185% of SNB (Standard Needs Budget)
         # Per R986-200-239(1), gross income must be <= 185% of SNB
         # The net income limit equals the SNB

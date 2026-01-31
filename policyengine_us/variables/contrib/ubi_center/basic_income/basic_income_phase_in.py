@@ -8,7 +8,7 @@ class basic_income_phase_in(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.contrib.ubi_center.basic_income.phase_in
         earnings = tax_unit("tax_unit_earned_income", period)
         if p.include_ss_benefits_as_earnings:

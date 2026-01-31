@@ -20,7 +20,7 @@ class il_hbi_income_eligible(Variable):
     # Per Illinois DHS, HBIS follows AABD community eligibility criteria
     # for income counting, which differs from MAGI.
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         age = person("age", period)

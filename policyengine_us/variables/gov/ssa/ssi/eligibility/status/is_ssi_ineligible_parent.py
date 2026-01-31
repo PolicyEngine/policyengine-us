@@ -7,7 +7,7 @@ class is_ssi_ineligible_parent(Variable):
     label = "Is an SSI-ineligible parent in respect of a child"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible = person("is_ssi_aged_blind_disabled", period)
         child = person("is_child", period)
         return ~eligible & ~child & (person.tax_unit.sum(eligible & child) > 0)

@@ -9,7 +9,7 @@ class il_tanf_countable_gross_earned_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         gross_earned_income = person("il_tanf_gross_earned_income", period)

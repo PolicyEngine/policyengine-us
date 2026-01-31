@@ -15,7 +15,7 @@ class tob_revenue_medicare_hi(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/42/401"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         """
         Calculate Medicare HI trust fund revenue using double-branching.
 

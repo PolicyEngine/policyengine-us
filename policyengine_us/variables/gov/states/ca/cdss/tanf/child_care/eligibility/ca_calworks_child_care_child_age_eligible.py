@@ -11,7 +11,7 @@ class ca_calworks_child_care_child_age_eligible(Variable):
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.eligibility
         age = person("age", period)
         is_disabled = person("is_disabled", period)

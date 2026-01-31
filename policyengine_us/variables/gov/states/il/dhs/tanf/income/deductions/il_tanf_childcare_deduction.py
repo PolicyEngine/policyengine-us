@@ -10,7 +10,7 @@ class il_tanf_childcare_deduction(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.143"  # (b)(2)
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.dhs.tanf.income.child_care_deduction

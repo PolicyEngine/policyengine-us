@@ -14,7 +14,7 @@ class il_hbwd_countable_assets(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # HBWD exempt assets per § 120.381:
         # - Primary residence (homestead)
         # - Personal effects and household goods

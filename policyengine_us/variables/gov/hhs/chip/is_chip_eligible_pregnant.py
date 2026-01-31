@@ -13,7 +13,7 @@ class is_chip_eligible_pregnant(Variable):
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # A person is eligible for CHIP as pregnant if they qualify through either
         # the standard pregnant pathway or the FCEP pathway
 

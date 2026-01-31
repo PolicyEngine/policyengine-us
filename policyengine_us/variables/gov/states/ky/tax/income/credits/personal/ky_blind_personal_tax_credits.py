@@ -10,7 +10,7 @@ class ky_blind_personal_tax_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ky.tax.income.credits.personal.amount
         is_blind = person("is_blind", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

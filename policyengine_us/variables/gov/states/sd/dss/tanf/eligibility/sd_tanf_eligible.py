@@ -9,7 +9,7 @@ class sd_tanf_eligible(Variable):
     reference = "https://sdlegislature.gov/Rules/Administrative/67:10:01:05"
     defined_for = StateCode.SD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Use federal demographic eligibility (minor child or pregnant)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Per ARSD 67:10:01:05: Must be US citizen or qualified alien

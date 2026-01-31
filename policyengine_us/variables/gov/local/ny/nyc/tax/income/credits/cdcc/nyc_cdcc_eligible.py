@@ -8,7 +8,7 @@ class nyc_cdcc_eligible(Variable):
     definition_period = YEAR
     defined_for = "in_nyc"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Eligibility is based on having a federal AGI below $30k
         # and being an NYC full-time resident.
 

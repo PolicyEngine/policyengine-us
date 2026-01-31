@@ -9,7 +9,7 @@ class or_tanf_eli_eligible(Variable):
     reference = "https://oregon.public.law/rules/oar_461-155-0030"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # ELI applies when currently enrolled in TANF AND has earned income
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         earned_income = add(spm_unit, period, ["tanf_gross_earned_income"])

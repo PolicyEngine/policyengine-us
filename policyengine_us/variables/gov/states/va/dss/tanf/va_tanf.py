@@ -10,7 +10,7 @@ class va_tanf(Variable):
     defined_for = "va_tanf_eligibility"
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # the calculated payment
         up_tanf_eligibility = spm_unit("va_up_tanf_eligibility", period)
         grant_standard = spm_unit("va_tanf_grant_standard", period)

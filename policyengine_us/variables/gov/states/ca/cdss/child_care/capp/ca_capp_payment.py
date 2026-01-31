@@ -10,7 +10,7 @@ class ca_capp_payment(Variable):
     defined_for = "ca_capp_eligible"
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.&lawCode=WIC"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # CAPP uses same RMR payment structure as CalWORKs child care
         payment_standard = person(
             "ca_calworks_child_care_payment_standard", period

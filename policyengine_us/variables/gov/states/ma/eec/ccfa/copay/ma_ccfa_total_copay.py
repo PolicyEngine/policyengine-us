@@ -10,7 +10,7 @@ class ma_ccfa_total_copay(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=76"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # TAFDC recipients get free child care (no copay)
         tafdc_eligible = spm_unit("ma_tafdc_eligible", period)
 

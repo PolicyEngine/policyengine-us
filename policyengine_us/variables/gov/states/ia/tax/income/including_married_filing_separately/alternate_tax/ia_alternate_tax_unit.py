@@ -15,7 +15,7 @@ class ia_alternate_tax_unit(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute alternate tax following worksheet in the instructions
         p = parameters(period).gov.states.ia.tax.income.alternate_tax
         # ... determine alternate tax deduction

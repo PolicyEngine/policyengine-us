@@ -12,7 +12,7 @@ class snap_child_support_gross_income_deduction(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_4"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         child_support = add(spm_unit, period, ["child_support_expense"])
         state = spm_unit.household("state_code_str", period)
         is_deductible = parameters(

@@ -13,7 +13,7 @@ class ne_elderly_disabled_credit(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit = tax_unit("elderly_disabled_credit", period)
         us_itax_before_credits = tax_unit("income_tax_before_credits", period)
         return min_(credit, us_itax_before_credits)

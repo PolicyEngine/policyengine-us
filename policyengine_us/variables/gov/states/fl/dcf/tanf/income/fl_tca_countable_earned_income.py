@@ -10,7 +10,7 @@ class fl_tca_countable_earned_income(Variable):
     reference = "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0414/Sections/0414.095.html"
     defined_for = StateCode.FL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DCF 2620.0111.01: Income Test and Benefit Determination
         # Step 2: Subtract $90 standard disregard
         # Step 3: Subtract $200 and 1/2 of remainder

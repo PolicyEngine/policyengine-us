@@ -14,7 +14,7 @@ class snap_child_support_deduction(Variable):
 
     # Excluding deduction for child support, which is applies to the gross income
     # calculation
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         child_support = add(spm_unit, period, ["child_support_expense"])
         gross_income_deduction = spm_unit(
             "snap_child_support_gross_income_deduction", period

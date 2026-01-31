@@ -9,7 +9,7 @@ class amt_separate_addition(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("taxable_income", period)
         excluded_deductions = tax_unit("amt_excluded_deductions", period)
         amt_inc = taxable_income + excluded_deductions

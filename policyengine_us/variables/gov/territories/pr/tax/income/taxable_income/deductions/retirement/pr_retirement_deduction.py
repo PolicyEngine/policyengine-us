@@ -10,7 +10,7 @@ class pr_retirement_deduction(Variable):
     reference = "https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30135/"  # (7)
     defined_for = "pr_retirement_deduction_eligibility"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.deductions.retirement

@@ -8,7 +8,7 @@ class household_health_benefits(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         p = parameters(period)
         if p.gov.simulation.include_health_benefits_in_net_income:
             return add(

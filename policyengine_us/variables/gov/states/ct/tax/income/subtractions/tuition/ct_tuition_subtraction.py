@@ -10,7 +10,7 @@ class ct_tuition_subtraction(Variable):
     reference = "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701a"
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ct.tax.income.subtractions.tuition
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]

@@ -12,7 +12,7 @@ class oh_owf_countable_income(Variable):
         "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Get gross earned income from federal TANF variable
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 

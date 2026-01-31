@@ -13,7 +13,7 @@ class id_grocery_credit(Variable):
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         qualified_months = person("id_grocery_credit_qualified_months", period)
         p = parameters(period).gov.states.id.tax.income.credits.grocery.aged

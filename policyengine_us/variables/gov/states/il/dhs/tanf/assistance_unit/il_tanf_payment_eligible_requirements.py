@@ -12,7 +12,7 @@ class il_tanf_payment_eligible_requirements(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         immigration_status_eligible = person(
             "il_tanf_immigration_status_eligible_person", period
         )

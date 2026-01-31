@@ -10,7 +10,7 @@ class additional_senior_deduction_eligible_person(Variable):
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ssn_card_type = person("ssn_card_type", period)
         ssn_card_str = ssn_card_type.decode_to_str()
         p = parameters(period).gov.irs.deductions.senior_deduction

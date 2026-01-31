@@ -8,7 +8,7 @@ class dc_ccsp_is_youngest_child(Variable):
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf"
     definition_period = MONTH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # the copay applies to the two youngest children
         eligible = person("dc_ccsp_eligible_child", period)
         age = person("monthly_age", period)

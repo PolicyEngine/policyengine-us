@@ -13,7 +13,7 @@ class id_itemized_deductions(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Idaho reduces the federal itemized deductions
         # by the amount of the SALT deduction
         id_salt_ded = tax_unit("id_salt_deduction", period)

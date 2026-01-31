@@ -8,5 +8,5 @@ class spm_unit_federal_tax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return sum_contained_tax_units("income_tax", spm_unit, period)

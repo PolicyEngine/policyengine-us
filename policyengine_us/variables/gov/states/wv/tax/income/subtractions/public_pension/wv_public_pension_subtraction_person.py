@@ -10,7 +10,7 @@ class wv_public_pension_subtraction_person(Variable):
     definition_period = YEAR
     reference = "https://code.wvlegislature.gov/11-21-12/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # "benefits received under any federal retirement system to which Title 4 U.S.C. §111 applies"
         # https://www.law.cornell.edu/uscode/text/4/111
         federal_pension_income = person(

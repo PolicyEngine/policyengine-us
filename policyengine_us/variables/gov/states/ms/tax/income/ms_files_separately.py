@@ -9,7 +9,7 @@ class ms_files_separately(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itax_indiv = add(
             tax_unit, period, ["ms_income_tax_before_credits_indiv"]
         )

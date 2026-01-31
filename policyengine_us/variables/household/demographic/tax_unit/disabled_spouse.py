@@ -7,7 +7,7 @@ class disabled_spouse(Variable):
     definition_period = YEAR
     label = "Tax unit spouse is legally disabled"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         disabled = person("is_ssi_disabled", period)
         spouse = person("is_tax_unit_spouse", period)

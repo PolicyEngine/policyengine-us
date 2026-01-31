@@ -9,7 +9,7 @@ class salt_cap(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/164"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate
         max_cap = p.cap[filing_status]

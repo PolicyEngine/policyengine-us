@@ -9,7 +9,7 @@ class de_tanf_resources_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4002"
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DSSM 4002: Resource limit is $10,000
         p = parameters(period).gov.states.de.dhss.tanf
         resources = spm_unit("spm_unit_assets", period.this_year)

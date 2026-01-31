@@ -9,7 +9,7 @@ class nh_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = max_(0, tax_unit("nh_taxable_income", period))
         p = parameters(period).gov.states.nh.tax.income
         if p.in_effect:

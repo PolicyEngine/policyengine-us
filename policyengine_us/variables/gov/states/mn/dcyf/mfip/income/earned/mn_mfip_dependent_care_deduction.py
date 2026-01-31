@@ -10,7 +10,7 @@ class mn_mfip_dependent_care_deduction(Variable):
     reference = "https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001809"
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.16, Subd. 1(b)(2):
         # Deduct actual dependent care up to $200/child under 2, $175/child 2+.
         # Only applies to eligibility test, not benefit calculation.

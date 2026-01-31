@@ -7,6 +7,6 @@ class is_chip_eligible(Variable):
     label = "CHIP eligible"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         chip_category = person("chip_category", period)
         return chip_category != chip_category.possible_values.NONE

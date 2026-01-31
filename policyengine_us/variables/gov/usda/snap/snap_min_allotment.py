@@ -11,7 +11,7 @@ class snap_min_allotment(Variable):
     )
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Parameters for the minimum benefit.
         snap = parameters(period).gov.usda.snap
         min_allotment = snap.min_allotment

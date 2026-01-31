@@ -11,8 +11,7 @@ class me_dependent_exemption_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
-
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get their Maine AGI (line 3).
         me_agi = tax_unit("me_agi", period)
 

@@ -11,7 +11,7 @@ class student_loan_interest_ald(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/221"
     defined_for = "student_loan_interest_ald_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         interest = person("student_loan_interest", period)
         p = parameters(period).gov.irs.ald.student_loan_interest
         filing_status = person.tax_unit("filing_status", period)

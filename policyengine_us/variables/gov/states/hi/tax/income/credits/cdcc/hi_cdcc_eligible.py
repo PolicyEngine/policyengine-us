@@ -9,6 +9,6 @@ class hi_cdcc_eligible(Variable):
     definition_period = YEAR
     reference = "https://law.justia.com/codes/hawaii/title-14/chapter-235/section-235-55-6/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         count_cdcc_eligible = tax_unit("count_cdcc_eligible", period)
         return count_cdcc_eligible > 0

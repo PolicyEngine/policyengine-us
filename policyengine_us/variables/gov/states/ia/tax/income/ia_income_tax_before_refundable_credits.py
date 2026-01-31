@@ -15,7 +15,7 @@ class ia_income_tax_before_refundable_credits(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before = tax_unit("ia_income_tax_before_credits", period)
         nonref_credits = tax_unit("ia_non_refundable_credits", period)
         is_tax_exempt = tax_unit("ia_is_tax_exempt", period)

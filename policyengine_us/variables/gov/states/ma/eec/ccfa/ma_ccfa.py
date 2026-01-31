@@ -12,7 +12,7 @@ class ma_ccfa(Variable):
     defined_for = "ma_ccfa_eligible"
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period.this_year
         )

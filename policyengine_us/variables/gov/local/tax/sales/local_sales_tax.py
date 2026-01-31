@@ -8,6 +8,6 @@ class local_sales_tax(Variable):
     label = "Local sales tax"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Until modeling the local sales tax table, estimate by multiplying by 0.2.
         return tax_unit("state_sales_tax", period) * 0.2

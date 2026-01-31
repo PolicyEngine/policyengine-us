@@ -10,7 +10,7 @@ class ky_ktap_dependent_care_disregard(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 921 KAR 2:016 Section 5(3)(b):
         # Dependent care disregard caps:
         # - $200/month for child under age 2

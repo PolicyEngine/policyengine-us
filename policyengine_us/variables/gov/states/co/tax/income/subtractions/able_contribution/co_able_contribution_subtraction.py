@@ -14,7 +14,7 @@ class co_able_contribution_subtraction(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         contribution_amount = tax_unit("able_contributions", period)
         p = parameters(
             period

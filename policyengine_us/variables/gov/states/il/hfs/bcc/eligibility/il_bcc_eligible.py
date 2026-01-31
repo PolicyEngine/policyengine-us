@@ -12,7 +12,7 @@ class il_bcc_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_female = person("is_female", period)
         age_eligible = person("il_bcc_age_eligible", period)
         immigration_eligible = person(

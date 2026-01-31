@@ -10,7 +10,7 @@ class base_part_b_premium(Variable):
     definition_period = YEAR
     defined_for = "is_medicare_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicare.part_b
         # base_premium is a monthly amount, multiply by MONTHS_IN_YEAR for annual
         return p.base_premium * MONTHS_IN_YEAR

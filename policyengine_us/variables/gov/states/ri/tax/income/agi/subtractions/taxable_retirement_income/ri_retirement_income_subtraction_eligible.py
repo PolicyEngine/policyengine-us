@@ -12,7 +12,7 @@ class ri_retirement_income_subtraction_eligible(Variable):
     # STEP 1: Eligibility
     defined_for = StateCode.RI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)

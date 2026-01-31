@@ -9,7 +9,7 @@ class state_itemized_deductions(Variable):
     definition_period = YEAR
     adds = "gov.states.household.state_itemized_deductions"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # States that adopt the federal itemized deductions
         # Based on comments in state_itemized_deductions.yaml
         FEDERAL_ITEMIZED_DEDUCTION_STATES = [

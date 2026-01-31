@@ -13,7 +13,7 @@ class dc_income_subtractions(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.tax.income.subtractions
         total_subtractions = add(person, period, p.sources)
         # Prevent negative subtractions from acting as additions

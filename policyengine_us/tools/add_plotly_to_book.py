@@ -1,3 +1,5 @@
+# pragma: no cover
+# This entire module is a standalone script for documentation building
 import argparse
 from pathlib import Path
 

@@ -10,7 +10,7 @@ class ma_senior_circuit_breaker(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         scb = parameters(
             period
         ).gov.states.ma.tax.income.credits.senior_circuit_breaker

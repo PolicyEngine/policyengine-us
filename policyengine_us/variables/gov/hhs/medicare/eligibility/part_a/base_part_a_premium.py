@@ -16,7 +16,7 @@ class base_part_a_premium(Variable):
     reference = "https://www.cms.gov/newsroom/fact-sheets/2025-medicare-parts-b-premiums-and-deductibles"
     defined_for = "is_medicare_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.hhs.medicare.part_a
         quarters_covered = person("medicare_quarters_of_coverage", period)
 

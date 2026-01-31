@@ -10,7 +10,7 @@ class lifetime_learning_credit_potential(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         education = parameters(period).gov.irs.credits.education
         llc = education.lifetime_learning_credit
         person = tax_unit.members

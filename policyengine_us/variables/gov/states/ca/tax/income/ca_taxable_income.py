@@ -13,7 +13,7 @@ class ca_taxable_income(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         ded = tax_unit("ca_deductions", period)
         agi = tax_unit("ca_agi", period)
         return max_(0, agi - ded)

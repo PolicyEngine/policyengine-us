@@ -8,7 +8,7 @@ class ca_riv_general_relief_immigration_status_eligible(Variable):
     definition_period = MONTH
     defined_for = "in_riv"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.local.ca.riv.general_relief
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

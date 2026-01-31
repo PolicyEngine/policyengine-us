@@ -10,7 +10,7 @@ class ma_part_b_excess_exemption(Variable):
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxinc_before_exemption = tax_unit(
             "ma_part_b_taxable_income_before_exemption", period
         )

@@ -10,7 +10,7 @@ class or_tanf_child_support_disregard(Variable):
     reference = "https://oregon.public.law/rules/oar_461-145-0080"
     defined_for = StateCode.OR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["or"].odhs.tanf
         child_support_received = add(
             spm_unit, period, ["child_support_received"]

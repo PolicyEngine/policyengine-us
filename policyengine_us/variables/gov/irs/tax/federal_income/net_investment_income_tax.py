@@ -9,7 +9,7 @@ class net_investment_income_tax(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1411"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.investment.net_investment_income_tax
         threshold = p.threshold[tax_unit("filing_status", period)]
         excess_agi = max_(

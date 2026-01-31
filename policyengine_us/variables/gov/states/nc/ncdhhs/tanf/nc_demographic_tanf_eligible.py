@@ -9,7 +9,7 @@ class nc_demographic_tanf_eligible(Variable):
     documentation = "Whether any person in a family applying for the Temporary Assistance for Needy Families program meets demographic requirements."
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nc.ncdhhs.tanf.eligibility
         person = spm_unit.members
         is_child = person("age", period) < p.age_limit

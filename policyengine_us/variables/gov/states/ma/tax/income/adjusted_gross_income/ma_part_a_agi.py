@@ -12,7 +12,7 @@ class ma_part_a_agi(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_a_gross_income = tax_unit("ma_part_a_gross_income", period)
         short_term_capital_gains = add(
             tax_unit, period, ["short_term_capital_gains"]

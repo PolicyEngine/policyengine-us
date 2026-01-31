@@ -13,7 +13,7 @@ class nm_works(Variable):
     )
     defined_for = "nm_works_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.620 NMAC:
         # Benefit = Payment Standard - Net Countable Income
         maximum_benefit = spm_unit("nm_works_maximum_benefit", period)

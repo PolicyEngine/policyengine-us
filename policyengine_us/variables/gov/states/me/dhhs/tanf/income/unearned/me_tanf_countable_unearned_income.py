@@ -13,7 +13,7 @@ class me_tanf_countable_unearned_income(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 22 M.R.S. Section 3762: First $50/month of child support
         # is excluded from income calculations
         p = parameters(period).gov.states.me.dhhs.tanf

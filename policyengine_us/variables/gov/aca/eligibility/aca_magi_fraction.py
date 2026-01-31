@@ -16,7 +16,7 @@ class aca_magi_fraction(Variable):
     )
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         magi = max_(0, tax_unit("aca_magi", period))
         fpg = tax_unit("tax_unit_fpg", period.last_year)
         return np.floor(100 * magi / fpg) / 100

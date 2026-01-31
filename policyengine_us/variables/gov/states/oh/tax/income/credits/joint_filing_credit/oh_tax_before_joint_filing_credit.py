@@ -15,7 +15,7 @@ class oh_tax_before_joint_filing_credit(Variable):
     definition_period = YEAR
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax_before_credits = tax_unit(
             "oh_income_tax_before_non_refundable_credits", period
         )

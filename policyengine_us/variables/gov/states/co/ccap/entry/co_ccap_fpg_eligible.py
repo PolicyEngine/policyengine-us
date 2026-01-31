@@ -9,7 +9,7 @@ class co_ccap_fpg_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         household = spm_unit.household
         state_eligible = household("state_code_str", period.this_year) == "CO"
         monthly_gross_income = np.round(

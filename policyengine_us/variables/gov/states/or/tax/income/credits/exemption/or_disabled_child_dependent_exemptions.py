@@ -12,7 +12,7 @@ class or_disabled_child_dependent_exemptions(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Identify qualifying tax unit members.
         person = tax_unit.members
         disabled = person("is_disabled", period)

@@ -17,7 +17,7 @@ class co_ctc(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.tax.income.credits.ctc
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values

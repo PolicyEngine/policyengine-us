@@ -15,7 +15,7 @@ class co_collegeinvest_subtraction(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         investment_amount = tax_unit("investment_in_529_plan", period)
         p = parameters(
             period

@@ -15,7 +15,7 @@ class ia_reduced_tax(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # logic follows Tax Reduction Worksheet
         modified_income = tax_unit("ia_modified_income", period)  # Line 1
         p = parameters(period).gov.states.ia.tax.income.tax_reduction

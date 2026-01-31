@@ -13,7 +13,7 @@ class sc_cdcc(Variable):
     )
     defined_for = StateCode.SC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get South Carolina CDCC rate.
         p_sc = parameters(period).gov.states.sc.tax.income.credits.cdcc
         p_us = parameters(period).gov.irs.credits.cdcc

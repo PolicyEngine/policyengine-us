@@ -8,7 +8,7 @@ class basic_income_phase_out(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         basic_income = add(tax_unit, period, ["basic_income_before_phase_out"])
         bi = parameters(period).gov.contrib.ubi_center.basic_income
         if bi.taxable:

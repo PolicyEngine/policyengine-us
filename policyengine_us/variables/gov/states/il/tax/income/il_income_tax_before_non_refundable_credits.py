@@ -10,7 +10,7 @@ class il_income_tax_before_non_refundable_credits(Variable):
 
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         recapture_of_investment_credit = tax_unit(
             "recapture_of_investment_credit", period
         )

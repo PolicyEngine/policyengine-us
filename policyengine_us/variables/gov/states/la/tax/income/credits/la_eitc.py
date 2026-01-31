@@ -10,7 +10,7 @@ class la_eitc(Variable):
     reference = "https://www.legis.la.gov/legis/Law.aspx?d=453085"
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.la.tax.income.credits
         return federal_eitc * p.eitc.match

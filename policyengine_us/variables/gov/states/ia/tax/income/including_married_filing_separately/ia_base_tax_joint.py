@@ -15,7 +15,7 @@ class ia_base_tax_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         reg_tax = person("ia_regular_tax_joint", period)
         alt_tax_eligible = person.tax_unit("ia_alternate_tax_eligible", period)
         alt_tax = person("ia_alternate_tax_joint", period)

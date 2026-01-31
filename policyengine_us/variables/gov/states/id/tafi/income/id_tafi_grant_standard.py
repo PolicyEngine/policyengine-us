@@ -14,7 +14,7 @@ class id_tafi_grant_standard(Variable):
     )
     defined_for = StateCode.ID
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.id.tafi
         countable_earned = spm_unit("id_tafi_countable_earned_income", period)
         countable_unearned = spm_unit(

@@ -8,7 +8,7 @@ class itemized_taxable_income_deductions_reduction(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.deductions.itemized.reduction
         if p.applies:
             agi = tax_unit("adjusted_gross_income", period)

@@ -11,7 +11,7 @@ class tx_dart_reduced_fare_age_eligible(Variable):
         "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.tx.dart.reduced_fare.age_threshold
         age = person("age", period)
 

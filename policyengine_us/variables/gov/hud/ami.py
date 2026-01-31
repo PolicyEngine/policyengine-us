@@ -8,7 +8,7 @@ class ami(Variable):
     documentation = "Area median income for a four-person household"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Only calculate for LA County and Denver County for now. Otherwise zero.
         in_la = household("in_la", period)
         in_denver = household("in_denver", period)

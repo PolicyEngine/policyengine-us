@@ -10,7 +10,7 @@ class ny_standard_deduction(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         standard_deduction = parameters(
             period

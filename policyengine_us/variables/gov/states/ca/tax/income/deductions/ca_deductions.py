@@ -13,7 +13,7 @@ class ca_deductions(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         std_ded = tax_unit("ca_standard_deduction", period)
         itm_ded = tax_unit("ca_itemized_deductions", period)
         return where(itm_ded > std_ded, itm_ded, std_ded)

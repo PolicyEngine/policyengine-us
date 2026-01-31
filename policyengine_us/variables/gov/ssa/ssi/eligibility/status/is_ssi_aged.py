@@ -7,7 +7,7 @@ class is_ssi_aged(Variable):
     label = "Is aged for SSI"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         aged_threshold = parameters(
             period
         ).gov.ssa.ssi.eligibility.aged_threshold

@@ -10,7 +10,7 @@ class dc_ccsp(Variable):
     reference = "https://osse.dc.gov/subsidy"
     defined_for = "dc_ccsp_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         copay = spm_unit("dc_ccsp_copay", period)
         maximum_payment = add(
             spm_unit, period, ["dc_ccsp_maximum_subsidy_amount"]

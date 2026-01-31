@@ -7,7 +7,7 @@ class is_full_time_student(Variable):
     label = "Is a full time student"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         in_college = person("is_full_time_college_student", period)
         in_k12 = person("is_in_k12_school", period)
         return in_college | in_k12

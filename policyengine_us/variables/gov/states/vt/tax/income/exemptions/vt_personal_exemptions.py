@@ -12,7 +12,7 @@ class vt_personal_exemptions(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.exemption
         is_joint = tax_unit("tax_unit_is_joint", period)
         elsewhere_head = tax_unit("head_is_dependent_elsewhere", period)

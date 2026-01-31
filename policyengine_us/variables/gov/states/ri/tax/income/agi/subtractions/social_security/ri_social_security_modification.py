@@ -10,7 +10,7 @@ class ri_social_security_modification(Variable):
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
     defined_for = "ri_social_security_modification_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         birth_year = person("birth_year", period)

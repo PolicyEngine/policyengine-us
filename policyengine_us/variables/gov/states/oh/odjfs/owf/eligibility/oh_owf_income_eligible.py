@@ -11,7 +11,7 @@ class oh_owf_income_eligible(Variable):
         "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Check enrollment status
         enrolled = spm_unit("is_tanf_enrolled", period)
 

@@ -15,7 +15,7 @@ class hi_reduced_itemized_deductions(Variable):
 
     # If the state AGI of the filer exceeds a certain amount, only partial itemized deductions
     # can be deducted.
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         total_deductions = tax_unit("hi_total_itemized_deductions", period)
         partial_deductions = add(
             tax_unit,

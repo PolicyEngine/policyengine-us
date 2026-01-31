@@ -12,7 +12,7 @@ class il_hbwd_disability_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Must meet Social Security Administration's definition of disability.
         # Per DB101 Illinois "For HBWD, Social Security's disability
         # rules related to earned income do not apply" - so we use is_disabled

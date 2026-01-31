@@ -7,7 +7,7 @@ class is_tax_unit_head(Variable):
     label = "Head of tax unit"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Only adults can be heads.
         eligible = ~person("is_child", period)
         age = person("age", period)

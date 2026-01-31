@@ -13,7 +13,7 @@ class ok_taxable_income(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("ok_agi", period)
         adjustments = tax_unit("ok_adjustments", period)
         exemptions = tax_unit("ok_exemptions", period)

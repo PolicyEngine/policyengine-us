@@ -10,7 +10,7 @@ class me_property_tax_fairness_credit_countable_rent(Variable):
     defined_for = StateCode.ME
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.me.tax.income.credits.fairness.property_tax

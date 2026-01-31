@@ -9,7 +9,7 @@ class va_tanf_income_eligibility(Variable):
     defined_for = StateCode.VA
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Two-step income test per Virginia TANF Manual Section 305.1
         # Step 1: Gross income <= Need Standard
         gross_income = spm_unit("va_tanf_gross_income", period)

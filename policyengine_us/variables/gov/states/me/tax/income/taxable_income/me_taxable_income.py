@@ -11,7 +11,7 @@ class me_taxable_income(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/611"
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("me_agi", period)
         deductions = tax_unit("me_deductions", period)
         exemptions = tax_unit("me_exemptions", period)

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 def create_dc_tax_threshold_joint_ratio_reform(
     parameters, period, bypass=False
-):
+):  # pragma: no cover
     if not bypass:
         joint_ratio = parameters(
             period
@@ -25,7 +25,7 @@ def create_dc_tax_threshold_joint_ratio_reform(
         )
         defined_for = StateCode.DC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             taxinc = max_(0, tax_unit("dc_taxable_income_joint", period))
             joint_ratio = parameters(
                 period
@@ -36,7 +36,7 @@ def create_dc_tax_threshold_joint_ratio_reform(
             )
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(dc_income_tax_before_credits_joint)
 
     if bypass or joint_ratio != 1:

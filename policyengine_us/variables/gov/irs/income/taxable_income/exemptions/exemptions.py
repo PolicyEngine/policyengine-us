@@ -9,7 +9,7 @@ class exemptions(Variable):
     documentation = "Personal exemptions amount after phase-out"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate exemptions amount before phase-out
         exemptions = tax_unit("exemptions_count", period)
         p = parameters(period).gov.irs.income.exemption

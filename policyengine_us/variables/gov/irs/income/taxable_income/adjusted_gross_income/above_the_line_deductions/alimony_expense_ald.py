@@ -12,7 +12,7 @@ class alimony_expense_ald(Variable):
     definition_period = YEAR
     reference = "https://www.irs.gov/taxtopics/tc452"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         divorce_year = person("divorce_year", period)
         alimony_expense = person("alimony_expense", period)

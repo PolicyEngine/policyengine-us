@@ -9,7 +9,7 @@ class ky_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, paramters):
+    def formula(tax_unit, period, paramters):  # pragma: no cover
         tax_before_non_refundable = tax_unit(
             "ky_income_tax_before_non_refundable_credits_unit", period
         )

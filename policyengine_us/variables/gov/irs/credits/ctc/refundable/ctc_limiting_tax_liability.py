@@ -9,7 +9,7 @@ class ctc_limiting_tax_liability(Variable):
     documentation = "The tax liability used to determine the maximum amount of the non-refundable CTC. Excludes SALT from all calculations (this is an inaccuracy required to avoid circular dependencies)."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         simulation = tax_unit.simulation
         no_salt_branch = simulation.get_branch("no_salt")
         no_salt_branch.set_input(

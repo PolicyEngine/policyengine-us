@@ -13,7 +13,7 @@ class il_fpp_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Note: Illinois has two Family Planning programs:
         # 1. Family Planning Presumptive Eligibility (FPPE) - temporary
         #    coverage, does NOT require citizenship/immigration status

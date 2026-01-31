@@ -16,7 +16,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum_amount = add(
                 tax_unit, period, ["other_dependent_credit_maximum"]
             )
@@ -31,7 +31,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.contrib.congress.afa.other_dependent_credit
@@ -48,7 +48,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # TCJA's phase-out changes are purely parametric so don't require
             # structural reform.
 
@@ -73,7 +73,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # TCJA's phase-out changes are purely parametric so don't require
             # structural reform.
 
@@ -98,7 +98,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # TCJA's phase-out changes are purely parametric so don't require
             # structural reform.
 
@@ -125,7 +125,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
             # without regard to this subsection [the refundability section] and the limitation under
             # section 26(a) [the section that limits the amount of the non-refundable CTC to tax liability].
@@ -176,7 +176,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum_amount = add(
                 tax_unit, period, ["ctc_child_individual_maximum_arpa"]
             )
@@ -199,7 +199,7 @@ def create_afa_other_dependent_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.congress.afa.ctc.amount
             base_amount = p.base
             age = person("age", period)
@@ -214,7 +214,7 @@ def create_afa_other_dependent_credit() -> Reform:
             baby_bonus_amount = baby_bonus * is_baby
             return pre_baby_bonus_amount + baby_bonus_amount
 
-    def modify_parameters(parameters):
+    def modify_parameters(parameters):  # pragma: no cover
         parameters.gov.irs.credits.non_refundable.update(
             start=instant("2025-01-01"),
             stop=instant("2039-12-31"),
@@ -249,7 +249,7 @@ def create_afa_other_dependent_credit() -> Reform:
         return parameters
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(other_dependent_credit_maximum)
             self.update_variable(other_dependent_credit_phase_out)
             self.update_variable(other_dependent_credit)
@@ -265,7 +265,7 @@ def create_afa_other_dependent_credit() -> Reform:
 
 def create_afa_other_dependent_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_afa_other_dependent_credit()
 

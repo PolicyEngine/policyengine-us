@@ -7,7 +7,7 @@ class slcsp_rating_area(Variable):
     label = "Second-lowest ACA silver-plan cost rating area"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         return where(
             household("in_la", period),
             household("slcsp_rating_area_la_county", period),

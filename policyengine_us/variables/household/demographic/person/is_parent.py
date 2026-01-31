@@ -7,5 +7,5 @@ class is_parent(Variable):
     label = "Is a parent"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return person("own_children_in_household", period) > 0

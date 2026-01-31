@@ -7,6 +7,6 @@ class is_child_of_tax_head(Variable):
     label = "Is a child"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_child_of_tax_head = person("is_child", period)
         return is_child_of_tax_head

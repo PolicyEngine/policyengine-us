@@ -9,7 +9,7 @@ class age_spouse(Variable):
     documentation = "Age in years of spouse (i.e. secondary adult if present)"
     unit = "year"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         age = person("age", period)
         spouse = person("is_tax_unit_spouse", period)

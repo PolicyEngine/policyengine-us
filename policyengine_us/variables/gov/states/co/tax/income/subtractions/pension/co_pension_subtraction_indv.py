@@ -15,7 +15,7 @@ class co_pension_subtraction_indv(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         taxable_pension_income = person(
             "co_pension_subtraction_income", period

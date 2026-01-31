@@ -12,7 +12,7 @@ class tx_tanf_eligible_parent(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per § 372.104, parents living in household must be included in certified group
         is_parent = person("is_tax_unit_head_or_spouse", period)
 

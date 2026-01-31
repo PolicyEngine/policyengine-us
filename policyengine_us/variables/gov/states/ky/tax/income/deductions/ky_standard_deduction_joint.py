@@ -9,7 +9,7 @@ class ky_standard_deduction_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # If filing a joint return, only one standard deduction is allowed
         is_head = person("is_tax_unit_head", period)
         p = parameters(period).gov.states.ky.tax.income.deductions

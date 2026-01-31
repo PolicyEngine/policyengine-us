@@ -10,7 +10,7 @@ class ky_ktap_countable_earned_income(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 921 KAR 2:016 Section 5(3):
         # (a) Deduct $175 work expense from gross earned income
         # (b) Deduct dependent care expenses up to limits

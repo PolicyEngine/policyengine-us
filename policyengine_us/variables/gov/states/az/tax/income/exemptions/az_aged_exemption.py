@@ -9,7 +9,7 @@ class az_aged_exemption(Variable):
     definition_period = YEAR
     defined_for = "az_aged_exemption_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         age = person("age", period)

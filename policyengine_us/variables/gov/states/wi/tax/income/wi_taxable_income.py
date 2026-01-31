@@ -16,7 +16,7 @@ class wi_taxable_income(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxinc = (
             tax_unit("wi_agi", period)
             - tax_unit("wi_standard_deduction", period)

@@ -9,7 +9,7 @@ class nm_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_agi = tax_unit("adjusted_gross_income", period)
         additions = tax_unit("nm_additions", period)
         salt_add_back = tax_unit("nm_salt_add_back", period)

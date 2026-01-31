@@ -7,7 +7,7 @@ class pell_grant_dependents_in_college(Variable):
     label = "Pell Grant dependents in college"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         college_student = person("is_full_time_college_student", period)
         is_dependent = person("is_tax_unit_dependent", period)

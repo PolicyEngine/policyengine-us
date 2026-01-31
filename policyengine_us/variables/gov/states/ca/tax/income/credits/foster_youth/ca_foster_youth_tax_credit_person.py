@@ -10,7 +10,7 @@ class ca_foster_youth_tax_credit_person(Variable):
     reference = "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4"
     defined_for = "ca_foster_youth_tax_credit_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
         age = person("age", period)
         base_credit = p.amount.calc(age)

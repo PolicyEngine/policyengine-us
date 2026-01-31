@@ -9,7 +9,7 @@ class nc_income_tax_before_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         income = tax_unit("nc_taxable_income", period)
         p = parameters(period).gov.states.nc.tax.income
         return max_(0, income) * p.rate

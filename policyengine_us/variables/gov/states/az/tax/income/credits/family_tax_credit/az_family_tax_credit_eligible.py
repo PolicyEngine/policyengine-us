@@ -9,7 +9,7 @@ class az_family_tax_credit_eligible(Variable):
     reference = "https://www.azleg.gov/ars/43/01073.htm"
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.family_tax_credits

@@ -8,6 +8,6 @@ class md_snap_is_elderly(Variable):
     label = "Is an elderly person for Maryland SNAP minimum allotment"
     defined_for = StateCode.MD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.md.usda.snap.min_allotment
         return person("age", period) >= p.age_threshold

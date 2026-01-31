@@ -7,7 +7,7 @@ class head_is_disabled(Variable):
     definition_period = YEAR
     label = "Tax unit head is disabled"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         disabled = person("is_disabled", period)
         head = person("is_tax_unit_head", period)

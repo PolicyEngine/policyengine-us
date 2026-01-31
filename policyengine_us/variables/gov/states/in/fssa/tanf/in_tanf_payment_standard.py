@@ -13,7 +13,7 @@ class in_tanf_payment_standard(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].fssa.tanf.standard_of_need
         capped_size = min_(spm_unit("spm_unit_size", period), p.max_unit_size)
         return p.amount[capped_size]

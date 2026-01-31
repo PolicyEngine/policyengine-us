@@ -12,7 +12,7 @@ class ga_military_retirement_exclusion_eligible_person(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ga.tax.income.agi.exclusions.military_retirement

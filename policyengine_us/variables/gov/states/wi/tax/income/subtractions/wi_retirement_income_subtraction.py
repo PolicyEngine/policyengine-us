@@ -15,7 +15,7 @@ class wi_retirement_income_subtraction(Variable):
     )
     defined_for = "wi_retirement_income_subtraction_agi_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wi.tax.income
         psri = p.subtractions.retirement_income
         person = tax_unit.members

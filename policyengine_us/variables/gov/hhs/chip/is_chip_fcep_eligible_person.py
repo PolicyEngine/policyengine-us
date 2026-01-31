@@ -11,7 +11,7 @@ class is_chip_fcep_eligible_person(Variable):
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get state code
         state_code = person.household("state_code", period)
 

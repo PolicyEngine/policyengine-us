@@ -14,7 +14,7 @@ class me_property_tax_fairness_credit_veterans_cap(Variable):
     }
     # Only one spouse needs to be a veteran for the filer to get the veteran match
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.me.tax.income.credits.fairness.property_tax

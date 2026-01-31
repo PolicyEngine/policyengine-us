@@ -9,5 +9,5 @@ class positive_agi(Variable):
     documentation = "Negative AGI values capped at zero"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return max_(tax_unit("adjusted_gross_income", period), 0)

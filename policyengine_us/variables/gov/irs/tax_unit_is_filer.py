@@ -32,7 +32,7 @@ class tax_unit_is_filer(Variable):
     (ii) The term "exemption amount" has the meaning given such term by section 151(d). In the case of an individual described in section 151(d)(2), the exemption amount shall be zero.
     """
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         gross_income = add(tax_unit, period, ["irs_gross_income"])
         exemption_amount = parameters(period).gov.irs.income.exemption.amount
 

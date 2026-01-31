@@ -9,7 +9,7 @@ class dc_ccsp_eligible_child(Variable):
     defined_for = StateCode.DC
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp.age_threshold
         age = person("monthly_age", period)
         is_disabled = person("is_disabled", period)

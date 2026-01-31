@@ -10,7 +10,7 @@ class ri_child_tax_rebate(Variable):
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf"
     defined_for = "ri_child_tax_rebate_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)

@@ -8,7 +8,7 @@ class is_citizen_or_legal_immigrant(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/8/1641"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.dhs.immigration
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

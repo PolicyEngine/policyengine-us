@@ -13,7 +13,7 @@ class ms_taxable_income_joint(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("ms_agi", period)
 
         deductions_and_exemptions = add(

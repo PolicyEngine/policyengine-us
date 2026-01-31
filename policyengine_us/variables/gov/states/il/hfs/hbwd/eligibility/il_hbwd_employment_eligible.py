@@ -12,7 +12,7 @@ class il_hbwd_employment_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per § 120.510(l)(1), employment is verified by current payment
         # under FICA or IMRF. We use earned income as a proxy for
         # employment with FICA contributions.

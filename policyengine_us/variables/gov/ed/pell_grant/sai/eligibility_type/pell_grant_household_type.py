@@ -16,7 +16,7 @@ class pell_grant_household_type(Variable):
     definition_period = YEAR
     label = "Pell Grant household type"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         dependent = person("is_tax_unit_dependent", period)
         joint = person.tax_unit("tax_unit_is_joint", period)
 

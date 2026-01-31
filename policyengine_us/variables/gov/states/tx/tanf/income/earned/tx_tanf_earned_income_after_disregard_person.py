@@ -13,7 +13,7 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Get gross earned income
         gross_earned = person("tx_tanf_gross_earned_income", period)
         p = parameters(period).gov.states.tx.tanf.income

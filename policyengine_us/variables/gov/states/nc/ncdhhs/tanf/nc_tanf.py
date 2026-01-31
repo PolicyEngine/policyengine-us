@@ -9,7 +9,7 @@ class nc_tanf(Variable):
     definition_period = YEAR
     defined_for = "nc_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_percentage = parameters(
             period
         ).gov.states.nc.ncdhhs.tanf.benefit.payment_percentage

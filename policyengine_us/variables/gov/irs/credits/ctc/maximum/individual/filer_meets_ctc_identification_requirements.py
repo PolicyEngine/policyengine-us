@@ -7,7 +7,7 @@ class filer_meets_ctc_identification_requirements(Variable):
     definition_period = YEAR
     label = "Filer meets CTC identification requirements"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
         p = parameters(period).gov.irs.credits.ctc
         if p.adult_ssn_requirement_applies:

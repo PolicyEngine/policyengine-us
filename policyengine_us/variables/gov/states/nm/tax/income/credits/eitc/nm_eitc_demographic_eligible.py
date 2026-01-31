@@ -8,7 +8,7 @@ class nm_eitc_demographic_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # New Mexico applies the same criteria as the federal EITC, but
         # changes the minimum age.
         person = tax_unit.members

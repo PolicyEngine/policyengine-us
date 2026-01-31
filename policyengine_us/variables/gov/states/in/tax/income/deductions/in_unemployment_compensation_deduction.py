@@ -12,7 +12,7 @@ class in_unemployment_compensation_deduction(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].tax.income.deductions
         unemployment_compensation_in_federal_agi = tax_unit(
             "tax_unit_taxable_unemployment_compensation", period

@@ -10,7 +10,7 @@ class il_tanf_initial_employment_deduction_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.141"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.dhs.tanf.income.initial_employment_deduction

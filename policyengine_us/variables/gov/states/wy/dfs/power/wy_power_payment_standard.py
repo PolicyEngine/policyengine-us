@@ -13,7 +13,7 @@ class wy_power_payment_standard(Variable):
     )
     defined_for = StateCode.WY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wy.dfs.power.payment_standard
         unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_unit_size)

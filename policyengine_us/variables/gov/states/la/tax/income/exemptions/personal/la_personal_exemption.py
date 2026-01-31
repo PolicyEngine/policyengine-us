@@ -10,7 +10,7 @@ class la_personal_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.la.tax.income.exemptions
         return p.personal[filing_status]

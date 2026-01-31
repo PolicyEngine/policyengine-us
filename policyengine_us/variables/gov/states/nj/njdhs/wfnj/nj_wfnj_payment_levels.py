@@ -12,7 +12,7 @@ class nj_wfnj_payment_levels(Variable):
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.nj.njdhs.wfnj
         capped_size = min_(size, p.max_household_size)

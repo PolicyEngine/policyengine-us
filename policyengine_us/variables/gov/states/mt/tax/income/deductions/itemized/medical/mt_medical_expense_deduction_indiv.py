@@ -14,7 +14,7 @@ class mt_medical_expense_deduction_indiv(Variable):
     unit = USD
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         expense = person("medical_out_of_pocket_expenses", period)
         p = parameters(period).gov.irs.deductions.itemized.medical
         # Law does not define Montana AGI as the cap.

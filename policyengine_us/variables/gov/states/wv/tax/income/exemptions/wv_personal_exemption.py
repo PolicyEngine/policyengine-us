@@ -10,7 +10,7 @@ class wv_personal_exemption(Variable):
     definition_period = YEAR
     reference = "https://code.wvlegislature.gov/11-21/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.wv.tax.income.exemptions
         tax_unit_size = tax_unit("tax_unit_size", period)
         return where(

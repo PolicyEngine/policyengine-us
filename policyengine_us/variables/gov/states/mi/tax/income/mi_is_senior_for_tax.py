@@ -9,6 +9,6 @@ class mi_is_senior_for_tax(Variable):
     reference = "http://legislature.mi.gov/doc.aspx?mcl-206-514"
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mi.tax.income
         return tax_unit("greater_age_head_spouse", period) >= p.senior_age

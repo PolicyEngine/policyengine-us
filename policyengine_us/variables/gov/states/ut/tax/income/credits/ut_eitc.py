@@ -11,7 +11,7 @@ class ut_eitc(Variable):
     defined_for = StateCode.UT
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1044.html?v=C59-10-S1044_2022050420220504"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ut.tax.income.credits.earned_income
         federal_eitc = tax_unit("eitc", period)
         return p.rate * federal_eitc

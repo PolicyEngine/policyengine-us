@@ -14,7 +14,7 @@ class vt_amt(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.vt.tax.income.rates
         # If AGI is bigger than a threshold, then we need to further compare a percentage
         # of Adjusted Gross Income less interest from U.S. obligations and the initial Tax

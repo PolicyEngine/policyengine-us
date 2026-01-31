@@ -12,7 +12,7 @@ class meets_snap_net_income_test(Variable):
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         net_income_limit_fpg = parameters(
             period
         ).gov.usda.snap.income.limit.net

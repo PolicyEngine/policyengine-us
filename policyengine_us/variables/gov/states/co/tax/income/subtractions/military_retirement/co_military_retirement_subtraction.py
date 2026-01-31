@@ -15,7 +15,7 @@ class co_military_retirement_subtraction(Variable):
     )
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.military_retirement

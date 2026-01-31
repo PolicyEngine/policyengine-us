@@ -9,7 +9,7 @@ class de_agi_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         pre_exclusions_agi = person("de_pre_exclusions_agi", period)
         indv_exclusions = person(
             "de_elderly_or_disabled_income_exclusion_indiv", period

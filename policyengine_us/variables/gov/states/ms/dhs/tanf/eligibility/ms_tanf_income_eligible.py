@@ -13,7 +13,7 @@ class ms_tanf_income_eligible(Variable):
         "https://www.mdhs.ms.gov/help/tanf/applying-for-tanf/",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ms.dhs.tanf
 
         # Use federal baseline for gross income

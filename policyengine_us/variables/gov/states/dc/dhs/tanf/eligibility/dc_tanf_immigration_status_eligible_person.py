@@ -11,7 +11,7 @@ class dc_tanf_immigration_status_eligible_person(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

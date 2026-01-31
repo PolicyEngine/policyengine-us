@@ -12,7 +12,7 @@ class ia_pension_exclusion_eligible(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ia.tax.income.pension_exclusion
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)

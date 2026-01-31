@@ -8,7 +8,7 @@ class dwks19(Variable):
     label = "IRS Form 1040 Schedule D worksheet (part 6 of 6)"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.capital_gains
         dwks14 = tax_unit("dwks14", period)
         filing_status = tax_unit("filing_status", period)

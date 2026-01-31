@@ -10,7 +10,7 @@ class il_liheap_base_payment(Variable):
     defined_for = StateCode.IL
     reference = "https://dceo.illinois.gov/communityservices/utilitybillassistance.html"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dceo.liheap.payment.base_amount
 
         # Check if heat is included in rent

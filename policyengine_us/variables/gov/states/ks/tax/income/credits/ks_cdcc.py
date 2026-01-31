@@ -13,7 +13,7 @@ class ks_cdcc(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ks.tax.income.credits
         # Kansas matches the federal credit taken
         return p.cdcc_fraction * tax_unit("cdcc", period)

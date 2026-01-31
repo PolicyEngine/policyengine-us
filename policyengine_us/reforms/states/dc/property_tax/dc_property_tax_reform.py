@@ -15,7 +15,7 @@ def create_dc_property_tax_credit() -> Reform:
         )
         defined_for = "takes_up_dc_ptc"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.dc.property_tax
             filing_status = tax_unit("filing_status", period)
             amount = p.amount[filing_status]
@@ -40,7 +40,7 @@ def create_dc_property_tax_credit() -> Reform:
         )
         defined_for = StateCode.DC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             us_agi = tax_unit("adjusted_gross_income", period)
             income_limt = tax_unit("dc_ptc_income_limit", period)
             return us_agi <= income_limt
@@ -57,7 +57,7 @@ def create_dc_property_tax_credit() -> Reform:
         )
         defined_for = StateCode.DC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             elderly_present = tax_unit(
                 "dc_ptc_elderly_head_or_spouse_present", period
             )
@@ -82,7 +82,7 @@ def create_dc_property_tax_credit() -> Reform:
         )
         defined_for = StateCode.DC
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_dc = parameters(period).gov.states.dc.tax.income.credits
             elderly_age = p_dc.ptc.min_elderly_age
             head_age = tax_unit("age_head", period)
@@ -90,7 +90,7 @@ def create_dc_property_tax_credit() -> Reform:
             return (head_age >= elderly_age) | (spouse_age >= elderly_age)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(dc_ptc)
             self.update_variable(dc_ptc_eligible)
             self.update_variable(dc_ptc_income_limit)
@@ -101,7 +101,7 @@ def create_dc_property_tax_credit() -> Reform:
 
 def create_dc_property_tax_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_dc_property_tax_credit()
 

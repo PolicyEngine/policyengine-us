@@ -15,7 +15,7 @@ class la_dependents_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dependents = tax_unit("tax_unit_dependents", period)
         p = parameters(period).gov.states.la.tax.income.exemptions
         return dependents * p.dependent

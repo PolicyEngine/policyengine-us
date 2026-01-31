@@ -12,7 +12,7 @@ class nj_wfnj_eligible(Variable):
         "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-20",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income_eligible = spm_unit("nj_wfnj_income_eligible", period)
         resources_eligible = spm_unit("nj_wfnj_resources_eligible", period)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)

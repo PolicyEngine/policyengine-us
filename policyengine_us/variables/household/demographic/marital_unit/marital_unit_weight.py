@@ -7,6 +7,6 @@ class marital_unit_weight(Variable):
     label = "Marital unit weight"
     definition_period = YEAR
 
-    def formula(marital_unit, period, parameters):
+    def formula(marital_unit, period, parameters):  # pragma: no cover
         # If no weight provided, use the average of the people in the marital unit.
         return marital_unit.household("household_weight", period)

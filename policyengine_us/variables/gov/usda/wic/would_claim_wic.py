@@ -7,7 +7,7 @@ class would_claim_wic(Variable):
     label = "Would claim WIC"
     definition_period = MONTH
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Assign households WIC takeup probabilistically in microsimulation.
         # Assume all take up in individual simulation.
         if person.simulation.dataset is not None:

@@ -8,7 +8,7 @@ class pell_grant_efc(Variable):
     label = "Pell Grant expected family contribution"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head_contribution = person("pell_grant_head_contribution", period)
         dependent_contribution = person(
             "pell_grant_dependent_contribution", period

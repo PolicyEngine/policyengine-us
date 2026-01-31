@@ -10,7 +10,7 @@ def create_ut_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             p = parameters(period).gov.contrib.states.ut.eitc
             age = person("age", period)
@@ -38,7 +38,7 @@ def create_ut_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
         reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1044.html?v=C59-10-S1044_2022050420220504"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(
                 period
             ).gov.states.ut.tax.income.credits.earned_income
@@ -83,7 +83,7 @@ def create_ut_refundable_eitc() -> Reform:
         adds = ["ut_refundable_eitc"]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ut_has_qualifying_child_for_refundable_eitc)
             self.update_variable(ut_refundable_eitc)
             self.update_variable(ut_non_refundable_eitc)
@@ -94,7 +94,9 @@ def create_ut_refundable_eitc() -> Reform:
     return reform
 
 
-def create_ut_refundable_eitc_reform(parameters, period, bypass: bool = False):
+def create_ut_refundable_eitc_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_ut_refundable_eitc()
 

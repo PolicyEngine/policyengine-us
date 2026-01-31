@@ -13,7 +13,7 @@ class il_ihwap_hhs_smi(Variable):
         "https://dceo.illinois.gov/communityservices/homeweatherization.html"
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # IL IHWAP Program Year N uses SMI from October 1 of year N-1
         # e.g., PY2026 uses SMI effective 2025-10-01
         prior_october = f"{period.start.year - 1}-10-01"

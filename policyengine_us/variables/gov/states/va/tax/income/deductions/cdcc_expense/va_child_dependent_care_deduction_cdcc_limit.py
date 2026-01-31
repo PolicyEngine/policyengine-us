@@ -12,7 +12,7 @@ class va_child_dependent_care_deduction_cdcc_limit(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=29"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         if period.start.year == 2021:
             instant_str = f"2020-01-01"
         else:

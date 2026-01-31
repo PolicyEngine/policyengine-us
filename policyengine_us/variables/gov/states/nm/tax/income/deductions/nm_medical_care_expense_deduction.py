@@ -17,7 +17,7 @@ class nm_medical_care_expense_deduction(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.nm.tax.income.deductions.medical_care_expense

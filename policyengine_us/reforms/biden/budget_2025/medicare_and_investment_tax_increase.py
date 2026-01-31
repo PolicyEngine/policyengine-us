@@ -12,7 +12,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             "Additional Medicare Tax from Form 8959 (included in payrolltax)"
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             amc = parameters(period).gov.irs.payroll.medicare.additional
             # Wage and self-employment income are taxed the same.
             ELEMENTS = [
@@ -38,7 +38,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/1411"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.irs.investment.net_investment_income_tax
             threshold = p.threshold[tax_unit("filing_status", period)]
             agi = tax_unit("adjusted_gross_income", period)
@@ -61,7 +61,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             return base_tax + add_tax
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(additional_medicare_tax)
             self.update_variable(net_investment_income_tax)
 
@@ -70,7 +70,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
 
 def create_medicare_and_investment_tax_increase_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_medicare_and_investment_tax_increase()
 

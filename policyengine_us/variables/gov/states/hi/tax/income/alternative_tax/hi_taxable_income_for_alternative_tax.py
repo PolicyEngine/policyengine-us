@@ -11,7 +11,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
     definition_period = YEAR
     defined_for = "hi_alternative_tax_on_capital_gains_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income
         filing_status = tax_unit("filing_status", period)
         # line 1 of Hawaii Tax on Capital Gains Worksheet

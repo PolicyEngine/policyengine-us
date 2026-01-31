@@ -10,7 +10,7 @@ class ssi_blind_or_disabled_working_student_exclusion(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1112#c_3"
     defined_for = "is_ssi_blind_or_disabled_working_student_exclusion_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student

@@ -8,7 +8,7 @@ class is_ebb_eligible(Variable):
     documentation = "Eligible for Emergency Broadband Benefit"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         programs = parameters(period).gov.fcc.ebb.categorical_eligibility
         eligible = np.any([spm_unit(program, period) for program in programs])
         # In transition period to Affordable Connectivity Program, households

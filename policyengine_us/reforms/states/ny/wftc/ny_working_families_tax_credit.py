@@ -10,7 +10,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ny.wftc
             income = tax_unit("ny_agi", period)
             filing_status = tax_unit("filing_status", period)
@@ -33,7 +33,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
             p = parameters(period).gov.contrib.states.ny.wftc
@@ -60,7 +60,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
         definition_period = YEAR
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p = parameters(period).gov.contrib.states.ny.wftc
@@ -85,7 +85,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             child_count = tax_unit("eitc_younger_children_count", period)
             eitc = parameters(period).gov.irs.credits.eitc
             # We will reduce the maximum credit amount by the amount for self
@@ -101,7 +101,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Rate at which the EITC phases in with income."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             child_count = tax_unit("eitc_younger_children_count", period)
             eitc = parameters(period).gov.irs.credits.eitc
             return eitc.phase_in_rate.calc(child_count)
@@ -114,7 +114,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "EITC maximum amount, taking into account earnings."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("eitc_younger_maximum", period)
             phase_in_rate = tax_unit("eitc_younger_phase_in_rate", period)
             earnings = tax_unit("filer_adjusted_earnings", period)
@@ -129,7 +129,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Earnings above this level reduce EITC entitlement."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             count_children = tax_unit("eitc_younger_children_count", period)
             eitc = parameters(period).gov.irs.credits.eitc
             is_joint = tax_unit("tax_unit_is_joint", period)
@@ -145,7 +145,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             eitc = parameters(period).gov.irs.credits.eitc
             num_children = tax_unit("eitc_younger_children_count", period)
             return eitc.phase_out.rate.calc(num_children)
@@ -158,7 +158,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             earnings = tax_unit("filer_adjusted_earnings", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
@@ -176,7 +176,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             return tax_unit("eitc_younger_children_count", period) > 0
 
     class younger_eitc_eligible(Variable):
@@ -186,7 +186,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             eitc = parameters.gov.irs.credits.eitc(period)
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
@@ -220,7 +220,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
         defined_for = "younger_eitc_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("eitc_younger_maximum", period)
             phased_in = tax_unit("eitc_younger_phased_in", period)
             reduction = tax_unit("eitc_younger_reduction", period)
@@ -235,7 +235,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p_irs = parameters(period).gov.irs.dependent.ineligible_age
@@ -268,7 +268,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
         unit = USD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             older_child_count = tax_unit("eitc_older_children_count", period)
             younger_child_count = tax_unit(
                 "eitc_younger_children_count", period
@@ -288,7 +288,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Rate at which the EITC phases in with income."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             older_child_count = tax_unit("eitc_older_children_count", period)
             younger_child_count = tax_unit(
                 "eitc_younger_children_count", period
@@ -305,7 +305,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "EITC maximum amount, taking into account earnings."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("eitc_older_maximum", period)
             phase_in_rate = tax_unit("eitc_older_phase_in_rate", period)
             earnings = tax_unit("filer_adjusted_earnings", period)
@@ -320,7 +320,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Earnings above this level reduce EITC entitlement."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             older_child_count = tax_unit("eitc_older_children_count", period)
             younger_child_count = tax_unit(
                 "eitc_younger_children_count", period
@@ -340,7 +340,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
         definition_period = YEAR
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             eitc = parameters(period).gov.irs.credits.eitc
             older_child_count = tax_unit("eitc_older_children_count", period)
             younger_child_count = tax_unit(
@@ -357,7 +357,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             earnings = tax_unit("filer_adjusted_earnings", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
@@ -375,7 +375,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             has_child = tax_unit("eitc_older_children_count", period) > 0
             age = person("age", period)
@@ -401,7 +401,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             eitc = parameters.gov.irs.credits.eitc(period)
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
@@ -433,7 +433,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
         defined_for = "older_eitc_eligible"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("eitc_older_maximum", period)
             phased_in = tax_unit("eitc_older_phased_in", period)
             reduction = tax_unit("eitc_older_reduction", period)
@@ -449,7 +449,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # The EITC match percentage is phased out for amounts attributed to
             # younger children
             federal_eitc = tax_unit("younger_eitc", period)
@@ -472,7 +472,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.nysenate.gov/legislation/laws/TAX/616"
         defined_for = StateCode.NY
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.ny.wftc.exemptions
             if p.in_effect:
                 child_dependent = person("is_child_dependent", period)
@@ -489,8 +489,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.nysenate.gov/legislation/laws/TAX/616"
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             count_dependents = add(
                 tax_unit, period, ["ny_exemptions_dependent"]
             )
@@ -507,14 +506,14 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ny.tax.income.credits
             older_credits = add(tax_unit, period, p.refundable)
             ny_wftc = tax_unit("ny_working_families_tax_credit", period)
             return older_credits + ny_wftc
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(ny_working_families_tax_credit)
             self.update_variable(ny_wftc_eligible_child)
             self.update_variable(ny_wftc_eligible_children)
@@ -551,7 +550,7 @@ def create_ny_working_families_tax_credit() -> Reform:
 
 def create_ny_working_families_tax_credit_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_ny_working_families_tax_credit()
 

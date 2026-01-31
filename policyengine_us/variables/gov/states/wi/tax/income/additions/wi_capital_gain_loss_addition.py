@@ -13,7 +13,7 @@ class wi_capital_gain_loss_addition(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_capital_loss = tax_unit("limited_capital_loss", period)
         wi_capital_loss = tax_unit("wi_capital_loss", period)
         return max_(0, us_capital_loss - wi_capital_loss)

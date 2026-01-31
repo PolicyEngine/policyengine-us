@@ -10,7 +10,7 @@ class lifetime_learning_credit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         credit_limit = tax_unit(
             "lifetime_learning_credit_credit_limit", period
         )

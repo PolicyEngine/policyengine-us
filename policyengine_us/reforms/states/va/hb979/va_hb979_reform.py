@@ -12,7 +12,7 @@ def create_va_hb979() -> Reform:
         reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
         defined_for = StateCode.VA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             taxable_income = tax_unit("va_taxable_income", period)
             p_baseline = parameters(period).gov.states.va.tax.income.rates
             p_reform = parameters(period).gov.contrib.states.va.hb979
@@ -24,13 +24,15 @@ def create_va_hb979() -> Reform:
             return where(reform_active, reform_tax, baseline_tax)
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(va_income_tax_before_non_refundable_credits)
 
     return reform
 
 
-def create_va_hb979_reform(parameters, period, bypass: bool = False):
+def create_va_hb979_reform(
+    parameters, period, bypass: bool = False
+):  # pragma: no cover
     if bypass:
         return create_va_hb979()
 

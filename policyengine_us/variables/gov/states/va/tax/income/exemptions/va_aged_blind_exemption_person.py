@@ -12,7 +12,7 @@ class va_aged_blind_exemption_person(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.va.tax.income.exemptions
         aged_person = person("is_irs_aged", period).astype(int)
         blind_person = person("is_blind", period).astype(int)

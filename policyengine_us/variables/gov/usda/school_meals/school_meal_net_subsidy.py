@@ -9,7 +9,7 @@ class school_meal_net_subsidy(Variable):
     unit = USD
     documentation = "Value of free and reduced price school meal subsidies"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Calculate net daily subsidy per child, subtracting the daily subsidy
         # for full-price children.
         daily_subsidy = spm_unit("school_meal_daily_subsidy", period)

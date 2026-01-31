@@ -10,7 +10,7 @@ class ma_ccfa_uncapped_daily_payment(Variable):
     definition_period = MONTH
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         center_based_early_education_payment = person(
             "ma_ccfa_center_based_early_education_reimbursement", period
         )

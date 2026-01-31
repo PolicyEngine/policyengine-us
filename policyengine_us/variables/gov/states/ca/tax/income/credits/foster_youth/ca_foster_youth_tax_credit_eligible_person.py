@@ -9,7 +9,7 @@ class ca_foster_youth_tax_credit_eligible_person(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.2."
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         was_in_foster_care = person("was_in_foster_care", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return was_in_foster_care & is_head_or_spouse

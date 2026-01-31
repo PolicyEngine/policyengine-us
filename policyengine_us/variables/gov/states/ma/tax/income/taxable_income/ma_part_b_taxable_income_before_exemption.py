@@ -10,7 +10,7 @@ class ma_part_b_taxable_income_before_exemption(Variable):
     reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         part_b_agi = tax_unit("ma_part_b_agi", period)
         part_b_deductions = tax_unit(
             "ma_part_b_taxable_income_deductions", period

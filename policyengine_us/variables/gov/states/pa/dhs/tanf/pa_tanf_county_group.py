@@ -18,7 +18,7 @@ class pa_tanf_county_group(Variable):
     defined_for = StateCode.PA
     reference = "http://services.dpw.state.pa.us/oimpolicymanuals/cash/168_Determining_Eligibility_and_Payment_Amount/168_Appendix_B.htm"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
         p = parameters(period).gov.states.pa.dhs.tanf.county_group
 

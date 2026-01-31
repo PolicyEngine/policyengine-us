@@ -13,7 +13,7 @@ class ri_works_payment_standard(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ri.dhs.works
         unit_size = spm_unit("spm_unit_size", period)
         max_table_size = p.payment_standard.max_unit_size

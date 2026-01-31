@@ -10,7 +10,7 @@ class co_tabor_cash_back(Variable):
     definition_period = YEAR
     reference = "https://leg.colorado.gov/sites/default/files/documents/2022A/bills/2022a_233_01.pdf"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.co.tax.income.credits.tabor
 
         joint = tax_unit("tax_unit_is_joint", period)

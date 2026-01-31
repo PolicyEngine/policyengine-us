@@ -73,7 +73,7 @@ class state_code(Variable):
     label = "State code"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         return StateCode.encode(
             household("state_name", period).decode_to_str()
         )

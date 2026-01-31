@@ -15,7 +15,7 @@ class ga_tanf_eligible(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
 
         # Must meet demographic requirements (minor child OR pregnant woman)

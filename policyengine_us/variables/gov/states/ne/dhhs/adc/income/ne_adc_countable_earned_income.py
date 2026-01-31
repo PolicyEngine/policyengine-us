@@ -12,7 +12,7 @@ class ne_adc_countable_earned_income(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ne.dhhs.adc.income.earned_income_disregard

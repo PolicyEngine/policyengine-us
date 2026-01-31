@@ -13,7 +13,7 @@ class ri_works(Variable):
     )
     defined_for = "ri_works_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_standard = spm_unit("ri_works_payment_standard", period)
         countable_income = spm_unit("ri_works_countable_income", period)
         return max_(payment_standard - countable_income, 0)

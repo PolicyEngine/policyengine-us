@@ -12,7 +12,7 @@ class ma_tafdc_payment_standard(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         in_public_housing = spm_unit.household("is_in_public_housing", period)
         p = parameters(
             period

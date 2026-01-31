@@ -14,7 +14,7 @@ class mt_salt_deduction(Variable):
     )
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Not included the SALT tax, only real estate taxes
         p = parameters(period).gov.irs.deductions
         filing_status = person.tax_unit("filing_status", period)

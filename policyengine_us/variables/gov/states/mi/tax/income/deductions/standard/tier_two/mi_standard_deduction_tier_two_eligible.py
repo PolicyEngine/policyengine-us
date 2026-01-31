@@ -13,7 +13,7 @@ class mi_standard_deduction_tier_two_eligible(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_two

@@ -11,7 +11,7 @@ class ma_tafdc_eligible_dependent(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)
 

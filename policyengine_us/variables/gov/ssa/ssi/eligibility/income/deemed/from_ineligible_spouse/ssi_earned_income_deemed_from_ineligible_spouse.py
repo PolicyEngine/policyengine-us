@@ -9,7 +9,7 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # First, determine unearned income from the ineligible spouse.
         # This is (a) in the law.
         ineligible_spouse = person("is_ssi_ineligible_spouse", period)

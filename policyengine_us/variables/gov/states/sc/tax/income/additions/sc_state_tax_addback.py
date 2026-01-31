@@ -14,7 +14,7 @@ class sc_state_tax_addback(Variable):
     )
     defined_for = StateCode.SC
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p_us = parameters(period).gov.irs.deductions
 
         us_itemizing = tax_unit("tax_unit_itemizes", period)

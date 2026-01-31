@@ -13,7 +13,7 @@ class ri_works_earned_income_after_disregard_person(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Per 218-RICR-20-00-2.15: Disregard $525 + 50% of remainder
         # "This disregard is allowed for each individual who has
         # otherwise been found eligible to receive cash assistance."

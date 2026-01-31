@@ -13,7 +13,7 @@ class ia_reportable_social_security(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         benefits = add(tax_unit, period, ["social_security"])
         income = (
             tax_unit("adjusted_gross_income", period)

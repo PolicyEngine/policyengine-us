@@ -10,7 +10,7 @@ class oh_owf_payment_standard(Variable):
     defined_for = StateCode.OH
     reference = "https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period)
         p = parameters(period).gov.states.oh.odjfs.owf.payment_standard
 

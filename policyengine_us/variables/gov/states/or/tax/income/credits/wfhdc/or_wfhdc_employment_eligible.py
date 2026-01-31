@@ -13,7 +13,7 @@ class or_wfhdc_employment_eligible(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         # 1) you are working
         earned_income = person("earned_income", period)

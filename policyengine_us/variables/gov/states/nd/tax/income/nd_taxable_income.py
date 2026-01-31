@@ -15,7 +15,7 @@ class nd_taxable_income(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_agi = tax_unit("adjusted_gross_income", period)
         us_ded = tax_unit("taxable_income_deductions", period)
         us_taxinc = us_agi - us_ded  # can be negative per ND instructions

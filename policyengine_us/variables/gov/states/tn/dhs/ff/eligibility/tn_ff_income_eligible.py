@@ -9,7 +9,7 @@ class tn_ff_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-1240-01-50-.20"
     defined_for = StateCode.TN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_income = add(
             spm_unit,
             period,

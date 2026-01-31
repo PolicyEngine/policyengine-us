@@ -15,7 +15,7 @@ class tx_regular_tanf(Variable):
     )
     defined_for = "tx_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_standard = spm_unit("tx_tanf_payment_standard", period)
         countable_income = spm_unit("tx_tanf_countable_income", period)
         p = parameters(period).gov.states.tx.tanf

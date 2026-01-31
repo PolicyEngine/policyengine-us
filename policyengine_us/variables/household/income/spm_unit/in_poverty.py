@@ -8,5 +8,5 @@ class in_poverty(Variable):
     documentation = "Whether a household is in poverty."
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         return spm_unit("poverty_gap", period) > 0

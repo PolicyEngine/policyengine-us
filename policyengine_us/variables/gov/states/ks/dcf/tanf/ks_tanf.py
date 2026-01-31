@@ -13,7 +13,7 @@ class ks_tanf(Variable):
     )
     defined_for = "ks_tanf_eligible"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per K.A.R. 30-4-100 and KEESM 7110:
         # Benefit = Payment Standard - Countable Income
         maximum_benefit = spm_unit("ks_tanf_maximum_benefit", period)

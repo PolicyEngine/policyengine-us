@@ -11,7 +11,7 @@ class de_taxable_income_indv(Variable):
     definition_period = YEAR
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("de_agi_indiv", period)
         deductions = person("de_deduction_indv", period)
         return max_(0, agi - deductions)

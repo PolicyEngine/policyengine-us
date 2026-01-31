@@ -13,8 +13,7 @@ class me_itemized_deductions_pre_phaseout(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
-
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the Maine itemizing deduction parameters.
         p = parameters(period).gov.states.me.tax.income.deductions.itemized
 

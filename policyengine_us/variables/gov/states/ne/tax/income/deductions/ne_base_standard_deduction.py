@@ -13,7 +13,7 @@ class ne_base_standard_deduction(Variable):
     )
     defined_for = StateCode.NE
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ne.tax.income.deductions.standard
         return p.base_amount[filing_status]

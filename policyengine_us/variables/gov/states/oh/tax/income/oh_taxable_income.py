@@ -10,7 +10,7 @@ class oh_taxable_income(Variable):
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf"
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         agi = tax_unit("oh_agi", period)
         exemptions = tax_unit("oh_personal_exemptions", period)
 

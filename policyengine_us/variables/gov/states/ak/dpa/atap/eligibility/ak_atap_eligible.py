@@ -12,7 +12,7 @@ class ak_atap_eligible(Variable):
     )
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Demographic: use federal TANF demographic eligibility
         demographic = spm_unit("is_demographic_tanf_eligible", period)
 

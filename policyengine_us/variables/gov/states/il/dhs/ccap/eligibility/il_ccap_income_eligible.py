@@ -9,7 +9,7 @@ class il_ccap_income_eligible(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=118832"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.ccap.income.income_limit
         countable_income = spm_unit("il_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)

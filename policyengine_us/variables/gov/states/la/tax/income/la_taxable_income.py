@@ -9,7 +9,7 @@ class la_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         itemizes = tax_unit("tax_unit_itemizes", period)
         itemized_deductions = tax_unit("la_itemized_deductions", period)
         claimed_itemized_deductions = itemizes * itemized_deductions

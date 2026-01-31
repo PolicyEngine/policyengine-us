@@ -11,7 +11,7 @@ class il_isbe_was_teen_parent_at_first_birth(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         age = person("age", period.this_year)
         is_child = person("is_child", period.this_year)

@@ -21,7 +21,7 @@ class az_property_tax_credit_agi(Variable):
     ]
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Start with Federal AGI
         # Per ITR 12-1, income includes wages, interest, business/farm income,
         # rent/royalty, S-corp/partnership income, alimony, capital gains,

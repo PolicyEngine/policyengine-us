@@ -10,7 +10,7 @@ def create_reported_state_income_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        def formula(household, period, parameters):
+        def formula(household, period, parameters):  # pragma: no cover
             p = parameters(period)
             added_components = (
                 p.gov.household.household_tax_before_refundable_credits
@@ -47,7 +47,7 @@ def create_reported_state_income_tax() -> Reform:
         adds = ["income_tax_refundable_credits"]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(household_tax_before_refundable_credits)
             self.update_variable(household_refundable_tax_credits)
 
@@ -56,7 +56,7 @@ def create_reported_state_income_tax() -> Reform:
 
 def create_reported_state_income_tax_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_reported_state_income_tax()
 

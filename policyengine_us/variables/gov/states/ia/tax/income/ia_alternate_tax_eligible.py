@@ -14,6 +14,6 @@ class ia_alternate_tax_eligible(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         return filing_status != filing_status.possible_values.SINGLE

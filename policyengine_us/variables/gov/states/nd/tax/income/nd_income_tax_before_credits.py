@@ -13,7 +13,7 @@ class nd_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.ND
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         taxable_income = tax_unit("nd_taxable_income", period)

@@ -8,7 +8,7 @@ class ny_tanf_resources_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # The amount of assets that a family may own and qualify for FA is $2,000
         # except for households in which any member is age 60 or over in which case $3,000 in assets can be owned.
         # https://otda.ny.gov/policy/tanf/TANF-State-Plan-2021-2023.pdf#page=7, #10

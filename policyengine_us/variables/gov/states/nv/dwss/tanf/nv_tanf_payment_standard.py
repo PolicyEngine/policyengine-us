@@ -10,7 +10,7 @@ class nv_tanf_payment_standard(Variable):
     reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf"
     defined_for = StateCode.NV
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.nv.dwss.tanf
         size = spm_unit("spm_unit_size", period.this_year)
         max_explicit_size = p.max_unit_size

@@ -8,5 +8,6 @@ class taxsim_v12(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         return tax_unit("tax_unit_taxable_social_security", period)

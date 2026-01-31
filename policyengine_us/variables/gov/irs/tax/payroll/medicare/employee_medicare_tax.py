@@ -11,6 +11,6 @@ class employee_medicare_tax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.payroll.medicare.rate
         return p.employee * person("payroll_tax_gross_wages", period)

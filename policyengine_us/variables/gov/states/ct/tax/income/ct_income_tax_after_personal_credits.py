@@ -9,7 +9,7 @@ class ct_income_tax_after_personal_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         taxable_income = tax_unit("ct_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values

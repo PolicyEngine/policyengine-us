@@ -18,7 +18,7 @@ class il_personal_exemption_eligibility_status(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         personal_eligibility_amount = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal

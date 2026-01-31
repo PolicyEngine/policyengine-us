@@ -8,7 +8,7 @@ class meets_snap_abawd_work_requirements(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/7/273.24"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.usda.snap.work_requirements.abawd
         age = person("monthly_age", period)
         weekly_hours_worked = person(

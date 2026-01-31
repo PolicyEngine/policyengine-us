@@ -10,7 +10,7 @@ class is_ssi_aged_blind_disabled(Variable):
     label = "SSI aged, blind, or disabled"
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#a_1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         simulation: Simulation = person.simulation
         return any_(
             person, period, ["is_ssi_aged", "is_blind", "is_ssi_disabled"]

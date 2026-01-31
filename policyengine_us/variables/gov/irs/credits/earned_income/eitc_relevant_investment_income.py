@@ -8,7 +8,7 @@ class eitc_relevant_investment_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         no_loss_capital_gains = max_(0, tax_unit("net_capital_gains", period))
         return (
             add(

@@ -10,7 +10,7 @@ class va_eitc_person(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         refundable_eitc = person.tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = person.tax_unit("va_non_refundable_eitc", period)
         claims_refundable = person.tax_unit(

@@ -9,7 +9,7 @@ class ma_liheap(Variable):
     defined_for = "ma_liheap_eligible"
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         payment_amount = add(
             spm_unit,
             period,

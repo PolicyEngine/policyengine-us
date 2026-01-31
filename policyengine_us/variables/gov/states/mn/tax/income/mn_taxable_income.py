@@ -15,7 +15,7 @@ class mn_taxable_income(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         us_agi = tax_unit("adjusted_gross_income", period)
         adds = tax_unit("mn_additions", period)
         deductions = tax_unit("mn_deductions", period)

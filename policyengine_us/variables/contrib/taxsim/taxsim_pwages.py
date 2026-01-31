@@ -9,7 +9,8 @@ class taxsim_pwages(Variable):
     documentation = "Wage and salary income of Primary Taxpayer"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_primary = person("is_tax_unit_head", period)
         wages = person("employment_income", period)

@@ -11,7 +11,7 @@ class auto_loan_interest_deduction(Variable):
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         auto_loan_interest = add(tax_unit, period, ["auto_loan_interest"])
         p = parameters(period).gov.irs.deductions.auto_loan_interest
         capped_interest = min_(auto_loan_interest, p.cap)

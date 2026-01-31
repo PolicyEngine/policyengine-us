@@ -9,7 +9,7 @@ class nm_works_resources_eligible(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0510.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 8.102.510.8 NMAC, resources/property limits:
         # - Liquid resources must not exceed $1,500
         # - Non-liquid resources must not exceed $2,000

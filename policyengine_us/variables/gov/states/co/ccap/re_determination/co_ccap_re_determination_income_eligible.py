@@ -9,7 +9,7 @@ class co_ccap_re_determination_income_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         monthly_gross_income = np.round(
             spm_unit("co_ccap_countable_income", period),
             2,

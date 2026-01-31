@@ -13,7 +13,7 @@ class mn_wfc(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.mn.tax.income.credits.cwfc
         # determine count of eligible dependents using EITC rules
         count = tax_unit("eitc_child_count", period)

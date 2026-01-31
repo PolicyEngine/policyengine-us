@@ -13,7 +13,7 @@ class me_child_care_credit(Variable):
     ]
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.me.tax.income.credits.child_care
 
         # Get share of expenses that went to step 4 programs

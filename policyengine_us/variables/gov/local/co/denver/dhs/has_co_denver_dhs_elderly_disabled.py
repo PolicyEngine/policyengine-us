@@ -8,7 +8,7 @@ class has_co_denver_dhs_elderly_disabled(Variable):
     documentation = "Whether the SPM unit has a person who meets Denver DHS definitions of elderly or disabled"
     label = "Has Denver DHS elderly or disabled people"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         elderly = person("is_co_denver_dhs_elderly", period)
         disabled = person("is_disabled", period)

@@ -13,7 +13,7 @@ class mo_adjusted_gross_income(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         gross_income = person("irs_gross_income", period)
         # subtract federal above-the-line deductions (ALDs) by person
         # ... subtract some ALDs explicitly by person

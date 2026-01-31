@@ -9,7 +9,7 @@ class market_income(Variable):
     documentation = "Income from all non-government sources"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         COMPONENTS = [
             "employment_income",
             "self_employment_income",

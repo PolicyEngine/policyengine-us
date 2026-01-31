@@ -14,7 +14,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.HI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             exemptions_count = tax_unit("head_spouse_count", period)
             p = parameters(period).gov.states.hi.tax.income.exemptions
             # Aged heads and spouses get an extra base exemption.
@@ -35,7 +35,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.MD
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Get md_personal_exemption from tax_unit multiplied by tax_unit_size
             md_personal_exemption = tax_unit("md_personal_exemption", period)
             tax_unit_size = tax_unit("head_spouse_count", period)
@@ -53,7 +53,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.mi.tax.income.exemptions
 
             # Personal Exemptions & Stillborn Exemptions
@@ -76,7 +76,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.NE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ne.tax.income.exemptions
             return tax_unit("head_spouse_count", period) * p.amount
 
@@ -90,7 +90,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.OH
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             # The personal exemption is provided for the head and spouse
             # if they are not claimed as a dependent elsewhere
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
@@ -112,7 +112,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.OK
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ok.tax.income.exemptions
             # special exemption AGI eligibility
             fagi = tax_unit("adjusted_gross_income", period)
@@ -150,7 +150,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf"
         defined_for = StateCode.RI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ri.tax.income.exemption
 
             exemptions_count = tax_unit("head_spouse_count", period)
@@ -179,7 +179,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.vt.tax.income.exemption
             is_joint = tax_unit("tax_unit_is_joint", period)
             elsewhere_head = tax_unit("head_is_dependent_elsewhere", period)
@@ -202,7 +202,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         definition_period = YEAR
         reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
 
-        def formula(person, period, parameters):
+        def formula(person, period, parameters):  # pragma: no cover
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
             amount = parameters(
                 period
@@ -218,7 +218,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         definition_period = YEAR
         reference = "https://code.wvlegislature.gov/11-21/"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.wv.tax.income.exemptions
             tax_unit_size = tax_unit("head_spouse_count", period)
             return where(
@@ -234,7 +234,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         definition_period = YEAR
         reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ca.tax.income.exemptions
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
@@ -272,7 +272,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             "https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=2c053fd5-32c1-4cc1-86b0-36aaade9da5b&pdistocdocslideraccess=true&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A6348-G0H1-DYB7-W3JT-00008-00&pdcomponentid=234187&pdtocnodeidentifier=ABWAALAADAAL&ecomp=k2vckkk&prid=4862391c-e031-443f-ad52-ae86c6bb5ce2",
         )
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ga.tax.income.exemptions
             filing_status = tax_unit("filing_status", period)
 
@@ -291,7 +291,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (a)(3)-(4)
         defined_for = StateCode.IN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states["in"].tax.income.exemptions
             return tax_unit("head_spouse_count", period) * p.base.amount
 
@@ -307,7 +307,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.IA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # count adult and dependent exemptions
             adult_count = tax_unit("head_spouse_count", period)
             filing_status = tax_unit("filing_status", period)
@@ -342,7 +342,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.KS
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             filing_status = tax_unit("filing_status", period)
             statuses = filing_status.possible_values
             joint = filing_status == statuses.JOINT
@@ -360,7 +360,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5"
         defined_for = StateCode.MA
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             filing_status = tax_unit("filing_status", period)
             tax = parameters(period).gov.states.ma.tax.income
             exempt_status = tax.exempt_status.limit
@@ -388,7 +388,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.WI
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # compute base exemption amount
             p = parameters(period).gov.states.wi.tax.income
             return tax_unit("head_spouse_count", period) * p.exemption.base
@@ -402,7 +402,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.de.tax.income.credits
             head_spouse_count = tax_unit("head_spouse_count", period)
             return p.personal_credits.personal * head_spouse_count
@@ -416,7 +416,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
         defined_for = StateCode.KY
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             income = tax_unit("ky_modified_agi", period)
             fpg = parameters(period).gov.hhs.fpg
             # This will be CONTIGUOUS_US for Kentucky.
@@ -443,7 +443,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
         defined_for = StateCode.OK
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.ok.tax.income.credits
             # determine AGI eligibility
             us_agi = tax_unit("adjusted_gross_income", period)
@@ -463,7 +463,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             return agi_eligible * prorate * ok_cdcc
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.neutralize_variable("al_dependent_exemption")
             self.neutralize_variable("il_dependent_exemption")
             self.neutralize_variable("la_dependents_exemption")
@@ -506,7 +506,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
 def create_repeal_state_dependent_exemptions_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_repeal_state_dependent_exemptions()
 

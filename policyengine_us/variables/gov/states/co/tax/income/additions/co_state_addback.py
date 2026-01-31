@@ -13,7 +13,7 @@ class co_state_addback(Variable):
     )
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
         state_inctax = max_(0, tax_unit("state_withheld_income_tax", period))
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])

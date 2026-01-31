@@ -7,7 +7,7 @@ class is_mother(Variable):
     label = "Is a mother"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # In the absence of relationship identifiers, check one of two
         # conditions:
         # 1. The person is female and has some children in their own household

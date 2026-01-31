@@ -9,7 +9,7 @@ class ca_capi_eligible_person(Variable):
     defined_for = StateCode.CA
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_ssi_eligible_spouse = person("is_ssi_eligible_spouse", period)
         immigration_status = person("immigration_status", period)

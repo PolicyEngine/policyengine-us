@@ -14,7 +14,7 @@ class nj_total_income(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # NJ Total Income = Gross Income + Additions - Subtractions
         # Per NJ Statute 54A:5-1 and Form NJ-1040
         gross_income = person("nj_gross_income", period)

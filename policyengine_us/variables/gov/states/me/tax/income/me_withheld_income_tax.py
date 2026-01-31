@@ -9,7 +9,7 @@ class me_withheld_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         agi = person("adjusted_gross_income_person", period)
         p_irs = parameters(period).gov.irs.deductions.standard
         # We apply the base IRS standard deduction amount

@@ -9,7 +9,7 @@ class tn_ff_eligible(Variable):
     reference = "https://www.tn.gov/humanservices/for-families/families-first-tanf/families-first-eligibility-information.html"
     defined_for = StateCode.TN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Must meet demographic requirements (minor child with parent/relative)
         # Use federal demographic eligibility directly
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)

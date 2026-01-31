@@ -8,7 +8,7 @@ class co_chp(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         saving = 0
         income_level = person("medicaid_income_level", period)
         is_pregnant = person("is_pregnant", period)

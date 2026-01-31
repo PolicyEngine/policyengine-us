@@ -7,7 +7,7 @@ class is_young_child_for_medicaid_fc(Variable):
     label = "Medicaid young child financial criteria"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         ma = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.young_child

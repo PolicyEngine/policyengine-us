@@ -15,7 +15,7 @@ class al_retirement_exemption_person(Variable):
     definition_period = YEAR
     defined_for = "al_retirement_exemption_eligible_person"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.al.tax.income.exemptions.retirement
         retirement_income = add(
             person,

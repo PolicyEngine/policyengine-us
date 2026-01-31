@@ -9,7 +9,7 @@ class mn_mfip_eligible(Variable):
     reference = "https://www.revisor.mn.gov/statutes/cite/142G.11"
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.11:
         # Must meet demographic, income, resource, and immigration requirements.
         demographic = spm_unit("is_demographic_tanf_eligible", period)

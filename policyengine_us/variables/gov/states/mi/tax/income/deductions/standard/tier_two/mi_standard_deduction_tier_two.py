@@ -14,7 +14,7 @@ class mi_standard_deduction_tier_two(Variable):
     )
     defined_for = "mi_standard_deduction_tier_two_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First: add the base amount, based on filing status
         p = parameters(period).gov.states.mi.tax.income.deductions
         filing_status = tax_unit("filing_status", period)

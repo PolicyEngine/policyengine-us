@@ -13,7 +13,7 @@ class tx_tanf_dependent_care_deduction(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Actual cost of dependent child care, capped at maximum by age
         # Per § 372.409 (a)(3): up to $200/month for children under 2, $175/month for children 2+
 

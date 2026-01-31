@@ -9,7 +9,7 @@ class il_cta_reduced_fare_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.transitchicago.com/reduced-fare-programs/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         children_reduced_fare = person(
             "il_cta_children_reduced_fare_eligible", period
         )

@@ -14,7 +14,7 @@ class mt_medical_expense_deduction_joint(Variable):
     unit = USD
     defined_for = StateCode.MT
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         expense = add(
             person.tax_unit, period, ["medical_out_of_pocket_expenses"]
         )

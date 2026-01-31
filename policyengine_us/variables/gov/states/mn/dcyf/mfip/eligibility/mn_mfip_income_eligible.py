@@ -11,7 +11,7 @@ class mn_mfip_income_eligible(Variable):
     )
     defined_for = StateCode.MN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per MN Stat. 142G.16, Subd. 1:
         # Countable income (with dependent care deduction) < Family Wage Level
         countable = spm_unit(

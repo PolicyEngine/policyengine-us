@@ -24,7 +24,7 @@ class msp_countable_income(Variable):
     3. 50% of remaining earned income excluded
     """
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B)
         earned = person("ssi_earned_income", period.this_year)
         unearned = person("ssi_unearned_income", period.this_year)

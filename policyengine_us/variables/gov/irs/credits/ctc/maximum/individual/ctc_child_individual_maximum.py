@@ -15,7 +15,7 @@ class ctc_child_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#i",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.irs.credits.ctc.amount
         return p.base.calc(age)

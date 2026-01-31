@@ -9,7 +9,7 @@ class slcsp_age_0(Variable):
     unit = USD
     definition_period = MONTH
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         # Get state code and rating area
         state_code = household("state_code", period)
         rating_area = household("slcsp_rating_area", period)

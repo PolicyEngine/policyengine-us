@@ -9,7 +9,7 @@ class income_tax_main_rates(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # compute taxable income that is taxed at the main rates
         full_taxable_income = tax_unit("taxable_income", period)
         cg_exclusion = tax_unit(

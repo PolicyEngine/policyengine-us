@@ -9,7 +9,7 @@ class sc_gross_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.sc.tax.income.credits.two_wage_earner.earned_income

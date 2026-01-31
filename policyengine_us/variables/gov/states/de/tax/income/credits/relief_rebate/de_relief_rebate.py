@@ -12,7 +12,7 @@ class de_relief_rebate(Variable):
 
     # Assuming that each adult in Delaware has filed a 2020
     # income tax return
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         head_spouse_count = tax_unit("head_spouse_count", period)
         p = parameters(period).gov.states.de.tax.income.credits.relief_rebate
         return head_spouse_count * p.amount

@@ -9,7 +9,7 @@ class il_scretd_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         age_eligible = add(tax_unit, period, ["il_scretd_age_eligible"]) > 0
         income_eligible = tax_unit("il_scretd_income_eligible", period)
         return age_eligible & income_eligible

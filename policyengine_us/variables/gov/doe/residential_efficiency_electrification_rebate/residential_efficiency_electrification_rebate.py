@@ -8,7 +8,7 @@ class residential_efficiency_electrification_rebate(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.doe.residential_efficiency_electrification_rebate

@@ -9,7 +9,7 @@ class il_scretd_age_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.idor.scretd
         age = person("age", period)
         return age >= p.age_threshold

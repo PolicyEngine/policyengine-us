@@ -12,7 +12,7 @@ class vt_military_retirement_income_based_exemption(Variable):
     defined_for = StateCode.VT
     documentation = "Vermont military retirement benefits exempt from Vermont taxation based on AGI thresholds (2025+)."
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.military_retirement

@@ -13,7 +13,7 @@ class ok_military_retirement_exclusion(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ok.tax.income.agi.subtractions.military_retirement

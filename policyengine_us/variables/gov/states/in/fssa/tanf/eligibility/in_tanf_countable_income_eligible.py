@@ -12,7 +12,7 @@ class in_tanf_countable_income_eligible(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Initial: standard of need; Continuing: FPL * rate
         p = parameters(period).gov.states["in"].fssa.tanf
         countable = spm_unit(

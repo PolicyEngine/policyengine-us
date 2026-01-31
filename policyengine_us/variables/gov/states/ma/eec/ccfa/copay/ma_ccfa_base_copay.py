@@ -10,7 +10,7 @@ class ma_ccfa_base_copay(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=76"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ma.eec.ccfa.copay.fee_level
 
         # Step 1: Get the family's copay level

@@ -10,7 +10,7 @@ class wic_fpg(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_D"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         pregnant = spm_unit.any(spm_unit.members("is_pregnant", period))
         # The system divides annual variables by 12 automatically when bringing them down to a month.
         # The normal FPG is an annual variable, so the system divides it by 12 by default.

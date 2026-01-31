@@ -9,7 +9,8 @@ class taxsim_pui(Variable):
     documentation = "Unemployment Compensation received - primary taxpayer."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
+        # TAXSIM compatibility variable
         person = tax_unit.members
         is_primary = person("is_tax_unit_head", period)
         unemployment_compensation = person("unemployment_compensation", period)

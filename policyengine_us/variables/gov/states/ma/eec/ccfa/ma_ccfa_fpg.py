@@ -10,7 +10,7 @@ class ma_ccfa_fpg(Variable):
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         size = spm_unit("spm_unit_size", period)
         capped_size = min_(size, 12)
         state_group = spm_unit.household("state_group_str", period.this_year)

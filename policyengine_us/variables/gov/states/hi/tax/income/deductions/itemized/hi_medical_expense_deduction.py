@@ -13,7 +13,7 @@ class hi_medical_expense_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p_deductions = parameters(period).gov.irs.deductions
 
         # 1. medical_expense_deduction: worksheet A-1

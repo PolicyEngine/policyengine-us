@@ -9,7 +9,7 @@ class is_wic_at_nutritional_risk(Variable):
     label = "At nutritional risk for WIC"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#b_8"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Assign nutritional risk status probabilistically in microsimulation.
         # Nutritional risk is a health assessment independent of income per § 1786(b)(8).
         # Assume all meet qualification in individual simulation.

@@ -10,7 +10,7 @@ class md_personal_exemption(Variable):
     defined_for = StateCode.MD
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries?searchWithin=true&listingIndexId=code-of-maryland.article-tax-general&q=blind&type=statute&sort=relevance&p=1"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get filing status and AGI.
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values

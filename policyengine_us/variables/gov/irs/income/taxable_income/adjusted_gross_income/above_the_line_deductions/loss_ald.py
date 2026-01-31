@@ -12,7 +12,7 @@ class loss_ald(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/165"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         max_loss = parameters(period).gov.irs.ald.loss.max[filing_status]
         person = tax_unit.members

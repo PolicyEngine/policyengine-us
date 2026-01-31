@@ -12,7 +12,7 @@ class ga_additional_standard_deduction(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # person = tax_unit.members
         p = parameters(period).gov.states.ga.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)

@@ -10,7 +10,7 @@ class ky_aged_personal_tax_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ky.tax.income.credits.personal.amount
         age = person("age", period)
         age_credit_amount = p.aged.calc(age)

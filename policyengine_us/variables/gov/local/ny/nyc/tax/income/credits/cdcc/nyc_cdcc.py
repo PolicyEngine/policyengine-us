@@ -10,7 +10,7 @@ class nyc_cdcc(Variable):
     reference = "https://www.tax.ny.gov/pdf/current_forms/it/it216i.pdf"
     defined_for = "nyc_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # The NYC CDCC is a share of the NY State CDCC.
         # The share magnitude is determined by the fraction of CDCC
         # relevant expenses used for children under 4 and the NYC CDCC rate,

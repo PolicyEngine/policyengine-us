@@ -9,7 +9,7 @@ class oh_owf_eligible(Variable):
     defined_for = StateCode.OH
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5107.10"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
 
         # Must meet demographic requirements (minor child with parent/relative

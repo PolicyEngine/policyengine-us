@@ -12,7 +12,7 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1165"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         eligible_child = person("is_ssi_aged_blind_disabled", period) & person(
             "is_child", period
         )

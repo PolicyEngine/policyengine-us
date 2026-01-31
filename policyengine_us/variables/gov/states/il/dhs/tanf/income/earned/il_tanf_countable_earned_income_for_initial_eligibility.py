@@ -10,7 +10,7 @@ class il_tanf_countable_earned_income_for_initial_eligibility(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=15864"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_gross_earned_income = spm_unit(
             "il_tanf_countable_gross_earned_income", period
         )

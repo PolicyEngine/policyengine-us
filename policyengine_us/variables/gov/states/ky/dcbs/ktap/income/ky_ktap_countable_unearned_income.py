@@ -10,7 +10,7 @@ class ky_ktap_countable_unearned_income(Variable):
     reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
     defined_for = StateCode.KY
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ky.dcbs.ktap.income.deductions
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])

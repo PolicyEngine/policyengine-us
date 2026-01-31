@@ -14,7 +14,7 @@ class mo_tanf_eligible(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         demographic = person("is_person_demographic_tanf_eligible", period)
         has_eligible_member = spm_unit.any(demographic)

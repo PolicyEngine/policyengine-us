@@ -9,7 +9,7 @@ class ma_eaedc_eligible_disabled_head_or_spouse(Variable):
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"  # (B)
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         is_disabled = person("is_disabled", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

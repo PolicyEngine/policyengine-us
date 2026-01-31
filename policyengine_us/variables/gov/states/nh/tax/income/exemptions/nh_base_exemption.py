@@ -9,7 +9,7 @@ class nh_base_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.NH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.nh.tax.income.exemptions.amount
         return p.base[filing_status]

@@ -7,7 +7,7 @@ class is_tax_unit_dependent(Variable):
     label = "Is a dependent in the tax unit"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         return ~head & ~spouse

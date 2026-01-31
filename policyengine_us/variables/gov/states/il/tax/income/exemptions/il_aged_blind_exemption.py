@@ -9,7 +9,7 @@ class il_aged_blind_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         aged_blind_count = tax_unit("aged_blind_count", period)
         p = parameters(period).gov.states.il.tax.income.exemption
         return aged_blind_count * p.aged_and_blind

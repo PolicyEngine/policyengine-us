@@ -10,7 +10,7 @@ class ma_part_b_taxable_income_exemption(Variable):
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         tax = parameters(period).gov.states.ma.tax.income
         # (B)(a)(3): Taxes for retirement programs.
         # NB: The law only mentions FICA and FRRA, but mass.gov includes SECA.

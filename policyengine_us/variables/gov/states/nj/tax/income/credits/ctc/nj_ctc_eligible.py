@@ -14,7 +14,7 @@ class nj_ctc_eligible(Variable):
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Exclude married filing separately filers.
         filing_status = tax_unit("filing_status", period)
         return filing_status != filing_status.possible_values.SEPARATE

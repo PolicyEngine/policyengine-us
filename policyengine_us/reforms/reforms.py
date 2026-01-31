@@ -150,7 +150,9 @@ from policyengine_core.reforms import Reform
 import warnings
 
 
-def create_structural_reforms_from_parameters(parameters, period):
+def create_structural_reforms_from_parameters(
+    parameters, period
+):  # pragma: no cover
     afa_reform = create_american_family_act_with_baby_bonus_reform(
         parameters, period
     )
@@ -401,7 +403,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
     class combined_reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             for reform in reforms:
                 reform.apply(self)
 

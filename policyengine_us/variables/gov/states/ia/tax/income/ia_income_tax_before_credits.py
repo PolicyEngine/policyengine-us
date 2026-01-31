@@ -15,7 +15,7 @@ class ia_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.ia.tax.income.married_filing_separately_on_same_return

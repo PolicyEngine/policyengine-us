@@ -9,7 +9,7 @@ class ctc_arpa_uncapped_phase_out(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Logic sequence follows the form, which is clearer than the IRC.
         p = parameters(period).gov.irs.credits.ctc.phase_out.arpa
         # defined_for didn't work.

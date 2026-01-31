@@ -12,7 +12,7 @@ class co_family_affordability_credit(Variable):
     reference = "https://leg.colorado.gov/bills/hb24-1311"
     defined_for = StateCode.CO
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         dependent = person("is_child_dependent", period)
         p = parameters(

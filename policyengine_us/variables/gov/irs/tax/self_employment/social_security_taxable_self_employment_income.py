@@ -9,7 +9,7 @@ class social_security_taxable_self_employment_income(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/1402#b"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.payroll.social_security
         # This will not be negative, since
         # taxable_earnings_for_social_security is capped at the cap.

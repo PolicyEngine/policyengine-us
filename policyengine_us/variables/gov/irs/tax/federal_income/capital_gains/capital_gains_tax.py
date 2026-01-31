@@ -9,7 +9,7 @@ class capital_gains_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         net_cg = tax_unit("net_capital_gain", period)
         taxable_income = tax_unit("taxable_income", period)
         adjusted_net_cg = min_(

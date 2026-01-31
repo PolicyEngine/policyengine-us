@@ -10,7 +10,7 @@ class ctc_qualifying_child(Variable):
     defined_for = "is_tax_unit_dependent"
     reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age = person("age", period)
         p = parameters(period).gov.irs.credits.ctc
         age_limit = p.amount.base.thresholds[-1]

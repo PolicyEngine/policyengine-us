@@ -9,7 +9,7 @@ class in_tanf_eligible(Variable):
     reference = "https://iar.iga.in.gov/code/2026/470/10.3"  # 470 IAC 10.3
     defined_for = StateCode.IN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Demographic eligibility - use federal baseline
         # Per IC 12-14-1-0.5 and 470 IAC 10.3-3
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)

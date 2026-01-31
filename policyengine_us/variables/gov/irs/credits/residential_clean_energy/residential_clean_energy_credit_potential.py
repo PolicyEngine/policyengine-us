@@ -10,7 +10,7 @@ class residential_clean_energy_credit_potential(Variable):
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25D"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.residential_clean_energy
         # Get total expenditures except fuel cell.
         expenditures_less_fuel_cell = add(

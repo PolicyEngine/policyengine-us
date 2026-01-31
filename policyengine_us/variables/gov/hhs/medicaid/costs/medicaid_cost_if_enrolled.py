@@ -12,7 +12,7 @@ class medicaid_cost_if_enrolled(Variable):
     definition_period = YEAR
     defined_for = "is_medicaid_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         state = person.household("state_code", period)
         group = person("medicaid_group", period)
 

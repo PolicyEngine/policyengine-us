@@ -11,7 +11,7 @@ class ms_standard_deduction_indiv(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,

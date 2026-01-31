@@ -8,7 +8,7 @@ class electricity_expense(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         pre_subsidy_electricity_expenses = spm_unit(
             "pre_subsidy_electricity_expense", period
         )

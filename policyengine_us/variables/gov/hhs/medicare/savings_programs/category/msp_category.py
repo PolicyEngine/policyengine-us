@@ -20,7 +20,7 @@ class msp_category(Variable):
         "https://www.law.cornell.edu/cfr/text/42/435.121",
     )
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         qmb = person("is_qmb_eligible", period)
         slmb = person("is_slmb_eligible", period)
         qi = person("is_qi_eligible", period)

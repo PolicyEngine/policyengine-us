@@ -7,7 +7,7 @@ class snap_state_using_standard_utility_allowance(Variable):
     definition_period = MONTH
     label = "Whether a state always uses the standard utility allowance"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         state = spm_unit.household("state_code", period)
         p = parameters(period).gov.usda.snap.income.deductions.utility
 

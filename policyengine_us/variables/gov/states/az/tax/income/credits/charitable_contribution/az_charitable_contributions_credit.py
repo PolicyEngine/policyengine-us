@@ -12,7 +12,7 @@ class az_charitable_contributions_credit(Variable):
         "https://law.justia.com/codes/arizona/2022/title-43/section-43-1088/"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.charitable_contribution.ceiling

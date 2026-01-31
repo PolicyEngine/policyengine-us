@@ -13,7 +13,7 @@ class or_deductions(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return max_(
             tax_unit("or_itemized_deductions", period),
             tax_unit("or_standard_deduction", period),

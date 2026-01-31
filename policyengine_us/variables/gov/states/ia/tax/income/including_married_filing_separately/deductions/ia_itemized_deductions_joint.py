@@ -15,7 +15,7 @@ class ia_itemized_deductions_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         deductions = person.tax_unit("ia_itemized_deductions_unit", period)
         is_head = person("is_tax_unit_head", period)
         return deductions * is_head

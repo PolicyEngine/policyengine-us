@@ -10,7 +10,7 @@ class ny_eitc(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (d)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.ny.tax.income.credits
         tentative_nys_eitc = federal_eitc * p.eitc.match

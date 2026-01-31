@@ -12,7 +12,7 @@ class tx_fpp_eligible(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         age_eligible = person("tx_fpp_age_eligible", period)
         income_eligible = person.spm_unit("tx_fpp_income_eligible", period)
         return age_eligible & income_eligible

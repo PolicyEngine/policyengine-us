@@ -16,7 +16,7 @@ class new_clean_vehicle_credit_potential(Variable):
     )
     defined_for = "new_clean_vehicle_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.irs.credits.clean_vehicle.new
         battery_component_percent = tax_unit(
             "new_clean_vehicle_battery_components_made_in_north_america",

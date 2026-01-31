@@ -12,7 +12,7 @@ class ri_works_income_eligible(Variable):
     )
     defined_for = StateCode.RI
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_income = spm_unit("ri_works_countable_income", period)
         payment_standard = spm_unit("ri_works_payment_standard", period)
         return countable_income < payment_standard

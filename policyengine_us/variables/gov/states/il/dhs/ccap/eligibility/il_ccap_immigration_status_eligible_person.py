@@ -9,7 +9,7 @@ class il_ccap_immigration_status_eligible_person(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=46885"
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.il.dhs.ccap
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()

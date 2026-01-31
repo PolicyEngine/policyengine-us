@@ -13,7 +13,7 @@ class wi_capital_gain_loss_subtraction(Variable):
     )
     defined_for = StateCode.WI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # calculate Schedule WD, Line 8
         stcg_net = add(tax_unit, period, ["short_term_capital_gains"])
         # calculate Schedule WD, Line 17

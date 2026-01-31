@@ -18,7 +18,7 @@ from policyengine_us.system import system
 from policyengine_us import Simulation
 
 
-def variable_summary(variable_name: str):
+def variable_summary(variable_name: str):  # pragma: no cover
     variable = system.variables.get(variable_name)
     metadata_df = pd.DataFrame(
         {
@@ -61,7 +61,7 @@ def variation_chart(
     additional_adult_data: dict = None,
     additional_child_data: dict = None,
     child_count_list: list = [0, 1, 2, 3],
-):
+):  # pragma: no cover
     dfs = []
 
     if additional_adult_data is None:

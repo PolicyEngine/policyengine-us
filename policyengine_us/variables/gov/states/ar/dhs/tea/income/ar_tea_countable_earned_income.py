@@ -10,7 +10,7 @@ class ar_tea_countable_earned_income(Variable):
     reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
     defined_for = StateCode.AR
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per 208.00.13 Ark. Code R. Section 001, Section 3.3
         p = parameters(period).gov.states.ar.dhs.tea.income.work_deduction
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])

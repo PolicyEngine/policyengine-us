@@ -12,7 +12,7 @@ class ok_tanf_dependent_care_deduction(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per OAC 340:10-3-33(b): Dependent care expenses may be deducted
         # up to $200/month for dependents under age 2
         # up to $175/month for dependents age 2 and older

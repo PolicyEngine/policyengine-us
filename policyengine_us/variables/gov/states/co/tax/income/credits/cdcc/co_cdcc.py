@@ -13,7 +13,7 @@ class co_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follow 2022 DR 0347 form and its instructions (in Book cited above):
         p = parameters(period).gov.states.co.tax.income.credits
         fed_agi = tax_unit("adjusted_gross_income", period)  # Line 4

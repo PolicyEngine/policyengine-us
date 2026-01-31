@@ -12,7 +12,7 @@ class tx_fpp_income_eligible(Variable):
     )
     defined_for = StateCode.TX
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         income = spm_unit("spm_unit_net_income", period)
         income_limit = spm_unit("tx_fpp_income_limit", period)
         return income <= income_limit

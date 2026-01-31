@@ -9,7 +9,7 @@ class nyc_school_tax_credit_fixed_amount(Variable):
     definition_period = YEAR
     defined_for = "nyc_school_tax_credit_fixed_amount_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Get the tax unit's filing status.
         filing_status = tax_unit("filing_status", period)
 

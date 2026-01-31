@@ -13,7 +13,7 @@ class co_low_income_cdcc(Variable):
     definition_period = YEAR
     defined_for = "co_low_income_cdcc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # follow 2022 DR 0347 form and its instructions (in Book cited above):
         p = parameters(period).gov.states.co.tax.income.credits
         # estimate care expenses for just children

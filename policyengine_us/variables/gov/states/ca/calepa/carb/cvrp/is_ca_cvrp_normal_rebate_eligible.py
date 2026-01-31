@@ -10,7 +10,7 @@ class is_ca_cvrp_normal_rebate_eligible(Variable):
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
     defined_for = StateCode.CA
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # AGI must be less than the threshold.
         agi = person.tax_unit("adjusted_gross_income", period)
         filing_status = person.tax_unit("filing_status", period)

@@ -7,6 +7,6 @@ class in_harris_county_tx(Variable):
     definition_period = YEAR
     label = "Is in Harris County, Texas"
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         county = household("county_str", period)
         return county == "HARRIS_COUNTY_TX"

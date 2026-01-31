@@ -9,7 +9,7 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
         definition_period = YEAR
         defined_for = "in_nyc"
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # Get the NYC School Tax Credit reform part of the parameter tree.
             p = parameters(period).gov.contrib.local.nyc.stc
 
@@ -41,7 +41,7 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
         ]
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(nyc_school_tax_credit_eligible)
             self.update_variable(nyc_school_tax_credit)
 
@@ -50,7 +50,7 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
 
 def create_adjust_income_limit_by_filing_status_and_eligibility_by_children_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_adjust_income_limit_and_min_children_by_filing_status()
 

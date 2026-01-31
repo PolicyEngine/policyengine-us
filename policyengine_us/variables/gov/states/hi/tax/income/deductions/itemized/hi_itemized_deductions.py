@@ -13,7 +13,7 @@ class hi_itemized_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Hawaii applies an federal AGI limit which has been introduced in 2009
         p = parameters(f"2009-01-01").gov.irs.deductions.itemized.reduction
 

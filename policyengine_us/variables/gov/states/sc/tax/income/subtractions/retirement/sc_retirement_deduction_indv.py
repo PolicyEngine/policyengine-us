@@ -13,7 +13,7 @@ class sc_retirement_deduction_indv(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

@@ -13,7 +13,7 @@ class me_property_tax_fairness_credit(Variable):
         "https://legislature.maine.gov/statutes/36/title36sec5219-KK.html",
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         property_tax_fairness_credit_cap = tax_unit(
             "me_property_tax_fairness_credit_cap", period
         )

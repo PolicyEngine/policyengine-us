@@ -9,7 +9,7 @@ class me_personal_exemption_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First get their Maine AGI.
         me_agi = tax_unit("me_agi", period)
 

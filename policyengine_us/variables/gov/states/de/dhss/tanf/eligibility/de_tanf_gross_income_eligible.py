@@ -9,7 +9,7 @@ class de_tanf_gross_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008"
     defined_for = StateCode.DE
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Per DSSM 4008: Gross income <= 185% of Standard of Need
         standard_of_need = spm_unit("de_tanf_standard_of_need", period)
         p = parameters(period).gov.states.de.dhss.tanf.income

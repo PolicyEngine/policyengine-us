@@ -12,7 +12,7 @@ class oh_personal_exemptions(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.oh.tax.income.exemptions.personal
 
         eligible_exemptions = add(

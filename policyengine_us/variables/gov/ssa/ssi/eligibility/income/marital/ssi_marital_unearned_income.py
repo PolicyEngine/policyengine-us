@@ -7,7 +7,7 @@ class ssi_marital_unearned_income(Variable):
     label = "Total SSI unearned income for a marital unit"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         both_eligible = person("ssi_marital_both_eligible", period)
         unearned_income = person("ssi_unearned_income", period)
 

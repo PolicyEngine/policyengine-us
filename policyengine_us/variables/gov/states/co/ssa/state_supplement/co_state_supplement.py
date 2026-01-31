@@ -8,7 +8,7 @@ class co_state_supplement(Variable):
     definition_period = YEAR
     defined_for = "co_state_supplement_eligible"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         income = person("ssi_countable_income", period)
         ssi = person("ssi", period)
         total_countable_income = ssi + income

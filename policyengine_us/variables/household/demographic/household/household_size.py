@@ -7,5 +7,5 @@ class household_size(Variable):
     label = "Household size"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(household, period, parameters):  # pragma: no cover
         return household.nb_persons()

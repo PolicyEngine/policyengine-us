@@ -9,7 +9,7 @@ class pr_is_tax_unit_dependent(Variable):
     defined_for = StateCode.PR
     reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # dependent definition in Puerto Rico:
         p = parameters(
             period

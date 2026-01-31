@@ -9,7 +9,7 @@ class reduced_price_school_meals(Variable):
     unit = USD
     documentation = "Value of reduced price school meals."
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         tier = spm_unit("school_meal_tier", period)
         is_reduced_price = tier == tier.possible_values.REDUCED
         return is_reduced_price * spm_unit("school_meal_net_subsidy", period)

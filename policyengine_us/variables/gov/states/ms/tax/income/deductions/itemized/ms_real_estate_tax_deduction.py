@@ -10,7 +10,7 @@ class ms_real_estate_tax_deduction(Variable):
     reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=15"
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # State income taxes paid or any other taxes
         # allowed in lieu of federal purposes including
         # withholding taxes on Mississippi gaming

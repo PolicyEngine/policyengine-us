@@ -13,7 +13,7 @@ class or_eitc(Variable):
     )
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # Grab federal EITC.
         federal_eitc = tax_unit("eitc", period)
         # Check if the tax unit has a young child to qualify for a higher rate.

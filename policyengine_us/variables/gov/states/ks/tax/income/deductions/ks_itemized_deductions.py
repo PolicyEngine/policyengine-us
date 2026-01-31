@@ -13,7 +13,7 @@ class ks_itemized_deductions(Variable):
     )
     defined_for = StateCode.KS
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # 2021 Form K-40 instructions say this:
         #   LINE 4 (Standard deduction or itemized deductions):
         #   If you did not itemize your deductions on your federal return,

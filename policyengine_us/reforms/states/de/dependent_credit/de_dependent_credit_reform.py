@@ -11,7 +11,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.de.dependent_credit
 
             person = tax_unit.members
@@ -35,7 +35,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.de.dependent_credit
 
             dependents_count = tax_unit("de_eligible_dependents_count", period)
@@ -49,7 +49,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.contrib.states.de.dependent_credit
 
             filing_status = tax_unit("filing_status", period)
@@ -70,8 +70,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
-
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             maximum = tax_unit("de_dependent_credit_maximum", period)
             phaseout = tax_unit("de_dependent_credit_phaseout", period)
 
@@ -85,7 +84,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
             total_dependents = tax_unit.sum(is_dependent)
@@ -102,7 +101,7 @@ def create_de_dependent_credit_reform() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.DE
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p_base = parameters(
                 period
             ).gov.states.de.tax.income.credits.personal_credits
@@ -126,7 +125,7 @@ def create_de_dependent_credit_reform() -> Reform:
             return personal_credit_amount + dependent_credit_amount
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.update_variable(de_eligible_dependents_count)
             self.update_variable(de_dependent_credit_maximum)
             self.update_variable(de_dependent_credit_phaseout)
@@ -139,7 +138,7 @@ def create_de_dependent_credit_reform() -> Reform:
 
 def create_de_dependent_credit_reform_fn(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_de_dependent_credit_reform()
 

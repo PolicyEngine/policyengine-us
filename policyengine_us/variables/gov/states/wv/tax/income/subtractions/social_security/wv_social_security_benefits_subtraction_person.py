@@ -21,7 +21,7 @@ class wv_social_security_benefits_subtraction_person(Variable):
     )
     defined_for = StateCode.WV
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.social_security_benefits

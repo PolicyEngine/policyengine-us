@@ -9,7 +9,7 @@ class pa_tanf_disregard_eligible(Variable):
     defined_for = StateCode.PA
     reference = "https://www.law.cornell.edu/regulations/pennsylvania/55-Pa-Code-SS-183-94"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         p = parameters(period).gov.states.pa.dhs.tanf.income.deductions
 

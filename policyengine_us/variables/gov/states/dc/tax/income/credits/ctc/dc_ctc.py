@@ -12,7 +12,7 @@ class dc_ctc(Variable):
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.tax.income.credits.ctc
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)

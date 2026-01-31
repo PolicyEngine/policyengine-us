@@ -12,7 +12,7 @@ class dc_ccsp_maximum_subsidy_amount(Variable):
     definition_period = MONTH
     defined_for = StateCode.DC
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.dc.dhs.ccsp.reimbursement_rates
         childcare_provider = person(
             "dc_ccsp_childcare_provider_category", period

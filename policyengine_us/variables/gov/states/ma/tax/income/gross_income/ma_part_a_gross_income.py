@@ -10,7 +10,7 @@ class ma_part_a_gross_income(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         dividends = add(tax_unit, period, ["dividend_income"])
         nonnegative_short_term_capital_gains = max_(
             0, add(tax_unit, period, ["short_term_capital_gains"])

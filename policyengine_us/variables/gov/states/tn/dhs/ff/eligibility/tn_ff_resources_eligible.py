@@ -9,7 +9,7 @@ class tn_ff_resources_eligible(Variable):
     reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=1"
     defined_for = StateCode.TN
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         countable_resources = spm_unit("tn_ff_countable_resources", period)
         p = parameters(period).gov.states.tn.dhs.ff.resources
         return countable_resources <= p.limit

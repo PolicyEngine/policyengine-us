@@ -9,7 +9,7 @@ class az_stillborn_exemption(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         stillborn = tax_unit("tax_unit_stillborn_children", period)

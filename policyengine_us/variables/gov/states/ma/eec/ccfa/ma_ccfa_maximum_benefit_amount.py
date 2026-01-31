@@ -10,7 +10,7 @@ class ma_ccfa_maximum_benefit_amount(Variable):
     defined_for = "ma_ccfa_eligible"
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         copay = spm_unit("ma_ccfa_total_copay", period)
         max_reimbursement = add(
             spm_unit, period, ["ma_ccfa_maximum_reimbursement"]

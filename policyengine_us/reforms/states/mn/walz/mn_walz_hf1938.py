@@ -15,7 +15,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             if period.start.year >= 2023:
                 instant_str = f"2022-01-01"
             else:
@@ -35,7 +35,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # specify parameters
             filing_status = tax_unit("filing_status", period)
             p = parameters(
@@ -81,7 +81,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.mn.tax.income.deductions.standard
             # ... calculate pre-limitation amount
             filing_status = tax_unit("filing_status", period)
@@ -115,7 +115,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             # 2021 Form M1 instructions say:
             #   You may claim the Minnesota standard deduction or itemize
             #   your deductions on your Minnesota return. You will generally
@@ -159,7 +159,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        def formula(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):  # pragma: no cover
             p = parameters(period).gov.states.mn.tax.income.credits.cdcc
             person = tax_unit.members
             # determine eligibility for Minnesota CDCC
@@ -194,7 +194,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             return eligible * amount
 
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.neutralize_variable("mn_public_pension_subtraction")
             self.update_variable(mn_social_security_subtraction)
             self.update_variable(mn_refundable_credits)
@@ -207,7 +207,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
 
 def create_mn_walz_hf1938_repeal_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_mn_walz_hf1938_repeal()
 

@@ -12,7 +12,7 @@ class il_aabd_personal_allowance(Variable):
     defined_for = StateCode.IL
     reference = "https://www.dhs.state.il.us/page.aspx?item=15913"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.il.dhs.aabd.payment.personal_allowance

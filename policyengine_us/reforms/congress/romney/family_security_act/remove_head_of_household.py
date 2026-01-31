@@ -4,7 +4,7 @@ from policyengine_core.periods import period as period_
 
 def create_remove_head_of_household() -> Reform:
     class reform(Reform):
-        def apply(self):
+        def apply(self):  # pragma: no cover
             self.neutralize_variable("head_of_household_eligible")
 
     return reform
@@ -12,7 +12,7 @@ def create_remove_head_of_household() -> Reform:
 
 def create_remove_head_of_household_reform(
     parameters, period, bypass: bool = False
-):
+):  # pragma: no cover
     if bypass:
         return create_remove_head_of_household()
 

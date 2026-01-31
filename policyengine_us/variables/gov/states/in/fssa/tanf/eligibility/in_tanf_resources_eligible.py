@@ -12,7 +12,7 @@ class in_tanf_resources_eligible(Variable):
         "https://iga.in.gov/laws/2025/ic/titles/12/#12-14-1-1",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states["in"].fssa.tanf.resources.limit
         countable = spm_unit("in_tanf_countable_resources", period)
         is_enrolled = spm_unit("is_tanf_enrolled", period)

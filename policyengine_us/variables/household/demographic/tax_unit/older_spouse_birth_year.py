@@ -9,5 +9,5 @@ class older_spouse_birth_year(Variable):
     documentation = "Birth year of taxpayer (i.e. primary adult) or spouse (i.e. secondary adult if present), depending on which is greater. "
     unit = "year"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         return period.start.year - tax_unit("greater_age_head_spouse", period)

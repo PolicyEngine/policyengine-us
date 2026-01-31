@@ -9,7 +9,7 @@ class income_tax_before_refundable_credits(Variable):
     label = "Federal income tax before refundable credits"
     documentation = "Income tax liability (including other taxes) after non-refundable credits are used, but before refundable credits are applied"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         if parameters(
             period
         ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:

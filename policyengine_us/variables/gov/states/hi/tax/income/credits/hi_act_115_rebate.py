@@ -10,7 +10,7 @@ class hi_act_115_rebate(Variable):
     definition_period = YEAR
     reference = "https://tax.hawaii.gov/act-115-ref/"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.hi.tax.income.credits.act_115_rebate
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values

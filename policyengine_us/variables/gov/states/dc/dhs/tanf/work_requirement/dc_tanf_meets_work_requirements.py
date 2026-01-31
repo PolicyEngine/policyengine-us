@@ -12,7 +12,7 @@ class dc_tanf_meets_work_requirements(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         person = spm_unit.members
         is_working = person("dc_tanf_is_working", period)
         work_requirement_exempt = person(

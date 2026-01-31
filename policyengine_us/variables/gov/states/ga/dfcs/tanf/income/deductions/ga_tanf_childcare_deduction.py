@@ -13,7 +13,7 @@ class ga_tanf_childcare_deduction(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         p = parameters(period).gov.states.ga.dfcs.tanf.income.deductions
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)

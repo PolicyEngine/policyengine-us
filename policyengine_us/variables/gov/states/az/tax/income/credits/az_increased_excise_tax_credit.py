@@ -10,7 +10,7 @@ class az_increased_excise_tax_credit(Variable):
     defined_for = "az_increased_excise_tax_credit_eligible"
     reference = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072-01.htm"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.increased_excise

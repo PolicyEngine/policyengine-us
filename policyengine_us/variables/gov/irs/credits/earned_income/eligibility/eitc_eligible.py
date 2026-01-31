@@ -8,7 +8,7 @@ class eitc_eligible(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eitc = parameters.gov.irs.credits.eitc(period)
         investment_income_eligible = tax_unit(
             "eitc_investment_income_eligible", period

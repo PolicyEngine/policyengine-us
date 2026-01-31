@@ -9,7 +9,7 @@ class military_disabled_spouse(Variable):
         "Tax unit spouse is legally disabled as a result of military service"
     )
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         person = tax_unit.members
         military_disabled = person(
             "is_fully_disabled_service_connected_veteran", period

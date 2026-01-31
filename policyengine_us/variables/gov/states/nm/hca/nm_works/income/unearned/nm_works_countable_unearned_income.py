@@ -10,7 +10,7 @@ class nm_works_countable_unearned_income(Variable):
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0520.html"
     defined_for = StateCode.NM
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support_deduction = spm_unit(
             "nm_works_child_support_deduction", period

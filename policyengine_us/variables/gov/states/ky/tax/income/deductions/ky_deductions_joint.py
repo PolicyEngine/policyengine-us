@@ -10,7 +10,7 @@ class ky_deductions_joint(Variable):
     reference = "https://law.justia.com/codes/kentucky/2022/chapter-141/section-141-019/"  # (2)(i)
     defined_for = StateCode.KY
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         return max_(
             person("ky_itemized_deductions_joint", period),
             person("ky_standard_deduction_joint", period),

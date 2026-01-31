@@ -9,7 +9,7 @@ class il_cta_military_service_pass_eligible(Variable):
     defined_for = StateCode.IL
     reference = "https://www.transitchicago.com/military/"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         is_in_active_duty = person("military_basic_pay", period) > 0
         disabled_veterans = person(
             "is_fully_disabled_service_connected_veteran", period

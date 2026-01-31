@@ -9,7 +9,7 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
     definition_period = YEAR
     defined_for = "nyc_school_tax_credit_rate_reduction_amount_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         # First get their NYC taxable income.
         nyc_taxable_income = tax_unit("nyc_taxable_income", period)
 

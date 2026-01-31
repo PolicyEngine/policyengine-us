@@ -9,7 +9,7 @@ class il_tanf_non_financial_eligible(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=30358"
     defined_for = StateCode.IL
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         demographic_eligible = (
             add(spm_unit, period, ["il_tanf_demographic_eligible_person"]) > 0
         )

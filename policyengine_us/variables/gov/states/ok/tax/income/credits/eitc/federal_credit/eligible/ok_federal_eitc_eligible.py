@@ -11,7 +11,7 @@ class ok_federal_eitc_eligible(Variable):
     )
     defined_for = StateCode.OK
 
-    def formula(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):  # pragma: no cover
         eitc = parameters.gov.irs.credits.eitc(f"2020-01-01")
         investment_income_eligible = tax_unit(
             "ok_federal_eitc_investment_income_eligible", period

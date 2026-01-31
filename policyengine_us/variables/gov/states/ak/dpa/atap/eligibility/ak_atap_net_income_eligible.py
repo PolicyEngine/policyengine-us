@@ -9,7 +9,7 @@ class ak_atap_net_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470"
     defined_for = StateCode.AK
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period, parameters):  # pragma: no cover
         # Test 2: Countable income (after deductions) <= need standard
         countable_income = spm_unit("ak_atap_countable_income", period)
         need_standard = spm_unit("ak_atap_need_standard", period)

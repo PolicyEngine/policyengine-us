@@ -14,7 +14,7 @@ class il_isbe_income_eligible(Variable):
     )
     defined_for = StateCode.IL
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
         # Income must be at or below 400% FPL for program eligibility.
         # 105 ILCS 5/2-3.71 establishes "4 times the poverty guidelines" as the
         # maximum income threshold for preschool program eligibility.
