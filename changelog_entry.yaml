@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+      - Arizona long-term capital gains subtraction now correctly returns zero when there is a net capital loss, rather than using raw long-term capital gains.
