@@ -34,19 +34,16 @@ class mo_adjusted_gross_income(Variable):
         is_spouse = person("is_tax_unit_spouse", period)
         # Allocate remaining ALDs proportionally based on gross income
         # to avoid losing deductions when one spouse has no income.
-        # Use mask instead of where to avoid divide-by-zero warnings.
+        # Use np.divide with mask to avoid divide-by-zero warnings.
         unit_gross_income = tax_unit.sum(gross_income)
-        allocation_share = where(is_head, 1.0, 0.0)  # Default to head
         mask = unit_gross_income > 0
-        allocation_share = where(
-            mask,
-            np.divide(
-                gross_income,
-                unit_gross_income,
-                out=np.zeros_like(gross_income),
-                where=mask,
-            ),
-            allocation_share,
+        # Default: head gets 100%, others get 0% (used when unit has no income)
+        default_share = where(is_head, 1.0, 0.0)
+        allocation_share = np.divide(
+            gross_income,
+            unit_gross_income,
+            out=default_share.copy(),  # Copy to avoid modifying default_share
+            where=mask,
         )
         allocated_alds = where(
             is_head | is_spouse,
