@@ -24,11 +24,14 @@ class loss_limited_capital_gains(Variable):
         # If net losses, allocate the loss-limited amount proportionally
         is_loss = tax_unit_capital_gains < 0
 
-        # For losses: allocate loss_limited amount proportionally
-        proportion = where(
-            tax_unit_capital_gains != 0,
-            person_capital_gains / tax_unit_capital_gains,
-            0,
+        # For losses: allocate loss_limited amount proportionally.
+        # Use np.divide with mask to avoid divide-by-zero warnings.
+        mask = tax_unit_capital_gains != 0
+        proportion = np.divide(
+            person_capital_gains,
+            tax_unit_capital_gains,
+            out=np.zeros_like(person_capital_gains),
+            where=mask,
         )
 
         return where(
