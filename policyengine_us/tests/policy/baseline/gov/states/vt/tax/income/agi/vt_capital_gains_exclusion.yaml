@@ -1,60 +1,86 @@
-- name: VT capital gain exclusion amount unit test 1
+# Vermont capital gains exclusion:
+# - Flat $5,000 exclusion applies to ALL capital gains
+# - 40% exclusion (capped at $350k) ONLY applies to eligible assets
+#   (excludes stocks, bonds, financial instruments, real estate)
+# - Final exclusion cannot exceed 40% of federal taxable income
+
+- name: VT exclusion is zero when not in VT
   period: 2022
   input:
-    state_code: ME # Test state definition other than VT
+    state_code: ME
     adjusted_net_capital_gain: 1_000
     taxable_income: 1_000
-    vt_percentage_capital_gains_exclusion: 1_000
   output:
-    vt_capital_gains_exclusion: 0  
+    vt_capital_gains_exclusion: 0
 
-- name: VT capital gain exclusion amount unit test 2
+- name: VT flat exclusion capped by 40% of taxable income
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 6_000
     taxable_income: 1_000
-    vt_percentage_capital_gains_exclusion: 1_000
+    # No eligible gains, so percentage exclusion is 0
   output:
-    vt_capital_gains_exclusion: 400  # # min(5000,1000*0.4) = 400
+    vt_capital_gains_exclusion: 400  # min(5000, 1000*0.4) = 400
 
-- name: VT capital gain exclusion amount unit test 3
+- name: VT flat exclusion of 5k when no percentage exclusion
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 6_000
     taxable_income: 12_600
-    vt_percentage_capital_gains_exclusion: 1_000
+    # No eligible gains specified, so only flat exclusion applies
   output:
-    vt_capital_gains_exclusion: 5_000  # min(5000,12600*0.4) = 4000
+    vt_capital_gains_exclusion: 5_000  # flat $5k, under 40% cap
 
-- name: VT capital gain exclusion amount unit test 4
+- name: VT percentage exclusion beats flat when eligible gains are high
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 12_600
     taxable_income: 12_700
-    vt_percentage_capital_gains_exclusion: 5_040
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 12_600
   output:
-    vt_capital_gains_exclusion: 5_040 # min(5040,5080) = 5040
+    # Flat: min(12600, 5000) = 5000
+    # Percentage: min(12600 * 0.4, 350000) = 5040
+    # Chosen: max(5000, 5040) = 5040
+    # Cap: 12700 * 0.4 = 5080
+    # Final: min(5040, 5080) = 5040
+    vt_capital_gains_exclusion: 5_040
 
-- name: VT capital gain exclusion amount unit test 5
+- name: VT exclusion capped at 40% of taxable income
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 12_600
     taxable_income: 12_500
-    vt_percentage_capital_gains_exclusion: 5_040
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 12_600
   output:
-    vt_capital_gains_exclusion: 5_000 # min(5040,5000) = 5000
+    # Flat: 5000, Percentage: 5040, Chosen: 5040
+    # Cap: 12500 * 0.4 = 5000
+    # Final: min(5040, 5000) = 5000
+    vt_capital_gains_exclusion: 5_000
 
-- name: Adjusted net capital gain is reduced by the dividend income
+- name: Adjusted net capital gain is reduced by dividend income for flat exclusion
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 6_000
     taxable_income: 12_600
-    vt_percentage_capital_gains_exclusion: 1_000
     qualified_dividend_income: 4_000
+    # No eligible gains, so percentage exclusion is 0
   output:
+    # Reduced ANCG: max(6000 - 4000, 0) = 2000
+    # Flat: min(2000, 5000) = 2000
     vt_capital_gains_exclusion: 2_000
+
+- name: Financial instrument gains only get flat exclusion
+  period: 2024
+  input:
+    state_code: VT
+    long_term_capital_gains: 137_498  # Financial instruments
+    taxable_income: 140_418
+    # No long_term_capital_gains_on_assets_eligible_for_vt_exclusion
+  output:
+    # Only flat $5,000 applies (financial instruments are NOT eligible for 40%)
+    vt_capital_gains_exclusion: 5_000

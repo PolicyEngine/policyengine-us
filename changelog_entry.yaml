@@ -1,0 +1,10 @@
+- bump: patch
+  changes:
+    changed:
+      - title: Fix VT capital gains exclusion for financial instruments
+        description: >
+          Vermont's 40% capital gains exclusion now correctly excludes financial
+          instruments (stocks, bonds) from eligibility. Only the flat $5,000
+          exclusion applies to these gains. Added new input variable
+          long_term_capital_gains_on_assets_eligible_for_vt_exclusion for
+          modeling the 40% exclusion on qualifying assets.

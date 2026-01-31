@@ -1,40 +1,45 @@
-- name: VT percentage capital gain exclusion amount unit test 1
+# The 40% percentage exclusion only applies to capital gains from eligible assets.
+# Eligible assets EXCLUDE: stocks, bonds, financial instruments, real estate.
+# Since standard capital gains inputs represent financial instruments (ineligible),
+# users must specify long_term_capital_gains_on_assets_eligible_for_vt_exclusion.
+
+- name: VT percentage exclusion is zero when not in VT
   period: 2022
   input:
-    state_code: ME # Test state definition other than VT
-    adjusted_net_capital_gain: 1_000
+    state_code: ME
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 1_000
   output:
     vt_percentage_capital_gains_exclusion: 0
 
-- name: VT percentage capital gain exclusion amount unit test 2
+- name: VT percentage exclusion is zero when no eligible gains specified
   period: 2022
   input:
     state_code: VT
-    adjusted_net_capital_gain: 0
-  output:
-    vt_percentage_capital_gains_exclusion: 0 
-
-- name: VT percentage capital gain exclusion amount unit test 3
-  period: 2022
-  input:
-    state_code: VT
-    adjusted_net_capital_gain: 1_000
-  output:
-    vt_percentage_capital_gains_exclusion: 400 
-
-- name: VT percentage capital gain exclusion amount unit test 4
-  period: 2022
-  input:
-    state_code: VT
-    adjusted_net_capital_gain: 900_000
-  output:
-    vt_percentage_capital_gains_exclusion: 350_000      
-
-- name: Adjusted net capital reduced by dividend income
-  period: 2022
-  input:
-    state_code: VT
-    adjusted_net_capital_gain: 900_000
-    qualified_dividend_income: 1_000_000
+    long_term_capital_gains: 100_000  # Financial instruments - NOT eligible
   output:
     vt_percentage_capital_gains_exclusion: 0
+
+- name: VT percentage exclusion is 40% of eligible gains
+  period: 2022
+  input:
+    state_code: VT
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 1_000
+  output:
+    vt_percentage_capital_gains_exclusion: 400
+
+- name: VT percentage exclusion is capped at 350k
+  period: 2022
+  input:
+    state_code: VT
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 900_000
+  output:
+    vt_percentage_capital_gains_exclusion: 350_000
+
+- name: VT percentage exclusion only counts eligible gains, not all LTCG
+  period: 2022
+  input:
+    state_code: VT
+    long_term_capital_gains: 500_000  # Financial instruments - NOT eligible
+    long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 10_000
+  output:
+    vt_percentage_capital_gains_exclusion: 4_000  # 40% of 10k eligible only
