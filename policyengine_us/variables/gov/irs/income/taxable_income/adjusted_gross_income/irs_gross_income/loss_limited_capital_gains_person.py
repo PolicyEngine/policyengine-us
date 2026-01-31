@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class loss_limited_capital_gains(Variable):
+class loss_limited_capital_gains_person(Variable):
     value_type = float
     entity = Person
-    label = "Loss-limited capital gains"
+    label = "Loss-limited capital gains (person)"
     unit = USD
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf"
