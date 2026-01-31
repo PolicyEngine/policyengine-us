@@ -70,5 +70,13 @@
         members: [person1, person2]
         state_fips: 54
   output:
-    adjusted_gross_income: -3_000
+    # AGI calculation with Section 461(l):
+    # - Partnership/S-corp loss: 2 * 727,887.75 = 1,455,775.50
+    # - Limited by Section 461(l) for MFJ: $610,000
+    # - Capital loss: 2 * 896,056.95 = 1,792,113.90
+    # - Limited by Section 1211: $3,000
+    # - Gross income: ~$0.02 (interest only)
+    # - loss_ald = 610,000 + 3,000 = 613,000
+    # - AGI = 0 - 613,000 = -613,000
+    adjusted_gross_income: -613_000
     wv_homestead_excess_property_tax_credit: 0
