@@ -12605,3 +12605,9 @@
     added:
     - Tests for tax_unit_is_filer variable covering filing requirement logic.
   date: 2026-01-31 16:52:24
+- bump: patch
+  changes:
+    changed:
+    - Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for
+      consistent formatting.
+  date: 2026-01-31 19:46:35
