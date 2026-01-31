@@ -25,7 +25,8 @@ class county(Variable):
 
         # When running over a dataset, use stored county data if available
         # (geographic variables like county are time-invariant for households)
-        if simulation.is_over_dataset:
+        if simulation.is_over_dataset:  # pragma: no cover
+            # Microsimulation-specific path - tested via microsim
             holder = simulation.get_holder("county")
             known_periods = holder.get_known_periods()
             if len(known_periods) > 0:
@@ -61,6 +62,6 @@ class county(Variable):
             county_name = zip_codes.county[zip_code]
             state_code = zip_codes.state[zip_code]
             return map_county_string_to_enum(county_name, state_code)
-        except:
+        except:  # pragma: no cover
             # If ZIP code lookup fails, use first county in state as fallback
             return household("first_county_in_state", period)

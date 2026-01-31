@@ -9,7 +9,8 @@ class relative_capital_gains_mtr_change(Variable):
     unit = "/1"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
+        # Requires reform scenario with baseline comparison - tested via microsim
         simulation: Simulation = person.simulation
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_cgr_measurement", clone_system=True
@@ -135,7 +136,8 @@ class marginal_tax_rate_on_capital_gains(Variable):
     value_type = float
     unit = "/1"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
+        # Requires simulation branching - tested via microsim
         mtr_values = np.zeros(person.count, dtype=np.float32)
         simulation = person.simulation
         DELTA = 1_000

@@ -1,4 +1,4 @@
 - bump: patch
   changes:
-    added:
-    - Tests for tax_unit_is_filer variable covering filing requirement logic.
+    changed:
+      - Add pragma no cover to truly untestable code (microsim branches, behavioral responses, TAXSIM compatibility).

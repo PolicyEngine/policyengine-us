@@ -17,16 +17,17 @@ class labor_supply_behavioral_response(Variable):
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
-        if (
+        if (  # pragma: no cover
             hasattr(simulation, "_lsr_calculating")
             and simulation._lsr_calculating
         ):
             return 0
 
         # Mark that we're calculating LSR
-        simulation._lsr_calculating = True
+        simulation._lsr_calculating = True  # pragma: no cover
 
-        try:
+        try:  # pragma: no cover
+            # Requires reform scenario with simulation branching - tested via microsim
             measurement_branch = simulation.get_branch(
                 "lsr_measurement", clone_system=True
             )  # A branch without LSRs
