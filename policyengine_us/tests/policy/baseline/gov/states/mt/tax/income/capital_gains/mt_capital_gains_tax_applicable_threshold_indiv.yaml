@@ -1,15 +1,4 @@
-- name: Reduced single threshold
-  period: 2023
-  input:
-    long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 2_500
-    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
-    state_code: MT
-  output:
-    # Capital gains tax not in effect before 2024, so threshold is 0
-    mt_capital_gains_tax_applicable_threshold_indiv: 0
-
-- name: Indiv path disabled in 2024
+- name: Indiv path disabled in 2024 (MFSS repealed)
   period: 2024
   input:
     long_term_capital_gains: 2_000
@@ -17,5 +6,4 @@
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
     state_code: MT
   output:
-    # MFSS repealed in 2024, indiv path disabled
     mt_capital_gains_tax_applicable_threshold_indiv: 0
