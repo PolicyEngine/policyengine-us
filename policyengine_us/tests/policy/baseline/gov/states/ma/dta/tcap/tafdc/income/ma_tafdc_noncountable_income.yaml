@@ -1,29 +1,79 @@
-- name: SNAP, housing subsidy, and LIHEAP counted as noncountable
+- name: Multiple noncountable sources
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
-    state_code: MA
-    snap: 200
-    spm_unit_capped_housing_subsidy: 6_000
-    ma_liheap: 1_200
+    people:
+      person1:
+        ssi: 10_200  # YEAR -> 850/mo
+        wic: 50  # MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # MONTH
+        spm_unit_capped_housing_subsidy: 6_000  # YEAR -> 500/mo
+        ma_liheap: 1_200  # YEAR -> 100/mo
+        spm_unit_school_lunch_subsidy: 1_200  # YEAR -> 100/mo
+        spm_unit_pell_grant: 6_000  # YEAR -> 500/mo
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 3_600  # YEAR -> 300/mo
+    households:
+      household:
+        members: [person1]
+        state_code: MA
   output:
-    ma_tafdc_noncountable_income: 800
+    # 850 + 50 + 200 + 500 + 100 + 100 + 500 + 300 = 2600
+    ma_tafdc_noncountable_income: 2_600
 
-- name: Only SNAP counted as noncountable
+- name: Only SNAP
   period: 2024-01
   input:
-    state_code: MA
-    snap: 300
-    spm_unit_capped_housing_subsidy: 0
-    ma_liheap: 0
+    people:
+      person1:
+        ssi: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 300
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
   output:
     ma_tafdc_noncountable_income: 300
 
 - name: No noncountable income
   period: 2024-01
   input:
-    state_code: MA
-    snap: 0
-    spm_unit_capped_housing_subsidy: 0
-    ma_liheap: 0
+    people:
+      person1:
+        ssi: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
   output:
     ma_tafdc_noncountable_income: 0

@@ -1,0 +1,26 @@
+description: Income sources that are noncountable for TAFDC eligibility and grant calculations.
+metadata:
+  type: list
+  period: month
+  label: Massachusetts TAFDC noncountable income sources
+  reference:
+    - title: 106 CMR 704.250 - Noncountable Income
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250
+values:
+  0001-01-01:
+    # (A) Income of SSI recipients
+    - ssi
+    # (C) SNAP benefits
+    - snap
+    # (D)+(F) School lunch subsidies
+    - spm_unit_school_lunch_subsidy
+    # (F) WIC
+    - wic
+    # (BB) Home Energy Assistance Program
+    - ma_liheap
+    # (II) Earned income tax credits
+    - eitc
+    # (J) Financial aid (Pell Grants)
+    - spm_unit_pell_grant
+    # (S) Housing subsidies
+    - spm_unit_capped_housing_subsidy
