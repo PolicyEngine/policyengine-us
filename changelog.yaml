@@ -12611,3 +12611,8 @@
     - Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for
       consistent formatting.
   date: 2026-01-31 19:46:35
+- bump: patch
+  changes:
+    added:
+    - Tests for TAXSIM output variables to achieve 100% coverage.
+  date: 2026-01-31 20:58:31
