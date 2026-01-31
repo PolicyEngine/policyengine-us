@@ -1,4 +1,4 @@
 - bump: patch
   changes:
     changed:
-      - Pin black==26.1.0 in dev dependencies and update CI to use uv sync for consistent formatting.
+      - Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for consistent formatting.
