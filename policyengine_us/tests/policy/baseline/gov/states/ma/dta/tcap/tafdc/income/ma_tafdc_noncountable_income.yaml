@@ -1,0 +1,29 @@
+- name: SNAP, housing subsidy, and LIHEAP counted as noncountable
+  period: 2024-01
+  input:
+    state_code: MA
+    snap: 200
+    spm_unit_capped_housing_subsidy: 6_000
+    ma_liheap: 1_200
+  output:
+    ma_tafdc_noncountable_income: 800
+
+- name: Only SNAP counted as noncountable
+  period: 2024-01
+  input:
+    state_code: MA
+    snap: 300
+    spm_unit_capped_housing_subsidy: 0
+    ma_liheap: 0
+  output:
+    ma_tafdc_noncountable_income: 300
+
+- name: No noncountable income
+  period: 2024-01
+  input:
+    state_code: MA
+    snap: 0
+    spm_unit_capped_housing_subsidy: 0
+    ma_liheap: 0
+  output:
+    ma_tafdc_noncountable_income: 0
