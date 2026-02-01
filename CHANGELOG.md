@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.539.0] - 2026-02-01 22:33:33
+
+### Changed
+
+- Add 2025 references to all Missouri income tax parameters.
+- Add 2025 value for mo_max_social_security_benefit ($48,216).
+- Add 2025 test cases for Missouri income tax and capital gains subtraction.
+
 ## [1.538.1] - 2026-02-01 22:20:32
 
 ### Changed
@@ -14761,6 +14769,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.1...1.539.0
 [1.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.0...1.538.1
 [1.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.4...1.538.0
 [1.537.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.3...1.537.4

@@ -12674,3 +12674,10 @@
     - Update Illinois TANF parameter historical dates to reflect actual policy enactment
       dates.
   date: 2026-02-01 22:20:32
+- bump: minor
+  changes:
+    changed:
+    - Add 2025 references to all Missouri income tax parameters.
+    - Add 2025 value for mo_max_social_security_benefit ($48,216).
+    - Add 2025 test cases for Missouri income tax and capital gains subtraction.
+  date: 2026-02-01 22:33:33
