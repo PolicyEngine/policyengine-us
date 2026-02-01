@@ -1,12 +1,14 @@
 description: Oklahoma limits resources to this amount under the Temporary Assistance for Needy Families program.
 
 values:
-  2021-01-01: 1_000
+  1996-10-01: 1_000
 
 metadata:
   unit: currency-USD
   period: month
   label: Oklahoma TANF resource limit
   reference:
-    - title: OAC 340:10-3-5(a) - Maximum Countable Reserve
-      href: https://www.law.cornell.edu/regulations/oklahoma/Okla-Admin-Code-SS-340-10-3-5
+    - title: OAC 340:10-3-2(c)
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-2
+    - title: OKDHS Appendix C-1, Schedule IX
+      href: https://www.okdhslive.org/popups/IncomeStandardsPopup.aspx
