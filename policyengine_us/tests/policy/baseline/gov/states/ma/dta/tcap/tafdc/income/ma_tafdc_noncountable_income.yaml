@@ -1,0 +1,189 @@
+- name: Multiple unconditional noncountable sources
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wic: 50  # MONTH, (F)
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # MONTH, (C)
+        spm_unit_capped_housing_subsidy: 6_000  # YEAR -> 500/mo, (S)
+        ma_liheap: 1_200  # YEAR -> 100/mo, (BB)
+        spm_unit_school_lunch_subsidy: 1_200  # YEAR -> 100/mo, (D)/(F)
+        spm_unit_pell_grant: 6_000  # YEAR -> 500/mo, (J)
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # 50 + 200 + 500 + 100 + 100 + 500 = 1450
+    ma_tafdc_noncountable_income: 1_450
+
+- name: Only SNAP
+  period: 2024-01
+  input:
+    people:
+      person1:
+        wic: 0
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 300
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_noncountable_income: 300
+
+- name: No noncountable income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        wic: 0
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_noncountable_income: 0
+
+- name: SSI recipient with unconditional sources
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_reported: 10_000  # YEAR
+        employment_income_before_lsr: 12_000  # YEAR -> 1000/mo
+        social_security: 6_000  # YEAR -> 500/mo
+        wic: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200  # MONTH
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Unconditional: SNAP 200
+    # Conditional (A): SSI exclusion 1000 earned + 500 unearned = 1500
+    # Total: 200 + 1500 = 1700
+    ma_tafdc_noncountable_income: 1_700
+
+- name: Dependent child under 16 with earned income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 0
+        ssi_reported: 0
+        ma_tafdc_lump_sum_income: 0
+        wic: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 14
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        ssi_reported: 0
+        ma_tafdc_lump_sum_income: 0
+        wic: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    # Conditional (U): child earned income 500
+    ma_tafdc_noncountable_income: 500
+
+- name: Lump sum with unconditional sources
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wic: 50
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 1_000
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Unconditional: WIC 50
+    # Conditional (B): lump sum capped at 600
+    # Total: 50 + 600 = 650
+    ma_tafdc_noncountable_income: 650
