@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.537.0] - 2026-02-01 20:53:00
+
+### Added
+
+- Add Alabama Family Assistance (TANF) program.
+
 ## [1.536.0] - 2026-02-01 20:30:41
 
 ### Added
@@ -14717,6 +14723,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.536.0...1.537.0
 [1.536.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.535.0...1.536.0
 [1.535.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.6...1.535.0
 [1.534.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.5...1.534.6
