@@ -12681,3 +12681,14 @@
     - Add 2025 value for mo_max_social_security_benefit ($48,216).
     - Add 2025 test cases for Missouri income tax and capital gains subtraction.
   date: 2026-02-01 22:33:33
+- bump: minor
+  changes:
+    added:
+    - Add comprehensive 2025 test cases for Oklahoma income tax (103 tests).
+    changed:
+    - Update Oklahoma income tax parameters for 2025 with current form references.
+    - Increase pension subtraction limit from $10,000 to $20,000 for 2024+ per HB
+      2020.
+    - Enhance documentation for Oklahoma income tax variables with calculation examples
+      and regulatory references.
+  date: 2026-02-01 23:13:46

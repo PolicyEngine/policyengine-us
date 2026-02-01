@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.540.0] - 2026-02-01 23:13:46
+
+### Added
+
+- Add comprehensive 2025 test cases for Oklahoma income tax (103 tests).
+
+### Changed
+
+- Update Oklahoma income tax parameters for 2025 with current form references.
+- Increase pension subtraction limit from $10,000 to $20,000 for 2024+ per HB 2020.
+- Enhance documentation for Oklahoma income tax variables with calculation examples and regulatory references.
+
 ## [1.539.0] - 2026-02-01 22:33:33
 
 ### Changed
@@ -14769,6 +14781,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.540.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.539.0...1.540.0
 [1.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.1...1.539.0
 [1.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.0...1.538.1
 [1.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.4...1.538.0
