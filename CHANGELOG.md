@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.534.6] - 2026-02-01 18:13:47
+
+### Fixed
+
+- Fix Rhode Island retirement income subtraction to apply the cap per person instead of per tax unit.
+
 ## [1.534.5] - 2026-01-31 20:58:31
 
 ### Added
@@ -14699,6 +14705,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.534.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.5...1.534.6
 [1.534.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.4...1.534.5
 [1.534.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.3...1.534.4
 [1.534.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.2...1.534.3

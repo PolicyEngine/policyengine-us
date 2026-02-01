@@ -12616,3 +12616,9 @@
     added:
     - Tests for TAXSIM output variables to achieve 100% coverage.
   date: 2026-01-31 20:58:31
+- bump: patch
+  changes:
+    fixed:
+    - Fix Rhode Island retirement income subtraction to apply the cap per person instead
+      of per tax unit.
+  date: 2026-02-01 18:13:47
