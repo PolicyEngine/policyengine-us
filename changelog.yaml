@@ -12643,3 +12643,9 @@
     - Arizona long-term capital gains subtraction now correctly returns zero when
       there is a net capital loss, rather than using raw long-term capital gains.
   date: 2026-02-01 21:42:20
+- bump: patch
+  changes:
+    fixed:
+    - Mississippi income tax now correctly uses loss-limited capital gains (federal
+      $3K limit) instead of unlimited raw capital gains.
+  date: 2026-02-01 21:55:06
