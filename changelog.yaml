@@ -12637,3 +12637,9 @@
     added:
     - Add Alabama Family Assistance (TANF) program.
   date: 2026-02-01 20:53:00
+- bump: patch
+  changes:
+    fixed:
+    - Arizona long-term capital gains subtraction now correctly returns zero when
+      there is a net capital loss, rather than using raw long-term capital gains.
+  date: 2026-02-01 21:42:20
