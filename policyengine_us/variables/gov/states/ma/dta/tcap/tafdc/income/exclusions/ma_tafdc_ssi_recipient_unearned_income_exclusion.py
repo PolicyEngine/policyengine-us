@@ -16,6 +16,6 @@ class ma_tafdc_ssi_recipient_unearned_income_exclusion(Variable):
     def formula(person, period, parameters):
         # Section (A): All unearned income of household
         # members receiving SSI is noncountable.
-        receives_ssi = person("ssi_reported", period, options=[DIVIDE]) > 0
+        receives_ssi = person("ssi_reported", period.this_year) > 0
         gross_unearned = person("ma_tcap_gross_unearned_income", period)
         return where(receives_ssi, gross_unearned, 0)
