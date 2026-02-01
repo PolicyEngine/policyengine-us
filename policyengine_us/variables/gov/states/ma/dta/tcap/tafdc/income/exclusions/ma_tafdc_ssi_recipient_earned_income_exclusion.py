@@ -16,6 +16,6 @@ class ma_tafdc_ssi_recipient_earned_income_exclusion(Variable):
     def formula(person, period, parameters):
         # Section (A): All earned income of household members
         # receiving SSI is noncountable.
-        receives_ssi = person("ssi_reported", period, options=[DIVIDE]) > 0
+        receives_ssi = person("ssi_reported", period.this_year) > 0
         gross_earned = person("ma_tcap_gross_earned_income", period)
         return where(receives_ssi, gross_earned, 0)
