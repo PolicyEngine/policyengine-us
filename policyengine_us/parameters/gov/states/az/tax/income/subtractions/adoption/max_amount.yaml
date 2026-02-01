@@ -1,0 +1,28 @@
+description: Arizona allows a subtraction for qualifying adoption expenses up to this maximum amount, depending on filing status and tax year.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arizona adoption expense subtraction maximum
+  breakdown:
+    - az_filing_status
+  reference:
+    - title: A.R.S. 43-1022 - Subtractions from Arizona Gross Income
+      href: https://www.azleg.gov/ars/43/01022.htm
+    - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=17
+SINGLE:
+  2021-01-01: 5_000
+  2023-01-01: 40_000
+  2026-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 5_000
+  2023-01-01: 40_000
+  2026-01-01: 5_000
+JOINT:
+  2021-01-01: 10_000
+  2023-01-01: 40_000
+  2026-01-01: 10_000
+SEPARATE:
+  2021-01-01: 10_000
+  2023-01-01: 40_000
+  2026-01-01: 10_000

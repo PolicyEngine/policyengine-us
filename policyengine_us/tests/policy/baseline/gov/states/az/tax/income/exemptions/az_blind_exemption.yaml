@@ -33,3 +33,45 @@
     blind_spouse: true
   output:
     az_blind_exemption: 3_000
+
+# =============================================================================
+# 2025 Tax Year Tests
+# Blind Exemption: $1,500 per blind person (unchanged from 2023)
+# =============================================================================
+
+- name: 2025 - head blind only
+  period: 2025
+  input:
+    state_code: AZ
+    blind_head: true
+    blind_spouse: false
+  output:
+    az_blind_exemption: 1_500
+
+- name: 2025 - spouse blind only
+  period: 2025
+  input:
+    state_code: AZ
+    blind_head: false
+    blind_spouse: true
+  output:
+    az_blind_exemption: 1_500
+
+- name: 2025 - both blind
+  period: 2025
+  input:
+    state_code: AZ
+    blind_head: true
+    blind_spouse: true
+  output:
+    # 2 * $1,500 = $3,000
+    az_blind_exemption: 3_000
+
+- name: 2025 - neither blind
+  period: 2025
+  input:
+    state_code: AZ
+    blind_head: false
+    blind_spouse: false
+  output:
+    az_blind_exemption: 0

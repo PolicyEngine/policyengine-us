@@ -1,0 +1,1225 @@
+# Arizona 2025 Income Tax Integration Tests
+# Tests end-to-end 2025 Arizona income tax calculations
+# Verifies interactions between subtractions, deductions, exemptions, and credits
+#
+# 2025 Key Values (from Form 140 Instructions and parameter files):
+# - Standard Deduction: Single $15,750, Joint $31,500, HOH $23,625, Separate $15,750
+# - Charitable Contribution Rate: 34% (increased from 33% in 2024)
+# - Tax Rate: 2.5% flat rate
+# - Filing Thresholds: Single $15,750, Joint $31,500, HOH $23,625, Separate $15,750
+#
+# Exemptions (unchanged):
+# - Age 65+: $2,100 (Box 8)
+# - Blind: $1,500 (Box 9)
+# - Other (stillborn, nursing care): $2,300 (Line 40)
+# - Parent/grandparent: $10,000 (Box 11a, Line 41)
+#
+# Dependent Tax Credit (Line 49):
+# - Under 17: $100
+# - Age 17+: $25
+# - Phase-out: $200k single/HOH/separate, $400k joint
+# - Reduction: 5% per $1,000 over threshold
+#
+# Family Tax Credit (Line 50): $40 per person, various income limits
+#
+# Increased Excise Tax Credit (Line 56): $25/person, max $100
+# - Income threshold: $12,500 single/separate, $25,000 joint/HOH
+#
+# Subtractions:
+# - Capital gains: 25% of net LTCG
+# - Public pension: $2,500 cap per person
+# - 529 contributions: $2,000/$4,000
+# - 529A ABLE: $2,000/$4,000
+# - Adoption expenses: $40,000 max (2023-2025)
+
+# =============================================================================
+# SECTION 1: Standard Deduction Tests
+# =============================================================================
+
+- name: Single filer basic 2025 tax calculation
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $60,000
+    adjusted_gross_income: 60_000
+    # AZ filing status = SINGLE
+    az_filing_status: SINGLE
+    # AZ base standard deduction for single = $15,750
+    az_base_standard_deduction: 15_750
+    # AZ taxable income = AGI - standard deduction = $60,000 - $15,750 = $44,250
+    az_taxable_income: 44_250
+    # AZ income tax = $44,250 * 2.5% = $1,106.25
+    az_income_tax_before_non_refundable_credits: 1_106.25
+
+- name: Joint filer 2025 standard deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 80_000
+      person2:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Federal AGI = $120,000
+    adjusted_gross_income: 120_000
+    # AZ filing status = JOINT
+    az_filing_status: JOINT
+    # AZ base standard deduction for joint = $31,500
+    az_base_standard_deduction: 31_500
+    # AZ taxable income = $120,000 - $31,500 = $88,500
+    az_taxable_income: 88_500
+    # AZ income tax = $88,500 * 2.5% = $2,212.50
+    az_income_tax_before_non_refundable_credits: 2_212.5
+
+- name: Separate filer 2025 basic calculation
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $45,000
+    adjusted_gross_income: 45_000
+    # AZ filing status = SEPARATE
+    az_filing_status: SEPARATE
+    # AZ base standard deduction for separate = $15,750
+    az_base_standard_deduction: 15_750
+    # AZ taxable income = $45,000 - $15,750 = $29,250
+    az_taxable_income: 29_250
+    # AZ income tax = $29,250 * 2.5% = $731.25
+    az_income_tax_before_non_refundable_credits: 731.25
+
+- name: Head of household 2025 standard deduction
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 75_000
+      child1:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: AZ
+  output:
+    # Federal AGI = $75,000
+    adjusted_gross_income: 75_000
+    # AZ filing status = HEAD_OF_HOUSEHOLD
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    # AZ base standard deduction for HOH = $23,625
+    az_base_standard_deduction: 23_625
+    # AZ Families Tax Rebate subtraction: 1 child under 17 = $250
+    az_families_tax_rebate_subtraction: 250
+    # AZ taxable income = $75,000 - $250 subtraction - $23,625 = $51,125
+    az_taxable_income: 51_125
+    # AZ income tax = $51,125 * 2.5% = $1,278.125
+    az_income_tax_before_non_refundable_credits: 1_278.125
+
+# =============================================================================
+# SECTION 2: Charitable Contribution Deduction Tests (34% rate in 2025)
+# =============================================================================
+
+- name: Joint filer 2025 with charitable deduction increase
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 80_000
+      person2:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Federal AGI = $120,000
+    adjusted_gross_income: 120_000
+    # AZ base standard deduction for joint = $31,500
+    az_base_standard_deduction: 31_500
+    # Increased standard deduction for charitable = $5,000 * 34% = $1,700
+    az_increased_standard_deduction_for_charitable_contributions: 1_700
+    # Total standard deduction = $31,500 + $1,700 = $33,200
+    az_standard_deduction: 33_200
+
+- name: Single filer 2025 with large charitable contribution
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        charitable_deduction: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Charitable increase = $10,000 * 34% = $3,400
+    az_increased_standard_deduction_for_charitable_contributions: 3_400
+    # Total standard deduction = $15,750 + $3,400 = $19,150
+    az_standard_deduction: 19_150
+    # Taxable income = $100,000 - $19,150 = $80,850
+    az_taxable_income: 80_850
+    # Tax = $80,850 * 2.5% = $2,021.25
+    az_income_tax_before_non_refundable_credits: 2_021.25
+
+- name: HOH 2025 with charitable and dependent
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 38
+        employment_income: 85_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        charitable_deduction: 3_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: AZ
+  output:
+    # Charitable increase = $3,000 * 34% = $1,020
+    az_increased_standard_deduction_for_charitable_contributions: 1_020
+    # Total standard deduction = $23,625 + $1,020 = $24,645
+    az_standard_deduction: 24_645
+    # Dependent tax credit: 1 child under 17 * $100 = $100
+    az_dependent_tax_credit: 100
+
+# =============================================================================
+# SECTION 3: Exemption Tests
+# =============================================================================
+
+- name: Single elderly filer 2025 with aged exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $50,000
+    adjusted_gross_income: 50_000
+    # AZ AGI = $50,000 - $2,100 = $47,900
+    az_agi: 47_900
+    # Taxable income = $47,900 - $15,750 = $32,150
+    az_taxable_income: 32_150
+
+- name: Joint elderly couple 2025 with aged exemptions
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 70
+        employment_income: 25_000
+      spouse2:
+        age: 67
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $45,000
+    adjusted_gross_income: 45_000
+    # AZ AGI = $45,000 - (2 * $2,100) = $40,800
+    az_agi: 40_800
+    # Taxable income = $40,800 - $31,500 = $9,300
+    az_taxable_income: 9_300
+    # Tax = $9,300 * 2.5% = $232.50
+    az_income_tax_before_non_refundable_credits: 232.5
+
+- name: Elderly person at threshold age (65) 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Age exactly 65 qualifies for aged exemption
+    az_agi: 37_900
+
+- name: Person just under aged exemption threshold (64)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Age 64 does not qualify for aged exemption
+    az_agi: 40_000
+
+- name: Blind filer exemption 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        blind_head: true
+        blind_spouse: false
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Blind exemption = $1,500
+    az_blind_exemption: 1_500
+    # AZ AGI = $50,000 - $1,500 = $48,500
+    az_agi: 48_500
+
+- name: Both spouses blind 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 40_000
+      person2:
+        age: 48
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: true
+        blind_spouse: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Both blind: 2 * $1,500 = $3,000
+    az_blind_exemption: 3_000
+    # AZ AGI = $70,000 - $3,000 = $67,000
+    az_agi: 67_000
+
+- name: Elderly and blind combined exemptions 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        blind_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Blind exemption = $1,500
+    az_blind_exemption: 1_500
+    # Total exemptions reduce AGI: $45,000 - $2,100 - $1,500 = $41,400
+    az_agi: 41_400
+
+# =============================================================================
+# SECTION 4: Dependent Tax Credit Tests (with phase-out)
+# =============================================================================
+
+- name: HOH with young children - no phase-out
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 75_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+      child3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: AZ
+  output:
+    # 3 children under 17: 3 * $100 = $300
+    az_dependent_tax_credit: 300
+
+- name: Joint filer with mixed-age children - no phase-out
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 200_000
+      parent2:
+        age: 43
+        employment_income: 150_000
+      child1:
+        age: 14
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: AZ
+  output:
+    # AGI = $350,000, under $400,000 joint threshold
+    # 1 child under 17: $100
+    # 1 child 17+: $25
+    # Total: $125
+    az_dependent_tax_credit: 125
+
+- name: Joint filer at phase-out threshold
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 50
+        employment_income: 250_000
+      parent2:
+        age: 48
+        employment_income: 150_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    # AGI = $400,000, exactly at $400,000 joint threshold
+    # No reduction at threshold
+    az_dependent_tax_credit: 100
+
+- name: Joint filer above phase-out threshold - partial credit
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 50
+        employment_income: 250_000
+      parent2:
+        age: 48
+        employment_income: 155_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: AZ
+  output:
+    # AGI = $405,000
+    # Over threshold by $5,000
+    # Reduction: ceil(5,000 / 1,000) = 5 increments * 5% = 25%
+    # Young child credit: $100 * (1 - 0.25) = $75
+    az_dependent_tax_credit: 75
+
+- name: Single filer above phase-out threshold - partial credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 210_000
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: AZ
+  output:
+    # AGI = $210,000
+    # Over $200,000 threshold by $10,000
+    # Reduction: ceil(10,000 / 1,000) = 10 increments * 5% = 50%
+    # Young child credit: $100 * (1 - 0.50) = $50
+    az_dependent_tax_credit: 50
+
+- name: Single filer with full phase-out - no credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 230_000
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: AZ
+  output:
+    # AGI = $230,000
+    # Over $200,000 threshold by $30,000
+    # Reduction: ceil(30,000 / 1,000) = 30 increments * 5% = 150% (capped at 100%)
+    # Credit fully phased out
+    az_dependent_tax_credit: 0
+
+# =============================================================================
+# SECTION 5: Family Tax Credit Tests
+# =============================================================================
+
+- name: Joint filers 2025 with family tax credit eligible - 0 dependents
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 30
+        employment_income: 9_000
+      spouse2:
+        age: 28
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $17,000
+    adjusted_gross_income: 17_000
+    # Income $17,000 < $20,000 limit for 0-1 dependents - family credit eligible
+    az_family_tax_credit_eligible: true
+    # Family tax credit: 2 people * $40 = $80 (max $240 for joint)
+    az_family_tax_credit: 80
+
+- name: Joint filers 2025 with 2 dependents - family credit
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 35
+        employment_income: 12_000
+      spouse2:
+        age: 33
+        employment_income: 10_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2, child1, child2]
+    households:
+      household:
+        members: [spouse1, spouse2, child1, child2]
+        state_code: AZ
+  output:
+    # Federal AGI = $22,000
+    adjusted_gross_income: 22_000
+    # Income $22,000 < $23,600 limit for 2 dependents - eligible
+    az_family_tax_credit_eligible: true
+    # Family tax credit: 4 people * $40 = $160
+    az_family_tax_credit: 160
+
+- name: Joint filers 2025 over income limit - no family credit
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 35
+        employment_income: 25_000
+      spouse2:
+        age: 33
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $35,000
+    adjusted_gross_income: 35_000
+    # Income $35,000 > $20,000 limit for 0-1 dependents - not eligible
+    az_family_tax_credit_eligible: false
+    az_family_tax_credit: 0
+
+- name: Single filer 2025 under income limit - family credit eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 9_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Income $9,500 < $10,000 limit for single filers
+    az_family_tax_credit_eligible: true
+    # Single filer: 1 person * $40 = $40 (max $120)
+    az_family_tax_credit: 40
+
+- name: Single filer 2025 over income limit - no family credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Income $11,000 > $10,000 limit for single filers
+    az_family_tax_credit_eligible: false
+    az_family_tax_credit: 0
+
+- name: HOH with 5 dependents at max family credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 26_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+      child3:
+        age: 10
+      child4:
+        age: 12
+      child5:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: AZ
+  output:
+    # Income $26,000 < $26,575 limit for HOH with 5+ dependents
+    az_family_tax_credit_eligible: true
+    # 6 people * $40 = $240, at max for HOH
+    az_family_tax_credit: 240
+
+# =============================================================================
+# SECTION 6: Increased Excise Tax Credit Tests
+# =============================================================================
+
+- name: Low income single 2025 with excise tax credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = $12,000
+    adjusted_gross_income: 12_000
+    # Income $12,000 < $12,500 limit for single - excise credit eligible
+    az_increased_excise_tax_credit_eligible: true
+    # Excise tax credit: 1 person * $25 = $25
+    az_increased_excise_tax_credit: 25
+
+- name: Single at excise credit threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 12_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Income $12,500 = threshold - should still be eligible
+    az_increased_excise_tax_credit_eligible: true
+    az_increased_excise_tax_credit: 25
+
+- name: Single over excise credit threshold - not eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 12_501
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Income $12,501 > $12,500 threshold - not eligible
+    az_increased_excise_tax_credit_eligible: false
+    az_increased_excise_tax_credit: 0
+
+- name: Joint filers with excise tax credit - 4 people max
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 30
+        employment_income: 12_000
+      spouse2:
+        age: 28
+        employment_income: 10_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2, child1, child2]
+    households:
+      household:
+        members: [spouse1, spouse2, child1, child2]
+        state_code: AZ
+  output:
+    # Federal AGI = $22,000
+    # Income $22,000 < $25,000 joint threshold - eligible
+    az_increased_excise_tax_credit_eligible: true
+    # 4 people * $25 = $100 (at max)
+    az_increased_excise_tax_credit: 100
+
+- name: Joint filers with 5+ people - capped at max $100
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 35
+        employment_income: 12_000
+      spouse2:
+        age: 33
+        employment_income: 10_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+      child3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2, child1, child2, child3]
+    households:
+      household:
+        members: [spouse1, spouse2, child1, child2, child3]
+        state_code: AZ
+  output:
+    # Income $22,000 < $25,000 joint threshold - eligible
+    az_increased_excise_tax_credit_eligible: true
+    # 5 people * $25 = $125, but capped at $100 max
+    az_increased_excise_tax_credit: 100
+
+- name: HOH with children - excise tax credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: AZ
+  output:
+    # Income $24,000 < $25,000 HOH threshold - eligible
+    az_increased_excise_tax_credit_eligible: true
+    # 3 people * $25 = $75
+    az_increased_excise_tax_credit: 75
+
+# =============================================================================
+# SECTION 7: Subtraction Tests
+# =============================================================================
+
+# Capital Gains Subtraction (25%)
+
+- name: Single filer with capital gains subtraction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 80_000
+        long_term_capital_gains: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Capital gains subtraction: $40,000 * 25% = $10,000
+    az_long_term_capital_gains_subtraction: 10_000
+
+# Public Pension Subtraction (capped at $2,500 per person)
+
+- name: Single retiree with public pension under cap
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Pension income $2,000 is under $2,500 cap
+    az_public_pension_exclusion: 2_000
+
+- name: Single retiree with public pension over cap
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Pension income $5,000 exceeds $2,500 cap - capped
+    az_public_pension_exclusion: 2_500
+
+- name: Joint retirees with public pension - both under cap
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 70
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 2_000
+      spouse2:
+        age: 68
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Both under cap: $2,000 + $1,500 = $3,500
+    az_public_pension_exclusion: 3_500
+
+- name: Joint retirees with public pension - both over cap
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 70
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 4_000
+      spouse2:
+        age: 68
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 3_500
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Each capped at $2,500: $2,500 + $2,500 = $5,000
+    az_public_pension_exclusion: 5_000
+
+# 529 College Savings Subtraction
+
+- name: Joint filers with 529 contributions
+  period: 2025
+  input:
+    people:
+      person1:
+        count_529_contribution_beneficiaries: 1
+      person2:
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        az_filing_status: JOINT
+        investment_in_529_plan: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 2 beneficiaries * $4,000 limit for joint = $8,000 max
+    az_529_college_savings_plan_subtraction: 8_000
+
+- name: Single filer with 529 contribution over limit
+  period: 2025
+  input:
+    people:
+      person1:
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+        az_filing_status: SINGLE
+        investment_in_529_plan: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Single filer: $2,000 limit per beneficiary
+    # $3,000 contribution capped at $2,000
+    az_529_college_savings_plan_subtraction: 2_000
+
+# 529A ABLE Account Subtraction
+
+- name: Joint filer with ABLE contribution
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    able_contributions: 3_500
+  output:
+    # Joint filers have $4,000 limit - $3,500 is under limit
+    az_529a_able_account_subtraction: 3_500
+
+# Adoption Expense Subtraction (2025: $40,000 max)
+
+- name: Joint filer with adoption expense at 2025 limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    qualified_adoption_assistance_expense: 40_000
+  output:
+    # Joint filers have same $40,000 limit for 2023-2025
+    az_adoption_expense_subtraction: 40_000
+
+- name: Single filer with adoption expense under limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    qualified_adoption_assistance_expense: 25_000
+  output:
+    # All filing statuses have $40,000 limit for 2023-2025
+    az_adoption_expense_subtraction: 25_000
+
+# =============================================================================
+# SECTION 8: Complex End-to-End Scenarios
+# =============================================================================
+
+- name: Elderly couple with multiple exemptions and credits
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 68
+        employment_income: 10_000
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 3_000
+      spouse2:
+        age: 66
+        employment_income: 8_000
+        is_tax_unit_head_or_spouse: true
+        taxable_public_pension_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        charitable_deduction: 2_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: AZ
+  output:
+    # Federal AGI = $10,000 + $8,000 + $3,000 + $2,000 = $23,000
+    adjusted_gross_income: 23_000
+    # Public pension: $2,500 + $2,000 = $4,500 (spouse1 capped)
+    az_public_pension_exclusion: 4_500
+    # Charitable: $2,000 * 34% = $680
+    az_increased_standard_deduction_for_charitable_contributions: 680
+    # Standard deduction: $31,500 + $680 = $32,180
+    az_standard_deduction: 32_180
+    # Income under $25,000 for joint - excise credit eligible
+    az_increased_excise_tax_credit_eligible: true
+    az_increased_excise_tax_credit: 50
+    # Income under $20,000 limit for 0-1 dependents - family credit eligible
+    az_family_tax_credit_eligible: true
+    az_family_tax_credit: 80
+
+- name: High income family - complete calculation
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 48
+        employment_income: 200_000
+        long_term_capital_gains: 50_000
+      parent2:
+        age: 46
+        employment_income: 100_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        charitable_deduction: 15_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: AZ
+  output:
+    # Federal AGI = $200,000 + $100,000 + $50,000 = $350,000
+    adjusted_gross_income: 350_000
+    # Capital gains subtraction: $50,000 * 25% = $12,500
+    az_long_term_capital_gains_subtraction: 12_500
+    # Charitable increase: $15,000 * 34% = $5,100
+    az_increased_standard_deduction_for_charitable_contributions: 5_100
+    # Standard deduction: $31,500 + $5,100 = $36,600
+    az_standard_deduction: 36_600
+    # Dependent credit: 2 children under 17 * $100 = $200 (under $400k threshold)
+    az_dependent_tax_credit: 200
+    # Not eligible for family credit (income too high)
+    az_family_tax_credit_eligible: false
+    az_family_tax_credit: 0
+    # Not eligible for excise credit (income too high)
+    az_increased_excise_tax_credit_eligible: false
+    az_increased_excise_tax_credit: 0
+
+- name: Low income single parent - eligible for multiple credits
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 18_000
+      child1:
+        age: 4
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: AZ
+  output:
+    # Federal AGI = $18,000
+    adjusted_gross_income: 18_000
+    # HOH standard deduction = $23,625
+    az_base_standard_deduction: 23_625
+    # Dependent credit: 2 children under 17 * $100 = $200
+    az_dependent_tax_credit: 200
+    # Income $18,000 < $20,000 for HOH with 0-1 deps - family credit eligible
+    az_family_tax_credit_eligible: true
+    # 3 people * $40 = $120
+    az_family_tax_credit: 120
+    # Income $18,000 < $25,000 for HOH - excise credit eligible
+    az_increased_excise_tax_credit_eligible: true
+    # 3 people * $25 = $75
+    az_increased_excise_tax_credit: 75
+
+# =============================================================================
+# SECTION 9: Year-over-Year Comparison (2024 vs 2025)
+# =============================================================================
+
+- name: Compare 2024 vs 2025 standard deduction - single
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 2024 single standard deduction = $14,600
+    az_base_standard_deduction: 14_600
+    # Taxable income = $60,000 - $14,600 = $45,400
+    az_taxable_income: 45_400
+    # Tax = $45,400 * 2.5% = $1,135
+    az_income_tax_before_non_refundable_credits: 1_135
+
+- name: Compare 2024 charitable rate (33%) vs 2025 (34%)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        charitable_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # 2024 charitable rate = 33%
+    # Charitable increase: $5,000 * 33% = $1,650
+    az_increased_standard_deduction_for_charitable_contributions: 1_650
+
+# =============================================================================
+# SECTION 10: Non-Arizona Resident Tests
+# =============================================================================
+
+- name: Non-Arizona resident - no state credits
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Non-AZ residents should not receive AZ-specific benefits
+    az_increased_excise_tax_credit_eligible: false
+    az_increased_excise_tax_credit: 0
+    az_family_tax_credit_eligible: false
+    az_family_tax_credit: 0

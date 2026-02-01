@@ -1,0 +1,23 @@
+description: Arizona limits the number of dependents counted for the Families Tax Rebate based on filing status.
+metadata:
+  period: year
+  unit: /1
+  label: Arizona Families Tax Rebate maximum dependents
+  propagate_metadata_to_children: true
+  breakdown:
+    - filing_status
+  reference:
+    - title: Arizona Families Tax Rebate
+      href: https://azdor.gov/individuals/arizona-families-tax-rebate
+    - title: SB1734 - Arizona Families Tax Rebate
+      href: https://www.azleg.gov/legtext/56leg/1r/laws/0147.htm
+SINGLE:
+  2021-01-01: 3
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 3
+SEPARATE:
+  2021-01-01: 3
+SURVIVING_SPOUSE:
+  2021-01-01: 3
+JOINT:
+  2021-01-01: 6
