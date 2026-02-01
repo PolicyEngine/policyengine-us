@@ -1,0 +1,50 @@
+- name: SSI recipient has all income excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_reported: 10_000  # YEAR
+        employment_income_before_lsr: 12_000  # YEAR -> 1000/mo earned
+        social_security: 6_000  # YEAR -> 500/mo unearned
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # SSI recipient: all earned (1000) + unearned (500)
+    ma_tafdc_ssi_recipient_earned_income_exclusion: 1_000
+    ma_tafdc_ssi_recipient_unearned_income_exclusion: 500
+    ma_tafdc_ssi_recipient_income_exclusion: 1_500
+
+- name: Non-SSI recipient has no exclusion
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi_reported: 0
+        employment_income_before_lsr: 12_000  # YEAR -> 1000/mo
+        social_security: 6_000  # YEAR -> 500/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_ssi_recipient_earned_income_exclusion: 0
+    ma_tafdc_ssi_recipient_unearned_income_exclusion: 0
+    ma_tafdc_ssi_recipient_income_exclusion: 0

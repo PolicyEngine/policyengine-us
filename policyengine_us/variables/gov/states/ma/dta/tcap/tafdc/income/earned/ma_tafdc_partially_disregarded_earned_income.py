@@ -20,7 +20,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
 
-        gross_earned_income = person("ma_tcap_gross_earned_income", period)
+        gross_earned_income = person("ma_tafdc_gross_earned_income", period)
         earned_income_after_work_related_deduction = max_(
             0, gross_earned_income - work_related_deduction
         )

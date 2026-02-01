@@ -1,0 +1,80 @@
+- name: Lump sum under cap is fully excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ma_tafdc_lump_sum_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_lump_sum_income_exclusion: 400
+
+- name: Lump sum at cap is fully excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ma_tafdc_lump_sum_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_lump_sum_income_exclusion: 600
+
+- name: Lump sum over cap is partially excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ma_tafdc_lump_sum_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Capped at $600
+    ma_tafdc_lump_sum_income_exclusion: 600
+
+- name: No lump sum income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ma_tafdc_lump_sum_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_lump_sum_income_exclusion: 0

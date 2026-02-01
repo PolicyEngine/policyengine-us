@@ -16,7 +16,7 @@ class ma_tafdc_countable_earned_income(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
-        total_earned_income = person("ma_tcap_gross_earned_income", period)
+        total_earned_income = person("ma_tafdc_gross_earned_income", period)
         # fully disregard for 6 months
         full_disregard_eligible = person(
             "ma_tafdc_full_earned_income_disregard_eligible", period
