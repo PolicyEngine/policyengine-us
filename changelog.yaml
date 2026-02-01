@@ -12655,3 +12655,11 @@
     - Corrected 2020 surviving spouse standard deduction from $24,400 to $24,800 to
       match joint filers per 26 USC 63(c)(2)(A).
   date: 2026-02-01 21:59:11
+- bump: patch
+  changes:
+    fixed:
+    - Backdate Oklahoma TANF parameters to correct effective dates.
+    - Backdate Wisconsin Works parameters to correct effective dates.
+    - Backdate Ohio Works First parameters to correct effective dates and add COLA
+      multiplier for dynamic payment standards.
+  date: 2026-02-01 22:06:11
