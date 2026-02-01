@@ -1,0 +1,85 @@
+- name: Child under 16 has earned income excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 14
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_child_earned_income_exclusion:
+      - 0  # parent: not a dependent child
+      - 500  # child1: under 16, full exclusion
+
+- name: Child 16+ full-time student has earned income excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 17
+        is_full_time_student: true
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_child_earned_income_exclusion:
+      - 0  # parent
+      - 500  # child1: 16+ student, excluded
+
+- name: Child 16+ non-student does NOT have earned income excluded
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 17
+        is_full_time_student: false
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_child_earned_income_exclusion:
+      - 0  # parent
+      - 0  # child1: 16+ non-student, NOT excluded

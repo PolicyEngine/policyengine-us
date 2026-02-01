@@ -16,7 +16,9 @@ class ma_tafdc_earned_income_after_deductions(Variable):
         # The 50% disregard only applies the unit has received TAFDC in the past 4 months and
         # is re-applying due to temporary ineligibility
         gross_earned_income = add(
-            spm_unit, period, ["ma_tcap_gross_earned_income"]
+            spm_unit,
+            period,
+            ["ma_tafdc_gross_earned_income"],
         )
         deductions = add(
             spm_unit,

@@ -1,0 +1,14 @@
+description: >-
+  Age below which a dependent child's earned income is
+  unconditionally excluded from TAFDC countable income.
+  Children at or above this age must be full-time students
+  for the exclusion to apply.
+metadata:
+  unit: year
+  period: year
+  label: Massachusetts TAFDC child earned income exclusion age threshold
+  reference:
+    - title: 106 CMR 704.250(U) - Noncountable Income
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250
+values:
+  0001-01-01: 16
