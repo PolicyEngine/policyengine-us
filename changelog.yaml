@@ -12649,3 +12649,9 @@
     - Mississippi income tax now correctly uses loss-limited capital gains (federal
       $3K limit) instead of unlimited raw capital gains.
   date: 2026-02-01 21:55:06
+- bump: patch
+  changes:
+    fixed:
+    - Corrected 2020 surviving spouse standard deduction from $24,400 to $24,800 to
+      match joint filers per 26 USC 63(c)(2)(A).
+  date: 2026-02-01 21:59:11
