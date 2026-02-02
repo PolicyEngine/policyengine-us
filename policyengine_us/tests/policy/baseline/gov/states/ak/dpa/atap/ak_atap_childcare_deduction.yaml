@@ -1,0 +1,233 @@
+# Unit tests for Alaska ATAP childcare deduction
+# 7 AAC 45.485 - Incapacitated-parent and child care disregard
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.485
+# Child care expenses excluded up to:
+# - $200/month per child under age 2
+# - $175/month per child age 2 and older
+# NOTE: childcare_expenses is YEAR-defined, so input annual values (monthly * 12)
+
+- name: Case 1, no children with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 6_000  # $500/month annual = $6,000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # No children = no eligible disregard caps
+    # Total max disregard = $0 (adult gets $0 from calc)
+    # Disregard = min($500, $0) = $0
+    ak_atap_childcare_deduction: 0
+
+- name: Case 2, one child under 2, expenses below cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_800  # $150/month annual = $1,800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 1: cap = $200/month
+    # Monthly expenses = $1,800 / 12 = $150
+    # Disregard = min($150, $200) = $150
+    ak_atap_childcare_deduction: 150
+
+- name: Case 3, one child under 2, expenses at cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month annual = $2,400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 1: cap = $200/month
+    # Monthly expenses = $2,400 / 12 = $200
+    # Disregard = min($200, $200) = $200
+    ak_atap_childcare_deduction: 200
+
+- name: Case 4, one child under 2, expenses above cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month annual = $3,600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 1: cap = $200/month
+    # Monthly expenses = $3,600 / 12 = $300
+    # Disregard = min($300, $200) = $200 (capped)
+    ak_atap_childcare_deduction: 200
+
+- name: Case 5, one child exactly age 2 (boundary), expenses at cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400  # $200/month annual = $2,400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 2: cap = $175/month (age 2 and older)
+    # Monthly expenses = $2,400 / 12 = $200
+    # Disregard = min($200, $175) = $175 (capped at $175)
+    ak_atap_childcare_deduction: 175
+
+- name: Case 6, one child age 2 or older, expenses below cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_200  # $100/month annual = $1,200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 5: cap = $175/month
+    # Monthly expenses = $1,200 / 12 = $100
+    # Disregard = min($100, $175) = $100
+    ak_atap_childcare_deduction: 100
+
+- name: Case 7, one child age 2 or older, expenses above cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month annual = $3,000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 5: cap = $175/month
+    # Monthly expenses = $3,000 / 12 = $250
+    # Disregard = min($250, $175) = $175 (capped)
+    ak_atap_childcare_deduction: 175
+
+- name: Case 8, two children mixed ages, expenses above combined cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_800  # $400/month annual = $4,800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Child age 1: cap = $200/month
+    # Child age 4: cap = $175/month
+    # Total max disregard = $200 + $175 = $375
+    # Monthly expenses = $4,800 / 12 = $400
+    # Disregard = min($400, $375) = $375 (capped at combined limit)
+    ak_atap_childcare_deduction: 375
+
+- name: Case 9, two children mixed ages, expenses below combined cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_600  # $300/month annual = $3,600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Child age 1: cap = $200/month
+    # Child age 4: cap = $175/month
+    # Total max disregard = $200 + $175 = $375
+    # Monthly expenses = $3,600 / 12 = $300
+    # Disregard = min($300, $375) = $300 (expenses below cap)
+    ak_atap_childcare_deduction: 300
+
+- name: Case 10, zero childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child age 3: cap = $175/month
+    # Monthly expenses = $0
+    # Disregard = min($0, $175) = $0
+    ak_atap_childcare_deduction: 0

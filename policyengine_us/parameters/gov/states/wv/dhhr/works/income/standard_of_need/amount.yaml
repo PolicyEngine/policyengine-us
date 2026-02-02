@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Assistance group size
   label: West Virginia Works standard of need amount
   reference:
     - title: WV Income Maintenance Manual Chapter 10, Appendix A

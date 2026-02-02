@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 EXTRA_PUF_VARIABLES = [
     "e02000",
     "e26270",

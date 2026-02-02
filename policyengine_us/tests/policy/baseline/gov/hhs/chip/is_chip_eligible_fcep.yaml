@@ -111,3 +111,82 @@
         members: [head]
   output:
     is_chip_fcep_eligible_person: False
+
+# Boundary tests to verify 5% FPL disregard is correctly included in limits
+# AR has statutory limit of 209% FPL, effective limit with disregard is 214%
+- name: AR boundary - just below 214% FPL limit (eligible)
+  period: 2023
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.13  # Just below AR's limit (209% + 5% disregard = 214%)
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AR
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+- name: AR boundary - above 214% FPL limit (not eligible)
+  period: 2023
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.15  # Above AR's limit
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AR
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
+
+# SD has lowest limit: 133% statutory, 138% effective with disregard
+- name: SD boundary - at 138% FPL limit (eligible)
+  period: 2023
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 1.38  # Exactly at SD's limit (133% + 5% disregard)
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: SD
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+- name: SD boundary - just above 138% FPL limit (not eligible)
+  period: 2023
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 1.39  # Just above SD's limit
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: SD
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False

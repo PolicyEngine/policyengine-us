@@ -37,6 +37,12 @@ class ca_riv_general_relief_eligible(Variable):
         income_eligible = spm_unit(
             "ca_riv_general_relief_income_eligible", period
         )
+        # Ensure at least one person in the unit is not an ineligible person
+        # (e.g., due to SSI/TANF receipt, immigration status, or work requirements)
+        budget_unit_size = spm_unit(
+            "ca_riv_general_relief_budget_unit_size", period
+        )
+        has_eligible_person = budget_unit_size > 0
 
         return (
             age_eligible
@@ -44,4 +50,5 @@ class ca_riv_general_relief_eligible(Variable):
             & property_eligible
             & income_eligible
             & meets_work_requirements
+            & has_eligible_person
         )

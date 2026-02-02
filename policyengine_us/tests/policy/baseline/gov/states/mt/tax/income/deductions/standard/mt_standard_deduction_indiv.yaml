@@ -59,11 +59,11 @@
   output:
     mt_standard_deduction_indiv: [2_260, 5_090, 0]
 
-- name: 2024 uses federal standard deduction
+- name: Indiv path disabled in 2024 (MFSS repealed)
   period: 2024
   input:
     state_code: MT
     mt_agi_indiv: 12_950
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
   output:
-    mt_standard_deduction_indiv: 14_600
+    mt_standard_deduction_indiv: 0

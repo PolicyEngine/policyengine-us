@@ -23,3 +23,104 @@
     state_code: MI
   output: # 5_000 + 5_000
     mi_personal_exemptions: 10_000
+
+# 2025 test cases - personal exemption is $5,800
+- name: Michigan personal exemption 2025, single filer
+  period: 2025
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 2025 personal exemption: $5,800 per person
+    mi_personal_exemptions: 5_800
+
+- name: Michigan personal exemption 2025, family of 4
+  period: 2025
+  input:
+    tax_unit_size: 4
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 2025 personal exemption: $5,800 * 4 = $23,200
+    mi_personal_exemptions: 23_200
+
+- name: Michigan personal exemption 2025, with stillborn children
+  period: 2025
+  input:
+    tax_unit_size: 2
+    tax_unit_stillborn_children: 1
+    state_code: MI
+  output:
+    # 2025: $5,800 * 2 (filers) + $5,800 * 1 (stillborn) = $17,400
+    mi_personal_exemptions: 17_400
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Personal Exemption ($5,800)
+# ============================================================================
+
+# Edge case: Zero dependents (minimum case)
+- name: Case 1, 2025 edge case zero dependents, single person only.
+  period: 2025
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # Minimum exemption: 1 person * $5,800 = $5,800
+    mi_personal_exemptions: 5_800
+
+# Edge case: Maximum realistic number of dependents (8 people)
+- name: Case 2, 2025 edge case large family with 8 members.
+  period: 2025
+  input:
+    tax_unit_size: 8
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # Large family: 8 persons * $5,800 = $46,400
+    mi_personal_exemptions: 46_400
+
+# Edge case: Extremely large household (stress test)
+- name: Case 3, 2025 edge case maximum household size of 12.
+  period: 2025
+  input:
+    tax_unit_size: 12
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 12 persons * $5,800 = $69,600
+    mi_personal_exemptions: 69_600
+
+# Edge case: Multiple stillborn children
+- name: Case 4, 2025 edge case multiple stillborn children.
+  period: 2025
+  input:
+    tax_unit_size: 2
+    tax_unit_stillborn_children: 3
+    state_code: MI
+  output:
+    # 2 persons + 3 stillborn = 5 total * $5,800 = $29,000
+    mi_personal_exemptions: 29_000
+
+# Edge case: Single parent with many children
+- name: Case 5, 2025 edge case single parent with 5 children.
+  period: 2025
+  input:
+    tax_unit_size: 6
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 1 parent + 5 children = 6 * $5,800 = $34,800
+    mi_personal_exemptions: 34_800
+
+# Edge case: Joint filers with no dependents
+- name: Case 6, 2025 edge case joint filers with no dependents.
+  period: 2025
+  input:
+    tax_unit_size: 2
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 2 filers * $5,800 = $11,600
+    mi_personal_exemptions: 11_600

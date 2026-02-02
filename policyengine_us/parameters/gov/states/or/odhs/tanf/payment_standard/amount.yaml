@@ -6,6 +6,8 @@ metadata:
   label: Oregon TANF payment standard
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Need group size
   reference:
     - title: OAR 461-155-0030(5)(a) - Income and Payment Standards; REF, TANF
       href: https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=268185
