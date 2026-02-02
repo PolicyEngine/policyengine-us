@@ -12722,3 +12722,9 @@
     changed:
     - title: Update Hawaii income tax parameters with 2025 references
   date: 2026-02-02 00:34:36
+- bump: minor
+  changes:
+    changed:
+    - Disable Montana _indiv computation path for 2024+ when married filing separately
+      on same return is no longer allowed.
+  date: 2026-02-02 00:48:06
