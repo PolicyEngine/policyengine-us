@@ -12709,3 +12709,11 @@
     - CT Social Security benefit adjustment now uses actual federal taxable Social
       Security amount instead of 85% of gross Social Security.
   date: 2026-02-02 00:00:17
+- bump: minor
+  changes:
+    added:
+    - NY TANF pre-October 2022 gross income test and immigration eligibility check.
+    changed:
+    - NY TANF parameters backfilled to 1998 with October 2022 reform rules per 22-ADM-11.
+    - NY TANF earned income deduction calculation order changes by reform date.
+  date: 2026-02-02 00:11:19

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.542.0] - 2026-02-02 00:11:19
+
+### Added
+
+- NY TANF pre-October 2022 gross income test and immigration eligibility check.
+
+### Changed
+
+- NY TANF parameters backfilled to 1998 with October 2022 reform rules per 22-ADM-11.
+- NY TANF earned income deduction calculation order changes by reform date.
+
 ## [1.541.1] - 2026-02-02 00:00:17
 
 ### Fixed
@@ -14799,6 +14810,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.542.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.541.1...1.542.0
 [1.541.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.541.0...1.541.1
 [1.541.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.540.1...1.541.0
 [1.540.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.540.0...1.540.1
