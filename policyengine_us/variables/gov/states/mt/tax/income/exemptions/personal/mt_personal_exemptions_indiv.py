@@ -7,7 +7,7 @@ class mt_personal_exemptions_indiv(Variable):
     label = "Montana exemptions when married couples file separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions

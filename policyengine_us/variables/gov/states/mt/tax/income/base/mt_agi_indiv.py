@@ -7,7 +7,7 @@ class mt_agi_indiv(Variable):
     label = "Montana Adjusted Gross Income for each individual"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         agi = person("adjusted_gross_income_person", period)
