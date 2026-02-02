@@ -1,0 +1,150 @@
+# Unit tests for Alaska ATAP countable unearned income
+# 7 AAC 45.470 - Income eligibility
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.470
+# 7 AAC 45.400 - Child support treatment (first $50 passthrough)
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.400
+# Unearned income generally counted in full, except child support passthrough
+
+- name: Case 1, no unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_atap_countable_unearned_income: 0
+
+- name: Case 2, Social Security income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 9_000  # $750/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Social Security counted in full: $750/month
+    ak_atap_countable_unearned_income: 750
+
+- name: Case 3, child support under passthrough amount.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child support $30/month, passthrough $50
+    # max($30 - $50, 0) = $0 counted
+    ak_atap_countable_unearned_income: 0
+
+- name: Case 4, child support over passthrough amount.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child support $150/month, passthrough $50
+    # Countable: $150 - $50 = $100
+    ak_atap_countable_unearned_income: 100
+
+- name: Case 5, child support exactly at passthrough.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Child support $50/month = passthrough
+    # Countable: $50 - $50 = $0
+    ak_atap_countable_unearned_income: 0
+
+- name: Case 6, social security income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Social security counted in full: $500/month
+    ak_atap_countable_unearned_income: 500
+
+- name: Case 7, multiple unearned income sources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_600  # $300/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Social security: $300
+    # Child support: $100 - $50 passthrough = $50
+    # Total: $300 + $50 = $350
+    ak_atap_countable_unearned_income: 350

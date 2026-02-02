@@ -1,0 +1,28 @@
+description: Virginia applies this multiplier to base Temporary Assistance for Needy Families standards of assistance.
+
+metadata:
+  unit: /1
+  period: year
+  label: Virginia TANF standard of assistance multiplier
+  reference:
+    - title: Virginia TANF Interim Working Group Report - January 2023
+      href: https://rga.lis.virginia.gov/Published/2023/RD81/PDF#page=4
+    - title: HB30 Conference Report 341#2c - 2022 TANF Standards Increase
+      href: https://budget.lis.virginia.gov/amendment/2022/2/HB30/Introduced/CR/341/2c/
+    - title: SB800 Budget Amendment 341#1s - 2023 TANF Standards Increase
+      href: https://budget.lis.virginia.gov/amendment/2023/1/SB800/Introduced/FA/341/1s/
+
+# Multipliers calculated relative to 2020-07-01 base values in parameter tables                                                                                             
+# Historical increases: Jan 2016 (+2.5%), Jul 2016 (+2.5%), Jul 2017 (+2.5%),                                                                                               
+# Jul 2019 (+5%), Jul 2020 (+15%), Jul 2021 (+10%), Jul 2022 (+5%), Jul 2023 (+10%)
+values:
+  # Pre-2016 base (before any increases since 2016) 
+  1996-01-01: 0.7691
+  2016-01-01: 0.7883
+  2016-07-01: 0.808
+  2017-07-01: 0.8282
+  2019-07-01: 0.8696
+  2020-07-01: 1.0
+  2021-07-01: 1.1
+  2022-07-01: 1.155
+  2023-07-01: 1.2705

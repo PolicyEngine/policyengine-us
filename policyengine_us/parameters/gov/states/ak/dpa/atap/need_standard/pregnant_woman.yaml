@@ -1,0 +1,26 @@
+description: Alaska provides this amount as the need standard for a pregnant woman under the Alaska Temporary Assistance Program.
+
+# Note: Values from 2017-2022 are estimated by applying SSI COLA percentages
+# backwards from 2023 authoritative values. No official documentation exists
+# to verify these historical values.
+values:
+  2017-01-01: 883
+  2018-01-01: 900
+  2019-01-01: 925
+  2020-01-01: 940
+  2021-01-01: 953
+  2022-01-01: 1_009
+  2023-01-01: 1_097
+  2024-01-01: 1_132
+  2025-01-01: 1_160
+  2026-01-01: 1_192
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Alaska ATAP pregnant woman need standard
+  reference:
+    - title: 7 AAC 45.520 - Qualifying standards
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+    - title: Temporary Assistance Need and Maximum Payment Standards - Pregnant Woman
+      href: http://dpaweb.hss.state.ak.us/POLICY/PDF/TA-Standards.pdf#page=5

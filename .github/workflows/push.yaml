@@ -2,10 +2,7 @@ name: Push
 on:
   push:
     branches: [main]
-# Concurrency: queues runs to ensure each merge completes its versioning/publishing
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+
 jobs:
   Lint:
     runs-on: ubuntu-latest
