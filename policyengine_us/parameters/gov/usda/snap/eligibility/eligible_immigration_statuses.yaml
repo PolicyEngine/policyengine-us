@@ -1,0 +1,28 @@
+description: The Department of Agriculture limits Supplemental Nutrition Assistance Program eligibility to these immigration statuses.
+values:
+  2018-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+
+  2025-07-04:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - CUBAN_HAITIAN_ENTRANT
+
+metadata:
+  label: SNAP eligible immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: 7 USC 2015(f) - Eligibility disqualifications
+      href: https://www.law.cornell.edu/uscode/text/7/2015#f
+    - title: 8 USC 1612 - Limited eligibility of qualified aliens for certain Federal programs
+      href: https://www.law.cornell.edu/uscode/text/8/1612
+    - title: USDA FNS - SNAP Implementation of OBBB - Alien SNAP Eligibility
+      href: https://www.fns.usda.gov/snap/obbb-alien-eligibility
