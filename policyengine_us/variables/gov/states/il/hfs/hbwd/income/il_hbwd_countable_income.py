@@ -14,8 +14,9 @@ class il_hbwd_countable_income(Variable):
     defined_for = "is_tax_unit_head_or_spouse"
 
     adds = [
-        "il_aabd_earned_income_after_exemption_person",
+        "il_hbwd_countable_earned_income",
         "il_hbwd_countable_unearned_income",
     ]
     # Per § 120.510(f), count income of individual AND spouse
+    # Per § 120.510(i), earned income exemptions apply only to disabled worker
     # Adds automatically sums across SPM unit members
