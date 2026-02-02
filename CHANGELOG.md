@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.544.0] - 2026-02-02 00:56:29
+
+### Changed
+
+- {'description': 'Updates Georgia income tax parameters for 2025 tax year based on the IT-511 Instructions Booklet:\n- Corrects 2025 tax rate to 5.19% (from incorrectly projected 5.29%)\n- Adds 2025 IT-511 references to all income tax parameters\n- Verifies CDCC credit rate at 50% of federal credit for 2025\n- Confirms standard deductions, dependent exemption, retirement exclusions, military retirement exclusions, and itemizer credit values\n', 'title': 'Update Georgia 2025 individual income tax model'}
+
 ## [1.543.0] - 2026-02-02 00:48:06
 
 ### Changed
@@ -14822,6 +14828,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.544.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.543.0...1.544.0
 [1.543.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.1...1.543.0
 [1.542.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.0...1.542.1
 [1.542.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.541.1...1.542.0
