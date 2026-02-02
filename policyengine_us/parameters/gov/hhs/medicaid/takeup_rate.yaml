@@ -1,12 +1,116 @@
 description: Percentage of people who do enroll in Medicaid, if eligible.
-values:
-  2018-01-01: 0.93
 metadata:
   label: Medicaid takeup rate
   unit: /1
   period: year
   economy: false
   household: false
+  breakdown:
+    - state_code
   reference:
     - title: KFF "A Closer Look at the Remaining Uninsured Population Eligible for Medicaid and CHIP"
-      href: https://www.kff.org/uninsured/issue-brief/a-closer-look-at-the-remaining-uninsured-population-eligible-for-medicaid-and-chip/#:~:text=the%20uninsured%20rate%20dropped%20to,States%20began%20the
+      href: https://www.kff.org/uninsured/issue-brief/a-closer-look-at-the-remaining-uninsured-population-eligible-for-medicaid-and-chip/
+    - title: State-specific rates derived from MACPAC enrollment targets vs modeled eligibility
+      href: https://www.medicaid.gov/medicaid/program-information/medicaid-and-chip-enrollment-data/report-highlights/index.html
+AK:
+  2018-01-01: 0.88
+AL:
+  2018-01-01: 0.92
+AR:
+  2018-01-01: 0.79
+AZ:
+  2018-01-01: 0.95
+CA:
+  2018-01-01: 0.78
+CO:
+  2018-01-01: 0.99
+CT:
+  2018-01-01: 0.89
+DC:
+  2018-01-01: 0.99
+DE:
+  2018-01-01: 0.86
+FL:
+  2018-01-01: 0.98
+GA:
+  2018-01-01: 0.73
+HI:
+  2018-01-01: 0.88
+IA:
+  2018-01-01: 0.84
+ID:
+  2018-01-01: 0.78
+IL:
+  2018-01-01: 0.85
+IN:
+  2018-01-01: 0.99
+KS:
+  2018-01-01: 0.92
+KY:
+  2018-01-01: 0.87
+LA:
+  2018-01-01: 0.79
+MA:
+  2018-01-01: 0.94
+MD:
+  2018-01-01: 0.95
+ME:
+  2018-01-01: 0.92
+MI:
+  2018-01-01: 0.91
+MN:
+  2018-01-01: 0.89
+MO:
+  2018-01-01: 0.89
+MS:
+  2018-01-01: 0.75
+MT:
+  2018-01-01: 0.83
+NC:
+  2018-01-01: 0.94
+ND:
+  2018-01-01: 0.91
+NE:
+  2018-01-01: 0.79
+NH:
+  2018-01-01: 0.84
+NJ:
+  2018-01-01: 0.74
+NM:
+  2018-01-01: 0.84
+NV:
+  2018-01-01: 0.93
+NY:
+  2018-01-01: 0.86
+OH:
+  2018-01-01: 0.82
+OK:
+  2018-01-01: 0.77
+OR:
+  2018-01-01: 0.92
+PA:
+  2018-01-01: 0.64
+RI:
+  2018-01-01: 0.94
+SC:
+  2018-01-01: 0.93
+SD:
+  2018-01-01: 0.88
+TN:
+  2018-01-01: 0.92
+TX:
+  2018-01-01: 0.95
+UT:
+  2018-01-01: 0.58
+VA:
+  2018-01-01: 0.82
+VT:
+  2018-01-01: 0.93
+WA:
+  2018-01-01: 0.98
+WI:
+  2018-01-01: 0.91
+WV:
+  2018-01-01: 0.83
+WY:
+  2018-01-01: 0.70
