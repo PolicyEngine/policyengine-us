@@ -202,3 +202,26 @@
     age_spouse: 50
   output:
     va_age_deduction: 7_000
+
+# 2025 tests - per 2025 Form 760 Instructions page 16
+- name: VA 2025 age deduction full amount for senior born before 1939
+  period: 2025
+  input:
+    state_code: VA
+    va_age_deduction_agi: 60_000
+    filing_status: SINGLE
+    age_head: 88
+  output:
+    # Full $12,000 deduction for those born before Jan 1, 1939
+    va_age_deduction: 12_000
+
+- name: VA 2025 age deduction with phase-out
+  period: 2025
+  input:
+    state_code: VA
+    va_age_deduction_agi: 55_000
+    filing_status: SINGLE
+    age_head: 70
+  output:
+    # $12,000 - ($55,000 - $50,000) = $7,000
+    va_age_deduction: 7_000

@@ -199,3 +199,115 @@
   output:
     hi_cdcc: 0
     hi_income_tax: 28_681
+
+# ============================================================================
+# 2025 Hawaii Income Tax Tests - H.B. 2404 Widened Tax Brackets
+# ============================================================================
+# These tests verify the 2025 tax bracket changes enacted under H.B. 2404.
+# Key change: Bracket thresholds significantly widened for all filing statuses.
+# Reference: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=48
+# ============================================================================
+
+- name: Hawaii 2025 single filer low income in 1.4% bracket.
+  period: 2025
+  input:
+    hi_taxable_income: 8_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # 2025 Single brackets: $0-$9,600 at 1.4%
+    # Tax = $8,000 x 0.014 = $112.00
+    hi_income_tax_before_non_refundable_credits: 112
+
+- name: Hawaii 2025 single filer crossing multiple brackets.
+  period: 2025
+  input:
+    hi_taxable_income: 15_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # 2025 Single brackets:
+    # $0-$9,600 at 1.4%: $9,600 x 0.014 = $134.40
+    # $9,600-$14,400 at 3.2%: $4,800 x 0.032 = $153.60
+    # $14,400-$19,200 at 5.5%: $600 x 0.055 = $33.00
+    # Total = $134.40 + $153.60 + $33.00 = $321.00
+    hi_income_tax_before_non_refundable_credits: 321
+
+- name: Hawaii 2025 joint filers in widened brackets.
+  period: 2025
+  input:
+    hi_taxable_income: 25_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    # 2025 Joint brackets:
+    # $0-$19,200 at 1.4%: $19,200 x 0.014 = $268.80
+    # $19,200-$28,800 at 3.2%: $5,800 x 0.032 = $185.60
+    # Total = $268.80 + $185.60 = $454.40
+    hi_income_tax_before_non_refundable_credits: 454.40
+
+- name: Hawaii 2025 head of household mid-range income.
+  period: 2025
+  input:
+    hi_taxable_income: 50_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: HI
+  output:
+    # 2025 Head of Household brackets:
+    # $0-$14,400 at 1.4%: $14,400 x 0.014 = $201.60
+    # $14,400-$21,600 at 3.2%: $7,200 x 0.032 = $230.40
+    # $21,600-$28,800 at 5.5%: $7,200 x 0.055 = $396.00
+    # $28,800-$36,000 at 6.4%: $7,200 x 0.064 = $460.80
+    # $36,000-$50,000 at 6.8%: $14,000 x 0.068 = $952.00
+    # Total = $201.60 + $230.40 + $396.00 + $460.80 + $952.00 = $2,240.80
+    hi_income_tax_before_non_refundable_credits: 2_240.80
+
+- name: Hawaii 2025 single filer at bracket boundary.
+  period: 2025
+  input:
+    hi_taxable_income: 9_600
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # 2025 Single: exactly at $9,600 boundary (top of 1.4% bracket)
+    # Tax = $9,600 x 0.014 = $134.40
+    hi_income_tax_before_non_refundable_credits: 134.40
+
+- name: Hawaii 2025 married filing separately in 7.6% bracket.
+  period: 2025
+  input:
+    hi_taxable_income: 75_000
+    filing_status: SEPARATE
+    state_code: HI
+  output:
+    # 2025 Married Filing Separately brackets (same as Single):
+    # $0-$9,600 at 1.4%: $9,600 x 0.014 = $134.40
+    # $9,600-$14,400 at 3.2%: $4,800 x 0.032 = $153.60
+    # $14,400-$19,200 at 5.5%: $4,800 x 0.055 = $264.00
+    # $19,200-$24,000 at 6.4%: $4,800 x 0.064 = $307.20
+    # $24,000-$36,000 at 6.8%: $12,000 x 0.068 = $816.00
+    # $36,000-$48,000 at 7.2%: $12,000 x 0.072 = $864.00
+    # $48,000-$75,000 at 7.6%: $27,000 x 0.076 = $2,052.00
+    # Total = $134.40 + $153.60 + $264.00 + $307.20 + $816.00 + $864.00 + $2,052.00 = $4,591.20
+    hi_income_tax_before_non_refundable_credits: 4_591.20
+
+- name: Hawaii 2025 surviving spouse high income in top brackets.
+  period: 2025
+  input:
+    hi_taxable_income: 400_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: HI
+  output:
+    # 2025 Surviving Spouse brackets (same as Joint):
+    # $0-$19,200 at 1.4%: $19,200 x 0.014 = $268.80
+    # $19,200-$28,800 at 3.2%: $9,600 x 0.032 = $307.20
+    # $28,800-$38,400 at 5.5%: $9,600 x 0.055 = $528.00
+    # $38,400-$48,000 at 6.4%: $9,600 x 0.064 = $614.40
+    # $48,000-$72,000 at 6.8%: $24,000 x 0.068 = $1,632.00
+    # $72,000-$96,000 at 7.2%: $24,000 x 0.072 = $1,728.00
+    # $96,000-$250,000 at 7.6%: $154,000 x 0.076 = $11,704.00
+    # $250,000-$350,000 at 7.9%: $100,000 x 0.079 = $7,900.00
+    # $350,000-$400,000 at 8.25%: $50,000 x 0.0825 = $4,125.00
+    # Total = $268.80 + $307.20 + $528.00 + $614.40 + $1,632.00 + $1,728.00
+    #         + $11,704.00 + $7,900.00 + $4,125.00 = $28,807.40
+    hi_income_tax_before_non_refundable_credits: 28_807.40

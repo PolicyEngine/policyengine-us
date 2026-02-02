@@ -1,0 +1,84 @@
+# Tests for NJ WFNJ payment levels across different time periods
+# Historical values:
+#   2015-01 to 2018-06: Frozen 30 years
+#   2018-07 to 2019-07: +10% increase
+#   2019-08 onwards: +20% increase (current)
+
+- name: Case 1, 2016 values (pre-2018 frozen rates).
+  period: 2016-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+  output:
+    # Size 1: $162 (frozen rate)
+    nj_wfnj_payment_levels: 162
+
+- name: Case 2, 2019 values (after July 2018 +10% increase).
+  period: 2019-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+  output:
+    # Size 1: $178 (after +10%)
+    nj_wfnj_payment_levels: 178
+
+- name: Case 3, 2020 values (after Aug 2019 +20% increase).
+  period: 2020-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+  output:
+    # Size 1: $214 (current)
+    nj_wfnj_payment_levels: 214
+
+- name: Case 4, family of 3 current rate.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 3
+  output:
+    # Size 3: $559
+    nj_wfnj_payment_levels: 559
+
+- name: Case 5, family of 8 (max table size).
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 8
+  output:
+    # Size 8: $961
+    nj_wfnj_payment_levels: 961
+
+- name: Case 6, family of 9 (first additional person beyond table).
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 9
+  output:
+    # $961 + 1 * $66 = $1,027
+    nj_wfnj_payment_levels: 1_027
+
+- name: Case 7, family of 10 uses additional per person rate.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 10
+  output:
+    # $961 + 2 * $66 = $1,093
+    nj_wfnj_payment_levels: 1_093
+
+- name: Case 8, family of 2.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 2
+  output:
+    nj_wfnj_payment_levels: 425
+
+- name: Case 9, non-NJ state returns zero.
+  period: 2024-01
+  input:
+    state_code: CO
+    spm_unit_size: 1
+  output:
+    nj_wfnj_payment_levels: 0

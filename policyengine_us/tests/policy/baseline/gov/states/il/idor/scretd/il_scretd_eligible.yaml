@@ -1,0 +1,71 @@
+# Tests for il_scretd_eligible variable
+# Combined eligibility requires both age and income eligibility
+# Source: 320 ILCS 30/2
+
+- name: Case 1, age and income eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_eligible: true
+
+- name: Case 2, age eligible but income not.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_eligible: false
+
+- name: Case 3, income eligible but age not.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_eligible: false
+
+- name: Case 4, neither age nor income eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_eligible: false

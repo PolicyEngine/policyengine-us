@@ -1,0 +1,21 @@
+description: The Committee for a Responsible Federal Budget proposes a surtax on adjusted gross income which applies at this rate for single filers, based on adjusted gross income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: CRFB surtax reform single rate
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 100_000
+    rate:
+      0000-01-01: 0.01
+  - threshold:
+      0000-01-01: 1_000_000
+    rate:
+      0000-01-01: 0.02

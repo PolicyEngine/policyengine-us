@@ -1,0 +1,74 @@
+- name: Case 1, eligible with income below maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: true
+        md_tca_maximum_benefit: 727
+        md_tca_countable_income: 200
+    households:
+      household:
+        state_code: MD
+  output:
+    # Benefit = $727 - $200 = $527
+    md_tca: 527
+
+- name: Case 2, eligible with zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: true
+        md_tca_maximum_benefit: 575
+        md_tca_countable_income: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    # Benefit = $575 - $0 = $575
+    md_tca: 575
+
+- name: Case 3, income exceeds maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: true
+        md_tca_maximum_benefit: 575
+        md_tca_countable_income: 600
+    households:
+      household:
+        state_code: MD
+  output:
+    # Benefit = max($575 - $600, 0) = $0
+    md_tca: 0
+
+- name: Case 4, ineligible household receives zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_eligible: false
+        md_tca_maximum_benefit: 575
+        md_tca_countable_income: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca: 0
