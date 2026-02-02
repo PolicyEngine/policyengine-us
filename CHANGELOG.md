@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.548.0] - 2026-02-02 19:05:08
+
+### Added
+
+- Update South Carolina income tax parameters for 2025, including reduced top rate (6.0%) and adjusted brackets.
+
 ## [1.547.0] - 2026-02-02 18:49:52
 
 ### Added
@@ -14872,6 +14878,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.547.0...1.548.0
 [1.547.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.1...1.547.0
 [1.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.0...1.546.1
 [1.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.3...1.546.0
