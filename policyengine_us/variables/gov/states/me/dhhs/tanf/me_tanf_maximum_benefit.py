@@ -28,6 +28,6 @@ class me_tanf_maximum_benefit(Variable):
         base_amount = p.maximum_benefit.amount[capped_size]
 
         # Add incremental amount for households larger than max size
-        incremental = additional_members * p.maximum_benefit.each_additional
+        incremental = additional_members * p.maximum_benefit.additional_person
 
         return base_amount + incremental

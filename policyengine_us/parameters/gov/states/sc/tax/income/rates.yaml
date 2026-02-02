@@ -11,6 +11,7 @@ brackets:
      2022-01-01: 3_200
      2023-01-01: 3_330
      2024-01-01: 3_460
+     2025-01-01: 3_560
    metadata:
       uprating: gov.irs.uprating
       rounding:
@@ -24,6 +25,7 @@ brackets:
      2022-01-01: 16_040
      2023-01-01: 16_680
      2024-01-01: 17_330
+     2025-01-01: 17_830
    metadata:
       uprating: gov.irs.uprating
       rounding:
@@ -34,6 +36,7 @@ brackets:
      2022-01-01: 0.065
      2023-01-01: 0.064
      2024-01-01: 0.062
+     2025-01-01: 0.06
  - threshold:
      1994-01-01: 6_660
      2021-01-01: 9_330
@@ -60,6 +63,8 @@ brackets:
 
 metadata:
   reference:
+    - title: SC 1040 Instructions 2025
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=1
     - title: SC 2024 Income Tax Chart
       href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2024.pdf#page=1
     - title: SC 1040ES Instructions 2023
@@ -70,7 +75,7 @@ metadata:
       href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2021.pdf
     - title: SC Legal Code |  Section 12-6-510
       href: https://www.scstatehouse.gov/code/t12c006.php
-    # Using a third party source as South Carolina does not provide inflation 
+    # Using a third party source as South Carolina does not provide inflation
     # adjustments for the tax brackets
     - title: South Carolina Tax Rates, Brackets, Forms
       href: https://www.efile.com/south-carolina-tax-rates-brackets-and-forms/
