@@ -31,29 +31,17 @@ def create_ny_s9077_escc_itin() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ny.tax.income.credits.ctc
-            p_reform = parameters(period).gov.contrib.states.ny.s9077
             person = tax_unit.members
             age = person("age", period)
 
-            # Check if S.9077 reform is active
-            reform_active = p_reform.in_effect
-
-            # Determine qualifying children based on reform status
-            if reform_active:
-                # S.9077: Allow ITIN holders (Section D(V))
-                # Requires: dependent status + has ITIN/SSN + meets age threshold
-                is_dependent = person("is_tax_unit_dependent", period)
-                has_valid_id = person("has_itin", period)
-                age_thresholds = p.post_2024.amount.thresholds
-                max_age = age_thresholds[-1]
-                age_eligible = age < max_age
-                qualifies = is_dependent & has_valid_id & age_eligible
-            else:
-                # Current law: Requires SSN (federal CTC eligibility)
-                qualifies_for_federal_ctc = person(
-                    "ctc_qualifying_child", period
-                )
-                qualifies = qualifies_for_federal_ctc
+            # S.9077: Allow ITIN holders (Section D(V))
+            # Requires: dependent status + has ITIN/SSN + meets age threshold
+            is_dependent = person("is_tax_unit_dependent", period)
+            has_valid_id = person("has_itin", period)
+            age_thresholds = p.post_2024.amount.thresholds
+            max_age = age_thresholds[-1]
+            age_eligible = age < max_age
+            qualifies = is_dependent & has_valid_id & age_eligible
 
             # Apply minimum age requirement
             qualifies = qualifies & (age >= p.minimum_age)
@@ -78,7 +66,6 @@ def create_ny_s9077_escc_itin() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ny.tax.income.credits.ctc
-            p_reform = parameters(period).gov.contrib.states.ny.s9077
 
             # Only eligible if post-2024 rules are in effect
             if not p.post_2024.in_effect:
@@ -87,24 +74,13 @@ def create_ny_s9077_escc_itin() -> Reform:
             person = tax_unit.members
             age = person("age", period)
 
-            # Check if S.9077 reform is active
-            reform_active = p_reform.in_effect
-
-            # Determine qualifying children based on reform status
-            if reform_active:
-                # S.9077: Allow ITIN holders
-                is_dependent = person("is_tax_unit_dependent", period)
-                has_valid_id = person("has_itin", period)
-                age_thresholds = p.post_2024.amount.thresholds
-                max_age = age_thresholds[-1]
-                age_eligible = age < max_age
-                qualifies = is_dependent & has_valid_id & age_eligible
-            else:
-                # Current law: Requires SSN
-                qualifies_for_federal_ctc = person(
-                    "ctc_qualifying_child", period
-                )
-                qualifies = qualifies_for_federal_ctc
+            # S.9077: Allow ITIN holders
+            is_dependent = person("is_tax_unit_dependent", period)
+            has_valid_id = person("has_itin", period)
+            age_thresholds = p.post_2024.amount.thresholds
+            max_age = age_thresholds[-1]
+            age_eligible = age < max_age
+            qualifies = is_dependent & has_valid_id & age_eligible
 
             # Apply minimum age requirement
             qualifies = qualifies & (age >= p.minimum_age)

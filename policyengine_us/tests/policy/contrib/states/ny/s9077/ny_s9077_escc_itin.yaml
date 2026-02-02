@@ -69,29 +69,6 @@
     # Age 0-3 bracket gets $1,000 in 2027
     ny_ctc_post_2024_base: 1_000
 
-- name: NY S9077 - ITIN child does NOT qualify when reform inactive
-  period: 2027
-  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
-  input:
-    gov.contrib.states.ny.s9077.in_effect: false
-    people:
-      parent:
-        age: 30
-      child:
-        age: 5
-        ssn_card_type: OTHER_NON_CITIZEN
-        has_itin: true
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code: NY
-  output:
-    # Without reform, ITIN children don't qualify
-    ny_ctc_post_2024_base: 0
-
 - name: NY S9077 - Child without valid ID does not qualify
   period: 2027
   reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
