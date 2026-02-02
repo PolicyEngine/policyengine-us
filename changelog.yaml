@@ -12768,3 +12768,11 @@
     changed:
     - Add historical data for Massachusetts TAFDC parameters
   date: 2026-02-02 01:38:39
+- bump: minor
+  changes:
+    added:
+    - Add 2025 references to all New York State and NYC income tax parameters.
+    - Update geothermal energy system credit cap to $10,000 for systems placed in
+      service on/after July 1, 2025.
+    - Add 2025 NY income tax integration tests.
+  date: 2026-02-02 01:50:17

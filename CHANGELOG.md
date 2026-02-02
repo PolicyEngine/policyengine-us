@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.546.0] - 2026-02-02 01:50:17
+
+### Added
+
+- Add 2025 references to all New York State and NYC income tax parameters.
+- Update geothermal energy system credit cap to $10,000 for systems placed in service on/after July 1, 2025.
+- Add 2025 NY income tax integration tests.
+
 ## [1.545.3] - 2026-02-02 01:38:39
 
 ### Changed
@@ -14852,6 +14860,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.3...1.546.0
 [1.545.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.2...1.545.3
 [1.545.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.1...1.545.2
 [1.545.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.0...1.545.1
