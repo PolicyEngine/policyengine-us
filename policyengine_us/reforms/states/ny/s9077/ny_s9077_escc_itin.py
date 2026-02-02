@@ -38,13 +38,13 @@ def create_ny_s9077_escc_itin() -> Reform:
             # Requires: dependent status + has ITIN/SSN + meets age threshold
             is_dependent = person("is_tax_unit_dependent", period)
             has_valid_id = person("has_itin", period)
-            age_thresholds = p.post_2024.amount.thresholds
-            max_age = age_thresholds[-1]
-            age_eligible = age < max_age
-            qualifies = is_dependent & has_valid_id & age_eligible
-
-            # Apply minimum age requirement
-            qualifies = qualifies & (age >= p.minimum_age)
+            age_eligible = age < p.post_2024.amount.thresholds[-1]
+            qualifies = (
+                is_dependent
+                & has_valid_id
+                & age_eligible
+                & (age >= p.minimum_age)
+            )
 
             # Calculate credit amount by age using scale parameter
             credit_by_age = p.post_2024.amount.calc(age)
@@ -77,13 +77,13 @@ def create_ny_s9077_escc_itin() -> Reform:
             # S.9077: Allow ITIN holders
             is_dependent = person("is_tax_unit_dependent", period)
             has_valid_id = person("has_itin", period)
-            age_thresholds = p.post_2024.amount.thresholds
-            max_age = age_thresholds[-1]
-            age_eligible = age < max_age
-            qualifies = is_dependent & has_valid_id & age_eligible
-
-            # Apply minimum age requirement
-            qualifies = qualifies & (age >= p.minimum_age)
+            age_eligible = age < p.post_2024.amount.thresholds[-1]
+            qualifies = (
+                is_dependent
+                & has_valid_id
+                & age_eligible
+                & (age >= p.minimum_age)
+            )
 
             # Check if any children get a non-zero credit amount
             credit_by_age = p.post_2024.amount.calc(age)

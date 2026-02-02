@@ -1,6 +1,27 @@
 # Test NY S.9077 Empire State Child Credit ITIN Expansion
 # Starting 2027, children with ITINs qualify for the ESCC
 
+- name: NY S9077 - ITIN child does NOT qualify without reform (counterfactual)
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Without S.9077, ITIN children do not qualify for ESCC
+    ny_ctc_post_2024_base: 0
+
 - name: NY S9077 - SSN child qualifies (baseline, reform active)
   period: 2027
   reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
