@@ -19,12 +19,12 @@ class ia_fip_eligible(Variable):
         immigration_eligible = (
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
-        resource_eligible = spm_unit("ia_fip_resource_eligible", period)
+        resources_eligible = spm_unit("ia_fip_resources_eligible", period)
         income_eligible = spm_unit("ia_fip_income_eligible", period)
 
         return (
             has_children
             & immigration_eligible
-            & resource_eligible
+            & resources_eligible
             & income_eligible
         )

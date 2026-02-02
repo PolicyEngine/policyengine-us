@@ -1,0 +1,149 @@
+# Test 3: Countable income < payment standard
+# Countable income applies both 20% deduction AND 58% work incentive disregard
+
+- name: Case 1, no income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Countable: $0 < $361 payment standard
+    ia_fip_countable_income_eligible: true
+
+- name: Case 2, moderate earned income passes.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Earned: $800/month
+    # After 20% deduction: $800 * 0.8 = $640
+    # After 58% disregard: $640 * 0.42 = $268.80
+    # Countable: $268.80 < $361 payment standard
+    ia_fip_countable_income_eligible: true
+
+- name: Case 3, higher earned income fails.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Earned: $1,000/month
+    # After 20% deduction: $1,000 * 0.8 = $800
+    # After 58% disregard: $800 * 0.42 = $336
+    # Plus unearned: $0
+    # Countable: $336 < $361 payment standard
+    ia_fip_countable_income_eligible: true
+
+- name: Case 4, unearned income no disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 4_800  # $400/month unearned (SSI not counted in TANF)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Unearned has no deductions
+    # Countable: $400 >= $361 payment standard
+    ia_fip_countable_income_eligible: false
+
+- name: Case 5, mixed income with disregard on earned only.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        social_security: 1_200  # $100/month unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Earned: $500/month
+    # After 20% deduction: $500 * 0.8 = $400
+    # After 58% disregard: $400 * 0.42 = $168
+    # Plus unearned: $100
+    # Countable: $168 + $100 = $268 < $361
+    ia_fip_countable_income_eligible: true
+
+- name: Case 6, two-parent family with higher payment standard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 6_000  # $500/month
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family of 4: payment standard = $495
+    # Total earned: $1,500/month
+    # After 20% deduction: $1,500 * 0.8 = $1,200
+    # After 58% disregard: $1,200 * 0.42 = $504
+    # Countable: $504 >= $495 payment standard
+    ia_fip_countable_income_eligible: false

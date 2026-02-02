@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_fip_resource_eligible(Variable):
+class ia_fip_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Iowa FIP resource eligible"
+    label = "Iowa FIP resources eligible"
     definition_period = MONTH
     defined_for = StateCode.IA
     reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=16"
