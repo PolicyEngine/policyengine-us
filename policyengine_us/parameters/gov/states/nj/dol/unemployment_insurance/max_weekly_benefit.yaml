@@ -1,0 +1,16 @@
+description: Maximum weekly unemployment insurance benefit amount in New Jersey. The maximum benefit rate is recalculated each year based on the statewide average weekly wage in the second preceding calendar year.
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: NJ UI maximum weekly benefit
+  reference:
+    - title: NJ Department of Labor - 2025 UI Benefit Rates
+      href: https://www.nj.gov/labor/lwdhome/press/2024/20241217_new_benefit_rates.shtml
+    - title: NJ Department of Labor - 2026 UI Benefit Rates
+      href: https://www.nj.gov/labor/lwdhome/press/2025/20251229_newbenefitrates2026.shtml
+
+values:
+  2024-01-01: 854
+  2025-01-01: 875
+  2026-01-01: 905

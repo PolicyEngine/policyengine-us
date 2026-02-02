@@ -1,0 +1,509 @@
+# Edge case tests for New Jersey Unemployment Insurance
+# These tests cover boundary conditions, zero values, and combined scenarios
+
+#######################################
+# ZERO/NULL EDGE CASES
+#######################################
+
+- name: NJ UI zero base period wages - not eligible (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_base_period_weeks: 0
+        nj_unemployment_insurance_base_period_wages: 0
+        nj_unemployment_insurance_weeks_claimed: 10
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: false
+        nj_unemployment_insurance: 0
+
+- name: NJ UI zero base period weeks - not eligible (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        nj_unemployment_insurance_base_period_weeks: 0
+        nj_unemployment_insurance_base_period_wages: 10000
+        nj_unemployment_insurance_weeks_claimed: 26
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 0 weeks < 20 minimum, but wages $10,000 < $14,200 alternative
+        nj_unemployment_insurance_eligible: false
+        nj_unemployment_insurance: 0
+
+- name: NJ UI zero weeks claimed - zero annual benefit (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        nj_unemployment_insurance_base_period_weeks: 26
+        nj_unemployment_insurance_base_period_wages: 20000
+        nj_unemployment_insurance_weeks_claimed: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        # Eligible but claims 0 weeks, so zero benefit
+        nj_unemployment_insurance: 0
+
+- name: NJ UI zero average weekly wage (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 28
+        nj_unemployment_insurance_average_weekly_wage: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 0 * 60% = 0
+        nj_unemployment_insurance_weekly_benefit_rate: 0
+
+#######################################
+# BOUNDARY CONDITIONS - BASE WEEKS
+#######################################
+
+- name: NJ UI exactly 20 base weeks - minimum threshold met (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 6000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Exactly 20 weeks = eligible
+        nj_unemployment_insurance_eligible: true
+
+- name: NJ UI exactly 19 base weeks - just below threshold (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 32
+        nj_unemployment_insurance_base_period_weeks: 19
+        nj_unemployment_insurance_base_period_wages: 5700
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 19 weeks < 20 minimum, $5,700 < $14,200 alternative
+        nj_unemployment_insurance_eligible: false
+
+- name: NJ UI 19 base weeks but meets alternative earnings threshold (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 34
+        nj_unemployment_insurance_base_period_weeks: 19
+        nj_unemployment_insurance_base_period_wages: 14200
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 19 weeks < 20 but $14,200 meets alternative threshold
+        nj_unemployment_insurance_eligible: true
+
+#######################################
+# BOUNDARY CONDITIONS - EARNINGS THRESHOLDS
+#######################################
+
+- name: NJ UI exactly at total earnings threshold (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        nj_unemployment_insurance_base_period_weeks: 15
+        nj_unemployment_insurance_base_period_wages: 14200
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Exactly $14,200 total = threshold for 2024
+        nj_unemployment_insurance_eligible: true
+
+- name: NJ UI one dollar below total earnings threshold (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 42
+        nj_unemployment_insurance_base_period_weeks: 15
+        nj_unemployment_insurance_base_period_wages: 14199
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 15 weeks < 20, $14,199 < $14,200 alternative
+        nj_unemployment_insurance_eligible: false
+
+#######################################
+# MAXIMUM VALUES - WEEKLY BENEFIT
+#######################################
+
+- name: NJ UI very high wages exceed maximum weekly benefit (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 45
+        nj_unemployment_insurance_average_weekly_wage: 10000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $10,000 * 60% = $6,000 but capped at $854
+        nj_unemployment_insurance_weekly_benefit_rate: 854
+
+- name: NJ UI extremely high wages exceed maximum weekly benefit (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 50
+        nj_unemployment_insurance_average_weekly_wage: 50000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $50,000 * 60% = $30,000 but capped at $854
+        nj_unemployment_insurance_weekly_benefit_rate: 854
+
+#######################################
+# MAXIMUM VALUES - WEEKS
+#######################################
+
+- name: NJ UI maximum 26 weeks of benefits (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        nj_unemployment_insurance_base_period_weeks: 52
+        nj_unemployment_insurance_base_period_wages: 52000
+        nj_unemployment_insurance_weeks_claimed: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        # avg weekly wage = $52000/52 = $1000, WBR = $600
+        # Claims 30 weeks but capped at 26 max
+        # $600 * 26 = $15,600
+        nj_unemployment_insurance: 15600
+
+- name: NJ UI weeks capped at base period weeks when less than 26 (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_base_period_weeks: 22
+        nj_unemployment_insurance_base_period_wages: 11000
+        nj_unemployment_insurance_weeks_claimed: 26
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        # avg weekly wage = $11000/22 = $500, WBR = $300
+        # Claims 26 weeks but capped at 22 base weeks
+        # $300 * 22 = $6,600
+        nj_unemployment_insurance: 6600
+
+#######################################
+# MAXIMUM VALUES - DEPENDENTS
+#######################################
+
+- name: NJ UI maximum 3 dependents caps at 15 percent rate (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 45
+        is_tax_unit_dependent: false
+      dependent1:
+        age: 15
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 12
+        is_tax_unit_dependent: true
+      dependent3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1, dependent2, dependent3]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1, dependent2, dependent3]
+    households:
+      household:
+        members: [person, dependent1, dependent2, dependent3]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 3 dependents = 7% + 4% + 4% = 15%
+        nj_unemployment_insurance_dependency_allowance: 0.15
+
+#######################################
+# COMBINED SCENARIOS
+#######################################
+
+- name: NJ UI low earner just meeting eligibility with limited weeks (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 25
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 5660
+        nj_unemployment_insurance_weeks_claimed: 26
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        # avg weekly wage = $5660/20 = $283, WBR = $169.80
+        # Claims 26 but capped at 20 base weeks
+        # $169.80 * 20 = $3,396
+        nj_unemployment_insurance: 3396
+
+- name: NJ UI full annual benefit calculation - max weeks max benefit (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 55
+        nj_unemployment_insurance_base_period_weeks: 52
+        nj_unemployment_insurance_base_period_wages: 104000
+        nj_unemployment_insurance_weeks_claimed: 26
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        # avg weekly wage = $104000/52 = $2000, WBR capped at $854
+        # 26 weeks * $854 = $22,204
+        nj_unemployment_insurance: 22204
+
+#######################################
+# YEAR-SPECIFIC BOUNDARY TESTS
+#######################################
+
+- name: NJ UI 2025 exactly at total earnings threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 34
+        nj_unemployment_insurance_base_period_weeks: 15
+        nj_unemployment_insurance_base_period_wages: 15200
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Exactly $15,200 = 2025 alternative threshold
+        nj_unemployment_insurance_eligible: true
+
+- name: NJ UI 2026 exactly at total earnings threshold
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 38
+        nj_unemployment_insurance_base_period_weeks: 15
+        nj_unemployment_insurance_base_period_wages: 15500
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Exactly $15,500 = 2026 alternative threshold
+        nj_unemployment_insurance_eligible: true

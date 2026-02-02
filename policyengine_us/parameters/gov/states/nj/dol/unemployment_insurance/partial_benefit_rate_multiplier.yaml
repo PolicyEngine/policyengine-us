@@ -1,0 +1,12 @@
+description: New Jersey calculates the partial benefit rate as the weekly benefit rate multiplied by this factor. The partial benefit rate is used to determine benefits when the claimant has some earnings during the week.
+
+metadata:
+  unit: /1
+  period: year
+  label: NJ UI partial benefit rate multiplier
+  reference:
+    - title: NJ Division of Unemployment Insurance - FAQ Factors that affect your weekly benefit rate
+      href: https://www.nj.gov/labor/myunemployment/help/faqs/reducebenefits.shtml
+
+values:
+  2015-01-01: 1.20
