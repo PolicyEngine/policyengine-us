@@ -1,0 +1,48 @@
+- name: Case 1, disability eligible via disability status.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_disabled: true
+    social_security_disability: 0
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 2, disability eligible via SSDI receipt.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_disabled: false
+    social_security_disability: 14_400  # $1,200/month
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 3, disability eligible via both.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_disabled: true
+    social_security_disability: 14_400  # $1,200/month
+  output:
+    il_hbwd_disability_eligible: true
+
+- name: Case 4, disability ineligible.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_disabled: false
+    social_security_disability: 0
+  output:
+    il_hbwd_disability_eligible: false
+
+- name: Case 5, disabled with high earnings (above SGA) - eligible because SGA does not apply to HBWD.
+  # This test demonstrates the fix: with the old formula (is_ssi_disabled),
+  # this person would be ineligible due to SGA ($1,550/month in 2024).
+  # With the new formula (is_disabled), SGA does not apply per DB101 Illinois.
+  period: 2024-01
+  input:
+    state_code: IL
+    is_disabled: true
+    employment_income: 36_000  # $3,000/month - well above SGA threshold
+    social_security_disability: 0
+  output:
+    il_hbwd_disability_eligible: true

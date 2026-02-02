@@ -1,0 +1,117 @@
+- name: RI exemption reform - restrict to children under 18
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.exemption.ri_exemption_reform.ri_exemption_reform
+  input:
+    gov.contrib.states.ri.dependent_exemption.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.amount: 5_100
+    gov.contrib.states.ri.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_exemptions: 15_300  # 1 personal (5_100) + 1 dependent (5_100) + 1 older dependent (5_100)
+
+- name: RI exemption reform - restrict to children under 13
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.exemption.ri_exemption_reform.ri_exemption_reform
+  input:
+    gov.contrib.states.ri.dependent_exemption.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.amount: 5_100
+    gov.contrib.states.ri.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: RI
+  output:
+    ri_exemptions: 15_300  # 1 personal (5_100) + 1 dependent (5_100) + 1 older dependent (5_100)
+
+- name: RI exemption reform - AGI phaseout
+  period: 2025
+  reforms: policyengine_us.reforms.states.ri.exemption.ri_exemption_reform.ri_exemption_reform
+  input:
+    gov.contrib.states.ri.dependent_exemption.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.amount: 5_100
+    gov.contrib.states.ri.dependent_exemption.phaseout.threshold.SINGLE: 100_000
+    gov.contrib.states.ri.dependent_exemption.phaseout.rate: 0.05
+    people:
+      parent:
+        age: 40
+        employment_income: 120_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: RI
+  output:
+    # Personal exemption: 5_100 (baseline 2025)
+    # Dependent exemption before phaseout: 5_100
+    # Phaseout: (120_000 - 100_000) * 0.05 = 1_000 (only applies to dependent exemption)
+    # Dependent exemption after phaseout: 5_100 - 1_000 = 4_100
+    # Final: 5_100 (personal) + 4_100 (dependent) = 9_200
+    ri_exemptions: 9_200
+
+- name: RI exemption reform - high income personal exemption baseline phaseout
+  period: 2024
+  reforms: policyengine_us.reforms.states.ri.exemption.ri_exemption_reform.ri_exemption_reform
+  input:
+    gov.contrib.states.ri.dependent_exemption.in_effect: true
+    gov.contrib.states.ri.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent]
+        state_name: RI
+  output:
+    # At AGI of $300,000, personal exemption should be fully phased out
+    # Baseline phaseout: starts at $246,450, rate 0.2 per $7,050 increment
+    # Excess AGI: $300,000 - $246,450 = $53,550
+    # Increments: ceil($53,550 / $7,050) = 8
+    # Reduction rate: min(0.2 * 8, 1) = min(1.6, 1) = 1 (100%)
+    # Personal exemption: $5,050 * (1 - 1) = $0
+    # Dependent exemption: $0 (set to $0 in reform)
+    # Final: $0 + $0 = $0
+    ri_exemptions: 0

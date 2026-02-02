@@ -9,17 +9,7 @@ SINGLE:
   2023-01-01: 13_850
   2024-01-01: 14_600
   2025-01-01: 15_750
-  # Internal forecast, will update when CBO forecast is released.
-  2026-01-01: 16_300
-  2027-01-01: 16_700
-  2028-01-01: 17_050
-  2029-01-01: 17_400
-  2030-01-01: 17_750
-  2031-01-01: 18_100
-  2032-01-01: 18_450
-  2033-01-01: 18_850
-  2034-01-01: 19_200
-  2035-01-01: 19_600
+  2026-01-01: 16_100
 JOINT:
   2018-01-01: 24_000
   2019-01-01: 24_400
@@ -29,17 +19,7 @@ JOINT:
   2023-01-01: 27_700
   2024-01-01: 29_200
   2025-01-01: 31_500
- # Internal forecast, will update when CBO forecast is released.
-  2026-01-01: 32_600
-  2027-01-01: 33_400
-  2028-01-01: 34_100
-  2029-01-01: 34_800
-  2030-01-01: 35_500
-  2031-01-01: 36_200
-  2032-01-01: 36_900
-  2033-01-01: 37_700
-  2034-01-01: 38_400
-  2035-01-01: 39_200
+  2026-01-01: 32_200
 SEPARATE:
   2018-01-01: 12_000
   2019-01-01: 12_200
@@ -49,17 +29,7 @@ SEPARATE:
   2023-01-01: 13_850
   2024-01-01: 14_600
   2025-01-01: 15_750
-  # Internal forecast, will update when CBO forecast is released.
-  2026-01-01: 16_300
-  2027-01-01: 16_700
-  2028-01-01: 17_050
-  2029-01-01: 17_400
-  2030-01-01: 17_750
-  2031-01-01: 18_100
-  2032-01-01: 18_450
-  2033-01-01: 18_850
-  2034-01-01: 19_200
-  2035-01-01: 19_600
+  2026-01-01: 16_100
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 18_000
   2019-01-01: 18_350
@@ -69,48 +39,31 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 20_800
   2024-01-01: 21_900
   2025-01-01: 23_625
-  # Internal forecast, will update when CBO forecast is released.
-  2026-01-01: 24_500
-  2027-01-01: 25_100
-  2028-01-01: 25_600
-  2029-01-01: 26_150
-  2030-01-01: 26_650
-  2031-01-01: 27_200
-  2032-01-01: 27_700
-  2033-01-01: 28_250
-  2034-01-01: 28_800
-  2035-01-01: 29_400
+  2026-01-01: 24_150
 SURVIVING_SPOUSE:
   2018-01-01: 24_000
   2019-01-01: 24_400
-  2020-01-01: 24_400
+  2020-01-01: 24_800
   2021-01-01: 25_100
   2022-01-01: 25_900
   2023-01-01: 27_700
   2024-01-01: 29_200
   2025-01-01: 31_500
- # Internal forecast, will update when CBO forecast is released.
-  2026-01-01: 32_600
-  2027-01-01: 33_400
-  2028-01-01: 34_100
-  2029-01-01: 34_800
-  2030-01-01: 35_500
-  2031-01-01: 36_200
-  2032-01-01: 36_900
-  2033-01-01: 37_700
-  2034-01-01: 38_400
-  2035-01-01: 39_200
+  2026-01-01: 32_200
 metadata:
   unit: currency-USD
   label: Standard deduction
   period: year
   breakdown:
     - filing_status
+  propagate_metadata_to_children: true
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S. Code § 63(c) - Standard deduction
+      href: https://www.law.cornell.edu/uscode/text/26/63#c
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12  
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=14
     - title: 2023 IRS data release
@@ -129,4 +82,8 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

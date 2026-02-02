@@ -1,0 +1,62 @@
+- name: Case 1, earnings above work expense deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    tanf_gross_earned_income: 500
+  output:
+    # Gross earned: $500
+    # Work expense deduction: $250
+    # After disregard: 500 - 250 = 250
+    ga_tanf_earned_income_after_disregard: 250
+
+- name: Case 2, earnings exactly at work expense deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    tanf_gross_earned_income: 250
+  output:
+    # Gross earned: $250
+    # Work expense deduction: $250
+    # After disregard: 250 - 250 = 0
+    ga_tanf_earned_income_after_disregard: 0
+
+- name: Case 3, earnings below work expense deduction.
+  period: 2025-01
+  input:
+    state_code: GA
+    tanf_gross_earned_income: 100
+  output:
+    # Gross earned: $100
+    # Work expense deduction: $250
+    # After disregard: max(100 - 250, 0) = 0
+    ga_tanf_earned_income_after_disregard: 0
+
+- name: Case 4, no earnings.
+  period: 2025-01
+  input:
+    state_code: GA
+    tanf_gross_earned_income: 0
+  output:
+    # Gross earned: $0
+    # Work expense deduction: $250
+    # After disregard: max(0 - 250, 0) = 0
+    ga_tanf_earned_income_after_disregard: 0
+
+- name: Case 5, high earnings.
+  period: 2025-01
+  input:
+    state_code: GA
+    tanf_gross_earned_income: 1_500
+  output:
+    # Gross earned: $1,500
+    # Work expense deduction: $250
+    # After disregard: 1500 - 250 = 1250
+    ga_tanf_earned_income_after_disregard: 1_250
+
+- name: Case 6, only calculates for GA.
+  period: 2025-01
+  input:
+    state_code: FL
+    tanf_gross_earned_income: 500
+  output:
+    ga_tanf_earned_income_after_disregard: 0

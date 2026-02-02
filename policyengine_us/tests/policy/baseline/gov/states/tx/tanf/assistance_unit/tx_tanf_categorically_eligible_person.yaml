@@ -1,0 +1,49 @@
+- name: Case 1, citizen eligible for inclusion.
+  period: 2025-01
+  input:
+    immigration_status: CITIZEN
+    ssi: 0
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: true
+    # Citizen & not receiving SSI → eligible
+
+- name: Case 2, qualified noncitizen eligible for inclusion.
+  period: 2025-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi: 0
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: true
+    # Qualified noncitizen & not receiving SSI → eligible
+
+- name: Case 3, undocumented person excluded.
+  period: 2025-01
+  input:
+    immigration_status: UNDOCUMENTED
+    ssi: 0
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: false
+    # Not qualified immigration status → excluded
+
+- name: Case 4, person receiving SSI excluded.
+  period: 2025-01
+  input:
+    immigration_status: CITIZEN
+    ssi: 900
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: false
+    # Receiving SSI → excluded from TANF assistance unit
+
+- name: Case 5, both immigration and SSI issues.
+  period: 2025-01
+  input:
+    immigration_status: UNDOCUMENTED
+    ssi: 900
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: false
+    # Fails both immigration & SSI requirements → excluded

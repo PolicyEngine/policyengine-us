@@ -7,7 +7,7 @@ class mt_regular_income_tax_indiv(Variable):
     label = "Montana income (subtracting capital gains before 2024) tax before refundable credits, when married couples file separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main
@@ -18,6 +18,9 @@ class mt_regular_income_tax_indiv(Variable):
         )
         if p.capital_gains.in_effect:
             capital_gains = person("long_term_capital_gains", period)
+            # Only subtract positive capital gains (they're taxed separately)
+            # Negative capital gains should not create phantom taxable income
+            capital_gains = max_(capital_gains, 0)
             taxable_income = max_(taxable_income - capital_gains, 0)
         status = filing_status.possible_values
         return select(

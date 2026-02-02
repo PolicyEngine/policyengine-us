@@ -1,0 +1,24 @@
+description: New Hampshire deducts up to this amount of child care expenses per child from countable income for part-time employees under the Financial Assistance to Needy Families program, depending on child age.
+
+metadata:
+  period: month
+  label: New Hampshire FANF child care deduction part-time per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: FAM 603.05 - Child/Dependent Care Deduction (SR 12-04)
+      href: https://www.dhhs.nh.gov/famar_htm/html/603_05_child_dependent_care_deduction_sr_12-04_07_12_fam_a.htm
+    - title: New Hampshire TANF State Plan - Policy Changes (BFA SR 22-18)
+      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/tanf-state-plan.pdf#page=25
+
+brackets:
+  - threshold:
+      2012-07-01: 0
+    amount:
+      2012-07-01: 100
+  - threshold:
+      2012-07-01: 2
+      2022-07-01: 6
+    amount:
+      2012-07-01: 87.5

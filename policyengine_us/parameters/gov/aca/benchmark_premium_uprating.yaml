@@ -1,0 +1,23 @@
+description: Uprating factor for Affordable Care Act benchmark (second lowest cost silver plan) premiums based on national average.
+metadata:
+  unit: currency-USD
+  label: ACA benchmark premium uprating
+  reference:
+    - title: KFF Marketplace Average Benchmark Premiums, 2014-2025
+      href: https://www.kff.org/affordable-care-act/state-indicator/marketplace-average-benchmark-premiums/
+values:
+  # Historical KFF data - actual national average SLCSP premiums
+  2014-01-01: 273
+  2015-01-01: 276
+  2016-01-01: 299
+  2017-01-01: 359
+  2018-01-01: 481
+  2019-01-01: 478
+  2020-01-01: 462
+  2021-01-01: 452
+  2022-01-01: 438
+  2023-01-01: 456
+  2024-01-01: 477
+  2025-01-01: 497
+  # Values for 2026-2100 are set programmatically in uprating_extensions.py
+  # based on 2024-2025 growth rate

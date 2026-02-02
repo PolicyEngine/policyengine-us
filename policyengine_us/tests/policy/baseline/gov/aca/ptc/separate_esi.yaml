@@ -30,7 +30,7 @@
     slcsp_age_curve_amount_person: [0, 5_526, 3_188]
     slcsp: 8_715.192 
     aca_magi_fraction: 2.90
-    aca_ptc_phase_out_rate: 0.056
+    aca_required_contribution_percentage: 0.056
     aca_ptc: 4_515.19
 
 - name: 2025 VT  - one adult esi
@@ -61,5 +61,5 @@
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible: [false, true, true]
     slcsp: 29_575.32  
-    aca_ptc_phase_out_rate: 0.0721
+    aca_required_contribution_percentage: 0.0721
     aca_ptc: 23_086.32

@@ -1,0 +1,181 @@
+# Tests for TN FF child care deduction
+# $200/month for children under age 2
+# $175/month for children age 2 and older
+# Deduction capped at actual childcare expenses paid
+# Note: childcare_expenses is a yearly variable, so multiply monthly amount by 12
+
+- name: Case 0, zero childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # No expenses, no deduction
+    tn_ff_child_care_deduction: 0
+
+- name: Case 1, no children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_child_care_deduction: 0
+
+- name: Case 2, one child under age 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_child_care_deduction: 200
+
+- name: Case 3, one child exactly age 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ff_child_care_deduction: 175
+
+- name: Case 4, two children both under age 2.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # $200 + $200 = $400
+    tn_ff_child_care_deduction: 400
+
+- name: Case 5, two children both age 2 or older.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # $175 + $175 = $350
+    tn_ff_child_care_deduction: 350
+
+- name: Case 6, mixed ages one under 2 and one 2+.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # $200 + $175 = $375
+    tn_ff_child_care_deduction: 375
+
+- name: Case 7, deduction capped at actual expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Max deduction would be $200 + $175 = $375/month
+        # Only $300/month in expenses ($3,600/year)
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Capped at actual monthly expenses: $3,600/12 = $300
+    tn_ff_child_care_deduction: 300

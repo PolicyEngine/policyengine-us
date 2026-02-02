@@ -1,0 +1,89 @@
+- name: Case 1, single parent with no income receives full grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_regular_tanf: 320
+
+- name: Case 2, benefit reduced by countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 3_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_regular_tanf: 232.90
+
+- name: Case 3, minimum grant applied.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 3_720
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_regular_tanf: 192.70
+
+- name: Case 4, ineligible household receives zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 24_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_regular_tanf: 0

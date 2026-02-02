@@ -1,0 +1,47 @@
+- name: Does not meet exception - works less than 20 hours, no work study
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 15
+    is_federal_work_study_participant: false
+  output:
+    meets_snap_work_exception: false
+
+- name: Meets exception - works exactly 20 hours
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 20
+    is_federal_work_study_participant: false
+  output:
+    meets_snap_work_exception: true
+
+- name: Meets exception - works more than 20 hours
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 25
+    is_federal_work_study_participant: false
+  output:
+    meets_snap_work_exception: true
+
+- name: Meets exception - participates in federal work study
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 0
+    is_federal_work_study_participant: true
+  output:
+    meets_snap_work_exception: true
+
+- name: Meets exception - works less than 20 hours but has work study
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 10
+    is_federal_work_study_participant: true
+  output:
+    meets_snap_work_exception: true
+
+- name: Meets exception - works 20+ hours and has work study
+  period: 2024
+  input:
+    weekly_hours_worked_before_lsr: 25
+    is_federal_work_study_participant: true
+  output:
+    meets_snap_work_exception: true

@@ -20,6 +20,10 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
+from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
+from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
+from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
+from .states.ny.s04487 import create_ny_s04487_newborn_credit_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -28,6 +32,9 @@ from .harris.rent_relief_act.rent_relief_tax_credit import (
 )
 from .congress.tlaib import (
     create_end_child_poverty_act_reform,
+)
+from .congress.tlaib.economic_dignity_for_all_agenda import (
+    create_end_child_poverty_act_reform as create_edaa_end_child_poverty_act_reform,
 )
 from .congress.tlaib.boost import (
     create_boost_middle_class_tax_credit_reform,
@@ -59,6 +66,9 @@ from .state_dependent_exemptions import (
 from .ctc import (
     create_ctc_older_child_supplement_reform,
     create_ctc_additional_bracket_reform,
+    create_ctc_per_child_phase_in_reform,
+    create_ctc_per_child_phase_out_reform,
+    create_ctc_minimum_refundable_amount_reform,
 )
 from .snap import (
     create_abolish_snap_deductions_reform,
@@ -95,6 +105,13 @@ from .reconciliation import (
 from .states.mi.surtax import (
     create_mi_surtax_reform,
 )
+from .local.ny.mamdani_income_tax import (
+    create_nyc_mamdani_income_tax_reform,
+)
+from .states.ut import (
+    create_ut_refundable_eitc_reform,
+    create_ut_hb210_reform,
+)
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
 )
@@ -104,7 +121,30 @@ from .congress.hawley.awra import (
 from .crfb import (
     create_non_refundable_ss_credit_reform,
     create_senior_deduction_extension_reform,
+    create_agi_surtax_reform,
 )
+from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
+from .states.ri.exemption.ri_exemption_reform import (
+    create_ri_exemption_reform_fn,
+)
+from .states.de.dependent_credit.de_dependent_credit_reform import (
+    create_de_dependent_credit_reform_fn,
+)
+from .states.va.dependent_exemption.va_dependent_exemption_reform import (
+    create_va_dependent_exemption_reform_fn,
+)
+from .states.va.hb979.va_hb979_reform import (
+    create_va_hb979_reform,
+)
+from .aca import (
+    create_aca_ptc_additional_bracket_reform,
+    create_aca_ptc_simplified_bracket_reform,
+    create_aca_ptc_700_fpl_cliff_reform,
+)
+from .cdcc import (
+    create_cdcc_single_parent_work_requirement_reform,
+)
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -146,6 +186,18 @@ def create_structural_reforms_from_parameters(parameters, period):
         create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
+    ny_a04038_enhanced_escc_infants = (
+        create_ny_a04038_enhanced_escc_infants_reform(parameters, period)
+    )
+    sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
+        parameters, period
+    )
+    ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(
+        parameters, period
+    )
+    ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
+        parameters, period
+    )
 
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
@@ -154,6 +206,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     end_child_poverty_act = create_end_child_poverty_act_reform(
+        parameters, period
+    )
+    edaa_end_child_poverty_act = create_edaa_end_child_poverty_act_reform(
         parameters, period
     )
     boost_middle_class_tax_credit = (
@@ -220,6 +275,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     senior_deduction_extension = create_senior_deduction_extension_reform(
         parameters, period
     )
+    agi_surtax = create_agi_surtax_reform(parameters, period)
 
     reconciled_ssn_for_llc_and_aoc = (
         create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
@@ -232,8 +288,46 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mi_surtax = create_mi_surtax_reform(parameters, period)
 
+    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
+        parameters, period
+    )
+
+    ut_refundable_eitc = create_ut_refundable_eitc_reform(parameters, period)
+
+    ut_hb210 = create_ut_hb210_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
+    )
+    ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
+        parameters, period
+    )
+    ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(
+        parameters, period
+    )
+    ctc_minimum_refundable_amount = (
+        create_ctc_minimum_refundable_amount_reform(parameters, period)
+    )
+    ri_ctc = create_ri_ctc_reform(parameters, period)
+    ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    de_dependent_credit = create_de_dependent_credit_reform_fn(
+        parameters, period
+    )
+    va_dependent_exemption = create_va_dependent_exemption_reform_fn(
+        parameters, period
+    )
+    va_hb979 = create_va_hb979_reform(parameters, period)
+    aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
+        parameters, period
+    )
+    aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
+        parameters, period
+    )
+    aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
+        parameters, period
+    )
+    cdcc_single_parent_work_requirement = (
+        create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
 
     reforms = [
@@ -251,9 +345,14 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
+        ny_a04038_enhanced_escc_infants,
+        sc_h3492_eitc_refundable,
+        ny_a06774_enhanced_cdcc,
+        ny_s04487_newborn_credit,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
+        edaa_end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
@@ -277,11 +376,27 @@ def create_structural_reforms_from_parameters(parameters, period):
         afa_other_dependent_credit,
         non_refundable_ss_credit,
         senior_deduction_extension,
+        agi_surtax,
         reconciled_ssn_for_llc_and_aoc,
         ctc_additional_bracket,
         mi_surtax,
+        nyc_mamdani_income_tax,
+        ut_refundable_eitc,
+        ut_hb210,
         additional_tax_bracket,
         american_worker_rebate_act,
+        ctc_per_child_phase_out,
+        ctc_per_child_phase_in,
+        ctc_minimum_refundable_amount,
+        ri_ctc,
+        ri_exemption,
+        de_dependent_credit,
+        va_dependent_exemption,
+        va_hb979,
+        aca_ptc_additional_bracket,
+        aca_ptc_simplified_bracket,
+        aca_ptc_700_fpl_cliff,
+        cdcc_single_parent_work_requirement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

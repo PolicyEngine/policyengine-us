@@ -1,0 +1,18 @@
+description: Minimum refundable amount per child for the CTC, exempt from phase-in but subject to phase-out
+
+metadata:
+  amount_unit: currency-USD
+  threshold_unit: year
+  type: single_amount
+  period: year
+  label: CTC minimum refundable amount per child
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 6
+    amount:
+      2024-01-01: 0

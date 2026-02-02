@@ -1,0 +1,117 @@
+- name: Single filer at 250% FPL - uses baseline value
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 2.5
+  output:
+    aca_required_contribution_percentage: 0.04
+
+- name: Single filer at 300% FPL - uses baseline value
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 3.0
+  output:
+    aca_required_contribution_percentage: 0.06
+
+- name: Single filer at 400% FPL - linear increase to 10%
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.10
+
+- name: Single filer at 500% FPL - linear increase to 14%
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 5.0
+  output:
+    aca_required_contribution_percentage: 0.14
+
+- name: Single filer at 600% FPL - linear increase to 18%
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 6.0
+  output:
+    aca_required_contribution_percentage: 0.18
+
+- name: Single filer at 350% FPL - interpolated value
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 3.5
+  output:
+    aca_required_contribution_percentage: 0.08
+
+- name: Baseline comparison at 400% FPL - shows difference
+  period: 2026
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.0996
+
+- name: Edge case - Lower boundary at 0% FPL
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 0.0
+  output:
+    aca_required_contribution_percentage: 0.0
+
+- name: Edge case - Lower boundary at 150% FPL (first bracket threshold)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 1.5
+  output:
+    aca_required_contribution_percentage: 0.0
+
+- name: Edge case - First positive bracket at 200% FPL
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 2.0
+  output:
+    aca_required_contribution_percentage: 0.02
+
+- name: Edge case - Upper boundary at 1000% FPL (highest defined bracket)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 10.0
+  output:
+    aca_required_contribution_percentage: 0.34
+
+- name: Edge case - Interpolation between 1.5 and 2.0 at 175% FPL
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_additional_bracket.aca_ptc_additional_bracket
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_additional_bracket.in_effect: true
+    aca_magi_fraction: 1.75
+  output:
+    aca_required_contribution_percentage: 0.01

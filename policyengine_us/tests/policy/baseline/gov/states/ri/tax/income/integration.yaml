@@ -52,3 +52,101 @@
         state_fips: 44
   output:
     ri_income_tax: 7_337
+
+- name: Tax unit with taxsimid 41198 in h21.its.csv and h21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 27_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 10_010
+        rental_income: 10_010
+        taxable_private_pension_income: 12_000
+        social_security_retirement: 22_000
+        rent: 5_000
+        ssi: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 6_000
+        aca_ptc: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ri_child_tax_rebate: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 44  # RI
+  output:  # expected results from patched TAXSIM35 2024-01-30 version
+    ri_income_tax: 890.25
+
+# 2025 integration test - verifies 2025 tax bracket thresholds
+# Tax brackets: $0-$79,900 (3.75%), $79,900-$181,650 (4.75%), >$181,650 (5.99%)
+# Exemption: $5,100, Standard deduction (single): $10,900
+- name: 2025 - Single filer with income in second bracket
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # RI AGI = $100,000
+    # Standard deduction (single, 2025) = $10,900
+    # Exemption = $5,100
+    # Taxable income = $100,000 - $10,900 - $5,100 = $84,000
+    # Tax = $79,900 * 0.0375 + ($84,000 - $79,900) * 0.0475
+    #     = $2,996.25 + $194.75 = $3,191
+    ri_income_tax: 3_191
+
+- name: 2025 - Single filer with income in third bracket
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # RI AGI = $200,000
+    # Standard deduction (single, 2025) = $10,900
+    # Exemption = $5,100
+    # Taxable income = $200,000 - $10,900 - $5,100 = $184,000
+    # Tax = $79,900 * 0.0375 + ($181,650 - $79,900) * 0.0475 + ($184,000 - $181,650) * 0.0599
+    #     = $2,996.25 + $4,833.125 + $140.765 = $7,970.14
+    ri_income_tax: 7_970

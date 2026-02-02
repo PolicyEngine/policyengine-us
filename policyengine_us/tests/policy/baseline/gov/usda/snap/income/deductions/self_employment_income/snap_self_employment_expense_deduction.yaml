@@ -1,7 +1,7 @@
 - name: Arkansas does not allow for a flat deduction
   period: 2025
   input:
-    self_employment_income: 2_000
+    self_employment_income_before_lsr: 2_000
     snap_self_employment_income_expense: 300
     state_code: AR
   output:
@@ -10,7 +10,7 @@
 - name: Alabama does not allow for an actual expense deduction
   period: 2025
   input:
-    self_employment_income: 300
+    self_employment_income_before_lsr: 300
     snap_self_employment_income_expense: 300
     state_code: AL
   output:
@@ -19,7 +19,7 @@
 - name: Alaska allows for both percentage and actual expense deductions
   period: 2025
   input:
-    self_employment_income: 300
+    self_employment_income_before_lsr: 300
     snap_self_employment_income_expense: 300
     state_code: AK
   output:
@@ -28,8 +28,28 @@
 - name: Alaska allows for both percentage and actual expense deductions, income over expenses
   period: 2025
   input:
-    self_employment_income: 3_000
+    self_employment_income_before_lsr: 3_000
     snap_self_employment_income_expense: 300
     state_code: AK
   output:
     snap_self_employment_expense_deduction: 1_500
+
+- name: Iowa allows 40% simplified deduction or actual expenses, whichever is greater
+  period: 2025
+  input:
+    self_employment_income_before_lsr: 3_000
+    snap_self_employment_income_expense: 500
+    state_code: IA
+  output:
+    # 40% of $3,000 = $1,200, which is greater than $500 expenses
+    snap_self_employment_expense_deduction: 1_200
+
+- name: Iowa uses actual expenses when greater than 40% simplified deduction
+  period: 2025
+  input:
+    self_employment_income_before_lsr: 1_000
+    snap_self_employment_income_expense: 600
+    state_code: IA
+  output:
+    # 40% of $1,000 = $400, but actual expenses ($600) are greater
+    snap_self_employment_expense_deduction: 600

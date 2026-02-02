@@ -27,8 +27,8 @@ class capital_gains_tax(Variable):
 
         filing_status = tax_unit("filing_status", period)
 
-        first_threshold = cg.brackets.thresholds["1"][filing_status]
-        second_threshold = cg.brackets.thresholds["2"][filing_status]
+        first_threshold = cg.thresholds["1"][filing_status]
+        second_threshold = cg.thresholds["2"][filing_status]
 
         income_ordinarily_under_second_rate = clip(
             taxable_income, 0, first_threshold
@@ -55,9 +55,9 @@ class capital_gains_tax(Variable):
         )
 
         main_cg_tax = (
-            cg_in_first_bracket * cg.brackets.rates["1"]
-            + cg_in_second_bracket * cg.brackets.rates["2"]
-            + cg_in_third_bracket * cg.brackets.rates["3"]
+            cg_in_first_bracket * cg.rates["1"]
+            + cg_in_second_bracket * cg.rates["2"]
+            + cg_in_third_bracket * cg.rates["3"]
         )
 
         unrecaptured_s_1250_gain = tax_unit(

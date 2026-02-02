@@ -1,0 +1,198 @@
+# End Child Poverty Act tests
+
+- name: ECPA child benefit for eligible child
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [parent, child]
+  output:
+    ecpa_child_benefit: [0, 5_680]
+    ecpa_filer_credit: 700
+
+- name: ECPA adult dependent credit
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    people:
+      parent:
+        age: 45
+      adult_dependent:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, adult_dependent]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_000
+  output:
+    ecpa_adult_dependent_credit: [0, 700]
+    ecpa_filer_credit: 700
+
+- name: ECPA filer credit with phase out
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    people:
+      filer:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 24_000
+  output:
+    ecpa_filer_credit: 500  # 700 - (4,000 * 0.05)
+
+- name: ECPA household with children and adult dependent
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    people:
+      parent:
+        age: 45
+      child1:
+        age: 5
+      child2:
+        age: 10
+      adult_dependent:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, adult_dependent]
+        filing_status: SINGLE
+        adjusted_gross_income: 30_000
+  output:
+    ecpa_child_benefit: [0, 5_680, 5_680, 0]
+    ecpa_adult_dependent_credit: [0, 0, 0, 700]
+    ecpa_filer_credit: 200  # 700 - (10,000 * 0.05)
+
+- name: ECPA joint filers with children and adult dependent
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child:
+        age: 8
+      adult_dependent:
+        age: 22
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child, adult_dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 45_000
+  output:
+    ecpa_child_benefit: [0, 0, 5_680, 0]
+    ecpa_adult_dependent_credit: [0, 0, 0, 700]
+    ecpa_filer_credit: 1_150  # 1,400 - (5,000 * 0.05)
+
+- name: Oklahoma family - state credits reference federal calculations
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  absolute_error_margin: 1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 30_000
+      parent2:
+        age: 33
+        employment_income: 20_000
+      newborn:
+        age: 0
+        birth_year: 2026
+      child:
+        age: 8
+        birth_year: 2018
+      adult_dependent:
+        age: 19
+        birth_year: 2007
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, newborn, child, adult_dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, newborn, child, adult_dependent]
+        state_code: OK
+  output:
+    # Federal CTC/EITC calculated for state reference
+    ctc: 4_900
+    eitc: 4_244
+
+    # Oklahoma credits (5% of federal)
+    ok_child_care_child_tax_credit:
+      2026: 245  # 5% of $4,900
+    ok_eitc:
+      2026: 72.07
+
+    # ECPA benefits
+    ecpa_child_benefit:
+      2026: [0, 0, 5_680, 5_680, 0]
+    ecpa_adult_dependent_credit:
+      2026: [0, 0, 0, 0, 700]
+    ecpa_filer_credit:
+      2026: 900  # $1,400 - ($50k - $40k) * 0.05
+
+    # Federal refundable credits exclude CTC/EITC
+    income_tax_refundable_credits:
+      2026: 1_600  # ECPA filer ($900) + adult dependent ($700)
+
+- name: Maine single parent - state EITC percentage of federal
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  absolute_error_margin: 1
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 25_000
+      child1:
+        age: 3
+        birth_year: 2023
+      child2:
+        age: 10
+        birth_year: 2016
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: ME
+  output:
+    # Federal calculations
+    ctc: 4_400
+    eitc: 7_071
+
+    # Maine EITC is 25% of federal
+    me_eitc: 1_767
+
+    # ECPA benefits
+    ecpa_child_benefit:
+      2026: [0, 5_680, 5_680]
+    ecpa_filer_credit:
+      2026: 450  # $700 - ($25k - $20k) * 0.05
+
+    # Federal credits exclude EITC/CTC
+    income_tax_refundable_credits:
+      2026: 450

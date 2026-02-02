@@ -1,0 +1,71 @@
+description: Massachusetts uses these fee percentages by fee level under the Child Care Financial Assistance program.
+metadata:
+  period: month
+  unit: /1
+  label: Massachusetts CCFA fee percentage by fee level
+  breakdown:
+    - range(1,29)
+  breakdown_labels:
+    - Fee level
+  reference:
+    - title: EEC Financial Assistance Parent Fee Table FY2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025
+
+0:
+  2023-10-01: 1 # Not used (fee level starts at 1)
+1:
+  2023-10-01: 1
+2:
+  2023-10-01: 0.04
+3:
+  2023-10-01: 0.045
+4:
+  2023-10-01: 0.049
+5:
+  2023-10-01: 0.0535
+6:
+  2023-10-01: 0.058
+7:
+  2023-10-01: 0.0625
+8:
+  2023-10-01: 0.067
+9:
+  2023-10-01: 0.0715
+10:
+  2023-10-01: 0.075
+11:
+  2023-10-01: 0.0805
+12:
+  2023-10-01: 0.085
+13:
+  2023-10-01: 0.0895
+14:
+  2023-10-01: 0.094
+15:
+  2023-10-01: 0.0985
+16:
+  2023-10-01: 0.103
+17:
+  2023-10-01: 0.1075
+18:
+  2023-10-01: 0.112
+19:
+  2023-10-01: 0.1165
+20:
+  2023-10-01: 0.121
+21:
+  2023-10-01: 0.1255
+22:
+  2023-10-01: 0.13
+23:
+  2023-10-01: 0.1345
+24:
+  2023-10-01: 0.139
+25:
+  2023-10-01: 0.1435
+26:
+  2023-10-01: 0.148
+27:
+  2023-10-01: 0.1525
+28:
+  2023-10-01: 0.156
