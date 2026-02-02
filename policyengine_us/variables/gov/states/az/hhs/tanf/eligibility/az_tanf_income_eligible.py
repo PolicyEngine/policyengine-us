@@ -15,8 +15,7 @@ class az_tanf_income_eligible(Variable):
         payment_standard = spm_unit("az_tanf_payment_standard", period)
 
         # Test 1: Needy family test (income <= FPG rate * FPG)
-        # Use period.this_year for fpg_rate since it's a rate, not a flow
-        fpg_rate = spm_unit("az_tanf_fpg_rate", period.this_year)
+        fpg_rate = spm_unit("az_tanf_fpg_rate", period)
         needy_family_test = countable_income <= fpg_rate * fpg
 
         # Test 2: Payment standard test (income <= payment standard)

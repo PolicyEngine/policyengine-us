@@ -6,9 +6,7 @@ class az_tanf_resources_eligible(Variable):
     entity = SPMUnit
     label = "Arizona TANF resources eligible"
     definition_period = MONTH
-    reference = (
-        "https://az.db101.org/az/programs/income_support/tanf/program2.htm"
-    )
+    reference = "https://des.az.gov/sites/default/files/dl/tanf_state_plan_oct_2023.pdf#page=20"
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
