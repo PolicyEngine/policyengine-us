@@ -1,13 +1,14 @@
-- name: Eligible child 
-  period: 2023
+- name: Eligible child
+  period: 2025
   input:
     ma_tafdc_eligible_dependent: true
     state_code: MA
   output:
+    # Clothing allowance effective 2024-09-01: $500
     ma_tafdc_clothing_allowance: 500
 
-- name: Ineligible child 
-  period: 2023
+- name: Ineligible child
+  period: 2025
   input:
     ma_tafdc_eligible_dependent: false
     state_code: MA

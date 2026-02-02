@@ -5,6 +5,314 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.549.0] - 2026-02-02 19:07:06
+
+### Added
+
+- Add NY S.9077 Empire State Child Credit ITIN expansion reform allowing children with ITINs to qualify starting 2027.
+
+## [1.548.0] - 2026-02-02 19:05:08
+
+### Added
+
+- Update South Carolina income tax parameters for 2025, including reduced top rate (6.0%) and adjusted brackets.
+
+## [1.547.0] - 2026-02-02 18:49:52
+
+### Added
+
+- Implement Maryland Temporary Cash Assistance (TCA) program.
+
+## [1.546.1] - 2026-02-02 17:32:10
+
+### Fixed
+
+- Missouri income tax now correctly allocates above-the-line deductions proportionally by gross income, ensuring capital loss deductions are not lost when one spouse has no income.
+
+## [1.546.0] - 2026-02-02 01:50:17
+
+### Added
+
+- Add 2025 references to all New York State and NYC income tax parameters.
+- Update geothermal energy system credit cap to $10,000 for systems placed in service on/after July 1, 2025.
+- Add 2025 NY income tax integration tests.
+
+## [1.545.3] - 2026-02-02 01:38:39
+
+### Changed
+
+- Add historical data for Massachusetts TAFDC parameters
+
+## [1.545.2] - 2026-02-02 01:21:49
+
+### Changed
+
+- Backdate DC TANF, GAC, and POWER parameters to program establishment dates.
+
+## [1.545.1] - 2026-02-02 01:15:31
+
+### Added
+
+- Backdate Texas TANF program.
+
+## [1.545.0] - 2026-02-02 01:03:18
+
+### Fixed
+
+- Implement NJ same category rule - net losses in any income category (capital gains, S-corp, partnership, rental, business) are now disregarded and cannot offset income from other categories.
+
+## [1.544.0] - 2026-02-02 00:56:29
+
+### Changed
+
+- {'description': 'Updates Georgia income tax parameters for 2025 tax year based on the IT-511 Instructions Booklet:\n- Corrects 2025 tax rate to 5.19% (from incorrectly projected 5.29%)\n- Adds 2025 IT-511 references to all income tax parameters\n- Verifies CDCC credit rate at 50% of federal credit for 2025\n- Confirms standard deductions, dependent exemption, retirement exclusions, military retirement exclusions, and itemizer credit values\n', 'title': 'Update Georgia 2025 individual income tax model'}
+
+## [1.543.0] - 2026-02-02 00:48:06
+
+### Changed
+
+- Disable Montana _indiv computation path for 2024+ when married filing separately on same return is no longer allowed.
+
+## [1.542.1] - 2026-02-02 00:34:36
+
+### Changed
+
+- {'title': 'Update Hawaii income tax parameters with 2025 references'}
+
+## [1.542.0] - 2026-02-02 00:11:19
+
+### Added
+
+- NY TANF pre-October 2022 gross income test and immigration eligibility check.
+
+### Changed
+
+- NY TANF parameters backfilled to 1998 with October 2022 reform rules per 22-ADM-11.
+- NY TANF earned income deduction calculation order changes by reform date.
+
+## [1.541.1] - 2026-02-02 00:00:17
+
+### Fixed
+
+- CT Social Security benefit adjustment now uses actual federal taxable Social Security amount instead of 85% of gross Social Security.
+
+## [1.541.0] - 2026-02-01 23:33:30
+
+### Added
+
+- Oregon Healthier Oregon program providing Medicaid-equivalent coverage for undocumented immigrants.
+
+## [1.540.1] - 2026-02-01 23:24:58
+
+### Changed
+
+- Update Colorado income tax parameters for tax year 2025.
+
+## [1.540.0] - 2026-02-01 23:13:46
+
+### Added
+
+- Add comprehensive 2025 test cases for Oklahoma income tax (103 tests).
+
+### Changed
+
+- Update Oklahoma income tax parameters for 2025 with current form references.
+- Increase pension subtraction limit from $10,000 to $20,000 for 2024+ per HB 2020.
+- Enhance documentation for Oklahoma income tax variables with calculation examples and regulatory references.
+
+## [1.539.0] - 2026-02-01 22:33:33
+
+### Changed
+
+- Add 2025 references to all Missouri income tax parameters.
+- Add 2025 value for mo_max_social_security_benefit ($48,216).
+- Add 2025 test cases for Missouri income tax and capital gains subtraction.
+
+## [1.538.1] - 2026-02-01 22:20:32
+
+### Changed
+
+- Update Illinois TANF parameter historical dates to reflect actual policy enactment dates.
+
+## [1.538.0] - 2026-02-01 22:15:00
+
+### Added
+
+- Backdating Maine TANF parameters.
+
+## [1.537.4] - 2026-02-01 22:06:11
+
+### Fixed
+
+- Backdate Oklahoma TANF parameters to correct effective dates.
+- Backdate Wisconsin Works parameters to correct effective dates.
+- Backdate Ohio Works First parameters to correct effective dates and add COLA multiplier for dynamic payment standards.
+
+## [1.537.3] - 2026-02-01 21:59:11
+
+### Fixed
+
+- Corrected 2020 surviving spouse standard deduction from $24,400 to $24,800 to match joint filers per 26 USC 63(c)(2)(A).
+
+## [1.537.2] - 2026-02-01 21:55:06
+
+### Fixed
+
+- Mississippi income tax now correctly uses loss-limited capital gains (federal $3K limit) instead of unlimited raw capital gains.
+
+## [1.537.1] - 2026-02-01 21:42:20
+
+### Fixed
+
+- Arizona long-term capital gains subtraction now correctly returns zero when there is a net capital loss, rather than using raw long-term capital gains.
+
+## [1.537.0] - 2026-02-01 20:53:00
+
+### Added
+
+- Add Alabama Family Assistance (TANF) program.
+
+## [1.536.0] - 2026-02-01 20:30:41
+
+### Added
+
+- Vermont TANF (Reach Up) program
+
+## [1.535.0] - 2026-02-01 19:35:05
+
+### Added
+
+- South Carolina TANF (Temporary Assistance for Needy Families) program
+
+## [1.534.6] - 2026-02-01 18:13:47
+
+### Fixed
+
+- Fix Rhode Island retirement income subtraction to apply the cap per person instead of per tax unit.
+
+## [1.534.5] - 2026-01-31 20:58:31
+
+### Added
+
+- Tests for TAXSIM output variables to achieve 100% coverage.
+
+## [1.534.4] - 2026-01-31 19:46:35
+
+### Changed
+
+- Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for consistent formatting.
+
+## [1.534.3] - 2026-01-31 16:52:24
+
+### Added
+
+- Tests for tax_unit_is_filer variable covering filing requirement logic.
+
+## [1.534.2] - 2026-01-31 03:23:17
+
+### Added
+
+- Add 2018 CHIP FCEP pregnant income limits from MACPAC MACStats December 2018 Data Book.
+
+## [1.534.1] - 2026-01-31 00:45:39
+
+### Added
+
+- Added income_tax_positive variable for CBO-consistent calibration
+
+## [1.534.0] - 2026-01-30 20:44:48
+
+### Added
+
+- Add Virginia HB979 income tax reform with new 8% and 10% brackets for high earners.
+
+## [1.533.0] - 2026-01-30 15:33:22
+
+### Changed
+
+- Update Michigan 2025 Individual Income Tax Model parameters
+
+## [1.532.4] - 2026-01-29 23:19:08
+
+### Changed
+
+- Update Virginia 2025 income tax parameters with 2025 Form 760 references
+- Add rebate values for 2024 ($200/$400) and 2025 ($0)
+- Add 2025 tests for standard deduction, EITC, military benefit subtraction, age deduction, rebate, and exemptions
+
+## [1.532.3] - 2026-01-29 21:06:35
+
+### Fixed
+
+- Medicaid category assignment now correctly evaluates mandatory groups (parent, pregnant, SSI) before optional expansion groups, per federal eligibility rules.
+
+## [1.532.2] - 2026-01-29 05:35:07
+
+### Added
+
+- Backdate New Hampshire interest and dividends tax parameters to 2020.
+
+## [1.532.1] - 2026-01-29 03:57:29
+
+### Changed
+
+- Updated uv.lock dependencies.
+
+## [1.532.0] - 2026-01-29 02:38:20
+
+### Added
+
+- California CalWORKs Stage 2 (C2AP) child care subsidy for former CalWORKs recipients within 24 months of leaving cash aid.
+- California CalWORKs Stage 3 (C3AP) child care subsidy for former CalWORKs recipients who exhausted Stage 2 eligibility.
+- California Alternative Payment Program (CAPP) child care subsidy for income-eligible families who never received CalWORKs.
+
+## [1.531.0] - 2026-01-29 02:17:08
+
+### Added
+
+- Illinois Home Weatherization Assistance Program (IHWAP) eligibility.
+- Reusable SMI (State Median Income) function.
+
+## [1.530.0] - 2026-01-28 21:20:03
+
+### Added
+
+- Illinois Senior Citizens Real Estate Tax Deferral Program (il_scretd)
+
+## [1.529.0] - 2026-01-28 21:12:25
+
+### Added
+
+- Illinois I-PASS Assist program eligibility.
+
+## [1.528.0] - 2026-01-28 21:05:51
+
+### Changed
+
+- Pin New York itemized deductions to pre-TCJA rules per Tax Law § 615
+
+## [1.527.2] - 2026-01-28 16:04:08
+
+### Fixed
+
+- Exclude Medicaid recipients from QI (Qualifying Individual) eligibility.
+
+## [1.527.1] - 2026-01-27 21:30:41
+
+### Fixed
+
+- Medicare Savings Program (MSP) calculation now returns correct benefit values instead of null.
+
+## [1.527.0] - 2026-01-27 03:46:23
+
+### Added
+
+- Add Connecticut EITC $250 qualifying child bonus for tax year 2025.
+
+### Changed
+
+- Update Connecticut tax parameter references to 2025 CT-1040 Instructions.
+
 ## [1.526.2] - 2026-01-27 03:21:56
 
 ### Changed
@@ -14576,6 +14884,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.548.0...1.549.0
+[1.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.547.0...1.548.0
+[1.547.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.1...1.547.0
+[1.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.0...1.546.1
+[1.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.3...1.546.0
+[1.545.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.2...1.545.3
+[1.545.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.1...1.545.2
+[1.545.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.0...1.545.1
+[1.545.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.544.0...1.545.0
+[1.544.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.543.0...1.544.0
+[1.543.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.1...1.543.0
+[1.542.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.0...1.542.1
+[1.542.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.541.1...1.542.0
+[1.541.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.541.0...1.541.1
+[1.541.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.540.1...1.541.0
+[1.540.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.540.0...1.540.1
+[1.540.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.539.0...1.540.0
+[1.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.1...1.539.0
+[1.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.538.0...1.538.1
+[1.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.4...1.538.0
+[1.537.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.3...1.537.4
+[1.537.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.2...1.537.3
+[1.537.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.1...1.537.2
+[1.537.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.537.0...1.537.1
+[1.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.536.0...1.537.0
+[1.536.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.535.0...1.536.0
+[1.535.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.6...1.535.0
+[1.534.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.5...1.534.6
+[1.534.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.4...1.534.5
+[1.534.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.3...1.534.4
+[1.534.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.2...1.534.3
+[1.534.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.1...1.534.2
+[1.534.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.534.0...1.534.1
+[1.534.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.533.0...1.534.0
+[1.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.4...1.533.0
+[1.532.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.3...1.532.4
+[1.532.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.2...1.532.3
+[1.532.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.1...1.532.2
+[1.532.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.532.0...1.532.1
+[1.532.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.531.0...1.532.0
+[1.531.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.530.0...1.531.0
+[1.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.529.0...1.530.0
+[1.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.528.0...1.529.0
+[1.528.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.2...1.528.0
+[1.527.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.1...1.527.2
+[1.527.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.527.0...1.527.1
+[1.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.2...1.527.0
 [1.526.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.1...1.526.2
 [1.526.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.526.0...1.526.1
 [1.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.525.0...1.526.0

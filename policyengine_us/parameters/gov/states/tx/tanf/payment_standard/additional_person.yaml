@@ -1,9 +1,14 @@
 description: Texas adds this amount to the maximum grant for each person beyond 15 in the certified group under the Temporary Assistance for Needy Families program.
 values:
+  2017-10-01: 67
+  2018-10-01: 68
+  2019-10-01: 70
   2023-10-01: 81
   2024-10-01: 85
   2025-10-01: 88
 
+  # 2017-2018 values calculated using rate = (17% × monthly FPL for size 3) ÷ budgetary needs for size 3. 
+  # Rate: 38.48% (2017), 39.15% (2018). Applied uniformly to all family types/sizes. Original bulletins unavailable. 
 metadata:
   unit: currency-USD
   period: month
@@ -11,9 +16,11 @@ metadata:
   reference:
     - title: Texas Works Handbook C-110, TANF (2023-10-01)
       href: https://web.archive.org/web/20240911175553/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
-    - title: Texas Works Handbook C-110, TANF (2024-10-01)
-      href: https://web.archive.org/web/20250308063323/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas TANF Maximum Grant Amounts (2024-10-01)
+      href: https://www.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-Bulletin-24-12.pdf#page=2
     - title: Texas Works Handbook C-110, TANF (Current)
       href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
     - title: 1 Tex. Admin. Code § 372.1505 (a) - Calculating Benefits
       href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-1505
+    - title: Texas TANF Maximum Grant Amounts (2019-10-01)
+      href: https://www.hhs.texas.gov/sites/default/files/documents/laws-regulations/handbooks/twh/bulletin2020/19-08.pdf#page=6

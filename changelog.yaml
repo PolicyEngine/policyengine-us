@@ -12506,3 +12506,297 @@
     changed:
     - Add historical values to Minnesota MFIP parameters.
   date: 2026-01-27 03:21:56
+- bump: minor
+  changes:
+    added:
+    - Add Connecticut EITC $250 qualifying child bonus for tax year 2025.
+    changed:
+    - Update Connecticut tax parameter references to 2025 CT-1040 Instructions.
+  date: 2026-01-27 03:46:23
+- bump: patch
+  changes:
+    fixed:
+    - Medicare Savings Program (MSP) calculation now returns correct benefit values
+      instead of null.
+  date: 2026-01-27 21:30:41
+- bump: patch
+  changes:
+    fixed:
+    - Exclude Medicaid recipients from QI (Qualifying Individual) eligibility.
+  date: 2026-01-28 16:04:08
+- bump: minor
+  changes:
+    changed:
+    - "Pin New York itemized deductions to pre-TCJA rules per Tax Law \xA7 615"
+  date: 2026-01-28 21:05:51
+- bump: minor
+  changes:
+    added:
+    - Illinois I-PASS Assist program eligibility.
+  date: 2026-01-28 21:12:25
+- bump: minor
+  changes:
+    added:
+    - Illinois Senior Citizens Real Estate Tax Deferral Program (il_scretd)
+  date: 2026-01-28 21:20:03
+- bump: minor
+  changes:
+    added:
+    - Illinois Home Weatherization Assistance Program (IHWAP) eligibility.
+    - Reusable SMI (State Median Income) function.
+  date: 2026-01-29 02:17:08
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs Stage 2 (C2AP) child care subsidy for former CalWORKs recipients
+      within 24 months of leaving cash aid.
+    - California CalWORKs Stage 3 (C3AP) child care subsidy for former CalWORKs recipients
+      who exhausted Stage 2 eligibility.
+    - California Alternative Payment Program (CAPP) child care subsidy for income-eligible
+      families who never received CalWORKs.
+  date: 2026-01-29 02:38:20
+- bump: patch
+  changes:
+    changed:
+    - Updated uv.lock dependencies.
+  date: 2026-01-29 03:57:29
+- bump: patch
+  changes:
+    added:
+    - Backdate New Hampshire interest and dividends tax parameters to 2020.
+  date: 2026-01-29 05:35:07
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid category assignment now correctly evaluates mandatory groups (parent,
+      pregnant, SSI) before optional expansion groups, per federal eligibility rules.
+  date: 2026-01-29 21:06:35
+- bump: patch
+  changes:
+    changed:
+    - Update Virginia 2025 income tax parameters with 2025 Form 760 references
+    - Add rebate values for 2024 ($200/$400) and 2025 ($0)
+    - Add 2025 tests for standard deduction, EITC, military benefit subtraction, age
+      deduction, rebate, and exemptions
+  date: 2026-01-29 23:19:08
+- bump: minor
+  changes:
+    changed:
+    - Update Michigan 2025 Individual Income Tax Model parameters
+  date: 2026-01-30 15:33:22
+- bump: minor
+  changes:
+    added:
+    - Add Virginia HB979 income tax reform with new 8% and 10% brackets for high earners.
+  date: 2026-01-30 20:44:48
+- bump: patch
+  changes:
+    added:
+    - Added income_tax_positive variable for CBO-consistent calibration
+  date: 2026-01-31 00:45:39
+- bump: patch
+  changes:
+    added:
+    - Add 2018 CHIP FCEP pregnant income limits from MACPAC MACStats December 2018
+      Data Book.
+  date: 2026-01-31 03:23:17
+- bump: patch
+  changes:
+    added:
+    - Tests for tax_unit_is_filer variable covering filing requirement logic.
+  date: 2026-01-31 16:52:24
+- bump: patch
+  changes:
+    changed:
+    - Pin black==26.1.0 in dev dependencies and update CI and Makefile to use uv for
+      consistent formatting.
+  date: 2026-01-31 19:46:35
+- bump: patch
+  changes:
+    added:
+    - Tests for TAXSIM output variables to achieve 100% coverage.
+  date: 2026-01-31 20:58:31
+- bump: patch
+  changes:
+    fixed:
+    - Fix Rhode Island retirement income subtraction to apply the cap per person instead
+      of per tax unit.
+  date: 2026-02-01 18:13:47
+- bump: minor
+  changes:
+    added:
+    - South Carolina TANF (Temporary Assistance for Needy Families) program
+  date: 2026-02-01 19:35:05
+- bump: minor
+  changes:
+    added:
+    - Vermont TANF (Reach Up) program
+  date: 2026-02-01 20:30:41
+- bump: minor
+  changes:
+    added:
+    - Add Alabama Family Assistance (TANF) program.
+  date: 2026-02-01 20:53:00
+- bump: patch
+  changes:
+    fixed:
+    - Arizona long-term capital gains subtraction now correctly returns zero when
+      there is a net capital loss, rather than using raw long-term capital gains.
+  date: 2026-02-01 21:42:20
+- bump: patch
+  changes:
+    fixed:
+    - Mississippi income tax now correctly uses loss-limited capital gains (federal
+      $3K limit) instead of unlimited raw capital gains.
+  date: 2026-02-01 21:55:06
+- bump: patch
+  changes:
+    fixed:
+    - Corrected 2020 surviving spouse standard deduction from $24,400 to $24,800 to
+      match joint filers per 26 USC 63(c)(2)(A).
+  date: 2026-02-01 21:59:11
+- bump: patch
+  changes:
+    fixed:
+    - Backdate Oklahoma TANF parameters to correct effective dates.
+    - Backdate Wisconsin Works parameters to correct effective dates.
+    - Backdate Ohio Works First parameters to correct effective dates and add COLA
+      multiplier for dynamic payment standards.
+  date: 2026-02-01 22:06:11
+- bump: minor
+  changes:
+    added:
+    - Backdating Maine TANF parameters.
+  date: 2026-02-01 22:15:00
+- bump: patch
+  changes:
+    changed:
+    - Update Illinois TANF parameter historical dates to reflect actual policy enactment
+      dates.
+  date: 2026-02-01 22:20:32
+- bump: minor
+  changes:
+    changed:
+    - Add 2025 references to all Missouri income tax parameters.
+    - Add 2025 value for mo_max_social_security_benefit ($48,216).
+    - Add 2025 test cases for Missouri income tax and capital gains subtraction.
+  date: 2026-02-01 22:33:33
+- bump: minor
+  changes:
+    added:
+    - Add comprehensive 2025 test cases for Oklahoma income tax (103 tests).
+    changed:
+    - Update Oklahoma income tax parameters for 2025 with current form references.
+    - Increase pension subtraction limit from $10,000 to $20,000 for 2024+ per HB
+      2020.
+    - Enhance documentation for Oklahoma income tax variables with calculation examples
+      and regulatory references.
+  date: 2026-02-01 23:13:46
+- bump: patch
+  changes:
+    changed:
+    - Update Colorado income tax parameters for tax year 2025.
+  date: 2026-02-01 23:24:58
+- bump: minor
+  changes:
+    added:
+    - Oregon Healthier Oregon program providing Medicaid-equivalent coverage for undocumented
+      immigrants.
+  date: 2026-02-01 23:33:30
+- bump: patch
+  changes:
+    fixed:
+    - CT Social Security benefit adjustment now uses actual federal taxable Social
+      Security amount instead of 85% of gross Social Security.
+  date: 2026-02-02 00:00:17
+- bump: minor
+  changes:
+    added:
+    - NY TANF pre-October 2022 gross income test and immigration eligibility check.
+    changed:
+    - NY TANF parameters backfilled to 1998 with October 2022 reform rules per 22-ADM-11.
+    - NY TANF earned income deduction calculation order changes by reform date.
+  date: 2026-02-02 00:11:19
+- bump: patch
+  changes:
+    changed:
+    - title: Update Hawaii income tax parameters with 2025 references
+  date: 2026-02-02 00:34:36
+- bump: minor
+  changes:
+    changed:
+    - Disable Montana _indiv computation path for 2024+ when married filing separately
+      on same return is no longer allowed.
+  date: 2026-02-02 00:48:06
+- bump: minor
+  changes:
+    changed:
+    - description: 'Updates Georgia income tax parameters for 2025 tax year based
+        on the IT-511 Instructions Booklet:
+
+        - Corrects 2025 tax rate to 5.19% (from incorrectly projected 5.29%)
+
+        - Adds 2025 IT-511 references to all income tax parameters
+
+        - Verifies CDCC credit rate at 50% of federal credit for 2025
+
+        - Confirms standard deductions, dependent exemption, retirement exclusions,
+        military retirement exclusions, and itemizer credit values
+
+        '
+      title: Update Georgia 2025 individual income tax model
+  date: 2026-02-02 00:56:29
+- bump: minor
+  changes:
+    fixed:
+    - Implement NJ same category rule - net losses in any income category (capital
+      gains, S-corp, partnership, rental, business) are now disregarded and cannot
+      offset income from other categories.
+  date: 2026-02-02 01:03:18
+- bump: patch
+  changes:
+    added:
+    - Backdate Texas TANF program.
+  date: 2026-02-02 01:15:31
+- bump: patch
+  changes:
+    changed:
+    - Backdate DC TANF, GAC, and POWER parameters to program establishment dates.
+  date: 2026-02-02 01:21:49
+- bump: patch
+  changes:
+    changed:
+    - Add historical data for Massachusetts TAFDC parameters
+  date: 2026-02-02 01:38:39
+- bump: minor
+  changes:
+    added:
+    - Add 2025 references to all New York State and NYC income tax parameters.
+    - Update geothermal energy system credit cap to $10,000 for systems placed in
+      service on/after July 1, 2025.
+    - Add 2025 NY income tax integration tests.
+  date: 2026-02-02 01:50:17
+- bump: patch
+  changes:
+    fixed:
+    - Missouri income tax now correctly allocates above-the-line deductions proportionally
+      by gross income, ensuring capital loss deductions are not lost when one spouse
+      has no income.
+  date: 2026-02-02 17:32:10
+- bump: minor
+  changes:
+    added:
+    - Implement Maryland Temporary Cash Assistance (TCA) program.
+  date: 2026-02-02 18:49:52
+- bump: minor
+  changes:
+    added:
+    - Update South Carolina income tax parameters for 2025, including reduced top
+      rate (6.0%) and adjusted brackets.
+  date: 2026-02-02 19:05:08
+- bump: minor
+  changes:
+    added:
+    - Add NY S.9077 Empire State Child Credit ITIN expansion reform allowing children
+      with ITINs to qualify starting 2027.
+  date: 2026-02-02 19:07:06

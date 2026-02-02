@@ -43,6 +43,8 @@
     spm_unit_is_married: false
     base_part_a_premium: 0
     base_part_b_premium: 2_096.40
+    # QI requires not being eligible for other Medicaid
+    is_medicaid_eligible: false
   output:
     msp_benefit_value: 174.70
 
@@ -60,3 +62,21 @@
     base_part_b_premium: 2_096.40
   output:
     msp_benefit_value: 0
+
+- name: MSP benefit - integration test (full calculation chain)
+  period: 2025-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # Low income to qualify for QMB
+    ssi_unearned_income: 12_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    # Explicitly provide quarters (no default in model)
+    medicare_quarters_of_coverage: 40
+    # NOT providing base_part_a_premium or base_part_b_premium
+    # to exercise the full calculation chain
+  output:
+    # With 40 quarters, Part A is premium-free ($0)
+    # Part B base premium for 2025 is $185/month
+    msp_benefit_value: 185
