@@ -12776,3 +12776,10 @@
       service on/after July 1, 2025.
     - Add 2025 NY income tax integration tests.
   date: 2026-02-02 01:50:17
+- bump: patch
+  changes:
+    fixed:
+    - Missouri income tax now correctly allocates above-the-line deductions proportionally
+      by gross income, ensuring capital loss deductions are not lost when one spouse
+      has no income.
+  date: 2026-02-02 17:32:10
