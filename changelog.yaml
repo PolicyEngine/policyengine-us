@@ -12703,3 +12703,9 @@
     - Oregon Healthier Oregon program providing Medicaid-equivalent coverage for undocumented
       immigrants.
   date: 2026-02-01 23:33:30
+- bump: patch
+  changes:
+    fixed:
+    - CT Social Security benefit adjustment now uses actual federal taxable Social
+      Security amount instead of 85% of gross Social Security.
+  date: 2026-02-02 00:00:17
