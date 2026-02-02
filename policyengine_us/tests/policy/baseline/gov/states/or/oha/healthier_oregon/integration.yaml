@@ -1,0 +1,66 @@
+# Integration tests for Oregon Healthier Oregon with cost calculation
+
+- name: Undocumented adult gets healthcare benefit value
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.0  # 100% FPL
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [true]
+    # Cost should be non-zero (Oregon expansion adult rate)
+    or_healthier_oregon_cost: [7_475.23]  # Oregon expansion adult per capita cost
+
+- name: Undocumented child gets higher income limit
+  period: 2024
+  input:
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 2.5  # 250% FPL - within child limit
+    households:
+      household:
+        members: [child]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [true]
+
+- name: US citizen not eligible - uses federal Medicaid instead
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.0
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [false]
+    or_healthier_oregon_cost: [0]
+
+- name: Program not available before July 2023
+  period: 2022
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.0
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [false]
+    or_healthier_oregon_cost: [0]

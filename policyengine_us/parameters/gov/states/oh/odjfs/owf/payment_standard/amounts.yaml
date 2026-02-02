@@ -1,45 +1,46 @@
-description: Ohio provides this amount as the payment standard under the Ohio Works First program.
+description: Ohio provides this base amount as the payment standard under the Ohio Works First program.
 metadata:
   unit: currency-USD
   period: month
-  label: Ohio Works First payment standard amounts
+  label: Ohio Works First payment standard base amounts
   breakdown:
     - range(1, 16)
-  breakdown_labels:
-    - Assistance group size
+  breakdown_label:
+    - Assistance unit size
   reference:
-    - title: ODJFS Action Change Transmittal Letter No. 295 - January 1, 2025 COLA Increase
-      href: https://drive.google.com/file/d/1Fmjn5WBld4gyOjzCtSCnvrdrUpubG1fJ/view?usp=sharing
     - title: Ohio Administrative Code § 5101:1-23-40(A)(1)
       href: https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40
+    - title: ODJFS Action Change Transmittal Letter No. 262 - January 1, 2017 COLA Increase
+      href: https://web.archive.org/web/20210515105829/https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/ACT-262.stm
+# Base 2017 values; actual payment standard = base × cola_multiplier
 
 1:
-  2025-01-01: 372
+  2017-01-01: 283
 2:
-  2025-01-01: 507
+  2017-01-01: 387
 3:
-  2025-01-01: 623
+  2017-01-01: 474
 4:
-  2025-01-01: 768
+  2017-01-01: 584
 5:
-  2025-01-01: 899
+  2017-01-01: 684
 6:
-  2025-01-01: 1_000
+  2017-01-01: 761
 7:
-  2025-01-01: 1_118
+  2017-01-01: 851
 8:
-  2025-01-01: 1_240
+  2017-01-01: 943
 9:
-  2025-01-01: 1_362
+  2017-01-01: 1_037
 10:
-  2025-01-01: 1_485
+  2017-01-01: 1_130
 11:
-  2025-01-01: 1_605
+  2017-01-01: 1_222
 12:
-  2025-01-01: 1_729
+  2017-01-01: 1_316
 13:
-  2025-01-01: 1_852
+  2017-01-01: 1_409
 14:
-  2025-01-01: 1_972
+  2017-01-01: 1_500
 15:
-  2025-01-01: 2_098
+  2017-01-01: 1_596
