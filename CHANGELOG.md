@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.545.0] - 2026-02-02 01:03:18
+
+### Fixed
+
+- Implement NJ same category rule - net losses in any income category (capital gains, S-corp, partnership, rental, business) are now disregarded and cannot offset income from other categories.
+
 ## [1.544.0] - 2026-02-02 00:56:29
 
 ### Changed
@@ -14828,6 +14834,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.545.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.544.0...1.545.0
 [1.544.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.543.0...1.544.0
 [1.543.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.1...1.543.0
 [1.542.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.542.0...1.542.1

@@ -12746,3 +12746,10 @@
         '
       title: Update Georgia 2025 individual income tax model
   date: 2026-02-02 00:56:29
+- bump: minor
+  changes:
+    fixed:
+    - Implement NJ same category rule - net losses in any income category (capital
+      gains, S-corp, partnership, rental, business) are now disregarded and cannot
+      offset income from other categories.
+  date: 2026-02-02 01:03:18
