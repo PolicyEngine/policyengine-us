@@ -1,0 +1,36 @@
+- name: Case 1, assets below the limit.
+  period: 2025-01
+  input:
+    state_code: SC
+    spm_unit_assets: 2_000
+  output:
+    sc_tanf_resources_eligible: true
+    # 2,000 <= 2,500 -> eligible
+
+- name: Case 2, assets above the limit.
+  period: 2025-01
+  input:
+    state_code: SC
+    spm_unit_assets: 3_000
+  output:
+    sc_tanf_resources_eligible: false
+    # 3,000 > 2,500 -> not eligible
+
+- name: Case 3, assets exactly at the limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: SC
+    spm_unit_assets: 2_500
+  output:
+    sc_tanf_resources_eligible: true
+    # 2,500 <= 2,500 -> eligible (uses <=)
+
+- name: Case 4, no assets.
+  period: 2025-01
+  input:
+    state_code: SC
+    spm_unit_assets: 0
+  output:
+    sc_tanf_resources_eligible: true
+    # 0 <= 2,500 -> eligible

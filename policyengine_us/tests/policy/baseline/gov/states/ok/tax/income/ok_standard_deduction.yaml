@@ -1,4 +1,11 @@
-- name: Unmarried with no children
+# Oklahoma Standard Deduction Tests
+# 2025 values per Form 511-NR instructions page 10:
+# Single: $6,350
+# MFJ/Surviving Spouse: $12,700
+# MFS: $6,350
+# HOH: $9,350
+
+- name: OK standard deduction - 2021 - single
   period: 2021
   input:
     filing_status: SINGLE
@@ -6,7 +13,7 @@
   output:
     ok_standard_deduction: 6_350
 
-- name: Married
+- name: OK standard deduction - 2022 - joint
   period: 2022
   input:
     filing_status: JOINT
@@ -14,10 +21,52 @@
   output:
     ok_standard_deduction: 12_700
 
-- name: Unmarrie with children
+- name: OK standard deduction - 2022 - HOH
   period: 2022
   input:
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: OK
   output:
     ok_standard_deduction: 9_350
+
+# 2025 Standard Deduction Tests - All Filing Statuses
+
+- name: OK standard deduction - 2025 - single
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: OK
+  output:
+    ok_standard_deduction: 6_350
+
+- name: OK standard deduction - 2025 - joint
+  period: 2025
+  input:
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_standard_deduction: 12_700
+
+- name: OK standard deduction - 2025 - MFS
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    state_code: OK
+  output:
+    ok_standard_deduction: 6_350
+
+- name: OK standard deduction - 2025 - HOH
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: OK
+  output:
+    ok_standard_deduction: 9_350
+
+- name: OK standard deduction - 2025 - surviving spouse
+  period: 2025
+  input:
+    filing_status: SURVIVING_SPOUSE
+    state_code: OK
+  output:
+    ok_standard_deduction: 12_700

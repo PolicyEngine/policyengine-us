@@ -12,6 +12,7 @@ first_person:
     2023-01-01: 14_580
     2024-01-01: 15_060
     2025-01-01: 15_650
+    2026-01-01: 15_960
   AK:
     2015-01-01: 14_720
     2016-01-01: 14_840
@@ -24,6 +25,7 @@ first_person:
     2023-01-01: 18_210
     2024-01-01: 18_810
     2025-01-01: 19_550
+    2026-01-01: 19_950
   HI:
     2015-01-01: 13_550
     2016-01-01: 13_670
@@ -36,6 +38,7 @@ first_person:
     2023-01-01: 16_770
     2024-01-01: 17_310
     2025-01-01: 17_990
+    2026-01-01: 18_360
   # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
   # Poverty guidelines do not apply to these areas, but we include them for
   # completeness and to avoid errors arising from uprating and breakdown
@@ -61,6 +64,7 @@ additional_person:
     2023-01-01: 5_140
     2024-01-01: 5_380
     2025-01-01: 5_500
+    2026-01-01: 5_680
   AK:
     2015-01-01: 5_200
     2016-01-01: 5_200
@@ -73,6 +77,7 @@ additional_person:
     2023-01-01: 6_430
     2024-01-01: 6_730
     2025-01-01: 6_880
+    2026-01-01: 7_100
   HI:
     2015-01-01: 4_780
     2016-01-01: 4_780
@@ -85,6 +90,7 @@ additional_person:
     2023-01-01: 5_910
     2024-01-01: 6_190
     2025-01-01: 6_330
+    2026-01-01: 6_530
   # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
   GU:
     2024-01-01: 0
@@ -96,6 +102,8 @@ additional_person:
 metadata:
   unit: currency-USD
   reference:
+    - title: 2026 Poverty Guidelines
+      href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
     - title: 2015 Poverty Guidelines
       href: https://aspe.hhs.gov/2015-poverty-guidelines
     - title: 2016 Poverty Guidelines

@@ -5,6 +5,9 @@ main:
     breakdown:
       - snap_region
       - range(1, 9)
+    breakdown_labels:
+      - SNAP region
+      - Household size
     label: SNAP max allotment
   CONTIGUOUS_US:
     0:
@@ -477,6 +480,7 @@ main:
       2025-10-01: 2_300
 additional:
   metadata:
+    label: SNAP additional maximum allotment
     breakdown:
     - snap_region
   CONTIGUOUS_US:

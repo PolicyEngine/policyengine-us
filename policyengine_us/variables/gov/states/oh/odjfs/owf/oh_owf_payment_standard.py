@@ -11,16 +11,16 @@ class oh_owf_payment_standard(Variable):
     reference = "https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/"
 
     def formula(spm_unit, period, parameters):
-        size = spm_unit("spm_unit_size", period)
+        size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.oh.odjfs.owf.payment_standard
 
-        # For assistance groups up to max_group_size, use table lookup
-        # For groups larger than max_group_size, calculate using increment
+        # Use table lookup for groups up to max_size, increment for larger groups
         max_size = p.max_group_size
         table_size = min_(size, max_size)
-        extra_members = max_(size - max_size, 0)
+        additional_person = max_(size - max_size, 0)
+        additional_amount = additional_person * p.additional_person
 
-        base_amount = p.amounts[table_size]
-        additional_amount = extra_members * p.additional_person_increment
+        # Base 2017 amounts adjusted by cumulative Social Security COLA
+        pre_cola_amount = p.amounts[table_size] + additional_amount
 
-        return base_amount + additional_amount
+        return pre_cola_amount * p.cola_multiplier

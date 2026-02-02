@@ -1,0 +1,101 @@
+- name: Case 1, no unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_works_countable_unearned_income: 0
+
+- name: Case 2, unearned income without child support is fully countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $6,000/12 = $500/month, no deduction
+    nm_works_countable_unearned_income: 500
+
+- name: Case 3, child support at deduction boundary results in zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $150/month = $100 passthrough + $50 disregard
+    # Countable: $150 - $150 = $0
+    nm_works_countable_unearned_income: 0
+
+- name: Case 4, child support one dollar above deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_812
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # $151/month - $150 deduction = $1
+    nm_works_countable_unearned_income: 1
+
+- name: Case 5, mixed unearned income with child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400
+        social_security: 1_800
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Social security: $150/month (fully countable)
+    # Child support: $200/month - $150 deduction = $50
+    # Total: $150 + $50 = $200
+    nm_works_countable_unearned_income: 200

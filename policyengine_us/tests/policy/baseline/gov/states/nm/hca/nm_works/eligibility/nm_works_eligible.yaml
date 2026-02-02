@@ -1,0 +1,53 @@
+# New Mexico Works (TANF) Eligibility Unit Tests
+# Tests the main eligibility determination
+# Source: 8.102.400 NMAC - Eligibility Determination
+
+- name: Case 1, eligible when both gross and net income tests pass.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    nm_works_eligible: true
+
+- name: Case 2, ineligible when gross income test fails.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_gross_income_eligible: false
+    nm_works_net_income_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    nm_works_eligible: false
+
+- name: Case 3, ineligible when net income test fails.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: false
+    is_demographic_tanf_eligible: true
+  output:
+    nm_works_eligible: false
+
+- name: Case 4, ineligible when both income tests fail.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_gross_income_eligible: false
+    nm_works_net_income_eligible: false
+    is_demographic_tanf_eligible: true
+  output:
+    nm_works_eligible: false
+
+- name: Case 5, ineligible when demographic requirements not met.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    is_demographic_tanf_eligible: false
+  output:
+    nm_works_eligible: false
