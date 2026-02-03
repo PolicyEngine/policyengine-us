@@ -30,11 +30,10 @@ class is_qualifying_relative_dependent(Variable):
         is_disabled = person("is_permanently_and_totally_disabled", period)
         not_qualifying_child = ~(is_qualifying_child | is_disabled)
 
-        # Gross income must be below the limit per IRC 152(d)(1)(B).
+        # Gross income must be below the exemption amount per
+        # IRC 152(d)(1)(B), which references IRC 151(d).
         gross_income = person("dependent_gross_income", period)
-        income_limit = parameters(
-            period
-        ).gov.irs.dependent.qualifying_relative_income_limit
+        income_limit = parameters(period).gov.irs.income.exemption.amount
         meets_income_test = gross_income < income_limit
 
         return is_dependent & not_qualifying_child & meets_income_test

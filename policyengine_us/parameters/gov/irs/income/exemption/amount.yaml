@@ -1,4 +1,10 @@
-description: Personal and dependent exemption amount
+description: >-
+  Personal and dependent exemption amount under IRC 151(d). TCJA set the
+  deduction to $0 from 2018 (made permanent by OBBB), but the underlying
+  amount continues to be inflation-adjusted and published in annual Rev. Proc.
+  for other provisions that reference it, such as the qualifying relative
+  gross income test under IRC 152(d)(1)(B). The deduction suspension is
+  represented separately in gov.irs.income.exemption.suspended.
 metadata:
   unit: currency-USD
   uprating: gov.irs.uprating
@@ -6,20 +12,26 @@ metadata:
   reference:
     - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
       href: https://www.law.cornell.edu/uscode/text/26/151#d_1
-    # TCJA sets to zero.
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
-      # 1. Tax Parameters.
-      href: https://www.cbo.gov/data/budget-economic-data
-    # OBBB permanently sets value to zero.
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-
+    - title: IRS Notice 2018-70 - Guidance on qualifying relative exemption amount
+      href: https://www.irs.gov/pub/irs-drop/n-18-70.pdf
+    - title: Rev. Proc. 2023-34 - 2024 inflation adjustments
+      href: https://www.irs.gov/irb/2023-48_IRB
+    - title: Rev. Proc. 2024-40 - 2025 inflation adjustments
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf
+    - title: Rev. Proc. 2025-32 - 2026 inflation adjustments
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
 values:
   2013-01-01: 3_900
   2014-01-01: 3_950
   2015-01-01: 4_000
   2016-01-01: 4_050
   2017-01-01: 4_050
-  2018-01-01: 0
+  2018-01-01: 4_150
+  2019-01-01: 4_200
+  2020-01-01: 4_300
+  2021-01-01: 4_300
+  2022-01-01: 4_400
+  2023-01-01: 4_700
+  2024-01-01: 5_050
+  2025-01-01: 5_200
+  2026-01-01: 5_300
