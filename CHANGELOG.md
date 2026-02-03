@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.550.0] - 2026-02-03 04:40:30
+
+### Added
+
+- is_qualifying_child_dependent variable for age-based qualifying child test
+- is_qualifying_relative_dependent variable for income-based qualifying relative test
+- dependent_gross_income variable for calculating dependent gross income
+
+### Changed
+
+- is_child_dependent now includes qualifying child, qualifying relative, and disability pathways
+- Head of household eligibility now correctly includes qualifying relatives (fixes issue 6994)
+
+## [1.549.0] - 2026-02-02 19:07:06
+
+### Added
+
+- Add NY S.9077 Empire State Child Credit ITIN expansion reform allowing children with ITINs to qualify starting 2027.
+
+## [1.548.0] - 2026-02-02 19:05:08
+
+### Added
+
+- Update South Carolina income tax parameters for 2025, including reduced top rate (6.0%) and adjusted brackets.
+
+## [1.547.0] - 2026-02-02 18:49:52
+
+### Added
+
+- Implement Maryland Temporary Cash Assistance (TCA) program.
+
+## [1.546.1] - 2026-02-02 17:32:10
+
+### Fixed
+
+- Missouri income tax now correctly allocates above-the-line deductions proportionally by gross income, ensuring capital loss deductions are not lost when one spouse has no income.
+
 ## [1.546.0] - 2026-02-02 01:50:17
 
 ### Added
@@ -14860,6 +14897,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.549.0...1.550.0
+[1.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.548.0...1.549.0
+[1.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.547.0...1.548.0
+[1.547.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.1...1.547.0
+[1.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.0...1.546.1
 [1.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.3...1.546.0
 [1.545.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.2...1.545.3
 [1.545.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.545.1...1.545.2

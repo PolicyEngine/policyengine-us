@@ -1,0 +1,67 @@
+- name: Dependent with employment income.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Only dependent's income counts, head's income excluded
+    dependent_gross_income: [0, 5_000]
+
+- name: Head or spouse has zero dependent gross income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 100_000
+      spouse:
+        age: 43
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # Head and spouse are not dependents, so their dependent_gross_income is 0
+    dependent_gross_income: [0, 0]
+
+- name: Dependent with multiple income sources.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 3_000
+        taxable_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Sum of all income sources
+    dependent_gross_income: [0, 3_500]

@@ -12776,3 +12776,40 @@
       service on/after July 1, 2025.
     - Add 2025 NY income tax integration tests.
   date: 2026-02-02 01:50:17
+- bump: patch
+  changes:
+    fixed:
+    - Missouri income tax now correctly allocates above-the-line deductions proportionally
+      by gross income, ensuring capital loss deductions are not lost when one spouse
+      has no income.
+  date: 2026-02-02 17:32:10
+- bump: minor
+  changes:
+    added:
+    - Implement Maryland Temporary Cash Assistance (TCA) program.
+  date: 2026-02-02 18:49:52
+- bump: minor
+  changes:
+    added:
+    - Update South Carolina income tax parameters for 2025, including reduced top
+      rate (6.0%) and adjusted brackets.
+  date: 2026-02-02 19:05:08
+- bump: minor
+  changes:
+    added:
+    - Add NY S.9077 Empire State Child Credit ITIN expansion reform allowing children
+      with ITINs to qualify starting 2027.
+  date: 2026-02-02 19:07:06
+- bump: minor
+  changes:
+    added:
+    - is_qualifying_child_dependent variable for age-based qualifying child test
+    - is_qualifying_relative_dependent variable for income-based qualifying relative
+      test
+    - dependent_gross_income variable for calculating dependent gross income
+    changed:
+    - is_child_dependent now includes qualifying child, qualifying relative, and disability
+      pathways
+    - Head of household eligibility now correctly includes qualifying relatives (fixes
+      issue 6994)
+  date: 2026-02-03 04:40:30
