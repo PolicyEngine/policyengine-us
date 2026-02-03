@@ -1,0 +1,9 @@
+- bump: minor
+  changes:
+    added:
+      - is_qualifying_child_dependent variable for age-based qualifying child test
+      - is_qualifying_relative_dependent variable for income-based qualifying relative test
+      - dependent_gross_income variable for calculating dependent gross income
+    changed:
+      - is_child_dependent now includes qualifying child, qualifying relative, and disability pathways
+      - Head of household eligibility now correctly includes qualifying relatives (fixes issue 6994)

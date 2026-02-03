@@ -13,7 +13,7 @@ class pa_tax_forgiveness_rate(Variable):
     def formula(tax_unit, period, parameters):
         eligibility_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
-        is_child_dependent = person("is_child_dependent", period)
+        is_child_dependent = person("is_qualifying_child_dependent", period)
         child_dependents = tax_unit.sum(is_child_dependent)
         # filing status affects the base, where it doubles for married claimants
         filing_status = tax_unit("filing_status", period)

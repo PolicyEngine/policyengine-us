@@ -7,7 +7,7 @@
         is_tax_unit_dependent: false
       dependent:
         age: 1
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit: 
         members: [head, dependent]
@@ -35,10 +35,10 @@
         is_tax_unit_dependent: false
       dependent:
         age: 1
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
       dependent2:
         age: 15
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit: 
         members: [head, dependent, dependent2]
@@ -66,10 +66,10 @@
         is_tax_unit_dependent: false
       dependent:
         age: 1
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
       dependent2:
         age: 15
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit: 
         members: [head, dependent, dependent2]
@@ -97,10 +97,10 @@
         is_tax_unit_dependent: false
       dependent:
         age: 1
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
       dependent2:
         age: 15
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit: 
         members: [head, dependent, dependent2]
