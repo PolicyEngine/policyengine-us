@@ -10,28 +10,78 @@ metadata:
   uprating: gov.irs.uprating
   period: year
   reference:
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
+    - title: 26 U.S. Code § 151(d)(1) - Exemption amount
       href: https://www.law.cornell.edu/uscode/text/26/151#d_1
     - title: IRS Notice 2018-70 - Guidance on qualifying relative exemption amount
       href: https://www.irs.gov/pub/irs-drop/n-18-70.pdf
-    - title: Rev. Proc. 2023-34 - 2024 inflation adjustments
-      href: https://www.irs.gov/irb/2023-48_IRB
-    - title: Rev. Proc. 2024-40 - 2025 inflation adjustments
-      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf
-    - title: Rev. Proc. 2025-32 - 2026 inflation adjustments
-      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
 values:
-  2013-01-01: 3_900
-  2014-01-01: 3_950
-  2015-01-01: 4_000
-  2016-01-01: 4_050
-  2017-01-01: 4_050
-  2018-01-01: 4_150
-  2019-01-01: 4_200
-  2020-01-01: 4_300
-  2021-01-01: 4_300
-  2022-01-01: 4_400
-  2023-01-01: 4_700
-  2024-01-01: 5_050
-  2025-01-01: 5_200
-  2026-01-01: 5_300
+  2013-01-01:
+    value: 3_900
+    reference:
+      - title: Rev. Proc. 2013-15
+        href: https://www.irs.gov/pub/irs-drop/rp-13-15.pdf
+  2014-01-01:
+    value: 3_950
+    reference:
+      - title: Rev. Proc. 2013-35
+        href: https://www.irs.gov/pub/irs-drop/rp-13-35.pdf
+  2015-01-01:
+    value: 4_000
+    reference:
+      - title: Rev. Proc. 2014-61
+        href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf
+  2016-01-01:
+    value: 4_050
+    reference:
+      - title: Rev. Proc. 2015-53
+        href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf
+  2017-01-01:
+    value: 4_050
+    reference:
+      - title: Rev. Proc. 2016-55
+        href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf
+  2018-01-01:
+    value: 4_150
+    reference:
+      - title: Rev. Proc. 2017-58
+        href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf
+  2019-01-01:
+    value: 4_200
+    reference:
+      - title: Rev. Proc. 2018-57
+        href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+  2020-01-01:
+    value: 4_300
+    reference:
+      - title: Rev. Proc. 2019-44
+        href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+  2021-01-01:
+    value: 4_300
+    reference:
+      - title: Rev. Proc. 2020-45
+        href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+  2022-01-01:
+    value: 4_400
+    reference:
+      - title: Rev. Proc. 2021-45
+        href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+  2023-01-01:
+    value: 4_700
+    reference:
+      - title: Rev. Proc. 2022-38
+        href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf
+  2024-01-01:
+    value: 5_050
+    reference:
+      - title: Rev. Proc. 2023-34
+        href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf
+  2025-01-01:
+    value: 5_200
+    reference:
+      - title: Rev. Proc. 2024-40
+        href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf
+  2026-01-01:
+    value: 5_300
+    reference:
+      - title: Rev. Proc. 2025-32
+        href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
