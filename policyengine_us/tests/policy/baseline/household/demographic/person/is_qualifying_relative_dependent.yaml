@@ -111,7 +111,7 @@
     # qualifying relative since income is below threshold
     is_qualifying_relative_dependent: [false, true]
 
-- name: Unrelated person living in household is not a qualifying relative for HOH.
+- name: Unrelated person living in household is a qualifying relative under IRC 152(d).
   period: 2024
   input:
     people:
@@ -131,8 +131,9 @@
       household:
         members: [head, unrelated_person]
   output:
-    # Unrelated person does not qualify for HOH purposes per IRC 2(b)(3)
-    is_qualifying_relative_dependent: [false, false]
+    # IRC 152(d)(2) allows household members who are not related.
+    # The HOH-specific relationship restriction is in head_of_household_eligible.
+    is_qualifying_relative_dependent: [false, true]
 
 - name: Disabled adult is not a qualifying relative.
   period: 2024

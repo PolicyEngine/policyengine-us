@@ -108,3 +108,27 @@
         members: [single_person]
   output:
     head_of_household_eligible: false
+
+- name: Unrelated qualifying relative does not qualify for HOH per IRC 2(b)(3).
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      unrelated_person:
+        age: 25
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_related_to_head_or_spouse: false
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, unrelated_person]
+    households:
+      household:
+        members: [head, unrelated_person]
+  output:
+    # Unrelated household members are qualifying relatives under IRC 152(d)
+    # but do not count for HOH purposes per IRC 2(b)(3)
+    head_of_household_eligible: false
