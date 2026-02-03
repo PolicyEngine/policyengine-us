@@ -1,8 +1,9 @@
 - bump: minor
   changes:
     added:
-    - State-specific Medicaid takeup rates based on MACPAC enrollment targets vs modeled eligibility. Rates range from 58% (Utah) to 99% (Colorado), replacing the uniform 93% national rate.
+    - State-specific Medicaid takeup rates calibrated against administrative enrollment data. Rates range from 53% (Utah) to 99% (Colorado), replacing the uniform 93% national rate.
     - Deprivation requirement parameter for Medicaid parent eligibility in non-expansion states (TX, FL, GA, etc.).
     - is_single_parent_household variable to determine if a person qualifies under Section 1931 deprivation rules.
     changed:
     - Medicaid parent eligibility (is_parent_for_medicaid_nfc) now checks deprivation requirement for non-expansion states, correctly excluding married parents who don't meet Section 1931 criteria.
+    - Refined takeup rates for Utah (53%) and Texas (76%) based on calibration to state enrollment targets.
