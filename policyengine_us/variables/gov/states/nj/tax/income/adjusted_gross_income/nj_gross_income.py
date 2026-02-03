@@ -21,7 +21,7 @@ class nj_gross_income(Variable):
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        # Income sources that cannot go negative (always >= 0)
+        # Income sources that cannot go negative (always >= 0).
         non_negative_sources = [
             "employment_income",
             "taxable_interest_income",
@@ -32,31 +32,28 @@ class nj_gross_income(Variable):
             "alimony_income",
             "miscellaneous_income",
         ]
-
-        # Sum non-negative sources directly
         total = sum(person(source, period) for source in non_negative_sources)
 
-        # Category c: Capital gains (short-term + long-term combined)
-        # Apply same-category rule: if net is negative, treat as 0
-        capital_gains = person("short_term_capital_gains", period) + person(
-            "long_term_capital_gains", period
-        )
-        total += max_(capital_gains, 0)
-
-        # Category b: Business/self-employment income (includes farm)
-        # Each can go negative but losses cannot offset other categories
-        self_employment = person("self_employment_income", period)
-        total += max_(self_employment, 0)
-
-        farm = person("farm_income", period)
-        total += max_(farm, 0)
-
-        # Categories k, p: Partnership and S-corp income
-        partnership_s_corp = person("partnership_s_corp_income", period)
-        total += max_(partnership_s_corp, 0)
-
-        # Category d: Rental income (rents, royalties)
-        rental = person("rental_income", period)
-        total += max_(rental, 0)
+        # Categories that can have losses. Under the same-category rule
+        # (N.J.S. 54A:5-1), if a category's net is negative it is
+        # disregarded (treated as $0) and cannot offset other categories.
+        # Each inner list is summed first, then clamped to zero.
+        loss_eligible_categories = [
+            # Category c: capital gains (short + long combined)
+            ["short_term_capital_gains", "long_term_capital_gains"],
+            # Category b: self-employment
+            ["self_employment_income"],
+            # Category b: farm
+            ["farm_income"],
+            # Categories k, p: partnership & S-corp
+            ["partnership_s_corp_income"],
+            # Category d: rental / royalties
+            ["rental_income"],
+        ]
+        for category_sources in loss_eligible_categories:
+            category_total = sum(
+                person(source, period) for source in category_sources
+            )
+            total += max_(category_total, 0)
 
         return total
