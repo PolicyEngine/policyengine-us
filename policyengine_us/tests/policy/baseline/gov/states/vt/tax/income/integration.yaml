@@ -25,3 +25,37 @@
         state_fips: 50
   output:
     vt_income_tax: 7_963
+
+# From GitHub issue #7291: VT capital gains exclusion incorrectly applies to financial instruments
+# Financial instrument gains (stocks/bonds) are NOT eligible for the 40% exclusion.
+# Only the flat $5,000 exclusion applies.
+- name: VT capital gains exclusion - financial instruments get flat exclusion only
+  period: 2024
+  absolute_error_margin: 10
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 2_576
+        taxable_interest_income: 344
+        long_term_capital_gains: 137_498  # Financial instruments - NOT eligible for 40%
+        is_tax_unit_head: true
+      dependent1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, dependent1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, dependent1]
+    households:
+      household:
+        members: [person1, dependent1]
+        state_fips: 50  # Vermont
+  output:
+    # Federal AGI: 2576 + 344 + 137498 = 140418
+    # Only $5,000 flat exclusion applies since gains are from financial instruments
+    # VT AGI: 140418 - 5000 = 135418
+    vt_agi: 135_418
