@@ -150,4 +150,6 @@
         members: [person1, person2]
         state_fips: 11  # DC
   output:  # as expected from above two test results
-    cliff_gap: [486.5, 470.47]
+    # Second value updated after dc_deduction_indiv optimization
+    # (PR #7297 allocates all deductions to higher earner)
+    cliff_gap: [486.5, 461.5]
