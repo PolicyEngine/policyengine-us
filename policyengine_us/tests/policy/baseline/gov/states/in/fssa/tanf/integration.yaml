@@ -1,0 +1,249 @@
+# Indiana TANF Integration Tests
+# Tests the full benefit calculation pipeline
+
+- name: Case 1 - Single parent with no income receives maximum benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    spm_unit_size: [3, 3, 3]
+    in_tanf_countable_earned_income_for_eligibility: [0, 0, 0]
+    in_tanf_countable_income_for_eligibility: [0, 0, 0]
+    in_tanf_countable_earned_income: [0, 0, 0]
+    in_tanf_countable_income_for_payment: [0, 0, 0]
+    in_tanf_countable_income_eligible: [true, true, true]
+    # Countable income ($0) < standard of need ($320) → eligible
+    in_tanf_payment_eligible: [true, true, true]
+    # Countable income ($0) < standard of need ($320) → eligible
+    in_tanf_payment_standard: [320, 320, 320]
+    # Family of 3 → $320
+    in_tanf_eligible: [true, true, true]
+    in_tanf: [320, 320, 320]
+    # Max benefit ($320) - countable income ($0) = $320
+
+- name: Case 2 - Single parent with earned income receives reduced benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 200
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    spm_unit_size: [2, 2]
+    in_tanf_countable_earned_income_for_eligibility: [53.6, 53.6]
+    # $200 - $90 = $110 → $110 - $30 = $80 → $80 * 0.67 = $53.60
+    in_tanf_countable_income_for_eligibility: [53.6, 53.6]
+    in_tanf_countable_earned_income: [50, 50]
+    # $200 × 0.25 (75% disregard) = $50
+    in_tanf_countable_income_for_payment: [50, 50]
+    in_tanf_countable_income_eligible: [true, true]
+    # Countable for elig ($53.60) < standard of need ($255) → eligible
+    in_tanf_payment_eligible: [true, true]
+    # Countable for benefit ($50) < standard of need ($255) → eligible
+    in_tanf_payment_standard: [255, 255]
+    # Family of 2 → $255
+    in_tanf_eligible: [true, true]
+    in_tanf: [205, 205]
+    # Max benefit ($255) - countable income ($50) = $205
+
+- name: Case 3 - Family with mixed earned and unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        tanf_gross_earned_income: 300
+      person2:
+        age: 12
+        tanf_gross_unearned_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 700
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    spm_unit_size: [2, 2]
+    in_tanf_countable_earned_income_for_eligibility: [120.6, 120.6]
+    # $300 - $90 = $210 → $210 - $30 = $180 → $180 * 0.67 = $120.60
+    in_tanf_countable_income_for_eligibility: [220.6, 220.6]
+    # $120.60 (earned) + $100 (unearned) = $220.60
+    in_tanf_countable_earned_income: [75, 75]
+    # $300 × 0.25 = $75
+    in_tanf_countable_income_for_payment: [175, 175]
+    # $75 (earned) + $100 (unearned) = $175
+    in_tanf_countable_income_eligible: [true, true]
+    # Countable for elig ($220.60) < standard of need ($255) → eligible
+    in_tanf_payment_eligible: [true, true]
+    # Countable for benefit ($175) < standard of need ($255) → eligible
+    in_tanf_payment_standard: [255, 255]
+    in_tanf_eligible: [true, true]
+    in_tanf: [80, 80]
+    # Max benefit ($255) - countable income ($175) = $80
+
+- name: Case 4 - High earner exceeds eligibility threshold
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        tanf_gross_earned_income: 600
+      person2:
+        age: 7
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 900
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    spm_unit_size: [3, 3, 3]
+    in_tanf_countable_earned_income_for_eligibility: [321.6, 321.6, 321.6]
+    # $600 - $90 = $510 → $510 - $30 = $480 → $480 * 0.67 = $321.60
+    in_tanf_countable_income_for_eligibility: [321.6, 321.6, 321.6]
+    in_tanf_countable_earned_income: [150, 150, 150]
+    # $600 × 0.25 = $150
+    in_tanf_countable_income_for_payment: [150, 150, 150]
+    in_tanf_countable_income_eligible: [false, false, false]
+    # Countable for elig ($321.60) >= standard of need ($320) → NOT eligible
+    in_tanf_payment_eligible: [true, true, true]
+    # Countable for benefit ($150) < standard of need ($320) → eligible
+    in_tanf_payment_standard: [320, 320, 320]
+    in_tanf_eligible: [false, false, false]
+    # Failed countable income test
+    in_tanf: [0, 0, 0]
+
+- name: Case 5 - Two parent household with one working
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 300
+      person2:
+        age: 29
+      person3:
+        age: 6
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_cash_assets: 1_500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IN
+  output:
+    spm_unit_size: [4, 4, 4, 4]
+    in_tanf_countable_earned_income_for_eligibility: [120.6, 120.6, 120.6, 120.6]
+    # $300 - $90 = $210 → $210 - $30 = $180 → $180 * 0.67 = $120.60
+    in_tanf_countable_income_for_eligibility: [120.6, 120.6, 120.6, 120.6]
+    in_tanf_countable_earned_income: [75, 75, 75, 75]
+    # $300 × 0.25 = $75
+    in_tanf_countable_income_for_payment: [75, 75, 75, 75]
+    in_tanf_countable_income_eligible: [true, true, true, true]
+    # Countable for elig ($120.60) < standard of need ($385) → eligible
+    in_tanf_payment_eligible: [true, true, true, true]
+    # Countable for benefit ($75) < standard of need ($385) → eligible
+    in_tanf_payment_standard: [385, 385, 385, 385]
+    # Family of 4 → $385
+    in_tanf_eligible: [true, true, true, true]
+    in_tanf: [310, 310, 310, 310]
+    # Max benefit ($385) - countable income ($75) = $310
+
+- name: Case 6 - Two earners both get $90 disregard
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 200
+      person2:
+        age: 28
+        tanf_gross_earned_income: 200
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    spm_unit_size: [3, 3, 3]
+    in_tanf_countable_earned_income_for_eligibility: [127.3, 127.3, 127.3]
+    # Person1: $200 - $90 = $110
+    # Person2: $200 - $90 = $110
+    # Unit total: $220 - $30 = $190 → $190 * 0.67 = $127.30
+    in_tanf_countable_income_for_eligibility: [127.3, 127.3, 127.3]
+    in_tanf_countable_earned_income: [100, 100, 100]
+    # ($200 + $200) × 0.25 = $100
+    in_tanf_countable_income_for_payment: [100, 100, 100]
+    in_tanf_countable_income_eligible: [true, true, true]
+    # Countable for elig ($127.30) < standard of need ($320) → eligible
+    in_tanf_payment_eligible: [true, true, true]
+    # Countable for benefit ($100) < standard of need ($320) → eligible
+    in_tanf_payment_standard: [320, 320, 320]
+    in_tanf_eligible: [true, true, true]
+    in_tanf: [220, 220, 220]
+    # Max benefit ($320) - countable income ($100) = $220
+
+- name: Case 7 - Single adult with no children (not demographically eligible)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 300
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    spm_unit_size: 1
+    in_tanf_countable_income_for_payment: 0
+    in_tanf_countable_income_eligible: true
+    in_tanf_payment_eligible: true
+    in_tanf_payment_standard: 155
+    # Family of 1 → $155
+    in_tanf_eligible: false
+    # Single adult with no children → not demographically eligible
+    in_tanf: 0

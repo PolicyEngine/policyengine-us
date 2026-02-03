@@ -1,0 +1,47 @@
+- name: Case 1, family size 1.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 1
+  output:
+    # Standard of need: $235
+    # Gross income ceiling: 235 * 1.85 = 434.75
+    ga_tanf_gross_income_ceiling: 434.75
+
+- name: Case 2, family size 3.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 3
+  output:
+    # Standard of need: $424
+    # Gross income ceiling: 424 * 1.85 = 784.4
+    ga_tanf_gross_income_ceiling: 784.4
+
+- name: Case 3, family size 11 at max table size.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 11
+  output:
+    # Standard of need: $860
+    # Gross income ceiling: 860 * 1.85 = 1591
+    ga_tanf_gross_income_ceiling: 1_591
+
+- name: Case 4, family size 12 beyond max table size.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 12
+  output:
+    # Standard of need: $884 (860 + 24)
+    # Gross income ceiling: 884 * 1.85 = 1635.4
+    ga_tanf_gross_income_ceiling: 1_635.4
+
+- name: Case 5, only calculates for GA.
+  period: 2025-01
+  input:
+    state_code: FL
+    spm_unit_size: 3
+  output:
+    ga_tanf_gross_income_ceiling: 0

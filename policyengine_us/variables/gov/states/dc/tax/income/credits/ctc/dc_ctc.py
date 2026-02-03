@@ -17,12 +17,12 @@ class dc_ctc(Variable):
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         income_threshold = p.income_threshold[filing_status]
-        # For each $1000 above income threshold, the ctc amount decrease by $20.
+        # For each $1,000 above income threshold, reduce credit by phase_out amount.
         excess = max_(0, income - income_threshold)
         increments = ceil(excess / p.phase_out.increment)
         phase_out = increments * p.phase_out.amount
 
-        capped_children = tax_unit("dc_ctc_capped_children", period)
-        base_amount = p.amount * capped_children
+        eligible_children = add(tax_unit, period, ["dc_ctc_eligible_child"])
+        base_amount = p.amount * eligible_children
 
         return max_(base_amount - phase_out, 0)

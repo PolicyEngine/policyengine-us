@@ -1,0 +1,81 @@
+# Unit tests for Rhode Island TANF payment standard by family size
+# 218-RICR-20-00-2.18: Payment standards effective 2025
+# Subsidized housing: $65 reduction
+# https://dhs.ri.gov/programs-and-services/ri-works-program
+
+- name: Case 1, family size 1.
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_works_payment_standard: 510
+
+- name: Case 2, family size 3.
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_works_payment_standard: 865
+
+- name: Case 3, family size 8 max in table.
+  period: 2025-01
+  input:
+    spm_unit_size: 8
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    ri_works_payment_standard: 1_489
+
+- name: Case 4, family size 9 incremental formula.
+  period: 2025-01
+  input:
+    spm_unit_size: 9
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + $125 = $1,614
+    ri_works_payment_standard: 1_614
+
+- name: Case 5, family size 12 large family.
+  period: 2025-01
+  input:
+    spm_unit_size: 12
+    receives_housing_assistance: false
+    state_code: RI
+  output:
+    # Size 8: $1,489 + 4 additional * $125 = $1,989
+    ri_works_payment_standard: 1_989
+
+- name: Case 6, family size 1 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # $510 - $65 reduction = $445
+    ri_works_payment_standard: 445
+
+- name: Case 7, family size 8 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 8
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # $1,489 - $65 reduction = $1,424
+    ri_works_payment_standard: 1_424
+
+- name: Case 8, family size 10 with subsidized housing.
+  period: 2025-01
+  input:
+    spm_unit_size: 10
+    receives_housing_assistance: true
+    state_code: RI
+  output:
+    # Size 10: $1,489 + 2*$125 = $1,739 - $65 = $1,674
+    ri_works_payment_standard: 1_674

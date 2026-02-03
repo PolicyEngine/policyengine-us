@@ -1,0 +1,207 @@
+- name: No income passes both gross and net tests.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Family size 2: GIC = $356 × 1.85 = $658.60, SON = $356
+    # Gross income: $0 < $658.60 ✅
+    # Countable income: $0 < $356 ✅
+    ga_tanf_income_eligible: true
+
+- name: Low earnings pass both tests.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Family size 2: GIC = $658.60, SON = $356
+    # Gross: $500 < $658.60 ✅
+    # Countable: $500 - $250 = $250 < $356 ✅
+    ga_tanf_income_eligible: true
+
+- name: High gross income fails gross income ceiling test.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 10_200  # $850/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $424 × 1.85 = $784.40
+    # Gross: $850 > $784.40 ✅ FAILS gross test
+    ga_tanf_income_eligible: false
+
+- name: Pass gross test but fail net income test.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 9_000  # $750/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $784.40, SON = $424
+    # Gross: $750 < $784.40 ✅ PASSES gross test
+    # Countable: $750 - $250 = $500 >= $424 ✅ FAILS net test
+    ga_tanf_income_eligible: false
+
+- name: Countable income one dollar below SON passes net test.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 8_076  # $673/month
+      child1:
+        age: 10
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $784.40, SON = $424
+    # Gross: $673 < $784.40 ✅
+    # Countable: $673 - $250 = $423 < $424 ✅
+    ga_tanf_income_eligible: true
+
+- name: Unearned income contributes to countable income.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        child_support_received: 1_200  # $100/month
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Family size 2: GIC = $658.60, SON = $356
+    # Gross: $300 + $100 = $400 < $658.60 ✅
+    # Countable: ($300 - $250) + $100 = $150 < $356 ✅
+    ga_tanf_income_eligible: true
+
+- name: Childcare helps family pass net test.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 2_400  # $200/month
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # Family size 2: GIC = $658.60, SON = $356
+    # Gross: $600 < $658.60 ✅
+    # Net earned: ($600 - $250) - $200 = $150
+    # Countable: $150 < $356 ✅
+    ga_tanf_income_eligible: true
+
+- name: Gross income exactly at GIC boundary passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_408  # $784/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $424 × 1.85 = $784.40
+    # Gross: $784 <= $784.40 ✅ PASSES gross test
+    # Countable: $784 - $250 = $534 >= $424 ❌ FAILS net test
+    ga_tanf_income_eligible: false
+
+- name: Gross income one dollar above GIC boundary fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_420  # $785/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Family size 3: GIC = $424 × 1.85 = $784.40
+    # Gross: $785 > $784.40 ❌ FAILS gross test
+    ga_tanf_income_eligible: false

@@ -1,0 +1,108 @@
+# Tests overall TCA eligibility (demographic + income + immigration)
+
+- name: Case 1, household with child is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_eligible: true
+
+- name: Case 2, household with no children is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_eligible: false
+
+- name: Case 3, single adult is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_eligible: false
+
+- name: Case 4, 18 year old secondary school student is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per federal TANF rules, 18-year-olds in secondary school count as children
+    md_tca_eligible: true
+
+- name: Case 5, 19 year old is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 19
+        is_full_time_college_student: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per federal TANF rules, 19-year-olds do not count as children
+    md_tca_eligible: false
+
+- name: Case 6, non-citizen household is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # Per COMAR 07.03.17.09 and 8 USC 1641, must be citizen or qualified alien
+    md_tca_eligible: false

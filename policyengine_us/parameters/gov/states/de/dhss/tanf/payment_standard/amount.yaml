@@ -1,0 +1,33 @@
+description: Delaware provides this amount as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 9)
+  breakdown_labels:
+    - Household size
+  label: Delaware TANF payment standard amount
+  reference:
+    - title: Delaware TANF State Plan 2017 - Payment Standard Table
+      href: https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/detanfstateplan2017.pdf#page=8
+    - title: 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility and Grant Amounts in TANF
+      href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+# These values have not change since 2002.
+1:
+  2002-10-01: 201
+2:
+  2002-10-01: 270
+3:
+  2002-10-01: 338
+4:
+  2002-10-01: 407
+5:
+  2002-10-01: 475
+6:
+  2002-10-01: 544
+7:
+  2002-10-01: 612
+8:
+  2002-10-01: 681

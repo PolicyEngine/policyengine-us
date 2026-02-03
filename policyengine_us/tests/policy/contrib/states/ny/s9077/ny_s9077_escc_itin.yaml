@@ -1,0 +1,185 @@
+# Test NY S.9077 Empire State Child Credit ITIN Expansion
+# Starting 2027, children with ITINs qualify for the ESCC
+
+- name: NY S9077 - ITIN child does NOT qualify without reform (counterfactual)
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Without S.9077, ITIN children do not qualify for ESCC
+    ny_ctc_post_2024_base: 0
+
+- name: NY S9077 - SSN child qualifies (baseline, reform active)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Age 4-16 bracket gets $500 in 2027
+    ny_ctc_post_2024_base: 500
+
+- name: NY S9077 - ITIN child qualifies when reform active
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # ITIN child qualifies under S.9077
+    ny_ctc_post_2024_base: 500
+
+- name: NY S9077 - ITIN young child qualifies when reform active
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Age 0-3 bracket gets $1,000 in 2027
+    ny_ctc_post_2024_base: 1_000
+
+- name: NY S9077 - Child without valid ID does not qualify
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: NONE
+        has_itin: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # No SSN or ITIN means no credit
+    ny_ctc_post_2024_base: 0
+
+- name: NY S9077 - Mixed SSN and ITIN children both qualify
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      ssn_child:
+        age: 3
+        ssn_card_type: CITIZEN
+      itin_child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, ssn_child, itin_child]
+    households:
+      household:
+        members: [parent, ssn_child, itin_child]
+        state_code: NY
+  output:
+    # SSN child $1,000 (age 0-3) + ITIN child $500 (age 4-16)
+    ny_ctc_post_2024_base: 1_500
+
+- name: NY S9077 - Adult child does not qualify
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 50
+      adult_child:
+        age: 20
+        ssn_card_type: CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: NY
+  output:
+    # Age 17+ gets $0
+    ny_ctc_post_2024_base: 0
+
+- name: NY S9077 - Eligibility check with ITIN child
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.s9077.ny_s9077_escc_itin.ny_s9077_escc_itin
+  input:
+    gov.contrib.states.ny.s9077.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true

@@ -1,0 +1,124 @@
+# Mississippi TANF benefit calculation tests
+# Benefit = Maximum Payment Standard - Countable Income
+# If countable income exceeds payment standard, benefit = $0
+# Must be eligible (ms_tanf_eligible) to receive any benefit
+
+- name: Case 1, ineligible household receives zero benefit.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: false
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 0
+  output:
+    ms_tanf: 0
+
+- name: Case 2, eligible household with no income receives maximum benefit.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 0
+  output:
+    # $260 - $0 = $260
+    ms_tanf: 260
+
+- name: Case 3, eligible household with countable income receives reduced benefit.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 100
+  output:
+    # $260 - $100 = $160
+    ms_tanf: 160
+
+- name: Case 4, eligible family of 2 with no income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 236
+    ms_tanf_countable_income: 0
+  output:
+    # $236 - $0 = $236
+    ms_tanf: 236
+
+- name: Case 5, eligible family of 2 with some income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 236
+    ms_tanf_countable_income: 150
+  output:
+    # $236 - $150 = $86
+    ms_tanf: 86
+
+- name: Case 6, eligible family of 4 with no income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 284
+    ms_tanf_countable_income: 0
+  output:
+    # $284 - $0 = $284
+    ms_tanf: 284
+
+- name: Case 7, eligible family of 4 with income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 284
+    ms_tanf_countable_income: 200
+  output:
+    # $284 - $200 = $84
+    ms_tanf: 84
+
+- name: Case 8, countable income equals maximum benefit.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 260
+  output:
+    # $260 - $260 = $0
+    ms_tanf: 0
+
+- name: Case 9, countable income exceeds maximum benefit.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 300
+  output:
+    # $260 - $300 = -$40, capped at $0
+    ms_tanf: 0
+
+- name: Case 10, single person eligible with small income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 200
+    ms_tanf_countable_income: 50
+  output:
+    # $200 - $50 = $150
+    ms_tanf: 150
+
+- name: Case 11, high income reduces benefit to near zero.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_tanf_eligible: true
+    ms_tanf_maximum_benefit: 260
+    ms_tanf_countable_income: 255
+  output:
+    # $260 - $255 = $5
+    ms_tanf: 5

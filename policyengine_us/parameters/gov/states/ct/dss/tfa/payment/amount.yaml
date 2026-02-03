@@ -1,0 +1,36 @@
+description: Connecticut provides up to this standard payment amount under the Temporary Family Assistance program, based on household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 9)
+  breakdown_labels:
+    - Household size
+  label: Connecticut TFA standard payment amount
+  reference:
+    - title: State of Connecticut TANF State Plan 2024-2026
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=53
+    - title: Connecticut General Statutes § 17b-104(c)
+      href: https://cga.ct.gov/current/pub/chap_319s.htm#sec_17b-104
+  # Note: Per CGS § 17b-104(c), payment standard = 73% of need standard (55% FPL).
+  # The calculated value for family size 4 is $1,004, but the official State Plan
+  # table shows $1,044 (+$40 discrepancy). All other family sizes match the formula
+  # within $1-2 (rounding). Using official State Plan values as authoritative.
+
+1: 
+  2023-10-01: 489
+2: 
+  2023-10-01: 661
+3: 
+  2023-10-01: 833
+4:
+  2023-10-01: 1_044
+5:
+  2023-10-01: 1_177
+6:
+  2023-10-01: 1_349
+7:
+  2023-10-01: 1_520
+8:
+  2023-10-01: 1_693

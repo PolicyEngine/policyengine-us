@@ -1,0 +1,26 @@
+description: Illinois limits eligibility to children of this age under the Preschool For All Expansion (PFAE) program.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 3
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 6
+    amount:
+      2015-01-01: false
+
+metadata:
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  period: year
+  label: Illinois PFAE eligible age range
+  reference:
+    - title: 23 IAC § 235.10 - Definitions (ages 3 to kindergarten enrollment)
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-23-SS-235.10
+    - title: 105 ILCS 5/10-20.12 - Kindergarten enrollment age (age 5 by Sept 1)
+      href: https://law.onecle.com/illinois/105ilcs5/10-20.12.html

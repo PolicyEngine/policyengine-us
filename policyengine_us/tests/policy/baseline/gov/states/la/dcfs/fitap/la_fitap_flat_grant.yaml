@@ -1,0 +1,74 @@
+- name: Case 1, pre-2022 size 1
+  period: 2017-01
+  input:
+    spm_unit_size: 1
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 122
+
+- name: Case 2, pre-2022 size 3
+  period: 2017-01
+  input:
+    spm_unit_size: 3
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 240
+
+- name: Case 3, pre-2022 size 20 exceeds table
+  # grant[18] + grant[2] - adjustment = 839 + 188 - 50 = 977
+  period: 2017-01
+  input:
+    spm_unit_size: 20
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 977
+
+- name: Case 4, post-2022 size 2
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 376
+
+- name: Case 5, post-2022 size 4
+  period: 2022-01
+  input:
+    spm_unit_size: 4
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 568
+
+- name: Case 6, post-2022 size 18 max in table
+  period: 2022-01
+  input:
+    spm_unit_size: 18
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 1_678
+
+- name: Case 7, post-2022 size 19 exceeds table
+  # grant[18] + grant[1] - adjustment = 1678 + 244 - 100 = 1822
+  period: 2022-01
+  input:
+    spm_unit_size: 19
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 1_822
+
+- name: Case 8, post-2022 size 1 (minimum household)
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 244
+
+- name: Case 9, pre-2022 size 19 exceeds table (tests $50 adjustment)
+  # grant[18] + grant[1] - adjustment = 839 + 122 - 50 = 911
+  period: 2017-01
+  input:
+    spm_unit_size: 19
+    state_code: LA
+  output:
+    la_fitap_flat_grant: 911

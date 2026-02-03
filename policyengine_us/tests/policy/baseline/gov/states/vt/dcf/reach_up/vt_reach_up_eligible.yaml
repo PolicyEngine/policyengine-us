@@ -1,0 +1,127 @@
+# Vermont TANF Eligibility
+# Must meet income, demographic, and other criteria
+# Source: 33 V.S.A. Chapter 11
+
+- name: Case 1, eligible single parent with child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_reach_up_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_reach_up_eligible: true
+
+- name: Case 2, ineligible due to income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_reach_up_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_reach_up_eligible: false
+
+- name: Case 3, eligible two-parent family.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        vt_reach_up_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    vt_reach_up_eligible: true
+
+- name: Case 4, eligible pregnant woman no children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        vt_reach_up_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Pregnant women within 30 days of due date may qualify
+    vt_reach_up_eligible: true
+
+- name: Case 5, ineligible due to resources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_reach_up_income_eligible: true
+        spm_unit_assets: 10_000  # Above $9,000 limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Assets exceed $9,000 resource limit
+    vt_reach_up_eligible: false

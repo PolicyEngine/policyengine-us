@@ -1,0 +1,51 @@
+# Kansas TANF countable earned income test
+# Sums person-level earned income after deductions,
+# then subtracts dependent care (no cap per KEESM 7224)
+
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_earned_income_after_deductions: 0
+    spm_unit_pre_subsidy_childcare_expenses: 0
+  output:
+    ks_tanf_countable_earned_income: 0
+
+- name: Case 2, earned income no childcare.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_earned_income_after_deductions: 164
+    spm_unit_pre_subsidy_childcare_expenses: 0
+  output:
+    ks_tanf_countable_earned_income: 164
+
+- name: Case 3, earned income with childcare.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_earned_income_after_deductions: 164
+    spm_unit_pre_subsidy_childcare_expenses: 1_200  # $100/month
+  output:
+    # $164 - $100 = $64
+    ks_tanf_countable_earned_income: 64
+
+- name: Case 4, childcare exceeds earned.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_earned_income_after_deductions: 50
+    spm_unit_pre_subsidy_childcare_expenses: 1_200  # $100/month
+  output:
+    # max($50 - $100, 0) = $0
+    ks_tanf_countable_earned_income: 0
+
+- name: Case 5, high childcare no cap.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_earned_income_after_deductions: 400
+    spm_unit_pre_subsidy_childcare_expenses: 3_600  # $300/month - no cap
+  output:
+    # $400 - $300 = $100
+    ks_tanf_countable_earned_income: 100

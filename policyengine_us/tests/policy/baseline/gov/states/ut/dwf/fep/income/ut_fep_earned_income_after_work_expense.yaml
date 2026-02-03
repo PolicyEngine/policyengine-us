@@ -1,0 +1,59 @@
+# Unit tests for ut_fep_earned_income_after_work_expense (Person-level)
+# Earned income after $100 work expense deduction per person
+# Formula: max(earned_income - 100, 0)
+# Reference: Utah Admin. Code R986-200-239(2)(a)
+
+- name: No earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_fep_earned_income_after_work_expense: 0
+
+- name: Earned income $500.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # max(500 - 100, 0) = 400
+    ut_fep_earned_income_after_work_expense: 400
+
+- name: Earned income less than $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 80
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # max(80 - 100, 0) = 0
+    ut_fep_earned_income_after_work_expense: 0
+
+- name: Earned income exactly $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # max(100 - 100, 0) = 0
+    ut_fep_earned_income_after_work_expense: 0

@@ -36,9 +36,20 @@ class SelectiveTestRunner:
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/local/\2",
             },
             # Match reforms in specific organization folders to their contrib test folders
+            # (exclude states/, congress/, and local/ which have their own patterns below)
             {
-                "file_pattern": r"policyengine_us/reforms/([^/]+)/",
+                "file_pattern": r"policyengine_us/reforms/(?!states/|congress/|local/)([^/]+)/",
                 "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
+            },
+            # Match reforms in specific congress member folders
+            {
+                "file_pattern": r"policyengine_us/reforms/congress/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/congress/\1",
+            },
+            # Match reforms in specific local jurisdiction folders
+            {
+                "file_pattern": r"policyengine_us/reforms/local/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/local/\1",
             },
             # Match general reforms to reform tests
             {
@@ -59,6 +70,11 @@ class SelectiveTestRunner:
             {
                 "file_pattern": r"policyengine_us/variables/household/",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/household",
+            },
+            # Match household variables to microsimulation tests (for dataset-level tests)
+            {
+                "file_pattern": r"policyengine_us/variables/household/",
+                "test_pattern": r"policyengine_us/tests/microsimulation",
             },
             # Match reforms in specific states
             {
