@@ -207,3 +207,34 @@ jobs:
         run: |
           echo "Running structural YAML tests (contrib excl states)..."
           uv run make test-yaml-structural
+
+  Pandas-Compatibility:
+    name: Pandas ${{ matrix.pandas-version }} Compatibility
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        pandas-version: ["2", "3"]
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Install pandas ${{ matrix.pandas-version }}
+        run: |
+          if [ "${{ matrix.pandas-version }}" = "2" ]; then
+            uv pip install "pandas>=2,<3" --system
+          else
+            uv pip install "pandas>=3,<4" --system
+          fi
+      - name: Turn off default branching
+        shell: bash
+        run: ./update_itemization.sh
+      - name: Run pandas compatibility tests
+        run: uv run pytest policyengine_us/tests/core/test_pandas3_compatibility.py -v
