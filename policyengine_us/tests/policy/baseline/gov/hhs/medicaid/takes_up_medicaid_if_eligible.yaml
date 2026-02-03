@@ -1,13 +1,13 @@
 - name: Seed above takeup rate
   period: 2025
   input:
-    medicaid_take_up_seed: 1
+    medicaid_take_up_seed: 0.79
   output:
     takes_up_medicaid_if_eligible: false
 
 - name: Seed below takeup rate
   period: 2025
   input:
-    medicaid_take_up_seed: 0.9
+    medicaid_take_up_seed: 0.77
   output:
     takes_up_medicaid_if_eligible: true
