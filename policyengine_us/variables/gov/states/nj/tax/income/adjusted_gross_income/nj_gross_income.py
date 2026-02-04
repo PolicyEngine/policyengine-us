@@ -32,7 +32,7 @@ class nj_gross_income(Variable):
             "alimony_income",
             "miscellaneous_income",
         ]
-        total = sum(person(source, period) for source in non_negative_sources)
+        total = add(person, period, non_negative_sources)
 
         # Categories that can have losses. Under the same-category rule
         # (N.J.S. 54A:5-1), if a category's net is negative it is
@@ -51,9 +51,6 @@ class nj_gross_income(Variable):
             ["rental_income"],
         ]
         for category_sources in loss_eligible_categories:
-            category_total = sum(
-                person(source, period) for source in category_sources
-            )
-            total += max_(category_total, 0)
+            total += max_(add(person, period, category_sources), 0)
 
         return total
