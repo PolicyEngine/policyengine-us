@@ -12,7 +12,7 @@ class mt_medical_expense_deduction_indiv(Variable):
         # MT Code § 15-30-2131 (2022) (1)(g)(i)
     )
     unit = USD
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         expense = person("medical_out_of_pocket_expenses", period)

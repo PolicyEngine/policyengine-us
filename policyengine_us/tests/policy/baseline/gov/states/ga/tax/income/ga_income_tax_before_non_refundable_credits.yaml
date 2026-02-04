@@ -34,7 +34,7 @@
   output:
     ga_income_tax_before_non_refundable_credits: 7
 
-- name: Head of household filer 
+- name: Head of household filer
   period: 2022
   input:
     ga_taxable_income: 1_100
@@ -42,3 +42,33 @@
     state_code: GA
   output:
     ga_income_tax_before_non_refundable_credits: 12
+
+- name: Single filer 2025 flat tax (5.19% rate)
+  period: 2025
+  input:
+    ga_taxable_income: 50_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    # 50,000 * 0.0519 = 2,595
+    ga_income_tax_before_non_refundable_credits: 2_595
+
+- name: Joint filer 2025 flat tax (5.19% rate)
+  period: 2025
+  input:
+    ga_taxable_income: 100_000
+    filing_status: JOINT
+    state_code: GA
+  output:
+    # 100,000 * 0.0519 = 5,190
+    ga_income_tax_before_non_refundable_credits: 5_190
+
+- name: Single filer 2024 flat tax (5.39% rate)
+  period: 2024
+  input:
+    ga_taxable_income: 50_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    # 50,000 * 0.0539 = 2,695
+    ga_income_tax_before_non_refundable_credits: 2_695

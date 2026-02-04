@@ -9,7 +9,7 @@ class mt_standard_deduction_indiv(Variable):
     )
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         # ▸ MT legacy parameter table (only relevant pre-2024)

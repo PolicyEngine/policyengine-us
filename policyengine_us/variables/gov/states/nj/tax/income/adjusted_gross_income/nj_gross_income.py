@@ -6,17 +6,10 @@ class nj_gross_income(Variable):
     entity = Person
     label = "New Jersey gross income"
     unit = USD
-    documentation = (
-        "Gross income calculated from specific income categories per NJ "
-        "statute, before additions and subtractions. Under the 'same "
-        "category rule' (N.J.S. 54A:5-1), if any income category has a net "
-        "loss, that loss is disregarded (treated as $0) and cannot offset "
-        "income from other categories."
-    )
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/",
-        "https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf",
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf#page=1",
     )
     defined_for = StateCode.NJ
 
@@ -41,10 +34,8 @@ class nj_gross_income(Variable):
         loss_eligible_categories = [
             # Category c: capital gains (short + long combined)
             ["short_term_capital_gains", "long_term_capital_gains"],
-            # Category b: self-employment
-            ["self_employment_income"],
-            # Category b: farm
-            ["farm_income"],
+            # Category b: self-employment + farm combined
+            ["self_employment_income", "farm_income"],
             # Categories k, p: partnership & S-corp
             ["partnership_s_corp_income"],
             # Category d: rental / royalties

@@ -7,7 +7,7 @@ class mt_deductions_indiv(Variable):
     label = "The total amount of Montana deductions and exemptions when married filing separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         standard_deduction = person("mt_standard_deduction_indiv", period)

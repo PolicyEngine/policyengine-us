@@ -7,7 +7,7 @@ class mt_income_tax_before_refundable_credits_indiv(Variable):
     label = "Montana income tax before refundable credits when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         income_before_credits = person(

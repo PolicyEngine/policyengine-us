@@ -32,7 +32,7 @@ class ca_amt_exemption(Variable):
         # Eligible children receive an increased exemption amount.
         # This applies when the HEAD of the tax unit is a child dependent.
         person = tax_unit.members
-        eligible_child = person("is_child_dependent", period)
+        eligible_child = person("is_qualifying_child_dependent", period)
         is_head = person("is_tax_unit_head", period)
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
         # Line 7
