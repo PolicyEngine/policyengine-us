@@ -545,6 +545,149 @@ Rhode Island provides an annual **nominal LIHEAP payment of $20.01** to certain 
 
 ---
 
+## FFY 2026 Benefit Matrix (from PDF)
+
+**Source**: Rhode Island Department of Human Services - LIHEAP Grant Amounts Federal Fiscal Year 2026
+- URL: /Users/ziminghua/Downloads/RI_BenefitMatrix_2026.pdf (local file)
+- Online: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+- **Effective Date**: October 1, 2025 through September 30, 2026
+
+**Important Note from Document**: "Moderate matrix dependent on funding levels at FFY 2025, to be input 9/30/2025" - This indicates values may be subject to adjustment based on federal funding.
+
+### Grant Amounts by Income Level and Heating Source
+
+Rhode Island uses **Federal Poverty Guidelines (FPG)** percentages to determine benefit tiers (NOT SMI - SMI is used for eligibility only).
+
+| Category | Income Level (% FPG) | Deliverables | Natural Gas | Electric | Other |
+|----------|---------------------|--------------|-------------|----------|-------|
+| A | Up to 75% | $861 | $232 | $393 | - |
+| B | 76-100% | $805 | $211 | $357 | - |
+| C | 101-125% | $752 | $192 | $324 | - |
+| D | 126-150% | $704 | $175 | $295 | - |
+| E | 151%+ | $657 | $159 | $268 | - |
+| F | Subsidized Housing w/ Primary Heating Bill | $657 | $159 | $268 | - |
+| G | Heat in Rent Direct Pay to Household | $400 | $400 | $400 | $400 |
+| H | Heat in Rent Secondary Electric | - | - | - | $80 |
+| I | Heat in Rent Subsidized Housing Secondary Electric | - | - | - | $50 |
+
+### Heating Source Definitions
+
+- **Deliverables**: Oil, propane, kerosene, wood, coal, or other delivered fuels
+- **Natural Gas**: Utility-provided natural gas
+- **Electric**: Electric heat (baseboard, heat pump, etc.)
+- **Other**: Used for special categories (Heat in Rent)
+
+### Minimum and Maximum Benefit Amounts (FFY 2026)
+
+| Measure | Amount | Category |
+|---------|--------|----------|
+| **Maximum Benefit** | $861 | Deliverables, Up to 75% FPG (Category A) |
+| **Minimum Regular Benefit** | $159 | Natural Gas, 151%+ FPG (Category E/F) |
+| **Heat in Rent Flat Payment** | $400 | Direct Pay to Household (Category G) |
+| **Secondary Electric** | $80 | Heat in Rent Secondary Electric (Category H) |
+| **Minimum Benefit** | $50 | Subsidized Housing Secondary Electric (Category I) |
+
+### Comparison: FFY 2025 vs FFY 2026
+
+| Measure | FFY 2025 | FFY 2026 | Change |
+|---------|----------|----------|--------|
+| Maximum Benefit | $1,285 | $861 | -$424 (-33%) |
+| Minimum Benefit | $75 | $50 | -$25 (-33%) |
+
+**Significant reduction in benefits for FFY 2026** - This is consistent with the RI DHS FFY 2026 State Plan Summary which noted that "grant amounts are expected to be smaller than in prior years" due to anticipated changes in federal funding.
+
+### FFY 2026 Income Eligibility Thresholds by FPG (for Benefit Tier Assignment)
+
+The PDF also provides FPG-based income thresholds used to assign households to benefit tiers:
+
+| Household Size | 75% FPG (Annual) | 100% FPG (Annual) | 125% FPG (Annual) | 150% FPG (Annual) |
+|----------------|------------------|-------------------|-------------------|-------------------|
+| 1 | $11,738 | $15,650 | $19,563 | $23,475 |
+| 2 | $15,863 | $21,150 | $31,725 | $31,725 |
+| 3 | $19,988 | $26,650 | $33,313 | $39,975 |
+| 4 | $24,113 | $32,150 | $40,188 | $48,225 |
+| 5 | $28,238 | $37,650 | $47,063 | $56,475 |
+| 6 | $32,363 | $43,150 | $53,938 | $64,725 |
+| 7 | $36,488 | $48,650 | $60,813 | $72,975 |
+| 8 | $40,613 | $54,150 | $67,688 | $81,225 |
+| 9 | $44,738 | $59,650 | $74,563 | $89,475 |
+| 10 | $48,863 | $65,150 | $81,438 | $97,725 |
+| 11 | $52,988 | $70,650 | $88,313 | $105,975 |
+| 12 | $57,113 | $76,150 | $95,188 | $114,225 |
+| 13 | $61,238 | $81,650 | $102,063 | $122,475 |
+| 14 | $65,363 | $87,150 | $108,938 | $130,725 |
+
+**Note**: The 100% FPG column shows monthly values as well ($1,304 for 1 person, etc.) which are used for income verification.
+
+### Benefit Calculation Logic
+
+1. **Determine Eligibility**: Household income must be at or below 60% SMI
+2. **Determine Benefit Tier**: Compare household income to FPG thresholds
+   - Up to 75% FPG -> Category A (highest benefit)
+   - 76-100% FPG -> Category B
+   - 101-125% FPG -> Category C
+   - 126-150% FPG -> Category D
+   - 151%+ FPG (up to 60% SMI) -> Category E (lowest regular benefit)
+3. **Determine Heating Source**: Deliverables, Natural Gas, or Electric
+4. **Special Categories**:
+   - Subsidized housing with primary heating bill -> Category F
+   - Heat included in rent -> Category G (flat $400)
+   - Heat in rent with separate electric -> Category H ($80)
+   - Subsidized housing with heat in rent, secondary electric -> Category I ($50)
+
+### Parameters Needed for Implementation
+
+Based on the FFY 2026 Benefit Matrix, the following parameters are needed:
+
+```yaml
+# Benefit amounts by income tier and fuel type
+ri_liheap_benefit_deliverables:
+  2025-10-01:
+    tier_a: 861  # Up to 75% FPG
+    tier_b: 805  # 76-100% FPG
+    tier_c: 752  # 101-125% FPG
+    tier_d: 704  # 126-150% FPG
+    tier_e: 657  # 151%+ FPG
+
+ri_liheap_benefit_natural_gas:
+  2025-10-01:
+    tier_a: 232
+    tier_b: 211
+    tier_c: 192
+    tier_d: 175
+    tier_e: 159
+
+ri_liheap_benefit_electric:
+  2025-10-01:
+    tier_a: 393
+    tier_b: 357
+    tier_c: 324
+    tier_d: 295
+    tier_e: 268
+
+# Special categories
+ri_liheap_heat_in_rent_payment:
+  2025-10-01: 400
+
+ri_liheap_secondary_electric:
+  2025-10-01: 80
+
+ri_liheap_subsidized_secondary_electric:
+  2025-10-01: 50
+```
+
+### References for Parameters
+
+```yaml
+reference:
+  - title: "Rhode Island LIHEAP Grant Amounts FFY 2026"
+    href: "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf"
+  - title: "RI DHS LIHEAP Program"
+    href: "https://dhs.ri.gov/programs-and-services/energy-assistance-programs-heating/low-income-home-energy-assistance-1"
+```
+
+---
+
 ## Benefit Calculation
 
 ### Benefit Determination Factors
@@ -555,7 +698,7 @@ LIHEAP Primary Grant amounts are based on:
 3. **Fuel type** (electric, gas, oil, propane)
 4. **Minimum delivery requirements**
 
-### FFY 2025 Benefit Amounts
+### FFY 2025 Benefit Amounts (Previous Year - For Reference)
 
 | Component | Minimum | Maximum |
 |-----------|---------|---------|
@@ -570,9 +713,14 @@ LIHEAP Primary Grant amounts are based on:
 
 **Note**: Benefit amounts vary by source due to timing of updates and funding levels.
 
-### FFY 2026 Benefit Amounts
+### FFY 2026 Benefit Amounts (Current Year)
 
-Grant amounts for FFY 2026 are **dependent on funding levels** and are expected to be **smaller than in prior years** due to anticipated changes in federal funding and guidance.
+| Component | Minimum | Maximum |
+|-----------|---------|---------|
+| Heating Assistance | $50 | $861 |
+| Winter Crisis | N/A | TBD (likely $1,500) |
+
+Grant amounts for FFY 2026 are **dependent on funding levels** and are **smaller than in prior years** due to anticipated changes in federal funding and guidance.
 
 **Source**: RI DHS FFY 2026 State Plan Summary
 - https://dhs.ri.gov/media/9371/download?language=en
@@ -733,6 +881,7 @@ The following rules CANNOT be fully simulated in PolicyEngine's single-period ar
 - Household size determination
 - Priority group identification (elderly, disabled, young child)
 - Citizenship/immigration eligibility
+- **Benefit amount calculation** (based on income tier and fuel type)
 
 ---
 
@@ -750,6 +899,8 @@ reference:
     href: "https://www.ecfr.gov/current/title-45/section-96.85"
   - title: "HHS LIHEAP IM2025-02 State Median Income Tables"
     href: "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf"
+  - title: "Rhode Island LIHEAP Grant Amounts FFY 2026"
+    href: "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf"
 ```
 
 ### For Variables
@@ -768,10 +919,9 @@ The following PDFs contain additional information but could not be extracted:
    - URL: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf
    - Expected content: Complete state plan with detailed program rules, benefit calculation methodology, outreach procedures, and administrative requirements
 
-2. **Rhode Island LIHEAP FFY 2026 Benefit Matrix**
+2. **Rhode Island LIHEAP FFY 2026 Benefit Matrix** (NOW EXTRACTED - see above)
    - URL: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
-   - Expected content: Specific benefit amounts by household size, income level, and fuel type combinations
-   - Key pages: Contains the complete grant amount matrix
+   - Content: Specific benefit amounts by household size, income level, and fuel type combinations
 
 3. **Rhode Island LIHEAP FFY 2026 State Plan Summary**
    - URL: https://dhs.ri.gov/media/9371/download?language=en
@@ -835,9 +985,9 @@ def formula(spm_unit, period, parameters):
 
 ### State-Specific Parameters Needed
 
-Rhode Island LIHEAP implementation may need:
+Rhode Island LIHEAP implementation needs:
 
-1. **Benefit amounts by income level and fuel type** (from Benefit Matrix PDF)
+1. **Benefit amounts by income level and fuel type** (from Benefit Matrix PDF - NOW DOCUMENTED)
 2. **Crisis assistance maximum** ($1,500)
 3. **Nominal SNAP payment amount** ($20.01)
 4. **Program season dates** (if used in eligibility)
@@ -874,6 +1024,8 @@ Applications are taken at these local agencies:
 | Income Limit | 60% of SMI | 42 U.S.C. 8624(b)(2)(B) |
 | RI 4-Person SMI (FFY 2026) | $135,424 | HHS IM2025-02 |
 | 60% SMI for 4-person (FFY 2026) | $81,254 | Calculated |
+| Heating Benefit Min (FFY 2026) | $50 | RI Benefit Matrix |
+| Heating Benefit Max (FFY 2026) | $861 | RI Benefit Matrix |
 | Heating Benefit Min (FFY 2025) | $75 | RI DHS |
 | Heating Benefit Max (FFY 2025) | $1,285 | RI DHS |
 | Crisis Assistance Max (FFY 2025) | $1,500 | RI DHS |

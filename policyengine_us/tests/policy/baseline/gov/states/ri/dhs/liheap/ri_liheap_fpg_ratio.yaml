@@ -1,0 +1,338 @@
+# Unit tests for Rhode Island LIHEAP federal poverty guideline ratio
+# Calculates income as a ratio of the federal poverty guideline (FPG)
+#
+# Formula: ri_liheap_fpg_ratio = irs_gross_income / spm_unit_fpg
+#
+# The FPG ratio determines which benefit bracket applies:
+# - 0-75%: Highest benefit tier
+# - 76-100%: Second tier
+# - 101-125%: Third tier
+# - 126-150%: Fourth tier
+# - 151%+: Lowest benefit tier (but still eligible if under 60% SMI)
+#
+# Note: This uses FPG for benefit calculation, while eligibility uses SMI.
+#
+# 2026 FPG values (CONTIGUOUS_US):
+# - 1-person: $15,960
+# - 2-person: $21,640
+# - 3-person: $27,320
+# - 4-person: $33,000
+# - Additional person: $5,680
+#
+# Source: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+
+# =============================================================================
+# SINGLE PERSON HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 1, single person zero income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Zero income / any FPG = 0
+    ri_liheap_fpg_ratio: 0
+
+- name: Case 2, single person income at 50% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 50% = $7,980
+        employment_income: 7_980
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $7,980 / $15,960 = 0.50
+    ri_liheap_fpg_ratio: 0.50
+
+- name: Case 3, single person income at 75% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 1-person = $15,960, 75% = $11,970
+        employment_income: 11_970
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $11,970 / $15,960 = 0.75
+    ri_liheap_fpg_ratio: 0.75
+
+- name: Case 4, single person income at 100% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 45
+        # 2026 FPG for 1-person = $15,960
+        employment_income: 15_960
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $15,960 / $15,960 = 1.0
+    ri_liheap_fpg_ratio: 1.0
+
+- name: Case 5, single person income at 125% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 50
+        # 2026 FPG for 1-person = $15,960, 125% = $19,950
+        employment_income: 19_950
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $19,950 / $15,960 = 1.25
+    ri_liheap_fpg_ratio: 1.25
+
+- name: Case 6, single person income at 150% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 55
+        # 2026 FPG for 1-person = $15,960, 150% = $23,940
+        employment_income: 23_940
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $23,940 / $15,960 = 1.50
+    ri_liheap_fpg_ratio: 1.50
+
+- name: Case 7, single person income at 175% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 60
+        # 2026 FPG for 1-person = $15,960, 175% = $27,930
+        employment_income: 27_930
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $27,930 / $15,960 = 1.75
+    ri_liheap_fpg_ratio: 1.75
+
+# =============================================================================
+# MULTI-PERSON HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 8, 2-person household at 100% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 2-person = $21,640
+        employment_income: 21_640
+      person2:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPG ratio = $21,640 / $21,640 = 1.0
+    ri_liheap_fpg_ratio: 1.0
+
+- name: Case 9, 4-person household at 50% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 4-person = $33,000, 50% = $16,500
+        employment_income: 16_500
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # FPG ratio = $16,500 / $33,000 = 0.50
+    ri_liheap_fpg_ratio: 0.50
+
+- name: Case 10, 4-person household at 130% FPG.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 4-person = $33,000, 130% = $42,900
+        employment_income: 42_900
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # FPG ratio = $42,900 / $33,000 = 1.30
+    ri_liheap_fpg_ratio: 1.30
+
+# =============================================================================
+# MULTIPLE INCOME SOURCES TESTS
+# Note: Using employment_income for these tests since irs_gross_income only
+# includes taxable income (SSI is not taxable, social_security is only partially
+# taxable as taxable_social_security).
+# =============================================================================
+
+- name: Case 11, elderly with employment income.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 70
+        # Income targeting 120% FPG: $15,960 * 1.20 = $19,152
+        employment_income: 19_152
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $19,152 / $15,960 = 1.20
+    ri_liheap_fpg_ratio: 1.20
+
+- name: Case 12, disabled with employment income.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # Income targeting 66% FPG: $15,960 * 0.66 = $10,534
+        employment_income: 10_534
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $10,534 / $15,960 = 0.66
+    ri_liheap_fpg_ratio: 0.66
+
+- name: Case 13, 2-person household with mixed income.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 65
+        # Using employment income for accurate FPG ratio testing
+        employment_income: 20_000
+      person2:
+        age: 63
+        employment_income: 11_801
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Total income = $20,000 + $11,801 = $31,801
+    # 2-person FPG = $21,640
+    # FPG ratio = $31,801 / $21,640 = 1.47
+    ri_liheap_fpg_ratio: 1.47
+
+# =============================================================================
+# NON-RI RESIDENT TEST
+# =============================================================================
+
+- name: Case 14, non-RI resident returns zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Not RI resident - defined_for = StateCode.RI returns 0
+    ri_liheap_fpg_ratio: 0

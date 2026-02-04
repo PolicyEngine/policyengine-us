@@ -1,0 +1,102 @@
+# Unit tests for Rhode Island LIHEAP heating type enum variable
+# Tests the input variable for heating fuel type used by the household
+#
+# Available heating types:
+# - DELIVERABLE: Oil, propane, kerosene, wood, coal
+# - NATURAL_GAS: Natural gas
+# - ELECTRIC: Electric heat
+# - HEAT_IN_RENT: Heat included in rent
+#
+# Default value: NATURAL_GAS (if not specified)
+#
+# Source: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+
+# =============================================================================
+# HEATING TYPE INPUT TESTS
+# =============================================================================
+
+- name: Case 1, deliverable fuel type.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_heating_type: DELIVERABLE
+
+- name: Case 2, natural gas type.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_heating_type: NATURAL_GAS
+
+- name: Case 3, electric heat type.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_heating_type: ELECTRIC
+
+- name: Case 4, heat in rent type.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: HEAT_IN_RENT
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_heating_type: HEAT_IN_RENT
+
+- name: Case 5, default heating type is natural gas.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No heating type specified - should default to NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Default value is NATURAL_GAS per variable definition
+    ri_liheap_heating_type: NATURAL_GAS
