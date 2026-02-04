@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.550.1] - 2026-02-04 19:32:22
+
+### Fixed
+
+- Fix NY ESCC post-2024 to allow ITIN holders in baseline (revert S.9077 reform).
+
 ## [1.550.0] - 2026-02-03 04:40:30
 
 ### Added
@@ -14897,6 +14903,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.550.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.0...1.550.1
 [1.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.549.0...1.550.0
 [1.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.548.0...1.549.0
 [1.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.547.0...1.548.0

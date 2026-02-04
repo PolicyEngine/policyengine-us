@@ -24,7 +24,6 @@ from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
 from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
 from .states.ny.s04487 import create_ny_s04487_newborn_credit_reform
-from .states.ny.s9077 import create_ny_s9077_escc_itin_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -199,7 +198,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
     )
-    ny_s9077_escc_itin = create_ny_s9077_escc_itin_reform(parameters, period)
 
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
@@ -351,7 +349,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         sc_h3492_eitc_refundable,
         ny_a06774_enhanced_cdcc,
         ny_s04487_newborn_credit,
-        ny_s9077_escc_itin,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,

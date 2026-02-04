@@ -150,7 +150,7 @@
   output:
     ny_ctc_post_2024_base: 990  # $330 + $330 + $330
 
-- name: No base credit when child not qualifying for federal CTC
+- name: No base credit when child has no valid ID (no SSN or ITIN)
   period: 2025
   input:
     people:
@@ -158,7 +158,7 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: false
+        has_itin: false
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -168,6 +168,66 @@
         state_code: NY
   output:
     ny_ctc_post_2024_base: 0
+
+- name: Base credit for child with SSN or ITIN
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 330
+
+- name: Base credit for young child with SSN or ITIN
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_000
+
+- name: Base credit for multiple children with valid IDs
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 2
+        has_itin: true
+      child2:
+        age: 8
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_base: 1_330  # $1,000 + $330
 
 - name: Base credit changes in 2026 (older children get $500)
   period: 2026
