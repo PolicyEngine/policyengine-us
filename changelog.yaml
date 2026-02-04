@@ -12813,3 +12813,8 @@
     - Head of household eligibility now correctly includes qualifying relatives (fixes
       issue 6994)
   date: 2026-02-03 04:40:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix NY ESCC post-2024 to allow ITIN holders in baseline (revert S.9077 reform).
+  date: 2026-02-04 19:32:22
