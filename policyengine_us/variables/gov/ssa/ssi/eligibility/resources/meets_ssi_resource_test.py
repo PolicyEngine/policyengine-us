@@ -14,7 +14,8 @@ class meets_ssi_resource_test(Variable):
         # Apply policy logic in individual simulation.
         p = parameters(period).gov.ssa.ssi
         if person.simulation.dataset is not None:
-            return random(person) < p.eligibility.resources.pass_rate
+            seed = person("ssi_resource_test_seed", period)
+            return seed < p.eligibility.resources.pass_rate
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
         countable_resources = where(
