@@ -14,64 +14,34 @@ class nj_gross_income(Variable):
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        # NJ "Same Category Rule": Net losses within any income category must be
-        # disregarded (capped at $0) - losses cannot offset income from other categories.
-        # Per N.J.S. 54A:5-1, the 16 income categories are treated separately.
+        # Income sources that cannot go negative (always >= 0).
+        non_negative_sources = [
+            "employment_income",
+            "taxable_interest_income",
+            "dividend_income",
+            "taxable_pension_income",
+            "taxable_ira_distributions",
+            "gambling_winnings",
+            "alimony_income",
+            "miscellaneous_income",
+        ]
+        total = add(person, period, non_negative_sources)
 
-        # Category (a): Wages, salaries, tips - always positive
-        cat_a = person("employment_income", period)
+        # Categories that can have losses. Under the same-category rule
+        # (N.J.S. 54A:5-1), if a category's net is negative it is
+        # disregarded (treated as $0) and cannot offset other categories.
+        # Each inner list is summed first, then clamped to zero.
+        loss_eligible_categories = [
+            # Category c: capital gains (short + long combined)
+            ["short_term_capital_gains", "long_term_capital_gains"],
+            # Category b: self-employment + farm combined
+            ["self_employment_income", "farm_income"],
+            # Categories k, p: partnership & S-corp
+            ["partnership_s_corp_income"],
+            # Category d: rental / royalties
+            ["rental_income"],
+        ]
+        for category_sources in loss_eligible_categories:
+            total += max_(add(person, period, category_sources), 0)
 
-        # Category (b): Net profits from business (self-employment + farm)
-        cat_b = max_(
-            person("self_employment_income", period)
-            + person("farm_income", period),
-            0,
-        )
-
-        # Category (c): Net gains from disposition of property (capital gains)
-        cat_c = max_(
-            person("short_term_capital_gains", period)
-            + person("long_term_capital_gains", period),
-            0,
-        )
-
-        # Category (d): Net rents, royalties, patents, copyrights
-        cat_d = max_(person("rental_income", period), 0)
-
-        # Category (e): Interest income
-        cat_e = person("taxable_interest_income", period)
-
-        # Category (f): Dividends
-        cat_f = person("dividend_income", period)
-
-        # Category (g): Gambling winnings
-        cat_g = person("gambling_winnings", period)
-
-        # Category (j): Pensions and annuities (including IRA distributions)
-        cat_j = person("taxable_pension_income", period) + person(
-            "taxable_ira_distributions", period
-        )
-
-        # Categories (k) and (p): Partnership and S-corp income
-        # These are combined in our data model
-        cat_k_p = max_(person("partnership_s_corp_income", period), 0)
-
-        # Category (n): Alimony
-        cat_n = person("alimony_income", period)
-
-        # Other income (Line 26)
-        cat_other = person("miscellaneous_income", period)
-
-        return (
-            cat_a
-            + cat_b
-            + cat_c
-            + cat_d
-            + cat_e
-            + cat_f
-            + cat_g
-            + cat_j
-            + cat_k_p
-            + cat_n
-            + cat_other
-        )
+        return total
