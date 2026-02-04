@@ -241,9 +241,16 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(tax_unit, period, parameters):
             # Get standard NY standard deduction based on filing status
+            dependent_elsewhere = tax_unit(
+                "head_is_dependent_elsewhere", period
+            )
+            p = parameters(period).gov.states.ny.tax.income.deductions.standard
             filing_status = tax_unit("filing_status", period)
-            p = parameters(period).gov.states.ny.tax.income.deductions
-            standard = p.standard.amount[filing_status]
+            standard = where(
+                dependent_elsewhere,
+                p.dependent_elsewhere,
+                p.amount[filing_status],
+            )
             # Check for youth enhanced standard deduction
             youth_deduction = tax_unit(
                 "ny_a04948_youth_standard_deduction", period
@@ -306,21 +313,9 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             # Start with federal AGI
             agi = tax_unit("adjusted_gross_income", period)
             # Add NY additions
-            additions = add(
-                tax_unit,
-                period,
-                [
-                    "ny_agi_additions",
-                ],
-            )
+            additions = tax_unit("ny_additions", period)
             # Subtract NY subtractions
-            subtractions = add(
-                tax_unit,
-                period,
-                [
-                    "ny_agi_subtractions",
-                ],
-            )
+            subtractions = tax_unit("ny_agi_subtractions", period)
             # Subtract student loan interest deduction (A04948)
             student_loan_deduction = tax_unit(
                 "ny_a04948_student_loan_interest_deduction", period
