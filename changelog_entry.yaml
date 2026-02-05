@@ -1,0 +1,17 @@
+- bump: minor
+  changes:
+    added:
+      - State-specific Medicaid takeup rates (53%-99% range, calibrated vs uniform 93%)
+      - Section 1931 deprivation requirement parameter for non-expansion states
+      - is_single_parent_household variable for Medicaid deprivation rules
+      - Head Start and Early Head Start takeup variables
+      - WIC takeup and nutritional risk draw variables (for deterministic microsim)
+      - SSI resource test now uses actual policy logic in individual sim
+    changed:
+      - Moved all stochastic randomness to data package for deterministic country package
+      - is_parent_for_medicaid_nfc now checks Section 1931 deprivation requirements
+      - Head Start and Early Head Start benefits now multiply by takeup
+      - WIC would_claim_wic and is_wic_at_nutritional_risk use draw variables instead of random()
+    removed:
+      - aca_take_up_seed, snap_take_up_seed, medicaid_take_up_seed variables
+      - random() calls from all variable formulas
