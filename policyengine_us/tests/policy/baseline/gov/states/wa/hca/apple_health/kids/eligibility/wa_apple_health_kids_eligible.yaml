@@ -1,0 +1,83 @@
+# Tests for Washington Apple Health for Kids eligibility
+
+- name: Child under 19 with low income eligible
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 1.5  # 150% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+
+- name: Child at Tier 1 income level eligible
+  period: 2024
+  input:
+    age: 15
+    medicaid_income_level: 2.5  # 250% FPL (between 210% and 265%)
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+
+- name: Child at Tier 2 income level eligible
+  period: 2024
+  input:
+    age: 8
+    medicaid_income_level: 3.0  # 300% FPL (between 265% and 317%)
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+
+- name: Child at exactly 317% FPL eligible
+  period: 2024
+  input:
+    age: 12
+    medicaid_income_level: 3.17  # 317% FPL (at limit)
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+
+- name: Child with income above 317% FPL NOT eligible
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 3.5  # 350% FPL (above limit)
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: false
+
+- name: Adult NOT eligible regardless of income
+  period: 2024
+  input:
+    age: 25
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: false
+
+- name: 18-year-old still eligible (under 19)
+  period: 2024
+  input:
+    age: 18
+    medicaid_income_level: 2.0  # 200% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+
+- name: 19-year-old NOT eligible
+  period: 2024
+  input:
+    age: 19
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: false
+
+- name: Undocumented child eligible (covers all immigration statuses)
+  period: 2024
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 2.0  # 200% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
