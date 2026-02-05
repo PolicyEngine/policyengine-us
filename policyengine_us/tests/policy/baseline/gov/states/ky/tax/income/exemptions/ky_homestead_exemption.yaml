@@ -1,0 +1,27 @@
+- name: Eligible
+  period: 2021
+  input:
+    ky_homestead_exemption_eligible: true
+    state_code: KY
+    assessed_property_value: 200_000
+  output:
+   ky_homestead_exemption: 40_500
+
+- name: Ineligible
+  period: 2021
+  input:
+    ky_homestead_exemption_eligible: false
+    state_code: KY
+    assessed_property_value: 200_000
+  output:
+    ky_homestead_exemption: 0
+
+- name: Assessed property value below the exemption amount
+  period: 2021
+  input:
+    ky_homestead_exemption_eligible: true
+    state_code: KY
+    assessed_property_value: 20_000
+  output:
+   ky_homestead_exemption: 20_000
+
