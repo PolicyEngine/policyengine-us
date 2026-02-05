@@ -60,8 +60,8 @@ The YAML parameter files live under
 
 Eligibility does **not** guarantee participation. For each eligibility group, PolicyEngine:
 
-1. Draws a reproducible pseudo‑random seed `medicaid_take_up_seed`.
-2. Compares the seed to an externally‑sourced take‑up probability (e.g. 93 % for children, 82 % for disabled adults).
+1. Draws a reproducible pseudo‑random value `medicaid_takeup_draw`.
+2. Compares the draw to an externally‑sourced take‑up probability (e.g. 93 % for children, 82 % for disabled adults).
 
 This yields a binary flag `is_medicaid_enrolled`, which—together with `medicaid_group`—feeds spending calculations.
 

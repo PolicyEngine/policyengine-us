@@ -1,0 +1,12 @@
+- bump: minor
+  changes:
+    added:
+    - Draw variables for stochastic take-up modeling (ACA, SNAP, Medicaid, WIC, SSI, EITC, DC PTC, Head Start).
+    - Takeup rate parameters and decision variables for Head Start and Early Head Start.
+    changed:
+    - Replaced take-up seed variables with draw variables using random() for ACA, SNAP, and Medicaid.
+    - Extracted random() calls into draw variables for WIC and SSI.
+    - Added take-up formulas to EITC and DC PTC (previously default True with no formula).
+    removed:
+    - aca_take_up_seed, snap_take_up_seed, medicaid_take_up_seed variables.
+  date: 2026-02-05

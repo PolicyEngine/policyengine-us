@@ -1,0 +1,13 @@
+- name: Draw below takeup rate
+  period: 2025
+  input:
+    early_head_start_takeup_draw: 0.05
+  output:
+    takes_up_early_head_start_if_eligible: true
+
+- name: Draw above takeup rate
+  period: 2025
+  input:
+    early_head_start_takeup_draw: 0.2
+  output:
+    takes_up_early_head_start_if_eligible: false

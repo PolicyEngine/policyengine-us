@@ -1,0 +1,15 @@
+- name: Draw below takeup rate
+  period: 2025
+  input:
+    dc_ptc_takeup_draw: 0.2
+    state_code: DC
+  output:
+    takes_up_dc_ptc: true
+
+- name: Draw above takeup rate
+  period: 2025
+  input:
+    dc_ptc_takeup_draw: 0.5
+    state_code: DC
+  output:
+    takes_up_dc_ptc: false

@@ -8,6 +8,6 @@ class takes_up_snap_if_eligible(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        seed = spm_unit("snap_take_up_seed", period)
+        draw = spm_unit("snap_takeup_draw", period)
         takeup_rate = parameters(period).gov.usda.snap.takeup_rate
-        return seed < takeup_rate
+        return draw < takeup_rate

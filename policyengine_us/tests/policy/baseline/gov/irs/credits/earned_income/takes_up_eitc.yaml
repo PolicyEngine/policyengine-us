@@ -1,0 +1,31 @@
+- name: Draw below takeup rate (0 children)
+  period: 2025
+  input:
+    eitc_takeup_draw: 0.5
+    eitc_child_count: 0
+  output:
+    takes_up_eitc: true
+
+- name: Draw above takeup rate (0 children)
+  period: 2025
+  input:
+    eitc_takeup_draw: 0.7
+    eitc_child_count: 0
+  output:
+    takes_up_eitc: false
+
+- name: Draw below takeup rate (1 child)
+  period: 2025
+  input:
+    eitc_takeup_draw: 0.8
+    eitc_child_count: 1
+  output:
+    takes_up_eitc: true
+
+- name: Draw above takeup rate (1 child)
+  period: 2025
+  input:
+    eitc_takeup_draw: 0.9
+    eitc_child_count: 1
+  output:
+    takes_up_eitc: false

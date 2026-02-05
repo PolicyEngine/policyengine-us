@@ -8,6 +8,6 @@ class takes_up_aca_if_eligible(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        seed = tax_unit("aca_take_up_seed", period)
+        draw = tax_unit("aca_takeup_draw", period)
         takeup_rate = parameters(period).gov.aca.takeup_rate
-        return seed < takeup_rate
+        return draw < takeup_rate
