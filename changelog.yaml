@@ -12818,3 +12818,9 @@
     fixed:
     - Fix NY ESCC post-2024 to allow ITIN holders in baseline (revert S.9077 reform).
   date: 2026-02-04 19:32:22
+- bump: patch
+  changes:
+    fixed:
+    - Fixed incorrect label for ca_ala_general_assistance_countable_income_person
+      variable.
+  date: 2026-02-05 04:45:16
