@@ -1,0 +1,8 @@
+- bump: minor
+  changes:
+    changed:
+      - Consolidated itemized deduction limitation parameters from `reduction/` to `limitation/` folder for cleaner organization.
+      - Renamed OBBB (One Big Beautiful Bill Act) itemized deduction parameters from `amended_structure/` to `obbb/` for clarity.
+      - Updated federal and Hawaii itemized deduction variables to use the consolidated parameter path.
+    fixed:
+      - Fixed YAML syntax errors in several parameter files (tabs replaced with spaces, URLs properly quoted).
