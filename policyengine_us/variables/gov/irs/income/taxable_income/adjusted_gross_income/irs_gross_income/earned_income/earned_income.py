@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class earned_income(Variable):
+class irs_earned_income(Variable):
     value_type = float
     entity = Person
     label = "Earned income"
@@ -9,4 +9,4 @@ class earned_income(Variable):
     documentation = "Income from wages or self-employment"
     definition_period = YEAR
 
-    adds = ["employment_income", "self_employment_income"]
+    adds = ["irs_employment_income", "self_employment_income"]

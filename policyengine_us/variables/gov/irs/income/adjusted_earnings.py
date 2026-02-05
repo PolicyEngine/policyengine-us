@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class adjusted_earnings(Variable):
+class irs_adjusted_earnings(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
@@ -15,4 +15,4 @@ class adjusted_earnings(Variable):
             * p.employer_share
             * person("self_employment_tax", period)
         )
-        return max_(0, person("earned_income", period) - adjustment)
+        return max_(0, person("irs_earned_income", period) - adjustment)
