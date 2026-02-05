@@ -1,0 +1,308 @@
+programs:
+  - jurisdiction: "Washington, DC"
+    general_program: "TANF"
+    specific_program: "DC TANF + POWER"
+    link: "https://code.dccouncil.gov/us/dc/council/code/titles/4/chapters/2/subchapters/V"
+    estimate: 2_600
+    notes: "Combination of TANF and supplemental POWER program"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "SNAP"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "WIC"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "General Relief / Assistance"
+    specific_program: "General Assistance for Children program"
+    link: "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a?utm_source=chatgpt.com"
+    estimate: 1_000
+    notes: "Eligibility based on TANF"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "Utility Subsidies"
+    specific_program: "DC LIHEAP"
+    link: "https://www.commerce.wa.gov/community-opportunities/liheap/"
+    estimate: 700
+    notes: "Simple eligibility check"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "Child Care Subsidies"
+    specific_program: "DC Childcare subsidy program"
+    link: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"
+    estimate: 1_500
+    notes: "Sliding scale calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "Medicaid"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "ACA"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "Section 8"
+    specific_program: ""
+    link: ""
+    estimate: 1_200
+    notes: "Housing voucher calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Washington, DC"
+    general_program: "Lifeline"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "TANF"
+    specific_program: "Temporary Assistance & Family Assistance"
+    link: "https://otda.ny.gov/programs/temporary-assistance/"
+    estimate: 2_400
+    notes: "Complex eligibility and benefit calculation"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "SNAP"
+    specific_program: ""
+    link: ""
+    estimate: 500
+    notes: "State-specific SNAP rules"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "WIC"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "General Relief / Assistance"
+    specific_program: "NY Cash Assistance"
+    link: "https://www.nyc.gov/site/hra/help/cash-assistance.page"
+    estimate: 1_400
+    notes: "Multiple assistance types"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "Utility Subsidies"
+    specific_program: "NY HEAP"
+    link: "https://otda.ny.gov/programs/heap"
+    estimate: 700
+    notes: "Simple eligibility and payment"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "Child Care Subsidies"
+    specific_program: "NY CCAP"
+    link: "https://ocfs.ny.gov/programs/childcare/ccap/"
+    estimate: 1_500
+    notes: "Sliding scale calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "Medicaid"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "ACA"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Not yet complete but funded from MyFriendBen"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "Section 8"
+    specific_program: ""
+    link: ""
+    estimate: 1_200
+    notes: "Housing voucher calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "New York, NY"
+    general_program: "Lifeline"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "TANF"
+    specific_program: "IL TANF"
+    link: "https://il.db101.org/il/programs/income_support/tanf/faqs.htm#:~:text=get%20TANF%20benefits.-,The%20Illinois%20Department%20of%20Human%20Services%20provides%20a%20chart%20of,less%20than%20%24753%20a%20month"
+    estimate: 2_400
+    notes: "Complex assistance units and time limits"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "SNAP"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "WIC"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "General Relief / Assistance"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Any specific programs from the Emergency Assistance Fund"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "Utility Subsidies"
+    specific_program: "IL LIHEAP"
+    link: "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html#:~:text=The%20LIHEAP%20application%20period%20is%20October%201%2C,15%2C%202025%2C%20or%20until%20funding%20is%20exhausted.&text=If%20your%20household%27s%20combined%20income%20for%20the,you%20may%20be%20eligible%20to%20receive%20assistance"
+    estimate: 700
+    notes: "Simple eligibility check"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "Child Care Subsidies"
+    specific_program: "IL CCAP"
+    link: "https://www.dhs.state.il.us/page.aspx?item=9877"
+    estimate: 1_500
+    notes: "Sliding scale calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "Medicaid"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "ACA"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "Section 8"
+    specific_program: ""
+    link: ""
+    estimate: 1_200
+    notes: "Housing voucher calculations"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Chicago, IL"
+    general_program: "Lifeline"
+    specific_program: "-"
+    link: "-"
+    estimate: 0
+    notes: "Already complete"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Riverside County, CA"
+    general_program: "Utility Subsidies"
+    specific_program: "SHARE"
+    link: "https://riversideca.gov/utilities/residents/assistance-programs/share-english"
+    estimate: 2_400
+    notes: "Expedited request"
+    complete: true
+    invoiced: false
+  
+  - jurisdiction: "Riverside County, CA"
+    general_program: "General Relief"
+    specific_program: ""
+    link: ""
+    estimate: 1_400
+    notes: "Employment requirements, loan tracking, county-specific rules"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Riverside County, CA"
+    general_program: "Community Action Partnership LIHEAP"
+    specific_program: ""
+    link: "https://capriverside.org/utility-assistance-program"
+    estimate: 400
+    notes: "Simple eligibility determination"
+    complete: false
+    invoiced: false
+  
+  - jurisdiction: "Alameda County, CA"
+    general_program: "General Assistance"
+    specific_program: ""
+    link: "https://www.alamedacountysocialservices.org/ex/our-services/Work-and-Money/General-Assistance/index"
+    estimate: 1_600
+    notes: "Complex time limits, employability determination, exemptions"
+    complete: false
+    invoiced: false
+
+total_estimate: 22_800
