@@ -1,6 +1,8 @@
 description: Broadband subsidies are taken as reported in the CPS ASEC.
 values:
   2000-01-01: true
+  2024-06-01: false  # ACP ends
 metadata:
   unit: bool
+  period: year
   label: Use reported broadband subsidies
