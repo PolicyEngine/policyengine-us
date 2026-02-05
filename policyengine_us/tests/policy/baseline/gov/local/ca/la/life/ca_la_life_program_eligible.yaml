@@ -1,0 +1,65 @@
+- name: not eligible
+  period: 2022
+  input:
+    snap: 0
+    social_security: 0
+    social_security_disability: 0
+    tanf: 0
+    in_la: true
+  output:
+    ca_la_life_program_eligible: false
+
+- name: snap
+  period: 2022
+  input:
+    snap: 1_000
+    social_security: 0
+    social_security_disability: 0
+    tanf: 0
+    in_la: true
+  output:
+    ca_la_life_program_eligible: true
+
+- name: social_security
+  period: 2022
+  input:
+    snap: 0
+    social_security: 1_000
+    social_security_disability: 0
+    tanf: 0
+    in_la: true
+  output:
+    ca_la_life_program_eligible: true
+
+- name: social security
+  period: 2022
+  input:
+    snap: 0
+    social_security: 1_000
+    social_security_disability: 0
+    tanf: 0
+    in_la: true
+  output:
+    ca_la_life_program_eligible: true
+
+- name: social security disability
+  period: 2022
+  input:
+    snap: 0
+    social_security: 1_000
+    social_security_disability: 0
+    tanf: 0
+    in_la: true
+  output:
+    ca_la_life_program_eligible: true
+
+- name: tanf
+  period: 2022
+  input:
+    snap: 0
+    social_security: 0
+    social_security_disability: 0
+    tanf: 1_000
+    in_la: true
+  output:
+    ca_la_life_program_eligible: true

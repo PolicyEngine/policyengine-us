@@ -1,0 +1,31 @@
+- name: Not child or dependent.
+  period: 2022
+  input:
+    is_child: false
+    is_tax_unit_dependent: false
+  output:
+    is_child_of_tax_head: false
+
+- name: Child
+  period: 2022
+  input:
+    is_child: true
+    is_tax_unit_dependent: false
+  output:
+    is_child_of_tax_head: false
+
+- name: Dependent
+  period: 2022
+  input:
+    is_child: false
+    is_tax_unit_dependent: true
+  output:
+    is_child_of_tax_head: false
+
+- name: Child and dependent.
+  period: 2022
+  input:
+    is_child: true
+    is_tax_unit_dependent: true
+  output:
+    is_child_of_tax_head: true
