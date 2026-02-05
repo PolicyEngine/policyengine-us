@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 
 
 class Race(Enum):
-    WHITE = "White, non-Hispanic"
-    BLACK = "Black, non-Hispanic"
-    HISPANIC = "Hispanic"
-    OTHER = "Other"
+    WHITE       = 1
+    BLACK       = 2
+    HISPANIC    = 3
+    OTHER       = 4
 
 
 class race(Variable):

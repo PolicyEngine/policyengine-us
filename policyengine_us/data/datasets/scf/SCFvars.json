@@ -1,0 +1,974 @@
+{
+    "ACTBUS": {
+        "description": "Total value of actively managed business(es), 2022 dollars"
+    },
+    "AGE": {
+        "description": "Age of reference person"
+    },
+    "AGECL": {
+        "description": "Age group of the reference person"
+    },
+    "ANNUIT": {
+        "description": "Amount R would receive if they cashed in annuities, 2022 dollars"
+    },
+    "ANYPEN": {
+        "description": "Pension exists for either reference person or spouse"
+    },
+    "ASSET": {
+        "description": "Total value of assets held by household, 2022 dollars"
+    },
+    "ASSETCAT": {
+        "description": "Asset percentile groups"
+    },
+    "BCALL": {
+        "description": "Information used for borrowing decisions: call around"
+    },
+    "BDONT": {
+        "description": "Information used for borrowing decisions: never borrow"
+    },
+    "BFINPLAN": {
+        "description": "Information used for borrowing decisions: lawyer, accountant, financial planner"
+    },
+    "BFINPRO": {
+        "description": "Information used for borrowing decisions: banker, broker, real estate broker, builder, dealer, insurance agent"
+    },
+    "BFRIENDWORK": {
+        "description": "Information used for borrowing decisions: friends, material from work/business contacts"
+    },
+    "BINTERNET": {
+        "description": "Information used for borrowing decisions: internet/online service"
+    },
+    "BMAGZNEWS": {
+        "description": "Information used for borrowing decisions: magazines, newspapers, books"
+    },
+    "BMAILADTV": {
+        "description": "Information used for borrowing decisions: material in mail, tv, radio, advertisements, telemarketer"
+    },
+    "BNKRUPLAST5": {
+        "description": "Household has declared bankruptcy in the past 5 years"
+    },
+    "BNPL": {
+        "description": "Amount owed for Buy Now, Pay Later programs, 2022 dollars"
+    },
+    "BOND": {
+        "description": "Total value of directly held bonds held by household, 2022 dollars"
+    },
+    "BOTHER": {
+        "description": "Information used for borrowing decisions: other sources"
+    },
+    "BPLANCJ": {
+        "description": "Either reference person or spouse/partner has both types of pension plan on a current job"
+    },
+    "BSELF": {
+        "description": "Information used for borrowing decisions: self, shop around, other personal research"
+    },
+    "BSHOPGRDL": {
+        "description": "Shopping for borrowing and credit: great deal of shopping"
+    },
+    "BSHOPMODR": {
+        "description": "Shopping for borrowing and credit: moderate shopping"
+    },
+    "BSHOPNONE": {
+        "description": "Shopping for borrowing and credit: almost no shopping"
+    },
+    "BUS": {
+        "description": "Total value of business(es) in which the household has either an active or nonactive interest, 2022 dollars"
+    },
+    "BUSSEFARMINC": {
+        "description": "Income from business, sole proprietorship, and farm, 2022 dollars"
+    },
+    "BUSVEH": {
+        "description": "Household has vehicle(s) owned by business"
+    },
+    "CALL": {
+        "description": "Total value of call accounts held by household, 2022 dollars"
+    },
+    "CANTMANG": {
+        "description": "Why no checking account: can't manage/balance a checking account"
+    },
+    "CASEID": {
+        "description": "Case ID (numeric)"
+    },
+    "CASHLI": {
+        "description": "Total cash value of whole life insurance held by household, 2022 dollars"
+    },
+    "CCBAL": {
+        "description": "Total value of credit card balances held by household, 2022 dollars"
+    },
+    "CDS": {
+        "description": "Total value of certificates of deposit held by household, 2022 dollars"
+    },
+    "CHECKING": {
+        "description": "Total value of checking accounts held by household, 2022 dollars"
+    },
+    "CKCONNECTN": {
+        "description": "Why chose main checking account institution: connection through work/school"
+    },
+    "CKCONVPAYRL": {
+        "description": "Why chose main checking account institution: other convenience, payroll deduction/direct deposit"
+    },
+    "CKLOCATION": {
+        "description": "Why chose main checking account institution: location of their offices"
+    },
+    "CKLONGTIME": {
+        "description": "Why chose main checking account institution: always done business there, banked there a long time"
+    },
+    "CKLOWFEEBAL": {
+        "description": "Why chose main checking account institution: had the lowest fees/minimum balance requirement"
+    },
+    "CKMANYSVCS": {
+        "description": "Why chose main checking account institution: able to obtain many services at one place"
+    },
+    "CKOTHCHOOSE": {
+        "description": "Why chose main checking account institution: other reason"
+    },
+    "CKPERSONAL": {
+        "description": "Why chose main checking account institution: personal relationship"
+    },
+    "CKRECOMFRND": {
+        "description": "Why chose main checking account institution: recommended, friend/family has account there"
+    },
+    "CKSAFETY": {
+        "description": "Why chose main checking account institution: offered safety and absence of risk"
+    },
+    "COMUTF": {
+        "description": "amount in combination and other mutual funds, 2022 dollars"
+    },
+    "CONSPAY": {
+        "description": "total monthly consumer debt payments, 2022 dollars"
+    },
+    "CPI_DEFL": {
+        "description": "Deflator Value"
+    },
+    "CREDIT": {
+        "description": "Why no checking account: credit problems, bankruptcy, does not meet qualifications for an account"
+    },
+    "CURRPEN": {
+        "description": "current value in pension, 2022 dollars"
+    },
+    "DBPLANCJ": {
+        "description": "Either reference person or spouse/partner has a defined benefit pension on a current job"
+    },
+    "DBPLANT": {
+        "description": "Either reference person or spouse/partner has DB plan on current job or some type of pension from a past job to be received in the future"
+    },
+    "DCPLANCJ": {
+        "description": "Either reference person or spouse/partner has any type of account-based plan on a current job"
+    },
+    "DEBT": {
+        "description": "Total value of debt held by household, 2022 dollars"
+    },
+    "DEBT2INC": {
+        "description": "Ratio of total debt to total income"
+    },
+    "DEQ": {
+        "description": "Total value of equity in directly held stocks, stock mutual funds, and combination mutual funds held by household, 2022 dollars"
+    },
+    "DONTLIKE": {
+        "description": "Why no checking account: don't like dealing with banks"
+    },
+    "DONTWANT": {
+        "description": "Why no checking account: does not want/need a checking account"
+    },
+    "DONTWRIT": {
+        "description": "Why no checking account: don't write enough checks to make it worthwhile"
+    },
+    "EDCL": {
+        "description": "Education category of reference person"
+    },
+    "EDN_INST": {
+        "description": "Total value of education loans held by household, 2022 dollars"
+    },
+    "EDUC": {
+        "description": "Highest completed grade by reference person"
+    },
+    "EHCHKG": {
+        "description": "people w/o checking accounts: ever had an account?"
+    },
+    "EMERGBORR": {
+        "description": "Respondent would borrow money in a hypothetical financial emergency"
+    },
+    "EMERGCUT": {
+        "description": "Respondent would cut back spending in a hypothetical financial emergency"
+    },
+    "EMERGPSTP": {
+        "description": "Respondent would postpone payments in a hypothetical financial emergency"
+    },
+    "EMERGSAV": {
+        "description": "Respondent would spend out of savings in a hypothetical financial emergency"
+    },
+    "EQUITINC": {
+        "description": "ratio of equity to normal income"
+    },
+    "EQUITY": {
+        "description": "Total value of financial assets held by household that are invested in stock, 2022 dollars"
+    },
+    "EXPENSHILO": {
+        "description": "Households overall expenses over last 12 months"
+    },
+    "FAMSTRUCT": {
+        "description": "Family structure of household"
+    },
+    "FARMBUS": {
+        "description": "compute value of business part of farm net of outstanding mortgages, 2022 dollars"
+    },
+    "FARMBUS_KG": {
+        "description": "capital gains on farm businesses, 2022 dollars"
+    },
+    "FEARDENIAL": {
+        "description": "Household feared being denied credit in the past 5 years"
+    },
+    "FIN": {
+        "description": "Total value of financial assets held by household, 2022 dollars"
+    },
+    "FINLIT": {
+        "description": "Number of financial literacy questions answered correctly"
+    },
+    "FOODAWAY": {
+        "description": "Total amount spent on food away from home, annualized, 2022 dollars"
+    },
+    "FOODDELV": {
+        "description": "Total amount spent on food delivered to home, annualized, 2022 dollars"
+    },
+    "FOODHOME": {
+        "description": "Total amount spent on food at home, annualized, 2022 dollars"
+    },
+    "FORECLLAST5": {
+        "description": "Respondent had a foreclosure in the last five years"
+    },
+    "FUTPEN": {
+        "description": "future pensions (accumulated in an account for the R/S), 2022 dollars"
+    },
+    "GBMUTF": {
+        "description": "amount in government bond mutual funds, 2022 dollars"
+    },
+    "GOVTBND": {
+        "description": "US government and government agency bonds and bills, 2022 dollars"
+    },
+    "HBORRALT": {
+        "description": "Respondent would borrow money from alternative sources in a hypothetical financial emergency"
+    },
+    "HBORRCC": {
+        "description": "Respondent would borrow money using a credit card in a hypothetical financial emergency"
+    },
+    "HBORRFF": {
+        "description": "Respondent would borrow money from friends or family in a hypothetical financial emergency"
+    },
+    "HBORRFIN": {
+        "description": "Respondent would borrow money from financial services in a hypothetical financial emergency"
+    },
+    "HBROK": {
+        "description": "have a brokerage account"
+    },
+    "HBUS": {
+        "description": "Have active or nonactively managed business(es)"
+    },
+    "HCUTENT": {
+        "description": "Respondent would postpone payments for entertainment in a hypothetical financial emergency"
+    },
+    "HCUTFOOD": {
+        "description": "Respondent would cut back on food purchases in a hypothetical financial emergency"
+    },
+    "HCUTOTH": {
+        "description": "Respondent would postpone other payments in a hypothetical financial emergency"
+    },
+    "HDEBT": {
+        "description": "Household has any debt"
+    },
+    "HELOC": {
+        "description": "Total value of home equity lines of credit secured by the primary residence held by the household, 2022 dollars"
+    },
+    "HELOC_YN": {
+        "description": "Currently borrowing on home equity line of credit"
+    },
+    "HHSEX": {
+        "description": "Gender of household reference person"
+    },
+    "HLIQ": {
+        "description": "Household has any checking, savings, money market or call accounts"
+    },
+    "HMORT2": {
+        "description": "Have junior lien mortgage not used for purchase of primary residence"
+    },
+    "HOMEEQ": {
+        "description": "Total value of equity in primary residence of household, 2022 dollars"
+    },
+    "HOUSECL": {
+        "description": "Home-ownership category of household"
+    },
+    "HOUSES": {
+        "description": "Total value of primary residence of household, 2022 dollars"
+    },
+    "HPAYDAY": {
+        "description": "Household had a payday loan within the past year"
+    },
+    "HPRIM_MORT": {
+        "description": "Have first lien mortgage on primary residence"
+    },
+    "HPSTPLN": {
+        "description": "Respondent would postpone payments on loans in a hypothetical financial emergency"
+    },
+    "HPSTPOTH": {
+        "description": "Respondent would postpone other payments in a hypothetical financial emergency"
+    },
+    "HPSTPPAY": {
+        "description": "Respondent would postpone payments for purchases in a hypothetical financial emergency"
+    },
+    "HSAVFIN": {
+        "description": "Respondent would spend out of financial sources in a hypothetical financial emergency"
+    },
+    "HSAVNFIN": {
+        "description": "Respondent would spend out of non-financial sources in a hypothetical financial emergency"
+    },
+    "HSEC_MORT": {
+        "description": "Have junior lien mortgage on primary residence"
+    },
+    "HSTOCKS": {
+        "description": "have stocks?"
+    },
+    "HTRAD": {
+        "description": "traded in the past year"
+    },
+    "ICALL": {
+        "description": "Information used for investing decisions: call around"
+    },
+    "IDONT": {
+        "description": "Information used for investing decisions: never borrow"
+    },
+    "IFINPLAN": {
+        "description": "Information used for investing decisions: lawyer, accountant, financial planner"
+    },
+    "IFINPRO": {
+        "description": "Information used for investing decisions: banker, broker, real estate broker, builder, dealer, insurance agent"
+    },
+    "IFRIENDWORK": {
+        "description": "Information used for investing decisions: friends, material from work/business contacts"
+    },
+    "IINTERNET": {
+        "description": "Information used for investing decisions: internet/online service"
+    },
+    "IMAGZNEWS": {
+        "description": "Information used for investing decisions: magazines, newspapers, books"
+    },
+    "IMAILADTV": {
+        "description": "Information used for investing decisions: material in mail, tv, radio, advertisements, telemarketer"
+    },
+    "INCCAT": {
+        "description": "Income percentile groups"
+    },
+    "INCOME": {
+        "description": "Total amount of income of household, 2022 dollars"
+    },
+    "INCPCTLECAT": {
+        "description": "Alternate income percentile groups"
+    },
+    "INCQRTCAT": {
+        "description": "Income quartile groups"
+    },
+    "INDCAT": {
+        "description": "Industry classifications for reference person"
+    },
+    "INSTALL": {
+        "description": "Total value of installment loans held by household, 2022 dollars"
+    },
+    "INTDIVINC": {
+        "description": "Interest (taxable and nontaxable) and dividend income, 2022 dollars"
+    },
+    "INTERNET": {
+        "description": "Do business with financial institution via the Internet"
+    },
+    "IOTHER": {
+        "description": "Information used for investing decisions: other sources"
+    },
+    "IRAKH": {
+        "description": "Total value of IRA/Keogh accounts, 2022 dollars"
+    },
+    "ISELF": {
+        "description": "Information used for investing decisions: self, shop around, other personal research"
+    },
+    "ISHOPGRDL": {
+        "description": "Shopping for saving and investments: great deal of shopping"
+    },
+    "ISHOPMODR": {
+        "description": "Shopping for saving and investments: moderate shopping"
+    },
+    "ISHOPNONE": {
+        "description": "Shopping for saving and investments: almost no shopping"
+    },
+    "KGBUS": {
+        "description": "Unrealized capital gains or losses on businesses, 2022 dollars"
+    },
+    "KGHOUSE": {
+        "description": "Unrealized capital gains or losses on the primary residence, 2022 dollars"
+    },
+    "KGINC": {
+        "description": "Capital gain or loss income, 2022 dollars"
+    },
+    "KGORE": {
+        "description": "Unrealized capital gains or losses on other real estate, 2022 dollars"
+    },
+    "KGSTMF": {
+        "description": "Unrealized capital gains or losses on stocks and mutual funds, 2022 dollars"
+    },
+    "KGTOTAL": {
+        "description": "Total unrealized capital gains or losses for the household, 2022 dollars"
+    },
+    "KIDS": {
+        "description": "Total number of children in household"
+    },
+    "KNOWL": {
+        "description": "Respondent's knowledge of personal finances"
+    },
+    "LATE": {
+        "description": "Household had any late debt payments in last year"
+    },
+    "LATE60": {
+        "description": "Household had any debt payments more than 60 days past due in last year"
+    },
+    "LEASE": {
+        "description": "have leased vehicle"
+    },
+    "LEVRATIO": {
+        "description": "Ratio of total debt to total assets"
+    },
+    "LF": {
+        "description": "Labor force participation of reference person"
+    },
+    "LIFECL": {
+        "description": "Life cycle of reference person"
+    },
+    "LIQ": {
+        "description": "Total value of all types of transactions accounts, 2022 dollars"
+    },
+    "LLOAN1": {
+        "description": "Total balance of household loans where the lender is a commercial bank, 2022 dollars"
+    },
+    "LLOAN10": {
+        "description": "Total balance of household loans where the lender is a store and/or a credit card, 2022 dollars"
+    },
+    "LLOAN11": {
+        "description": "Total balance of household loans where the lender is a pension, 2022 dollars"
+    },
+    "LLOAN12": {
+        "description": "Total balance of household loans where the lender is other, unclassifiable, or foreign, 2022 dollars"
+    },
+    "LLOAN2": {
+        "description": "Total balance of household loans where the lender is saving and loan, 2022 dollars"
+    },
+    "LLOAN3": {
+        "description": "Total balance of household loans where the lender is credit union, 2022 dollars"
+    },
+    "LLOAN4": {
+        "description": "Total balance of household loans where the lender is finance, loan or leasing company, or inc debt consolidator, 2022 dollars"
+    },
+    "LLOAN5": {
+        "description": "Total balance of household loans where the lender is a brokerage and/or life insurancer, 2022 dollars"
+    },
+    "LLOAN6": {
+        "description": "Total balance of household loans where the lender is a real estate company, 2022 dollars"
+    },
+    "LLOAN7": {
+        "description": "Total balance of household loans  where the lender is an individual, 2022 dollars"
+    },
+    "LLOAN8": {
+        "description": "Total balance of household loans where the lender is an other nonfinancial, 2022 dollars"
+    },
+    "LLOAN9": {
+        "description": "Total balance of household loans where the lender is government, 2022 dollars"
+    },
+    "MARRIED": {
+        "description": "Marital status of reference person"
+    },
+    "MINBAL": {
+        "description": "Why no checking account: minimum balance is too high"
+    },
+    "MMA": {
+        "description": "Total value of money market deposit and money market mutual fund accounts, 2022 dollars"
+    },
+    "MMDA": {
+        "description": "money maket deposit accounts, 2022 dollars"
+    },
+    "MMMF": {
+        "description": "money market mutual funds, 2022 dollars"
+    },
+    "MORT1": {
+        "description": "Amount owed on mortgage 1, 2022 dollars"
+    },
+    "MORT2": {
+        "description": "Amount owed on mortgage 2, 2022 dollars"
+    },
+    "MORT3": {
+        "description": "Amount owed on mortgage 3, 2022 dollars"
+    },
+    "MORTBND": {
+        "description": "mortgage-backed bonds, 2022 dollars"
+    },
+    "MORTPAY": {
+        "description": "total monthly mortgage payments, 2022 dollars"
+    },
+    "MRTHEL": {
+        "description": "Total value of debt seucred by the primary residence held by household, 2022 dollars"
+    },
+    "NBUSVEH": {
+        "description": "Total number of business vehicles held by household"
+    },
+    "NETWORTH": {
+        "description": "Total net worth of household, 2022 dollars"
+    },
+    "NEWCAR1": {
+        "description": "number of car/truck/SUV with model year no older than two years before the survey"
+    },
+    "NEWCAR2": {
+        "description": "number of car/truck/SUV with model year no older than one year before the survey"
+    },
+    "NFIN": {
+        "description": "Total value of nonfinancial assets held by household, 2022 dollars"
+    },
+    "NH_MORT": {
+        "description": "Total value of mortgages and home equity loans secured by the primary residence held by household, 2022 dollars"
+    },
+    "NHNFIN": {
+        "description": "total nonfinancial assets excluding principal residences, 2022 dollars"
+    },
+    "NINCCAT": {
+        "description": "Normal income percentile groups"
+    },
+    "NINCPCTLECAT": {
+        "description": "Alternate Normal income percentile groups"
+    },
+    "NINCQRTCAT": {
+        "description": "Normal income quartile groups"
+    },
+    "NLEASE": {
+        "description": "number of leased vehicles"
+    },
+    "NMMF": {
+        "description": "Total value of directly held pooled investment funds held by household, 2022 dollars"
+    },
+    "NNRESRE": {
+        "description": "Total value of net equity in nonresidential real estate held by household, 2022 dollars"
+    },
+    "NOBNPL": {
+        "description": "Respondent does not use Buy Now, Pay Later"
+    },
+    "NOCCBAL": {
+        "description": "Household does not carry a balance on credit cards"
+    },
+    "NOCHK": {
+        "description": "Household has no checking account"
+    },
+    "NOFINRISK": {
+        "description": "Respondent not willing to take financial risk"
+    },
+    "NOMONEY": {
+        "description": "Why no checking account: don't have (enough) money"
+    },
+    "NONACTBUS": {
+        "description": "Value of non-actively managed business(es), 2022 dollars"
+    },
+    "NORMINC": {
+        "description": "Household normal income, 2022 dollars"
+    },
+    "NOTXBND": {
+        "description": "tax-exempt bonds (state and local bonds), 2022 dollars"
+    },
+    "NOWN": {
+        "description": "number of owned vehicles"
+    },
+    "NSTOCKS": {
+        "description": "number different companies in which hold stock"
+    },
+    "NTRAD": {
+        "description": "number of trades per year"
+    },
+    "NVEHIC": {
+        "description": "total number of vehicles (owned and leased)"
+    },
+    "NWCAT": {
+        "description": "Net worth percentile groups"
+    },
+    "NWPCTLECAT": {
+        "description": "Alternate net worth percentile groups"
+    },
+    "OBMUTF": {
+        "description": "amount in other bond mutual funds, 2022 dollars"
+    },
+    "OBND": {
+        "description": "corporate and foreign bonds, 2022 dollars"
+    },
+    "OCCAT1": {
+        "description": "Occupation categories for reference person"
+    },
+    "OCCAT2": {
+        "description": "Occupation classification for reference person"
+    },
+    "ODEBT": {
+        "description": "Total value of other debts held by household, 2022 dollars"
+    },
+    "OMUTF": {
+        "description": "amount in other mutual funds, 2022 dollars"
+    },
+    "ORESRE": {
+        "description": "Total value of other residential real estate held by household, 2022 dollars"
+    },
+    "OTH_INST": {
+        "description": "Total value of other installment loans held by household, 2022 dollars"
+    },
+    "OTHER": {
+        "description": "Why no checking account: other"
+    },
+    "OTHFIN": {
+        "description": "Total value of other financial assets, 2022 dollars"
+    },
+    "OTHLOC": {
+        "description": "Total value of other lines of credit held by household, 2022 dollars"
+    },
+    "OTHMA": {
+        "description": "Total value of other managed assets held by household, 2022 dollars"
+    },
+    "OTHNFIN": {
+        "description": "Total value of other nonfinancial assets held by household, 2022 dollars"
+    },
+    "OWN": {
+        "description": "have an owned vehicle"
+    },
+    "PAYEDU1": {
+        "description": "payments on first education loan, 2022 dollars"
+    },
+    "PAYEDU2": {
+        "description": "payments on second education loan, 2022 dollars"
+    },
+    "PAYEDU3": {
+        "description": "payments on third education loan, 2022 dollars"
+    },
+    "PAYEDU4": {
+        "description": "payments on fourth education loan, 2022 dollars"
+    },
+    "PAYEDU5": {
+        "description": "payments on fifth education loan, 2022 dollars"
+    },
+    "PAYEDU6": {
+        "description": "payments on sixth education loan, 2022 dollars"
+    },
+    "PAYEDU7": {
+        "description": "payments on seventh education loan, 2022 dollars"
+    },
+    "PAYHI1": {
+        "description": "payments on first home improvement loan, 2022 dollars"
+    },
+    "PAYHI2": {
+        "description": "payments on second home improvement loan, 2022 dollars"
+    },
+    "PAYILN1": {
+        "description": "payments on first installment loan, 2022 dollars"
+    },
+    "PAYILN2": {
+        "description": "payments on second installment loan, 2022 dollars"
+    },
+    "PAYILN3": {
+        "description": "payments on third installment loan, 2022 dollars"
+    },
+    "PAYILN4": {
+        "description": "payments on fourth installment loan, 2022 dollars"
+    },
+    "PAYILN5": {
+        "description": "payments on fifth installment loan, 2022 dollars"
+    },
+    "PAYILN6": {
+        "description": "payments on sixth installment loan, 2022 dollars"
+    },
+    "PAYILN7": {
+        "description": "payments on seventh installment loan, 2022 dollars"
+    },
+    "PAYINS": {
+        "description": "payments on loans against insurance policies, 2022 dollars"
+    },
+    "PAYLC1": {
+        "description": "payments on first land contract, 2022 dollars"
+    },
+    "PAYLC2": {
+        "description": "payments on second land contract, 2022 dollars"
+    },
+    "PAYLCO": {
+        "description": "payments on other land contracts, 2022 dollars"
+    },
+    "PAYLOC1": {
+        "description": "payments on first line of credit, 2022 dollars"
+    },
+    "PAYLOC2": {
+        "description": "payments on second line of credit, 2022 dollars"
+    },
+    "PAYLOC3": {
+        "description": "payments on third line of credit, 2022 dollars"
+    },
+    "PAYLOCO": {
+        "description": "payments on other lines of credit, 2022 dollars"
+    },
+    "PAYMARG": {
+        "description": "payments on margin loans, 2022 dollars"
+    },
+    "PAYMORT1": {
+        "description": "payments on first mortgage, 2022 dollars"
+    },
+    "PAYMORT2": {
+        "description": "payments on second mortgage, 2022 dollars"
+    },
+    "PAYMORT3": {
+        "description": "payments on third mortgage, 2022 dollars"
+    },
+    "PAYMORTO": {
+        "description": "payments on other loans, 2022 dollars"
+    },
+    "PAYORE1": {
+        "description": "payments on first other resdential property, 2022 dollars"
+    },
+    "PAYORE2": {
+        "description": "payments on second other resdential property, 2022 dollars"
+    },
+    "PAYORE3": {
+        "description": "payments on third other resdential property, 2022 dollars"
+    },
+    "PAYOREV": {
+        "description": "payments on remaining other resdential properties, 2022 dollars"
+    },
+    "PAYPEN1": {
+        "description": "payments on loan against first pension plan not previously reported, 2022 dollars"
+    },
+    "PAYPEN2": {
+        "description": "payments on loan against second pension plan not previously reported, 2022 dollars"
+    },
+    "PAYPEN3": {
+        "description": "payments on loan against third pension plan not previously reported, 2022 dollars"
+    },
+    "PAYPEN4": {
+        "description": "payments on loan against fourth pension plan not previously reported, 2022 dollars"
+    },
+    "PAYPEN5": {
+        "description": "payments on loan against fifth pension plan not previously reported, 2022 dollars"
+    },
+    "PAYPEN6": {
+        "description": "payments on loan against sixth pension plan not previously reported, 2022 dollars"
+    },
+    "PAYVEH1": {
+        "description": "payments on first vehicle, 2022 dollars"
+    },
+    "PAYVEH2": {
+        "description": "payments on second vehicle, 2022 dollars"
+    },
+    "PAYVEH3": {
+        "description": "payments on third vehicle, 2022 dollars"
+    },
+    "PAYVEH4": {
+        "description": "payments on fourth vehicle, 2022 dollars"
+    },
+    "PAYVEHM": {
+        "description": "payments on remaining vehicles, 2022 dollars"
+    },
+    "PAYVEO1": {
+        "description": "payment on first other vehicle, 2022 dollars"
+    },
+    "PAYVEO2": {
+        "description": "payment on second other vehicle, 2022 dollars"
+    },
+    "PAYVEOM": {
+        "description": "payment on remaining other vehicles, 2022 dollars"
+    },
+    "PENACCTWD": {
+        "description": "Withdrawals from IRAs and tax-deferred pension accounts, 2022 dollars"
+    },
+    "PIR40": {
+        "description": "Household has a PIR higher than 40%"
+    },
+    "PIRCONS": {
+        "description": "ratio of monthly non-mortgage non-revolving consumer debt payments to monthly income"
+    },
+    "PIRMORT": {
+        "description": "ratio of monthly mortgage payments to monthly income"
+    },
+    "PIRREV": {
+        "description": "ratio of monthly revolving debt payments to monthly income"
+    },
+    "PIRTOTAL": {
+        "description": "Ratio of monthly debt payments to monthly income"
+    },
+    "PLOAN1": {
+        "description": "Total value of aggregate loan balance by loan purpose: home purchase, cottage, vacation property, 2022 dollars"
+    },
+    "PLOAN2": {
+        "description": "Total value of aggregate loan balance by loan purpose: home improvement, 2022 dollars"
+    },
+    "PLOAN3": {
+        "description": "Total value of aggregate loan balance by loan purpose: vehicles, 2022 dollars"
+    },
+    "PLOAN4": {
+        "description": "Total value of aggregate loan balance by loan purpose: goods and services, 2022 dollars"
+    },
+    "PLOAN5": {
+        "description": "Total value of aggregate loan balance by loan purpose: investments and mortgage loans for other real estate, 2022 dollars"
+    },
+    "PLOAN6": {
+        "description": "Total value of aggregate loan balance by loan purpose: education and professional expenses, 2022 dollars"
+    },
+    "PLOAN7": {
+        "description": "Total value of aggregate loan balance by loan purpose: other unclassifiable loans, 2022 dollars"
+    },
+    "PLOAN8": {
+        "description": "Total value of aggregate loan balance by loan purpose: not used in public data, 2022 dollars"
+    },
+    "PREPAID": {
+        "description": "Amount in prepaid card accounts, 2022 dollars"
+    },
+    "PURCH1": {
+        "description": "First lien on primary residence used for purchase of primary residence"
+    },
+    "PURCH2": {
+        "description": "Junior lien on primary residence used for purchase of primary residence"
+    },
+    "RACE": {
+        "description": "Race/ethnicity of respondent"
+    },
+    "RACECL": {
+        "description": "Class of race of respondent"
+    },
+    "RACECL4": {
+        "description": "Alternate class of race of respondent"
+    },
+    "RACECL5": {
+        "description": "Alternate class of race of respondent"
+    },
+    "REFIN_EVER": {
+        "description": "Refinanced first lien mortgage on primary residence"
+    },
+    "RENT": {
+        "description": "Monthly rent, 2022 dollars"
+    },
+    "RESDBT": {
+        "description": "Total value of debt for other residential property held by households, 2022 dollars"
+    },
+    "RETEQ": {
+        "description": "Total value of equity in quasi-liquid retirement assets, 2022 dollars"
+    },
+    "RETQLIQ": {
+        "description": "Total value of quasi-liquid held by household, 2022 dollars"
+    },
+    "REVPAY": {
+        "description": "total monthly revolving debt payments, 2022 dollars"
+    },
+    "SAVBND": {
+        "description": "Total value of savings bonds held by household, 2022 dollars"
+    },
+    "SAVED": {
+        "description": "Indicator of whether the household saved over the past 12 months"
+    },
+    "SAVING": {
+        "description": "Total value of savings accounts held by household, 2022 dollars"
+    },
+    "SAVRES1": {
+        "description": "Reason for saving: can't save"
+    },
+    "SAVRES2": {
+        "description": "Reason for saving: education"
+    },
+    "SAVRES3": {
+        "description": "Reason for saving: family"
+    },
+    "SAVRES4": {
+        "description": "Reason for saving: home"
+    },
+    "SAVRES5": {
+        "description": "Reason for saving: purchases"
+    },
+    "SAVRES6": {
+        "description": "Reason for saving: retirement"
+    },
+    "SAVRES7": {
+        "description": "Reason for saving: liquidity/the future"
+    },
+    "SAVRES8": {
+        "description": "Reason for saving: investment"
+    },
+    "SAVRES9": {
+        "description": "Reason for saving: no particular reason"
+    },
+    "SPENDLESS": {
+        "description": "R would spend less if assets depreciated in value"
+    },
+    "SPENDMOR": {
+        "description": "R would spend more if assets appreciated in value"
+    },
+    "SSRETINC": {
+        "description": "Social security and pension income, 2022 dollars"
+    },
+    "STMUTF": {
+        "description": "amount in stock mutual funds, 2022 dollars"
+    },
+    "STOCKS": {
+        "description": "Total value of directly held stocks held by household, 2022 dollars"
+    },
+    "SVCCHG": {
+        "description": "Why no checking account: service changes are too high"
+    },
+    "TFBMUTF": {
+        "description": "amount in tax-free bond mutual funds, 2022 dollars"
+    },
+    "THRIFT": {
+        "description": "Total value of account-type pension plans from R and spouse's current job, 2022 dollars"
+    },
+    "TPAY": {
+        "description": "Total value of monthly debt payments, 2022 dollars"
+    },
+    "TRANSFOTHINC": {
+        "description": "Unemployment, alimony/child support, TANF/food stamps/SSI, and other income, 2022 dollars"
+    },
+    "TRUSTS": {
+        "description": "Amount R would receive if they cashed in trusts, 2022 dollars"
+    },
+    "TURNDOWN": {
+        "description": "Household has been turned down for credit in the past 5 years"
+    },
+    "TURNFEAR": {
+        "description": "Household has been turned down for credit or feared being denied credit in the past 5 years"
+    },
+    "VEH_INST": {
+        "description": "Total value of vehicle loans held by household, 2022 dollars"
+    },
+    "VEHIC": {
+        "description": "Total value of all vehicles held by household, 2022 dollars"
+    },
+    "VLEASE": {
+        "description": "Total value of leased vehicles held by household, 2022 dollars"
+    },
+    "WAGEINC": {
+        "description": "Wage and salary income, 2022 dollars"
+    },
+    "WGT": {
+        "description": "Sample weight"
+    },
+    "WHYNOCKG": {
+        "description": "Reason household does not have a checking account"
+    },
+    "WILSH": {
+        "description": "Wilshire index of stock prices"
+    },
+    "WSAVED": {
+        "description": "spent more/same/less than income in past year"
+    },
+    "X1": {
+        "description": "Case ID with implicate number"
+    },
+    "XX1": {
+        "description": "Case ID"
+    },
+    "Y1": {
+        "description": "Case ID with implicate number"
+    },
+    "YEAR": {
+        "description": "Survey Year"
+    },
+    "YESFINRISK": {
+        "description": "Respondent willing to take financial risk"
+    },
+    "YY1": {
+        "description": "Case ID"
+    }
+}
