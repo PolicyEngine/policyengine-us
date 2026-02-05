@@ -1,0 +1,143 @@
+- name: Heat pump type test (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_dac_category: NDAC
+    ny_clean_heat_home_category: SINGLE
+    ny_clean_heat_heat_pump_category: C2A
+    ny_clean_heat_project_cost: 1_000_000_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 2_500
+
+
+- name: Home test (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_dac_category: NDAC
+    ny_clean_heat_home_category: APARTMENT
+    ny_clean_heat_heat_pump_category: C2B
+    ny_clean_heat_project_cost: 1_000_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 1_000
+
+- name: DAC test (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_dac_category: DAC
+    ny_clean_heat_home_category: APARTMENT
+    ny_clean_heat_heat_pump_category: C2B
+    ny_clean_heat_project_cost: 1_000_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 2_000
+
+- name: Heat pump test (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: GSHP
+    ny_clean_heat_dac_category: NDAC
+    ny_clean_heat_project_cost: 1_000_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 25_000
+
+- name: Cap test (non-DAC) (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_dac_category: NDAC
+    ny_clean_heat_home_category: SINGLE
+    ny_clean_heat_heat_pump_category: C2E
+    ny_clean_heat_project_cost: 1_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 500
+
+- name: Cap test (DAC) (Residential)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: RESIDENTIAL
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_dac_category: DAC
+    ny_clean_heat_home_category: APARTMENT
+    ny_clean_heat_heat_pump_category: C2B
+    ny_clean_heat_project_cost: 1_000
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 700
+
+
+# Test for Multifamily
+- name: MMBtu test (Multifamily)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: MULTIFAMILY
+    ny_clean_heat_source_category: GSHP
+    ny_clean_heat_building_category: NEW
+    ny_clean_heat_heat_pump_category: C4A1
+    ny_clean_heat_project_cost: 10_000_000
+    ny_clean_heat_mmbtu: 100
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 12_500
+
+- name: Cap amount test - project cost (Multifamily)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: MULTIFAMILY
+    ny_clean_heat_source_category: GSHP
+    ny_clean_heat_building_category: NEW
+    ny_clean_heat_heat_pump_category: C4A1
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_mmbtu: 100
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 5_000
+
+- name: Another MMBtu test (Multifamily)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: MULTIFAMILY
+    ny_clean_heat_source_category: GSHP
+    ny_clean_heat_building_category: EXISTING
+    ny_clean_heat_heat_pump_category: C4A1
+    ny_clean_heat_project_cost: 10_000_000
+    ny_clean_heat_mmbtu: 100
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 20_000
+
+- name: dwelling unit test (Multifamily)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: MULTIFAMILY
+    ny_clean_heat_source_category: ASHP
+    ny_clean_heat_building_category: EXISTING
+    ny_clean_heat_heat_pump_category: C6A
+    ny_clean_heat_project_cost: 10_000_000_000
+    ny_clean_heat_dwelling_units: 3
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 3_000
+
+- name: cap amount test - dwelling unit (Multifamily)
+  period: 2024
+  input:
+    ny_clean_heat_family_type_category: MULTIFAMILY
+    ny_clean_heat_source_category: GSHP
+    ny_clean_heat_building_category: EXISTING
+    ny_clean_heat_heat_pump_category: C2C
+    ny_clean_heat_project_cost: 10_000_000_000
+    ny_clean_heat_dwelling_units: 300    
+    state_code: NY
+  output:
+    ny_clean_heat_incentive: 500_000

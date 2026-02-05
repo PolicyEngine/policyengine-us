@@ -1,0 +1,15 @@
+description: New York State caps the amount of the rebate of the Clean Heat program for residential building owners, at this rate of the project cost.
+metadata:
+  unit: /1
+  breakdown:
+    - ny_clean_heat_dac_category
+  period: year
+  label: New York State Clean Heat program residential cap rate
+  reference:
+      - title: New York State Clean Heat Con Edison Heat Pump Program Manual
+        href: https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12
+
+NDAC:
+  2024-03-01: 0.5
+DAC:
+  2024-03-01: 0.7

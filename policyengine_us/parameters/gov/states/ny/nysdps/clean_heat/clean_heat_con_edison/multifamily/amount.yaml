@@ -1,0 +1,60 @@
+description: New York State provides the following Clean Heat rebate amount for multifamily building residents, based on the source, building and heat pump category. 
+metadata:
+    unit: currency-USD
+    breakdown:
+        - ny_clean_heat_source_category
+        - ny_clean_heat_building_category
+        - ny_clean_heat_heat_pump_category
+    period: year
+    label: New York State Clean Heat multifamily building resident rebate amount 
+    reference:
+        - title: New York State Clean Heat Con Edison Heat Pump Program Manual
+          href: https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=13
+
+GSHP:
+    NEW:
+        C2C:
+            2024-03-01: 0
+        C4:
+            2024-03-01: 125
+        C4A1:
+            2024-03-01: 125
+        C4A2: 
+            2024-03-01: 150
+        C6: 
+            2024-03-01: 125
+        C6A: 
+            2024-03-01: 0
+        C10: 
+            2024-03-01: 0
+    EXISTING:
+        C2C: 
+            2024-03-01: 5_000
+        C4:
+            2024-03-01: 200
+        C4A1: 
+            2024-03-01: 200
+        C4A2: 
+            2024-03-01: 225
+        C6: 
+            2024-03-01: 200
+        C6A: 
+            2024-03-01: 0
+        C10: 
+            2024-03-01: 100
+ASHP:
+    EXISTING:
+        C2C: 
+            2024-03-01: 5_000
+        C4:
+            2024-03-01: 200
+        C4A1: 
+            2024-03-01: 200
+        C4A2: 
+            2024-03-01: 225
+        C6: 
+            2024-03-01: 200
+        C6A: 
+            2024-03-01: 1_000
+        C10: 
+            2024-03-01: 70
