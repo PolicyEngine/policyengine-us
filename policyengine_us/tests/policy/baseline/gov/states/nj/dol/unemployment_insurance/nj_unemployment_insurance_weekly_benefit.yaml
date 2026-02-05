@@ -1,0 +1,237 @@
+# Tests for NJ Unemployment Insurance Weekly Benefit Rate (WBR) calculation
+# Formula: WBR = 60% of average weekly wage, capped at maximum weekly benefit
+# Weekly benefit = WBR * (1 + dependency_allowance_rate), capped at max weekly benefit
+# Maximum weekly benefits: 2024=$854, 2025=$875, 2026=$905
+#
+# These tests verify the weekly_benefit_rate variable (without dependency allowance)
+
+- name: NJ UI WBR basic calculation - 60% of average wage (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_average_weekly_wage: 1000
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $1,000 * 60% = $600
+        nj_unemployment_insurance_weekly_benefit_rate: 600
+
+- name: NJ UI WBR capped at maximum (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        nj_unemployment_insurance_average_weekly_wage: 2000
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $2,000 * 60% = $1,200 but capped at $854 (2024 max)
+        nj_unemployment_insurance_weekly_benefit_rate: 854
+
+- name: NJ UI WBR low earnings (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 25
+        nj_unemployment_insurance_average_weekly_wage: 500
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $500 * 60% = $300
+        nj_unemployment_insurance_weekly_benefit_rate: 300
+
+- name: NJ UI WBR at threshold - exactly at max (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        nj_unemployment_insurance_average_weekly_wage: 1423.33
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $1,423.33 * 60% = $854 (exactly at max)
+        nj_unemployment_insurance_weekly_benefit_rate: 854
+
+- name: NJ UI WBR just below cap threshold (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 38
+        nj_unemployment_insurance_average_weekly_wage: 1400
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $1,400 * 60% = $840 (below $854 cap)
+        nj_unemployment_insurance_weekly_benefit_rate: 840
+
+- name: NJ UI WBR with 2025 maximum
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_average_weekly_wage: 2000
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $2,000 * 60% = $1,200 but capped at $875 (2025 max)
+        nj_unemployment_insurance_weekly_benefit_rate: 875
+
+- name: NJ UI WBR moderate earnings 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 32
+        nj_unemployment_insurance_average_weekly_wage: 1200
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $1,200 * 60% = $720 (below $875 cap)
+        nj_unemployment_insurance_weekly_benefit_rate: 720
+
+- name: NJ UI WBR with 2026 maximum
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 45
+        nj_unemployment_insurance_average_weekly_wage: 2000
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $2,000 * 60% = $1,200 but capped at $905 (2026 max)
+        nj_unemployment_insurance_weekly_benefit_rate: 905
+
+- name: NJ UI WBR just at 2026 cap threshold
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 42
+        nj_unemployment_insurance_average_weekly_wage: 1508.33
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $1,508.33 * 60% = $905 (exactly at max)
+        nj_unemployment_insurance_weekly_benefit_rate: 905
+
+- name: NJ UI WBR very low earnings
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 22
+        nj_unemployment_insurance_average_weekly_wage: 300
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $300 * 60% = $180
+        nj_unemployment_insurance_weekly_benefit_rate: 180
+
+- name: NJ UI WBR high earner well above cap
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 50
+        nj_unemployment_insurance_average_weekly_wage: 5000
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $5,000 * 60% = $3,000 but capped at $854 (2024 max)
+        nj_unemployment_insurance_weekly_benefit_rate: 854

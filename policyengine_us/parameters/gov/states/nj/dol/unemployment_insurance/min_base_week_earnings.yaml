@@ -1,0 +1,18 @@
+description: Minimum earnings per week required to count as a base week for New Jersey unemployment insurance eligibility. The base week amount equals 20 times the state minimum hourly wage as of October 1 of the previous calendar year.
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: NJ UI minimum base week earnings
+  reference:
+    - title: N.J.S.A. 43:21-4(e)(1) - Eligibility for benefits
+      href: https://law.justia.com/codes/new-jersey/title-43/section-43-21-4/
+    - title: NJ Division of Unemployment Insurance - Who is eligible for benefits?
+      href: https://www.nj.gov/labor/myunemployment/before/about/who/
+    - title: NJ Department of Labor - 2026 UI Benefit Rates
+      href: https://www.nj.gov/labor/lwdhome/press/2025/20251229_newbenefitrates2026.shtml
+
+values:
+  2024-01-01: 283
+  2025-01-01: 303
+  2026-01-01: 310

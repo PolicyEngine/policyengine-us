@@ -1,0 +1,162 @@
+# Tests for NJ Unemployment Insurance Dependency Allowance Rate
+# The dependency allowance variable returns a RATE (decimal), not a dollar amount
+# Dependency allowance rates:
+# - 1st dependent: 7% (0.07)
+# - 2nd dependent: 4% additional (total 11% = 0.11)
+# - 3rd dependent: 4% additional (total 15% = 0.15)
+# - Maximum total: 15% (0.15) - capped at max 3 dependents
+#
+# The actual implementation uses tax_unit_dependents from the tax unit
+
+- name: NJ UI dependency allowance rate - 1 dependent (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 35
+        is_tax_unit_dependent: false
+      dependent1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1]
+    households:
+      household:
+        members: [person, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 1 dependent = 7% rate
+        nj_unemployment_insurance_dependency_allowance: 0.07
+
+- name: NJ UI dependency allowance rate - 2 dependents (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 40
+        is_tax_unit_dependent: false
+      dependent1:
+        age: 10
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1, dependent2]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1, dependent2]
+    households:
+      household:
+        members: [person, dependent1, dependent2]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 2 dependents = 7% + 4% = 11% rate
+        nj_unemployment_insurance_dependency_allowance: 0.11
+
+- name: NJ UI dependency allowance rate - 3 dependents (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 42
+        is_tax_unit_dependent: false
+      dependent1:
+        age: 15
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 12
+        is_tax_unit_dependent: true
+      dependent3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1, dependent2, dependent3]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1, dependent2, dependent3]
+    households:
+      household:
+        members: [person, dependent1, dependent2, dependent3]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # 3 dependents = 7% + 4% + 4% = 15% rate (maximum)
+        nj_unemployment_insurance_dependency_allowance: 0.15
+
+- name: NJ UI dependency allowance rate - 5 dependents capped at 15% (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 45
+        is_tax_unit_dependent: false
+      dependent1:
+        age: 17
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 15
+        is_tax_unit_dependent: true
+      dependent3:
+        age: 12
+        is_tax_unit_dependent: true
+      dependent4:
+        age: 8
+        is_tax_unit_dependent: true
+      dependent5:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1, dependent2, dependent3, dependent4, dependent5]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1, dependent2, dependent3, dependent4, dependent5]
+    households:
+      household:
+        members: [person, dependent1, dependent2, dependent3, dependent4, dependent5]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Even with 5 dependents, max rate is 15%
+        nj_unemployment_insurance_dependency_allowance: 0.15
+
+- name: NJ UI dependency allowance rate - no dependents (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 28
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # No dependents = 0% rate
+        nj_unemployment_insurance_dependency_allowance: 0
