@@ -1,28 +1,28 @@
-# Nutritional risk is a health assessment per 42 U.S.C. § 1786(b)(8).
-# In individual simulation, draw defaults to 0, so all persons in a
-# WIC-eligible category are assessed at nutritional risk (0 < rate).
-# In microsimulation, risk is assigned probabilistically by category.
+# Nutritional risk is resolved in the data package for microsimulation.
+# In individual simulation, default_value = True so all persons are assumed
+# at nutritional risk. NONE-category adults still get True, but is_wic_eligible
+# gates on demographic eligibility (category != NONE), so it's benign.
 
-- name: Case 1, infant at nutritional risk (draw=0, INFANT rate=0.95).
+- name: Case 1, infant at nutritional risk (default True).
   period: 2024-01
   input:
     age: 0
   output:
     is_wic_at_nutritional_risk: true
 
-- name: Case 2, child at nutritional risk (draw=0, CHILD rate=0.752).
+- name: Case 2, child at nutritional risk (default True).
   period: 2024-01
   input:
     age: 3
   output:
     is_wic_at_nutritional_risk: true
 
-- name: Case 3, non-WIC adult not at nutritional risk (NONE rate=0).
+- name: Case 3, non-WIC adult (default True, benign — gated by is_wic_eligible).
   period: 2024-01
   input:
     age: 35
   output:
-    is_wic_at_nutritional_risk: false
+    is_wic_at_nutritional_risk: true
 
 - name: Case 4, person receiving WIC is at nutritional risk.
   period: 2024-01
