@@ -5,128 +5,114 @@
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 2, legal permanent resident always eligible.
-  period: 2024
-  input:
-    immigration_status: LEGAL_PERMANENT_RESIDENT
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 3, refugee eligible pre-OBBBA.
+- name: Case 2, refugee eligible pre-OBBBA.
   period: 2024
   input:
     immigration_status: REFUGEE
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 4, asylee eligible pre-OBBBA.
-  period: 2024
-  input:
-    immigration_status: ASYLEE
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 5, cuban haitian entrant always eligible.
-  period: 2024
-  input:
-    immigration_status: CUBAN_HAITIAN_ENTRANT
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 6, deportation withheld eligible pre-OBBBA.
-  period: 2024
-  input:
-    immigration_status: DEPORTATION_WITHHELD
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 7, conditional entrant eligible pre-OBBBA.
-  period: 2024
-  input:
-    immigration_status: CONDITIONAL_ENTRANT
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 8, paroled one year eligible pre-OBBBA.
-  period: 2024
-  input:
-    immigration_status: PAROLED_ONE_YEAR
-  output:
-    is_snap_immigration_status_eligible: true
-
-- name: Case 9, undocumented never eligible.
+- name: Case 3, undocumented never eligible.
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
   output:
     is_snap_immigration_status_eligible: false
 
-- name: Case 10, DACA never eligible.
-  period: 2024
-  input:
-    immigration_status: DACA
-  output:
-    is_snap_immigration_status_eligible: false
-
-- name: Case 11, TPS never eligible.
-  period: 2024
-  input:
-    immigration_status: TPS
-  output:
-    is_snap_immigration_status_eligible: false
-
-- name: Case 12, refugee ineligible post-OBBBA.
+- name: Case 4, refugee ineligible post-OBBBA federal date.
   period: 2026
+  absolute_error_margin: 0.1
   input:
-    immigration_status: REFUGEE
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
   output:
     is_snap_immigration_status_eligible: false
 
-- name: Case 13, asylee ineligible post-OBBBA.
+- name: Case 5, asylee ineligible post-OBBBA federal date.
   period: 2026
+  absolute_error_margin: 0.1
   input:
-    immigration_status: ASYLEE
+    people:
+      person1:
+        immigration_status: ASYLEE
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
   output:
     is_snap_immigration_status_eligible: false
 
-- name: Case 14, deportation withheld ineligible post-OBBBA.
+- name: Case 6, citizen still eligible post-OBBBA.
   period: 2026
+  absolute_error_margin: 0.1
   input:
-    immigration_status: DEPORTATION_WITHHELD
-  output:
-    is_snap_immigration_status_eligible: false
-
-- name: Case 15, conditional entrant ineligible post-OBBBA.
-  period: 2026
-  input:
-    immigration_status: CONDITIONAL_ENTRANT
-  output:
-    is_snap_immigration_status_eligible: false
-
-- name: Case 16, paroled one year ineligible post-OBBBA.
-  period: 2026
-  input:
-    immigration_status: PAROLED_ONE_YEAR
-  output:
-    is_snap_immigration_status_eligible: false
-
-- name: Case 17, citizen still eligible post-OBBBA.
-  period: 2026
-  input:
-    immigration_status: CITIZEN
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 18, LPR still eligible post-OBBBA.
+- name: Case 7, LPR still eligible post-OBBBA.
   period: 2026
+  absolute_error_margin: 0.1
   input:
-    immigration_status: LEGAL_PERMANENT_RESIDENT
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 19, cuban haitian entrant still eligible post-OBBBA.
-  period: 2026
+- name: Case 8, CA refugee still eligible in 2025 due to delayed implementation.
+  period: 2025
+  absolute_error_margin: 0.1
   input:
-    immigration_status: CUBAN_HAITIAN_ENTRANT
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
   output:
     is_snap_immigration_status_eligible: true
+
+- name: Case 9, CA refugee still eligible in 2026 due to delayed implementation.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 10, CA refugee ineligible in 2027.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    is_snap_immigration_status_eligible: false

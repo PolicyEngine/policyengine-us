@@ -1,0 +1,162 @@
+- name: Household with one ineligible student
+  period: 2022
+  input:
+    people: 
+      person1:
+        is_snap_ineligible_student: false
+      person2:
+        is_snap_ineligible_student: false
+      person3:
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 2
+
+- name: Everybody eligible
+  period: 2022
+  input:
+    people: 
+      person1:
+        is_snap_ineligible_student: false
+      person2:
+        is_snap_ineligible_student: false
+      person3:
+        is_snap_ineligible_student: false
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 3
+
+- name: No eligible people
+  period: 2022
+  input:
+    people:
+      person1:
+        is_snap_ineligible_student: true
+      person2:
+        is_snap_ineligible_student: true
+      person3:
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 0
+
+- name: Case 4, mixed-status household with one immigration-ineligible member.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: UNDOCUMENTED
+      person3:
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 2
+
+- name: Case 5, all members immigration-ineligible.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+      person2:
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_size: 2
+  output:
+    snap_unit_size: 0
+
+- name: Case 6, ineligible student and immigration-ineligible member.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: UNDOCUMENTED
+      person3:
+        immigration_status: CITIZEN
+        is_snap_ineligible_student: true
+      person4:
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        spm_unit_size: 4
+  output:
+    snap_unit_size: 2
+
+- name: Case 7, post-OBBBA refugee no longer eligible reduces unit size.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: REFUGEE
+      person3:
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: TX
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 2
+
+- name: Case 8, pre-OBBBA refugee is eligible, full unit size.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: REFUGEE
+      person3:
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+  output:
+    snap_unit_size: 3
+
+- name: Case 9, undocumented ineligible student not double-counted.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: UNDOCUMENTED
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        spm_unit_size: 2
+  output:
+    snap_unit_size: 1

@@ -10,11 +10,11 @@ values:
     - CONDITIONAL_ENTRANT
     - PAROLED_ONE_YEAR
 
-  2025-07-04:
+  2025-07-01: # Real effective date July 4th.
     - CITIZEN
     - LEGAL_PERMANENT_RESIDENT
     - CUBAN_HAITIAN_ENTRANT
-
+    # Compacts of Free Association (COFA) citizens
 metadata:
   label: SNAP eligible immigration statuses
   period: year
