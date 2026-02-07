@@ -2,3 +2,5 @@
   changes:
     added:
       - Add liquid asset input variables (bank_account_assets, stock_assets, bond_assets), ssi_countable_resources, and spm_unit_cash_assets aggregation
+    changed:
+      - SSI resource test now uses actual imputed assets instead of random pass rate
