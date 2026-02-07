@@ -5,8 +5,8 @@ class meets_ssi_resource_test(Variable):
     value_type = bool
     entity = Person
     label = "Meets SSI resource test"
-    unit = USD
     definition_period = YEAR
+    reference = "https://secure.ssa.gov/poms.nsf/lnx/0501110000"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ssa.ssi

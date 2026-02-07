@@ -1,0 +1,8 @@
+- bump: minor
+  changes:
+    added:
+      - Add liquid asset input variables (bank_account_assets, stock_assets, bond_assets), ssi_countable_resources, and spm_unit_cash_assets aggregation
+      - Add takes_up_ssi_if_eligible variable for SSI takeup modeling
+    changed:
+      - SSI resource test now uses actual imputed assets instead of random pass rate
+      - SSI benefit now applies takeup in microsimulation
