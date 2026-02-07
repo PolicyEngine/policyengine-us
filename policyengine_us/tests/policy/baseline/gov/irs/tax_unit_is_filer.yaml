@@ -1,0 +1,61 @@
+- name: High income - required to file
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 100000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    tax_unit_is_required_to_file: true
+    tax_unit_is_filer: true
+
+- name: Low income with child - not required but files for credits
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income: 5000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+  output:
+    tax_unit_is_required_to_file: false
+    eligible_for_refundable_credits: true
+    tax_unit_is_filer: true
+
+- name: No income - not required and no credits
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    tax_unit_is_required_to_file: false
+    eligible_for_refundable_credits: false
+    tax_unit_is_filer: false
+
+- name: Voluntary filer - not required but chooses to file
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+        would_file_taxes_voluntarily: true
+  output:
+    tax_unit_is_required_to_file: false
+    eligible_for_refundable_credits: false
+    tax_unit_is_filer: true
