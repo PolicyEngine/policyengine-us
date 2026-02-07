@@ -1,6 +1,9 @@
 - bump: minor
   changes:
     added:
-      - Add would_file_taxes_voluntarily input variable for voluntary tax filers.
+      - Add tax_unit_is_required_to_file variable for rules-based filing requirement.
+      - Add eligible_for_refundable_credits variable for EITC/CTC eligibility check.
+      - Add would_file_if_eligible_for_refundable_credit propensity variable.
+      - Add would_file_taxes_voluntarily propensity variable for voluntary filers.
     changed:
-      - Update tax_unit_is_filer to use takes_up_eitc and would_file_taxes_voluntarily propensity variables from microdata.
+      - Refactor tax_unit_is_filer to use three-part filing logic with propensity variables.
