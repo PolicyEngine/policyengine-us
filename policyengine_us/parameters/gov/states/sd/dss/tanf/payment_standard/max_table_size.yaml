@@ -1,12 +1,14 @@
 description: South Dakota uses this amount as the maximum family size in the payment standard table under the Temporary Assistance for Needy Families program.
 
 values:
-  2023-07-01: 12
+  2016-09-01: 12
 
 metadata:
   unit: person
   period: month
   label: South Dakota TANF maximum table family size
   reference:
+    - title: ARSD 67:10:05:03 - Payment Standards (2016)
+      href: https://sdlegislature.gov/api/Rules/Archived/10994.pdf#page=1
     - title: ARSD 67:10:05:03 - Payment Standards
       href: https://sdlegislature.gov/Rules/Administrative/67:10:05:03
