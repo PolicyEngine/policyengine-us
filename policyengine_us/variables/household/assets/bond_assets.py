@@ -12,3 +12,7 @@ class bond_assets(Variable):
     unit = USD
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
+    reference = (
+        "https://secure.ssa.gov/poms.nsf/lnx/0501140240",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501140250",
+    )
