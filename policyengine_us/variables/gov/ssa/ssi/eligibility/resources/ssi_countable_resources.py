@@ -13,8 +13,7 @@ class ssi_countable_resources(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ssa.gov/ssi/spotlights/spot-resources.htm",
-        "https://www.law.cornell.edu/uscode/text/42/1382b",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501140000",  # POMS SI 01140.000 - Types of Countable Resources
     )
 
     adds = "gov.ssa.ssi.eligibility.resources.countable"
