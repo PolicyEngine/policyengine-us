@@ -1,0 +1,208 @@
+# Integration tests for New Jersey ANCHOR Program
+# Tests the full calculation pipeline from income to eligibility to benefit
+# ANCHOR: Affordable New Jersey Communities for Homeowners and Renters
+
+- name: Case 1, senior homeowner couple with moderate income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 60_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34  # New Jersey
+  output:
+    # Combined income: $60,000 + $40,000 = $100,000
+    # Income $100K <= $150K lower threshold
+    # Homeowner + Senior (age 68 >= 65 or age 65 >= 65)
+    # Benefit: $1,750 (senior homeowner lower income)
+    nj_anchor_eligible: true
+    nj_anchor: 1_750
+
+- name: Case 2, non-senior homeowner with higher income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 180_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $180K > $150K but <= $250K upper threshold
+    # Non-senior homeowner (age 50 < 65)
+    # Benefit: $1,000 (non-senior homeowner upper income)
+    nj_anchor_eligible: true
+    nj_anchor: 1_000
+
+- name: Case 3, senior renter with low income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 24_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income: $24,000 (Social Security)
+    # Income $24K <= $150K renter threshold
+    # Senior renter (age 72 >= 65)
+    # Benefit: $700 (senior renter)
+    nj_anchor_eligible: true
+    nj_anchor: 700
+
+- name: Case 4, non-senior renter at income threshold.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 150_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $150K at renter threshold (at threshold = eligible)
+    # Non-senior renter (age 35 < 65)
+    # Benefit: $450 (non-senior renter)
+    nj_anchor_eligible: true
+    nj_anchor: 450
+
+- name: Case 5, renter with income above threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 160_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $160K > $150K renter limit
+    # Ineligible - exceeds renter income limit
+    # Benefit: $0
+    nj_anchor_eligible: false
+    nj_anchor: 0
+
+- name: Case 6, homeowner with income above limit is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 300_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $300K > $250K homeowner limit
+    # Ineligible - exceeds homeowner income limit
+    # Benefit: $0
+    nj_anchor_eligible: false
+    nj_anchor: 0
+
+- name: Case 7, family with children homeowner lower income tier.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 80_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 34
+  output:
+    # Combined income: $80K + $50K = $130K
+    # Income $130K <= $150K lower threshold
+    # Non-senior homeowner (ages 42, 40 < 65)
+    # Benefit: $1,500 (non-senior homeowner lower income)
+    nj_anchor_eligible: true
+    nj_anchor: 1_500
