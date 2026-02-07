@@ -2,13 +2,20 @@ from policyengine_us.model_api import *
 
 
 class tax_unit_is_filer(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "files taxes"
-    unit = USD
-    documentation = (
-        "Whether this tax unit has a non-zero income tax liability."
-    )
+    documentation = """
+    Whether this tax unit files a federal income tax return.
+
+    A tax unit files if any of the following apply:
+    1. They are legally required to file (IRC § 6012)
+    2. They take up EITC (implying they file to claim refundable credits)
+    3. They would file voluntarily (state requirements, documentation, habit)
+
+    The propensity variables (takes_up_eitc and would_file_taxes_voluntarily)
+    are assigned during microdata construction.
+    """
     definition_period = YEAR
 
     """
@@ -65,9 +72,14 @@ class tax_unit_is_filer(Variable):
             income_over_exemption_amount | unearned_income_over_threshold
         )
 
-        tax_refund = tax_unit("income_tax", period) < 0
-        not_required_but_likely_filer = ~required_to_file & tax_refund
+        # Tax units may file even when not required if:
+        # 1. They take up EITC (implying they file to claim refundable credits)
+        # 2. They would file voluntarily (state requirements, documentation, habit)
+        takes_up_eitc = tax_unit("takes_up_eitc", period)
+        would_file_voluntarily = tax_unit(
+            "would_file_taxes_voluntarily", period
+        )
 
         # (a)(1)(D) is just definitions
 
-        return required_to_file | not_required_but_likely_filer
+        return required_to_file | takes_up_eitc | would_file_voluntarily
