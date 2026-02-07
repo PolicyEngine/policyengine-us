@@ -1,0 +1,99 @@
+- name: Case 1, applicant with resources below limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Applicant limit is $2,000
+    ia_fip_resources_eligible: true
+
+- name: Case 2, applicant with resources above limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Applicant limit is $2,000
+    ia_fip_resources_eligible: false
+
+- name: Case 3, recipient with resources below higher limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Recipient limit is $5,000
+    ia_fip_resources_eligible: true
+
+- name: Case 4, recipient with resources above higher limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 6_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Recipient limit is $5,000
+    ia_fip_resources_eligible: false
+
+- name: Case 5, applicant at exact limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # At limit should be eligible (<=)
+    ia_fip_resources_eligible: true

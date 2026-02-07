@@ -1,0 +1,112 @@
+# Test 1: Gross income <= 185% of standard of need
+# Family of 2: Standard of need = $719/month, 185% = $1,330.15/month
+
+- name: Case 1, no income single parent with child.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_fip_gross_income_eligible: true
+
+- name: Case 2, earned income below 185% limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month < $1,330.15
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family of 2: 185% of $719 = $1,330.15/month
+    # Gross income: $1,000/month < $1,330.15
+    ia_fip_gross_income_eligible: true
+
+- name: Case 3, earned income above 185% limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month > $1,330.15
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross income: $2,000/month > $1,330.15
+    ia_fip_gross_income_eligible: false
+
+- name: Case 4, mixed earned and unearned income at threshold.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        social_security: 9_600  # $800/month unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross income: $500 + $800 = $1,300/month < $1,330.15
+    ia_fip_gross_income_eligible: true
+
+- name: Case 5, two-parent family with two children.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family of 4: 185% of $986 = $1,824.10/month
+    # Gross income: $1,500/month < $1,824.10
+    ia_fip_gross_income_eligible: true
