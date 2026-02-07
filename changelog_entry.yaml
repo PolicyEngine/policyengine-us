@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    added:
+      - Add would_file_taxes_voluntarily input variable for voluntary tax filers.
+    changed:
+      - Update tax_unit_is_filer to use takes_up_eitc and would_file_taxes_voluntarily propensity variables from microdata.
