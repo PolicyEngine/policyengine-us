@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.552.0] - 2026-02-07 00:40:26
+
+### Added
+
+- Section 1931 deprivation requirement parameter for non-expansion states
+- is_single_parent_household variable for Medicaid deprivation rules
+- Head Start and Early Head Start takeup variables
+- SSI resource test now uses actual policy logic in individual sim
+
+### Changed
+
+- Moved all stochastic randomness to data package for deterministic country package
+- is_parent_for_medicaid_nfc now checks Section 1931 deprivation requirements
+- Head Start and Early Head Start benefits now multiply by takeup
+- WIC would_claim_wic and is_wic_at_nutritional_risk default to True (resolved in data package)
+
 ## [1.551.1] - 2026-02-07 00:23:46
 
 ### Changed
@@ -14921,6 +14937,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.1...1.552.0
 [1.551.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.0...1.551.1
 [1.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.2...1.551.0
 [1.550.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.1...1.550.2
