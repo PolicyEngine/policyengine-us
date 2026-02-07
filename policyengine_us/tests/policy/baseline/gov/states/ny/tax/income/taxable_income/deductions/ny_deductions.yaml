@@ -3,6 +3,10 @@
   absolute_error_margin: 0
   input:
     state_code: NY
+    # Explicitly set sales taxes to 0 to test default behavior
+    # without IRS sales tax table lookup values
+    state_sales_tax: 0
+    local_sales_tax: 0
   output:
     ny_standard_deduction: 8_000
     ny_itemized_deductions: 0

@@ -1,6 +1,19 @@
 from policyengine_us.model_api import *
 
 
+def smi(unit_size, state, period, parameters):
+    p = parameters(period).gov.hhs.smi
+    size_threshold = p.additional_person_threshold
+    capped_size = clip(unit_size - 1, 0, size_threshold - 1)
+    extra_persons = max_(unit_size - size_threshold, 0)
+    size_adjustment = (
+        p.household_size_adjustment.first_person
+        + p.household_size_adjustment.second_to_sixth_person * capped_size
+        + p.household_size_adjustment.additional_person * extra_persons
+    )
+    return p.amount[state] * size_adjustment
+
+
 class hhs_smi(Variable):
     value_type = float
     entity = SPMUnit
@@ -12,18 +25,4 @@ class hhs_smi(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
-        four_person_smi = parameters(period).gov.hhs.smi.amount[state]
-        adjustment_mapping = parameters(
-            period
-        ).gov.hhs.smi.household_size_adjustment
-        first_person_rate = adjustment_mapping.first_person
-        second_to_sixth_additional_rate = (
-            adjustment_mapping.second_to_sixth_person
-        )
-        seven_or_more_additional_rate = adjustment_mapping.additional_person
-        size_adjustment = (
-            first_person_rate
-            + second_to_sixth_additional_rate * (min_(size, 6) - 1)
-            + seven_or_more_additional_rate * max_(size - 6, 0)
-        )
-        return four_person_smi * size_adjustment
+        return smi(size, state, period, parameters)

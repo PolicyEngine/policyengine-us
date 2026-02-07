@@ -10,9 +10,6 @@ class ImmigrationStatus(Enum):
     CUBAN_HAITIAN_ENTRANT = "Cuban/Haitian Entrant"
     CONDITIONAL_ENTRANT = "Conditional Entrant"
     PAROLED_ONE_YEAR = "Paroled for at Least One Year"
-    DACA_TPS = (
-        "Deferred Action for Childhood Arrivals or Temporary Protected Status"
-    )
     UNDOCUMENTED = "Undocumented"
     DACA = "Deferred Action for Childhood Arrivals"
     TPS = "Temporary Protected Status"

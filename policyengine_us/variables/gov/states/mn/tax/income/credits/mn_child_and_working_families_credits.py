@@ -33,7 +33,7 @@ class mn_child_and_working_families_credits(Variable):
         earnings = tax_unit("filer_adjusted_earnings", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
-        qualifying_child = person("is_child_dependent", period)
+        qualifying_child = person("is_qualifying_child_dependent", period)
         age = person("age", period)
         full_time_student = person("is_full_time_student", period)
         qualifying_older_child = (

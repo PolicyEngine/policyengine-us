@@ -1,0 +1,34 @@
+description: Tennessee provides up to this Differential Grant Payment Amount (DGPA) under the Families First program, based on family size.
+
+1:
+  2008-11-01: 140
+2:
+  2008-11-01: 192
+3:
+  2008-11-01: 232
+4:
+  2008-11-01: 242
+5:
+  2008-11-01: 291
+6:
+  2008-11-01: 305
+7:
+  2008-11-01: 345
+8:
+  2008-11-01: 386
+9:
+  2008-11-01: 425
+10:
+  2008-11-01: 467
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Family size
+  label: Tennessee Families First Differential Grant Payment Amount
+  reference:
+    - title: Tennessee Administrative Code § 1240-01-50-.20
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=27

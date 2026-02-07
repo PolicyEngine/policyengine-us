@@ -1,0 +1,95 @@
+name: Weekly uv.lock Update
+
+on:
+  schedule:
+    # Every Wednesday at 5 PM EST (10 PM UTC)
+    - cron: "0 22 * * 3"
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  update-lock:
+    name: Update uv.lock
+    runs-on: ubuntu-latest
+    if: github.repository == 'PolicyEngine/policyengine-us'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.POLICYENGINE_GITHUB }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Update lock file
+        run: uv lock --upgrade
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet uv.lock; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create changelog entry
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          printf '%s\n' \
+            '- bump: patch' \
+            '  changes:' \
+            '    changed:' \
+            '    - Updated uv.lock dependencies.' \
+            '' > changelog_entry.yaml
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b bot/weekly-uv-lock-update
+          git add uv.lock changelog_entry.yaml
+          git commit -m "Update uv.lock dependencies"
+          git push -f origin bot/weekly-uv-lock-update
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
+        run: |
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head bot/weekly-uv-lock-update --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists, skipping creation"
+            exit 0
+          fi
+
+          gh pr create \
+            --title "Weekly uv.lock update" \
+            --body "$(cat <<'EOF'
+          ## Summary
+
+          Automated weekly update of `uv.lock` dependencies.
+
+          Related to #7000
+
+          ## Changes
+
+          This PR updates the `uv.lock` file with the latest compatible dependency versions.
+
+          ## Review
+
+          - Review the lock file changes to ensure no unexpected dependency updates
+          - If unwanted, simply close this PR - main remains unchanged
+
+          ---
+          Generated automatically by GitHub Actions
+          EOF
+          )"

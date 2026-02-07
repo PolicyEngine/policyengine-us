@@ -1,0 +1,544 @@
+# Integration tests for Rhode Island Works (RIW) - Rhode Island TANF
+# Full pipeline testing with realistic family scenarios
+# 218-RICR-20-00-2: Rhode Island Works Program Rules and Regulations
+# https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+#
+# Key rules:
+# - Earned income disregard: $525 flat + 50% of remainder PER EARNER
+# - Child support: First $50/month excluded
+# - Subsidized housing: $65 reduction to payment standard
+# - Resource limit: $5,000
+
+- name: Scenario 1, single parent with 2 children, no income, full benefit.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 8
+        is_in_k12_school: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Family size: 3, Payment standard: $865
+    # No income = full benefit
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 0
+    ri_works_payment_standard: 865
+    ri_works: 865
+
+- name: Scenario 2, single parent with 1 child, part-time work.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 6
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Earned: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Benefit: $701 - $237.50 = $463.50
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 237.5
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 237.5
+    ri_works_payment_standard: 701
+    ri_works: 463.5
+
+- name: Scenario 3, family of 4 with earned and unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        child_support_received: 1_800  # $150/month
+      person2:
+        age: 32
+      person3:
+        age: 10
+        is_in_k12_school: true
+      person4:
+        age: 7
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Earned: max($800 - $525, 0) * 0.5 = $137.50
+    # Unearned: $150 - $50 = $100
+    # Benefit: $990 - $237.50 = $752.50
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 137.5
+    ri_works_countable_unearned_income: 100
+    ri_works_countable_income: 237.5
+    ri_works_payment_standard: 990
+    ri_works: 752.5
+
+- name: Scenario 4, large family of 6 with subsidized housing.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 38
+      person3:
+        age: 16
+        is_in_k12_school: true
+      person4:
+        age: 13
+        is_in_k12_school: true
+      person5:
+        age: 9
+        is_in_k12_school: true
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        receives_housing_assistance: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    # Earned: max($1,200 - $525, 0) * 0.5 = $337.50
+    # Payment standard: $1,240 - $65 = $1,175
+    # Benefit: $1,175 - $337.50 = $837.50
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 337.5
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 337.5
+    ri_works_payment_standard: 1_175
+    ri_works: 837.5
+
+- name: Scenario 5, family with income at disregard threshold.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 6_300  # $525/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Earned at $525: max($525 - $525, 0) * 0.5 = $0
+    # Full benefit: $701
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 0
+    ri_works_payment_standard: 701
+    ri_works: 701
+
+- name: Scenario 6, high income results in zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Earned: max($3,000 - $525, 0) * 0.5 = $1,237.50
+    # $1,237.50 >= $701 = income ineligible
+    ri_works_income_eligible: false
+    ri_works_resource_eligible: true
+    ri_works_eligible: false
+    ri_works_countable_earned_income: 1_237.5
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 1_237.5
+    ri_works_payment_standard: 701
+    ri_works: 0
+
+- name: Scenario 7, earned income one dollar above $525 threshold.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_312  # $526/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Earned: max($526 - $525, 0) * 0.5 = $0.50
+    # Benefit: $701 - $0.50 = $700.50
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 0.5
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 0.5
+    ri_works_payment_standard: 701
+    ri_works: 700.5
+
+- name: Scenario 8, child support one dollar above $50 exclusion.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 28
+        child_support_received: 612  # $51/month
+      person2:
+        age: 6
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Unearned: $51 - $50 = $1
+    # Benefit: $701 - $1 = $700
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 1
+    ri_works_countable_income: 1
+    ri_works_payment_standard: 701
+    ri_works: 700
+
+- name: Scenario 9, large family of 10 beyond payment table.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 43
+      person3:
+        age: 17
+        is_in_k12_school: true
+      person4:
+        age: 15
+        is_in_k12_school: true
+      person5:
+        age: 13
+        is_in_k12_school: true
+      person6:
+        age: 11
+        is_in_k12_school: true
+      person7:
+        age: 9
+        is_in_k12_school: true
+      person8:
+        age: 7
+        is_in_k12_school: true
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: RI
+  output:
+    # Earned: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Payment standard: $1,489 + 2 * $125 = $1,739
+    # Benefit: $1,739 - $237.50 = $1,501.50
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 237.5
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 237.5
+    ri_works_payment_standard: 1_739
+    ri_works: 1_501.5
+
+- name: Scenario 10, only unearned income, no earned.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_400  # $200/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Unearned: $200 (no exclusion for SS)
+    # Benefit: $701 - $200 = $501
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: true
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 200
+    ri_works_countable_income: 200
+    ri_works_payment_standard: 701
+    ri_works: 501
+
+- name: Scenario 11, single person household, no children.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Single adult - demographic ineligible (requires child)
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: true
+    ri_works_eligible: false
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 0
+    ri_works_payment_standard: 510
+    ri_works: 0
+
+- name: Scenario 12, family with resources above limit.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Resources: $7,000 > $5,000 = resource ineligible
+    ri_works_income_eligible: true
+    ri_works_resource_eligible: false
+    ri_works_eligible: false
+    ri_works_countable_earned_income: 0
+    ri_works_countable_unearned_income: 0
+    ri_works_countable_income: 0
+    ri_works_payment_standard: 701
+    ri_works: 0
+
+- name: Scenario 13, two earners with per-earner disregard.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 32
+        employment_income_before_lsr: 6_000  # $500/month (below $525)
+      person3:
+        age: 8
+        is_in_k12_school: true
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Person 1: max($1,000 - $525, 0) * 0.5 = $237.50
+    # Person 2: max($500 - $525, 0) * 0.5 = $0 (fully disregarded)
+    # Benefit: $990 - $237.50 = $752.50
+    ri_works_earned_income_after_disregard_person: [237.5, 0, 0, 0]
+    ri_works_countable_earned_income: 237.5
+    ri_works_countable_income: 237.5
+    ri_works_payment_standard: 990
+    ri_works: 752.5
+
+- name: Scenario 14, resources at limit with high income.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000  # Exactly at resource limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Resources: $5,000 <= $5,000 = resource eligible
+    # Earned: max($3,000 - $525, 0) * 0.5 = $1,237.50
+    # $1,237.50 >= $701 = income ineligible
+    ri_works_income_eligible: false
+    ri_works_resource_eligible: true
+    ri_works_eligible: false
+    ri_works_countable_earned_income: 1_237.5
+    ri_works_countable_income: 1_237.5
+    ri_works_payment_standard: 701
+    ri_works: 0
+
+- name: Scenario 15, dependent care with earned income full pipeline.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 4_800  # $400/month * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Earned after disregard: max($1,500 - $525, 0) * 0.5 = $487.50
+    # Dependent care: $200 (age 1) + $175 (age 4) = $375
+    # Countable earned: max($487.50 - $375, 0) = $112.50
+    # Benefit: $865 - $112.50 = $752.50
+    ri_works_dependent_care_deduction: 375
+    ri_works_countable_earned_income: 112.5
+    ri_works_countable_income: 112.5
+    ri_works_payment_standard: 865
+    ri_works: 752.5

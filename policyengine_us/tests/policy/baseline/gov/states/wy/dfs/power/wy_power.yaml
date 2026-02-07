@@ -1,0 +1,58 @@
+# Wyoming POWER Benefit Amount Tests
+# Formula: max(payment_standard - countable_income, 0) if eligible else 0
+# Source: Wyoming DFS Policy Manual Section 1101
+
+- name: Case 1, eligible with income below payment standard.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_eligible: true
+    wy_power_payment_standard: 847
+    wy_power_countable_income: 400
+  output:
+    # max(847 - 400, 0) = $447
+    wy_power: 447
+
+- name: Case 2, eligible with zero income gets full benefit.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_eligible: true
+    wy_power_payment_standard: 902
+    wy_power_countable_income: 0
+  output:
+    # max(902 - 0, 0) = $902
+    wy_power: 902
+
+- name: Case 3, eligible with income equals payment standard.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_eligible: true
+    wy_power_payment_standard: 847
+    wy_power_countable_income: 847
+  output:
+    # max(847 - 847, 0) = $0
+    wy_power: 0
+
+- name: Case 4, eligible with income exceeds payment standard floors to zero.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_eligible: true
+    wy_power_payment_standard: 847
+    wy_power_countable_income: 1_000
+  output:
+    # max(847 - 1000, 0) = max(-153, 0) = $0
+    wy_power: 0
+
+- name: Case 5, not eligible returns zero.
+  period: 2026-01
+  input:
+    state_code: WY
+    wy_power_eligible: false
+    wy_power_payment_standard: 847
+    wy_power_countable_income: 0
+  output:
+    # defined_for = wy_power_eligible, so returns 0 when not eligible
+    wy_power: 0

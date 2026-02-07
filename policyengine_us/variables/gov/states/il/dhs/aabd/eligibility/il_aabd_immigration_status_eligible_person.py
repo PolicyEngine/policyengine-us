@@ -18,6 +18,6 @@ class il_aabd_immigration_status_eligible_person(Variable):
         immigration_status_str = immigration_status.decode_to_str()
         has_qualifying_status = np.isin(
             immigration_status_str,
-            p.qualified_noncitizen_status,
+            p.qualified_noncitizen_statuses,
         )
         return has_qualifying_status | is_citizen

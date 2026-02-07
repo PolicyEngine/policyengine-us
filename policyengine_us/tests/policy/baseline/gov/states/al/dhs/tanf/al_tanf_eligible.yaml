@@ -1,0 +1,260 @@
+# Unit tests for Alabama TANF eligibility
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Eligibility requires: demographic eligible (minor child or pregnant),
+# immigration eligible (citizen or qualified noncitizen), and income eligible
+# Alabama has NO asset limit for TANF
+
+- name: Case 1, eligible family with minor child and no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child (age 5)
+    # Immigration: default is CITIZEN
+    # Income: $0 <= $304 payment standard
+    al_tanf_eligible: true
+
+- name: Case 2, eligible pregnant woman.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 2_400  # $200/month
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    # Demographic: pregnant
+    # Immigration: default is CITIZEN
+    # Income: $200 - $40 (20% work expense) = $160 <= $264 payment standard
+    al_tanf_eligible: true
+
+- name: Case 3, ineligible due to no minor child and not pregnant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 19  # Not a minor child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: no minor child (age 19), not pregnant
+    # Fails demographic eligibility
+    al_tanf_eligible: false
+
+- name: Case 4, ineligible due to high income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child
+    # Immigration: default is CITIZEN
+    # Income: $1,000 - $200 (20% work expense) = $800 > $304 payment standard
+    al_tanf_eligible: false
+
+- name: Case 5, legal permanent resident eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child
+    # Immigration: Legal Permanent Resident is qualified noncitizen
+    # Income: $200 - $40 (20% work expense) = $160 <= $304 payment standard
+    al_tanf_eligible: true
+
+- name: Case 6, undocumented immigrant with citizen child - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        immigration_status: CITIZEN  # Child is citizen
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child
+    # Immigration: at least one citizen in unit (child)
+    # Income: $200 - $40 (20% work expense) = $160 <= $304 payment standard
+    al_tanf_eligible: true
+
+- name: Case 7, family of 4 with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 32
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # Demographic: has minor children
+    # Immigration: default is CITIZEN
+    # Income: $500 - $100 (work expense) - $300 (childcare) = $100 <= $392
+    al_tanf_eligible: true
+
+- name: Case 8, refugee family eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 3_000  # $250/month
+        immigration_status: REFUGEE
+      person2:
+        age: 6
+        immigration_status: REFUGEE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child
+    # Immigration: Refugee is qualified noncitizen
+    # Income: $250 - $50 (20% work expense) = $200 <= $304 payment standard
+    al_tanf_eligible: true
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1, child at age 17 - minor child boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 17  # Last year as minor
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: age 17 is still minor under federal TANF rules
+    # Immigration: default is CITIZEN
+    # Income: $0 <= $304 payment standard
+    al_tanf_eligible: true
+
+- name: Edge Case 2, all undocumented household - ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Demographic: has minor child
+    # Immigration: NO citizen or qualified noncitizen in household
+    # Fails immigration eligibility
+    al_tanf_eligible: false
+
+- name: Edge Case 3, pregnant woman at exact income threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        employment_income_before_lsr: 3_960  # $330/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    # Demographic: pregnant
+    # Immigration: default is CITIZEN
+    # Income: $330 - $66 (20% work expense) = $264
+    # Payment standard (1 person): $264
+    # $264 <= $264, eligible (tests <= at exact boundary)
+    al_tanf_eligible: true

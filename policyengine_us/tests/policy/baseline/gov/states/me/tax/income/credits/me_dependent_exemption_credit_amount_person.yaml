@@ -18,7 +18,7 @@
   output:
     me_dependent_exemption_credit_amount_person: 300
 
-- name: Non CTC eligible child
+- name: Non CTC eligible child (but still qualifies as tax dependent)
   period: 2025
   input:
     state_code: ME
@@ -26,4 +26,5 @@
     is_tax_unit_dependent: true
     age: 2
   output:
-    me_dependent_exemption_credit_amount_person: 0
+    # Even non-CTC children who are tax dependents qualify for ME credit
+    me_dependent_exemption_credit_amount_person: 600

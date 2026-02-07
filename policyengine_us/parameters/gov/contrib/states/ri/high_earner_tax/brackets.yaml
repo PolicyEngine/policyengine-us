@@ -1,0 +1,25 @@
+description: Rhode Island high earner tax brackets from Governor Dan Mckee's FY2027 Budget Proposal.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Rhode Island high earner tax brackets
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    rate:
+      2027-01-01: 0.0375
+  - threshold:
+      2027-01-01: 55_000
+    rate:
+      2027-01-01: 0.0475
+  - threshold:
+      2027-01-01: 125_000
+    rate:
+      2027-01-01: 0.0599
+  - threshold:
+      2027-01-01: 648_398
+    rate:
+      2027-01-01: 0.0899

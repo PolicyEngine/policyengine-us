@@ -1,16 +1,22 @@
 name: Pull request
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
+# Concurrency: auto-cancels previous runs when new commits are pushed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
       - name: Check formatting
-        uses: "lgeiger/black-action@master"
-        with:
-          args: ". -l 79 --check"
+        run: uv run black . -l 79 --check
   check-version:
     name: Check version
     runs-on: ubuntu-latest
@@ -50,11 +56,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          # Install core package and its dependencies
-          uv pip install -e . --system
-          # Install only coverage for testing (not docs dependencies)
-          uv pip install coverage --system
+        run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: ./update_itemization.sh
@@ -65,7 +67,7 @@ jobs:
           GITHUB_BASE_REF: ${{ github.base_ref }}
         run: |
           echo "Running selective tests based on changed files..."
-          python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
+          uv run python policyengine_us/tests/run_selective_tests.py --base-branch ${{ github.base_ref }} --coverage
       - name: Generate coverage report
         id: coverage
         if: always()
@@ -73,10 +75,10 @@ jobs:
           echo "📊 Coverage Report"
           echo "=================="
           # Show files below 100% coverage (won't fail CI)
-          coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
+          uv run coverage report --fail-under=0 --skip-covered --skip-empty || echo "No coverage data available."
 
           # Count files below 100%
-          TOTAL_FILES=$(coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
+          TOTAL_FILES=$(uv run coverage report --skip-covered --skip-empty 2>/dev/null | grep -E "^[a-zA-Z].*\.py " | wc -l || echo "0")
 
           if [ "$TOTAL_FILES" -gt "0" ]; then
             echo ""
@@ -88,7 +90,7 @@ jobs:
           fi
 
           # Generate XML for Codecov
-          coverage xml || echo "No coverage data to generate XML report."
+          uv run coverage xml || echo "No coverage data to generate XML report."
           # Expose whether we have coverage for later steps
           if [ -f coverage.xml ]; then
             echo "has_coverage=true" >> "$GITHUB_OUTPUT"
@@ -107,8 +109,8 @@ jobs:
           verbose: true
       - name: Build package
         run: uv build
-  YAML-NonStructural:
-    name: Full Suite - Non-Structural YAML
+  NonStructural-States:
+    name: Full Suite - States (excl NY) & Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -120,42 +122,88 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: uv sync --dev
+        run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests
+      - name: Run non-structural YAML tests (states)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests..."
-          uv run make test-yaml-no-structural
-  Structural-and-Python:
-    name: Full Suite - Structural YAML & Python
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: uv sync --dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run structural YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running structural YAML tests..."
-          uv run make test-yaml-structural
+          echo "Running non-structural YAML tests (states)..."
+          uv run make test-yaml-no-structural-states
       - name: Run Python-based tests
         env:
           PYTHONUNBUFFERED: 1
         run: |
           echo "Running Python-based tests..."
           uv run make test-other
+  NonStructural-Other:
+    name: Full Suite - Baseline (incl NY) & Reform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run non-structural YAML tests (other)
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running non-structural YAML tests (other)..."
+          uv run make test-yaml-no-structural-other
+  Structural-Heavy:
+    name: Full Suite - Structural (States)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run structural YAML tests (states)
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running structural YAML tests (contrib/states)..."
+          uv run make test-yaml-structural-heavy
+  Structural:
+    name: Full Suite - Structural (Other)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run structural YAML tests (other)
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running structural YAML tests (contrib excl states)..."
+          uv run make test-yaml-structural

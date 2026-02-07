@@ -16,7 +16,12 @@ threshold:
     values:
       2010-01-01: 7_500
   metadata:
+    label: Elderly or disabled credit phase-out threshold
     unit: currency-USD
+    period: year
+    breakdown:
+      - filing_status
+    propagate_metadata_to_children: true
     reference:
       - title: 26 U.S. Code § 22(c)(3)(D)
         href: https://www.law.cornell.edu/uscode/text/26/22#c_3_D

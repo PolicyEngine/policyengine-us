@@ -25,9 +25,11 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 75_000
   2025-01-01: 90_000
 metadata:
+  label: Social Security Benefits Credit phase-out threshold
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
-  label: Social Security Benefits Credit phase-out threshold
   reference:
     - title: Utah Code §59-10-1042 (4) # Effective 2021-05-05; Superseded 2022-05-04
       href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1042.html
@@ -45,3 +47,7 @@ metadata:
       href: https://le.utah.gov/~2025/bills/static/SB0071.html
     - title: Senate Bill 71 (Bill Text)
       href: https://le.utah.gov/Session/2025/bills/enrolled/SB0071.pdf#page=2
+    - title: Utah Social Security Benefits Credit
+      href: https://incometax.utah.gov/credits/ss-benefits
+    - title: 2025 Utah TC-40 Instructions, Social Security Benefits Credit Worksheet
+      href: https://tax.utah.gov/forms/drafts/tc-40inst.pdf#page=23

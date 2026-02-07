@@ -1,0 +1,53 @@
+- name: Case 1, no income, full benefit.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 316
+    pa_tanf_countable_income: 0
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 316
+
+- name: Case 2, partial income, partial benefit.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 316
+    pa_tanf_countable_income: 150
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 166
+
+- name: Case 3, countable income equals maximum benefit.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 316
+    pa_tanf_countable_income: 316
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 0
+
+- name: Case 4, countable income exceeds maximum benefit.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 316
+    pa_tanf_countable_income: 500
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 0
+
+- name: Case 5, very small benefit amount.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 316
+    pa_tanf_countable_income: 315
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 1
+
+- name: Case 6, large family, high maximum benefit.
+  period: 2024-01
+  input:
+    pa_tanf_maximum_benefit: 836
+    pa_tanf_countable_income: 200
+    pa_tanf_eligible: true
+  output:
+    pa_tanf: 636

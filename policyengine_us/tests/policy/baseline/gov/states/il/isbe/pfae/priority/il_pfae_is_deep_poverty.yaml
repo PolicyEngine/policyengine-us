@@ -1,0 +1,15 @@
+- name: Case 1, income below 50% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 5_000
+  output:
+    il_pfae_is_deep_poverty: true
+
+- name: Case 2, income above 50% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    employment_income: 30_000
+  output:
+    il_pfae_is_deep_poverty: false

@@ -22,7 +22,7 @@
   output:
     ct_social_security_benefit_adjustment: 12_000
 
-- name: Adjusted gross income under reduction threshold, joint
+- name: Adjusted gross income at reduction threshold, joint
   period: 2022
   input:
     state_code: CT
@@ -32,7 +32,11 @@
     tax_unit_social_security: 15_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment: 11_500
+    # Part C: min(15000, 5000) = 5000
+    # Part D: 5000 * 0.25 = 1250
+    # Part E: 12000 (actual federal taxable SS, not 15000 * 0.85)
+    # Part F: max(12000 - 1250, 0) = 10750
+    ct_social_security_benefit_adjustment: 10_750
 
 - name: Integration test
   absolute_error_margin: 0.01
@@ -51,3 +55,35 @@
         state_fips: 9  # CT
   output:  # expected results from patched TAXSIM35 2024-02-15 version
     ct_social_security_benefit_adjustment: 9_000
+
+# Test case from GitHub issue #7019 - verifies fix for using actual federal
+# taxable SS instead of 85% of gross SS
+- name: CT SS adjustment uses actual federal taxable SS (issue 7019)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 46_718.91
+        taxable_private_pension_income: 28_475.02
+        is_tax_unit_head: true
+      person2:
+        age: 75
+        social_security_retirement: 46_718.91
+        taxable_private_pension_income: 28_475.02
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 9
+  output:
+    ct_social_security_benefit_adjustment: 38_802
+    ct_agi: 43_544
+    ct_income_tax: 332

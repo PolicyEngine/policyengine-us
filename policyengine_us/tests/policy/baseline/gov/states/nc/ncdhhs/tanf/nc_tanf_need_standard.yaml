@@ -29,3 +29,19 @@
     nc_tanf_household_size: 16
   output:
     nc_tanf_need_standard: 1_142 * 12
+
+- name: Need standard for family of 3 in 2017.
+  period: 2017
+  input:
+    state_code: NC
+    nc_tanf_household_size: 3
+  output:
+    nc_tanf_need_standard: 544 * 12
+
+- name: Need standard for family of 3 in 2018.
+  period: 2018
+  input:
+    state_code: NC
+    nc_tanf_household_size: 3
+  output:
+    nc_tanf_need_standard: 544 * 12

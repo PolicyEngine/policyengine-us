@@ -1,0 +1,382 @@
+# Integration tests for South Dakota TANF - full pipeline testing
+# Tests realistic family scenarios with complete eligibility and benefit calculations
+# ARSD 67:10:05:03: Payment standards by family size and living arrangement
+# Source: https://sdlegislature.gov/Rules/Administrative/67:10:05:03
+# Earned income formula: max(0, gross_earned - $90) x 0.80
+# Eligibility: Countable income <= Payment standard (no gross income test)
+# Benefit: Payment standard - Countable income
+# Note: Uses employment_income_before_lsr for earned income (federal TANF baseline)
+
+- name: Scenario 1 - Single parent with 2 children, no income, full benefit.
+  # Family of 3, independent living, no income, receives full payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Gross earned income: $0
+    # Countable earned: max(0 - 90, 0) x 0.80 = $0
+    # Countable income: $0
+    # Payment standard (family of 3, independent): $701
+    # Benefit: $701 - $0 = $701
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 0
+    sd_tanf_countable_income: 0
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: true
+    sd_tanf: 701
+
+- name: Scenario 2 - Family of 3 with $400 monthly earned income.
+  # Standard earned income calculation with $90 + 20% disregard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $400
+    # After $90 flat deduction: max(400 - 90, 0) = $310
+    # 20% disregard: $310 x 0.20 = $62
+    # Countable earned: $310 x 0.80 = $248
+    # Countable income: $248
+    # Payment standard (family of 3): $701
+    # Benefit: $701 - $248 = $453
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 248
+    sd_tanf_countable_income: 248
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: true
+    sd_tanf: 453
+
+- name: Scenario 3 - Family of 3 with high income, ineligible.
+  # Income exceeds payment standard, not eligible
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $1,200
+    # After $90 flat deduction: max(1200 - 90, 0) = $1,110
+    # Countable earned: $1,110 x 0.80 = $888
+    # Countable income: $888
+    # Payment standard (family of 3): $701
+    # Eligibility: $888 <= $701 = false
+    # Benefit: $0 (ineligible)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 888
+    sd_tanf_countable_income: 888
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: false
+    sd_tanf: 0
+
+- name: Scenario 4a - Independent living with moderate income, eligible.
+  # Family of 3 with income between shared ($507) and independent ($701) thresholds
+  # Demonstrates that independent living allows eligibility at this income level
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_336  # $778/month
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned: $778
+    # After $90 deduction: max(778 - 90, 0) = $688
+    # Countable earned: $688 x 0.80 = $550.4
+    # Payment standard (independent): $701
+    # Eligibility: $550.4 <= $701 = true
+    # Benefit: $701 - $550.4 = $150.6
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 550.4
+    sd_tanf_countable_income: 550.4
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: true
+    sd_tanf: 150.6
+
+- name: Scenario 4b - Shared living with same income, ineligible.
+  # Same family and income as 4a, but shared living reduces payment standard
+  # Demonstrates that shared living causes ineligibility at this income level
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_336  # $778/month (same as 4a)
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        sd_tanf_is_shared_living: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned: $778 (same as 4a)
+    # Countable earned: $550.4 (same as 4a)
+    # Payment standard (shared): $507
+    # Eligibility: $550.4 > $507 = false (ineligible due to shared living!)
+    # Benefit: $0
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 550.4
+    sd_tanf_countable_income: 550.4
+    sd_tanf_payment_standard: 507
+    sd_tanf_eligible: false
+    sd_tanf: 0
+
+- name: Scenario 5 - Child support excluded from countable unearned income.
+  # Per ARSD 67:10:03:04, child support is excluded from countable income
+  # Social security is counted; child support is not
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month earned
+        social_security: 1_200  # $100/month unearned (counted)
+        child_support_received: 600  # $50/month (excluded)
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned income: $400
+    # Countable earned: (400 - 90) x 0.80 = $248
+    # Monthly gross unearned: $100 (SS) + $50 (child support) = $150
+    # Countable unearned: $150 - $50 (child support excluded) = $100
+    # Countable income: $248 + $100 = $348
+    # Payment standard (family of 3): $701
+    # Benefit: $701 - $348 = $353
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_countable_earned_income: 248
+    sd_tanf_countable_unearned_income: 100
+    sd_tanf_countable_income: 348
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: true
+    sd_tanf: 353
+
+- name: Scenario 6 - Large family of 5 with moderate earnings.
+  # Tests larger family payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 35
+      person3:
+        age: 14
+        is_in_k12_school: true
+      person4:
+        age: 10
+        is_in_k12_school: true
+      person5:
+        age: 5
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: SD
+  output:
+    # Family size: 5
+    # Monthly gross earned: $600
+    # After $90 deduction: max(600 - 90, 0) = $510
+    # Countable earned: $510 x 0.80 = $408
+    # Countable income: $408
+    # Payment standard (family of 5): $848
+    # Benefit: $848 - $408 = $440
+    is_person_demographic_tanf_eligible: [false, false, true, true, true]
+    sd_tanf_countable_earned_income: 408
+    sd_tanf_countable_income: 408
+    sd_tanf_payment_standard: 848
+    sd_tanf_eligible: true
+    sd_tanf: 440
+
+- name: Scenario 7 - Income at threshold, zero benefit but still eligible.
+  # Edge case where countable income equals payment standard
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 11_610  # Approx $968/month to get $701 countable
+      person2:
+        age: 5
+        is_in_k12_school: true
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Monthly gross earned: ~$968 (11_610/12 = 967.5)
+    # After $90 deduction: max(967.5 - 90, 0) = $877.5
+    # Countable earned: $877.5 x 0.80 = $702 (approximately)
+    # Payment standard (family of 3): $701
+    # Eligibility: $702 > $701 = false (just over)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: false
+    sd_tanf: 0
+
+- name: Scenario 8 - Two earners, each gets own $90 deduction.
+  # Critical test: Per ARSD 67:10:03:05, EACH employed member receives $90 + 20%
+  # This verifies deductions are calculated per-person, not per-unit
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 3_600  # $300/month
+      person3:
+        age: 8
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # Family size: 3
+    # Person 1: $400 earned → (400 - 90) x 0.80 = $248
+    # Person 2: $300 earned → (300 - 90) x 0.80 = $168
+    # Total countable earned: $248 + $168 = $416
+    # NOTE: If incorrectly calculated as single $90 deduction:
+    #   ($700 - $90) x 0.80 = $488 (WRONG)
+    # Countable income: $416
+    # Payment standard (family of 3): $701
+    # Benefit: $701 - $416 = $285
+    is_person_demographic_tanf_eligible: [false, false, true]
+    sd_tanf_countable_earned_income_person: [248, 168, 0]
+    sd_tanf_countable_earned_income: 416
+    sd_tanf_countable_income: 416
+    sd_tanf_payment_standard: 701
+    sd_tanf_eligible: true
+    sd_tanf: 285

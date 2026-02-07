@@ -1,0 +1,112 @@
+# Vermont TANF Countable Unearned Income
+# Child support disregard: First $100/month (per household)
+# Source: 33 V.S.A. Section 1103(a)(4)
+
+- name: Case 1, child support $0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_reach_up_countable_unearned_income: 0
+
+- name: Case 2, child support $99.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_188  # $99/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # $99 - min($99, $100) = $0
+    vt_reach_up_countable_unearned_income: 0
+
+- name: Case 3, child support $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # $100 - min($100, $100) = $0
+    vt_reach_up_countable_unearned_income: 0
+
+- name: Case 4, child support $150.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # $150 - min($150, $100) = $50
+    vt_reach_up_countable_unearned_income: 50
+
+- name: Case 5, social security only no child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 2_400  # $200/month
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Social security has no disregard
+    # $200 - min($0, $100) = $200
+    vt_reach_up_countable_unearned_income: 200
+
+- name: Case 6, child support $101 one above disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_212  # $101/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # $101 - min($101, $100) = $1
+    vt_reach_up_countable_unearned_income: 1
