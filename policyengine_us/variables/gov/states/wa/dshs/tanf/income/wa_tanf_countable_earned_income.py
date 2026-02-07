@@ -14,20 +14,20 @@ class wa_tanf_countable_earned_income(Variable):
         # Get gross earned income from federal TANF variable
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
 
-        # Apply earned income disregard per WAC 388-450-0170:
-        # "We start by deducting the first $500 of the total household's
-        # earned income. We then subtract 50% of the remaining monthly
-        # gross earned income."
+        # Apply earned income disregard per WAC 388-450-0170
         p = parameters(
             period
         ).gov.states.wa.dshs.tanf.income.deductions.earned_income_disregard
 
-        # Step 1: Deduct flat $500 family earnings disregard
-        remainder = max_(gross_earned - p.amount, 0)
+        # Step 1: Deduct flat family earnings disregard (if in effect)
+        # The $500 flat disregard was added by HB 1447, effective Aug 1, 2024.
+        # Before that date, only the 50% disregard applied.
+        flat_disregard = where(p.in_effect, p.amount, 0)
+        remainder = max_(gross_earned - flat_disregard, 0)
 
         # Step 2: Subtract (disregard) 50% of remaining income
         # Per WAC 388-450-0170(3): "subtract 50% of the remaining...income"
-        amount_disregarded = remainder * p.percentage_disregarded
+        amount_disregarded = remainder * p.rate
 
         # Countable earned income = remainder - amount disregarded
         return remainder - amount_disregarded
