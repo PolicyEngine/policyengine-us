@@ -1,0 +1,13 @@
+description: The Social Security Administration applies this percentage to Average Indexed Monthly Earnings up to the first bend point in the Primary Insurance Amount calculation for Social Security Disability Insurance benefits.
+
+values:
+  1979-01-01: 0.9
+
+metadata:
+  rate_unit: /1
+  label: SSA SSDI PIA first percentage
+  reference:
+    - title: Social Security Administration - Primary Insurance Amount
+      href: https://www.ssa.gov/oact/cola/piaformula.html
+    - title: 42 U.S. Code § 415(a)(1)(A)(i) - Primary insurance amount formula
+      href: https://www.law.cornell.edu/uscode/text/42/415#a_1_A_i
