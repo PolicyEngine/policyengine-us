@@ -7,3 +7,5 @@ class spm_unit_cash_assets(Variable):
     label = "SPM unit cash assets"
     definition_period = YEAR
     unit = USD
+
+    adds = ["bank_account_assets", "stock_assets", "bond_assets"]
