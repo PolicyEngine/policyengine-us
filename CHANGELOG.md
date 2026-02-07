@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.553.0] - 2026-02-07 18:08:52
+
+### Added
+
+- Add liquid asset input variables (bank_account_assets, stock_assets, bond_assets), ssi_countable_resources, and spm_unit_cash_assets aggregation
+- Add takes_up_ssi_if_eligible variable for SSI takeup modeling
+
+### Changed
+
+- SSI resource test now uses actual imputed assets instead of random pass rate
+- SSI benefit now applies takeup in microsimulation
+
 ## [1.552.0] - 2026-02-07 00:40:26
 
 ### Added
@@ -14937,6 +14949,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.552.0...1.553.0
 [1.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.1...1.552.0
 [1.551.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.0...1.551.1
 [1.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.2...1.551.0
