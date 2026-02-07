@@ -17,20 +17,4 @@ class ssi_countable_resources(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1382b",
     )
 
-    def formula(person, period, parameters):
-        # SSI counts liquid assets but excludes:
-        # - Home and land
-        # - One vehicle (with exceptions)
-        # - Household goods and personal effects
-        # - Burial plots and up to $1,500 in burial funds
-        # - Life insurance with face value <= $1,500
-        # - Retirement accounts (excluded under ABLE Act for some)
-        #
-        # Current imputation includes:
-        # - Bank accounts (checking, savings, money market)
-        # - Stocks and mutual funds
-        # - Bonds and government securities
-        bank = person("bank_account_assets", period)
-        stocks = person("stock_assets", period)
-        bonds = person("bond_assets", period)
-        return bank + stocks + bonds
+    adds = "gov.ssa.ssi.eligibility.resources.countable"
