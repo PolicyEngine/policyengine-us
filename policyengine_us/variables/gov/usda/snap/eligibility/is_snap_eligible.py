@@ -28,8 +28,12 @@ class is_snap_eligible(Variable):
         work_requirements_eligibility = spm_unit(
             "meets_snap_work_requirements", period
         )
+        immigration_eligible_member_present = spm_unit.any(
+            person("is_snap_immigration_status_eligible", period)
+        )
         return (
             (normal_eligibility | categorical_eligibility)
             & eligible_person_present
             & work_requirements_eligibility
+            & immigration_eligible_member_present
         )
