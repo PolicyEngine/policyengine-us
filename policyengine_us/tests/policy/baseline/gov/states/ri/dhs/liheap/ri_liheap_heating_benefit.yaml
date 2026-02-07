@@ -1,0 +1,659 @@
+# Unit tests for Rhode Island LIHEAP heating benefit calculation
+# Tests benefit amounts based on fuel type and FPG bracket
+#
+# Benefit amounts vary by:
+# 1. Heating type: Deliverable, Natural Gas, Electric, Heat in Rent
+# 2. FPG ratio bracket: 0-75%, 76-100%, 101-125%, 126-150%, 151%+
+#
+# FFY 2026 Benefit Matrix (effective 2025-10-01):
+# | FPG Range | Deliverable | Natural Gas | Electric |
+# |-----------|-------------|-------------|----------|
+# | 0-75%     | $861        | $232        | $393     |
+# | 76-100%   | $805        | $211        | $357     |
+# | 101-125%  | $752        | $192        | $324     |
+# | 126-150%  | $704        | $175        | $295     |
+# | 151%+     | $657        | $159        | $268     |
+#
+# Heat in Rent:
+# - Direct Pay: $400
+# - Secondary Electric (non-subsidized): $80
+# - Secondary Electric (subsidized housing): $50
+#
+# 2026 FPG values (CONTIGUOUS_US):
+# - 1-person: $15,960
+# - 2-person: $21,640
+# - 3-person: $27,320
+# - 4-person: $33,000
+# - Additional person: $5,680
+#
+# Source: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+
+# =============================================================================
+# DELIVERABLE FUEL TESTS (Oil, Propane, Kerosene, Wood, Coal)
+# =============================================================================
+
+- name: Case 1, deliverable fuel, FPG ratio 50% bracket 0-75%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 1-person = $15,960, 50% = $7,980
+        employment_income: 7_980
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $7,980 / $15,960 = 0.50 (50%)
+    # Bracket 0-75%: Deliverable = $861
+    ri_liheap_heating_benefit: 861
+
+- name: Case 2, deliverable fuel, FPG ratio 90% bracket 76-100%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 90% = $14,364
+        employment_income: 14_364
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $14,364 / $15,960 = 0.90 (90%)
+    # Bracket 76-100%: Deliverable = $805
+    ri_liheap_heating_benefit: 805
+
+- name: Case 3, deliverable fuel, FPG ratio 110% bracket 101-125%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        # 2026 FPG for 1-person = $15,960, 110% = $17,556
+        employment_income: 17_556
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $17,556 / $15,960 = 1.10 (110%)
+    # Bracket 101-125%: Deliverable = $752
+    ri_liheap_heating_benefit: 752
+
+- name: Case 4, deliverable fuel, FPG ratio 140% bracket 126-150%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        # 2026 FPG for 1-person = $15,960, 140% = $22,344
+        employment_income: 22_344
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $22,344 / $15,960 = 1.40 (140%)
+    # Bracket 126-150%: Deliverable = $704
+    ri_liheap_heating_benefit: 704
+
+- name: Case 5, deliverable fuel, FPG ratio 160% bracket 151%+.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 55
+        # 2026 FPG for 1-person = $15,960, 160% = $25,536
+        employment_income: 25_536
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $25,536 / $15,960 = 1.60 (160%)
+    # Bracket 151%+: Deliverable = $657
+    ri_liheap_heating_benefit: 657
+
+# =============================================================================
+# NATURAL GAS TESTS
+# =============================================================================
+
+- name: Case 6, natural gas, FPG ratio 50% bracket 0-75%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 1-person = $15,960, 50% = $7,980
+        employment_income: 7_980
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~50%, Bracket 0-75%: Natural Gas = $232
+    ri_liheap_heating_benefit: 232
+
+- name: Case 7, natural gas, FPG ratio 90% bracket 76-100%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 90% = $14,364
+        employment_income: 14_364
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~90%, Bracket 76-100%: Natural Gas = $211
+    ri_liheap_heating_benefit: 211
+
+- name: Case 8, natural gas, FPG ratio 110% bracket 101-125%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        # 2026 FPG for 1-person = $15,960, 110% = $17,556
+        employment_income: 17_556
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~110%, Bracket 101-125%: Natural Gas = $192
+    ri_liheap_heating_benefit: 192
+
+- name: Case 9, natural gas, FPG ratio 140% bracket 126-150%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        # 2026 FPG for 1-person = $15,960, 140% = $22,344
+        employment_income: 22_344
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~140%, Bracket 126-150%: Natural Gas = $175
+    ri_liheap_heating_benefit: 175
+
+- name: Case 10, natural gas, FPG ratio 160% bracket 151%+.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 55
+        # 2026 FPG for 1-person = $15,960, 160% = $25,536
+        employment_income: 25_536
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~160%, Bracket 151%+: Natural Gas = $159
+    ri_liheap_heating_benefit: 159
+
+# =============================================================================
+# ELECTRIC HEAT TESTS
+# =============================================================================
+
+- name: Case 11, electric heat, FPG ratio 50% bracket 0-75%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # 2026 FPG for 1-person = $15,960, 50% = $7,980
+        employment_income: 7_980
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~50%, Bracket 0-75%: Electric = $393
+    ri_liheap_heating_benefit: 393
+
+- name: Case 12, electric heat, FPG ratio 90% bracket 76-100%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 90% = $14,364
+        employment_income: 14_364
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~90%, Bracket 76-100%: Electric = $357
+    ri_liheap_heating_benefit: 357
+
+- name: Case 13, electric heat, FPG ratio 110% bracket 101-125%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        # 2026 FPG for 1-person = $15,960, 110% = $17,556
+        employment_income: 17_556
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~110%, Bracket 101-125%: Electric = $324
+    ri_liheap_heating_benefit: 324
+
+- name: Case 14, electric heat, FPG ratio 140% bracket 126-150%.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        # 2026 FPG for 1-person = $15,960, 140% = $22,344
+        employment_income: 22_344
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~140%, Bracket 126-150%: Electric = $295
+    ri_liheap_heating_benefit: 295
+
+- name: Case 15, electric heat, FPG ratio 160% bracket 151%+.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 55
+        # 2026 FPG for 1-person = $15,960, 160% = $25,536
+        employment_income: 25_536
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio ~160%, Bracket 151%+: Electric = $268
+    ri_liheap_heating_benefit: 268
+
+# =============================================================================
+# HEAT IN RENT TESTS
+# =============================================================================
+
+- name: Case 16, heat in rent non-subsidized housing.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: HEAT_IN_RENT
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Heat in rent: $400 direct pay + $80 secondary electric = $480
+    ri_liheap_heating_benefit: 480
+
+- name: Case 17, heat in rent subsidized housing.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: HEAT_IN_RENT
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Heat in rent subsidized: $400 direct pay + $50 secondary electric = $450
+    ri_liheap_heating_benefit: 450
+
+# =============================================================================
+# MULTI-PERSON HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 18, 4-person household deliverable fuel low income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 4-person FPG = $33,000, targeting ~60% FPG = $19,800
+        employment_income: 19_800
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # FPG for 4-person = $33,000, income $19,800
+    # FPG ratio = $19,800 / $33,000 = 0.60 (60%)
+    # Bracket 0-75%: Deliverable = $861
+    ri_liheap_heating_benefit: 861
+
+- name: Case 19, 3-person household natural gas mid income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # 3-person FPG = $27,320, targeting 140% FPG = $38,248
+        employment_income: 38_248
+      person2:
+        age: 38
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPG for 3-person = $27,320, income $38,248
+    # FPG ratio = $38,248 / $27,320 = 1.40 (140%)
+    # Bracket 126-150%: Natural Gas = $175
+    ri_liheap_heating_benefit: 175
+
+- name: Case 20, 2-person household electric heat elderly.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        # 2-person FPG = $21,640, targeting 160% FPG = $34,624
+        # Using employment_income since irs_gross_income only counts taxable income
+        employment_income: 20_000
+      person2:
+        age: 68
+        employment_income: 14_624
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Income = $20,000 + $14,624 = $34,624
+    # FPG for 2-person = $21,640
+    # FPG ratio = $34,624 / $21,640 = 1.60 (160%)
+    # Bracket 151%+: Electric = $268
+    ri_liheap_heating_benefit: 268
+
+# =============================================================================
+# BOUNDARY CONDITION TESTS
+# =============================================================================
+
+- name: Case 21, FPG ratio exactly at 75% threshold.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 75% = $11,970
+        employment_income: 11_970
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $11,970 / $15,960 = 0.75 (75%)
+    # At 75% threshold - still in 0-75% bracket
+    ri_liheap_heating_benefit: 861
+
+- name: Case 22, FPG ratio just above 75% threshold.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 76% = $12,130
+        employment_income: 12_130
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $12,130 / $15,960 = 0.76 (76%)
+    # Just above 76% threshold - in 76-100% bracket
+    ri_liheap_heating_benefit: 805
+
+- name: Case 23, FPG ratio exactly at 100% threshold.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 100% = $15,960
+        employment_income: 15_960
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $15,960 / $15,960 = 1.0 (100%)
+    # At 100% threshold - still in 76-100% bracket
+    ri_liheap_heating_benefit: 211
+
+- name: Case 24, FPG ratio just above 100% threshold.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 2026 FPG for 1-person = $15,960, 101% = $16,120
+        employment_income: 16_120
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # FPG ratio = $16,120 / $15,960 = 1.01 (101%)
+    # Just above 101% threshold - in 101-125% bracket
+    ri_liheap_heating_benefit: 192
+
+# =============================================================================
+# INELIGIBLE HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 25, income over 60% SMI ineligible household.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income $60,000 exceeds 60% SMI for 1-person household
+    # Not eligible for LIHEAP - heating benefit should be $0
+    # Note: ri_liheap_heating_benefit has defined_for="ri_liheap_eligible"
+    ri_liheap_heating_benefit: 0
+
+- name: Case 26, non-RI resident ineligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Not RI resident - ineligible for RI LIHEAP
+    ri_liheap_heating_benefit: 0
+
+# =============================================================================
+# ZERO INCOME TESTS
+# =============================================================================
+
+- name: Case 27, zero income household lowest FPG bracket.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Zero income = 0% FPG ratio
+    # Bracket 0-75%: Deliverable = $861
+    ri_liheap_heating_benefit: 861

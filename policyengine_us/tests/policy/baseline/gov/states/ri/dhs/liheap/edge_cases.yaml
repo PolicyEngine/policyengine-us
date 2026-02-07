@@ -1,0 +1,933 @@
+# Edge case tests for Rhode Island LIHEAP
+# Tests boundary conditions, extreme values, and corner cases
+# Generated to prevent "what about X?" review comments
+#
+# Income eligibility: Gross income <= 60% of State Median Income (SMI)
+# SMI calculation uses HHS parameters based on state and household size
+#
+# Priority thresholds:
+# - Elderly: age >= 60
+# - Young child: age < 6
+# - Disabled: is_disabled = true
+
+# =============================================================================
+# INCOME ELIGIBILITY EDGE CASES
+# =============================================================================
+
+# --- Zero Income Test ---
+
+- name: Edge 1, zero income single person household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Zero income always below any threshold
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 2, zero income household with multiple members.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Zero income always below any threshold
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+# --- Clearly Over/Under Income Limits ---
+
+- name: Edge 3, income clearly below 1-person limit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # $35,000 is well below any reasonable 1-person 60% SMI limit
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 4, income clearly above 1-person limit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # $50,000 is above any reasonable 1-person 60% SMI limit
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+# --- Large Household Size Test ---
+
+- name: Edge 5, 8-person household income well below limit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 80_000
+      person2:
+        age: 43
+      person3:
+        age: 18
+      person4:
+        age: 16
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: RI
+  output:
+    # 8-person household has high 60% SMI limit
+    # $80,000 should be below the limit
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 6, 8-person household income well above limit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 150_000
+      person2:
+        age: 43
+      person3:
+        age: 18
+      person4:
+        age: 16
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: RI
+  output:
+    # $150,000 is above any reasonable 8-person 60% SMI limit
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+- name: Edge 7, 10-person household very large family.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 90_000
+      person2:
+        age: 48
+      person3:
+        age: 22
+      person4:
+        age: 20
+      person5:
+        age: 18
+      person6:
+        age: 16
+      person7:
+        age: 14
+      person8:
+        age: 12
+      person9:
+        age: 10
+      person10:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: RI
+  output:
+    # Tests very large household size adjustment formula
+    # 10-person adjustment: 0.52 + 0.16*5 + 0.03*4 = 1.44
+    # Large household should have high income limit
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+# =============================================================================
+# PRIORITY HOUSEHOLD EDGE CASES - AGE BOUNDARIES
+# =============================================================================
+
+# --- Elderly Age Boundary (60) ---
+
+- name: Edge 8, person exactly age 60 at elderly threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Age 60 >= 60 = elderly, priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 9, person age 59 just below elderly threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Age 59 < 60 = not elderly
+    # Not disabled, no young children = NOT priority
+    ri_liheap_priority_household: false
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 10, person age 61 just above elderly threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 61
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Age 61 >= 60 = elderly, priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+# --- Young Child Age Boundary (under 6) ---
+
+- name: Edge 11, child exactly age 6 at young child threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child age 6 is NOT under 6
+    # No elderly, not disabled = NOT priority
+    ri_liheap_priority_household: false
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 12, child age 5 just under young child threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child age 5 < 6 = young child, priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 13, child age 7 above young child threshold.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35_000
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child age 7 is NOT under 6
+    # No elderly, not disabled = NOT priority
+    ri_liheap_priority_household: false
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 14, infant age 0 should be priority.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 30_000
+      person2:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Infant age 0 < 6 = young child = priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 15, toddler age 1 should be priority.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 30_000
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Toddler age 1 < 6 = young child = priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+# =============================================================================
+# PRIORITY HOUSEHOLD EDGE CASES - DISABILITY
+# =============================================================================
+
+- name: Edge 16, person with is_disabled equals true.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Disabled member = priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 17, disabled child in household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 33
+      person3:
+        age: 12
+        is_disabled: true
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Child with disability = priority household
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 18, person NOT disabled explicit false.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: false
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Not disabled, not elderly, no young children = NOT priority
+    ri_liheap_priority_household: false
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+# =============================================================================
+# PRIORITY HOUSEHOLD EDGE CASES - MULTIPLE FACTORS
+# =============================================================================
+
+- name: Edge 19, multiple priority factors elderly plus young child.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 20_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Elderly (68) AND young child (3) = priority household (multiple factors)
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 20, multiple priority factors elderly plus disabled.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 72
+        is_disabled: true
+        social_security: 22_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Elderly (72) AND disabled = priority household (multiple factors)
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 21, multiple priority factors disabled plus young child.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+        ssi: 10_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Disabled AND young child (4) = priority household (multiple factors)
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+- name: Edge 22, all three priority factors elderly disabled with young child.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        social_security: 18_000
+      person2:
+        age: 35
+        employment_income: 20_000
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Elderly (70), disabled, AND young child (2) = priority (all three factors)
+    ri_liheap_priority_household: true
+    ri_liheap_income_eligible: true
+    ri_liheap_eligible: true
+
+# =============================================================================
+# OVERALL ELIGIBILITY EDGE CASES
+# =============================================================================
+
+- name: Edge 23, income eligible but NOT priority plain eligible household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_000
+      person2:
+        age: 38
+      person3:
+        age: 15
+      person4:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Income eligible
+    # Ages 40, 38, 15, 12 - no elderly (under 60), no disabled, no young children (under 6)
+    # Eligible but NOT priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 24, income ineligible regardless of priority factors.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 70_000
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Elderly (65) AND young child (2) = would be priority
+    # BUT income $70,000 is above 2-person 60% SMI limit = income INELIGIBLE
+    # Priority factors don't override income requirement
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: false
+
+- name: Edge 25, high income with all priority factors still ineligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        employment_income: 100_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Has ALL priority factors: elderly (70), disabled, young child (3)
+    # But income $100,000 far exceeds 2-person 60% SMI limit
+    # Income eligibility is strict requirement
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: false
+
+# =============================================================================
+# STATE RESIDENCY EDGE CASES
+# =============================================================================
+
+- name: Edge 26, non-RI resident ineligible regardless of income.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Massachusetts resident, NOT Rhode Island
+    # Would be income eligible in RI, but not RI resident
+    # ri_liheap_income_eligible has defined_for = StateCode.RI
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+- name: Edge 27, non-RI resident with priority factors still ineligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        social_security: 15_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Connecticut resident, NOT Rhode Island
+    # Has elderly (70), disabled, and young child (3) = would be priority
+    # Income would be eligible
+    # But state residency requirement not met
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+- name: Edge 28, neighboring state NY resident ineligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 20_000
+      person2:
+        age: 63
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # New York resident - different state
+    # Would be elderly priority and income eligible in RI
+    # Not eligible for RI LIHEAP
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+# =============================================================================
+# HOUSEHOLD COMPOSITION EDGE CASES
+# =============================================================================
+
+- name: Edge 29, single person household minimum size.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Minimum household size of 1
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 30, household with no one meeting any priority criteria.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 40_000
+      person2:
+        age: 43
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 12
+      person6:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    # 6-person household
+    # Ages: 45, 43, 17, 15, 12, 8 - no one is 60+ (elderly)
+    # Youngest is 8, not under 6 (young child)
+    # No one disabled
+    # Income eligible but NOT priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+# =============================================================================
+# INCOME SOURCE EDGE CASES
+# =============================================================================
+
+- name: Edge 31, mixed income sources within limit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 15_000
+        employment_income: 10_000
+      person2:
+        age: 63
+        social_security: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Income: $15,000 + $10,000 + $10,000 = $35,000
+    # Should be below 2-person 60% SMI limit
+    # Age 65 = elderly = priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Edge 32, self-employment income only.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Self-employment income counts toward gross income
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Edge 33, SSI income only disabled person.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        ssi: 10_092
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # SSI income counts toward gross income
+    # $10,092 well below any 1-person 60% SMI limit
+    # Disabled = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Edge 34, social security disability income.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 55
+        is_disabled: true
+        social_security_disability: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # SSDI income counts toward gross income
+    # Disabled = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Edge 35, multiple income sources elderly couple.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 20_000
+        employment_income: 5_000
+      person2:
+        age: 66
+        social_security: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Total income: $20,000 + $5,000 + $15,000 = $40,000
+    # Elderly (68 and 66) = priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true

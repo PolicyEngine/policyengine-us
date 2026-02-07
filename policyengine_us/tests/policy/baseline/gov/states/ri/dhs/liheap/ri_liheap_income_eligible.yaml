@@ -1,0 +1,208 @@
+# Unit tests for Rhode Island LIHEAP income eligibility
+# Eligibility: Gross income <= 60% of State Median Income (SMI)
+# Source: 42 U.S.C. Section 8624(b)(2)(B); 45 CFR 96.85
+# https://dhs.ri.gov/programs-and-services/energy-assistance-programs-heating/low-income-home-energy-assistance-program
+#
+# FFY 2025 60% SMI limits by household size (used for period 2025):
+# 1-person: $39,102
+# 2-person: $51,134
+# 3-person: $63,165
+# 4-person: $75,197
+# 5-person: $87,228
+# 6-person: $99,260
+#
+# Note: Period 2025 uses parameters effective 2025-01-01, which falls within FFY 2025
+# (Oct 2024 - Sept 2025). RI 4-person SMI for FFY 2025 is $125,328.
+
+- name: Case 1, single person income well below 60% SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 60% SMI for 1-person in RI FFY 2025: $39,102
+    # $30,000 < $39,102 = eligible
+    ri_liheap_income_eligible: true
+
+- name: Case 2, single person income above 60% SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 60% SMI for 1-person in RI FFY 2025: $39,102
+    # $50,000 > $39,102 = ineligible
+    ri_liheap_income_eligible: false
+
+- name: Case 3, single person income at boundary just below limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 39_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 60% SMI for 1-person: $39,102
+    # $39,000 < $39,102 = eligible
+    ri_liheap_income_eligible: true
+
+- name: Case 4, single person income at boundary just above limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 39_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 60% SMI for 1-person: $39,102
+    # $39,500 > $39,102 = ineligible
+    ri_liheap_income_eligible: false
+
+- name: Case 5, 4-person household income below 60% SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # 60% SMI for 4-person in RI FFY 2025: $75,197
+    # $60,000 < $75,197 = eligible
+    ri_liheap_income_eligible: true
+
+- name: Case 6, 4-person household income above 60% SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 33
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 60% SMI for 2-person: $51,134
+    # $80,000 > $51,134 = ineligible
+    ri_liheap_income_eligible: false
+
+- name: Case 7, 2-person household at boundary.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 51_000
+      person2:
+        age: 48
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 60% SMI for 2-person: $51,134
+    # $51,000 < $51,134 = eligible
+    ri_liheap_income_eligible: true
+
+- name: Case 8, 6-person large household eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+      person2:
+        age: 38
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    # 60% SMI for 6-person: $99,260
+    # $80,000 < $99,260 = eligible
+    ri_liheap_income_eligible: true
+
+- name: Case 9, household with zero income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # $0 < any SMI threshold = eligible
+    ri_liheap_income_eligible: true

@@ -1,0 +1,387 @@
+# Integration tests for Rhode Island LIHEAP (Low Income Home Energy Assistance Program)
+# Full pipeline testing with realistic family scenarios
+#
+# Program Overview:
+# - Administered by: Rhode Island Department of Human Services (DHS)
+# - Income limit: 60% of State Median Income (SMI)
+# - No categorical eligibility (SNAP/SSI/TANF do not auto-qualify)
+# - Priority given to households with elderly (60+), disabled, or young children (under 6)
+#
+# Sources:
+# - https://dhs.ri.gov/programs-and-services/energy-assistance-programs-heating/low-income-home-energy-assistance-program
+# - 42 U.S.C. Section 8624
+# - 45 CFR 96.85
+#
+# FFY 2026 60% SMI limits by household size:
+# 1-person: $42,252 | 2-person: $55,252 | 3-person: $68,253
+# 4-person: $81,254 | 5-person: $94,254 | 6-person: $107,255
+
+- name: Scenario 1, single elderly person on Social Security, priority household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income: $24,000 (Social Security)
+    # 60% SMI for 1-person: $42,252
+    # $24,000 < $42,252 = income eligible
+    # Age 72 = elderly = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 2, single working adult, income just below 60% SMI.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 42_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income: $42,000
+    # 60% SMI for 1-person: $42,252
+    # $42,000 < $42,252 = income eligible (just below threshold)
+    # Age 35 = not elderly, not disabled, no young children = not priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Scenario 3, high income single person, ineligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 55_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income: $55,000
+    # 60% SMI for 1-person: $42,252
+    # $55,000 > $42,252 = income ineligible
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+- name: Scenario 4, family with young child, priority household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 35_000
+      person2:
+        age: 26
+        employment_income: 15_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Income: $35,000 + $15,000 = $50,000
+    # 60% SMI for 3-person: $68,253
+    # $50,000 < $68,253 = income eligible
+    # Child age 4 (under 6) = young child = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 5, disabled adult with child, priority household.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 10_092
+        social_security_disability: 18_000
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Income: $10,092 (SSI) + $18,000 (SSDI) = $28,092
+    # 60% SMI for 2-person: $55,252
+    # $28,092 < $55,252 = income eligible
+    # Disabled member = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 6, large family of 5, income eligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 55_000
+      person2:
+        age: 38
+        employment_income: 25_000
+      person3:
+        age: 16
+      person4:
+        age: 13
+      person5:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    # Income: $55,000 + $25,000 = $80,000
+    # 60% SMI for 5-person: $94,254
+    # $80,000 < $94,254 = income eligible
+    # No elderly (ages 40, 38), not disabled, no children under 6 = not priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Scenario 7, 4-person household exceeding 60% SMI, ineligible.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 55_000
+      person2:
+        age: 43
+        employment_income: 35_000
+      person3:
+        age: 15
+      person4:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Income: $55,000 + $35,000 = $90,000
+    # 60% SMI for 4-person: $81,254
+    # $90,000 > $81,254 = income ineligible
+    ri_liheap_income_eligible: false
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: false
+
+- name: Scenario 8, multigenerational household with elderly grandparent, priority.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 68
+        social_security: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    # Income: $40,000 + $20,000 = $60,000
+    # 60% SMI for 5-person: $94,254
+    # $60,000 < $94,254 = income eligible
+    # Grandparent age 68 = elderly = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 9, couple with infant, priority due to young child.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 28_000
+      person2:
+        age: 28
+        employment_income: 18_000
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Income: $28,000 + $18,000 = $46,000
+    # 60% SMI for 3-person: $68,253
+    # $46,000 < $68,253 = income eligible
+    # Child age 1 (under 6) = young child = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 10, household just at income boundary, 2-person.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 55_000
+      person2:
+        age: 53
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Income: $55,000
+    # 60% SMI for 2-person: $55,252
+    # $55,000 < $55,252 = income eligible (just under threshold)
+    # Ages 55 and 53, not disabled, no children = not priority
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: false
+    ri_liheap_eligible: true
+
+- name: Scenario 11, zero income household with young child.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 22
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Income: $0
+    # Zero income always below any SMI threshold = income eligible
+    # Child age 2 (under 6) = young child = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+
+- name: Scenario 12, household with disabled child, priority.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 45_000
+      person2:
+        age: 36
+      person3:
+        age: 14
+        is_disabled: true
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Income: $45,000
+    # 60% SMI for 4-person: $81,254
+    # $45,000 < $81,254 = income eligible
+    # Child age 14 is disabled = priority household
+    ri_liheap_income_eligible: true
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true

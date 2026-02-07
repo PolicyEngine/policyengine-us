@@ -1,0 +1,415 @@
+# Unit tests for Rhode Island LIHEAP main benefit variable
+# Tests the final benefit amount combining eligibility and heating benefit calculation
+#
+# The ri_liheap variable:
+# - Returns heating_benefit if eligible
+# - Returns $0 if not eligible
+#
+# Program overview:
+# - Income eligibility: <= 60% State Median Income (SMI)
+# - Benefit varies by heating type and FPG ratio bracket
+#
+# FFY 2026 Benefit Matrix (effective 2025-10-01):
+# | FPG Range | Deliverable | Natural Gas | Electric |
+# |-----------|-------------|-------------|----------|
+# | 0-75%     | $861        | $232        | $393     |
+# | 76-100%   | $805        | $211        | $357     |
+# | 101-125%  | $752        | $192        | $324     |
+# | 126-150%  | $704        | $175        | $295     |
+# | 151%+     | $657        | $159        | $268     |
+#
+# Heat in Rent: $400 direct pay + $80 secondary electric (or $50 if subsidized)
+#
+# 2026 FPG values (CONTIGUOUS_US):
+# - 1-person: $15,960
+# - 2-person: $21,640
+# - 3-person: $27,320
+# - 4-person: $33,000
+# - Additional person: $5,680
+#
+# Source: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+
+# =============================================================================
+# ELIGIBLE HOUSEHOLD BENEFIT TESTS
+# =============================================================================
+
+- name: Case 1, eligible single person deliverable fuel low income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # Income at ~63% FPG ($15,960 * 0.63 = $10,055)
+        employment_income: 10_055
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income $10,055 < 60% SMI for 1-person = eligible
+    # FPG ratio ~63%, Bracket 0-75%: Deliverable = $861
+    ri_liheap_eligible: true
+    ri_liheap: 861
+
+- name: Case 2, eligible single person natural gas moderate income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # Income at ~133% FPG ($15,960 * 1.33 = $21,227)
+        employment_income: 21_227
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income $21,227 < 60% SMI for 1-person = eligible
+    # FPG ratio ~133%, Bracket 126-150%: Natural Gas = $175
+    ri_liheap_eligible: true
+    ri_liheap: 175
+
+- name: Case 3, eligible single person electric heat high FPG ratio.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        # Income at ~160% FPG ($15,960 * 1.60 = $25,536)
+        employment_income: 25_536
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income $25,536 < 60% SMI for 1-person = eligible
+    # FPG ratio ~160%, Bracket 151%+: Electric = $268
+    ri_liheap_eligible: true
+    ri_liheap: 268
+
+- name: Case 4, eligible heat in rent non-subsidized.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: HEAT_IN_RENT
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Eligible, heat in rent: $400 + $80 = $480
+    ri_liheap_eligible: true
+    ri_liheap: 480
+
+- name: Case 5, eligible heat in rent subsidized housing.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: HEAT_IN_RENT
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Eligible, heat in rent subsidized: $400 + $50 = $450
+    ri_liheap_eligible: true
+    ri_liheap: 450
+
+# =============================================================================
+# INELIGIBLE HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 6, ineligible income over 60% SMI.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income $50,000 > 60% SMI for 1-person = ineligible
+    ri_liheap_eligible: false
+    ri_liheap: 0
+
+- name: Case 7, ineligible non-RI resident.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Not RI resident = ineligible for RI LIHEAP
+    ri_liheap_eligible: false
+    ri_liheap: 0
+
+# =============================================================================
+# FAMILY HOUSEHOLD TESTS
+# =============================================================================
+
+- name: Case 8, 4-person family low income deliverable fuel.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 4-person FPG = $33,000, targeting 80% FPG = $26,400
+        employment_income: 26_400
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # 4-person family, income $26,400 < 60% SMI = eligible
+    # FPG ratio = $26,400 / $33,000 = 80%, Bracket 76-100%: Deliverable = $805
+    ri_liheap_eligible: true
+    ri_liheap: 805
+
+- name: Case 9, 3-person family moderate income natural gas.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # 3-person FPG = $27,320, targeting 160% FPG = $43,712
+        employment_income: 43_712
+      person2:
+        age: 38
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # 3-person family, income $43,712 < 60% SMI = eligible
+    # FPG ratio = $43,712 / $27,320 = 160%, Bracket 151%+: Natural Gas = $159
+    ri_liheap_eligible: true
+    ri_liheap: 159
+
+- name: Case 10, 2-person elderly household electric heat.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        # 2-person FPG = $21,640, targeting 130% FPG = $28,132
+        # Using employment_income since irs_gross_income only counts taxable income
+        employment_income: 15_000
+      person2:
+        age: 68
+        employment_income: 13_132
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 2-person elderly, income $28,132 < 60% SMI = eligible
+    # FPG ratio = $28,132 / $21,640 = 130%, Bracket 126-150%: Electric = $295
+    ri_liheap_eligible: true
+    ri_liheap: 295
+
+# =============================================================================
+# PRIORITY HOUSEHOLD TESTS (eligible with priority status)
+# =============================================================================
+
+- name: Case 11, elderly priority household.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 65
+        # Income at ~133% FPG ($15,960 * 1.33 = $21,227)
+        # Using employment_income since irs_gross_income only counts taxable income
+        employment_income: 21_227
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Elderly (65+) = priority household, income eligible
+    # FPG ratio ~133%, Bracket 126-150%: Deliverable = $704
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+    ri_liheap: 704
+
+- name: Case 12, disabled priority household.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # Using employment_income since SSI is not counted in irs_gross_income
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ri_liheap_heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Disabled = priority household, income eligible
+    # FPG ratio = $10,000 / $15,960 = 62.7%, Bracket 0-75%: Natural Gas = $232
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+    ri_liheap: 232
+
+- name: Case 13, young child priority household.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 2-person FPG = $21,640, targeting 105% FPG = $22,722
+        employment_income: 22_722
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_liheap_heating_type: ELECTRIC
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child under 6 = priority household, income eligible
+    # FPG ratio = $22,722 / $21,640 = 105%, Bracket 101-125%: Electric = $324
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+    ri_liheap: 324
+
+# =============================================================================
+# ZERO INCOME TESTS
+# =============================================================================
+
+- name: Case 14, zero income household eligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_liheap_heating_type: DELIVERABLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Zero income = FPG ratio 0%, always eligible
+    # Bracket 0-75%: Deliverable = $861
+    ri_liheap_priority_household: true
+    ri_liheap_eligible: true
+    ri_liheap: 861
+
+# =============================================================================
+# DEFAULT HEATING TYPE TEST
+# =============================================================================
+
+- name: Case 15, default heating type natural gas.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        # Income at ~94% FPG ($15,960 * 0.94 = $15,002)
+        employment_income: 15_002
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No heating type specified - should default to NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Default heating type is NATURAL_GAS per variable definition
+    # FPG ratio ~94%, Bracket 76-100%: Natural Gas = $211
+    ri_liheap_eligible: true
+    ri_liheap: 211

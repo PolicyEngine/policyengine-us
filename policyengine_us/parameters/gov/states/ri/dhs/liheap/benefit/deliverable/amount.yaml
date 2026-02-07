@@ -1,0 +1,35 @@
+description: Rhode Island provides this amount as the heating assistance benefit for deliverable fuels under the Low Income Home Energy Assistance Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: Rhode Island LIHEAP deliverable fuel benefit
+  reference:
+    - title: Rhode Island LIHEAP FFY 2026 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+    - title: 42 U.S.C. Section 8624 - Applications and requirements
+      href: https://www.law.cornell.edu/uscode/text/42/8624
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 861
+  - threshold:
+      2025-10-01: 0.76
+    amount:
+      2025-10-01: 805
+  - threshold:
+      2025-10-01: 1.01
+    amount:
+      2025-10-01: 752
+  - threshold:
+      2025-10-01: 1.26
+    amount:
+      2025-10-01: 704
+  - threshold:
+      2025-10-01: 1.51
+    amount:
+      2025-10-01: 657

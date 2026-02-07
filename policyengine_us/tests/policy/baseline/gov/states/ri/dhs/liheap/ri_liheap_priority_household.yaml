@@ -1,0 +1,212 @@
+# Unit tests for Rhode Island LIHEAP priority household status
+# Per 42 U.S.C. Section 8624, states must give priority to households with:
+# - Elderly member (age 60+)
+# - Disabled member
+# - Young child (under 6)
+# Source: https://dhs.ri.gov/media/9371/download?language=en (FFY 2026 State Plan Summary)
+
+- name: Case 1, household with elderly member (age 60).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Person age 60 = elderly, priority household
+    ri_liheap_priority_household: true
+
+- name: Case 2, household with elderly member (age 75).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        social_security: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Person age 75 = elderly, priority household
+    ri_liheap_priority_household: true
+
+- name: Case 3, household with disabled member.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Disabled member = priority household
+    ri_liheap_priority_household: true
+
+- name: Case 4, household with young child under 6.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 30_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child age 4 (under 6) = young child, priority household
+    ri_liheap_priority_household: true
+
+- name: Case 5, household with infant.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+      person2:
+        age: 32
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Child age 1 (under 6) = young child, priority household
+    ri_liheap_priority_household: true
+
+- name: Case 6, household with child age 6 not priority.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child age 6 is NOT under 6, not a priority factor
+    # No elderly or disabled either = not priority
+    ri_liheap_priority_household: false
+
+- name: Case 7, adult age 59 not elderly, not priority.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 35_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Age 59 is NOT 60+, not elderly
+    # Not disabled, no young children = not priority
+    ri_liheap_priority_household: false
+
+- name: Case 8, working-age adults with older children, not priority.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 50_000
+      person2:
+        age: 40
+      person3:
+        age: 14
+      person4:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # No elderly (ages 42, 40), not disabled
+    # No children under 6 (ages 14, 10)
+    # Not a priority household
+    ri_liheap_priority_household: false
+
+- name: Case 9, household with multiple priority factors.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        social_security: 15_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Elderly (65), disabled, AND young child (3)
+    # Multiple priority factors = priority household
+    ri_liheap_priority_household: true
+
+- name: Case 10, household with disabled child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Disabled child = priority household
+    ri_liheap_priority_household: true
