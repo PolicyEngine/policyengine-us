@@ -15,7 +15,8 @@ class tax_unit_is_required_to_file(Variable):
 
     def formula(tax_unit, period, parameters):
         gross_income = add(tax_unit, period, ["irs_gross_income"])
-        exemption_amount = parameters(period).gov.irs.income.exemption.amount
+        p = parameters(period).gov.irs.income.exemption
+        exemption_amount = 0 if p.suspended else p.amount
 
         # (a)(1)(A), (a)(1)(B)
         filing_status = tax_unit("filing_status", period).decode_to_str()

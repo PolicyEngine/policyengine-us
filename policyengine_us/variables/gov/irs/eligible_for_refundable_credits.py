@@ -13,9 +13,6 @@ class eligible_for_refundable_credits(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # Check if would receive any refundable credits
-        # This is a simplified check - the actual credits themselves handle
-        # detailed eligibility
         eitc = tax_unit("eitc", period)
         refundable_ctc = tax_unit("refundable_ctc", period)
-        return (eitc > 0) | (refundable_ctc > 0)
+        return (eitc + refundable_ctc) > 0
