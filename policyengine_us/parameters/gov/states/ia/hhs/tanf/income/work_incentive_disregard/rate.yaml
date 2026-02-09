@@ -1,0 +1,16 @@
+description: Iowa excludes this share of remaining earned income from countable income under the Temporary Assistance for Needy Families program.
+
+values:
+  2025-07-01: 0.58
+
+metadata:
+  unit: /1
+  period: month
+  label: Iowa TANF work incentive disregard rate
+  reference:
+    - title: IAC 441-41.27(2)"c" - Work incentive disregard
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+# NOTE: This disregard applies only to recipients (continuing eligibility),
+# not to initial applicants. Use is_tanf_enrolled to differentiate.
+# Applied after the 20% earned income deduction and income diversions.

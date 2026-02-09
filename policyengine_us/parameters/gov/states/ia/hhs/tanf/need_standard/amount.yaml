@@ -1,0 +1,55 @@
+description: Iowa sets this amount as the standard of need under the Temporary Assistance for Needy Families program.
+
+metadata:
+  amount_unit: currency-USD
+  period: month
+  label: Iowa TANF standard of need
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: IAC 441-41.28(2) - Schedule of Living Costs
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+    - title: IAC 441-41.28 (May 2025 codification)
+      href: https://www.legis.iowa.gov/docs/iac/rule/05-14-2025.441.41.28.pdf#page=1
+
+brackets:
+  - threshold:
+      2025-07-01: 1
+    amount:
+      2025-07-01: 365
+  - threshold:
+      2025-07-01: 2
+    amount:
+      2025-07-01: 719
+  - threshold:
+      2025-07-01: 3
+    amount:
+      2025-07-01: 849
+  - threshold:
+      2025-07-01: 4
+    amount:
+      2025-07-01: 986
+  - threshold:
+      2025-07-01: 5
+    amount:
+      2025-07-01: 1_092
+  - threshold:
+      2025-07-01: 6
+    amount:
+      2025-07-01: 1_216
+  - threshold:
+      2025-07-01: 7
+    amount:
+      2025-07-01: 1_335
+  - threshold:
+      2025-07-01: 8
+    amount:
+      2025-07-01: 1_457
+  - threshold:
+      2025-07-01: 9
+    amount:
+      2025-07-01: 1_576
+  - threshold:
+      2025-07-01: 10
+    amount:
+      2025-07-01: 1_724

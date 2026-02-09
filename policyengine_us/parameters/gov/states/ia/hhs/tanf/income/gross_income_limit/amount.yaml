@@ -1,0 +1,60 @@
+description: Iowa limits gross income to this amount under the Temporary Assistance for Needy Families program.
+
+metadata:
+  amount_unit: currency-USD
+  period: month
+  label: Iowa TANF gross income limit
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: IAC 441-41.28(2) - 185% of Schedule of Living Costs
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+    - title: IAC 441-41.27(1) - Gross income test
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+    - title: IAC 441-41.28 (May 2025 codification)
+      href: https://www.legis.iowa.gov/docs/iac/rule/05-14-2025.441.41.28.pdf#page=1
+
+# NOTE: These amounts equal 185% of the Standard of Need (Schedule of Living Costs).
+# They are published as fixed amounts in IAC 441-41.28(2).
+# Verified: $365 x 1.85 = $675.25; $849 x 1.85 = $1,570.65.
+brackets:
+  - threshold:
+      2025-07-01: 1
+    amount:
+      2025-07-01: 675.25
+  - threshold:
+      2025-07-01: 2
+    amount:
+      2025-07-01: 1_330.15
+  - threshold:
+      2025-07-01: 3
+    amount:
+      2025-07-01: 1_570.65
+  - threshold:
+      2025-07-01: 4
+    amount:
+      2025-07-01: 1_824.1
+  - threshold:
+      2025-07-01: 5
+    amount:
+      2025-07-01: 2_020.2
+  - threshold:
+      2025-07-01: 6
+    amount:
+      2025-07-01: 2_249.6
+  - threshold:
+      2025-07-01: 7
+    amount:
+      2025-07-01: 2_469.75
+  - threshold:
+      2025-07-01: 8
+    amount:
+      2025-07-01: 2_695.45
+  - threshold:
+      2025-07-01: 9
+    amount:
+      2025-07-01: 2_915.6
+  - threshold:
+      2025-07-01: 10
+    amount:
+      2025-07-01: 3_189.4

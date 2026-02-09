@@ -1,0 +1,16 @@
+description: Iowa excludes this amount of monthly child support from countable income under the Temporary Assistance for Needy Families program.
+
+values:
+  2025-07-01: 50
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa TANF child support disregard
+  reference:
+    - title: IAC 441-41.27(7)"u" - Child support exemption ($50 per eligible group)
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+# NOTE: The $50 exemption is per eligible group per month, not per person.
+# Applies to the first $50 of current monthly support obligation or
+# voluntary support payment received and retained.

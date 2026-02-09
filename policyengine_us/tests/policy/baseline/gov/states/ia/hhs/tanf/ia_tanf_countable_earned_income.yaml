@@ -1,0 +1,289 @@
+# Unit tests for Iowa TANF (FIP) countable earned income
+# IAC 441-41.27(2): 20% earned income deduction applied to all;
+# 58% work incentive disregard applied only to recipients (not initial applicants)
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, no earned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_countable_earned_income: 0
+
+- name: Case 2, applicant with earnings gets 20% deduction only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $800/month
+    # 20% deduction: $800 * 0.20 = $160
+    # After 20%: $800 - $160 = $640
+    # 58% disregard NOT applied (applicant)
+    # Countable earned: $640
+    ia_tanf_countable_earned_income: 640
+
+- name: Case 3, recipient with earnings gets both 20% and 58% deductions.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $800/month
+    # 20% deduction: $800 * 0.20 = $160
+    # After 20%: $800 - $160 = $640
+    # 58% disregard: $640 * 0.58 = $371.20
+    # Countable earned: $640 - $371.20 = $268.80
+    ia_tanf_countable_earned_income: 268.80
+
+- name: Case 4, recipient with low earnings.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned: $300/month
+    # 20% deduction: $300 * 0.20 = $60
+    # After 20%: $300 - $60 = $240
+    # 58% disregard: $240 * 0.58 = $139.20
+    # Countable earned: $240 - $139.20 = $100.80
+    ia_tanf_countable_earned_income: 100.80
+
+- name: Case 5, applicant with low earnings gets 20% only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned: $300/month
+    # 20% deduction: $300 * 0.20 = $60
+    # After 20%: $300 - $60 = $240
+    # 58% disregard NOT applied (applicant)
+    # Countable earned: $240
+    ia_tanf_countable_earned_income: 240
+
+- name: Case 6, recipient with higher earnings.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_600  # $1,300/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $1,300/month
+    # 20% deduction: $1,300 * 0.20 = $260
+    # After 20%: $1,300 - $260 = $1,040
+    # 58% disregard: $1,040 * 0.58 = $603.20
+    # Countable earned: $1,040 - $603.20 = $436.80
+    ia_tanf_countable_earned_income: 436.80
+
+# --- Edge cases added below ---
+
+- name: Case 7, recipient with very small earnings of one dollar per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12  # $1/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned: $1/month
+    # 20% deduction: $1 * 0.20 = $0.20
+    # After 20%: $1 - $0.20 = $0.80
+    # 58% disregard: $0.80 * 0.58 = $0.464
+    # Countable earned: $0.80 - $0.464 = $0.336
+    ia_tanf_countable_earned_income: 0.336
+
+- name: Case 8, applicant with same income as recipient gets higher countable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned: $1,000/month
+    # 20% deduction: $1,000 * 0.20 = $200
+    # After 20%: $1,000 - $200 = $800
+    # 58% disregard NOT applied (applicant)
+    # Countable earned: $800
+    ia_tanf_countable_earned_income: 800
+
+- name: Case 9, recipient with same income as case 8 gets lower countable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned: $1,000/month
+    # 20% deduction: $1,000 * 0.20 = $200
+    # After 20%: $1,000 - $200 = $800
+    # 58% disregard: $800 * 0.58 = $464
+    # Countable earned: $800 - $464 = $336
+    ia_tanf_countable_earned_income: 336
+
+- name: Case 10, recipient with no earned income and enrolled.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # No earned income; 20% of $0 = $0; 58% of $0 = $0
+    ia_tanf_countable_earned_income: 0
+
+- name: Case 11, self-employment income counts as earned for applicant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross earned (self-employment): $500/month
+    # 20% deduction: $500 * 0.20 = $100
+    # After 20%: $500 - $100 = $400
+    # 58% disregard NOT applied (applicant)
+    # Countable earned: $400
+    ia_tanf_countable_earned_income: 400

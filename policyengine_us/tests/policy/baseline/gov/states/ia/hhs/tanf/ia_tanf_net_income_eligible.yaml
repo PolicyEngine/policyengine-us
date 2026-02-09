@@ -1,0 +1,279 @@
+# Unit tests for Iowa TANF (FIP) net income eligibility (Test 2 - Applicants Only)
+# IAC 441-41.27(239B): Net income (after 20% deduction, before 58% disregard)
+# must be less than Standard of Need. Only applies to applicants.
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, applicant with no income passes net income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Net income: $0 < $849
+    ia_tanf_net_income_eligible: true
+
+- name: Case 2, applicant with moderate earnings passes net income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Gross earned: $800
+    # 20% deduction: $800 * 0.20 = $160
+    # Net earned: $800 - $160 = $640
+    # 58% disregard NOT applied (applicant)
+    # Net income: $640 < $849
+    ia_tanf_net_income_eligible: true
+
+- name: Case 3, applicant with high earnings fails net income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Gross earned: $1,200
+    # 20% deduction: $1,200 * 0.20 = $240
+    # Net earned: $1,200 - $240 = $960
+    # Net income: $960 >= $849
+    ia_tanf_net_income_eligible: false
+
+- name: Case 4, recipient skips net income test (always passes).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Recipients skip Test 2 entirely -- always true
+    ia_tanf_net_income_eligible: true
+
+- name: Case 5, applicant with unearned income only fails net income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pension_income: 12_000  # $1,000/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # No earned income, so no 20% deduction
+    # Net income: $1,000 (all unearned) >= $849
+    ia_tanf_net_income_eligible: false
+
+# --- Edge cases added below ---
+
+- name: Case 6, applicant with net income exactly at standard of need fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Need net earned = $849 (SoN for size 3)
+        # After 20% deduction: earned * 0.80 = $849
+        # earned = $849 / 0.80 = $1,061.25/month => annual $12,735
+        employment_income_before_lsr: 12_735
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Gross earned: $1,061.25
+    # 20% deduction: $1,061.25 * 0.20 = $212.25
+    # Net earned: $1,061.25 - $212.25 = $849
+    # Test uses strict < : $849 < $849 is FALSE
+    ia_tanf_net_income_eligible: false
+
+- name: Case 7, applicant with net income one dollar below standard of need passes.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Need net earned = $848 < $849
+        # After 20% deduction: earned * 0.80 = $848
+        # earned = $848 / 0.80 = $1,060/month => annual $12,720
+        employment_income_before_lsr: 12_720
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Gross earned: $1,060
+    # 20% deduction: $1,060 * 0.20 = $212
+    # Net earned: $1,060 - $212 = $848
+    # $848 < $849 -- PASS
+    ia_tanf_net_income_eligible: true
+
+- name: Case 8, applicant with combined earned and unearned at boundary fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        pension_income: 5_988  # $499/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3, Standard of Need: $849
+    # Gross earned: $500
+    # 20% deduction: $500 * 0.20 = $100
+    # Net earned: $500 - $100 = $400
+    # Unearned (no deduction): $499
+    # Net income: $400 + $499 = $899 >= $849
+    ia_tanf_net_income_eligible: false
+
+- name: Case 9, recipient with very high income still passes (skips test).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month
+        pension_income: 12_000  # $1,000/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Recipients skip Test 2 entirely regardless of income
+    # Net income would be $3,000 * 0.80 + $1,000 = $3,400 >> $849
+    # But since recipient, always true
+    ia_tanf_net_income_eligible: true
+
+- name: Case 10, applicant family of 1 with unearned at need standard fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pension_income: 4_380  # $365/month = SoN for size 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Family size: 1, Standard of Need: $365
+    # Net income: $365 (unearned only, no 20% deduction)
+    # $365 < $365 is FALSE (strict less than)
+    ia_tanf_net_income_eligible: false

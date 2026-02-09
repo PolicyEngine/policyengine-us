@@ -1,0 +1,55 @@
+description: Iowa provides this amount as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  amount_unit: currency-USD
+  period: month
+  label: Iowa TANF payment standard
+  type: single_amount
+  threshold_unit: person
+  reference:
+    - title: IAC 441-41.28(2) - Schedule of Basic Needs
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+    - title: IAC 441-41.28 (May 2025 codification)
+      href: https://www.legis.iowa.gov/docs/iac/rule/05-14-2025.441.41.28.pdf#page=1
+
+brackets:
+  - threshold:
+      2025-07-01: 1
+    amount:
+      2025-07-01: 183
+  - threshold:
+      2025-07-01: 2
+    amount:
+      2025-07-01: 361
+  - threshold:
+      2025-07-01: 3
+    amount:
+      2025-07-01: 426
+  - threshold:
+      2025-07-01: 4
+    amount:
+      2025-07-01: 495
+  - threshold:
+      2025-07-01: 5
+    amount:
+      2025-07-01: 548
+  - threshold:
+      2025-07-01: 6
+    amount:
+      2025-07-01: 610
+  - threshold:
+      2025-07-01: 7
+    amount:
+      2025-07-01: 670
+  - threshold:
+      2025-07-01: 8
+    amount:
+      2025-07-01: 731
+  - threshold:
+      2025-07-01: 9
+    amount:
+      2025-07-01: 791
+  - threshold:
+      2025-07-01: 10
+    amount:
+      2025-07-01: 865

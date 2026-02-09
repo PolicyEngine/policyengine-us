@@ -1,0 +1,79 @@
+# Unit tests for Iowa TANF (FIP) need standard by family size
+# IAC 441-41.28(2): Schedule of Living Costs (Standard of Need)
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+
+- name: Case 1, family size 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 365
+
+- name: Case 2, family size 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 719
+
+- name: Case 3, family size 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 849
+
+- name: Case 4, family size 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 986
+
+- name: Case 5, family size 5.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 5
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 1_092
+
+- name: Case 6, family size 10.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 10
+    state_code: IA
+  output:
+    ia_tanf_need_standard: 1_724
+
+- name: Case 7, family size 11 uses additional person increment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 11
+    state_code: IA
+  output:
+    # $1,724 (size 10) + $173 (additional person) = $1,897
+    ia_tanf_need_standard: 1_897
+
+# --- Edge cases added below ---
+
+- name: Case 8, family size 12 uses two additional person increments.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 12
+    state_code: IA
+  output:
+    # $1,724 (size 10) + 2 * $173 = $1,724 + $346 = $2,070
+    ia_tanf_need_standard: 2_070

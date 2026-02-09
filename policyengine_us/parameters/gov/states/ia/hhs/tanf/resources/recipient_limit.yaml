@@ -1,0 +1,15 @@
+description: Iowa limits resources to this amount for recipients under the Temporary Assistance for Needy Families program.
+
+values:
+  2025-07-01: 5_000
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa TANF recipient resource limit
+  reference:
+    - title: IAC 441-41.26(1)"e" - Resource limitation ($5,000 recipient units)
+      href: https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-26
+
+# NOTE: Applicant units where at least one member was a recipient in Iowa
+# in the month prior to application also use this $5,000 limit.

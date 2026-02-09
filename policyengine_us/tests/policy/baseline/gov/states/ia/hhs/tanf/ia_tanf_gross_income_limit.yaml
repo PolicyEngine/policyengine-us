@@ -1,0 +1,85 @@
+# Unit tests for Iowa TANF (FIP) gross income limit by family size
+# IAC 441-41.28(2): 185% of Standard of Need (Schedule of Living Costs)
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+
+- name: Case 1, family size 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1
+    state_code: IA
+  output:
+    # 185% of $365 = $675.25
+    ia_tanf_gross_income_limit: 675.25
+
+- name: Case 2, family size 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    state_code: IA
+  output:
+    # 185% of $719 = $1,330.15
+    ia_tanf_gross_income_limit: 1_330.15
+
+- name: Case 3, family size 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    state_code: IA
+  output:
+    # 185% of $849 = $1,570.65
+    ia_tanf_gross_income_limit: 1_570.65
+
+- name: Case 4, family size 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    state_code: IA
+  output:
+    # 185% of $986 = $1,824.10
+    ia_tanf_gross_income_limit: 1_824.10
+
+- name: Case 5, family size 5.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 5
+    state_code: IA
+  output:
+    # 185% of $1,092 = $2,020.20
+    ia_tanf_gross_income_limit: 2_020.20
+
+- name: Case 6, family size 10.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 10
+    state_code: IA
+  output:
+    # 185% of $1,724 = $3,189.40
+    ia_tanf_gross_income_limit: 3_189.40
+
+# --- Edge cases added below ---
+
+- name: Case 7, family size 11 uses additional person increment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 11
+    state_code: IA
+  output:
+    # $3,189.40 (size 10) + $320.05 (1 additional) = $3,509.45
+    ia_tanf_gross_income_limit: 3_509.45
+
+- name: Case 8, family size 12 uses two additional person increments.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 12
+    state_code: IA
+  output:
+    # $3,189.40 (size 10) + 2 * $320.05 = $3,189.40 + $640.10 = $3,829.50
+    ia_tanf_gross_income_limit: 3_829.50

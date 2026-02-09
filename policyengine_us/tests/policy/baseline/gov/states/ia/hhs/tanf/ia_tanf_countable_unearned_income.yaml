@@ -1,0 +1,226 @@
+# Unit tests for Iowa TANF (FIP) countable unearned income
+# IAC 441-41.27(239B): Unearned income with $50 child support disregard
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, no unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_countable_unearned_income: 0
+
+- name: Case 2, pension income counted as unearned.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        pension_income: 3_600  # $300/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Pension: $300/month
+    # $50 child support disregard: max($300 - $50, 0) = $250
+    ia_tanf_countable_unearned_income: 250
+
+- name: Case 3, child support received counted as unearned.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400  # $200/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Child support: $200/month
+    # $50 disregard: max($200 - $50, 0) = $150
+    ia_tanf_countable_unearned_income: 150
+
+- name: Case 4, social security counted as unearned.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security: 6_000  # $500/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Social security: $500/month
+    # $50 child support disregard: max($500 - $50, 0) = $450
+    ia_tanf_countable_unearned_income: 450
+
+- name: Case 5, multiple unearned income sources.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        pension_income: 2_400  # $200/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Pension: $200 + Child support: $100 = $300/month total unearned
+    # $50 child support disregard: max($300 - $50, 0) = $250
+    ia_tanf_countable_unearned_income: 250
+
+# --- Edge cases added below ---
+
+- name: Case 6, child support exactly fifty dollars per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Child support: $50/month
+    # $50 disregard: max($50 - $50, 0) = $0
+    ia_tanf_countable_unearned_income: 0
+
+- name: Case 7, unearned income less than fifty dollar disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Child support: $30/month
+    # $50 disregard: max($30 - $50, 0) = $0 (disregard exceeds income)
+    ia_tanf_countable_unearned_income: 0
+
+- name: Case 8, unearned income one dollar over disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 612  # $51/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Child support: $51/month
+    # $50 disregard: max($51 - $50, 0) = $1
+    ia_tanf_countable_unearned_income: 1
+
+- name: Case 9, large unearned income with disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        pension_income: 12_000  # $1,000/month
+        social_security: 6_000  # $500/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Pension: $1,000 + SS: $500 = $1,500/month total
+    # $50 disregard: max($1,500 - $50, 0) = $1,450
+    ia_tanf_countable_unearned_income: 1_450
+
+- name: Case 10, zero child support with other unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        pension_income: 2_400  # $200/month
+        child_support_received: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Pension: $200/month, child support: $0
+    # Total unearned: $200
+    # $50 disregard: max($200 - $50, 0) = $150
+    ia_tanf_countable_unearned_income: 150

@@ -1,0 +1,194 @@
+# Unit tests for Iowa TANF (FIP) benefit amount calculation
+# IAC 441-41.28(2), 441-45.27: FIP Grant = Payment Standard - Countable Net Income
+# Rounded down to whole dollar
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+
+- name: Case 1, eligible with no income receives full payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $0 = $426
+    ia_tanf: 426
+
+- name: Case 2, eligible with some countable income receives reduced benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 268.80
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $268.80 = $157.20, rounded down to $157
+    ia_tanf: 157
+
+- name: Case 3, eligible with income equal to payment standard gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 426
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $426 = $0
+    ia_tanf: 0
+
+- name: Case 4, eligible with income exceeding payment standard gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 500
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # max($426 - $500, 0) = $0
+    ia_tanf: 0
+
+- name: Case 5, ineligible receives no benefit regardless of income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: false
+    state_code: IA
+  output:
+    ia_tanf: 0
+
+- name: Case 6, benefit rounded down to whole dollar.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 495
+    ia_tanf_countable_income: 368
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $495 - $368 = $127 (already whole dollar)
+    ia_tanf: 127
+
+- name: Case 7, benefit with fractional amount rounded down.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 100.80
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $100.80 = $325.20, rounded down to $325
+    ia_tanf: 325
+
+- name: Case 8, full payment for family of 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 495
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    ia_tanf: 495
+
+- name: Case 9, small benefit still paid.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 425
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $425 = $1 (no minimum grant in Iowa)
+    ia_tanf: 1
+
+# --- Edge cases added below ---
+
+- name: Case 10, benefit of zero point ninety nine rounds down to zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 425.01
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $425.01 = $0.99, floor = $0
+    ia_tanf: 0
+
+- name: Case 11, benefit of exactly one dollar after floor.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 424.50
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $424.50 = $1.50, floor = $1
+    ia_tanf: 1
+
+- name: Case 12, full payment standard for family size 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 183
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    ia_tanf: 183
+
+- name: Case 13, full payment standard for family size 10.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 865
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    ia_tanf: 865
+
+- name: Case 14, full payment standard for family size 11.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 952
+    ia_tanf_countable_income: 0
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $865 (size 10) + $87 (additional) = $952
+    ia_tanf: 952
+
+- name: Case 15, benefit of zero point fifty rounds down to zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 425.50
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $425.50 = $0.50, floor = $0
+    ia_tanf: 0
+
+- name: Case 16, benefit with large fractional amount rounded down.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ia_tanf_payment_standard: 426
+    ia_tanf_countable_income: 100.01
+    ia_tanf_eligible: true
+    state_code: IA
+  output:
+    # $426 - $100.01 = $325.99, floor = $325
+    ia_tanf: 325

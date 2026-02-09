@@ -1,0 +1,225 @@
+# Unit tests for Iowa TANF (FIP) gross income eligibility (Test 1)
+# IAC 441-41.27(239B): Gross income must not exceed 185% of Standard of Need
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, no income passes gross income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family size: 2
+    # Gross income limit: $1,330.15 (185% of $719)
+    # Gross income: $0 <= $1,330.15
+    ia_tanf_gross_income_eligible: true
+
+- name: Case 2, income below limit passes.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross income: $1,000 <= $1,570.65
+    ia_tanf_gross_income_eligible: true
+
+- name: Case 3, income above limit fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross income: $2,000 > $1,570.65
+    ia_tanf_gross_income_eligible: false
+
+- name: Case 4, income at exact limit passes.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_847.80  # $1,570.65/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross income: $1,570.65 <= $1,570.65
+    ia_tanf_gross_income_eligible: true
+
+- name: Case 5, combined earned and unearned income above limit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month earned
+        pension_income: 6_000  # $500/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross: $1,200 earned + $500 unearned = $1,700 > $1,570.65
+    ia_tanf_gross_income_eligible: false
+
+# --- Edge cases added below ---
+
+- name: Case 6, income one dollar over limit for family of 3 fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $1,570.65 + $1 = $1,571.65/month => annual $18,859.80
+        employment_income_before_lsr: 18_859.80
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross income: $1,571.65 > $1,570.65
+    ia_tanf_gross_income_eligible: false
+
+- name: Case 7, family of 1 with income at limit passes.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $675.25/month => annual $8,103
+        employment_income_before_lsr: 8_103
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Family size: 1
+    # Gross income limit: $675.25 (185% of $365)
+    # Monthly gross income: $675.25 <= $675.25
+    ia_tanf_gross_income_eligible: true
+
+- name: Case 8, family of 1 with income one dollar over limit fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $676.25/month => annual $8,115
+        employment_income_before_lsr: 8_115
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Family size: 1
+    # Gross income limit: $675.25 (185% of $365)
+    # Monthly gross income: $676.25 > $675.25
+    ia_tanf_gross_income_eligible: false
+
+- name: Case 9, combined earned and unearned income exactly at limit passes.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month earned
+        pension_income: 6_847.80  # $570.65/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    # Monthly gross: $1,000 + $570.65 = $1,570.65 <= $1,570.65
+    ia_tanf_gross_income_eligible: true

@@ -1,0 +1,220 @@
+# Unit tests for Iowa TANF (FIP) overall eligibility
+# IAC 441-41.27(239B), 441-41.28(239B):
+# Applicants must pass Tests 1, 2, and 3; Recipients must pass Tests 1 and 3
+# Must have at least one demographically eligible child
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, eligible with eligible child and passing all tests.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 0
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_eligible: true
+
+- name: Case 2, ineligible with no eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 0
+        ia_tanf_payment_standard: 183
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_tanf_eligible: false
+
+- name: Case 3, ineligible when gross income test fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: false
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 0
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_eligible: false
+
+- name: Case 4, ineligible when net income test fails.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: false
+        ia_tanf_countable_income: 0
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_eligible: false
+
+- name: Case 5, ineligible when countable income exceeds payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 400
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Countable income ($400) >= Payment standard ($361)
+    ia_tanf_eligible: false
+
+- name: Case 6, eligible when countable income just below payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 360
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Countable income ($360) < Payment standard ($361)
+    ia_tanf_eligible: true
+
+# --- Edge cases added below ---
+
+- name: Case 7, ineligible when countable income exactly equals payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 361
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Countable income ($361) == Payment standard ($361)
+    # benefit_positive requires payment_standard > countable_income (strict >)
+    # $361 > $361 is FALSE
+    ia_tanf_eligible: false
+
+- name: Case 8, eligible when countable income one dollar below payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 182
+        ia_tanf_payment_standard: 183
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family size 1: Payment standard $183
+    # Countable income ($182) < $183 -- eligible
+    ia_tanf_eligible: true
+
+- name: Case 9, ineligible when all tests pass but no eligible child exists.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ia_tanf_gross_income_eligible: true
+        ia_tanf_net_income_eligible: true
+        ia_tanf_countable_income: 0
+        ia_tanf_payment_standard: 361
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Two adults, neither demographically eligible
+    ia_tanf_eligible: false

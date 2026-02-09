@@ -1,0 +1,640 @@
+# Integration tests for Iowa TANF (Family Investment Program / FIP)
+# Tests realistic family scenarios with complete eligibility and benefit calculations
+# IAC 441-41.27(239B), 441-41.28(239B), 441-45.27
+# Three-test system: Test 1 (gross income), Test 2 (net income, applicants only),
+# Test 3 (payment standard test / benefit calculation)
+# 20% earned income deduction for all; 58% work incentive disregard for recipients only
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-28
+
+- name: Case 1, applicant with no income family of 3 receives full benefit.
+  # From working_references.md Example 1
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Payment standard: $426
+    # Need standard: $849
+    # Gross income limit: $1,570.65 (185% of $849)
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Test 1 (Gross Income): $0 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2 (Net Income, applicant): $0 < $849 -- PASS
+    ia_tanf_net_income_eligible: true
+
+    # Income calculations
+    ia_tanf_countable_earned_income: 0
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 0
+
+    # Test 3 (Payment Standard): $0 < $426 -- PASS
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $426 - $0 = $426
+    ia_tanf: 426
+
+- name: Case 2, applicant with moderate earned income family of 4.
+  # Tests all three eligibility tests for an applicant
+  # Applicant does NOT get 58% work incentive disregard
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family size: 4
+    # Payment standard: $495
+    # Need standard: $986
+    # Gross income limit: $1,824.10 (185% of $986)
+    ia_tanf_payment_standard: 495
+    ia_tanf_need_standard: 986
+    ia_tanf_gross_income_limit: 1_824.10
+
+    # Monthly gross earned: $800
+    # Test 1 (Gross Income): $800 <= $1,824.10 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Earned income deduction: $800 * 0.20 = $160
+    # After 20%: $800 - $160 = $640
+    # NO 58% disregard (applicant)
+    # Countable earned: $640
+    ia_tanf_countable_earned_income: 640
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 640
+
+    # Test 2 (Net Income, applicant): $640 < $986 -- PASS
+    ia_tanf_net_income_eligible: true
+
+    # Test 3 (Payment Standard): $640 >= $495 -- FAIL
+    # Countable income exceeds payment standard -- ineligible
+    is_person_demographic_tanf_eligible: [false, false, true, true]
+    ia_tanf_eligible: false
+    ia_tanf: 0
+
+- name: Case 3, recipient with earned income family of 3.
+  # From working_references.md Example 2
+  # Recipients skip Test 2 and get 58% work incentive disregard
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Payment standard: $426
+    # Need standard: $849
+    # Gross income limit: $1,570.65 (185% of $849)
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Monthly gross earned: $800
+    # Test 1 (Gross Income): $800 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient, always passes)
+    ia_tanf_net_income_eligible: true
+
+    # 20% deduction: $800 * 0.20 = $160
+    # After 20%: $800 - $160 = $640
+    # 58% disregard (recipient): $640 * 0.58 = $371.20
+    # Countable earned: $640 - $371.20 = $268.80
+    ia_tanf_countable_earned_income: 268.80
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 268.80
+
+    # Test 3 (Payment Standard): $268.80 < $426 -- PASS
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $426 - $268.80 = $157.20, rounded down to $157
+    ia_tanf: 157
+
+- name: Case 4, recipient with earned and unearned income family of 4.
+  # From working_references.md Example 4
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month earned
+        pension_income: 2_400  # $200/month unearned
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family size: 4
+    # Payment standard: $495
+    # Need standard: $986
+    # Gross income limit: $1,824.10 (185% of $986)
+    ia_tanf_payment_standard: 495
+    ia_tanf_need_standard: 986
+    ia_tanf_gross_income_limit: 1_824.10
+
+    # Monthly gross: $500 earned + $200 unearned = $700
+    # Test 1 (Gross Income): $700 <= $1,824.10 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient)
+    ia_tanf_net_income_eligible: true
+
+    # 20% deduction: $500 * 0.20 = $100
+    # After 20%: $500 - $100 = $400
+    # 58% disregard (recipient): $400 * 0.58 = $232
+    # Countable earned: $400 - $232 = $168
+    ia_tanf_countable_earned_income: 168
+
+    # Unearned: max($200 - $50, 0) = $150
+    ia_tanf_countable_unearned_income: 150
+
+    # Total countable: $168 + $150 = $318
+    ia_tanf_countable_income: 318
+
+    # Test 3 (Payment Standard): $318 < $495 -- PASS
+    is_person_demographic_tanf_eligible: [false, false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $495 - $318 = $177
+    ia_tanf: 177
+
+- name: Case 5, family over income limit ineligible.
+  # High earner exceeds 185% of Standard of Need (gross income test fails)
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    # Gross income limit: $1,570.65 (185% of $849)
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Monthly gross income: $2,000
+    # Test 1 (Gross Income): $2,000 > $1,570.65 -- FAIL
+    ia_tanf_gross_income_eligible: false
+
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: false
+    ia_tanf: 0
+
+- name: Case 6, applicant with $800 earnings family of 3 fails payment standard test.
+  # From working_references.md Example 3
+  # Applicant does not get 58% disregard, so net income exceeds payment standard
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Test 1 (Gross Income): $800 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # 20% deduction: $800 * 0.20 = $160
+    # After 20%: $640 (no 58% for applicant)
+    ia_tanf_countable_earned_income: 640
+    ia_tanf_countable_income: 640
+
+    # Test 2 (Net Income): $640 < $849 -- PASS
+    ia_tanf_net_income_eligible: true
+
+    # Test 3 (Payment Standard): $640 >= $426 -- FAIL
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: false
+    ia_tanf: 0
+
+- name: Case 7, large family of 5 with recipient earnings.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 36
+      person3:
+        age: 14
+      person4:
+        age: 10
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: IA
+  output:
+    # Family size: 5
+    # Payment standard: $548
+    # Need standard: $1,092
+    # Gross income limit: $2,020.20 (185% of $1,092)
+    ia_tanf_payment_standard: 548
+    ia_tanf_need_standard: 1_092
+    ia_tanf_gross_income_limit: 2_020.20
+
+    # Monthly gross earned: $600
+    # Test 1 (Gross Income): $600 <= $2,020.20 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient)
+    ia_tanf_net_income_eligible: true
+
+    # 20% deduction: $600 * 0.20 = $120
+    # After 20%: $600 - $120 = $480
+    # 58% disregard (recipient): $480 * 0.58 = $278.40
+    # Countable earned: $480 - $278.40 = $201.60
+    ia_tanf_countable_earned_income: 201.60
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 201.60
+
+    # Test 3 (Payment Standard): $201.60 < $548 -- PASS
+    is_person_demographic_tanf_eligible: [false, false, true, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $548 - $201.60 = $346.40, rounded down to $346
+    ia_tanf: 346
+
+# --- Edge case integration tests added below ---
+
+- name: Case 8, applicant vs recipient same income different outcome.
+  # Same family income but applicant fails Test 3 while recipient would pass
+  # Demonstrates the 58% disregard making the difference
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Test 1 (Gross Income): $600 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Applicant: 20% deduction only
+    # 20% deduction: $600 * 0.20 = $120
+    # After 20%: $600 - $120 = $480
+    # NO 58% disregard (applicant)
+    ia_tanf_countable_earned_income: 480
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 480
+
+    # Test 2 (Net Income, applicant): $480 < $849 -- PASS
+    ia_tanf_net_income_eligible: true
+
+    # Test 3: $480 >= $426 -- FAIL (applicant's countable exceeds payment standard)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: false
+    ia_tanf: 0
+
+- name: Case 9, recipient same income as case 8 is eligible.
+  # Recipient with $600/month earns same as case 8 but gets 58% disregard
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Test 1 (Gross Income): $600 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient)
+    ia_tanf_net_income_eligible: true
+
+    # Recipient: 20% deduction + 58% disregard
+    # 20% deduction: $600 * 0.20 = $120
+    # After 20%: $600 - $120 = $480
+    # 58% disregard: $480 * 0.58 = $278.40
+    # Countable earned: $480 - $278.40 = $201.60
+    ia_tanf_countable_earned_income: 201.60
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 201.60
+
+    # Test 3: $201.60 < $426 -- PASS
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $426 - $201.60 = $224.40, floor = $224
+    ia_tanf: 224
+
+- name: Case 10, recipient with child support and earned income.
+  # Tests child support disregard interaction with earned income deductions
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month earned
+        child_support_received: 1_800  # $150/month child support
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Test 1 (Gross Income): $400 earned + $150 unearned = $550 <= $1,570.65
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient)
+    ia_tanf_net_income_eligible: true
+
+    # Earned income:
+    # 20% deduction: $400 * 0.20 = $80
+    # After 20%: $400 - $80 = $320
+    # 58% disregard: $320 * 0.58 = $185.60
+    # Countable earned: $320 - $185.60 = $134.40
+    ia_tanf_countable_earned_income: 134.40
+
+    # Unearned income:
+    # Child support: $150
+    # $50 disregard: max($150 - $50, 0) = $100
+    ia_tanf_countable_unearned_income: 100
+
+    # Total countable: $134.40 + $100 = $234.40
+    ia_tanf_countable_income: 234.40
+
+    # Test 3: $234.40 < $426 -- PASS
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $426 - $234.40 = $191.60, floor = $191
+    ia_tanf: 191
+
+- name: Case 11, recipient with child support exactly fifty dollars fully disregarded.
+  # Tests the $50 child support disregard boundary at exactly $50
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Family size: 2
+    ia_tanf_payment_standard: 361
+    ia_tanf_need_standard: 719
+    ia_tanf_gross_income_limit: 1_330.15
+
+    # Test 1 (Gross Income): $50 <= $1,330.15 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # Test 2: SKIPPED (recipient)
+    ia_tanf_net_income_eligible: true
+
+    # No earned income
+    ia_tanf_countable_earned_income: 0
+
+    # Unearned: max($50 - $50, 0) = $0
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 0
+
+    # Test 3: $0 < $361 -- PASS
+    is_person_demographic_tanf_eligible: [false, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $361 - $0 = $361
+    ia_tanf: 361
+
+- name: Case 12, applicant with benefit that rounds down to zero.
+  # Income is just barely below payment standard producing sub-dollar benefit
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        # Need countable earned ~$425.50 (just below $426 payment standard)
+        # For applicant: earned * 0.80 = countable
+        # $425.50 / 0.80 = $531.875/month => annual $6,382.50
+        employment_income_before_lsr: 6_382.50
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family size: 3
+    ia_tanf_payment_standard: 426
+    ia_tanf_need_standard: 849
+    ia_tanf_gross_income_limit: 1_570.65
+
+    # Gross earned: $531.875
+    # Test 1 (Gross Income): $531.875 <= $1,570.65 -- PASS
+    ia_tanf_gross_income_eligible: true
+
+    # 20% deduction: $531.875 * 0.20 = $106.375
+    # After 20%: $531.875 - $106.375 = $425.50
+    ia_tanf_countable_earned_income: 425.50
+    ia_tanf_countable_unearned_income: 0
+    ia_tanf_countable_income: 425.50
+
+    # Test 2 (Net Income): $425.50 < $849 -- PASS
+    ia_tanf_net_income_eligible: true
+
+    # Test 3: $425.50 < $426 -- PASS (barely)
+    is_person_demographic_tanf_eligible: [false, true, true]
+    ia_tanf_eligible: true
+
+    # Benefit: $426 - $425.50 = $0.50, floor = $0
+    ia_tanf: 0

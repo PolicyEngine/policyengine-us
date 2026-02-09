@@ -1,0 +1,225 @@
+# Unit tests for Iowa TANF (FIP) total countable income
+# IAC 441-41.27(239B): Countable earned + countable unearned income
+# https://www.law.cornell.edu/regulations/iowa/Iowa-Admin-Code-r-441-41-27
+
+- name: Case 1, no income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_tanf_countable_income: 0
+
+- name: Case 2, earned income only for applicant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $800
+    # 20% deduction: $160
+    # Countable earned: $640 (no 58% for applicant)
+    # No unearned income (countable unearned: max($0 - $50, 0) = $0)
+    # Total countable: $640
+    ia_tanf_countable_income: 640
+
+- name: Case 3, earned income only for recipient.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $800
+    # 20% deduction: $160
+    # After 20%: $640
+    # 58% disregard: $371.20
+    # Countable earned: $268.80
+    # No unearned income (countable unearned: max($0 - $50, 0) = $0)
+    # Total countable: $268.80
+    ia_tanf_countable_income: 268.80
+
+- name: Case 4, combined earned and unearned for recipient.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        pension_income: 2_400  # $200/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $500
+    # 20% deduction: $100
+    # After 20%: $400
+    # 58% disregard: $232
+    # Countable earned: $168
+    # Unearned: max($200 - $50, 0) = $150
+    # Total countable: $168 + $150 = $318
+    ia_tanf_countable_income: 318
+
+- name: Case 5, unearned income only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pension_income: 3_600  # $300/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # No earned income
+    # Unearned: max($300 - $50, 0) = $250
+    # Total countable: $250
+    ia_tanf_countable_income: 250
+
+# --- Edge cases added below ---
+
+- name: Case 6, same income applicant vs recipient produces different countable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        pension_income: 2_400  # $200/month unearned
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $500
+    # 20% deduction: $100
+    # After 20%: $400 (no 58% for applicant)
+    # Countable earned: $400
+    # Unearned: max($200 - $50, 0) = $150
+    # Total countable: $400 + $150 = $550
+    ia_tanf_countable_income: 550
+
+- name: Case 7, very small unearned income below disregard results in zero total.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # No earned income
+    # Unearned: max($30 - $50, 0) = $0
+    # Total countable: $0
+    ia_tanf_countable_income: 0
+
+- name: Case 8, recipient with high earned income near payment standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Need countable earned ~$426 (payment standard for size 3)
+        # After 20% and 58%: earned * 0.80 * 0.42 = earned * 0.336
+        # 426 / 0.336 = $1,267.86/month => annual $15,214.29
+        employment_income_before_lsr: 15_214.29
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Gross earned: $1,267.86/month
+    # 20% deduction: $1,267.86 * 0.20 = $253.57
+    # After 20%: $1,267.86 - $253.57 = $1,014.29
+    # 58% disregard: $1,014.29 * 0.58 = $588.29
+    # Countable earned: $1,014.29 - $588.29 = $426.00
+    # No unearned (countable unearned: max($0 - $50, 0) = $0)
+    # Total countable: $426.00
+    ia_tanf_countable_income: 426
