@@ -1,6 +1,6 @@
 # Ohio 2025 Income Tax Integration Tests
 # Based on 2025 IT 1040 Booklet and Ohio Revised Code Chapter 5747
-# Tests 2025 parameter values: exemptions ($2,500/$2,250/$2,000) and rates (0%/2.75%/3.15%)
+# Tests 2025 parameter values: exemptions ($2,350/$2,100/$1,850) and rates (0%/2.75%/3.15%)
 
 - name: 2025 - Single filer medium income (2.75% bracket)
   absolute_error_margin: 5
@@ -23,12 +23,12 @@
         state_code: OH
   output:
     # Income: $68,050 (middle exemption tier: $40k-$80k)
-    # Exemption: 1 * $2,250 = $2,250
-    # Taxable income: $68,050 - $2,250 = $65,800
-    # Tax: $342 base + 2.75% of ($65,800 - $26,050) = $1,435
-    oh_personal_exemptions: 2_250
-    oh_taxable_income: 65_800
-    oh_income_tax_before_non_refundable_credits: 1_435
+    # Exemption: 1 * $2,100 = $2,100
+    # Taxable income: $68,050 - $2,100 = $65,950
+    # Tax: $342 base + 2.75% of ($65,950 - $26,050) = $1,439
+    oh_personal_exemptions: 2_100
+    oh_taxable_income: 65_950
+    oh_income_tax_before_non_refundable_credits: 1_439
 
 - name: 2025 - High income married couple (3.15% bracket)
   absolute_error_margin: 10
@@ -56,10 +56,10 @@
         state_code: OH
   output:
     # Income: $150,000 (high exemption tier: >$80k)
-    # Exemptions: 2 * $2,000 = $4,000
-    # Taxable income: $150,000 - $4,000 = $146,000
-    oh_personal_exemptions: 4_000
-    oh_taxable_income: 146_000
+    # Exemptions: 2 * $1,850 = $3,700
+    # Taxable income: $150,000 - $3,700 = $146,300
+    oh_personal_exemptions: 3_700
+    oh_taxable_income: 146_300
 
 - name: 2025 - Low income family (lowest exemption tier)
   absolute_error_margin: 5
@@ -89,7 +89,7 @@
         state_code: OH
   output:
     # Income: $35,000 (lowest exemption tier: <=$40k)
-    # Exemptions: 3 * $2,500 = $7,500
-    # Taxable income: $35,000 - $7,500 = $27,500
-    oh_personal_exemptions: 7_500
-    oh_taxable_income: 27_500
+    # Exemptions: 3 * $2,350 = $7,050
+    # Taxable income: $35,000 - $7,050 = $27,950
+    oh_personal_exemptions: 7_050
+    oh_taxable_income: 27_950

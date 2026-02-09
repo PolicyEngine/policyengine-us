@@ -4,17 +4,17 @@ brackets:
       2021-01-01: 0
     amount:
       2021-01-01: 2_400
-      2025-01-01: 2_500
+      2025-01-01: 2_350
   - threshold:
       2021-01-01: 40_000
     amount:
       2021-01-01: 2_150
-      2025-01-01: 2_250
+      2025-01-01: 2_100
   - threshold:
       2021-01-01: 80_000
     amount:
       2021-01-01: 1_900
-      2025-01-01: 2_000
+      2025-01-01: 1_850
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -23,7 +23,7 @@ metadata:
   label: Ohio Personal Exemption
   reference:
     - title: Ohio Revised Code - Section 5747.025 Personal exemptions (A)(1)(2)(3)
-      href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-025/
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.025
     - title: 2021 Ohio IT 1040 Individual Income Tax Return Form (line 4)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=14
     - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions (line 4)
