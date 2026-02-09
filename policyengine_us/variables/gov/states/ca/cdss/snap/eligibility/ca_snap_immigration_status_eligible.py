@@ -5,7 +5,7 @@ class ca_snap_immigration_status_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Person is eligible for California SNAP due to immigration status"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.CA
     reference = (
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-92.pdf#page=7",

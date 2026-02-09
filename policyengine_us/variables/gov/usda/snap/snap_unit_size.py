@@ -5,7 +5,7 @@ class snap_unit_size(Variable):
     value_type = int
     entity = SPMUnit
     label = "SNAP unit size"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
