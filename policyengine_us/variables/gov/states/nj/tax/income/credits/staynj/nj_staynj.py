@@ -16,9 +16,17 @@ class nj_staynj(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.credits.staynj
 
-        # Calculate 50% of property taxes paid
+        # Get property taxes paid
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        calculated_benefit = property_taxes * p.rate
+
+        # Get ANCHOR benefit received (must be subtracted per NJ Treasury)
+        anchor_benefit = tax_unit("nj_anchor", period)
+
+        # Calculate 50% of (property taxes minus ANCHOR)
+        # Per NJ Treasury: Stay NJ benefit is 50% of property taxes
+        # MINUS any payments received through ANCHOR
+        net_property_taxes = max_(property_taxes - anchor_benefit, 0)
+        calculated_benefit = net_property_taxes * p.rate
 
         # Cap at maximum benefit
         return min_(calculated_benefit, p.max_benefit)

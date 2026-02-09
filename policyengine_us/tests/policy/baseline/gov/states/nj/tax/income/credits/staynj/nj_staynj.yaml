@@ -1,9 +1,16 @@
 # Unit tests for nj_staynj variable
 # Tests benefit amounts for Stay NJ Property Tax Credit
-# Benefit: 50% of property taxes paid, maximum $6,500
+# Formula: Stay NJ = min((property_taxes - ANCHOR) * 0.5, $6,500)
 # Note: Stay NJ begins in 2026
+# Note: Stay NJ is calculated AFTER subtracting ANCHOR benefits from property taxes
+#
+# ANCHOR benefit amounts for homeowners (income <= $250K):
+#   - Senior (65+), income <= $150K: $1,750
+#   - Senior (65+), income $150K-$250K: $1,250
+#   - Non-senior, income <= $150K: $1,500
+#   - Non-senior, income $150K-$250K: $1,000
 
-- name: Case 1, eligible senior receives 50 percent of property tax.
+- name: Case 1, eligible senior receives 50 percent of property tax after ANCHOR offset.
   period: 2026
   input:
     people:
@@ -24,9 +31,10 @@
         members: [person1]
         state_fips: 34  # New Jersey
   output:
-    # Property tax: $10,000
-    # Benefit: 50% * $10,000 = $5,000 (under $6,500 max)
-    nj_staynj: 5_000
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $10,000 - $1,750 = $8,250
+    # Stay NJ: 50% * $8,250 = $4,125 (under $6,500 max)
+    nj_staynj: 4_125
 
 - name: Case 2, benefit capped at maximum of $6,500.
   period: 2026
@@ -49,12 +57,13 @@
         members: [person1]
         state_fips: 34
   output:
-    # Property tax: $20,000
-    # 50% * $20,000 = $10,000
+    # Senior (65+), income $200K in $150K-$250K range: ANCHOR = $1,250
+    # Net property tax: $20,000 - $1,250 = $18,750
+    # 50% * $18,750 = $9,375
     # Capped at max: $6,500
     nj_staynj: 6_500
 
-- name: Case 3, benefit exactly at maximum threshold.
+- name: Case 3, benefit under maximum with ANCHOR offset.
   period: 2026
   input:
     people:
@@ -75,11 +84,12 @@
         members: [person1]
         state_fips: 34
   output:
-    # Property tax: $13,000
-    # 50% * $13,000 = $6,500 (exactly at max)
-    nj_staynj: 6_500
+    # Senior (65+), income $150K <= $150K: ANCHOR = $1,750
+    # Net property tax: $13,000 - $1,750 = $11,250
+    # 50% * $11,250 = $5,625 (under cap)
+    nj_staynj: 5_625
 
-- name: Case 4, low property tax results in low benefit.
+- name: Case 4, low property tax results in low benefit after ANCHOR offset.
   period: 2026
   input:
     people:
@@ -100,9 +110,10 @@
         members: [person1]
         state_fips: 34
   output:
-    # Property tax: $4,000
-    # 50% * $4,000 = $2,000
-    nj_staynj: 2_000
+    # Senior (65+), income $80K <= $150K: ANCHOR = $1,750
+    # Net property tax: $4,000 - $1,750 = $2,250
+    # 50% * $2,250 = $1,125
+    nj_staynj: 1_125
 
 - name: Case 5, ineligible due to age receives $0.
   period: 2026
@@ -125,7 +136,7 @@
         members: [person1]
         state_fips: 34
   output:
-    # Age 64 < 65 - ineligible
+    # Age 64 < 65 - ineligible for Stay NJ
     nj_staynj: 0
 
 - name: Case 6, ineligible due to income receives $0.
@@ -149,7 +160,8 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $600K >= $500K limit - ineligible
+    # Income $600K >= $500K limit - ineligible for Stay NJ
+    # (Also ineligible for ANCHOR due to income > $250K)
     nj_staynj: 0
 
 - name: Case 7, ineligible renter receives $0.
@@ -196,10 +208,12 @@
         members: [person1]
         state_fips: 34
   output:
+    # Property tax $0, no ANCHOR (not paying property taxes)
+    # Net: $0 - $0 = $0
     # 50% * $0 = $0
     nj_staynj: 0
 
-- name: Case 9, senior at income just below limit is eligible.
+- name: Case 9, senior at income above ANCHOR limit but below Stay NJ limit.
   period: 2026
   input:
     people:
@@ -220,7 +234,9 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $499K < $500K limit - eligible
+    # Income $499K > $250K ANCHOR limit - no ANCHOR benefit
+    # Income $499K < $500K Stay NJ limit - eligible for Stay NJ
+    # Net property tax: $12,000 - $0 = $12,000
     # 50% * $12,000 = $6,000
     nj_staynj: 6_000
 
@@ -228,7 +244,7 @@
 # EDGE CASES - Boundary conditions and corner cases
 # ==============================================================================
 
-- name: Edge case 1, property tax exactly $13,000 where 50 percent equals cap.
+- name: Edge case 1, property tax $13,000 with ANCHOR offset.
   period: 2026
   input:
     people:
@@ -249,10 +265,12 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $13,000 = $6,500 exactly at cap
-    nj_staynj: 6_500
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $13,000 - $1,750 = $11,250
+    # 50% * $11,250 = $5,625
+    nj_staynj: 5_625
 
-- name: Edge case 2, property tax one dollar above cap threshold.
+- name: Edge case 2, property tax one dollar above previous cap threshold.
   period: 2026
   input:
     people:
@@ -273,11 +291,12 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $13,001 = $6,500.50 > $6,500 cap
-    # Capped at $6,500
-    nj_staynj: 6_500
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $13,001 - $1,750 = $11,251
+    # 50% * $11,251 = $5,625.50
+    nj_staynj: 5_625.5
 
-- name: Edge case 3, property tax one dollar below cap threshold.
+- name: Edge case 3, property tax one dollar below previous cap threshold.
   period: 2026
   input:
     people:
@@ -298,8 +317,10 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $12,999 = $6,499.50 (under cap)
-    nj_staynj: 6_499.5
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $12,999 - $1,750 = $11,249
+    # 50% * $11,249 = $5,624.50
+    nj_staynj: 5_624.5
 
 - name: Edge case 4, very high property tax capped at maximum.
   period: 2026
@@ -322,7 +343,9 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $50,000 = $25,000
+    # Senior (65+), income $200K in $150K-$250K range: ANCHOR = $1,250
+    # Net property tax: $50,000 - $1,250 = $48,750
+    # 50% * $48,750 = $24,375
     # Capped at max: $6,500
     nj_staynj: 6_500
 
@@ -347,7 +370,9 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $499,999 < $500,000 (strict less than) - eligible
+    # Income $499,999 > $250K - no ANCHOR
+    # Income $499,999 < $500,000 (strict less than) - eligible for Stay NJ
+    # Net property tax: $10,000 - $0 = $10,000
     # 50% * $10,000 = $5,000
     nj_staynj: 5_000
 
@@ -397,8 +422,10 @@
         state_fips: 34
   output:
     # Age 65 >= 65 (uses >=) - eligible
-    # 50% * $8,000 = $4,000
-    nj_staynj: 4_000
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $8,000 - $1,750 = $6,250
+    # 50% * $6,250 = $3,125
+    nj_staynj: 3_125
 
 - name: Edge case 8, zero income still receives benefit.
   period: 2026
@@ -421,11 +448,12 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $0 < $500K - eligible
-    # 50% * $6,000 = $3,000
-    nj_staynj: 3_000
+    # Senior (65+), income $0 <= $150K: ANCHOR = $1,750
+    # Net property tax: $6,000 - $1,750 = $4,250
+    # 50% * $4,250 = $2,125
+    nj_staynj: 2_125
 
-- name: Edge case 9, very low property tax.
+- name: Edge case 9, very low property tax below ANCHOR amount.
   period: 2026
   input:
     people:
@@ -446,8 +474,10 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $100 = $50
-    nj_staynj: 50
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: max($100 - $1,750, 0) = $0
+    # 50% * $0 = $0
+    nj_staynj: 0
 
 - name: Edge case 10, couple where only spouse is 65 plus.
   period: 2026
@@ -474,10 +504,11 @@
         members: [person1, person2]
         state_fips: 34
   output:
-    # Uses greater_age_head_spouse = max(50, 66) = 66 >= 65
-    # 50% * $14,000 = $7,000 > $6,500 cap
-    # Capped at $6,500
-    nj_staynj: 6_500
+    # Uses greater_age_head_spouse = max(50, 66) = 66 >= 65 - senior
+    # Senior, income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $14,000 - $1,750 = $12,250
+    # 50% * $12,250 = $6,125
+    nj_staynj: 6_125
 
 - name: Edge case 11, mixed household paying both rent and taxes receives $0.
   period: 2026
@@ -528,7 +559,7 @@
     # Income $1M far exceeds $500K limit - ineligible
     nj_staynj: 0
 
-- name: Edge case 13, property tax at $1 gives minimal benefit.
+- name: Edge case 13, property tax at $1 below ANCHOR gives zero benefit.
   period: 2026
   input:
     people:
@@ -549,10 +580,12 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $1 = $0.50
-    nj_staynj: 0.5
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: max($1 - $1,750, 0) = $0
+    # 50% * $0 = $0
+    nj_staynj: 0
 
-- name: Edge case 14, property tax just under double cap triggers cap.
+- name: Edge case 14, property tax just under previous double cap.
   period: 2026
   input:
     people:
@@ -573,8 +606,10 @@
         members: [person1]
         state_fips: 34
   output:
-    # 50% * $12,998 = $6,499 (under cap)
-    nj_staynj: 6_499
+    # Senior (65+), income $100K <= $150K: ANCHOR = $1,750
+    # Net property tax: $12,998 - $1,750 = $11,248
+    # 50% * $11,248 = $5,624
+    nj_staynj: 5_624
 
 - name: Edge case 15, senior who neither owns nor rents is ineligible.
   period: 2026
