@@ -1,5 +1,5 @@
 # Kansas Disabled Veteran Exemption Tests for 2025
-# The disabled veteran exemption increased from $2,250 (2023) to $2,320 (2024+)
+# The disabled veteran exemption increased from $2,250 (2023-2024) to $2,320 (2025+)
 # Reference: 2025 Form K-40 Instructions, K.S.A. 79-32,121(b)
 
 - name: Disabled veteran exemption 2025 - single filer
@@ -76,7 +76,7 @@
     # Total exemptions: $22,960
     ks_exemptions: 22_960
 
-- name: Disabled veteran exemption 2024 - verify same amount as 2025
+- name: Disabled veteran exemption 2024 - lower amount than 2025
   period: 2024
   input:
     people:
@@ -93,9 +93,9 @@
         state_code: KS
   output:
     # Base exemption for single: $9,160
-    # Disabled veteran exemption: $2,320 (same as 2025)
-    # Total exemptions: $11,480
-    ks_exemptions: 11_480
+    # Disabled veteran exemption: $2,250 (2024 rate, before increase)
+    # Total exemptions: $11,410
+    ks_exemptions: 11_410
 
 - name: Disabled veteran exemption 2023 - verify lower amount
   period: 2023
