@@ -35,23 +35,23 @@
     people:
       person1:
         age: 37
-        employment_income: 31010
-        taxable_interest_income: 5505.0
-        short_term_capital_gains: 5005.0
-        rental_income: 2505.0
-        rent: 23000
+        employment_income: 31_010
+        taxable_interest_income: 5_505
+        short_term_capital_gains: 5_005
+        rental_income: 2_505
+        rent: 23_000
       person2:
         age: 37
-        employment_income: 4010
-        taxable_interest_income: 5505.0
-        short_term_capital_gains: 5005.0
-        rental_income: 2505.0
+        employment_income: 4_010
+        taxable_interest_income: 5_505
+        short_term_capital_gains: 5_005
+        rental_income: 2_505
     households:
       household:
         members: [person1, person2]
         state_fips: 26  # MI
   output:  # expected results from patched TAXSIM35 2024-03-06 version
-    mi_income_tax: 2178.13
+    mi_income_tax: 2_178.13
 
 - name: Tax unit with taxsimid 50656 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01
@@ -60,31 +60,31 @@
     people:
       person1:
         age: 59
-        employment_income: 2010
-        qualified_dividend_income: 1005.0
-        taxable_interest_income: 5505.0
-        short_term_capital_gains: 3005.0
-        long_term_capital_gains: 505.0
-        rental_income: 2005.0
-        taxable_private_pension_income: 3500.0
-        rent: 24000
-        self_employment_income: 10010
+        employment_income: 2_010
+        qualified_dividend_income: 1_005
+        taxable_interest_income: 5_505
+        short_term_capital_gains: 3_005
+        long_term_capital_gains: 505
+        rental_income: 2_005
+        taxable_private_pension_income: 3_500
+        rent: 24_000
+        self_employment_income: 10_010
         business_is_qualified: true
         business_is_sstb: true
-        w2_wages_from_qualified_business: 100e6
+        w2_wages_from_qualified_business: 100_000_000
         ssi: 0  # not in TAXSIM35
         ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
         ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
         age: 59
-        employment_income: 9010
-        qualified_dividend_income: 1005
-        taxable_interest_income: 5505
-        short_term_capital_gains: 3005
+        employment_income: 9_010
+        qualified_dividend_income: 1_005
+        taxable_interest_income: 5_505
+        short_term_capital_gains: 3_005
         long_term_capital_gains: 505
-        rental_income: 2005.0
-        taxable_private_pension_income: 3500
+        rental_income: 2_005
+        taxable_private_pension_income: 3_500
       person3:
         age: 16
     tax_units:
@@ -110,17 +110,17 @@
     people:
       person1:
         age: 28
-        employment_income: 4010
-        qualified_dividend_income: 3010
-        taxable_interest_income: 11010
-        short_term_capital_gains: 7010
-        long_term_capital_gains: 3010
-        rental_income: 2010
-        rent: 24000
-        self_employment_income: 33010
+        employment_income: 4_010
+        qualified_dividend_income: 3_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 7_010
+        long_term_capital_gains: 3_010
+        rental_income: 2_010
+        rent: 24_000
+        self_employment_income: 33_010
         business_is_qualified: true
         business_is_sstb: true
-        w2_wages_from_qualified_business: 100e6
+        w2_wages_from_qualified_business: 100_000_000
       person2:
         age: 11
     tax_units:
@@ -137,7 +137,7 @@
         members: [person1, person2]
         state_fips: 26  # MI
   output:  # expected results from patched TAXSIM35 2024-03-21 version
-    mi_income_tax: 2263.98
+    mi_income_tax: 2_263.98
 
 - name: taxsim_record_25759_2024.yaml
   absolute_error_margin: 2
@@ -146,8 +146,8 @@
     people:
       person1:
         age: 31
-        employment_income: 0.0
-        long_term_capital_gains: -3810357
+        employment_income: 0
+        long_term_capital_gains: -3_810_357
         is_tax_unit_head: true
       person2:
         age: 10

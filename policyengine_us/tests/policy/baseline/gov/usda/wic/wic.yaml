@@ -3,6 +3,7 @@
   input:
     wic_category_str: PREGNANT
     is_wic_eligible: true
+    would_claim_wic: true
   output:
     wic: 37.33
 
@@ -12,15 +13,16 @@
     wic_category_str: INFANT
     is_wic_eligible: false
   output:
-    wic: 0 
+    wic: 0
 
 - name: Households that are in postpartum category are eligible.
   period: 2018-01
   input:
     wic_category_str: POSTPARTUM
     is_wic_eligible: true
+    would_claim_wic: true
   output:
-    wic: 30.72 
+    wic: 30.72
 
 - name: Meets eligible test but not one of the WIC demographic categories.
   period: 2022-01
@@ -28,13 +30,14 @@
     wic_category_str: NONE
     is_wic_eligible: true
   output:
-    wic: 0 
+    wic: 0
 
 - name: Eligible breastfeeding individuals. Verifies uprating.
   period: 2022-01
   input:
     wic_category_str: BREASTFEEDING
     is_wic_eligible: true
+    would_claim_wic: true
   output:
     # Multiply by ratio of 2022-01 to 2018-01 CPI-U.
     wic: 37.76 * 281.148 / 247.867

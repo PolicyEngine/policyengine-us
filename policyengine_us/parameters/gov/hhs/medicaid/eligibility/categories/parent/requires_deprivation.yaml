@@ -1,0 +1,122 @@
+description: >
+  Whether the state requires a child to be "deprived of parental support"
+  for parent Medicaid eligibility. This is based on Section 1931 criteria
+  which applies to non-expansion states using pre-ACA AFDC rules.
+  In practice, this means two-parent households generally do not qualify
+  unless one parent is incapacitated or unemployed.
+metadata:
+  label: Medicaid parent eligibility requires deprivation
+  unit: bool
+  period: year
+  breakdown:
+    - state_code
+  reference:
+    - title: Section 1931 Medicaid Eligibility
+      href: https://www.law.cornell.edu/uscode/text/42/1396u-1
+    - title: KFF - Medicaid Eligibility for Parents
+      href: https://www.kff.org/medicaid/state-indicator/medicaid-income-eligibility-limits-for-parents/
+# Non-expansion states that use Section 1931 deprivation rules
+AL:
+  2018-01-01: true
+FL:
+  2018-01-01: true
+GA:
+  2018-01-01: true
+KS:
+  2018-01-01: true
+MS:
+  2018-01-01: true
+NC:
+  2018-01-01: true
+  2023-12-01: false  # NC expanded Medicaid
+SC:
+  2018-01-01: true
+SD:
+  2018-01-01: true
+TN:
+  2018-01-01: true
+TX:
+  2018-01-01: true
+WI:
+  2018-01-01: true
+WY:
+  2018-01-01: true
+# Expansion states - no deprivation requirement
+AK:
+  2018-01-01: false
+AR:
+  2018-01-01: false
+AZ:
+  2018-01-01: false
+CA:
+  2018-01-01: false
+CO:
+  2018-01-01: false
+CT:
+  2018-01-01: false
+DC:
+  2018-01-01: false
+DE:
+  2018-01-01: false
+HI:
+  2018-01-01: false
+IA:
+  2018-01-01: false
+ID:
+  2018-01-01: false
+IL:
+  2018-01-01: false
+IN:
+  2018-01-01: false
+KY:
+  2018-01-01: false
+LA:
+  2018-01-01: false
+MA:
+  2018-01-01: false
+MD:
+  2018-01-01: false
+ME:
+  2018-01-01: false
+MI:
+  2018-01-01: false
+MN:
+  2018-01-01: false
+MO:
+  2018-01-01: false
+MT:
+  2018-01-01: false
+ND:
+  2018-01-01: false
+NE:
+  2018-01-01: false
+NH:
+  2018-01-01: false
+NJ:
+  2018-01-01: false
+NM:
+  2018-01-01: false
+NV:
+  2018-01-01: false
+NY:
+  2018-01-01: false
+OH:
+  2018-01-01: false
+OK:
+  2018-01-01: false
+OR:
+  2018-01-01: false
+PA:
+  2018-01-01: false
+RI:
+  2018-01-01: false
+UT:
+  2018-01-01: false
+VA:
+  2018-01-01: false
+VT:
+  2018-01-01: false
+WA:
+  2018-01-01: false
+WV:
+  2018-01-01: false

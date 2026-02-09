@@ -1,0 +1,33 @@
+# Vermont Reach Up Countable Earned Income
+# Formula: max(earned_after_disregard - dependent_care_deduction, 0)
+# Source: 33 V.S.A. Section 1103
+
+- name: Case 1, earned income only no dependent care.
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_countable_earned_income_person: 500
+    vt_reach_up_dependent_care_deduction: 0
+  output:
+    # $500 - $0 = $500
+    vt_reach_up_countable_earned_income: 500
+
+- name: Case 2, earned income with dependent care deduction.
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_countable_earned_income_person: 500
+    vt_reach_up_dependent_care_deduction: 175
+  output:
+    # $500 - $175 = $325
+    vt_reach_up_countable_earned_income: 325
+
+- name: Case 3, dependent care exceeds earned income.
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_countable_earned_income_person: 100
+    vt_reach_up_dependent_care_deduction: 175
+  output:
+    # max($100 - $175, 0) = $0
+    vt_reach_up_countable_earned_income: 0

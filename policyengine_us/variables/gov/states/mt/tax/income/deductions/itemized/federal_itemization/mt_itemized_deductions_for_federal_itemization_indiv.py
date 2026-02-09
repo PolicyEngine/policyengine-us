@@ -12,7 +12,7 @@ class mt_itemized_deductions_for_federal_itemization_indiv(Variable):
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/"
         # MT Code § 15-30-2131 (2022) (1)
     )
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.deductions
