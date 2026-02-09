@@ -9,7 +9,7 @@ class utility_expense(Variable):
     definition_period = YEAR
 
     adds = [
-        "heating_cooling_expense",
+        # "heating_cooling_expense",
         "gas_expense",
         "electricity_expense",
         "trash_expense",
