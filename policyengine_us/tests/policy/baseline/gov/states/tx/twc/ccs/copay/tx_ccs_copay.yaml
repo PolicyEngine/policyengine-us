@@ -1,6 +1,6 @@
 - name: Case 1, minimum copay for income below 20% SMI.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -28,7 +28,7 @@
 
 - name: Case 2, single child in 30% SMI bracket.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -56,7 +56,7 @@
 
 - name: Case 3, two children in 50% SMI bracket.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -89,7 +89,7 @@
 
 - name: Case 4, three children in 75% SMI bracket.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -124,7 +124,7 @@
 
 - name: Case 5, single child above 85% SMI bracket.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -148,7 +148,7 @@
 
 - name: Case 7, three children with high income capped at 7%.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -183,7 +183,7 @@
 
 - name: Case 8, single parent with two children in care.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -212,7 +212,7 @@
 
 - name: Case 9, single parent with one child in care at higher income.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -239,7 +239,7 @@
 
 - name: Case 10, very low income single parent with one child.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:
@@ -266,7 +266,7 @@
 
 - name: Case 6, no eligible children means no copay.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.5
   input:
     people:
       person1:

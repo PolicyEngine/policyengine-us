@@ -21,26 +21,34 @@ class tx_ccs_copay(Variable):
             spm_unit.members("tx_ccs_eligible_child", period)
         )
 
-        # First child rate per official TWC PSoC Calculator:
-        # IF(SMI% < min_smi, 0, ((SMI% * 100 - 1) * slope) + base_rate)
-        # Capped at maximum rate.
+        # Derive linear formula constants from PSoC chart brackets.
+        # First child rate is linear: base + slope * (smi_ratio - min_smi)
+        fc = p.first_child
+        min_smi = fc.thresholds[0]
+        base_rate = fc.amounts[0]
+        slope = (fc.amounts[1] - fc.amounts[0]) / (
+            fc.thresholds[1] - fc.thresholds[0]
+        )
+
         raw_first_child_rate = where(
-            smi_ratio < p.minimum_smi,
+            smi_ratio < min_smi,
             0,
-            ((smi_ratio * 100 - 1) * p.slope) + p.base_rate,
+            base_rate + (smi_ratio - min_smi) * slope,
         )
         max_rate = p.maximum
         first_child_rate = min_(raw_first_child_rate, max_rate)
 
-        # Additional child rate per official TWC PSoC Calculator:
-        # IF(first_child_rate == max, 0, SMI% * factor * num_additional)
+        # Additional child rate is linear: smi_ratio * factor
+        factor = p.additional_child
         additional_children = max_(eligible_children - 1, 0)
         additional_child_rate = where(
             first_child_rate >= max_rate,
             0,
-            smi_ratio * p.additional_child_factor * additional_children,
+            smi_ratio * factor * additional_children,
         )
 
         # Total rate capped at maximum, then applied to income.
-        total_rate = min_(first_child_rate + additional_child_rate, max_rate)
+        total_rate = min_(
+            first_child_rate + additional_child_rate, max_rate
+        )
         return total_rate * income
