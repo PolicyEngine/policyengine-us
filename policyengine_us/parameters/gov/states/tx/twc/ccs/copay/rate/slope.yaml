@@ -1,0 +1,15 @@
+description: Texas CCS copayment slope for the first child rate. The copayment percentage increases by this amount for each 1% increase in SMI ratio above the minimum threshold.
+
+values:
+  2024-10-01: 0.000666
+metadata:
+  unit: /1
+  period: month
+  label: Texas CCS first child copayment slope per 1% SMI
+  reference:
+    - title: 40 TAC §809.19 - Parent Share of Cost
+      href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
+    - title: TWC BCY2025 PSoC Calculator
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-psoc-calculator-twc.xlsx
+    - title: TWC BCY2026 PSoC Calculator
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy-2026-psoc-calculator-twc.xlsx

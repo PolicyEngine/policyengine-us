@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    changed:
+      - Update Texas CCS copayment formula to use exact TWC PSoC Calculator equations instead of bracket interpolation.
+    added:
+      - Add Texas CCS copayment formula parameters (base_rate, slope, additional_child_factor, minimum_smi) derived from official TWC PSoC Calculator.
