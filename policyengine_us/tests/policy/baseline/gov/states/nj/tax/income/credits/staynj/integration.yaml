@@ -32,9 +32,11 @@
     # At least one person age 68 >= 65
     # Homeowner with mortgage
     # Property tax: $10,000
-    # Benefit: 50% * $10,000 = $5,000
+    # ANCHOR benefit: $1,750 (income $150K qualifies for homeowner tier 2)
+    # Net property tax: $10,000 - $1,750 = $8,250
+    # Benefit: 50% * $8,250 = $4,125
     nj_staynj_eligible: true
-    nj_staynj: 5_000
+    nj_staynj: 4_125
 
 - name: Case 2, wealthy senior homeowner capped at maximum.
   period: 2026
@@ -89,9 +91,11 @@
     # Income: $36K (Social Security) < $500K
     # Age 75 >= 65
     # Property tax: $8,000
-    # 50% * $8,000 = $4,000
+    # ANCHOR benefit: $1,750 (income $36K qualifies for homeowner tier 2)
+    # Net property tax: $8,000 - $1,750 = $6,250
+    # 50% * $6,250 = $3,125
     nj_staynj_eligible: true
-    nj_staynj: 4_000
+    nj_staynj: 3_125
 
 - name: Case 4, non-senior homeowner is ineligible.
   period: 2026
@@ -202,6 +206,8 @@
     # Combined income: $80K + $70K = $150K < $500K
     # Homeowner
     # Property tax: $11,000
-    # 50% * $11,000 = $5,500
+    # ANCHOR benefit: $1,750 (income $150K qualifies for homeowner tier 2)
+    # Net property tax: $11,000 - $1,750 = $9,250
+    # 50% * $9,250 = $4,625
     nj_staynj_eligible: true
-    nj_staynj: 5_500
+    nj_staynj: 4_625
