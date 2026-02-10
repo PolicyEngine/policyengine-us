@@ -1,0 +1,95 @@
+- name: Case 1, SSI-only recipient.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $0 + $11,928 = $11,928
+    # OSS = $21,648 - $11,928 = $9,720
+    sc_ssi_state_supplement: 9_720
+
+- name: Case 2, SSI plus Social Security income.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 2_400
+    ssi: 11_928
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $2,400 + $11,928 = $14,328
+    # OSS = $21,648 - $14,328 = $7,320
+    sc_ssi_state_supplement: 7_320
+
+- name: Case 3, income above NIL.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 12_000
+    ssi: 11_928
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $12,000 + $11,928 = $23,928
+    # OSS = max(0, $21,648 - $23,928) = $0
+    sc_ssi_state_supplement: 0
+
+- name: Case 4, not eligible.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: false
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    # Not eligible so OSS = $0 (defined_for gates this)
+    sc_ssi_state_supplement: 0
+
+- name: Case 5, non-SSI recipient with countable income below NIL.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 15_000
+    ssi: 0
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $15,000 + $0 = $15,000
+    # OSS = $21,648 - $15,000 = $6,648
+    sc_ssi_state_supplement: 6_648
+
+- name: Case 6, income exactly at NIL.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 9_720
+    ssi: 11_928
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $9,720 + $11,928 = $21,648
+    # OSS = max(0, $21,648 - $21,648) = $0
+    sc_ssi_state_supplement: 0
+
+# Edge case tests
+
+- name: Edge case - zero income, maximum OSS.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 0
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $0 + $0 = $0
+    # OSS = $21,648 - $0 = $21,648 (maximum possible supplement)
+    sc_ssi_state_supplement: 21_648
+
+- name: Edge case - very small countable income with no SSI.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 1
+    ssi: 0
+  output:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $1 + $0 = $1
+    # OSS = $21,648 - $1 = $21,647
+    sc_ssi_state_supplement: 21_647

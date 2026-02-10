@@ -1,0 +1,146 @@
+- name: Case 1, aged person in CRCF in SC with low income.
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: true
+
+- name: Case 2, aged person NOT in CRCF.
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: false
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: false
+
+- name: Case 3, non-disabled person under 65 in CRCF.
+  period: 2026
+  input:
+    age: 30
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: false
+    ssi_countable_income: 0
+    ssi: 0
+  output:
+    sc_ssi_state_supplement_eligible: false
+
+- name: Case 4, person in wrong state.
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: true
+    state_code: GA
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: false
+
+- name: Case 5, disabled person under 65 in CRCF.
+  period: 2026
+  input:
+    age: 45
+    is_ssi_disabled: true
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: true
+
+- name: Case 6, blind person in CRCF.
+  period: 2026
+  input:
+    age: 50
+    is_blind: true
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: true
+
+- name: Case 7, income above net income limit.
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 12_000
+    ssi: 11_928
+  output:
+    # Total countable = 12_000 + 11_928 = 23_928
+    # NIL annual = 1_804 * 12 = 21_648
+    # 23_928 > 21_648 so not eligible
+    sc_ssi_state_supplement_eligible: false
+
+# Edge case tests
+
+- name: Edge case - income exactly at NIL boundary (strict less-than).
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 9_720
+    ssi: 11_928
+  output:
+    # Total = 9_720 + 11_928 = 21_648
+    # NIL annual = 1_804 * 12 = 21_648
+    # Uses strict < so 21_648 < 21_648 is false
+    sc_ssi_state_supplement_eligible: false
+
+- name: Edge case - income one dollar below NIL boundary.
+  period: 2026
+  input:
+    age: 70
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 9_719
+    ssi: 11_928
+  output:
+    # Total = 9_719 + 11_928 = 21_647
+    # NIL annual = 21_648
+    # 21_647 < 21_648 is true
+    sc_ssi_state_supplement_eligible: true
+
+- name: Edge case - person aged exactly 65 in CRCF (meets SSI aged threshold).
+  period: 2026
+  input:
+    age: 65
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 0
+    ssi: 11_928
+  output:
+    sc_ssi_state_supplement_eligible: true
+
+- name: Edge case - person aged 64, not disabled or blind, in CRCF.
+  period: 2026
+  input:
+    age: 64
+    is_in_residential_care_facility: true
+    state_code: SC
+    is_ssi_aged_blind_disabled: false
+    ssi_countable_income: 0
+    ssi: 0
+  output:
+    # Age 64 does not meet SSI aged threshold (65+)
+    # Not disabled or blind, so is_ssi_aged_blind_disabled = false
+    sc_ssi_state_supplement_eligible: false
