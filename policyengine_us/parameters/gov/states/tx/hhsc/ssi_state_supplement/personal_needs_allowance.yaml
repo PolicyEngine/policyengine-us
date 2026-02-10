@@ -1,0 +1,18 @@
+description: Texas provides this amount as the personal needs allowance for Supplemental Security Income recipients in Medicaid-funded long-term care facilities under the Optional State Supplement program.
+
+values:
+  1999-09-01: 45
+  2001-09-01: 60
+  2003-09-01: 45
+  2006-01-01: 60
+  2024-01-01: 75
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Texas SSI State Supplement personal needs allowance
+  reference:
+    - title: Texas Human Resources Code Section 32.024(w)
+      href: https://statutes.capitol.texas.gov/Docs/HR/htm/HR.32.htm
+    - title: HHSC MEPD Handbook Section H-1500 - Personal Needs Allowance
+      href: https://www.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/h-1500-personal-needs-allowance

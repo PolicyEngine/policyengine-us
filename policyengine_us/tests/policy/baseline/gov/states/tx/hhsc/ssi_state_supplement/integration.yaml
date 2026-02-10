@@ -1,0 +1,213 @@
+# Integration tests for Texas SSI State Supplement
+# Tests realistic scenarios with full eligibility and benefit calculations
+#
+# Key Texas SSI State Supplement rules:
+# - Only for SSI recipients in Medicaid-funded nursing facilities or ICF/IID
+# - Supplement = PNA - Federal reduced SSI benefit
+# - 2024 PNA: $75/month, Federal reduced SSI: $30/month individual
+# - Individual supplement: $45/month = $540/year
+# - No additional state income rules beyond federal SSI
+#
+# Reference: Texas Human Resources Code Section 32.024(w)
+# Reference: SSA State Assistance Programs for SSI Recipients - Texas
+
+- name: Scenario 1, SSI-eligible elderly individual in Texas Medicaid facility.
+  # 70-year-old SSI recipient in a nursing facility receives state supplement
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Eligibility: SSI eligible + in Medicaid facility + TX = eligible
+    tx_ssi_state_supplement_eligible: true
+    # Supplement: ($75 PNA - $30 federal reduced SSI) * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Scenario 2, SSI-eligible disabled individual in Texas Medicaid facility.
+  # 45-year-old disabled SSI recipient in ICF/IID
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Eligibility: SSI eligible + in Medicaid facility + TX = eligible
+    tx_ssi_state_supplement_eligible: true
+    # Supplement: ($75 - $30) * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Scenario 3, SSI-eligible individual NOT in Medicaid facility.
+  # SSI recipient living in community - no supplement
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not in Medicaid facility = not eligible
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0
+
+- name: Scenario 4, person in Medicaid facility but NOT SSI eligible.
+  # Non-SSI recipient in nursing facility - no supplement
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible_individual: false
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Not SSI eligible = not eligible for supplement
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0
+
+- name: Scenario 5, SSI-eligible individual in Medicaid facility in another state.
+  # SSI recipient in facility but not in Texas
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Not in Texas = TX supplement does not apply (defined_for TX)
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0
+
+- name: Scenario 6, couple both SSI-eligible in Texas Medicaid facility.
+  # Both members of a couple in a nursing facility
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+      person2:
+        age: 70
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Both persons are eligible
+    tx_ssi_state_supplement_eligible: [true, true]
+    # Each person: ($75 - $30) * 12 = $540/year
+    tx_ssi_state_supplement: [540, 540]
+
+- name: Scenario 7, historical 2023 period with lower PNA.
+  # Tests pre-2024 PNA of $60/month
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+    # 2023 PNA: $60/month, Federal reduced SSI: $30/month
+    # Supplement: ($60 - $30) * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Scenario 8, historical 2005 period with $45 PNA.
+  # Tests 2003-2005 PNA of $45/month (PNA dropped back from $60)
+  period: 2005
+  input:
+    people:
+      person1:
+        age: 80
+        is_ssi_eligible_individual: true
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+    # 2005 PNA: $45/month (set 2003-09-01), Federal reduced SSI: $30/month
+    # Supplement: ($45 - $30) * 12 = $180/year
+    tx_ssi_state_supplement: 180

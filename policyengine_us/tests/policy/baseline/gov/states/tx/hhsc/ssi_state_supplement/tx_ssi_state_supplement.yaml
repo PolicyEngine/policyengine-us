@@ -1,0 +1,29 @@
+# Unit tests for Texas SSI State Supplement benefit amount
+# Supplement = max(0, (PNA - Federal institutional SSI rate) * 12)
+# For 2024: ($75 - $30) * 12 = $45/month * 12 = $540/year
+# Reference: Texas Human Resources Code Section 32.024(w)
+
+- name: Case 1, eligible individual receives full supplement.
+  period: 2024
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # PNA = $75/month, Federal reduced SSI = $30/month
+    # Supplement = ($75 - $30) * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Case 2, not eligible receives zero.
+  period: 2024
+  input:
+    tx_ssi_state_supplement_eligible: false
+  output:
+    tx_ssi_state_supplement: 0
+
+- name: Case 3, eligible individual in 2023 with lower PNA.
+  period: 2023
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # PNA = $60/month (2006-2023), Federal reduced SSI = $30/month
+    # Supplement = ($60 - $30) * 12 = $360/year
+    tx_ssi_state_supplement: 360
