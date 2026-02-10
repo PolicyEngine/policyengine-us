@@ -1,0 +1,40 @@
+# Unit tests for Texas SSI State Supplement eligibility
+# Eligible if: SSI eligible individual AND residing in a Medicaid-funded facility
+# AND in Texas
+# Reference: Texas Human Resources Code Section 32.024(w)
+
+- name: Case 1, SSI eligible and in Medicaid facility in Texas.
+  period: 2024
+  input:
+    is_ssi_eligible_individual: true
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+
+- name: Case 2, SSI eligible but not in Medicaid facility.
+  period: 2024
+  input:
+    is_ssi_eligible_individual: true
+    is_in_medicaid_facility: false
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
+
+- name: Case 3, not SSI eligible but in Medicaid facility.
+  period: 2024
+  input:
+    is_ssi_eligible_individual: false
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
+
+- name: Case 4, neither SSI eligible nor in Medicaid facility.
+  period: 2024
+  input:
+    is_ssi_eligible_individual: false
+    is_in_medicaid_facility: false
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
