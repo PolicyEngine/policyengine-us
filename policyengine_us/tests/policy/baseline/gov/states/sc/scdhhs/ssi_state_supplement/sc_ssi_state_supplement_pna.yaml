@@ -1,0 +1,52 @@
+- name: Case 1, SSI-only recipient gets lower PNA.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 0
+    state_code: SC
+  output:
+    # PNA for SSI-only = $85/month * 12 = $1,020/year
+    sc_ssi_state_supplement_pna: 1_020
+
+- name: Case 2, recipient with other income gets higher PNA.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 2_400
+    state_code: SC
+  output:
+    # PNA for other income = $105/month * 12 = $1,260/year
+    sc_ssi_state_supplement_pna: 1_260
+
+- name: Case 3, not eligible gets zero PNA.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: false
+    ssi_countable_income: 0
+    state_code: SC
+  output:
+    sc_ssi_state_supplement_pna: 0
+
+# Edge case tests
+
+- name: Edge case - countable income exactly zero, SSI-only PNA.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 0
+    state_code: SC
+  output:
+    # ssi_countable_income == 0 triggers SSI-only PNA
+    # PNA = $85/month * 12 = $1,020/year
+    sc_ssi_state_supplement_pna: 1_020
+
+- name: Edge case - countable income of one dollar, triggers other-income PNA.
+  period: 2026
+  input:
+    sc_ssi_state_supplement_eligible: true
+    ssi_countable_income: 1
+    state_code: SC
+  output:
+    # ssi_countable_income == 1 != 0, so other-income PNA applies
+    # PNA = $105/month * 12 = $1,260/year
+    sc_ssi_state_supplement_pna: 1_260
