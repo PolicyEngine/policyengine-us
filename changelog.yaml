@@ -12872,3 +12872,9 @@
     changed:
     - Refactor tax_unit_is_filer to use three-part filing logic with propensity variables.
   date: 2026-02-08 04:15:39
+- bump: patch
+  changes:
+    fixed:
+    - Fix RI high earner tax and social security exemption reform exports to match
+      standard pattern
+  date: 2026-02-10 15:34:12
