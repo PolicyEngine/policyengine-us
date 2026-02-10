@@ -24,8 +24,12 @@ class spm_unit_benefits(Variable):
             "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
+            # New Mexico programs.
+            "nm_ssi_state_supplement",
             # South Carolina programs.
             "sc_ssi_state_supplement",
+            # Texas programs.
+            "tx_ssi_state_supplement",
             "snap",
             "wic",
             "free_school_meals",
