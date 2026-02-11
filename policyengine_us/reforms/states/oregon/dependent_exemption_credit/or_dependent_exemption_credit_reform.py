@@ -24,11 +24,13 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
 
             # Apply age limit if in effect
-            if p.age_limit.in_effect:
-                age_threshold = p.age_limit.threshold
-                eligible_dependents = is_dependent & (age < age_threshold)
-            else:
-                eligible_dependents = is_dependent
+            age_threshold = p.age_limit.threshold
+            age_eligible = age < age_threshold
+            eligible_dependents = where(
+                p.age_limit.in_effect,
+                is_dependent & age_eligible,
+                is_dependent,
+            )
 
             return tax_unit.sum(eligible_dependents)
 
@@ -66,17 +68,16 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
             eligible_count = tax_unit("or_eligible_dependents_count", period)
             maximum_credit = eligible_count * p.amount
 
-            # Check if universal mode (no income limit)
-            if p.phaseout.in_effect:
-                return maximum_credit
-
-            # Apply income limit (cliff cutoff)
+            # Apply income limit (cliff cutoff) unless universal mode is enabled
             filing_status = tax_unit("filing_status", period)
             agi = tax_unit("adjusted_gross_income", period)
             income_limit = p.income_limit[filing_status]
             qualifies = agi <= income_limit
 
-            return where(qualifies, maximum_credit, 0)
+            # Universal mode bypasses income limit
+            effective_qualifies = where(p.phaseout.in_effect, True, qualifies)
+
+            return where(effective_qualifies, maximum_credit, 0)
 
     class or_regular_exemptions(Variable):
         value_type = int
