@@ -111,6 +111,7 @@ from .local.ny.mamdani_income_tax import (
 from .states.ut import (
     create_ut_refundable_eitc_reform,
     create_ut_hb210_reform,
+    create_ut_hb210_s2_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -296,6 +297,8 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     ut_hb210 = create_ut_hb210_reform(parameters, period)
 
+    ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -383,6 +386,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_mamdani_income_tax,
         ut_refundable_eitc,
         ut_hb210,
+        ut_hb210_s2,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
