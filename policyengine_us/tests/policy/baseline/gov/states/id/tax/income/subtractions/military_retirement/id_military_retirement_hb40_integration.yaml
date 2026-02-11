@@ -1,0 +1,156 @@
+- name: Pre-2025 military retirement requires age 65+ for general retirement deduction
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 30_000
+        public_pension_income: 0
+        social_security_retirement: 0
+        age: 40
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Age requirement (65+) not met, so no deduction from general retirement
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+    # Separate military deduction does not apply until 2025
+    id_military_retirement_deduction: 0
+
+- name: Pre-2025 military retirement deductible if age 65+
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 30_000
+        public_pension_income: 0
+        social_security_retirement: 0
+        age: 66
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+    id_military_retirement_deduction: 0
+
+- name: 2025 military retirement fully exempt regardless of age via separate deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 30_000
+        public_pension_income: 0
+        social_security_retirement: 0
+        age: 40
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Age requirement not met, so no general retirement deduction
+    id_retirement_benefits_deduction_eligible_person: false
+    # Military retirement excluded from relevant income for 2025
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+    # But military retirement fully deductible via separate HB 40 deduction
+    id_military_retirement_deduction: 30_000
+
+- name: 2025 public pension still requires age 65+ for general retirement deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 0
+        public_pension_income: 20_000
+        social_security_retirement: 0
+        age: 40
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+    id_military_retirement_deduction: 0
+
+- name: 2025 public pension deductible if age 65+
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 0
+        public_pension_income: 20_000
+        social_security_retirement: 0
+        age: 66
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 20_000
+    id_retirement_benefits_deduction: 20_000
+    id_military_retirement_deduction: 0
+
+- name: 2025 combined military and public pension with age 66
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 25_000
+        public_pension_income: 20_000
+        social_security_retirement: 0
+        age: 66
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_eligible_person: true
+    # Only public pension in relevant income for 2025
+    id_retirement_benefits_deduction_relevant_income: 20_000
+    id_retirement_benefits_deduction: 20_000
+    # Military retirement fully deductible separately
+    id_military_retirement_deduction: 25_000

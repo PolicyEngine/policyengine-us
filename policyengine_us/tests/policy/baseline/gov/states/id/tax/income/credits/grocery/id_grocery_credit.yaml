@@ -75,16 +75,16 @@
     id_grocery_credit: 0
 
 - name: Integration test, no aged credit in 2025
+  # In 2025, base grocery credit is $155 per person and aged credit is not in effect
+  # Two people at $155 each = $310 total
   period: 2025
   input:
     people:
       person1:
         age: 70
-        id_grocery_credit_base: 120
       person2:
         age: 70
-        id_grocery_credit_base: 120
-    households: 
+    households:
       household:
         members: [person1, person2]
         state_code: ID
@@ -93,4 +93,4 @@
         members: [person1, person2]
         snap: 0
   output:
-    id_grocery_credit: 240
+    id_grocery_credit: 310

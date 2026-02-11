@@ -21,3 +21,32 @@
     state_code: ID
   output:
     id_ctc: 0
+
+# 2025 Tests - Credit amount remains $205 per qualifying child
+# NOTE: Idaho CTC expires after 2025 per Idaho Code 63-3029L
+
+- name: One child in 2025
+  # $205 per qualifying child
+  period: 2025
+  input:
+    ctc_qualifying_children: 1
+    state_code: ID
+  output:
+    id_ctc: 205
+
+- name: Family with 3 children in 2025
+  # 3 children * $205 = $615
+  period: 2025
+  input:
+    ctc_qualifying_children: 3
+    state_code: ID
+  output:
+    id_ctc: 615
+
+- name: No children in 2025
+  period: 2025
+  input:
+    ctc_qualifying_children: 0
+    state_code: ID
+  output:
+    id_ctc: 0
