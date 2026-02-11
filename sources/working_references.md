@@ -397,3 +397,526 @@ Several of these parameters have automatic uprating configured. However, the act
 - [x] Tier one retirement joint 2025 confirmed: $131,794
 - [ ] Home heating credit 2025 standard allowances: PENDING (form not yet released)
 - [x] Tax rate 2025 confirmed: 4.25%
+
+---
+---
+
+## Maryland State Income Tax - 2025 Implementation
+**Collected**: 2026-02-11
+**Implementation Task**: Document 2025 Maryland income tax rules including new brackets, standard deduction changes, itemized deduction phase-out, capital gains surtax, and credits.
+
+---
+
+## Official Program Name
+
+**Federal Program**: State Income Tax
+**State's Official Name**: Maryland Income Tax
+**Administering Agency**: Comptroller of Maryland
+**Source**: Maryland Tax-General Article, Title 10
+
+**Variable Prefix**: `md_income_tax` (existing pattern in codebase)
+
+---
+
+## Key Legislative Change for 2025
+
+**House Bill 352 - Budget Reconciliation and Financing Act of 2025**
+- Signed by Governor Wes Moore on May 20, 2025
+- Effective: July 1, 2025, for taxable years beginning after December 31, 2024
+- Purpose: Address state's $3 billion budget deficit
+- Primary reference: [HB 352 Enrolled](https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf)
+
+---
+
+## State Income Tax Rates and Brackets (2025)
+
+### Source Information
+- **Title**: Maryland Tax-General Section 10-105 - State Income Tax Rates
+- **Citation**: Md. Code, Tax-General SS 10-105
+- **URL**: https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF
+- **Effective Date**: Taxable years beginning after December 31, 2024
+
+### Key Changes for 2025
+Maryland expanded from 8 tax brackets to 10, adding two new high-income brackets:
+- New 6.25% bracket for high earners
+- New 6.50% bracket for top earners (highest rate increased from 5.75%)
+
+### Single Filers / Married Filing Separately
+
+| Taxable Income | Rate |
+|----------------|------|
+| $0 - $1,000 | 2.00% |
+| $1,001 - $2,000 | 3.00% |
+| $2,001 - $3,000 | 4.00% |
+| $3,001 - $100,000 | 4.75% |
+| $100,001 - $125,000 | 5.00% |
+| $125,001 - $150,000 | 5.25% |
+| $150,001 - $250,000 | 5.50% |
+| $250,001 - $500,000 | 5.75% |
+| $500,001 - $1,000,000 | **6.25% (NEW)** |
+| Over $1,000,000 | **6.50% (NEW)** |
+
+### Married Filing Jointly / Head of Household / Surviving Spouse
+
+| Taxable Income | Rate |
+|----------------|------|
+| $0 - $1,000 | 2.00% |
+| $1,001 - $2,000 | 3.00% |
+| $2,001 - $3,000 | 4.00% |
+| $3,001 - $150,000 | 4.75% |
+| $150,001 - $175,000 | 5.00% |
+| $175,001 - $225,000 | 5.25% |
+| $225,001 - $300,000 | 5.50% |
+| $300,001 - $600,000 | 5.75% |
+| $600,001 - $1,200,000 | **6.25% (NEW)** |
+| Over $1,200,000 | **6.50% (NEW)** |
+
+### References for Parameters
+```yaml
+reference:
+  - title: "SS 10-105 (a)(1). State income tax rates"
+    href: "https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF"
+  - title: "Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025"
+    href: "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=161"
+```
+
+---
+
+## Standard Deduction (2025)
+
+### Source Information
+- **Title**: Maryland Standard Deduction Changes
+- **Citation**: HB 352, Page 164
+- **URL**: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=164
+- **Effective Date**: Tax year 2025
+
+### Key Changes for 2025
+**Major structural change**: Maryland eliminated the income-based phase-in calculation and moved to a **flat standard deduction** for all filers of the same filing status.
+
+Previous system (pre-2025):
+- Calculated as 15% of Maryland AGI
+- Minimum: $1,500-$1,850 depending on status
+- Maximum: $2,250-$5,450 depending on status
+
+New system (2025 onward):
+- Flat amount based on filing status
+- Subject to cost-of-living (chained CPI) adjustments
+
+### 2025 Standard Deduction Amounts
+
+| Filing Status | Amount |
+|---------------|--------|
+| Single | $3,350 |
+| Married Filing Separately | $3,350 |
+| Married Filing Jointly | $6,700 |
+| Head of Household | $6,700 |
+| Surviving Spouse | $6,700 |
+
+### References for Parameters
+```yaml
+reference:
+  - title: "Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025 (page 164 - chained CPI indexing)"
+    href: "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=164"
+  - title: "Maryland new tax year update - exemptions and deductions"
+    href: "https://www.marylandtaxes.gov/new-tax-year-update.php"
+```
+
+---
+
+## Itemized Deduction Phase-Out (NEW for 2025)
+
+### Source Information
+- **Title**: Maryland Itemized Deduction Limitation
+- **Citation**: HB 352, Page 166-167
+- **URL**: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=166
+- **Effective Date**: Tax year 2025
+
+### Key Rules
+Beginning in tax year 2025, taxpayers with high federal adjusted gross income must reduce their itemized deductions.
+
+**Phase-out Formula**:
+```
+Reduction = 7.5% x (FAGI - Threshold)
+Allowable Itemized Deductions = Otherwise Allowable - Reduction
+```
+
+### Phase-Out Thresholds
+
+| Filing Status | FAGI Threshold |
+|---------------|----------------|
+| Single | $200,000 |
+| Head of Household | $200,000 |
+| Married Filing Jointly | $200,000 |
+| Married Filing Separately | $100,000 |
+| Surviving Spouse | $200,000 |
+
+**Phase-Out Rate**: 7.5%
+
+### References for Parameters
+```yaml
+reference:
+  - title: "Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025"
+    href: "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=166"
+```
+
+---
+
+## Personal Exemptions
+
+### Source Information
+- **Title**: Maryland Personal Exemptions
+- **Citation**: Md. Code, Tax-General SS 10-211
+- **URL**: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries
+- **Effective Date**: Ongoing (no changes in 2025)
+
+### Exemption Amount
+The personal exemption is **$3,200 per exemption** but phases out based on federal AGI.
+
+### Phase-Out Schedule (Single/Married Filing Separately)
+
+| FAGI | Exemption Amount |
+|------|------------------|
+| Up to $100,000 | $3,200 |
+| $100,001 - $125,000 | $1,600 |
+| $125,001 - $150,000 | $800 |
+| Over $150,000 | $0 |
+
+### Phase-Out Schedule (Joint Filers/Head of Household/Surviving Spouse)
+
+| FAGI | Exemption Amount |
+|------|------------------|
+| Up to $150,000 | $3,200 |
+| $150,001 - $175,000 | $1,600 |
+| $175,001 - $200,000 | $800 |
+| Over $200,000 | $0 |
+
+### Additional Exemptions
+- **Aged exemption**: $1,000 for taxpayers age 65 or older
+- **Blind exemption**: $1,000 for blind taxpayers
+- **Aged dependent exemption**: Additional amount for aged dependents
+
+### References for Parameters
+```yaml
+reference:
+  - title: "Part III - Exemptions Section 10-211 Individuals Other Than Fiduciaries"
+    href: "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries"
+  - title: "Maryland 2024 State & Local Tax Forms & Instructions - Exemption Amount Chart"
+    href: "https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=12"
+```
+
+---
+
+## Capital Gains Surtax (NEW for 2025)
+
+### Source Information
+- **Title**: Maryland Capital Gains Surtax
+- **Citation**: HB 352, Page 163-164
+- **URL**: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=163
+- **Effective Date**: Taxable years beginning after December 31, 2024
+
+### Key Rules
+A new **2% surtax** applies to net capital gains for high-income taxpayers.
+
+**Threshold**: Federal Adjusted Gross Income exceeding $350,000
+
+**Rate**: 2% of net capital gains
+
+**Exclusions**:
+- Primary residence sales under $1,500,000
+- Certain gains tied to Section 179 property
+
+### References for Parameters
+```yaml
+reference:
+  - title: "Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025"
+    href: "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=163"
+```
+
+---
+
+## Local/County Income Tax
+
+### Source Information
+- **Title**: Maryland County Income Tax Rates
+- **URL**: https://help.nfc.usda.gov/bulletins/2025/1737141865.htm
+- **Effective Date**: 2025
+
+### Key Change for 2025
+**Maximum local tax rate increased from 3.20% to 3.30%**
+
+### 2025 County Tax Rates
+
+| County | Rate | Notes |
+|--------|------|-------|
+| Allegany | 3.03% | Flat |
+| Anne Arundel | 2.70% - 3.20% | Graduated |
+| Baltimore County | 3.20% | Flat |
+| Baltimore City | 3.20% | Flat |
+| Calvert | 3.20% | Flat (updated 2025) |
+| Caroline | 3.20% | Flat |
+| Carroll | 3.03% | Flat |
+| Cecil | 2.74% | Flat (updated 2025) |
+| Charles | 3.03% | Flat |
+| Dorchester | 3.30% | Flat (increased from 3.20% in 2025) |
+| Frederick | 2.25% - 3.20% | Graduated |
+| Garrett | 2.65% | Flat |
+| Harford | 3.06% | Flat |
+| Howard | 3.20% | Flat |
+| Kent | 3.20% | Flat |
+| Montgomery | 3.20% | Flat |
+| Prince George's | 3.20% | Flat |
+| Queen Anne's | 3.20% | Flat |
+| St. Mary's | 3.20% | Flat (updated 2025) |
+| Somerset | 3.20% | Flat |
+| Talbot | 2.40% | Flat |
+| Washington | 2.95% | Flat |
+| Wicomico | 3.20% | Flat |
+| Worcester | 2.25% | Flat |
+
+### Graduated Local Tax Tables
+
+**Anne Arundel County** (2025):
+| Taxable Income | Rate |
+|----------------|------|
+| $1 - $50,000 | 2.70% |
+| Over $50,000 | 2.94% |
+(For Single, Married Filing Separately, or Dependent)
+
+| Taxable Income | Rate |
+|----------------|------|
+| $1 - $25,000 | 2.25% |
+| $25,001 - $100,000 | 2.75% |
+| $100,001 - $250,000 | 2.96% |
+| Over $250,000 | 3.20% |
+(For Married Filing Jointly, Head of Household, Qualifying Surviving Spouse)
+
+**Frederick County** (2025):
+Similar graduated structure based on filing status.
+
+### References for Parameters
+```yaml
+reference:
+  - title: "Maryland State and Counties Income Tax Withholding"
+    href: "https://help.nfc.usda.gov/bulletins/2025/1737141865.htm"
+  - title: "2025 Maryland State and Local Withholding Information"
+    href: "https://www.marylandcomptroller.gov/content/dam/mdcomp/md/state-payroll/memos/2025/2025-Maryland-State-and-Local-Withholding-Information.pdf"
+```
+
+---
+
+## Tax Credits
+
+### Earned Income Tax Credit (EITC)
+
+**Source**: Md. Code, Tax-General SS 10-704
+
+**Match Rates**:
+- **Refundable EITC**: 45% of federal EITC (for filers with children or married)
+- **Non-refundable EITC**: Additional percentage for married or with child
+- **Unmarried Childless**: Different match rate applies
+
+**Eligibility**: Must qualify for and claim federal EITC
+
+### References
+```yaml
+reference:
+  - title: "Md. Code, Tax-Gen. SS 10-704(c)(2)(ii)"
+    href: "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
+  - title: "Maryland 2024 State & Local Tax Forms & Instructions - Line 22 - Earned Income Credit"
+    href: "https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=14"
+```
+
+---
+
+### Child Tax Credit (CTC)
+
+**Source**: Md. Code, Tax-General SS 10-751
+
+**Credit Amount**: $500 per eligible child
+
+**Eligibility**:
+- Federal AGI of $15,000 or less
+- Child must be under age 6 OR disabled child under age 17
+
+**Note**: Maryland will offer fully refundable Child Tax Credits starting in 2026.
+
+### References
+```yaml
+reference:
+  - title: "Md. Code, Tax-Gen. SS 10-751 (a)(2)(ii.)"
+    href: "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child"
+  - title: "Maryland 2024 Resident Tax Forms and Instructions"
+    href: "https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=27"
+```
+
+---
+
+### Child and Dependent Care Credit (CDCC)
+
+**Source**: Md. Code, Tax-General SS 10-716
+
+**Match Rate**: 32% of federal CDCC
+
+**Refundable portion**: Available for lower-income filers (AGI cap applies)
+
+### References
+```yaml
+reference:
+  - title: "Md. Code, Tax-Gen. SS 10-716 (c)(1)"
+    href: "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care"
+  - title: "Maryland 2024 Form 502 CR Instructions"
+    href: "https://marylandtaxes.gov/forms/24-forms/502CR.pdf#page=7"
+```
+
+---
+
+### Poverty Line Credit
+
+**Source**: Md. Code, Tax-General SS 10-709
+
+**Credit Amount**: Up to 5% of earned income
+
+**Eligibility**:
+- Earned income and Federal AGI plus additions below poverty level for household size
+- Nonrefundable credit
+
+### References
+```yaml
+reference:
+  - title: "MD. Tax - General Code Ann. SS 10-709"
+    href: "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
+  - title: "Maryland 2024 State & Local Tax Forms & Instructions - Line 23 - Poverty Level Credit"
+    href: "https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=14"
+```
+
+---
+
+### Senior Tax Credit
+
+**Source**: Technical Bulletin No. 51
+
+**Credit Amount**: Up to $1,000 (nonrefundable)
+
+**Eligibility**:
+- Age 65 or older on last day of tax year
+- Income thresholds vary by filing status:
+  - Single: FAGI up to $100,000
+  - Joint/HoH/Surviving Spouse: FAGI up to $150,000
+
+### References
+```yaml
+reference:
+  - title: "Technical Bulletin No. 51 - Senior Citizens and Maryland Income Tax"
+    href: "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-51.pdf"
+```
+
+---
+
+## Subtractions from Income
+
+### Social Security Subtraction
+- Fully subtracted from Maryland AGI for qualifying taxpayers
+- Part of the Maryland Retirement Tax Reduction Act of 2022
+
+### Pension Subtraction
+- Maximum amount varies by age and income
+- Minimum age: 65
+
+### Two-Income Subtraction
+- For married couples filing jointly where both spouses have earned income
+- Maximum subtraction applies
+
+### Dependent Care Subtraction
+- For child care expenses
+- Year offset applies
+
+---
+
+## Summary of 2025 Changes
+
+| Component | Pre-2025 | 2025 Change |
+|-----------|----------|-------------|
+| Top State Tax Rate | 5.75% | 6.50% |
+| Number of Brackets | 8 | 10 |
+| Standard Deduction | Income-based (15% of AGI) | Flat ($3,350 single / $6,700 joint) |
+| Itemized Deduction Limit | None | 7.5% phase-out above $200,000 FAGI |
+| Capital Gains Surtax | None | 2% for FAGI > $350,000 |
+| Max Local Tax Rate | 3.20% | 3.30% |
+
+---
+
+## PDFs for Future Reference (Maryland)
+
+The following PDFs contain additional information but could not be extracted directly:
+
+1. **2025 Resident Booklet - Maryland Tax Forms and Instructions**
+   - URL: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf
+   - Expected content: Complete 2025 tax forms, instructions, tax tables, worksheets, and filing guidance
+   - Key pages: Tax computation worksheets, exemption charts, credit instructions
+
+2. **Tax Alert - Changes to Standard and Itemized Deductions and State/Local Income Tax Rates from 2025 Legislative Session**
+   - URL: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/alerts/tax-alert-changes-to-standard-and-itemized-deductions-and-to-state-and-local-income-tax-rates-from-the-2025-legislative-session.pdf
+   - Expected content: Official tax alert detailing all 2025 changes
+
+3. **Maryland Withholding Tax Facts January 2025**
+   - URL: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/facts/Withholding-Tax-Facts-2025.pdf
+   - Expected content: Withholding tables, exemption allowances, calculation methods
+
+4. **2025 Maryland State and Local Withholding Information**
+   - URL: https://www.marylandcomptroller.gov/content/dam/mdcomp/md/state-payroll/memos/2025/2025-Maryland-State-and-Local-Withholding-Information.pdf
+   - Expected content: Complete county tax rate tables, graduated rate schedules
+
+5. **House Bill 352 - Budget Reconciliation and Financing Act of 2025 (Enrolled)**
+   - URL: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf
+   - Expected content: Full legislative text of all 2025 tax changes
+   - Key pages:
+     - Page 161: Income tax rate changes
+     - Page 163-164: Capital gains surtax
+     - Page 164: Standard deduction changes
+     - Page 166-167: Itemized deduction phase-out
+
+6. **2025 Tax Updates Webinar Presentation**
+   - URL: https://www.marylandcomptroller.gov/content/dam/mdcomp/md/legal-publications/2025-tax-updates-webinar-presentation.pdf
+   - Expected content: Summary presentation of all 2025 tax changes
+
+---
+
+## Existing Implementation Status
+
+The codebase already has Maryland income tax implemented at:
+`policyengine_us/parameters/gov/states/md/tax/income/`
+
+**Parameters already updated for 2025:**
+- Tax rate brackets (all filing statuses) - includes new 6.25% and 6.50% brackets
+- Standard deduction flat amounts
+- Itemized deduction phase-out (threshold and rate)
+- Capital gains surtax (rate and threshold)
+
+**Variables in place:**
+- `md_income_tax` - Final state income tax
+- `md_taxable_income` - Taxable income calculation
+- `md_standard_deduction` - Standard deduction
+- `md_itemized_deductions` - Itemized deductions with phase-out
+- `md_exemptions` - Personal exemptions
+- `md_eitc` - Earned Income Tax Credit
+- `md_ctc` - Child Tax Credit
+- `md_cdcc` - Child and Dependent Care Credit
+- `md_poverty_line_credit` - Poverty Line Credit
+- `md_capital_gains_surtax` - Capital gains surtax
+- `md_local_income_tax_before_credits` - Local/county income tax
+
+---
+
+## Sources (Maryland)
+
+### Official Government Sources
+- [Maryland Comptroller's Office](https://www.marylandcomptroller.gov/)
+- [Maryland Tax Guidance](https://www.marylandtaxes.gov/)
+- [Maryland General Assembly - HB 352](https://mgaleg.maryland.gov/mgawebsite/Legislation/Details/hb0352)
+- [Maryland Code - Tax General](https://govt.westlaw.com/mdc/)
+
+### Secondary Sources
+- [RSM - Maryland Budget Tax Changes](https://rsmus.com/insights/tax-alerts/2025/maryland-budget-adds-new-taxes-increases-rates.html)
+- [Gordon Feinblatt - Maryland Tax Alert 2025](https://www.gfrlaw.com/what-we-do/insights/maryland-tax-alert-2025)
+- [PBMares - Major Maryland Tax Updates for 2025](https://www.pbmares.com/major-maryland-tax-updates-for-2025/)
+- [USDA NFC - Maryland State Income Tax](https://help.nfc.usda.gov/bulletins/2025/1756838508.htm)
