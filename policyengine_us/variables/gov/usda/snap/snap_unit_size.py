@@ -6,6 +6,10 @@ class snap_unit_size(Variable):
     entity = SPMUnit
     label = "SNAP unit size"
     definition_period = MONTH
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/7/2014#b",
+        "https://www.law.cornell.edu/uscode/text/7/2015#f",
+    )
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)

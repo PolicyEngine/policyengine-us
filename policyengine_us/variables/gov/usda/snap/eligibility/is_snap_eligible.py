@@ -10,6 +10,7 @@ class is_snap_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
+        "https://www.law.cornell.edu/uscode/text/7/2015#f",
     )
 
     def formula(spm_unit, period, parameters):
