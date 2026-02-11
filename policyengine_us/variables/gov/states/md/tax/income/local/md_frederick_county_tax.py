@@ -8,6 +8,7 @@ class md_frederick_county_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
+    reference = "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=25"
 
     def formula(tax_unit, period, parameters):
         county = tax_unit.household("county_str", period)
