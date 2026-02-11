@@ -89,8 +89,8 @@
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 9, CA refugee still eligible in 2026 due to delayed implementation.
-  period: 2026
+- name: Case 9, CA refugee still eligible in January 2026 due to delayed implementation.
+  period: 2026-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -103,7 +103,7 @@
   output:
     is_snap_immigration_status_eligible: true
 
-- name: Case 10, CA refugee ineligible in 2027.
+- name: Case 10, CA refugee ineligible in 2027 after delayed implementation ends.
   period: 2027
   absolute_error_margin: 0.1
   input:
