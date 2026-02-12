@@ -1,0 +1,76 @@
+- name: Case 1, income below threshold.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 500_000
+    state_code: VT
+  output:
+    # AGI $500,000 < threshold $1,000,000
+    # Surcharge = $0
+    vt_h619_income_tax_surcharge: 0
+
+- name: Case 2, income exactly at threshold.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 1_000_000
+    state_code: VT
+  output:
+    # AGI $1,000,000 >= threshold $1,000,000
+    # Surcharge = $1,000,000 * 0.03 = $30,000
+    vt_h619_income_tax_surcharge: 30_000
+
+- name: Case 3, income just above threshold.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 1_000_001
+    state_code: VT
+  output:
+    # AGI $1,000,001 >= threshold $1,000,000
+    # Surcharge = $1,000,001 * 0.03 = $30,000.03
+    # Cliff effect: $1 over threshold triggers 3% on ALL income
+    vt_h619_income_tax_surcharge: 30_000.03
+
+- name: Case 4, income well above threshold.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 2_000_000
+    state_code: VT
+  output:
+    # AGI $2,000,000 >= threshold $1,000,000
+    # Surcharge = $2,000,000 * 0.03 = $60,000
+    vt_h619_income_tax_surcharge: 60_000
+
+- name: Case 5, income just below threshold.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 999_999
+    state_code: VT
+  output:
+    # AGI $999,999 < threshold $1,000,000
+    # Surcharge = $0
+    vt_h619_income_tax_surcharge: 0
+
+- name: Case 6, surcharge not in effect.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: false
+    adjusted_gross_income: 2_000_000
+    state_code: VT
+  output:
+    # Reform not in effect, so surcharge = $0 regardless of income
+    vt_h619_income_tax_surcharge: 0
+
+- name: Case 7, non-Vermont resident.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 2_000_000
+    state_code: NY
+  output:
+    # Not a Vermont resident, defined_for = VT
+    # Surcharge = $0
+    vt_h619_income_tax_surcharge: 0
