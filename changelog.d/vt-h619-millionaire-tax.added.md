@@ -1,0 +1,1 @@
+Vermont H.619 proposed 3% income tax surcharge on AGI for taxpayers with federal AGI of $1,000,000 or more.
