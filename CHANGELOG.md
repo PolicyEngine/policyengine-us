@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.555.3] - 2026-02-12 22:42:22
+
+### Changed
+
+- Add 2025 Vermont income tax values, renter credit income limits, and form references to parameter files.
+
 ## [1.555.2] - 2026-02-12 18:16:49
 
 ### Changed
@@ -14986,6 +14992,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.555.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.2...1.555.3
 [1.555.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.1...1.555.2
 [1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
 [1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0
