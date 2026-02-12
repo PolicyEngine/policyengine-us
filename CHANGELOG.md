@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.555.1] - 2026-02-12 17:44:36
+
+### Changed
+
+- DC EITC match rate updated to 100% for 2025 per Act 26-214.
+
 ## [1.555.0] - 2026-02-11 17:26:50
 
 ### Added
@@ -14974,6 +14980,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
 [1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0
 [1.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.0...1.554.1
 [1.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.553.0...1.554.0
