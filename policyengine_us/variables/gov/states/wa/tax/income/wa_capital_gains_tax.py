@@ -31,5 +31,5 @@ class wa_capital_gains_tax(Variable):
             taxable_ltcg = max_(
                 0, ltcg - charitable_deduction - p.deductions.standard
             )
-            return taxable_ltcg * p.rate
+            return p.rate.calc(taxable_ltcg)
         return 0

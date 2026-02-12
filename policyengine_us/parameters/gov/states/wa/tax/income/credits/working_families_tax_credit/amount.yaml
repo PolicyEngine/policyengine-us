@@ -18,15 +18,18 @@ metadata:
     - title: 2024 Working Families Tax Credit Eligibility
       href: https://workingfamiliescredit.wa.gov/eligibility
     # 2024 instruction does not include the specific amounts.
+    - title: 2025 Working Families Tax Credit Eligibility
+      href: https://workingfamiliescredit.wa.gov/eligibility
 
 brackets:
   - threshold:
       2022-01-01: 0
     amount:
-      values: 
+      values:
         2022-01-01: 300
         2023-01-01: 315
         2024-01-01: 325
+        2025-01-01: 335
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -39,6 +42,7 @@ brackets:
         2022-01-01: 600
         2023-01-01: 625
         2024-01-01: 640
+        2025-01-01: 660
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -51,6 +55,7 @@ brackets:
         2022-01-01: 900
         2023-01-01: 940
         2024-01-01: 965
+        2025-01-01: 995
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -63,6 +68,7 @@ brackets:
         2022-01-01: 1_200
         2023-01-01: 1_255
         2024-01-01: 1_290
+        2025-01-01: 1_330
       metadata:
         uprating: gov.irs.uprating
         rounding:
