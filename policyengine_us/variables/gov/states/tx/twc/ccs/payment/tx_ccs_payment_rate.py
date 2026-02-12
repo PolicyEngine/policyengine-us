@@ -42,9 +42,9 @@ class tx_ccs_payment_rate(Variable):
                 care_schedule,
             )
         else:
-            daily_rate = p.rates[region][provider_type][
-                provider_rating
-            ][age_category][care_schedule]
+            daily_rate = p.rates[region][provider_type][provider_rating][
+                age_category
+            ][care_schedule]
 
         return daily_rate * attending_days_per_month
 

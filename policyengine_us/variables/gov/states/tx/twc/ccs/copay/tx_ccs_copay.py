@@ -48,7 +48,5 @@ class tx_ccs_copay(Variable):
         )
 
         # Total rate capped at maximum, then applied to income.
-        total_rate = min_(
-            first_child_rate + additional_child_rate, max_rate
-        )
+        total_rate = min_(first_child_rate + additional_child_rate, max_rate)
         return total_rate * income

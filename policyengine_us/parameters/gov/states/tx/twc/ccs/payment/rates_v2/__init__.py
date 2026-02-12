@@ -44,9 +44,9 @@ def _build_lookup(csv_path):
         for col, (age_group, schedule) in COLUMN_MAP.items():
             if age_group not in lookup[region][ptype][rating]:
                 lookup[region][ptype][rating][age_group] = {}
-            lookup[region][ptype][rating][age_group][
-                schedule
-            ] = float(row[col])
+            lookup[region][ptype][rating][age_group][schedule] = float(
+                row[col]
+            )
     return lookup
 
 
