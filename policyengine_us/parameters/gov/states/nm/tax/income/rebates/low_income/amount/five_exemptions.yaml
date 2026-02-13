@@ -36,7 +36,19 @@ brackets:
         rounding:
           type: nearest
           interval: 1
-  - threshold: 
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      values:
+        2021-01-01: 575
+        2023-01-01: 622
+        2024-01-01: 645
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
+  - threshold:
       2021-01-01: 9_000
     amount: 
       values:
