@@ -1,6 +1,8 @@
 description: The US limits the itemized deductions to filers with adjusted gross income over this amount, based on filing status.
 JOINT:
-  values: 
+  values:
+    2009-01-01: 250_200
+    2010-01-01: .inf
     2013-01-01: 300_000
     2014-01-01: 305_050
     2015-01-01: 309_900
@@ -26,6 +28,8 @@ JOINT:
         interval: 50
 SINGLE:
   values:
+    2009-01-01: 166_800
+    2010-01-01: .inf
     2013-01-01: 250_000
     2014-01-01: 254_200
     2015-01-01: 258_250
@@ -51,6 +55,8 @@ SINGLE:
         interval: 50
 SEPARATE:
   values:
+    2009-01-01: 125_100
+    2010-01-01: .inf
     2013-01-01: 150_000
     2014-01-01: 152_525
     2015-01-01: 154_950
@@ -76,6 +82,8 @@ SEPARATE:
         interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
+    2009-01-01: 208_500
+    2010-01-01: .inf
     2013-01-01: 275_000
     2014-01-01: 279_650
     2015-01-01: 284_050
@@ -99,8 +107,10 @@ HEAD_OF_HOUSEHOLD:
       rounding:
         type: downwards
         interval: 50
-SURVIVING_SPOUSE: # Same as joint  
+SURVIVING_SPOUSE: # Same as joint
   values:
+    2009-01-01: 250_200
+    2010-01-01: .inf
     2013-01-01: 300_000
     2014-01-01: 305_050
     2015-01-01: 309_900
@@ -131,9 +141,11 @@ metadata:
   breakdown:
   - filing_status
   reference:
-    # This section of the legal code was repealed between 2018 and 2026.
+    # This section of the legal code was repealed between 2010-2012 and 2018-2025.
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/68#b_1
+    - title: 2009 Form 1040 - Limit on Itemized Deductions
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2009.pdf#page=6
     - title: 2013 Instruction 1040 Schedule A
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2013.pdf#page=13
     - title: 2014 Instruction 1040 Schedule A
