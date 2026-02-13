@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.556.2] - 2026-02-13 19:31:10
+
+### Changed
+
+- Update CBO baseline projections to February 2026 (Budget and Economic Outlook 2026 to 2036), extending all calibration targets and CPI parameters through 2036.
+
+## [1.556.1] - 2026-02-13 18:38:12
+
+### Changed
+
+- Update CPI-U, C-CPI-U, and CPI-W projections for 2026+ based on CBO September 2025 interim inflation update
+
+## [1.556.0] - 2026-02-13 17:37:15
+
+### Added
+
+- Iowa Family Investment Program (FIP), the state's TANF cash assistance program.
+
+## [1.555.3] - 2026-02-12 22:42:22
+
+### Changed
+
+- Add 2025 Vermont income tax values, renter credit income limits, and form references to parameter files.
+
+## [1.555.2] - 2026-02-12 18:16:49
+
+### Changed
+
+- Update Kentucky income tax model for 2025, including standard deduction ($3,270), tax rate (4%), and all tax credits with official 2025 references.
+
+## [1.555.1] - 2026-02-12 17:44:36
+
+### Changed
+
+- DC EITC match rate updated to 100% for 2025 per Act 26-214.
+
+## [1.555.0] - 2026-02-11 17:26:50
+
+### Added
+
+- Implement Utah HB 210 Substitute 2 marriage tax credit (Section 59-10-1049)
+
 ## [1.554.1] - 2026-02-10 15:34:12
 
 ### Fixed
@@ -14968,6 +15010,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
+[1.556.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.0...1.556.1
+[1.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.3...1.556.0
+[1.555.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.2...1.555.3
+[1.555.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.1...1.555.2
+[1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
+[1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0
 [1.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.0...1.554.1
 [1.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.553.0...1.554.0
 [1.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.552.0...1.553.0
