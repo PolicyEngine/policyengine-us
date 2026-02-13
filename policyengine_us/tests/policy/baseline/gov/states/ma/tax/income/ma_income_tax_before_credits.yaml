@@ -33,3 +33,16 @@
     state_code: MA
   output:
     ma_income_tax_before_credits: 85
+
+- name: 2025 surtax threshold at $1,083,150.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    ma_part_b_taxable_income: 1_200_000
+    is_ma_income_tax_exempt: false
+    state_code: MA
+  output:
+    # Part B tax: 1,200,000 * 0.05 = 60,000
+    # Surtax: (1,200,000 - 1,083,150) * 0.04 = 4,674
+    # Total: 60,000 + 4,674 = 64,674
+    ma_income_tax_before_credits: 64_674
