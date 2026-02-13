@@ -131,6 +131,9 @@ from .states.ri.exemption.ri_exemption_reform import (
 from .states.de.dependent_credit.de_dependent_credit_reform import (
     create_de_dependent_credit_reform_fn,
 )
+from .states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform import (
+    create_or_dependent_exemption_credit_reform_fn,
+)
 from .states.va.dependent_exemption.va_dependent_exemption_reform import (
     create_va_dependent_exemption_reform_fn,
 )
@@ -316,6 +319,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     de_dependent_credit = create_de_dependent_credit_reform_fn(
         parameters, period
     )
+    or_dependent_exemption_credit = (
+        create_or_dependent_exemption_credit_reform_fn(parameters, period)
+    )
     va_dependent_exemption = create_va_dependent_exemption_reform_fn(
         parameters, period
     )
@@ -395,6 +401,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_ctc,
         ri_exemption,
         de_dependent_credit,
+        or_dependent_exemption_credit,
         va_dependent_exemption,
         va_hb979,
         aca_ptc_additional_bracket,
