@@ -1,0 +1,111 @@
+- name: Case 1, CA citizen always eligible.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+
+- name: Case 2, CA refugee eligible pre-OBBBA.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+
+- name: Case 3, CA refugee still eligible in 2025 due to delayed implementation.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+
+- name: Case 4, CA refugee ineligible after April 2026.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: false
+
+- name: Case 5, CA asylee still eligible in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: ASYLEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+
+- name: Case 6, CA asylee ineligible after April 2026.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: ASYLEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: false
+
+- name: Case 7, CA LPR always eligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: true
+
+- name: Case 8, CA undocumented never eligible.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_snap_immigration_status_eligible: false
