@@ -1,0 +1,36 @@
+description: Iowa sets these values as the payment standard, or the schedule of basic needs, by family size under the Family Investment Program.
+
+1:
+  1997-01-01: 183
+2:
+  1997-01-01: 361
+3:
+  1997-01-01: 426
+4:
+  1997-01-01: 495
+5:
+  1997-01-01: 548
+6:
+  1997-01-01: 610
+7:
+  1997-01-01: 670
+8:
+  1997-01-01: 731
+9:
+  1997-01-01: 791
+10:
+  1997-01-01: 865
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Assistance unit size
+  label: Iowa FIP payment standard
+  reference:
+    - title: Iowa Administrative Code 441-41.28(239B) - Need Standards, 41.28(2)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=31
+    - title: Iowa TANF State Plan 2025, Section (3)
+      href: https://hhs.iowa.gov/media/17445/download?inline#page=7
