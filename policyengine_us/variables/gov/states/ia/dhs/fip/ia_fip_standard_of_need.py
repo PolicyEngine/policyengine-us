@@ -12,7 +12,7 @@ class ia_fip_standard_of_need(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.dhs.fip
-        people = spm_unit("spm_unit_size", period)
+        people = spm_unit("spm_unit_size", period.this_year)
         capped_people = min_(people, p.max_unit_size).astype(int)
         additional_people = people - capped_people
 
