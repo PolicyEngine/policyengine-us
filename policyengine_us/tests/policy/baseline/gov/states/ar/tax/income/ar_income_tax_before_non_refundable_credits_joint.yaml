@@ -95,3 +95,29 @@
   output:
     # 100_000 * 0.047 - 153.7 = 4546.3 > 1_000
     ar_income_tax_before_non_refundable_credits_joint: 1_000
+
+- name: Case 10, 2025 joint taxable income in 3.4% bracket, low income cap applies.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 20_000
+    ar_low_income_tax_joint: 300
+    state_code: AR
+  output:
+    # Regular: 20_000 * 0.034 - 288 = 392
+    # Low income cap: 300
+    # min(392, 300) = 300
+    ar_income_tax_before_non_refundable_credits_joint: 300
+
+- name: Case 11, 2025 joint taxable income in 3.9% bracket, no low income cap.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 50_000
+    ar_low_income_tax_joint: 5_000
+    state_code: AR
+  output:
+    # Regular: 50_000 * 0.039 - 420 = 1_530
+    # Low income cap: 5_000
+    # min(1_530, 5_000) = 1_530
+    ar_income_tax_before_non_refundable_credits_joint: 1_530
