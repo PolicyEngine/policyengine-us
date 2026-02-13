@@ -1352,16 +1352,20 @@ values:
   2025-06-01: 321.500
   2025-07-01: 322.132
   2025-08-01: 323.364
-  # CBO projections from CBO Jan 2025 forecast for future periods.
-  2026-02-01: 325.9 # 2027 value.
-  2027-02-01: 333.5 # 2028 value.
-  2028-02-01: 341.1 # 2029 value.
-  2029-02-01: 348.7 # 2030 value.
-  2030-02-01: 356.5 # 2031 value.
-  2031-02-01: 364.5 # 2032 value.
-  2032-02-01: 372.7 # 2033 value.
-  2033-02-01: 381.0 # 2034 value.
-  2034-02-01: 389.6 # 2035 value.
+  # CBO projections adjusted for CBO Sep 2025 interim inflation update.
+  # CBO Sep 2025 CPI-U inflation: 2.7% (2026), 2.2% (2027), 2.2% (2028)
+  # vs Jan 2025: 2.4% (2026), 2.3% (2027), 2.3% (2028).
+  # Index levels scaled by cumulative ratio (1+sep)/(1+jan) per year.
+  # Source: https://www.cbo.gov/publication/61738
+  2026-02-01: 326.9 # 2027 value. (was 325.9)
+  2027-02-01: 334.1 # 2028 value. (was 333.5)
+  2028-02-01: 341.4 # 2029 value. (was 341.1)
+  2029-02-01: 349.0 # 2030 value. (was 348.7)
+  2030-02-01: 356.8 # 2031 value. (was 356.5)
+  2031-02-01: 364.8 # 2032 value. (was 364.5)
+  2032-02-01: 373.1 # 2033 value. (was 372.7)
+  2033-02-01: 381.4 # 2034 value. (was 381.0)
+  2034-02-01: 390.0 # 2035 value. (was 389.6)
   # Values for 2035-2100 are set programmatically in uprating_extensions.py
 metadata:
   unit: currency-USD
@@ -1376,3 +1380,6 @@ metadata:
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 158
       href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
+    - title: CBO | Current View of the Economy From 2025 to 2028 | September 2025
+      # Inflation projections used to adjust CPI-U index levels for 2026+
+      href: https://www.cbo.gov/publication/61738

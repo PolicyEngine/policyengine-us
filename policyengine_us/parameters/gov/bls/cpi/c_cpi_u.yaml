@@ -309,18 +309,20 @@ values:
   2025-06-01: 178.909
   2025-07-01: 179.154
   2025-08-01: 179.656
-  # CBO projections from CBO Jan 2025 forecast for future periods.
-  # CBO projects the average C-CPI-U over the 12mo ending August,
-  # which determines tax parameters for the following year.
-  2026-02-01: 180.5 # 2027 value.
-  2027-02-01: 184.1 # 2028 value.
-  2028-02-01: 187.8 # 2029 value.
-  2029-02-01: 191.5 # 2030 value.
-  2030-02-01: 195.3 # 2031 value.
-  2031-02-01: 199.1 # 2032 value.
-  2032-02-01: 203.1 # 2033 value.
-  2033-02-01: 207.1 # 2034 value.
-  2034-02-01: 211.2 # 2035 value. 
+  # CBO projections adjusted for CBO Sep 2025 interim inflation update.
+  # CBO Sep 2025 CPI-U inflation: 2.7% (2026), 2.2% (2027), 2.2% (2028)
+  # vs Jan 2025: 2.4% (2026), 2.3% (2027), 2.3% (2028).
+  # C-CPI-U scaled proportionally to CPI-U adjustment.
+  # Source: https://www.cbo.gov/publication/61738
+  2026-02-01: 181.0 # 2027 value. (was 180.5)
+  2027-02-01: 184.5 # 2028 value. (was 184.1)
+  2028-02-01: 188.0 # 2029 value. (was 187.8)
+  2029-02-01: 191.7 # 2030 value. (was 191.5)
+  2030-02-01: 195.5 # 2031 value. (was 195.3)
+  2031-02-01: 199.3 # 2032 value. (was 199.1)
+  2032-02-01: 203.3 # 2033 value. (was 203.1)
+  2033-02-01: 207.3 # 2034 value. (was 207.1)
+  2034-02-01: 211.4 # 2035 value. (was 211.2)
   # Values for 2035-2100 are set programmatically in uprating_extensions.py
 metadata:
   economy: false
@@ -335,3 +337,6 @@ metadata:
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 159
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
+    - title: CBO | Current View of the Economy From 2025 to 2028 | September 2025
+      # Inflation projections used to adjust C-CPI-U index levels for 2026+
+      href: https://www.cbo.gov/publication/61738
