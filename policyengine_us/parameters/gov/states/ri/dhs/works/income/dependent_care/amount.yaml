@@ -9,15 +9,18 @@ metadata:
   reference:
     - title: 218-RICR-20-00-2.15.5(B)(2) Dependent Care Deduction
       href: https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+    - title: R.I. Gen. Laws Chapter 40-5.2 - Rhode Island Works Act of 2008
+      href: http://webserver.rilin.state.ri.us/Statutes/TITLE40/40-5.2/INDEX.htm
     - title: Rhode Island Works Program Eligibility
       href: https://dhs.ri.gov/programs-and-services/ri-works-program/eligibility-how-apply
 
 brackets:
+  # Rhode Island Works established July 1, 2008; amounts based on federal SNAP limits
   - threshold:
-      2019-01-01: 0
+      2008-07-01: 0
     amount:
-      2019-01-01: 200
+      2008-07-01: 200
   - threshold:
-      2019-01-01: 2
+      2008-07-01: 2
     amount:
-      2019-01-01: 175
+      2008-07-01: 175
