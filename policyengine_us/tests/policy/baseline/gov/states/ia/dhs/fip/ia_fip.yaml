@@ -1,0 +1,379 @@
+# Iowa TANF (Family Investment Program) benefit tests
+# Per 441 IAC 41.27(239B) and 41.28(239B)
+
+# Unit tests - isolate core benefit calculation logic
+
+- name: Unit test - eligible household receives benefit
+  period: 2025
+  input:
+    ia_fip_payment_standard: 5_112
+    ia_fip_countable_income: 3_225.60
+    ia_fip_eligible: true
+    state_code: IA
+  output:
+    ia_fip: 1_886.40
+
+- name: Unit test - countable income exceeds payment standard
+  period: 2025
+  input:
+    ia_fip_payment_standard: 5_112
+    ia_fip_countable_income: 6_000
+    ia_fip_eligible: true
+    state_code: IA
+  output:
+    ia_fip: 0
+
+- name: Unit test - ineligible household receives no benefit
+  period: 2025
+  input:
+    ia_fip_payment_standard: 5_112
+    ia_fip_countable_income: 3_000
+    ia_fip_eligible: false
+    state_code: IA
+  output:
+    ia_fip: 0
+
+# Integration tests - full calculation with realistic household structures
+
+- name: Integration test - family of 3 with $800/month earnings
+  # Example from 441 IAC 41.27(239B) documentation
+  # Family of 3 with one employed parent earning $800/month gross
+  # Calculations (annual):
+  # - Gross Income: $9,600
+  # - 20% earned income deduction: $9,600 * 0.20 = $1,920
+  # - Net after 20%: $9,600 - $1,920 = $7,680
+  # - 58% work incentive: $7,680 * 0.58 = $4,454.40
+  # - Countable income: $7,680 - $4,454.40 = $3,225.60
+  # - Payment standard for 3: $426/month * 12 = $5,112/year
+  # - Benefit: $5,112 - $3,225.60 = $1,886.40/year
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 9_600
+        is_tax_unit_head_or_spouse: true
+      child1:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 10_188
+    ia_fip_payment_standard: 5_112
+    ia_fip_gross_income: 9_600
+    ia_fip_countable_income: 3_225.60
+    ia_fip_income_eligible: true
+    ia_fip_eligible: true
+    ia_fip: 1_886.40
+
+- name: Integration test - family exceeds gross income limit
+  # Family of 2 with $2,000/month earnings
+  # Standard of need for 2: $719/month * 12 = $8,628/year
+  # Gross income limit: $8,628 * 1.85 = $15,961.80/year
+  # Gross income: $24,000/year > $15,961.80 - FAIL Test 1
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 24_000
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 8_628
+    ia_fip_gross_income: 24_000
+    ia_fip_income_eligible: false
+    ia_fip_eligible: false
+    ia_fip: 0
+
+- name: Integration test - zero income household receives max benefit
+  # Family of 2 with zero income
+  # Payment standard for 2: $361/month * 12 = $4,332/year
+  # Countable income: $0
+  # Benefit: $4,332 - $0 = $4,332/year
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 8_628
+    ia_fip_payment_standard: 4_332
+    ia_fip_gross_income: 0
+    ia_fip_countable_income: 0
+    ia_fip_income_eligible: true
+    ia_fip_eligible: true
+    ia_fip: 4_332
+
+- name: Integration test - unearned income only (no deductions)
+  # Family of 2 with $400/month unearned income
+  # Unearned income does not get the 20% deduction or 58% work incentive
+  # Standard of need for 2: $719/month * 12 = $8,628/year
+  # Payment standard for 2: $361/month * 12 = $4,332/year
+  # Gross income: $4,800/year
+  # Gross income limit: $8,628 * 1.85 = $15,961.80 > $4,800 - PASS Test 1
+  # Net income: $4,800 < $8,628 - PASS Test 2
+  # Countable income: $4,800 (no earned income deductions apply)
+  # Countable income $4,800 > payment standard $4,332 - FAIL Test 3
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 0
+        social_security: 4_800
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 8_628
+    ia_fip_payment_standard: 4_332
+    ia_fip_gross_income: 4_800
+    ia_fip_countable_income: 4_800
+    ia_fip_income_eligible: false
+    ia_fip_eligible: false
+    ia_fip: 0
+
+- name: Integration test - mixed earned and unearned income
+  # Family of 3 with $500/month earned and $200/month unearned
+  # Standard of need for 3: $849/month * 12 = $10,188/year
+  # Payment standard for 3: $426/month * 12 = $5,112/year
+  # Gross earned: $6,000/year
+  # Gross unearned: $2,400/year
+  # Gross income: $8,400/year
+  # Gross income limit: $10,188 * 1.85 = $18,847.80 > $8,400 - PASS Test 1
+  # 20% deduction: $6,000 * 0.20 = $1,200
+  # Net income: $8,400 - $1,200 = $7,200 < $10,188 - PASS Test 2
+  # Remaining earned: $6,000 - $1,200 = $4,800
+  # 58% work incentive: $4,800 * 0.58 = $2,784
+  # Countable earned: $4,800 - $2,784 = $2,016
+  # Countable income: $2,016 + $2,400 = $4,416 < $5,112 - PASS Test 3
+  # Benefit: $5,112 - $4,416 = $696/year
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000
+        social_security: 2_400
+        is_tax_unit_head_or_spouse: true
+      child1:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 10_188
+    ia_fip_payment_standard: 5_112
+    ia_fip_gross_income: 8_400
+    ia_fip_countable_income: 4_416
+    ia_fip_income_eligible: true
+    ia_fip_eligible: true
+    ia_fip: 696
+
+- name: Integration test - single parent household
+  # Single parent with 1 child earning $600/month
+  # Standard of need for 2: $719/month * 12 = $8,628/year
+  # Payment standard for 2: $361/month * 12 = $4,332/year
+  # Gross earned: $7,200/year
+  # Gross income limit: $8,628 * 1.85 = $15,961.80 > $7,200 - PASS Test 1
+  # 20% deduction: $7,200 * 0.20 = $1,440
+  # Net income: $7,200 - $1,440 = $5,760 < $8,628 - PASS Test 2
+  # Remaining earned: $7,200 - $1,440 = $5,760
+  # 58% work incentive: $5,760 * 0.58 = $3,340.80
+  # Countable income: $5,760 - $3,340.80 = $2,419.20 < $4,332 - PASS Test 3
+  # Benefit: $4,332 - $2,419.20 = $1,912.80/year
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income_before_lsr: 7_200
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 2
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_fip_standard_of_need: 8_628
+    ia_fip_payment_standard: 4_332
+    ia_fip_countable_income: 2_419.20
+    ia_fip_income_eligible: true
+    ia_fip_eligible: true
+    ia_fip: 1_912.80
+
+- name: Integration test - large family (over 10 members)
+  # Family of 11 members (at max cap 10 + 1 additional)
+  # Standard of need for 10: $1,724/month
+  # Additional per person: varies, let's check the additional parameter
+  # Payment standard for 10: $865/month
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      parent2:
+        age: 33
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      child1:
+        age: 16
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child4:
+        age: 10
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child5:
+        age: 8
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child6:
+        age: 6
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child7:
+        age: 4
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child8:
+        age: 2
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+      child9:
+        age: 1
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: IA
+  output:
+    ia_fip_income_eligible: true
+    ia_fip_eligible: true
+
+- name: Integration test - non-Iowa state gets zero benefit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    ia_fip: 0
