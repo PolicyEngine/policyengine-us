@@ -52,7 +52,7 @@
   output:
     ny_ctc_post_2024_eligible: false
 
-- name: Not eligible when child doesn't qualify for federal CTC
+- name: Not eligible when child has no valid ID (no SSN or ITIN)
   period: 2025
   input:
     people:
@@ -60,7 +60,7 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: false
+        has_itin: false
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -70,6 +70,25 @@
         state_code: NY
   output:
     ny_ctc_post_2024_eligible: false
+
+- name: Eligible when child has SSN or ITIN (default)
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc_post_2024_eligible: true
 
 - name: Not eligible in 2024 (before post-2024 rules)
   period: 2024

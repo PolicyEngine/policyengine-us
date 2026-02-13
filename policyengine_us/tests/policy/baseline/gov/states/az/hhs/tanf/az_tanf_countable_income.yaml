@@ -1,0 +1,116 @@
+# Unit tests for Arizona TANF countable income
+# Combines countable earned income + gross unearned income
+# Reference: https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Benefit_Determination.html
+
+- name: Case 1, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_countable_income: 0
+
+- name: Case 2, earned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month annual
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $287 (after disregards)
+    # Unearned: $0
+    # Total: $287
+    az_tanf_countable_income: 287
+
+- name: Case 3, unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400  # $200/month annual unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $0
+    # Unearned: $200 (no disregard on unearned)
+    # Total: $200
+    az_tanf_countable_income: 200
+
+- name: Case 4, mixed earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month annual
+        child_support_received: 1_200  # $100/month annual unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $287 (after disregards)
+    # Unearned: $100 (no disregard)
+    # Total: $387
+    az_tanf_countable_income: 387
+
+- name: Case 5, mixed income with dependent care.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month annual
+        child_support_received: 1_200  # $100/month annual unearned
+      person2:
+        age: 1
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Earned after disregards: $287
+    # Dependent care deduction: $200 (child under 2)
+    # Countable earned: $287 - $200 = $87
+    # Unearned: $100
+    # Total: $187
+    az_tanf_countable_income: 187

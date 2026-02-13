@@ -1,25 +1,87 @@
-description: Personal and dependent exemption amount
+description: >-
+  Personal and dependent exemption amount under IRC 151(d). TCJA set the
+  deduction to $0 from 2018 (made permanent by OBBB), but the underlying
+  amount continues to be inflation-adjusted and published in annual Rev. Proc.
+  for other provisions that reference it, such as the qualifying relative
+  gross income test under IRC 152(d)(1)(B). The deduction suspension is
+  represented separately in gov.irs.income.exemption.suspended.
 metadata:
   unit: currency-USD
   uprating: gov.irs.uprating
   period: year
   reference:
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
+    - title: 26 U.S. Code § 151(d)(1) - Exemption amount
       href: https://www.law.cornell.edu/uscode/text/26/151#d_1
-    # TCJA sets to zero.
-    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
-      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
-      # 1. Tax Parameters.
-      href: https://www.cbo.gov/data/budget-economic-data
-    # OBBB permanently sets value to zero.
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-
+    - title: IRS Notice 2018-70 - Guidance on qualifying relative exemption amount
+      href: https://www.irs.gov/pub/irs-drop/n-18-70.pdf
 values:
-  2013-01-01: 3_900
-  2014-01-01: 3_950
-  2015-01-01: 4_000
-  2016-01-01: 4_050
-  2017-01-01: 4_050
-  2018-01-01: 0
+  2013-01-01:
+    value: 3_900
+    reference:
+      - title: Rev. Proc. 2013-15
+        href: https://www.irs.gov/pub/irs-drop/rp-13-15.pdf
+  2014-01-01:
+    value: 3_950
+    reference:
+      - title: Rev. Proc. 2013-35
+        href: https://www.irs.gov/pub/irs-drop/rp-13-35.pdf
+  2015-01-01:
+    value: 4_000
+    reference:
+      - title: Rev. Proc. 2014-61
+        href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf
+  2016-01-01:
+    value: 4_050
+    reference:
+      - title: Rev. Proc. 2015-53
+        href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf
+  2017-01-01:
+    value: 4_050
+    reference:
+      - title: Rev. Proc. 2016-55
+        href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf
+  2018-01-01:
+    value: 4_150
+    reference:
+      - title: Rev. Proc. 2017-58
+        href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf
+  2019-01-01:
+    value: 4_200
+    reference:
+      - title: Rev. Proc. 2018-57
+        href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+  2020-01-01:
+    value: 4_300
+    reference:
+      - title: Rev. Proc. 2019-44
+        href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+  2021-01-01:
+    value: 4_300
+    reference:
+      - title: Rev. Proc. 2020-45
+        href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+  2022-01-01:
+    value: 4_400
+    reference:
+      - title: Rev. Proc. 2021-45
+        href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+  2023-01-01:
+    value: 4_700
+    reference:
+      - title: Rev. Proc. 2022-38
+        href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf
+  2024-01-01:
+    value: 5_050
+    reference:
+      - title: Rev. Proc. 2023-34
+        href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf
+  2025-01-01:
+    value: 5_200
+    reference:
+      - title: Rev. Proc. 2024-40
+        href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf
+  2026-01-01:
+    value: 5_300
+    reference:
+      - title: Rev. Proc. 2025-32
+        href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf

@@ -5,6 +5,114 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.555.3] - 2026-02-12 22:42:22
+
+### Changed
+
+- Add 2025 Vermont income tax values, renter credit income limits, and form references to parameter files.
+
+## [1.555.2] - 2026-02-12 18:16:49
+
+### Changed
+
+- Update Kentucky income tax model for 2025, including standard deduction ($3,270), tax rate (4%), and all tax credits with official 2025 references.
+
+## [1.555.1] - 2026-02-12 17:44:36
+
+### Changed
+
+- DC EITC match rate updated to 100% for 2025 per Act 26-214.
+
+## [1.555.0] - 2026-02-11 17:26:50
+
+### Added
+
+- Implement Utah HB 210 Substitute 2 marriage tax credit (Section 59-10-1049)
+
+## [1.554.1] - 2026-02-10 15:34:12
+
+### Fixed
+
+- Fix RI high earner tax and social security exemption reform exports to match standard pattern
+
+## [1.554.0] - 2026-02-08 04:15:39
+
+### Added
+
+- Add tax_unit_is_required_to_file variable for rules-based filing requirement.
+- Add eligible_for_refundable_credits variable for EITC/CTC eligibility check.
+- Add would_file_if_eligible_for_refundable_credit propensity variable.
+- Add would_file_taxes_voluntarily propensity variable for voluntary filers.
+
+### Changed
+
+- Refactor tax_unit_is_filer to use three-part filing logic with propensity variables.
+
+## [1.553.0] - 2026-02-07 18:08:52
+
+### Added
+
+- Add liquid asset input variables (bank_account_assets, stock_assets, bond_assets), ssi_countable_resources, and spm_unit_cash_assets aggregation
+- Add takes_up_ssi_if_eligible variable for SSI takeup modeling
+
+### Changed
+
+- SSI resource test now uses actual imputed assets instead of random pass rate
+- SSI benefit now applies takeup in microsimulation
+
+## [1.552.0] - 2026-02-07 00:40:26
+
+### Added
+
+- Section 1931 deprivation requirement parameter for non-expansion states
+- is_single_parent_household variable for Medicaid deprivation rules
+- Head Start and Early Head Start takeup variables
+- SSI resource test now uses actual policy logic in individual sim
+
+### Changed
+
+- Moved all stochastic randomness to data package for deterministic country package
+- is_parent_for_medicaid_nfc now checks Section 1931 deprivation requirements
+- Head Start and Early Head Start benefits now multiply by takeup
+- WIC would_claim_wic and is_wic_at_nutritional_risk default to True (resolved in data package)
+
+## [1.551.1] - 2026-02-07 00:23:46
+
+### Changed
+
+- Update Alabama 2025 Income tax.
+
+## [1.551.0] - 2026-02-07 00:10:55
+
+### Added
+
+- Arizona Cash Assistance (TANF) program.
+
+## [1.550.2] - 2026-02-05 04:45:16
+
+### Fixed
+
+- Fixed incorrect label for ca_ala_general_assistance_countable_income_person variable.
+
+## [1.550.1] - 2026-02-04 19:32:22
+
+### Fixed
+
+- Fix NY ESCC post-2024 to allow ITIN holders in baseline (revert S.9077 reform).
+
+## [1.550.0] - 2026-02-03 04:40:30
+
+### Added
+
+- is_qualifying_child_dependent variable for age-based qualifying child test
+- is_qualifying_relative_dependent variable for income-based qualifying relative test
+- dependent_gross_income variable for calculating dependent gross income
+
+### Changed
+
+- is_child_dependent now includes qualifying child, qualifying relative, and disability pathways
+- Head of household eligibility now correctly includes qualifying relatives (fixes issue 6994)
+
 ## [1.549.0] - 2026-02-02 19:07:06
 
 ### Added
@@ -14884,6 +14992,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.555.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.2...1.555.3
+[1.555.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.1...1.555.2
+[1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
+[1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0
+[1.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.0...1.554.1
+[1.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.553.0...1.554.0
+[1.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.552.0...1.553.0
+[1.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.1...1.552.0
+[1.551.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.551.0...1.551.1
+[1.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.2...1.551.0
+[1.550.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.1...1.550.2
+[1.550.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.550.0...1.550.1
+[1.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.549.0...1.550.0
 [1.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.548.0...1.549.0
 [1.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.547.0...1.548.0
 [1.547.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.546.1...1.547.0

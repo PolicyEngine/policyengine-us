@@ -14,6 +14,8 @@ metadata:
       href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf#page=10
     - title: 2024 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
       href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=10
+    - title: 2025 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=11
       # Legal code specifies amount with inflation adjustments..
     - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(ii) 
       href: https://legislature.vermont.gov/statutes/section/32/151/05811 
@@ -24,6 +26,7 @@ JOINT:
     2022-01-01: 13_050
     2023-01-01: 14_050
     2024-01-01: 14_850
+    2025-01-01: 15_300
   metadata:
     uprating: gov.irs.uprating
     rounding:
@@ -35,6 +38,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 9_800
     2023-01-01: 10_550
     2024-01-01: 11_100
+    2025-01-01: 11_450
   metadata:
     uprating: gov.irs.uprating
     rounding:
@@ -46,8 +50,9 @@ SURVIVING_SPOUSE:
     2022-01-01: 13_050
     2023-01-01: 14_050
     2024-01-01: 14_850
+    2025-01-01: 15_300
   metadata:
-    uprating: gov.irs.uprating  
+    uprating: gov.irs.uprating
     rounding:
       type: downwards
       interval: 50
@@ -57,6 +62,7 @@ SINGLE:
     2022-01-01: 6_500
     2023-01-01: 7_000
     2024-01-01: 7_400
+    2025-01-01: 7_650
   metadata:
     uprating: gov.irs.uprating
     rounding:
@@ -68,6 +74,7 @@ SEPARATE:
     2022-01-01: 6_500
     2023-01-01: 7_000
     2024-01-01: 7_400
+    2025-01-01: 7_650
   metadata:
     uprating: gov.irs.uprating
     rounding:

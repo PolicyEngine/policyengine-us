@@ -12800,3 +12800,103 @@
     - Add NY S.9077 Empire State Child Credit ITIN expansion reform allowing children
       with ITINs to qualify starting 2027.
   date: 2026-02-02 19:07:06
+- bump: minor
+  changes:
+    added:
+    - is_qualifying_child_dependent variable for age-based qualifying child test
+    - is_qualifying_relative_dependent variable for income-based qualifying relative
+      test
+    - dependent_gross_income variable for calculating dependent gross income
+    changed:
+    - is_child_dependent now includes qualifying child, qualifying relative, and disability
+      pathways
+    - Head of household eligibility now correctly includes qualifying relatives (fixes
+      issue 6994)
+  date: 2026-02-03 04:40:30
+- bump: patch
+  changes:
+    fixed:
+    - Fix NY ESCC post-2024 to allow ITIN holders in baseline (revert S.9077 reform).
+  date: 2026-02-04 19:32:22
+- bump: patch
+  changes:
+    fixed:
+    - Fixed incorrect label for ca_ala_general_assistance_countable_income_person
+      variable.
+  date: 2026-02-05 04:45:16
+- bump: minor
+  changes:
+    added:
+    - Arizona Cash Assistance (TANF) program.
+  date: 2026-02-07 00:10:55
+- bump: patch
+  changes:
+    changed:
+    - Update Alabama 2025 Income tax.
+  date: 2026-02-07 00:23:46
+- bump: minor
+  changes:
+    added:
+    - Section 1931 deprivation requirement parameter for non-expansion states
+    - is_single_parent_household variable for Medicaid deprivation rules
+    - Head Start and Early Head Start takeup variables
+    - SSI resource test now uses actual policy logic in individual sim
+    changed:
+    - Moved all stochastic randomness to data package for deterministic country package
+    - is_parent_for_medicaid_nfc now checks Section 1931 deprivation requirements
+    - Head Start and Early Head Start benefits now multiply by takeup
+    - WIC would_claim_wic and is_wic_at_nutritional_risk default to True (resolved
+      in data package)
+    removed:
+    - aca_take_up_seed, snap_take_up_seed, medicaid_take_up_seed variables
+    - random() calls from all variable formulas
+    - Takeup rate parameters (now in policyengine-us-data)
+  date: 2026-02-07 00:40:26
+- bump: minor
+  changes:
+    added:
+    - Add liquid asset input variables (bank_account_assets, stock_assets, bond_assets),
+      ssi_countable_resources, and spm_unit_cash_assets aggregation
+    - Add takes_up_ssi_if_eligible variable for SSI takeup modeling
+    changed:
+    - SSI resource test now uses actual imputed assets instead of random pass rate
+    - SSI benefit now applies takeup in microsimulation
+  date: 2026-02-07 18:08:52
+- bump: minor
+  changes:
+    added:
+    - Add tax_unit_is_required_to_file variable for rules-based filing requirement.
+    - Add eligible_for_refundable_credits variable for EITC/CTC eligibility check.
+    - Add would_file_if_eligible_for_refundable_credit propensity variable.
+    - Add would_file_taxes_voluntarily propensity variable for voluntary filers.
+    changed:
+    - Refactor tax_unit_is_filer to use three-part filing logic with propensity variables.
+  date: 2026-02-08 04:15:39
+- bump: patch
+  changes:
+    fixed:
+    - Fix RI high earner tax and social security exemption reform exports to match
+      standard pattern
+  date: 2026-02-10 15:34:12
+- bump: minor
+  changes:
+    added:
+    - Implement Utah HB 210 Substitute 2 marriage tax credit (Section 59-10-1049)
+  date: 2026-02-11 17:26:50
+- bump: patch
+  changes:
+    changed:
+    - DC EITC match rate updated to 100% for 2025 per Act 26-214.
+  date: 2026-02-12 17:44:36
+- bump: patch
+  changes:
+    changed:
+    - Update Kentucky income tax model for 2025, including standard deduction ($3,270),
+      tax rate (4%), and all tax credits with official 2025 references.
+  date: 2026-02-12 18:16:49
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 Vermont income tax values, renter credit income limits, and form references
+      to parameter files.
+  date: 2026-02-12 22:42:22
