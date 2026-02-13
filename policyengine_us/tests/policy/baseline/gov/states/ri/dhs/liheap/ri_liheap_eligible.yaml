@@ -1,0 +1,138 @@
+# Unit tests for Rhode Island LIHEAP overall eligibility
+# Eligibility requires:
+# 1. Rhode Island residency (state_code = RI)
+# 2. Income <= 60% of State Median Income
+# Source: https://dhs.ri.gov/programs-and-services/energy-assistance-programs-heating/low-income-home-energy-assistance-program
+#
+# Note: Rhode Island does NOT use categorical eligibility - all households
+# must meet the 60% SMI income test regardless of SNAP/SSI/TANF participation.
+#
+# FFY 2025 60% SMI limits by household size (used for period 2025):
+# 1-person: $39,102
+# 2-person: $51,134
+# 4-person: $75,197
+
+- name: Case 1, RI resident, income eligible, single person.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # RI resident, income $30,000 < 60% SMI $39,102
+    ri_liheap_eligible: true
+
+- name: Case 2, RI resident, income ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # RI resident, but income $50,000 > 60% SMI $39,102
+    ri_liheap_eligible: false
+
+- name: Case 3, non-RI resident, income would be eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Not RI resident - not eligible for RI LIHEAP
+    ri_liheap_eligible: false
+
+- name: Case 4, 4-person household, income eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 33
+        employment_income: 15_000
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # 60% SMI for 4-person: $75,197
+    # $65,000 < $75,197 = eligible
+    ri_liheap_eligible: true
+
+- name: Case 5, 4-person household, income ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 33
+        employment_income: 30_000
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # 60% SMI for 4-person: $75,197
+    # $80,000 > $75,197 = ineligible
+    ri_liheap_eligible: false
+
+- name: Case 6, zero income household eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Zero income always below SMI threshold
+    ri_liheap_eligible: true
