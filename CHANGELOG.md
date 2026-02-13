@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.557.0] - 2026-02-13 20:55:08
+
+### Changed
+
+- Update Mississippi income tax parameters with 2025 references and replace bill references with legal code citations.
+
 ## [1.556.2] - 2026-02-13 19:31:10
 
 ### Changed
@@ -15010,6 +15016,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.2...1.557.0
 [1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
 [1.556.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.0...1.556.1
 [1.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.3...1.556.0
