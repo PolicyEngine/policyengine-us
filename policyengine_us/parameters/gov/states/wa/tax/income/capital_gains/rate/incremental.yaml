@@ -1,4 +1,4 @@
-description: Washington capital gains tax rate.
+description: Washington taxes long-term capital gains at these marginal rates based on taxable gain amount.
 brackets:
   - threshold:
       2022-01-01: 0
@@ -14,7 +14,7 @@ metadata:
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  label: Washington capital gains tax rate
+  label: Washington marginal capital gains tax rate
   reference:
     - title: RCW 82.87.040(1)-(2) Tax imposed—Long-term capital assets
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.040
