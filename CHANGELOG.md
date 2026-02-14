@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.557.1] - 2026-02-14 02:56:16
+
+### Changed
+
+- Update Colorado Child Tax Credit income thresholds for 2025 (single $26K/$51K/$77K, joint $36K/$61K/$87K).
+- Update Colorado CollegeInvest contribution subtraction limits for 2025 (single $25,400, joint $38,100).
+- Update Colorado ABLE contribution subtraction caps for 2025 (single $25,400, joint $38,100).
+- Fix Colorado Care Worker Tax Credit start date from 2026 to 2025 per C.R.S. 39-22-566.
+- Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
+
 ## [1.557.0] - 2026-02-13 20:55:08
 
 ### Changed
@@ -15016,6 +15026,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.557.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.0...1.557.1
 [1.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.2...1.557.0
 [1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
 [1.556.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.0...1.556.1
