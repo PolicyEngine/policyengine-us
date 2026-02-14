@@ -1,28 +1,17 @@
-# Unit tests for tanf variable - testing only direct inputs
+# Unit tests for tanf variable
 
 - name: TANF abolition parameter returns zero
   period: 2022
   input:
     gov.hhs.tanf.abolish_tanf: true
-    tanf_reported: 500
     ca_tanf: 300
     co_tanf: 200
   output:
     tanf: 0
 
-- name: TANF reported is used when positive
+- name: State TANF values are summed
   period: 2022
   input:
-    tanf_reported: 200
-    ca_tanf: 100
-    co_tanf: 50
-  output:
-    tanf: 200
-
-- name: State TANF values are summed when no reported value
-  period: 2022
-  input:
-    tanf_reported: 0
     ca_tanf: 150
     co_tanf: 100
     dc_tanf: 75
@@ -30,10 +19,9 @@
   output:
     tanf: 450
 
-- name: Zero TANF when no state programs and no reported value
+- name: Zero TANF when no state programs calculate a benefit
   period: 2022
   input:
-    tanf_reported: 0
     ca_tanf: 0
     co_tanf: 0
     dc_tanf: 0
@@ -41,10 +29,18 @@
   output:
     tanf: 0
 
-- name: Only positive reported TANF overrides state values
+- name: Takeup set to false zeroes out TANF
   period: 2022
   input:
-    tanf_reported: 0
+    takes_up_tanf_if_eligible: false
+    ca_tanf: 500
+    ny_tanf: 300
+  output:
+    tanf: 0
+
+- name: Takeup defaults to true
+  period: 2022
+  input:
     ca_tanf: 100
     ny_tanf: 200
   output:
