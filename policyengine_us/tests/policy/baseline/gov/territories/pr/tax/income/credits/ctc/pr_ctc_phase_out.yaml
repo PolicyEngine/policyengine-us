@@ -1,0 +1,63 @@
+- name: Income over threshold, joint
+  period: 2024
+  input:
+    people:
+      person1:
+        # threshold should be 400_000
+        pr_gross_income_person: 25_000
+      person2:
+        pr_gross_income_person: 25_001
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 350_000
+        filing_status: JOINT
+        members: [person1, person2]
+  output:
+    pr_ctc_phase_out: 50
+
+- name: Income under threshold, joint
+  period: 2024
+  input:
+    people:
+      person1:
+        # threshold should be 400_000
+        pr_gross_income_person: 69_999
+      person2:
+        pr_gross_income_person: 30_000
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 300_000
+        filing_status: JOINT
+        members: [person1, person2]
+  output:
+    pr_ctc_phase_out: 0
+
+- name: Income under threshold, single
+  period: 2024
+  input:
+    people:
+      person1:
+        # threshold should be 200_000
+        pr_gross_income_person: 1_000
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 199_000
+        filing_status: SINGLE
+        members: [person1]
+  output:
+    pr_ctc_phase_out: 0
+
+- name: Income over threshold, other filing statuses
+  period: 2024
+  input:
+    people:
+      person1:
+        # threshold should be 200_000
+        pr_gross_income_person: 2_000
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 200_000
+        filing_status: SEPARATE
+        members: [person1]
+  output:
+    pr_ctc_phase_out: 100
