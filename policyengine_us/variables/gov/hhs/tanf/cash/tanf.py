@@ -54,8 +54,8 @@ class tanf(Variable):
     definition_period = YEAR
     label = "TANF"
     documentation = (
-        "Value of Temporary Assistance for Needy Families benefit "
-        "received, summing all state-specific TANF programs."
+        "Value of Temporary Assistance for Needy Families benefit received, "
+        "summing all state-specific TANF programs."
     )
     unit = USD
 
