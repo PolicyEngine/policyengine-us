@@ -1,6 +1,7 @@
 description: Federal poverty guidelines published by the Department of Health and Human Services.
 first_person:
   CONTIGUOUS_US:
+    1992-01-01: 6_810
     2015-01-01: 11_770
     2016-01-01: 11_880
     2017-01-01: 12_060
@@ -14,6 +15,7 @@ first_person:
     2025-01-01: 15_650
     2026-01-01: 15_960
   AK:
+    1992-01-01: 8_500
     2015-01-01: 14_720
     2016-01-01: 14_840
     2017-01-01: 15_060
@@ -27,6 +29,7 @@ first_person:
     2025-01-01: 19_550
     2026-01-01: 19_950
   HI:
+    1992-01-01: 7_830
     2015-01-01: 13_550
     2016-01-01: 13_670
     2017-01-01: 13_860
@@ -53,6 +56,7 @@ additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
   # This difference is always the same for larger households.
   CONTIGUOUS_US:
+    1992-01-01: 2_380
     2015-01-01: 4_160
     2016-01-01: 4_160
     2017-01-01: 4_180
@@ -66,6 +70,7 @@ additional_person:
     2025-01-01: 5_500
     2026-01-01: 5_680
   AK:
+    1992-01-01: 2_980
     2015-01-01: 5_200
     2016-01-01: 5_200
     2017-01-01: 5_230
@@ -79,6 +84,7 @@ additional_person:
     2025-01-01: 6_880
     2026-01-01: 7_100
   HI:
+    1992-01-01: 2_740
     2015-01-01: 4_780
     2016-01-01: 4_780
     2017-01-01: 4_810

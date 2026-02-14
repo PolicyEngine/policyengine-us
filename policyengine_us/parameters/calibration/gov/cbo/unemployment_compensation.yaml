@@ -4,17 +4,20 @@ values:
   2023-01-01: 35_000_000_000
   # Projected.
   2024-01-01: 34_663_000_000
-  2025-01-01: 39_817_000_000
-  2026-01-01: 43_864_000_000
-  2027-01-01: 45_927_000_000
-  2028-01-01: 47_736_000_000
-  2029-01-01: 49_230_000_000
-  2030-01-01: 50_789_000_000
-  2031-01-01: 52_463_000_000
-  2032-01-01: 54_157_000_000
-  2033-01-01: 55_785_000_000
-  2034-01-01: 57_425_000_000
-  2035-01-01: 59_095_000_000
+  # CBO February 2026 baseline projections.
+  # Row 19: Total (Regular + Extended + TAA)
+  2025-01-01: 38_735_000_000
+  2026-01-01: 43_530_000_000
+  2027-01-01: 46_151_000_000
+  2028-01-01: 47_350_000_000
+  2029-01-01: 48_085_000_000
+  2030-01-01: 48_710_000_000
+  2031-01-01: 50_005_000_000
+  2032-01-01: 51_455_000_000
+  2033-01-01: 52_925_000_000
+  2034-01-01: 54_415_000_000
+  2035-01-01: 55_920_000_000
+  2036-01-01: 57_450_000_000
 metadata:
   unit: currency-USD
   label: Unemployment compensation outlays
@@ -29,3 +32,7 @@ metadata:
       # Row 16: Estimated Outlays
       # Note: Includes TAA, a small amount that might be included in microdata.
       href: https://www.cbo.gov/system/files/2025-01/51316-2025-01-unemployment.xlsx
+    - title: CBO Details About Baseline Projections for Selected Programs | Unemployment Compensation | February 2026
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs
+      # Row 19: Total (Regular + Extended + TAA)
+      href: https://www.cbo.gov/system/files/2026-02/51316-2026-02-unemployment.xlsx

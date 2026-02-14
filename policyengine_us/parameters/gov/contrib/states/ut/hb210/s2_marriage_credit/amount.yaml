@@ -1,0 +1,20 @@
+description: Utah provides this marriage tax credit amount by filing status under HB 210 Substitute 2.
+
+SINGLE:
+  2026-01-01: 0
+JOINT:
+  2026-01-01: 158
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 0
+SEPARATE:
+  2026-01-01: 79
+SURVIVING_SPOUSE:
+  2026-01-01: 158
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah HB 210 Substitute 2 marriage credit amount
+  reference:
+    - title: Utah HB 210 Substitute 2 (2026), Section 59-10-1049
+      href: https://le.utah.gov/~2026/bills/static/HB0210.html

@@ -1,0 +1,14 @@
+description: >-
+  Whether the personal exemption deduction is suspended. TCJA suspended it
+  for 2018-2025 under IRC 151(d)(5)(A). OBBB made the suspension permanent.
+  The underlying exemption amount in gov.irs.income.exemption.amount continues
+  to be inflation-adjusted for other provisions that reference IRC 151(d).
+metadata:
+  unit: bool
+  period: year
+  reference:
+    - title: 26 U.S. Code § 151(d)(5)(A) - Exemption amount is zero
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
+values:
+  2013-01-01: false
+  2018-01-01: true

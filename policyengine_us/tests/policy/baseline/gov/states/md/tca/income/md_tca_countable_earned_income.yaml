@@ -1,0 +1,96 @@
+# Tests countable earned income calculation
+# Formula: max(gross_earned * (1 - rate) - childcare_deduction, 0)
+# Rate: 20% for applicants, 40% for enrolled recipients
+
+- name: Case 1, enrolled recipient with no childcare.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+        md_tca_childcare_deduction: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    # $1,000 * (1 - 0.4) - $0 = $600
+    md_tca_countable_earned_income: 600
+
+- name: Case 2, applicant with no childcare.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+        md_tca_childcare_deduction: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    # $1,000 * (1 - 0.2) - $0 = $800
+    md_tca_countable_earned_income: 800
+
+- name: Case 3, enrolled with childcare deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+        md_tca_childcare_deduction: 200
+    households:
+      household:
+        state_code: MD
+  output:
+    # $1,000 * (1 - 0.4) - $200 = $600 - $200 = $400
+    md_tca_countable_earned_income: 400
+
+- name: Case 4, childcare exceeds after-disregard amount.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+        md_tca_childcare_deduction: 400
+    households:
+      household:
+        state_code: MD
+  output:
+    # $500 * (1 - 0.4) - $400 = $300 - $400 = max(-$100, 0) = $0
+    md_tca_countable_earned_income: 0
+
+- name: Case 5, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+        md_tca_childcare_deduction: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_countable_earned_income: 0
