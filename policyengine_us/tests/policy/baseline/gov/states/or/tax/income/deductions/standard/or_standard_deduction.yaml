@@ -98,3 +98,42 @@
   output:
     # $1000 income + $350 addition + $1200 blind
     or_standard_deduction: 2_550
+
+# 2025 tests - Standard deduction amounts updated
+- name: 2025 single filer standard deduction
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 35
+  output:
+    or_standard_deduction: 2_835
+
+- name: 2025 joint filers standard deduction
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 35
+  output:
+    or_standard_deduction: 5_670
+
+- name: 2025 head of household standard deduction
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 35
+  output:
+    or_standard_deduction: 4_560
+
+- name: 2025 single elderly filer with aged/blind addition
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 65
+  output:
+    # $2,835 base + $1,200 aged
+    or_standard_deduction: 4_035
