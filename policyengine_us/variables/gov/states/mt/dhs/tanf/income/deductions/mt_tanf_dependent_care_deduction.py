@@ -7,9 +7,7 @@ class mt_tanf_dependent_care_deduction(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) dependent care deduction"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf#page=1"
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):

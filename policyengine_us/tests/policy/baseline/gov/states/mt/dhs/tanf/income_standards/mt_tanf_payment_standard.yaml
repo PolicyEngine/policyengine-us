@@ -16,9 +16,9 @@
   output:
     mt_tanf_payment_standard: 1_475
 
-- name: Case 3, AU size 25 - capped
+- name: Case 3, AU size 25 - capped at 20 per ARM 37.78.420
   period: 2024-01
-  absolute_error_margin: 0.4 
+  absolute_error_margin: 0.4
   input:
     state_code: MT
     mt_tanf_assistance_unit_size: 25

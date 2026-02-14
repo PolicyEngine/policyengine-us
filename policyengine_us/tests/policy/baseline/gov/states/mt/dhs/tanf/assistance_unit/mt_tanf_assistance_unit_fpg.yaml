@@ -34,14 +34,14 @@
   output:
     mt_tanf_assistance_unit_fpg: 1_919.1 # (13_590 + 2 * 4_720)/12
 
-- name: Case 5, assistance unit capped size in 2023-01.
+- name: Case 5, assistance unit capped at size 20 per ARM 37.78.420.
   period: 2023-01
   absolute_error_margin: 0.1
   input:
     mt_tanf_assistance_unit_size: 25
     state_code: MT
   output:
-    # capped at 20-person household, monthly FPG = (13,590 + 19 * 4,720) / 12
+    # Capped at 20-person household, monthly FPG = (13,590 + 19 * 4,720) / 12
     mt_tanf_assistance_unit_fpg: 8_605.8
 
 - name: Case 6, assitance unit size 3, covering Jan - Jun and Jul - Dec FPG change

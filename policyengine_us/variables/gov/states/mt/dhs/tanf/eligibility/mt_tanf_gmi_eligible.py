@@ -6,9 +6,7 @@ class mt_tanf_gmi_eligible(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "Passes Montana TANF Gross Monthly Income Eligibility Test"
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF604-1Jan012018.pdf"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF604-1Jan012018.pdf#page=1"
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):

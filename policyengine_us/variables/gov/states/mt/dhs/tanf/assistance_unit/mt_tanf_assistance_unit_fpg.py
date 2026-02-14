@@ -6,13 +6,18 @@ class mt_tanf_assistance_unit_fpg(Variable):
     entity = SPMUnit
     label = "Montana TANF assistance unit's federal poverty guideline"
     unit = USD
-    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf"
+    reference = (
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf#page=1"
+    )
     definition_period = MONTH
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("mt_tanf_assistance_unit_size", period)
-        capped_size = min_(n, 20)
+        # ARM 37.78.420 income standards tables list sizes 1-20.
+        p = parameters(period).gov.states.mt.dhs.tanf
+        max_size = p.max_unit_size
+        capped_size = min_(n, max_size)
         state_group = spm_unit.household("state_group_str", period)
         year = period.start.year
         month = period.start.month

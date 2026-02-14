@@ -7,8 +7,8 @@ class mt_tanf_meets_work_requirements(Variable):
     label = "Work requirement satisfied for Montana Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.103"  # 62,
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf"
+        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.103",
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf#page=1",
     )
     defined_for = StateCode.MT
 

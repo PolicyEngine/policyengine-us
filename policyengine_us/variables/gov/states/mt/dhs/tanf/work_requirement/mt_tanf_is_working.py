@@ -6,7 +6,9 @@ class mt_tanf_is_working(Variable):
     entity = Person
     label = "Person is working under the work requirement for Montana Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
-    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf"
+    reference = (
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF705.1.pdf#page=1"
+    )
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):

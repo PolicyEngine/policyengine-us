@@ -9,7 +9,7 @@ class mt_tanf(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.420",
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf",
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf#page=1",
     )
     defined_for = "mt_tanf_eligible"
 
