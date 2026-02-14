@@ -6,7 +6,7 @@
   period: 2024-01
   input:
     spm_unit_size: 1
-    housing_cost: 0
+    pre_subsidy_rent: 0
     state_code: FL
   output:
     fl_tca_payment_standard: 95
@@ -15,7 +15,7 @@
   period: 2024-01
   input:
     spm_unit_size: 1
-    housing_cost: 300  # $25/month
+    pre_subsidy_rent: 300  # $25/month
     state_code: FL
   output:
     fl_tca_payment_standard: 153
@@ -24,7 +24,7 @@
   period: 2024-01
   input:
     spm_unit_size: 1
-    housing_cost: 12_000
+    pre_subsidy_rent: 12_000
     state_code: FL
   output:
     fl_tca_payment_standard: 180
@@ -33,7 +33,7 @@
   period: 2024-01
   input:
     spm_unit_size: 2
-    housing_cost: 0
+    pre_subsidy_rent: 0
     state_code: FL
   output:
     fl_tca_payment_standard: 158
@@ -42,7 +42,7 @@
   period: 2024-01
   input:
     spm_unit_size: 2
-    housing_cost: 600  # $50/month (boundary)
+    pre_subsidy_rent: 600  # $50/month (boundary)
     state_code: FL
   output:
     fl_tca_payment_standard: 205
@@ -51,7 +51,7 @@
   period: 2024-01
   input:
     spm_unit_size: 2
-    housing_cost: 612  # $51/month (just above boundary)
+    pre_subsidy_rent: 612  # $51/month (just above boundary)
     state_code: FL
   output:
     fl_tca_payment_standard: 241
@@ -60,7 +60,7 @@
   period: 2024-01
   input:
     spm_unit_size: 3
-    housing_cost: 0
+    pre_subsidy_rent: 0
     state_code: FL
   output:
     fl_tca_payment_standard: 198
@@ -69,7 +69,7 @@
   period: 2024-01
   input:
     spm_unit_size: 3
-    housing_cost: 300
+    pre_subsidy_rent: 300
     state_code: FL
   output:
     fl_tca_payment_standard: 258
@@ -78,7 +78,7 @@
   period: 2024-01
   input:
     spm_unit_size: 3
-    housing_cost: 12_000
+    pre_subsidy_rent: 12_000
     state_code: FL
   output:
     fl_tca_payment_standard: 303
@@ -87,7 +87,7 @@
   period: 2024-01
   input:
     spm_unit_size: 14
-    housing_cost: 12_000
+    pre_subsidy_rent: 12_000
     state_code: FL
   output:
     fl_tca_payment_standard: 919
@@ -96,7 +96,7 @@
   period: 2024-01
   input:
     spm_unit_size: 2
-    housing_cost: 12  # $1/month
+    pre_subsidy_rent: 12  # $1/month
     state_code: FL
   output:
     fl_tca_payment_standard: 205
