@@ -12937,3 +12937,12 @@
       39-22-566.
     - Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
   date: 2026-02-14 02:56:16
+- bump: patch
+  changes:
+    changed:
+    - Update Louisiana income tax parameter references from House Bill 10 to enacted
+      legal code and add 2025 IT-540 form references.
+    fixed:
+    - Fix Louisiana disability income exemption cap incorrectly set to $12,000 for
+      2025 (actual value remains $6,000 per RS 47:44.1(B)).
+  date: 2026-02-14 03:01:37

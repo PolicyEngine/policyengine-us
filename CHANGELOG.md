@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.557.2] - 2026-02-14 03:01:37
+
+### Changed
+
+- Update Louisiana income tax parameter references from House Bill 10 to enacted legal code and add 2025 IT-540 form references.
+
+### Fixed
+
+- Fix Louisiana disability income exemption cap incorrectly set to $12,000 for 2025 (actual value remains $6,000 per RS 47:44.1(B)).
+
 ## [1.557.1] - 2026-02-14 02:56:16
 
 ### Changed
@@ -15026,6 +15036,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.557.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.1...1.557.2
 [1.557.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.0...1.557.1
 [1.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.2...1.557.0
 [1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
