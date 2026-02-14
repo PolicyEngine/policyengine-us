@@ -15,6 +15,7 @@ class wa_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get payment standard based on assistance unit size
+        # (capped at maximum_family_size, typically 10)
         payment_standard = spm_unit("wa_tanf_payment_standard", period)
 
         # Get countable income (after all disregards and deductions)
@@ -24,11 +25,4 @@ class wa_tanf(Variable):
         # "The department calculates the amount of your cash assistance
         # by subtracting your AU's countable income from the applicable
         # payment standard."
-        grant_before_cap = max_(payment_standard - countable_income, 0)
-
-        # Apply maximum grant cap (unique to Washington)
-        # Per DSHS manual, grants cannot exceed $1,338
-        # regardless of family size (affects families of 8+)
-        p = parameters(period).gov.states.wa.dshs.tanf.payment_standard
-
-        return min_(grant_before_cap, p.maximum_amount)
+        return max_(payment_standard - countable_income, 0)
