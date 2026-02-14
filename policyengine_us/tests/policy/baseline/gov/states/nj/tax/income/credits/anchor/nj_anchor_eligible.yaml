@@ -1,0 +1,461 @@
+# Unit tests for nj_anchor_eligible variable
+# Tests eligibility for ANCHOR (Affordable New Jersey Communities for Homeowners and Renters)
+# Eligibility: Homeowners with income <= $250,000 OR Renters with income <= $150,000
+
+- name: Case 1, homeowner with income below lower threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34  # New Jersey
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 2, homeowner with income between lower and upper threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 3, homeowner with income at upper threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 250_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 4, homeowner with income above upper threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 260_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: false
+
+- name: Case 5, renter with income below threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 6, renter with income at threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 7, renter with income above threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 160_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: false
+
+- name: Case 8, senior homeowner with lower income is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+- name: Case 9, senior renter with income at threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 150_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_anchor_eligible: true
+
+# ==============================================================================
+# EDGE CASES - Boundary conditions and corner cases
+# ==============================================================================
+
+- name: Edge case 1, homeowner with income exactly one dollar above $250,000 is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 250_001
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $250,001 > $250,000 upper limit (uses <=)
+    nj_anchor_eligible: false
+
+- name: Edge case 2, homeowner with income exactly one dollar above $150,000 lower threshold.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_001
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $150,001 > $150,000 (still eligible, just upper tier for benefits)
+    nj_anchor_eligible: true
+
+- name: Edge case 3, renter with income exactly one dollar above $150,000 is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_001
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $150,001 > $150,000 renter limit (uses <=)
+    nj_anchor_eligible: false
+
+- name: Edge case 4, homeowner with zero income is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Zero income is below all thresholds
+    nj_anchor_eligible: true
+
+- name: Edge case 5, renter with zero income is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Zero income is below all thresholds
+    nj_anchor_eligible: true
+
+- name: Edge case 6, very high income homeowner is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $1M far exceeds $250,000 limit
+    nj_anchor_eligible: false
+
+- name: Edge case 7, very high income renter is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 500_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $500K far exceeds $150,000 limit
+    nj_anchor_eligible: false
+
+- name: Edge case 8, mixed household both pays rent and property taxes is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Implementation: is_homeowner = pays_taxes & ~pays_rent
+    # is_renter = pays_rent & ~pays_taxes
+    # Both pay taxes AND rent - neither qualifies
+    nj_anchor_eligible: false
+
+- name: Edge case 9, couple where spouse is 65 plus and head is under 65.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # Eligibility based on income and tenure only (age affects benefit amount)
+    # Income $100K <= $250,000 limit, homeowner
+    nj_anchor_eligible: true
+
+- name: Edge case 10, person who neither owns nor rents is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # No rent - defaults to 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Not homeowner (no property taxes) and not renter (no rent paid)
+    # Formula: is_homeowner = pays_taxes & ~pays_rent = false
+    # Formula: is_renter = pays_rent & ~pays_taxes = false
+    # Neither category qualifies
+    nj_anchor_eligible: false
