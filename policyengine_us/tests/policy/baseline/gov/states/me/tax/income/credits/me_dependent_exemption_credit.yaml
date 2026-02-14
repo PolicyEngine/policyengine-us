@@ -76,9 +76,9 @@
       household:
         state_code: ME
   output:
-    me_dependent_exemption_credit: 300
+    me_dependent_exemption_credit: 305
 
-- name: Head of Household filer with one young dependent, earning $110,000, gets $600 exemption.
+- name: Head of Household filer with one young dependent, earning $110,000, gets $610 exemption.
   period: 2025
   input:
     people:
@@ -96,9 +96,9 @@
       household:
         state_code: ME
   output:
-    me_dependent_exemption_credit: 600
+    me_dependent_exemption_credit: 610
 
-- name: Head of Household filer with one young dependent, earning $132,500, gets $300 exemption.
+- name: Head of Household filer with one young dependent, earning $132,500, gets $310 exemption.
   period: 2025
   input:
     people:
@@ -116,9 +116,9 @@
       household:
         state_code: ME
   output:
-    me_dependent_exemption_credit: 300
+    me_dependent_exemption_credit: 310
 
-- name: Head of Household filer with one young dependent, earning $140,000, gets no exemption.
+- name: Head of Household filer with one young dependent, earning $140,000, gets $10 exemption.
   period: 2025
   input:
     people:
@@ -136,4 +136,4 @@
       household:
         state_code: ME
   output:
-    me_dependent_exemption_credit: 0
+    me_dependent_exemption_credit: 10

@@ -10,6 +10,8 @@ metadata:
       href: https://legislature.maine.gov/statutes/36/title36sec5403.html
     - title: Maine form 1040 Schedule 2 (2024)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_1040me_sched_2%20_ff.pdf#page=1
+    - title: 2025 Instructions for Form 1040ME - Worksheet for Standard/Itemized Deductions, Line 2
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=5
     - title: Maine form 1040 Schedule 2 (2023)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
     - title: Maine form 1040 Schedule 2 (2022)
@@ -38,6 +40,7 @@ SINGLE:
     2022-01-01: 85_850
     2023-01-01: 91_500
     2024-01-01: 97_150
+    2025-01-01: 100_000
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -53,6 +56,7 @@ SEPARATE:
     2022-01-01: 85_850
     2023-01-01: 91_500
     2024-01-01: 97_150
+    2025-01-01: 100_000
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -68,6 +72,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 128_750
     2023-01-01: 137_300
     2024-01-01: 145_750
+    2025-01-01: 150_000
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -83,6 +88,7 @@ JOINT:
     2022-01-01: 171_700
     2023-01-01: 183_050
     2024-01-01: 194_300
+    2025-01-01: 200_050
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -98,6 +104,7 @@ SURVIVING_SPOUSE:
     2022-01-01: 171_700
     2023-01-01: 183_050
     2024-01-01: 194_300
+    2025-01-01: 200_050
   uprating:
     parameter: gov.irs.uprating
     rounding:

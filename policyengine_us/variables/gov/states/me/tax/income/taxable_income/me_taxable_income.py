@@ -8,7 +8,7 @@ class me_taxable_income(Variable):
     unit = USD
     documentation = "ME AGI less taxable income deductions"
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/611"
+    reference = "https://legislature.maine.gov/statutes/36/title36sec5111.html"
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):

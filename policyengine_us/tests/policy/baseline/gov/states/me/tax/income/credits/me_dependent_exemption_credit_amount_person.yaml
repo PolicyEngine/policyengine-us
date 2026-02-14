@@ -6,7 +6,7 @@
     is_tax_unit_dependent: true
     age: 2
   output:
-    me_dependent_exemption_credit_amount_person: 600
+    me_dependent_exemption_credit_amount_person: 610
 
 - name: Child dependent over 6
   period: 2025
@@ -16,7 +16,7 @@
     is_tax_unit_dependent: true
     age: 8
   output:
-    me_dependent_exemption_credit_amount_person: 300
+    me_dependent_exemption_credit_amount_person: 305
 
 - name: Non CTC eligible child (but still qualifies as tax dependent)
   period: 2025
@@ -27,4 +27,4 @@
     age: 2
   output:
     # Even non-CTC children who are tax dependents qualify for ME credit
-    me_dependent_exemption_credit_amount_person: 600
+    me_dependent_exemption_credit_amount_person: 610
