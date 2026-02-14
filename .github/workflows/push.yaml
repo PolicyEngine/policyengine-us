@@ -193,15 +193,15 @@ jobs:
       GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: 3.13
       - name: Install Wheel and Pytest
         run: pip3 install wheel setuptools pytest==5.4.3
       - name: Install package
