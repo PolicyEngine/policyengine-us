@@ -1,0 +1,35 @@
+- name: Case 1, AU size 1
+  period: 2024-01
+  absolute_error_margin: 0.3  
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 1
+  output:
+    mt_tanf_gross_income_standard: 859
+
+- name: Case 2, AU size 8
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 8
+  output:
+    mt_tanf_gross_income_standard: 2_979
+
+- name: Case 3, AU size 25 - capped at 20 per ARM 37.78.420
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 25
+  output:
+    mt_tanf_gross_income_standard: 6_613
+
+- name: Case 4, zero net income
+  period: 2024-01
+  absolute_error_margin: 0.3  
+  input:
+    state_code: MT
+    mt_tanf_net_income_standard: 0
+  output:
+    mt_tanf_gross_income_standard: 0.0
