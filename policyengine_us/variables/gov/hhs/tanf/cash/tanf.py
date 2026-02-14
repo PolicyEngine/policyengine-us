@@ -33,7 +33,7 @@ STATE_TANF_VARIABLES = [
     # Non-standard program names (13 states)
     "ak_atap",  # Alaska Temporary Assistance Program
     "ct_tfa",  # Connecticut Temporary Family Assistance
-    # "fl_tca" excluded: circular dependency via housing_cost → tanf
+    "fl_tca",  # Florida Temporary Cash Assistance
     "ia_fip",  # Iowa Family Investment Program
     "md_tca",  # Maryland Temporary Cash Assistance
     "mi_fip",  # Michigan Family Independence Program
