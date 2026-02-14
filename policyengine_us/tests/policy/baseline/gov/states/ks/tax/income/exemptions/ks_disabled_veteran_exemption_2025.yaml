@@ -1,0 +1,162 @@
+# Kansas Disabled Veteran Exemption Tests for 2025
+# The disabled veteran exemption increased from $2,250 (2023-2024) to $2,320 (2025+)
+# Reference: 2025 Form K-40 Instructions, K.S.A. 79-32,121(b)
+
+- name: Disabled veteran exemption 2025 - single filer
+  period: 2025
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Base exemption for single: $9,160
+    # Disabled veteran exemption: $2,320
+    # Total exemptions: $11,480
+    ks_exemptions: 11_480
+
+- name: Disabled veteran exemption 2025 - married filing jointly both veterans
+  period: 2025
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+        employment_income: 40_000
+      person2:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Base exemption for MFJ: $18,320
+    # Disabled veteran exemption for person1: $2,320
+    # Disabled veteran exemption for person2: $2,320
+    # Total exemptions: $22,960
+    ks_exemptions: 22_960
+
+- name: Disabled veteran exemption 2025 - one disabled veteran with dependents
+  period: 2025
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+        employment_income: 60_000
+      person2:
+        employment_income: 25_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: KS
+  output:
+    # Base exemption for MFJ: $18,320
+    # Disabled veteran exemption for person1: $2,320
+    # Dependent exemption for child1: $2,320
+    # Total exemptions: $22,960
+    ks_exemptions: 22_960
+
+- name: Disabled veteran exemption 2024 - lower amount than 2025
+  period: 2024
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Base exemption for single: $9,160
+    # Disabled veteran exemption: $2,250 (2024 rate, before increase)
+    # Total exemptions: $11,410
+    ks_exemptions: 11_410
+
+- name: Disabled veteran exemption 2023 - verify lower amount
+  period: 2023
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ks_count_exemptions: 1
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 2023 uses consolidated exemption structure
+    # Base exemption: $2,250 * 1 = $2,250
+    # Disabled veteran exemption: $2,250
+    # Total exemptions: $4,500
+    ks_exemptions: 4_500
+
+- name: Veteran but not disabled - no veteran exemption in 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: false
+        is_veteran: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Base exemption for single: $9,160
+    # No disabled veteran exemption (not disabled)
+    # Total exemptions: $9,160
+    ks_exemptions: 9_160
+
+- name: Disabled but not veteran - no veteran exemption in 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        is_permanently_and_totally_disabled: true
+        is_veteran: false
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Base exemption for single: $9,160
+    # No disabled veteran exemption (not a veteran)
+    # Total exemptions: $9,160
+    ks_exemptions: 9_160
