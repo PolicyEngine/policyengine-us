@@ -10,5 +10,5 @@ class la_school_readiness_credit_non_refundable(Variable):
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
     defined_for = StateCode.LA
 
-    adds = ["la_school_readiness_tax_credit"]
-    subtracts = ["la_school_readiness_tax_credit_refundable"]
+    adds = ["la_school_readiness_credit"]
+    subtracts = ["la_school_readiness_credit_refundable"]
