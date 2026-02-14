@@ -11,6 +11,55 @@
     # $150k total
     wa_capital_gains_tax: 150_000 * 0.07
 
+- name: 2024 high income, flat 7% applies to all taxable gains (no tiered rate).
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    long_term_capital_gains: 1_770_000
+    state_code: WA
+  output:
+    # Standard deduction: $270,000
+    # Taxable LTCG: $1,770,000 - $270,000 = $1,500,000
+    # Flat rate: $1,500,000 * 0.07 = $105,000
+    wa_capital_gains_tax: 105_000
+
+- name: Case 2, 2025 tiered rate applies above $1M of taxable gains.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    long_term_capital_gains: 1_778_000
+    state_code: WA
+  output:
+    # Standard deduction: $278,000
+    # Taxable LTCG: $1,778,000 - $278,000 = $1,500,000
+    # Bracket 1: $1,000,000 * 0.07 = $70,000
+    # Bracket 2: $500,000 * 0.099 = $49,500
+    # Total: $119,500
+    wa_capital_gains_tax: 119_500
+
+- name: 2025 taxable gains exactly at $1M boundary, no second bracket applies.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    long_term_capital_gains: 1_278_000
+    state_code: WA
+  output:
+    # Standard deduction: $278,000
+    # Taxable LTCG: $1,278,000 - $278,000 = $1,000,000
+    # All in first bracket: $1,000,000 * 0.07 = $70,000
+    wa_capital_gains_tax: 70_000
+
+- name: 2025 gains below standard deduction result in zero tax.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 200_000
+    state_code: WA
+  output:
+    # Standard deduction: $278,000
+    # Taxable LTCG: max(0, $200,000 - $278,000) = $0
+    wa_capital_gains_tax: 0
+
 - name: 2021 test
   period: 2021
   input:

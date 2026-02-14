@@ -1,0 +1,26 @@
+description: Washington taxes long-term capital gains at these marginal rates based on taxable gain amount.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.07
+  - threshold:
+      2025-01-01: 1_000_000
+    rate:
+      2025-01-01: 0.099
+
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Washington marginal capital gains tax rate
+  reference:
+    - title: RCW 82.87.040(1)-(2) Tax imposed—Long-term capital assets
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.040
+    - title: Capital gains tax | Washington Department of Revenue
+      href: https://dor.wa.gov/taxes-rates/other-taxes/capital-gains-tax
+    - title: New tiered rates for Washington's capital gains tax | Washington Department of Revenue
+      href: https://dor.wa.gov/forms-publications/publications-subject/special-notices/new-tiered-rates-washingtons-capital-gains-tax
+    - title: ESSB 5813, Chapter 421, Laws of 2025, Sec. 101
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Htm/Bills/Session%20Laws/Senate/5813-S.SL.htm
