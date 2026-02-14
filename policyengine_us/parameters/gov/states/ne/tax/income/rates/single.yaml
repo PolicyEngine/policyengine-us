@@ -10,6 +10,7 @@ brackets:
         2022-01-01: 3_440
         2023-01-01: 3_700
         2024-01-01: 3_900
+        2025-01-01: 4_030
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -23,6 +24,7 @@ brackets:
         2022-01-01: 20_590
         2023-01-01: 22_170
         2024-01-01: 23_370
+        2025-01-01: 24_120
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -38,6 +40,7 @@ brackets:
         2022-01-01: 33_180
         2023-01-01: 35_730
         2024-01-01: 37_670
+        2025-01-01: 38_870
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -72,3 +75,5 @@ metadata:
   # Includes inflation adjusted 2024 brackets
   - title: Nebraska Tax Rate Chronologies
     href: https://revenue.nebraska.gov/sites/default/files/doc/research/chronology/4-607table1_0.pdf
+  - title: 2025 Nebraska Individual Income Tax Booklet, Tax Table
+    href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=49
