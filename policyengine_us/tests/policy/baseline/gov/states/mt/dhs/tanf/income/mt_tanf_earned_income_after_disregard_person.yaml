@@ -20,14 +20,14 @@
     people:
       person1:
         age: 40
-        employment_income: 6_000 # 500 monthly
+        employment_income_before_lsr: 6_000 # 500 monthly
         weekly_hours_worked: 25
       person2:
         age: 1
         is_tax_unit_dependent: true
       person3:
         age: 40
-        employment_income: 12_000 # 1000 monthly 
+        employment_income_before_lsr: 12_000 # 1000 monthly 
     spm_units:
       spm_unit:
         members: [person1, person2, person3]

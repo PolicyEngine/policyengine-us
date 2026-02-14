@@ -47,7 +47,7 @@
     people:
       parent:
         age: 40
-        employment_income: 9_000
+        employment_income_before_lsr: 9_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -99,7 +99,7 @@
     people:
       parent:
         age: 40
-        employment_income: 12000
+        employment_income_before_lsr: 12000
         weekly_hours_worked: 10
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -147,13 +147,13 @@
     people:
       parent1:
         age: 40
-        employment_income: 4_500
+        employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       parent2:
         age: 40
-        employment_income: 4_500
+        employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -207,13 +207,13 @@
     people:
       parent1:
         age: 40
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       parent2:
         age: 40
-        employment_income: 4_500
+        employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
@@ -239,7 +239,7 @@
     mt_tanf_gross_earned_income: 1_375.00
     # Countable earned income = gross income - $200 work expense - 25% disregard  
     # Parent 1: 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
-    # Parent 2: 1000 - 200 - ((1000 - 200) * 0.25) = 131.25
+    # Parent 2: 375 - 200 - ((375 - 200) * 0.25) = 131.25
     mt_tanf_earned_income_after_disregard_person: [600.00, 131.25, 0, 0]
     # Countable SPM Unit earned income = 600.00 + 131.25 = 731.25
     mt_tanf_countable_earned_income: 731.25

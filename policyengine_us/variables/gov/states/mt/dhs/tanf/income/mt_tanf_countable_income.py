@@ -22,4 +22,10 @@ class mt_tanf_countable_income(Variable):
         dependent_care_deduction = spm_unit(
             "mt_tanf_dependent_care_deduction", period
         )
-        return max_(income_sources - dependent_care_deduction, 0)
+        child_support_expense = add(
+            spm_unit, period, ["child_support_expense"]
+        )
+        return max_(
+            income_sources - dependent_care_deduction - child_support_expense,
+            0,
+        )

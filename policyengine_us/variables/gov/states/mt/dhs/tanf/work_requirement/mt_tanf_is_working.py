@@ -16,11 +16,13 @@ class mt_tanf_is_working(Variable):
         weekly_hours_worked = person("weekly_hours_worked", period.this_year)
         age = person("monthly_age", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_disabled = person("is_disabled", period.this_year)
         spm_unit = person.spm_unit
         is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
         youngest_age = spm_unit.sum(is_youngest_member * age)
 
-        is_two_parent_unit = spm_unit.sum(is_head_or_spouse) > 1
+        able_parents = is_head_or_spouse & ~is_disabled
+        is_two_parent_unit = spm_unit.sum(able_parents) > 1
         # For single parent with a child under 6, work 27 hours pr week
         # For single parent with a child at 6 or older, work 33 hours pr week
         # For two-parent household, work-eligible heads of the household must individually meet the 33-hour/week requirement

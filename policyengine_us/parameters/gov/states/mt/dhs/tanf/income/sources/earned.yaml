@@ -1,8 +1,8 @@
 description: Montana counts these income sources as earned income under the Temporary Assistance for Needy Families program.
 values:
   2023-01-01:
-    - employment_income
-    - self_employment_income
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
 metadata:
   unit: list
   period: year
