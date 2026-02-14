@@ -1,0 +1,76 @@
+description: Maryland county local income tax rates by county.
+metadata:
+  unit: /1
+  period: year
+  label: Maryland county local income tax rate
+  reference:
+    - title: "Maryland 2025 Resident Tax Forms and Instructions - Local Tax Rate Chart"
+      href: "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=25"
+    - title: Maryland Local Income Tax Rates
+      href: https://services.marylandcomptroller.gov/taxes/en/maryland-income-tax-rates-and-brackets
+    - title: 2022 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2022/Resident_Booklet.pdf#page=22
+    - title: 2023 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2023/Resident_Booklet.pdf#page=23
+    - title: 2024 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident_Booklet.pdf#page=25
+# Progressive counties have 0 rate here; their tax is calculated separately
+ANNE_ARUNDEL_COUNTY_MD:
+  2021-01-01: 0
+FREDERICK_COUNTY_MD:
+  2021-01-01: 0
+ALLEGANY_COUNTY_MD:
+  2021-01-01: 0.0305
+  2023-01-01: 0.0303
+BALTIMORE_CITY_MD:
+  2021-01-01: 0.032
+BALTIMORE_COUNTY_MD:
+  2021-01-01: 0.032
+CALVERT_COUNTY_MD:
+  2021-01-01: 0.03
+  2025-01-01: 0.032
+CAROLINE_COUNTY_MD:
+  2021-01-01: 0.032
+CARROLL_COUNTY_MD:
+  2021-01-01: 0.0303
+CECIL_COUNTY_MD:
+  2021-01-01: 0.03
+  2023-01-01: 0.028
+  2024-01-01: 0.0275
+  2025-01-01: 0.0274
+CHARLES_COUNTY_MD:
+  2021-01-01: 0.0303
+DORCHESTER_COUNTY_MD:
+  2021-01-01: 0.032
+  2025-01-01: 0.033
+GARRETT_COUNTY_MD:
+  2021-01-01: 0.0265
+HARFORD_COUNTY_MD:
+  2021-01-01: 0.0306
+HOWARD_COUNTY_MD:
+  2021-01-01: 0.032
+KENT_COUNTY_MD:
+  2021-01-01: 0.032
+MONTGOMERY_COUNTY_MD:
+  2021-01-01: 0.032
+PRINCE_GEORGE_S_COUNTY_MD:
+  2021-01-01: 0.032
+QUEEN_ANNE_S_COUNTY_MD:
+  2021-01-01: 0.032
+SOMERSET_COUNTY_MD:
+  2021-01-01: 0.032
+ST_MARY_S_COUNTY_MD:
+  2021-01-01: 0.0317
+  2022-01-01: 0.031
+  2023-01-01: 0.03
+  2025-01-01: 0.032
+TALBOT_COUNTY_MD:
+  2021-01-01: 0.024
+WASHINGTON_COUNTY_MD:
+  2021-01-01: 0.032
+  2022-01-01: 0.03
+  2023-01-01: 0.0295
+WICOMICO_COUNTY_MD:
+  2021-01-01: 0.032
+WORCESTER_COUNTY_MD:
+  2021-01-01: 0.0225
