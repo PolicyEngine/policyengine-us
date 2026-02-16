@@ -7,14 +7,14 @@
   output:
     mt_tanf_payment_standard_eligible: True
   
-- name: Income equal to payment standard, passes payment standard test
+- name: Income equal to payment standard, fails payment standard test
   period: 2023-01
   input:
     state_code: MT
     mt_tanf_payment_standard: 859
     mt_tanf_countable_income: 859
   output:
-    mt_tanf_payment_standard_eligible: True
+    mt_tanf_payment_standard_eligible: False
 
 - name: Income above payment standard, Fails payment standard test
   period: 2023-01
