@@ -28,8 +28,9 @@ class md_ctc_eligible(Variable):
         qualifying_child = dependent & meets_age_limit
         has_qualifying_child = tax_unit.sum(qualifying_child) > 0
 
-        # When phase-out applies (2025+): must have qualifying child AND AGI < max_agi
-        # Per Worksheet 21C: "If Line 1 [AGI] is $24,001 or greater, STOP. YOU ARE NOT ELIGIBLE."
+        # When phase-out applies (2025+): must have qualifying child AND AGI below max_agi
+        # Per Worksheet 21C: "$24,000 or less" is eligible; "$24,001 or greater, STOP."
+        # max_agi is set to 24_001 so that agi < 24_001 includes $24,000.
         agi_eligible = agi < p.phase_out.max_agi
         phase_out_eligible = has_qualifying_child & agi_eligible
 
