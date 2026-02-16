@@ -6,6 +6,7 @@ JOINT:
   2022-01-01: 159_500
   2023-01-01: 161_100
   2024-01-01: 169_900
+  2025-01-01: 174_300
 SINGLE:
   2019-01-01: 92_000
   2020-01-01: 92_950
@@ -13,6 +14,7 @@ SINGLE:
   2022-01-01: 102_600
   2023-01-01: 103_650
   2024-01-01: 109_300
+  2025-01-01: 112_100
 SEPARATE:
   2019-01-01: 92_000
   2020-01-01: 92_950
@@ -20,6 +22,7 @@ SEPARATE:
   2022-01-01: 102_600
   2023-01-01: 103_650
   2024-01-01: 109_300
+  2025-01-01: 112_100
 HEAD_OF_HOUSEHOLD:
   2019-01-01: 92_000
   2020-01-01: 92_950
@@ -27,6 +30,7 @@ HEAD_OF_HOUSEHOLD:
   2022-01-01: 102_600
   2023-01-01: 103_650
   2024-01-01: 109_300
+  2025-01-01: 112_100
 SURVIVING_SPOUSE:
   2019-01-01: 92_000
   2020-01-01: 92_950
@@ -34,10 +38,13 @@ SURVIVING_SPOUSE:
   2022-01-01: 102_600
   2023-01-01: 103_650
   2024-01-01: 109_300
+  2025-01-01: 112_100
 metadata:
   breakdown:
     - filing_status
   reference:
+    - title: Maryland 2025 Form 502CR Instructions - CDCC AGI Thresholds
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cr.pdf#page=7
     - title: Md. Code, Tax-Gen. § 10-716 (b)
       href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care
     - title: Maryland 2020 State & Local Tax Forms & Instructions

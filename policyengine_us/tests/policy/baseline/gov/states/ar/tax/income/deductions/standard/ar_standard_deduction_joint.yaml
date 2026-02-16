@@ -49,5 +49,32 @@
     filing_status: JOINT
     is_tax_unit_head: false
     state_code: AR
-  output:  
-    ar_standard_deduction_joint: 0  
+  output:
+    ar_standard_deduction_joint: 0
+
+- name: Case 7, single filer for 2025.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    is_tax_unit_head: true
+    state_code: AR
+  output:
+    ar_standard_deduction_joint: 2_470
+
+- name: Case 8, joint filer for 2025.
+  period: 2025
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    state_code: AR
+  output:
+    ar_standard_deduction_joint: 4_940
+
+- name: Case 9, head of household for 2025.
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_head: true
+    state_code: AR
+  output:
+    ar_standard_deduction_joint: 2_470

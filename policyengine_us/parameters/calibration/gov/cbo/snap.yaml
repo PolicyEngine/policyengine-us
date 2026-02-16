@@ -56,18 +56,19 @@ values:
     2022-01-01: 113_973_270_000
     2023-01-01: 107_062_860_000
     2024-01-01: 93_730_290_000
-    # CBO forecast.
-    2025-01-01: 95_722_000_000
-    2026-01-01: 96_816_000_000
-    2027-01-01: 99_514_000_000
-    2028-01-01: 99_461_000_000
-    2029-01-01: 99_394_000_000
-    2030-01-01: 99_432_000_000
-    2031-01-01: 99_565_000_000
-    2032-01-01: 102_661_000_000
-    2033-01-01: 102_712_000_000
-    2034-01-01: 102_844_000_000
-    2035-01-01: 103_061_000_000
+    # CBO February 2026 baseline projections.
+    2025-01-01: 106_330_000_000
+    2026-01-01: 100_053_000_000
+    2027-01-01: 97_418_000_000
+    2028-01-01: 93_684_000_000
+    2029-01-01: 94_641_000_000
+    2030-01-01: 96_032_000_000
+    2031-01-01: 97_521_000_000
+    2032-01-01: 99_193_000_000
+    2033-01-01: 100_251_000_000
+    2034-01-01: 101_212_000_000
+    2035-01-01: 102_240_000_000
+    2036-01-01: 103_187_000_000
 metadata:
     unit: currency-USD
     label: Total SNAP outlays
@@ -80,6 +81,10 @@ metadata:
         # Source: https://www.cbo.gov/data/baseline-projections-selected-programs
         # Row 19: Total Benefits > Budget Authority
         href: https://www.cbo.gov/system/files/2025-01/51312-2025-01-snap.xlsx
+      - title: CBO Baseline Projections - SNAP | February 2026
+        # Source: https://www.cbo.gov/data/baseline-projections-selected-programs
+        # Row 15: Estimated Outlays
+        href: https://www.cbo.gov/system/files/2026-02/51312-2026-02-snap.xlsx
       - title: USDA SNAP Data Tables | National Level Annual Summary | Participation and Costs, 1969-2024
         # Column D: Total Benefits
         href: https://www.fns.usda.gov/pd/supplemental-nutrition-assistance-program-snap
