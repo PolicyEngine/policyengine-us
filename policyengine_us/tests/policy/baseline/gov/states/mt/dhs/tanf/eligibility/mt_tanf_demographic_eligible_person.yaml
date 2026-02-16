@@ -1,5 +1,7 @@
 - name: Case 1, default person is 18 and out of school.
   period: 2022-01
+  input:
+    state_code: MT
   output:
     mt_tanf_demographic_eligible_person: false
 

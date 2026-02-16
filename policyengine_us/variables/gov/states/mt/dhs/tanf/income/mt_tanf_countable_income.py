@@ -11,22 +11,12 @@ class mt_tanf_countable_income(Variable):
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
-        income_sources = add(
-            spm_unit,
-            period,
-            [
-                "mt_tanf_countable_earned_income",
-                "mt_tanf_gross_unearned_income",
-            ],
-        )
-
+        countable_earned = spm_unit("mt_tanf_countable_earned_income", period)
         dependent_care_deduction = spm_unit(
             "mt_tanf_dependent_care_deduction", period
         )
-        child_support_expense = add(
-            spm_unit, period, ["child_support_expense"]
+        earned_after_deductions = max_(
+            countable_earned - dependent_care_deduction, 0
         )
-        return max_(
-            income_sources - dependent_care_deduction - child_support_expense,
-            0,
-        )
+        countable_unearned = spm_unit("mt_tanf_gross_unearned_income", period)
+        return earned_after_deductions + countable_unearned

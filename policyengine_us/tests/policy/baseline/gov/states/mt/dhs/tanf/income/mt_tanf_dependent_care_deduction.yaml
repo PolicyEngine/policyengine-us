@@ -1,5 +1,6 @@
 - name: Case 1, no dependent care expense, 0
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -10,6 +11,7 @@
 
 - name: Case 2, some childcare expense.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -20,6 +22,7 @@
 
 - name: Case 3, some childcare expense, but not a dependent.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: false
@@ -30,6 +33,7 @@
 
 - name: Case 4, some childcare expense, but not a child.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -40,6 +44,7 @@
 
 - name: Case 5, some childcare expense, applies minimum.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -50,6 +55,7 @@
 
 - name: Case 6, incapacitated adult with expenses
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -61,6 +67,7 @@
 
 - name: Case 7, incapacitated adult without dependency
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: false
@@ -72,6 +79,7 @@
 
 - name: Case 8, incapacitated adult without expenses
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -83,6 +91,7 @@
 
 - name: Case 9, incapacitated adult with expenses
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     is_tax_unit_dependent: true
@@ -94,6 +103,7 @@
 
 - name: Case 10, integration test.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

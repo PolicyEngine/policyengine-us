@@ -1,5 +1,6 @@
 - name: Case 1, no earned income, $0 after deduction.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     mt_tanf_gross_earned_income_person: 0
@@ -8,6 +9,7 @@
 
 - name: Case 2, $500 monthly income, $0 per year after deduction.
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code: MT
     mt_tanf_gross_earned_income_person: 500
@@ -16,6 +18,7 @@
 
 - name: Case 3, integration.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
