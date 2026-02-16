@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 # All implemented state TANF programs.
 # Most use {st}_tanf naming; some states have their own program names.
 STATE_TANF_VARIABLES = [
-    # Standard {st}_tanf naming (26 states)
+    # Standard {st}_tanf naming (28 states)
     "al_tanf",
     "az_tanf",
     "ca_tanf",
@@ -18,6 +18,7 @@ STATE_TANF_VARIABLES = [
     "me_tanf",
     "mo_tanf",
     "ms_tanf",
+    "mt_tanf",
     "nc_tanf",
     "nd_tanf",
     "nv_tanf",
@@ -30,17 +31,20 @@ STATE_TANF_VARIABLES = [
     "tx_tanf",
     "va_tanf",
     "wa_tanf",
-    # Non-standard program names (13 states)
+    # Non-standard program names (15 states)
     "ak_atap",  # Alaska Temporary Assistance Program
     "ct_tfa",  # Connecticut Temporary Family Assistance
     "fl_tca",  # Florida Temporary Cash Assistance
     "ia_fip",  # Iowa Family Investment Program
+    "ky_ktap",  # Kentucky K-TAP
     "md_tca",  # Maryland Temporary Cash Assistance
     "mi_fip",  # Michigan Family Independence Program
     "mn_mfip",  # Minnesota Family Investment Program
+    "nh_fanf",  # New Hampshire FANF
     "nj_wfnj",  # New Jersey WorkFirst New Jersey
     "nm_works",  # New Mexico Works
     "ri_works",  # Rhode Island Works
+    "tn_ff",  # Tennessee Families First
     "vt_reach_up",  # Vermont Reach Up
     "wi_works",  # Wisconsin Works (W-2)
     "wv_works",  # West Virginia Works
