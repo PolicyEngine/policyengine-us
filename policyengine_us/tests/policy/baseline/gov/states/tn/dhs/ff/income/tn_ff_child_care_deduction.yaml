@@ -17,6 +17,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
         members: [person1, person2]
@@ -35,6 +36,7 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1]
@@ -55,6 +57,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2]
@@ -75,6 +78,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2]
@@ -98,6 +102,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2, person3]
@@ -122,6 +127,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2, person3]
@@ -146,6 +152,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 6_000  # $500/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2, person3]
@@ -172,6 +179,7 @@
         # Max deduction would be $200 + $175 = $375/month
         # Only $300/month in expenses ($3,600/year)
         childcare_expenses: 3_600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2, person3]

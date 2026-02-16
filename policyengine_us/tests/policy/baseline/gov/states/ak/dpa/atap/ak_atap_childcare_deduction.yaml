@@ -16,6 +16,7 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 6_000  # $500/month annual = $6,000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1]
@@ -38,6 +39,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 1_800  # $150/month annual = $1,800
+        spm_unit_pre_subsidy_childcare_expenses: 1_800
     households:
       household:
         members: [person1, person2]
@@ -60,6 +62,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 2_400  # $200/month annual = $2,400
+        spm_unit_pre_subsidy_childcare_expenses: 2_400
     households:
       household:
         members: [person1, person2]
@@ -82,6 +85,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600  # $300/month annual = $3,600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]
@@ -104,6 +108,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 2_400  # $200/month annual = $2,400
+        spm_unit_pre_subsidy_childcare_expenses: 2_400
     households:
       household:
         members: [person1, person2]
@@ -126,6 +131,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 1_200  # $100/month annual = $1,200
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
     households:
       household:
         members: [person1, person2]
@@ -148,6 +154,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_000  # $250/month annual = $3,000
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
     households:
       household:
         members: [person1, person2]
@@ -172,6 +179,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 4_800  # $400/month annual = $4,800
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
     households:
       household:
         members: [person1, person2, person3]
@@ -198,6 +206,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 3_600  # $300/month annual = $3,600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2, person3]
@@ -206,7 +215,7 @@
     # Child age 1: cap = $200/month
     # Child age 4: cap = $175/month
     # Total max disregard = $200 + $175 = $375
-    # Monthly expenses = $3,600 / 12 = $300
+    # Monthly expenses = $3_600 / 12 = $300
     # Disregard = min($300, $375) = $300 (expenses below cap)
     ak_atap_childcare_deduction: 300
 
@@ -222,6 +231,7 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
         members: [person1, person2]

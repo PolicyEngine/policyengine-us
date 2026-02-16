@@ -525,6 +525,7 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 4_800  # $400/month * 12
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
     tax_units:
       tax_unit:
         members: [person1, person2, person3]

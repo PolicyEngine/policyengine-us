@@ -14,6 +14,7 @@
       spm_unit:
         members: [child]
         childcare_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
         members: [child]
@@ -32,6 +33,7 @@
       spm_unit:
         members: [child]
         childcare_expenses: 300 * 12  # $300/month annual
+        spm_unit_pre_subsidy_childcare_expenses: 300 * 12
     households:
       household:
         members: [child]
@@ -52,6 +54,7 @@
       spm_unit:
         members: [child]
         childcare_expenses: 300 * 12  # $300/month annual
+        spm_unit_pre_subsidy_childcare_expenses: 300 * 12
     households:
       household:
         members: [child]
@@ -72,6 +75,7 @@
       spm_unit:
         members: [child]
         childcare_expenses: 150 * 12  # $150/month annual
+        spm_unit_pre_subsidy_childcare_expenses: 150 * 12
     households:
       household:
         members: [child]
@@ -97,6 +101,7 @@
       spm_unit:
         members: [adult, child1, child2]
         childcare_expenses: 500 * 12  # $500/month annual
+        spm_unit_pre_subsidy_childcare_expenses: 500 * 12
     households:
       household:
         members: [adult, child1, child2]

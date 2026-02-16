@@ -46,6 +46,7 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 3_600  # $300/month
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]
@@ -70,6 +71,7 @@
         members: [person1, person2]
         is_tanf_enrolled: true
         childcare_expenses: 3_600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]
@@ -94,6 +96,7 @@
         members: [person1, person2]
         is_tanf_enrolled: true
         childcare_expenses: 2_400
+        spm_unit_pre_subsidy_childcare_expenses: 2_400
     households:
       household:
         members: [person1, person2]
@@ -118,6 +121,7 @@
         members: [person1, person2]
         is_tanf_enrolled: true
         childcare_expenses: 3_600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]

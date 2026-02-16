@@ -222,6 +222,7 @@
         spm_unit_assets: 500
         is_tanf_enrolled: true
         childcare_expenses: 3_600
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]
@@ -288,6 +289,7 @@
         spm_unit_assets: 500
         is_tanf_enrolled: false
         childcare_expenses: 6_000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2, person3]
@@ -321,6 +323,7 @@
         spm_unit_assets: 500
         is_tanf_enrolled: true
         childcare_expenses: 4_800
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
     households:
       household:
         members: [person1, person2, person3]

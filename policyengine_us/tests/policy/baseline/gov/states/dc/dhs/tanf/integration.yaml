@@ -31,6 +31,7 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
         dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:
@@ -62,6 +63,7 @@
         members: [person1, person2]
         is_tanf_enrolled: true
         childcare_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
         dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:
@@ -93,6 +95,7 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 1_200
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
         dc_tanf_meets_work_requirements: true
     tax_units:
       tax_unit:

@@ -26,6 +26,10 @@ class ri_works_dependent_care_deduction(Variable):
         max_per_dependent = p.amount.calc(age)
         total_max_deduction = spm_unit.sum(max_per_dependent * is_dependent)
 
-        childcare_expenses = spm_unit("childcare_expenses", period)
+        # Uses pre-subsidy expenses to avoid circular dependency
+        # through childcare subsidies and SNAP.
+        childcare_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
 
         return min_(childcare_expenses, total_max_deduction)

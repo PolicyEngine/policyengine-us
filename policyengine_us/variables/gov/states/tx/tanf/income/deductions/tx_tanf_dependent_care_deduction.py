@@ -17,8 +17,11 @@ class tx_tanf_dependent_care_deduction(Variable):
         # Actual cost of dependent child care, capped at maximum by age
         # Per § 372.409 (a)(3): up to $200/month for children under 2, $175/month for children 2+
 
-        # Get actual childcare expenses
-        childcare_expenses = spm_unit("childcare_expenses", period)
+        # Uses pre-subsidy expenses to avoid circular dependency
+        # through childcare subsidies and SNAP.
+        childcare_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
 
         # Calculate maximum deduction for dependents (children or incapacitated adults)
         person = spm_unit.members

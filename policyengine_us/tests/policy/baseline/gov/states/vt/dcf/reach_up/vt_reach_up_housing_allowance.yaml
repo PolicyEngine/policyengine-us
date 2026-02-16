@@ -13,7 +13,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        housing_cost: 0
     households:
       household:
         members: [person1]
@@ -29,15 +28,15 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 4_200  # $350/month, below $450 cap
       person2:
         age: 35
+        pre_subsidy_rent: 7_200  # $600/month, above $450 cap
     spm_units:
       spm_unit1:
         members: [person1]
-        housing_cost: 4_200  # $350/month, below $450 cap
       spm_unit2:
         members: [person2]
-        housing_cost: 7_200  # $600/month, above $450 cap
     households:
       household1:
         members: [person1]
@@ -58,15 +57,15 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 3_600  # $300/month, below $400 cap
       person2:
         age: 35
+        pre_subsidy_rent: 6_000  # $500/month, above $400 cap
     spm_units:
       spm_unit1:
         members: [person1]
-        housing_cost: 3_600  # $300/month, below $400 cap
       spm_unit2:
         members: [person2]
-        housing_cost: 6_000  # $500/month, above $400 cap
     households:
       household1:
         members: [person1]

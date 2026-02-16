@@ -56,6 +56,7 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
         childcare_expenses: 4_800 # $400 per month
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -102,6 +103,7 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
         childcare_expenses: 4_800 
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -148,6 +150,7 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
         childcare_expenses: 400
+        spm_unit_pre_subsidy_childcare_expenses: 400
     tax_units:
       tax_unit:
         members: [person1, person2, person3]

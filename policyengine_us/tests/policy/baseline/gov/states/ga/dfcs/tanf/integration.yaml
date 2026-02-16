@@ -135,6 +135,7 @@
         members: [parent, child]
         spm_unit_cash_assets: 500
         childcare_expenses: 2_400  # $200/month
+        spm_unit_pre_subsidy_childcare_expenses: 2_400
         is_tanf_enrolled: false  # New applicant
     households:
       household:
@@ -169,6 +170,7 @@
         members: [parent, child]
         spm_unit_cash_assets: 500
         childcare_expenses: 2_100  # $175/month
+        spm_unit_pre_subsidy_childcare_expenses: 2_100
         is_tanf_enrolled: false  # New applicant
     households:
       household:
