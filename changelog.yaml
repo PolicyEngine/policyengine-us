@@ -12894,3 +12894,68 @@
     - Update Kentucky income tax model for 2025, including standard deduction ($3,270),
       tax rate (4%), and all tax credits with official 2025 references.
   date: 2026-02-12 18:16:49
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 Vermont income tax values, renter credit income limits, and form references
+      to parameter files.
+  date: 2026-02-12 22:42:22
+- bump: minor
+  changes:
+    added:
+    - Iowa Family Investment Program (FIP), the state's TANF cash assistance program.
+  date: 2026-02-13 17:37:15
+- bump: patch
+  changes:
+    changed:
+    - Update CPI-U, C-CPI-U, and CPI-W projections for 2026+ based on CBO September
+      2025 interim inflation update
+  date: 2026-02-13 18:38:12
+- bump: patch
+  changes:
+    changed:
+    - Update CBO baseline projections to February 2026 (Budget and Economic Outlook
+      2026 to 2036), extending all calibration targets and CPI parameters through
+      2036.
+  date: 2026-02-13 19:31:10
+- bump: minor
+  changes:
+    changed:
+    - Update Mississippi income tax parameters with 2025 references and replace bill
+      references with legal code citations.
+  date: 2026-02-13 20:55:08
+- bump: patch
+  changes:
+    changed:
+    - Update Colorado Child Tax Credit income thresholds for 2025 (single $26K/$51K/$77K,
+      joint $36K/$61K/$87K).
+    - Update Colorado CollegeInvest contribution subtraction limits for 2025 (single
+      $25,400, joint $38,100).
+    - Update Colorado ABLE contribution subtraction caps for 2025 (single $25,400,
+      joint $38,100).
+    - Fix Colorado Care Worker Tax Credit start date from 2026 to 2025 per C.R.S.
+      39-22-566.
+    - Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
+  date: 2026-02-14 02:56:16
+- bump: patch
+  changes:
+    changed:
+    - Update Louisiana income tax parameter references from House Bill 10 to enacted
+      legal code and add 2025 IT-540 form references.
+    fixed:
+    - Fix Louisiana disability income exemption cap incorrectly set to $12,000 for
+      2025 (actual value remains $6,000 per RS 47:44.1(B)).
+  date: 2026-02-14 03:01:37
+- bump: minor
+  changes:
+    changed:
+    - Update Montana income tax parameters for 2025, including bracket thresholds,
+      capital gains thresholds, old age subtraction inflation adjustment, 529 tuition
+      subtraction cap increase, and references.
+  date: 2026-02-15 23:33:04
+- bump: patch
+  changes:
+    fixed:
+    - Remove taxable_social_security from NJ subtractions to fix double exclusion
+      bug. Social Security was already excluded from NJ gross income.
+  date: 2026-02-16 00:14:38

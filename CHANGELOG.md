@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.558.1] - 2026-02-16 00:14:38
+
+### Fixed
+
+- Remove taxable_social_security from NJ subtractions to fix double exclusion bug. Social Security was already excluded from NJ gross income.
+
+## [1.558.0] - 2026-02-15 23:33:04
+
+### Changed
+
+- Update Montana income tax parameters for 2025, including bracket thresholds, capital gains thresholds, old age subtraction inflation adjustment, 529 tuition subtraction cap increase, and references.
+
+## [1.557.2] - 2026-02-14 03:01:37
+
+### Changed
+
+- Update Louisiana income tax parameter references from House Bill 10 to enacted legal code and add 2025 IT-540 form references.
+
+### Fixed
+
+- Fix Louisiana disability income exemption cap incorrectly set to $12,000 for 2025 (actual value remains $6,000 per RS 47:44.1(B)).
+
+## [1.557.1] - 2026-02-14 02:56:16
+
+### Changed
+
+- Update Colorado Child Tax Credit income thresholds for 2025 (single $26K/$51K/$77K, joint $36K/$61K/$87K).
+- Update Colorado CollegeInvest contribution subtraction limits for 2025 (single $25,400, joint $38,100).
+- Update Colorado ABLE contribution subtraction caps for 2025 (single $25,400, joint $38,100).
+- Fix Colorado Care Worker Tax Credit start date from 2026 to 2025 per C.R.S. 39-22-566.
+- Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
+
+## [1.557.0] - 2026-02-13 20:55:08
+
+### Changed
+
+- Update Mississippi income tax parameters with 2025 references and replace bill references with legal code citations.
+
+## [1.556.2] - 2026-02-13 19:31:10
+
+### Changed
+
+- Update CBO baseline projections to February 2026 (Budget and Economic Outlook 2026 to 2036), extending all calibration targets and CPI parameters through 2036.
+
+## [1.556.1] - 2026-02-13 18:38:12
+
+### Changed
+
+- Update CPI-U, C-CPI-U, and CPI-W projections for 2026+ based on CBO September 2025 interim inflation update
+
+## [1.556.0] - 2026-02-13 17:37:15
+
+### Added
+
+- Iowa Family Investment Program (FIP), the state's TANF cash assistance program.
+
+## [1.555.3] - 2026-02-12 22:42:22
+
+### Changed
+
+- Add 2025 Vermont income tax values, renter credit income limits, and form references to parameter files.
+
 ## [1.555.2] - 2026-02-12 18:16:49
 
 ### Changed
@@ -14986,6 +15048,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.0...1.558.1
+[1.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.2...1.558.0
+[1.557.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.1...1.557.2
+[1.557.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.0...1.557.1
+[1.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.2...1.557.0
+[1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
+[1.556.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.0...1.556.1
+[1.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.3...1.556.0
+[1.555.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.2...1.555.3
 [1.555.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.1...1.555.2
 [1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
 [1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0

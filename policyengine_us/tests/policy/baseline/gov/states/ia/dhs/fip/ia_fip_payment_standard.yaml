@@ -1,0 +1,196 @@
+# Unit tests for Iowa FIP payment standard
+# The payment standard is the schedule of basic needs by family size
+# Reference: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=31
+
+- name: Case 1, family of 1.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Payment standard for 1: $183/month * 12 = $2,196/year
+    ia_fip_payment_standard: 2_196
+
+- name: Case 2, family of 2.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Payment standard for 2: $361/month * 12 = $4,332/year
+    ia_fip_payment_standard: 4_332
+
+- name: Case 3, family of 3.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Payment standard for 3: $426/month * 12 = $5,112/year
+    ia_fip_payment_standard: 5_112
+
+- name: Case 4, family of 4.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Payment standard for 4: $495/month * 12 = $5,940/year
+    ia_fip_payment_standard: 5_940
+
+- name: Case 5, family of 5.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: IA
+  output:
+    # Payment standard for 5: $548/month * 12 = $6,576/year
+    ia_fip_payment_standard: 6_576
+
+- name: Case 6, family of 6.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: IA
+  output:
+    # Payment standard for 6: $610/month * 12 = $7,320/year
+    ia_fip_payment_standard: 7_320
+
+- name: Case 7, family of 10 (max size in table).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: IA
+  output:
+    # Payment standard for 10: $865/month * 12 = $10,380/year
+    ia_fip_payment_standard: 10_380
+
+- name: Case 8, non-Iowa state gets zero.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # defined_for StateCode.IA, other states return 0
+    ia_fip_payment_standard: 0
