@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.560.2] - 2026-02-16 01:32:52
+
+### Changed
+
+- Update Nebraska income tax parameters for 2025 with new bracket thresholds, standard deduction amounts, exemption credit, and form references.
+
 ## [1.560.1] - 2026-02-16 01:29:52
 
 ### Changed
@@ -15092,6 +15098,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.560.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.1...1.560.2
 [1.560.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.0...1.560.1
 [1.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.559.0...1.560.0
 [1.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.5...1.559.0
