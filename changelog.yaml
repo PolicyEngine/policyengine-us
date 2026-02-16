@@ -12969,3 +12969,10 @@
       \ the student's status when the loan was originally taken out, not current-year\
       \ AOC eligibility."
   date: 2026-02-16 01:16:13
+- bump: patch
+  changes:
+    changed:
+    - Update Indiana county income tax rates with 2022-2025 data from official DOR
+      publications, fix rate errors for Allen and Dearborn counties, fix Bartholomew
+      County parameter key typo, and update references to 2025 IT-40 and legal code.
+  date: 2026-02-16 01:24:59
