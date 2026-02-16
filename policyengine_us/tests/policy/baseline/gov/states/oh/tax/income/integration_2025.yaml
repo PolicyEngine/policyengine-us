@@ -1,6 +1,6 @@
 # Ohio 2025 Income Tax Integration Tests
 # Based on 2025 IT 1040 Booklet and Ohio Revised Code Chapter 5747
-# Tests 2025 parameter values: exemptions ($2,350/$2,100/$1,850) and rates (0%/2.75%/3.15%)
+# Tests 2025 parameter values: exemptions ($2,400/$2,150/$1,900) and rates (0%/2.75%/3.125%)
 
 - name: 2025 - Single filer medium income (2.75% bracket)
   absolute_error_margin: 5
@@ -23,14 +23,14 @@
         state_code: OH
   output:
     # Income: $68,050 (middle exemption tier: $40k-$80k)
-    # Exemption: 1 * $2,100 = $2,100
-    # Taxable income: $68,050 - $2,100 = $65,950
-    # Tax: $342 base + 2.75% of ($65,950 - $26,050) = $1,439
-    oh_personal_exemptions: 2_100
-    oh_taxable_income: 65_950
-    oh_income_tax_before_non_refundable_credits: 1_439
+    # Exemption: 1 * $2,150 = $2,150
+    # Taxable income: $68,050 - $2,150 = $65,900
+    # Tax: $342 base + 2.75% of ($65,900 - $26,050) = $342 + $1,095.875 = $1,438
+    oh_personal_exemptions: 2_150
+    oh_taxable_income: 65_900
+    oh_income_tax_before_non_refundable_credits: 1_438
 
-- name: 2025 - High income married couple (3.15% bracket)
+- name: 2025 - High income married couple (3.125% bracket)
   absolute_error_margin: 10
   period: 2025
   input:
@@ -56,10 +56,10 @@
         state_code: OH
   output:
     # Income: $150,000 (high exemption tier: >$80k)
-    # Exemptions: 2 * $1,850 = $3,700
-    # Taxable income: $150,000 - $3,700 = $146,300
-    oh_personal_exemptions: 3_700
-    oh_taxable_income: 146_300
+    # Exemptions: 2 * $1,900 = $3,800
+    # Taxable income: $150,000 - $3,800 = $146,200
+    oh_personal_exemptions: 3_800
+    oh_taxable_income: 146_200
 
 - name: 2025 - Low income family (lowest exemption tier)
   absolute_error_margin: 5
@@ -89,7 +89,7 @@
         state_code: OH
   output:
     # Income: $35,000 (lowest exemption tier: <=$40k)
-    # Exemptions: 3 * $2,350 = $7,050
-    # Taxable income: $35,000 - $7,050 = $27,950
-    oh_personal_exemptions: 7_050
-    oh_taxable_income: 27_950
+    # Exemptions: 3 * $2,400 = $7,200
+    # Taxable income: $35,000 - $7,200 = $27,800
+    oh_personal_exemptions: 7_200
+    oh_taxable_income: 27_800
