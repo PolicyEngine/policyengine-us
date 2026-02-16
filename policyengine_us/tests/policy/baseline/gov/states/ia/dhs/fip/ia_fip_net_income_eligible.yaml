@@ -1,0 +1,144 @@
+# Test 2: Net income < standard of need (applicants only)
+# Net income = gross income - 20% earned income deduction
+# Does NOT include 58% work incentive disregard
+
+- name: Case 1, no income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Net income: $0 < $719
+    ia_fip_net_income_eligible: true
+
+- name: Case 2, earned income with 20% deduction passes.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross: $800/month
+    # 20% deduction: $800 * 0.20 = $160
+    # Net: $800 - $160 = $640 < $719 standard of need
+    ia_fip_net_income_eligible: true
+
+- name: Case 3, earned income with 20% deduction fails.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross: $1,000/month
+    # 20% deduction: $1,000 * 0.20 = $200
+    # Net: $1,000 - $200 = $800 >= $719 standard of need
+    ia_fip_net_income_eligible: false
+
+- name: Case 4, unearned income only no deduction.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 8_400  # $700/month unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross: $700/month (unearned)
+    # 20% deduction only applies to earned: $0
+    # Net: $700 - $0 = $700 < $719
+    ia_fip_net_income_eligible: true
+
+- name: Case 5, mixed income deduction only on earned.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month earned
+        social_security: 3_600  # $300/month unearned
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross: $500 + $300 = $800/month
+    # 20% deduction on earned only: $500 * 0.20 = $100
+    # Net: $800 - $100 = $700 < $719
+    ia_fip_net_income_eligible: true
+
+- name: Case 6, larger family higher threshold.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 32
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # Family of 4: standard of need = $986
+    # Gross: $1,000/month
+    # 20% deduction: $1,000 * 0.20 = $200
+    # Net: $1,000 - $200 = $800 < $986
+    ia_fip_net_income_eligible: true

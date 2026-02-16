@@ -1,35 +1,39 @@
-- name: Eligible person
-  period: 2021
+- name: Eligible - head or spouse, not MFS
+  period: 2024
   input:
     is_tax_unit_head_or_spouse: true
     filing_status: JOINT
-    is_eligible_for_american_opportunity_credit: true
   output:
     student_loan_interest_ald_eligible: true
 
-- name: AOC ineligible
-  period: 2021
+- name: Eligible - single filer
+  period: 2024
   input:
     is_tax_unit_head_or_spouse: true
-    filing_status: JOINT
-    is_eligible_for_american_opportunity_credit: false
+    filing_status: SINGLE
   output:
-    student_loan_interest_ald_eligible: false
+    student_loan_interest_ald_eligible: true
 
-- name: Not head or spouse
-  period: 2021
+- name: Eligible - head of household filer
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    student_loan_interest_ald_eligible: true
+
+- name: Ineligible - dependent (not head or spouse)
+  period: 2024
   input:
     is_tax_unit_head_or_spouse: false
     filing_status: JOINT
-    is_eligible_for_american_opportunity_credit: true
   output:
     student_loan_interest_ald_eligible: false
 
-- name: Separate filers ineligible
-  period: 2021
+- name: Ineligible - Married Filing Separately
+  period: 2024
   input:
     is_tax_unit_head_or_spouse: true
     filing_status: SEPARATE
-    is_eligible_for_american_opportunity_credit: true
   output:
     student_loan_interest_ald_eligible: false

@@ -5,6 +5,179 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.563.0] - 2026-02-16 14:52:53
+
+### Added
+
+- Montana Temporary Assistance for Needy Families (TANF).
+
+## [1.562.3] - 2026-02-16 03:46:10
+
+### Fixed
+
+- Fix Maryland Child Tax Credit AGI eligibility boundary to include filers with exactly $24,000 AGI per Worksheet 21C.
+
+## [1.562.2] - 2026-02-16 03:42:03
+
+### Changed
+
+- Update Massachusetts income tax parameters for 2025, including surtax threshold ($1,083,150), Senior Circuit Breaker credit max ($2,820), income limits, and property value limit ($1,298,000).
+
+## [1.562.1] - 2026-02-16 03:09:22
+
+### Changed
+
+- Update Arkansas income tax parameters for 2025 including tax rate brackets, reduction schedule, standard deductions, low income tax tables, and additional tax credit for qualified individuals.
+
+## [1.562.0] - 2026-02-16 02:17:35
+
+### Added
+
+- Create Oregon dependent exemption credit reform to separate dependent exemptions with configurable age limits and universal mode.
+
+## [1.561.1] - 2026-02-16 01:39:50
+
+### Changed
+
+- Add 2025 form references to North Carolina income tax parameters confirming unchanged values for standard deduction, child deduction, and other provisions.
+
+## [1.561.0] - 2026-02-16 01:39:11
+
+### Changed
+
+- Update Maine income tax parameters for 2025 including bracket thresholds, personal exemption, deduction and exemption phaseout thresholds, itemized deduction cap, pension exclusion cap, and add 2025 references.
+
+## [1.560.3] - 2026-02-16 01:34:59
+
+### Fixed
+
+- Fix ga_exemptions formula in repeal_state_dependent_exemptions reform to use correct parameter path.
+- Fix ks_exemptions in repeal_state_dependent_exemptions reform to handle 2024+ by_filing_status branch.
+
+## [1.560.2] - 2026-02-16 01:32:52
+
+### Changed
+
+- Update Nebraska income tax parameters for 2025 with new bracket thresholds, standard deduction amounts, exemption credit, and form references.
+
+## [1.560.1] - 2026-02-16 01:29:52
+
+### Changed
+
+- Add 2025 Delaware income tax form references to parameter files.
+
+## [1.560.0] - 2026-02-16 01:29:02
+
+### Added
+
+- Add 2025 CTC values from official NM PIT Packet Table 4
+- Add 2025 PIT Packet references to all NM income tax parameters
+- Update armed forces retirement exemption to reflect HB-0252 making it permanent
+
+## [1.559.0] - 2026-02-16 01:28:23
+
+### Added
+
+- Adds 2025 references with page numbers to all Maryland income tax parameters.
+
+## [1.558.5] - 2026-02-16 01:26:34
+
+### Changed
+
+- Update West Virginia income tax rates for 2025 per SB 2033.
+
+## [1.558.4] - 2026-02-16 01:25:53
+
+### Fixed
+
+- Michigan surtax reform now activates correctly when in_effect parameter is toggled in the app.
+
+## [1.558.3] - 2026-02-16 01:24:59
+
+### Changed
+
+- Update Indiana county income tax rates with 2022-2025 data from official DOR publications, fix rate errors for Allen and Dearborn counties, fix Bartholomew County parameter key typo, and update references to 2025 IT-40 and legal code.
+
+## [1.558.2] - 2026-02-16 01:16:13
+
+### Fixed
+
+- Fix student loan interest deduction eligibility (IRC § 221) to remove incorrect AOC eligibility requirement. The previous implementation required is_eligible_for_american_opportunity_credit to be true, but this is not a legal requirement. While § 221(d)(3) references § 25A(b)(3) for the definition of "eligible student", this refers to the student's status when the loan was originally taken out, not current-year AOC eligibility.
+
+## [1.558.1] - 2026-02-16 00:14:38
+
+### Fixed
+
+- Remove taxable_social_security from NJ subtractions to fix double exclusion bug. Social Security was already excluded from NJ gross income.
+
+## [1.558.0] - 2026-02-15 23:33:04
+
+### Changed
+
+- Update Montana income tax parameters for 2025, including bracket thresholds, capital gains thresholds, old age subtraction inflation adjustment, 529 tuition subtraction cap increase, and references.
+
+## [1.557.2] - 2026-02-14 03:01:37
+
+### Changed
+
+- Update Louisiana income tax parameter references from House Bill 10 to enacted legal code and add 2025 IT-540 form references.
+
+### Fixed
+
+- Fix Louisiana disability income exemption cap incorrectly set to $12,000 for 2025 (actual value remains $6,000 per RS 47:44.1(B)).
+
+## [1.557.1] - 2026-02-14 02:56:16
+
+### Changed
+
+- Update Colorado Child Tax Credit income thresholds for 2025 (single $26K/$51K/$77K, joint $36K/$61K/$87K).
+- Update Colorado CollegeInvest contribution subtraction limits for 2025 (single $25,400, joint $38,100).
+- Update Colorado ABLE contribution subtraction caps for 2025 (single $25,400, joint $38,100).
+- Fix Colorado Care Worker Tax Credit start date from 2026 to 2025 per C.R.S. 39-22-566.
+- Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
+
+## [1.557.0] - 2026-02-13 20:55:08
+
+### Changed
+
+- Update Mississippi income tax parameters with 2025 references and replace bill references with legal code citations.
+
+## [1.556.2] - 2026-02-13 19:31:10
+
+### Changed
+
+- Update CBO baseline projections to February 2026 (Budget and Economic Outlook 2026 to 2036), extending all calibration targets and CPI parameters through 2036.
+
+## [1.556.1] - 2026-02-13 18:38:12
+
+### Changed
+
+- Update CPI-U, C-CPI-U, and CPI-W projections for 2026+ based on CBO September 2025 interim inflation update
+
+## [1.556.0] - 2026-02-13 17:37:15
+
+### Added
+
+- Iowa Family Investment Program (FIP), the state's TANF cash assistance program.
+
+## [1.555.3] - 2026-02-12 22:42:22
+
+### Changed
+
+- Add 2025 Vermont income tax values, renter credit income limits, and form references to parameter files.
+
+## [1.555.2] - 2026-02-12 18:16:49
+
+### Changed
+
+- Update Kentucky income tax model for 2025, including standard deduction ($3,270), tax rate (4%), and all tax credits with official 2025 references.
+
+## [1.555.1] - 2026-02-12 17:44:36
+
+### Changed
+
+- DC EITC match rate updated to 100% for 2025 per Act 26-214.
+
 ## [1.555.0] - 2026-02-11 17:26:50
 
 ### Added
@@ -14974,6 +15147,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.563.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.3...1.563.0
+[1.562.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.2...1.562.3
+[1.562.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.1...1.562.2
+[1.562.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.0...1.562.1
+[1.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.1...1.562.0
+[1.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.0...1.561.1
+[1.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.3...1.561.0
+[1.560.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.2...1.560.3
+[1.560.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.1...1.560.2
+[1.560.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.0...1.560.1
+[1.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.559.0...1.560.0
+[1.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.5...1.559.0
+[1.558.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.4...1.558.5
+[1.558.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.3...1.558.4
+[1.558.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.2...1.558.3
+[1.558.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.1...1.558.2
+[1.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.0...1.558.1
+[1.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.2...1.558.0
+[1.557.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.1...1.557.2
+[1.557.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.0...1.557.1
+[1.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.2...1.557.0
+[1.556.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.1...1.556.2
+[1.556.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.556.0...1.556.1
+[1.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.3...1.556.0
+[1.555.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.2...1.555.3
+[1.555.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.1...1.555.2
+[1.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.555.0...1.555.1
 [1.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.1...1.555.0
 [1.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.554.0...1.554.1
 [1.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.553.0...1.554.0
