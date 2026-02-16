@@ -80,7 +80,7 @@
     or_income_tax: 9_814.18
 
 - name: 40839-OR.yaml
-  absolute_error_margin: 4
+  absolute_error_margin: 0.1
   period: 2024
   input:
     people:
@@ -109,8 +109,15 @@
         members: [person1]
         state_fips: 41
   output:
+    # Tax calculation with corrected 2024 brackets:
+    # OR AGI: $21,464.90 (Federal AGI $22,011 - federal tax subtraction $546.10)
+    # Standard deduction: $3,945 ($2,745 base + $1,200 elderly addition)
+    # Taxable income: $17,519.90
+    # Tax: $4,300 @ 4.75% + $6,450 @ 6.75% + $6,769.90 @ 8.75% = $1,231.99
+    # Credits: Exemption $249 + Retirement $44.01 = $293.01
+    # Final tax: $1,231.99 - $293.01 = $938.98
     or_retirement_credit: 44
-    or_income_tax: 941
+    or_income_tax: 939
 
 # 2025 integration test
 - name: 2025 single filer with employment income
@@ -129,16 +136,17 @@
         members: [person1]
         state_code: OR
   output:
-    # Oregon AGI: $50,000
+    # Federal AGI: $50,000
+    # OR AGI: $46,128.50 (after federal tax subtraction of $3,871.50)
     # Standard deduction: $2,835 (single 2025)
-    # Taxable income: $47,165
-    # Tax calculation (2025 rates):
-    #   - First $4,400 at 4.75% = $209
-    #   - $4,400 to $11,050 ($6,650) at 6.75% = $448.88
-    #   - Above $11,050 ($36,115) at 8.75% = $3,160.06
-    # Total before credits: $3,817.94
+    # Taxable income: $43,293.50
+    # Tax calculation (2025 corrected brackets: $0, $4,400, $11,100):
+    #   - First $4,400 at 4.75% = $209.00
+    #   - $4,400 to $11,100 ($6,700) at 6.75% = $452.25
+    #   - Above $11,100 ($32,193.50) at 8.75% = $2,816.93
+    # Total before credits: $3,478.18
     # Exemption credit: $256 (1 exemption)
-    # Tax after credits: $3,561.94
+    # Tax after credits: $3,222.18
     or_standard_deduction: 2_835
     or_exemption_credit: 256
 
