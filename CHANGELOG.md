@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.558.1] - 2026-02-16 00:14:38
+
+### Fixed
+
+- Remove taxable_social_security from NJ subtractions to fix double exclusion bug. Social Security was already excluded from NJ gross income.
+
 ## [1.558.0] - 2026-02-15 23:33:04
 
 ### Changed
@@ -15042,6 +15048,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.558.0...1.558.1
 [1.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.2...1.558.0
 [1.557.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.1...1.557.2
 [1.557.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.557.0...1.557.1

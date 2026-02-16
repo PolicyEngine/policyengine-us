@@ -1,5 +1,0 @@
-- bump: patch
-  changes:
-    fixed:
-    - Remove taxable_social_security from NJ subtractions to fix double exclusion
-      bug. Social Security was already excluded from NJ gross income.
