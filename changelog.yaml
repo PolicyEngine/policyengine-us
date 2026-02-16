@@ -13010,3 +13010,11 @@
     - Update Nebraska income tax parameters for 2025 with new bracket thresholds,
       standard deduction amounts, exemption credit, and form references.
   date: 2026-02-16 01:32:52
+- bump: patch
+  changes:
+    fixed:
+    - Fix ga_exemptions formula in repeal_state_dependent_exemptions reform to use
+      correct parameter path.
+    - Fix ks_exemptions in repeal_state_dependent_exemptions reform to handle 2024+
+      by_filing_status branch.
+  date: 2026-02-16 01:34:59
