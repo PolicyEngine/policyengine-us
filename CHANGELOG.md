@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.564.1] - 2026-02-16 20:38:19
+
+### Changed
+
+- Update Iowa income tax to flat 3.8% rate for 2025 per SF 2442
+- Update Iowa alternate tax rate to 4.3% for 2025
+
 ## [1.564.0] - 2026-02-16 19:11:59
 
 ### Changed
@@ -15165,6 +15172,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.0...1.564.1
 [1.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.563.2...1.564.0
 [1.563.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.563.1...1.563.2
 [1.563.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.563.0...1.563.1
