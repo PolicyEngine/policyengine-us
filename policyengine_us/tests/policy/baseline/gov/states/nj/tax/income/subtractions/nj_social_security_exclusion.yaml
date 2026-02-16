@@ -1,0 +1,32 @@
+- name: NJ should not double-exclude Social Security (fixes #6979)
+  # Social Security is already excluded from NJ gross income (not in gross_income_sources.yaml)
+  # per NJ Statute 54A:6-15, so it should NOT be subtracted again.
+  # Test case: Single, age 75, $37,274 wages, $27,262 gross SS
+  # Expected: NJ taxable income = wages - exemptions = $37,274 - $2,000 = $35,274
+  # (SS should have no effect since it's already excluded from gross income)
+  # Expected NJ tax: ~$552 per TaxAct
+  absolute_error_margin: 5
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 75
+        employment_income: 37_274
+        social_security: 27_262
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # $37,274 wages - $1,000 regular exemption - $1,000 senior exemption = $35,274
+    nj_taxable_income: 35_274
+    nj_income_tax: 552

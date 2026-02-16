@@ -1,0 +1,146 @@
+- name: Case 1, no dependent care expense, 0
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: true
+    childcare_expenses: 0 
+  output:
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 2, some childcare expense.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: true
+    childcare_expenses: 250*12
+  output:
+    mt_tanf_dependent_care_deduction: 200
+
+- name: Case 3, some childcare expense, but not a dependent.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: false
+    mt_tanf_eligible_child: true
+    childcare_expenses: 250*12 
+  output:
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 4, some childcare expense, but not a child.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: false
+    childcare_expenses: 250*12 
+  output:
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 5, some childcare expense, applies minimum.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: true
+    childcare_expenses: 100*12 
+  output:
+    mt_tanf_dependent_care_deduction: 100
+
+- name: Case 6, incapacitated adult with expenses
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: false
+    is_incapable_of_self_care: true
+    childcare_expenses: 250*12
+  output:
+    mt_tanf_dependent_care_deduction: 200
+
+- name: Case 7, incapacitated adult without dependency
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: false
+    mt_tanf_eligible_child: false
+    is_incapable_of_self_care: true
+    childcare_expenses: 250*12
+  output:
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 8, incapacitated adult without expenses
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: false
+    is_incapable_of_self_care: true
+    childcare_expenses: 0
+  output:
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 9, incapacitated adult with expenses
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    is_tax_unit_dependent: true
+    mt_tanf_eligible_child: false
+    is_incapable_of_self_care: true
+    childcare_expenses: 100*12
+  output:
+    mt_tanf_dependent_care_deduction: 100
+
+- name: Case 10, integration test.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 36_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+      person3:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+      person5:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person4]
+        is_tanf_enrolled: false
+        childcare_expenses: 5_000
+      spm_unit2:
+        members: [person3, person5]
+        is_tanf_enrolled: false
+        childcare_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MT
+  output:
+    # spm_unit1: person2 and person4 → 2 * 200 = 400/month
+    # spm_unit2: person3 and person5 → 2 * 200 = 400/month
+    # min(5_000/12, 400) = min(416.67, 400) = 400
+    mt_tanf_dependent_care_deduction: [400, 400]

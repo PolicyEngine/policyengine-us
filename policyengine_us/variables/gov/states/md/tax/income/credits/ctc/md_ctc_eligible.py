@@ -17,18 +17,26 @@ class md_ctc_eligible(Variable):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         agi = tax_unit("adjusted_gross_income", period)
 
-        # When phase-out applies, eligibility is based on having eligible children
-        # (phase-out is handled in the credit amount calculation)
-        if p.phase_out.applies:
-            person = tax_unit.members
-            dependent = person("is_tax_unit_dependent", period)
-            disabled = person("is_disabled", period)
-            age_limit = where(
-                disabled, p.age_threshold.disabled, p.age_threshold.main
-            )
-            meets_age_limit = person("age", period) < age_limit
-            eligible = dependent & meets_age_limit
-            return tax_unit.sum(eligible) > 0
+        # Check for qualifying children (used in both paths)
+        person = tax_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        disabled = person("is_disabled", period)
+        age_limit = where(
+            disabled, p.age_threshold.disabled, p.age_threshold.main
+        )
+        meets_age_limit = person("age", period) < age_limit
+        qualifying_child = dependent & meets_age_limit
+        has_qualifying_child = tax_unit.sum(qualifying_child) > 0
 
-        # When phase-out does not apply, use old logic (hard adjusted gross income cutoff)
-        return agi <= p.agi_cap
+        # When phase-out applies (2025+): must have qualifying child AND AGI below max_agi
+        # Per Worksheet 21C: "$24,000 or less" is eligible; "$24,001 or greater, STOP."
+        # max_agi is set to 24_001 so that agi < 24_001 includes $24,000.
+        agi_eligible = agi < p.phase_out.max_agi
+        phase_out_eligible = has_qualifying_child & agi_eligible
+
+        # When phase-out does not apply (pre-2025): use old logic (hard AGI cutoff)
+        pre_phase_out_eligible = agi <= p.agi_cap
+
+        return where(
+            p.phase_out.applies, phase_out_eligible, pre_phase_out_eligible
+        )
