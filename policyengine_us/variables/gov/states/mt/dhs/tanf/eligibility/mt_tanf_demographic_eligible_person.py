@@ -15,9 +15,9 @@ class mt_tanf_demographic_eligible_person(Variable):
     def formula(person, period, parameters):
         tanf_eligible_child = person("mt_tanf_eligible_child", period)
         related_to_head_or_spouse = person(
-            "is_related_to_head_or_spouse", period
+            "is_related_to_head_or_spouse", period.this_year
         )
-        pregnant = person("is_pregnant", period)
+        pregnant = person("is_pregnant", period.this_year)
         immigration_status_eligible = person(
             "mt_tanf_immigration_status_eligible_person", period
         )

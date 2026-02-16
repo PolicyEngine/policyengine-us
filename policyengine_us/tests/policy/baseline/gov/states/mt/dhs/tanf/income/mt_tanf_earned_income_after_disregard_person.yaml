@@ -1,5 +1,5 @@
-- name: Case 1, no earned income, $0 per year after deduction.
-  period: 2023
+- name: Case 1, no earned income, $0 after deduction.
+  period: 2023-01
   input:
     state_code: MT
     mt_tanf_gross_earned_income_person: 0
@@ -14,7 +14,7 @@
   output:
     mt_tanf_earned_income_after_disregard_person: 225  #(500 - 200)*0.75
 
-- name: Case 3, integration. 
+- name: Case 3, integration.
   period: 2024-01
   input:
     people:

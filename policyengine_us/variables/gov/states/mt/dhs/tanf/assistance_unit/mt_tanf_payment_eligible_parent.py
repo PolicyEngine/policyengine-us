@@ -10,7 +10,9 @@ class mt_tanf_payment_eligible_parent(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_head_or_spouse = person(
+            "is_tax_unit_head_or_spouse", period.this_year
+        )
         eligible_requirements = person(
             "mt_tanf_payment_eligible_requirements", period
         )

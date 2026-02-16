@@ -44,7 +44,7 @@
     # Capped at 20-person household, monthly FPG = (13_590 + 19 * 4_720) / 12
     mt_tanf_assistance_unit_fpg: 8_605.8
 
-- name: Case 6, assitance unit size 3, covering Jan - Jun and Jul - Dec FPG change
+- name: Case 6, assistance unit size 3, covering Jan - Jun and Jul - Dec FPG change
   period: 2023
   absolute_error_margin: 0.1
   input:
