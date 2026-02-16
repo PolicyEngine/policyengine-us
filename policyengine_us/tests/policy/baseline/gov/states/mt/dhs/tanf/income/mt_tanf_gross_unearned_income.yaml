@@ -1,0 +1,88 @@
+- name: Case 1, no unearned income and no child support expense.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_gross_unearned_income: 0
+
+- name: Case 2, unearned income with no child support expense.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # social_security: 6,000/year = 500/month
+    # child_support_expense: 0
+    # max(500 - 0, 0) = 500
+    mt_tanf_gross_unearned_income: 500
+
+- name: Case 3, unearned income exceeds child support expense.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 6_000
+        child_support_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # social_security: 6,000/year = 500/month
+    # child_support_expense: 1,200/year = 100/month
+    # max(500 - 100, 0) = 400
+    mt_tanf_gross_unearned_income: 400
+
+- name: Case 4, child support expense exceeds unearned income floors at zero.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_200
+        child_support_expense: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # social_security: 1,200/year = 100/month
+    # child_support_expense: 6,000/year = 500/month
+    # max(100 - 500, 0) = 0
+    mt_tanf_gross_unearned_income: 0
+
+- name: Case 5, child support expense exactly equals unearned income.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 3_600
+        child_support_expense: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # unemployment_compensation: 3,600/year = 300/month
+    # child_support_expense: 3,600/year = 300/month
+    # max(300 - 300, 0) = 0
+    mt_tanf_gross_unearned_income: 0
