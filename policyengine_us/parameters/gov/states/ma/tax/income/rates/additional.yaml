@@ -11,6 +11,8 @@ metadata:
       href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=3
     - title: Form 1 2024 Massachusetts Resident Income Tax - 4% Surtax on Taxable Income Over $1 Million
       href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=3
+    - title: Form 1 2025 Massachusetts Resident Income Tax - 4% Surtax
+      href: https://www.mass.gov/doc/2025-form-1-instructions/download#page=3
     - title: Chapter 62, Section 4 (d)
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/section4
 brackets:
@@ -22,6 +24,7 @@ brackets:
         values:  
           2023-01-01: 1_000_000
           2024-01-01: 1_053_750
+          2025-01-01: 1_083_150
         metadata:
           uprating:
             parameter: gov.irs.uprating
