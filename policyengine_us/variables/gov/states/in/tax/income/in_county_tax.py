@@ -7,7 +7,7 @@ class in_county_tax(Variable):
     label = "Indiana county tax"
     definition_period = YEAR
     unit = USD
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-1"  # (a)(3)
+    reference = "https://iga.in.gov/laws/2024/ic/titles/6#6-3.6"
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):

@@ -12883,3 +12883,157 @@
     added:
     - Implement Utah HB 210 Substitute 2 marriage tax credit (Section 59-10-1049)
   date: 2026-02-11 17:26:50
+- bump: patch
+  changes:
+    changed:
+    - DC EITC match rate updated to 100% for 2025 per Act 26-214.
+  date: 2026-02-12 17:44:36
+- bump: patch
+  changes:
+    changed:
+    - Update Kentucky income tax model for 2025, including standard deduction ($3,270),
+      tax rate (4%), and all tax credits with official 2025 references.
+  date: 2026-02-12 18:16:49
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 Vermont income tax values, renter credit income limits, and form references
+      to parameter files.
+  date: 2026-02-12 22:42:22
+- bump: minor
+  changes:
+    added:
+    - Iowa Family Investment Program (FIP), the state's TANF cash assistance program.
+  date: 2026-02-13 17:37:15
+- bump: patch
+  changes:
+    changed:
+    - Update CPI-U, C-CPI-U, and CPI-W projections for 2026+ based on CBO September
+      2025 interim inflation update
+  date: 2026-02-13 18:38:12
+- bump: patch
+  changes:
+    changed:
+    - Update CBO baseline projections to February 2026 (Budget and Economic Outlook
+      2026 to 2036), extending all calibration targets and CPI parameters through
+      2036.
+  date: 2026-02-13 19:31:10
+- bump: minor
+  changes:
+    changed:
+    - Update Mississippi income tax parameters with 2025 references and replace bill
+      references with legal code citations.
+  date: 2026-02-13 20:55:08
+- bump: patch
+  changes:
+    changed:
+    - Update Colorado Child Tax Credit income thresholds for 2025 (single $26K/$51K/$77K,
+      joint $36K/$61K/$87K).
+    - Update Colorado CollegeInvest contribution subtraction limits for 2025 (single
+      $25,400, joint $38,100).
+    - Update Colorado ABLE contribution subtraction caps for 2025 (single $25,400,
+      joint $38,100).
+    - Fix Colorado Care Worker Tax Credit start date from 2026 to 2025 per C.R.S.
+      39-22-566.
+    - Fix typo in Colorado CTC head of household rate threshold date (2015 to 2022).
+  date: 2026-02-14 02:56:16
+- bump: patch
+  changes:
+    changed:
+    - Update Louisiana income tax parameter references from House Bill 10 to enacted
+      legal code and add 2025 IT-540 form references.
+    fixed:
+    - Fix Louisiana disability income exemption cap incorrectly set to $12,000 for
+      2025 (actual value remains $6,000 per RS 47:44.1(B)).
+  date: 2026-02-14 03:01:37
+- bump: minor
+  changes:
+    changed:
+    - Update Montana income tax parameters for 2025, including bracket thresholds,
+      capital gains thresholds, old age subtraction inflation adjustment, 529 tuition
+      subtraction cap increase, and references.
+  date: 2026-02-15 23:33:04
+- bump: patch
+  changes:
+    fixed:
+    - Remove taxable_social_security from NJ subtractions to fix double exclusion
+      bug. Social Security was already excluded from NJ gross income.
+  date: 2026-02-16 00:14:38
+- bump: patch
+  changes:
+    fixed:
+    - "Fix student loan interest deduction eligibility (IRC \xA7 221) to remove incorrect\
+      \ AOC eligibility requirement. The previous implementation required is_eligible_for_american_opportunity_credit\
+      \ to be true, but this is not a legal requirement. While \xA7 221(d)(3) references\
+      \ \xA7 25A(b)(3) for the definition of \"eligible student\", this refers to\
+      \ the student's status when the loan was originally taken out, not current-year\
+      \ AOC eligibility."
+  date: 2026-02-16 01:16:13
+- bump: patch
+  changes:
+    changed:
+    - Update Indiana county income tax rates with 2022-2025 data from official DOR
+      publications, fix rate errors for Allen and Dearborn counties, fix Bartholomew
+      County parameter key typo, and update references to 2025 IT-40 and legal code.
+  date: 2026-02-16 01:24:59
+- bump: patch
+  changes:
+    fixed:
+    - Michigan surtax reform now activates correctly when in_effect parameter is toggled
+      in the app.
+  date: 2026-02-16 01:25:53
+- bump: patch
+  changes:
+    changed:
+    - Update West Virginia income tax rates for 2025 per SB 2033.
+  date: 2026-02-16 01:26:34
+- bump: minor
+  changes:
+    added:
+    - Adds 2025 references with page numbers to all Maryland income tax parameters.
+  date: 2026-02-16 01:28:23
+- bump: minor
+  changes:
+    added:
+    - Add 2025 CTC values from official NM PIT Packet Table 4
+    - Add 2025 PIT Packet references to all NM income tax parameters
+    - Update armed forces retirement exemption to reflect HB-0252 making it permanent
+  date: 2026-02-16 01:29:02
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 Delaware income tax form references to parameter files.
+  date: 2026-02-16 01:29:52
+- bump: patch
+  changes:
+    changed:
+    - Update Nebraska income tax parameters for 2025 with new bracket thresholds,
+      standard deduction amounts, exemption credit, and form references.
+  date: 2026-02-16 01:32:52
+- bump: patch
+  changes:
+    fixed:
+    - Fix ga_exemptions formula in repeal_state_dependent_exemptions reform to use
+      correct parameter path.
+    - Fix ks_exemptions in repeal_state_dependent_exemptions reform to handle 2024+
+      by_filing_status branch.
+  date: 2026-02-16 01:34:59
+- bump: minor
+  changes:
+    changed:
+    - Update Maine income tax parameters for 2025 including bracket thresholds, personal
+      exemption, deduction and exemption phaseout thresholds, itemized deduction cap,
+      pension exclusion cap, and add 2025 references.
+  date: 2026-02-16 01:39:11
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 form references to North Carolina income tax parameters confirming
+      unchanged values for standard deduction, child deduction, and other provisions.
+  date: 2026-02-16 01:39:50
+- bump: minor
+  changes:
+    added:
+    - Create Oregon dependent exemption credit reform to separate dependent exemptions
+      with configurable age limits and universal mode.
+  date: 2026-02-16 02:17:35
