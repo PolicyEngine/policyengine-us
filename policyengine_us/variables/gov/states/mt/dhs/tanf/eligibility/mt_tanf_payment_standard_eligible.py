@@ -10,6 +10,6 @@ class mt_tanf_payment_standard_eligible(Variable):
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
-        return spm_unit("mt_tanf_countable_income", period) <= spm_unit(
+        return spm_unit("mt_tanf_countable_income", period) < spm_unit(
             "mt_tanf_payment_standard", period
         )
