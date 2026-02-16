@@ -10,12 +10,12 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 6_000
       person2:
         age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
-        housing_cost: 500  # $500/month rent
     households:
       household:
         members: [person1, person2]
@@ -39,7 +39,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        housing_cost: 0
     households:
       household:
         members: [person1, person2]
@@ -58,6 +57,7 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 7_200
       person2:
         age: 5
       person3:
@@ -65,7 +65,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        housing_cost: 600
     households:
       household:
         members: [person1, person2, person3]
@@ -91,7 +90,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        housing_cost: 0
     households:
       household:
         members: [person1, person2, person3]
@@ -110,6 +108,7 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 8_400
       person2:
         age: 5
       person3:
@@ -119,7 +118,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        housing_cost: 700
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -138,6 +136,7 @@
     people:
       person1:
         age: 30
+        pre_subsidy_rent: 9_600
       person2:
         age: 28
       person3:
@@ -149,7 +148,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        housing_cost: 800
     households:
       household:
         members: [person1, person2, person3, person4, person5]
