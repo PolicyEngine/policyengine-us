@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.562.2] - 2026-02-16 03:42:03
+
+### Changed
+
+- Update Massachusetts income tax parameters for 2025, including surtax threshold ($1,083,150), Senior Circuit Breaker credit max ($2,820), income limits, and property value limit ($1,298,000).
+
 ## [1.562.1] - 2026-02-16 03:09:22
 
 ### Changed
@@ -15129,6 +15135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.562.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.1...1.562.2
 [1.562.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.0...1.562.1
 [1.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.1...1.562.0
 [1.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.0...1.561.1
