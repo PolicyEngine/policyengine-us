@@ -17,8 +17,8 @@ class mn_mfip_child_support_income_exclusion(Variable):
         # Child support up to $100 (1 child) or $200 (2+ children) is excluded.
         p = parameters(
             period
-        ).gov.states.mn.dcyf.mfip.income.child_support_disregard
+        ).gov.states.mn.dcyf.mfip.income.deductions.child_support
         child_support = add(spm_unit, period, ["child_support_received"])
         children = spm_unit("spm_unit_count_children", period.this_year)
-        max_disregard = p.amount.calc(children)
+        max_disregard = p.calc(children)
         return min_(child_support, max_disregard)

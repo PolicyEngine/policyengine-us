@@ -2,9 +2,12 @@ description: Oregon matches this fraction of qualifying childcare expenses based
 metadata:
   unit: /1
   period: year
-  breakdown: 
+  breakdown:
   - list(range(0,30))
   - or_wfhdc_eligibility_category
+  breakdown_labels:
+  - FPL bracket
+  - Eligibility category
   label: Oregon working family household and dependent care credit credit rate 
   reference:
     - title: 2021 Oregon Form OR-17 (Individual Income Tax Guide)

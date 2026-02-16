@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 9)
+  breakdown_labels:
+    - Household size
   label: Nevada TANF need standard amount
   reference:
     - title: TANF Need Standards Chart (2025)

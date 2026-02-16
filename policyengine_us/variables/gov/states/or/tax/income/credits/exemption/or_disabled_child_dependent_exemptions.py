@@ -17,7 +17,7 @@ class or_disabled_child_dependent_exemptions(Variable):
         person = tax_unit.members
         disabled = person("is_disabled", period)
         # Law references IRC Section 152, which defines child dependent for EITC.
-        eitc_qualifying_child = person("is_child_dependent", period)
+        eitc_qualifying_child = person("is_qualifying_child_dependent", period)
         # Determine eligibility from AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states["or"].tax.income.credits.exemption

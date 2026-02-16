@@ -1,0 +1,21 @@
+description: Utah provides this additional taxpayer credit amount for married filers under HB 210 (2026).
+  # NOTE: This applies to the original bill and Substitute 1 only, not Substitute 2.
+  # Substitute 2 creates a separate standalone marriage tax credit (Section 59-10-1049).
+SINGLE:
+  2026-01-01: 0
+JOINT:
+  2026-01-01: 1_086
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 0
+SEPARATE:
+  2026-01-01: 543
+SURVIVING_SPOUSE:
+  2026-01-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah HB 210 taxpayer credit add-on amount
+  reference:
+    - title: Utah HB 210 (2026), Section 2, amending 59-10-1018(3)
+      href: https://le.utah.gov/~2026/bills/static/HB0210.html

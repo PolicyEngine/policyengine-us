@@ -13,7 +13,8 @@ class exemptions(Variable):
         # calculate exemptions amount before phase-out
         exemptions = tax_unit("exemptions_count", period)
         p = parameters(period).gov.irs.income.exemption
-        amount = exemptions * p.amount
+        per_exemption = 0 if p.suspended else p.amount
+        amount = exemptions * per_exemption
         # calculate exemptions amount after phase-out
         filing_status = tax_unit("filing_status", period)
         phase_out_start_agi = p.phase_out.start[filing_status]

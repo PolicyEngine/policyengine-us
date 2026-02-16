@@ -1,8 +1,10 @@
 description: Dollar gap between upper and lower threshold of pre-QBID taxable income
 metadata:
+  label: QBID phase-out length
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
-  label: QBID phase-out length
   reference:
     - title: 26 U.S. Code § 199A(b)(3)(B) - Qualified business income
       href: https://www.law.cornell.edu/uscode/text/26/199A#b_3_B

@@ -1,0 +1,178 @@
+# Unit tests for Alaska ATAP countable earned income
+# 7 AAC 45.480 - Deductions from income
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.480
+# Work incentive: $150 flat deduction + 33% of remaining earned income (Tier 1, months 1-12)
+# NOTE: Tier progression cannot be simulated; always uses Tier 1 rate
+# Tests assume continuing recipients (is_tanf_enrolled: true) for $150 + 33% rule
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # No income = $0 countable
+    ak_atap_countable_earned_income: 0
+
+- name: Case 2, low earned income below flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Monthly: $100, flat deduction: $150
+    # After flat: max($100 - $150, 0) = $0
+    # 33% disregard: $0 * 0.33 = $0
+    # Countable: $0 - $0 = $0
+    ak_atap_countable_earned_income: 0
+
+- name: Case 3, earned income $500 per month.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Monthly: $500, flat deduction: $150
+    # After flat: $500 - $150 = $350
+    # 33% disregard: $350 * 0.33 = $115.50
+    # Countable: $350 - $115.50 = $234.50
+    ak_atap_countable_earned_income: 234.50
+
+- name: Case 4, earned income $800 per month.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Monthly: $800, flat deduction: $150
+    # After flat: $800 - $150 = $650
+    # 33% disregard: $650 * 0.33 = $214.50
+    # Countable: $650 - $214.50 = $435.50
+    ak_atap_countable_earned_income: 435.50
+
+- name: Case 5, earned income $1200 per month.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 14_400  # $1,200/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Monthly: $1,200, flat deduction: $150
+    # After flat: $1,200 - $150 = $1,050
+    # 33% disregard: $1,050 * 0.33 = $346.50
+    # Countable: $1,050 - $346.50 = $703.50
+    ak_atap_countable_earned_income: 703.50
+
+- name: Case 6, earned income exactly at flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_800  # $150/month = flat deduction amount
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Monthly: $150, flat deduction: $150
+    # After flat: $150 - $150 = $0
+    # 33% disregard: $0 * 0.33 = $0
+    # Countable: $0
+    ak_atap_countable_earned_income: 0
+
+- name: Case 7, two earners in household.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 4_800  # $400/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # Per 7 AAC 45.480: Deductions apply per person
+    # Person 1: $500 - ($150 + ($500-$150)*0.33) = $500 - $265.50 = $234.50
+    # Person 2: $400 - ($150 + ($400-$150)*0.33) = $400 - $232.50 = $167.50
+    # Total countable: $234.50 + $167.50 = $402.00
+    ak_atap_countable_earned_income: 402

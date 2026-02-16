@@ -1,0 +1,14 @@
+description: Ohio adds this base amount to the payment standard for each additional person under the Ohio Works First program.
+
+values:
+  2017-01-01: 118
+# Base 2017 values; actual payment standard = base × cola_multiplier
+metadata:
+  unit: currency-USD
+  period: month
+  label: Ohio Works First additional person base amount
+  reference:
+    - title: Ohio Administrative Code § 5101:1-23-40(A)(1)
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40
+    - title: ODJFS Action Change Transmittal Letter No. 262 - January 1, 2017 COLA Increase
+      href: https://web.archive.org/web/20210515105829/https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/ACT-262.stm

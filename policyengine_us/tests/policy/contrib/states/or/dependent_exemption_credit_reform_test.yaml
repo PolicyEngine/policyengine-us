@@ -29,7 +29,7 @@
     # Dependent exemption credit:
     #   - 2 eligible dependents (child1, child2): $300 * 2 = $600
     # Total: ~$256.18 + $600 = ~$856.18
-    or_exemption_credit: 856
+    or_exemption_credit: 856.179
 
 - name: OR dependent exemption credit reform - age limit enabled, only young children qualify
   period: 2025
@@ -65,7 +65,7 @@
     # Dependent exemption credit:
     #   - 1 eligible dependent (child1, age 10, under age limit 13): $256
     # Total: ~$512.36 + $256 = ~$768.36
-    or_exemption_credit: 768
+    or_exemption_credit: 768.358
 
 - name: OR dependent exemption credit reform - age limit disabled, all dependents qualify
   period: 2025
@@ -99,7 +99,7 @@
     # Dependent exemption credit (all dependents):
     #   - 2 eligible dependents: $256 * 2 = $512
     # Total: ~$256.18 + $512 = ~$768.18
-    or_exemption_credit: 768
+    or_exemption_credit: 768.179
 
 - name: OR dependent exemption credit reform - income below limit (cliff cutoff)
   period: 2025
@@ -130,7 +130,7 @@
     # Dependent credit: 1 child = $256
     # Total: ~$512.18
     or_dependent_exemption_credit: 256
-    or_exemption_credit: 512
+    or_exemption_credit: 512.179
 
 - name: OR dependent exemption credit reform - income above limit (cliff cutoff)
   period: 2025
@@ -223,7 +223,7 @@
     # Dependent credit: 1 child = $256
     # Disabled child dependent exemption: 1 = ~$256.18 (baseline, uprated)
     # Total: ~$256.18 + $256 + ~$256.18 = ~$768.36
-    or_exemption_credit: 768
+    or_exemption_credit: 768.358
 
 - name: OR dependent exemption credit reform - joint filers with higher income limit
   period: 2025
@@ -255,4 +255,4 @@
     # Regular exemptions: 2 (head + spouse) = ~$512.36 (baseline, uprated)
     # Dependent credit: 1 child = $256
     # Total: ~$768.36
-    or_exemption_credit: 768
+    or_exemption_credit: 768.358

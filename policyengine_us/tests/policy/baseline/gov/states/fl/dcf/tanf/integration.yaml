@@ -1,0 +1,590 @@
+# Florida TCA Integration Tests
+# Comprehensive end-to-end tests for Temporary Cash Assistance program
+# Sources: Florida Statutes 414.095, FAC 65A-4
+
+# 2024 FPL values (Contiguous US):
+# 1 person: $15,060/year = $1,255/month; 185% = $2,321.75/month
+# 2 people: $20,440/year; 185% = $3,151.17/month
+# 3 people: $25,820/year; 185% = $3,980.58/month
+
+# Payment Standard Table (>$50 shelter tier):
+# Size 2: $241, Size 3: $303, Size 4: $364
+
+- name: Case 1, single parent with one child, zero income, full benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        rent: 12_000  # $1,000/month (>$50 shelter tier)
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Income calculations
+    fl_tca_countable_earned_income: 0
+    # No earned income
+    fl_tca_countable_income: 0
+    # Total: 0 + 0 = 0
+
+    # Eligibility tests
+    fl_tca_gross_income_eligible: true
+    # Adjusted gross: 0 < 185% FPL ($3,151) -> Pass
+    fl_tca_net_income_eligible: true
+    # Countable: 0 < payment standard ($241) -> Pass
+    fl_tca_eligible: true
+
+    # Benefit calculation
+    fl_tca_payment_standard: 241
+    # Size 2, >$50 shelter
+    fl_tca: 241
+    # Benefit: 241 - 0 = $241
+
+- name: Case 2, single parent with earnings and child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        rent: 12_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Income calculations
+    fl_tca_countable_earned_income: 105
+    # Earned: $500/month
+    # After $90: 410, after $200: 210, * 0.5 = 105
+    fl_tca_countable_income: 105
+    # 105 + 0 = 105
+
+    # Eligibility tests
+    fl_tca_gross_income_eligible: true
+    # Gross: $500 < $3,151 -> Pass
+    fl_tca_net_income_eligible: true
+    # Countable: 105 < 241 -> Pass
+    fl_tca_eligible: true
+
+    # Benefit calculation
+    fl_tca_payment_standard: 241
+    fl_tca: 136
+    # Benefit: 241 - 105 = $136
+
+- name: Case 3, family of 3 with zero shelter obligation.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 0  # Zero shelter tier
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 198
+    # Size 3, $0 shelter tier -> $198
+    fl_tca: 198
+
+- name: Case 4, family of 3 with $25 shelter obligation.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 300  # $25/month ($1-$50 shelter tier)
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 258
+    # Size 3, $1-$50 shelter tier -> $258
+    fl_tca: 258
+
+- name: Case 5, family of 3 with $100 shelter obligation.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 1_200  # $100/month (>$50 shelter tier)
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 303
+    # Size 3, >$50 shelter tier -> $303
+    fl_tca: 303
+
+- name: Case 6, income exceeds net income limit but passes gross test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Income calculations
+    fl_tca_countable_earned_income: 355
+    # After $90: 910, after $200: 710, * 0.5 = 355
+    fl_tca_countable_income: 355
+
+    # Eligibility tests
+    fl_tca_gross_income_eligible: true
+    # Gross: $1,000 < $3,151 -> Pass
+    fl_tca_net_income_eligible: false
+    # 355 > $241 -> Fail
+    fl_tca_eligible: false
+    # Failed net test
+
+    # Benefit
+    fl_tca_payment_standard: 241
+    fl_tca: 0
+    # Ineligible -> $0
+
+- name: Case 7, income exceeds gross income limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 48_000  # $4,000/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 1_855
+    # After $90: 3910, after $200: 3710, * 0.5 = 1,855
+    fl_tca_countable_income: 1_855
+    fl_tca_gross_income_eligible: false
+    # Gross: $4,000 > $3,151 -> Fail
+    fl_tca_net_income_eligible: false
+    # 1,855 > $241 -> Also fails
+    fl_tca_eligible: false
+    fl_tca: 0
+
+- name: Case 8, small benefit with unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_820  # $235/month annual  # Unearned income
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    fl_tca_countable_income: 235
+    fl_tca_gross_income_eligible: true
+    # 235 < $3,151 -> Pass
+    fl_tca_net_income_eligible: true
+    # 235 < $241 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    fl_tca: 6
+    # Benefit: 241 - 235 = $6
+
+- name: Case 9, two parents with two children eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+        rent: 12_000
+      person2:
+        age: 32
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 5
+    # After $90: 210, after $200: 10, * 0.5 = 5
+    fl_tca_countable_income: 5
+    fl_tca_gross_income_eligible: true
+    # Gross: $300 < 185% FPL for 4 ($4,810) -> Pass
+    fl_tca_net_income_eligible: true
+    # 5 < $364 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 364
+    # Size 4, >$50 shelter
+    fl_tca: 359
+    # 364 - 5 = $359
+
+- name: Case 10, mixed income sources.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_800  # $400/month
+        social_security: 2_400  # $200/month annual
+        rent: 12_000
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 55
+    # After $90: 310, after $200: 110, * 0.5 = 55
+    fl_tca_countable_income: 255
+    # 55 + 200 = 255
+    fl_tca_gross_income_eligible: true
+    # Gross: 400 + 200 = 600 < $3,981 -> Pass
+    fl_tca_net_income_eligible: true
+    # 255 < $303 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 303
+    fl_tca: 48
+    # Benefit: 303 - 255 = $48
+
+- name: Case 11, larger family size 5 zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        rent: 12_000
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 426
+    # Size 5, >$50 shelter
+    fl_tca: 426
+
+# ============================================================
+# Edge Case Integration Tests
+# ============================================================
+
+- name: Case 12, earned income $200 below $290 threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month exactly
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # After $90: 110, after $200: 0, * 0.5 = 0
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    # Gross: $200 < $3,151 -> Pass
+    fl_tca_net_income_eligible: true
+    # 0 < 241 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    fl_tca: 241
+    # Full benefit when earned income below $290 threshold
+
+- name: Case 13, shelter cost exactly at $50 boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 600  # $50/month exactly
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 205
+    # $50 shelter is in $1-$50 tier -> $205
+    fl_tca: 205
+
+- name: Case 14, shelter cost $51 crosses to high tier.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 612  # $51/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    # $51 shelter is in >$50 tier -> $241
+    fl_tca: 241
+
+- name: Case 15, benefit of $10.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_772  # $231/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    fl_tca_countable_income: 231
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    # 231 < 241 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    fl_tca: 10
+    # Benefit: 241 - 231 = $10
+
+- name: Case 16, benefit of $9.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_784  # $232/month annual
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    fl_tca_countable_income: 232
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    fl_tca: 9
+    # Benefit: 241 - 232 = $9
+
+- name: Case 17, multiple earners with varying income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+        rent: 12_000
+      person2:
+        age: 33
+        employment_income_before_lsr: 2_400  # $200/month
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 105
+    # Combined: 300 + 200 = 500
+    # After $90: 410, after $200: 210, * 0.5 = 105
+    fl_tca_countable_income: 105
+    fl_tca_gross_income_eligible: true
+    # Gross: $500 < $3,981 -> Pass
+    fl_tca_net_income_eligible: true
+    # 105 < 303 -> Pass
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 303
+    fl_tca: 198
+    # 303 - 105 = $198
+
+- name: Case 18, assets at limit with income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000  # Exactly at limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 5
+    # After $90: 210, after $200: 10, * 0.5 = 5
+    fl_tca_countable_income: 5
+    fl_tca_resources_eligible: true
+    # 2,000 <= 2,000 -> Pass
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 241
+    fl_tca: 236
+    # 241 - 5 = $236
+
+- name: Case 19, assets over limit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_001  # One dollar over limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_income: 0
+    fl_tca_resources_eligible: false
+    # 2,001 > 2,000 -> Fail
+    fl_tca_gross_income_eligible: true
+    fl_tca_net_income_eligible: true
+    fl_tca_eligible: false
+    # Failed resource test
+    fl_tca: 0

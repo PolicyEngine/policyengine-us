@@ -53,10 +53,10 @@
   output:
     additional_senior_deduction: 12_000
     # Total deductions when not itemizing should include:
-    # standard_deduction: 38_300 (joint filing in 2029, includes additional standard deduction for seniors)
+    # standard_deduction: 39_000 (joint filing in 2029, includes additional standard deduction for seniors)
     # qualified_business_income_deduction: 5_000
     # additional_senior_deduction: 12_000 (from extension)
-    taxable_income_deductions_if_not_itemizing: 54_250
+    taxable_income_deductions_if_not_itemizing: 54_950
 
 - name: Integration test - no senior deduction in 2029 without extension
   period: 2029
@@ -107,8 +107,8 @@
   output:
     additional_senior_deduction: 6_000
     # Total deductions should include:
-    # basic_standard_deduction: 19_600 (single filing in 2035)
-    # additional_standard_deduction: 2_450 (single senior aged deduction in 2035)
+    # basic_standard_deduction: 19_900 (single filing in 2035)
+    # additional_standard_deduction: 2_500 (single senior aged deduction in 2035)
     # qualified_business_income_deduction: 2_000
     # additional_senior_deduction: 6_000 (from extension)
-    taxable_income_deductions_if_not_itemizing: 29_450
+    taxable_income_deductions_if_not_itemizing: 29_800

@@ -5,7 +5,10 @@ class ny_ctc_post_2024_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "New York CTC post-2024 eligibility"
-    documentation = "Whether the tax unit is eligible for New York CTC under post-2024 rules"
+    documentation = (
+        "Whether the tax unit is eligible for New York CTC under post-2024 "
+        "rules. Unlike federal CTC, NY allows children with ITINs to qualify."
+    )
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = StateCode.NY
@@ -20,9 +23,8 @@ class ny_ctc_post_2024_eligible(Variable):
         person = tax_unit.members
         age = person("age", period)
 
-        # Check if we have qualifying children for post-2024 rules
-        qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
-        qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
+        # Use NY-specific qualifying child definition (allows ITINs)
+        qualifies = person("ny_escc_qualifying_child", period)
 
         # Check if any children get a non-zero credit amount
         credit_by_age = p.post_2024.amount.calc(age)

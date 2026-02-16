@@ -1,0 +1,72 @@
+# Tests income eligibility: net_income <= grant_standard
+
+- name: Case 1, income below grant standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_countable_income: 300
+        md_tca_maximum_benefit: 575
+    households:
+      household:
+        state_code: MD
+  output:
+    # $300 <= $575 = true
+    md_tca_income_eligible: true
+
+- name: Case 2, income equals grant standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_countable_income: 575
+        md_tca_maximum_benefit: 575
+    households:
+      household:
+        state_code: MD
+  output:
+    # $575 <= $575 = true
+    md_tca_income_eligible: true
+
+- name: Case 3, income exceeds grant standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_countable_income: 600
+        md_tca_maximum_benefit: 575
+    households:
+      household:
+        state_code: MD
+  output:
+    # $600 <= $575 = false
+    md_tca_income_eligible: false
+
+- name: Case 4, zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        md_tca_countable_income: 0
+        md_tca_maximum_benefit: 575
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tca_income_eligible: true

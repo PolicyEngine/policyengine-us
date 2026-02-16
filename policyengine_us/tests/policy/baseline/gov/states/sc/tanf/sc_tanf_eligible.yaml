@@ -1,0 +1,39 @@
+- name: Case 1, eligible for all.
+  period: 2025-01
+  input:
+    state_code: SC
+    is_demographic_tanf_eligible: true
+    sc_tanf_income_eligible: true
+    sc_tanf_resources_eligible: true
+  output:
+    sc_tanf_eligible: true
+
+- name: Case 2, not demographic eligible.
+  period: 2025-01
+  input:
+    state_code: SC
+    is_demographic_tanf_eligible: false
+    sc_tanf_income_eligible: true
+    sc_tanf_resources_eligible: true
+  output:
+    sc_tanf_eligible: false
+
+- name: Case 3, not income eligible.
+  period: 2025-01
+  input:
+    state_code: SC
+    is_demographic_tanf_eligible: true
+    sc_tanf_income_eligible: false
+    sc_tanf_resources_eligible: true
+  output:
+    sc_tanf_eligible: false
+
+- name: Case 4, not resources eligible.
+  period: 2025-01
+  input:
+    state_code: SC
+    is_demographic_tanf_eligible: true
+    sc_tanf_income_eligible: true
+    sc_tanf_resources_eligible: false
+  output:
+    sc_tanf_eligible: false

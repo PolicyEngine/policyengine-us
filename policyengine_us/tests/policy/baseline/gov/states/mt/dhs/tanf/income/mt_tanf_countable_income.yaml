@@ -1,0 +1,55 @@
+- name: Case 1, both are zero.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_earned_income: 0
+    mt_tanf_gross_unearned_income: 0
+    mt_tanf_dependent_care_deduction: 0
+  output:
+    mt_tanf_countable_income: 0
+
+- name: Case 2, earned income after disregard higher than childcare deduction.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_earned_income: 4_020
+    mt_tanf_gross_unearned_income: 0
+    mt_tanf_dependent_care_deduction: 1_000
+  output:
+    mt_tanf_countable_income: 3_020
+
+- name: Case 3, earned income after disregard lower than childcare deduction.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_earned_income: 500
+    mt_tanf_gross_unearned_income: 0
+    mt_tanf_dependent_care_deduction: 1_000
+  output:
+    mt_tanf_countable_income: 0
+
+- name: Case 4, child support expense deducted from unearned income.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        child_support_expense: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_countable_earned_income: 600
+        mt_tanf_gross_unearned_income: 100
+        mt_tanf_dependent_care_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # max(600 - 0, 0) + 100 = 700
+    # Note: child_support_expense is deducted in mt_tanf_gross_unearned_income,
+    # but here mt_tanf_gross_unearned_income is mocked directly as 100.
+    mt_tanf_countable_income: 700

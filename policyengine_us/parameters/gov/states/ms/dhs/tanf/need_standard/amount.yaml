@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: Mississippi TANF need standard amount
   reference:
     - title: MDHS TANF Eligibility Flyer (2018) - 100% Requirements Table

@@ -21,6 +21,6 @@ class mn_mfip_dependent_care_deduction(Variable):
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        max_deduction_per_child = p.amount.calc(age) * dependent
+        max_deduction_per_child = p.calc(age) * dependent
         total_max_deduction = spm_unit.sum(max_deduction_per_child)
         return min_(childcare_expenses, total_max_deduction)

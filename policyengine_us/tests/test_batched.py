@@ -10,6 +10,7 @@ import os
 import gc
 import time
 import argparse
+import re
 from pathlib import Path
 from typing import List, Dict
 
@@ -256,15 +257,16 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            import re
-
             if re.search(r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+", line):
                 test_completed = True
-                # Check if tests passed (no failures mentioned or 0 failed)
-                if "failed" not in line or "0 failed" in line:
-                    test_passed = True
+                # Check if tests passed by parsing actual failure count
+                failed_match = re.search(r"(\d+) failed", line)
+                if failed_match:
+                    failed_count = int(failed_match.group(1))
+                    test_passed = failed_count == 0
                 else:
-                    test_passed = False
+                    # No "X failed" in line means all passed
+                    test_passed = True
 
                 print(f"\n    Tests completed, terminating process...")
 

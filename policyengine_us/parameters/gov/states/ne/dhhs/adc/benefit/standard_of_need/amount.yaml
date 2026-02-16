@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(1, 11)
+  breakdown_labels:
+    - Household size
   label: Nebraska ADC standard of need
   reference:
     - title: Neb. Rev. Stat. 43-513(1)
