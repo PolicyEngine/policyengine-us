@@ -1,4 +1,4 @@
-- name: Eligible refugee 
+- name: Case 1, eligible refugee.
   period: 2023
   input:
     immigration_status: REFUGEE
@@ -6,7 +6,7 @@
   output:
     mt_tanf_immigration_status_eligible_person: true
 
-- name: Not eligible undocumented 
+- name: Case 2, undocumented person.
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -14,7 +14,7 @@
   output:
     mt_tanf_immigration_status_eligible_person: false
 
-- name: Eligible citizen 
+- name: Case 3, eligible citizen.
   period: 2023
   input:
     immigration_status: CITIZEN

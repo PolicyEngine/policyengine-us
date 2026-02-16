@@ -92,8 +92,8 @@
   output:
     mt_tanf_dependent_care_deduction: 100
 
-- name: Integration test
-  period: 2023
+- name: Case 10, integration test.
+  period: 2023-01
   input:
     people:
       person1:
@@ -130,7 +130,7 @@
         members: [person1, person2, person3, person4, person5]
         state_code: MT
   output:
-    # spm_unit1: person2 and person4 → 2 * 200 = 400
-    # spm_unit2: person3 and person5 → 2 * 200 = 400
-    # min (5_000, 400*12)
-    mt_tanf_dependent_care_deduction: [4800, 4800]
+    # spm_unit1: person2 and person4 → 2 * 200 = 400/month
+    # spm_unit2: person3 and person5 → 2 * 200 = 400/month
+    # min(5_000/12, 400) = min(416.67, 400) = 400
+    mt_tanf_dependent_care_deduction: [400, 400]

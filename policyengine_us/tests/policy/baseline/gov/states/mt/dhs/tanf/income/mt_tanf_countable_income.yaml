@@ -1,4 +1,4 @@
-- name: Both are 0.
+- name: Case 1, both are zero.
   period: 2023-01
   input:
     state_code: MT
@@ -8,7 +8,7 @@
   output:
     mt_tanf_countable_income: 0
 
-- name: Earned income after disregard higher than childcare deduction. 
+- name: Case 2, earned income after disregard higher than childcare deduction.
   period: 2023-01
   input:
     state_code: MT
@@ -18,7 +18,7 @@
   output:
     mt_tanf_countable_income: 3_020
 
-- name: Earned income after disregard lower than childcare deduction.
+- name: Case 3, earned income after disregard lower than childcare deduction.
   period: 2023-01
   input:
     state_code: MT
@@ -28,22 +28,22 @@
   output:
     mt_tanf_countable_income: 0
 
-- name: Child support expense deducted from countable income.
+- name: Case 4, child support expense deducted from countable income.
   period: 2023-01
   input:
     people:
-      parent:
+      person1:
         child_support_expense: 1_200
     spm_units:
       spm_unit:
-        members: [parent]
+        members: [person1]
         mt_tanf_countable_earned_income: 600
         mt_tanf_gross_unearned_income: 200
         mt_tanf_dependent_care_deduction: 0
     households:
       household:
-        members: [parent]
+        members: [person1]
         state_code: MT
   output:
-    # 600 + 200 - 0 - 100 (1200/12 monthly) = 700
+    # 600 + 200 - 0 - 100 (1_200/12 monthly) = 700
     mt_tanf_countable_income: 700

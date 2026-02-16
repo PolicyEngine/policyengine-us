@@ -1,9 +1,9 @@
-- name: Default person is 18 and out of school, therefore ineligible for TANF
+- name: Case 1, default person is 18 and out of school.
   period: 2022
   output:
     mt_tanf_demographic_eligible_person: false
 
-- name: Is eligible for TANF due to children under 18
+- name: Case 2, child under 18.
   period: 2022-01
   input:
     age: 17
@@ -13,7 +13,7 @@
   output:
     mt_tanf_demographic_eligible_person: true
 
-- name: 18-year-old out of school is not eligible for TANF
+- name: Case 3, 18 year old out of school.
   period: 2022-01
   input:
     age: 18
@@ -22,7 +22,7 @@
   output:
     mt_tanf_demographic_eligible_person: false
 
-- name: Is eligible for TANF due to pregnancy
+- name: Case 4, pregnant person.
   period: 2022-01
   input:
     is_pregnant: true
@@ -30,7 +30,7 @@
   output:
     mt_tanf_demographic_eligible_person: true
 
-- name: Is eligible for TANF due to being an 18-year-old in school
+- name: Case 5, 18 year old in school.
   period: 2022-01
   input:
     age: 18
@@ -40,7 +40,7 @@
   output:
     mt_tanf_demographic_eligible_person: true
 
-- name: Is ineligible for TANF due to not related to head or spouse.
+- name: Case 6, not related to head or spouse.
   period: 2022-01
   input:
     age: 17

@@ -3,31 +3,31 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent: {}
-      child:
+      person1: {}
+      person2:
         age: 10
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
         mt_tanf_meets_work_requirements: true
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 2
-    # FPG = 1132.5 + 393.33 = 1525.83 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.5 + 393.33 = 1_525.83 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
-    # Payment standard = 1525.83 * 0.35 = 534.04
+    # Payment standard = 1_525.83 * 0.35 = 534.04
     mt_tanf_payment_standard: 534.04
     mt_tanf_gross_earned_income: 0
     mt_tanf_countable_earned_income: 0
     mt_tanf_countable_income: 0
-    # Benefit standard = 1525.83 * 0.30 = 457.75
+    # Benefit standard = 1_525.83 * 0.30 = 457.75
     mt_tanf_benefit_standard: 1_525.83 * 0.30
     # Net income standard = 457.75 / 0.785 = 583.12
     mt_tanf_net_income_standard: 457.75 / 0.785
-    # Gross income standard = 583.12 * 1.85 = 1078.77
+    # Gross income standard = 583.12 * 1.85 = 1_078.77
     mt_tanf_gross_income_standard: 583.12 * 1.85
     mt_tanf_gross_income: 0
     mt_tanf_payment_standard_eligible: true
@@ -45,26 +45,26 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 40
         employment_income_before_lsr: 9_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child:
+      person2:
         age: 10
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         childcare_expenses: 2_400
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 2
-    # FPG = 1132.5 + 393.33 * (2 - 1) = 1525.83 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.5 + 393.33 * (2 - 1) = 1_525.83 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
     mt_tanf_payment_standard: 534.04
     mt_tanf_gross_earned_income: 750.00
@@ -74,11 +74,11 @@
     # Countable income = countable earned income - $200 dependent care expenses
     # 412.50 - 200 = 212.50
     mt_tanf_countable_income: 412.50 - 200
-    # Benefit standard = 1525.83 * 0.30 = 457.75
+    # Benefit standard = 1_525.83 * 0.30 = 457.75
     mt_tanf_benefit_standard: 1_525.83 * 0.30
     # Net income standard = 457.75 / 0.785 = 583.12
     mt_tanf_net_income_standard: 457.75 / 0.785
-    # Gross income standard = 583.12 * 1.85 = 1078.77
+    # Gross income standard = 583.12 * 1.85 = 1_078.77
     mt_tanf_gross_income_standard: 583.12 * 1.85
     mt_tanf_gross_income: 750.00
     mt_tanf_payment_standard_eligible: true
@@ -96,37 +96,37 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 40
-        employment_income_before_lsr: 12000
+        employment_income_before_lsr: 12_000
         weekly_hours_worked: 10
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child:
+      person2:
         age: 10
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 2
-    # FPG = 1132.5 + 393.33 * (2 - 1) = 1525.83 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.5 + 393.33 * (2 - 1) = 1_525.83 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
     mt_tanf_payment_standard: 534.04
     mt_tanf_gross_earned_income: 1_000.00
     # Countable earned income = gross income - $200 work expense - 25% disregard
-    # = 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
-    mt_tanf_countable_earned_income: 1_000 - 200 - ((1000 - 200) * 0.25)
+    # = 1_000 - 200 - ((1_000 - 200) * 0.25) = 600.00
+    mt_tanf_countable_earned_income: 1_000 - 200 - ((1_000 - 200) * 0.25)
     mt_tanf_countable_income: 600.00
-    # Benefit standard = 1525.83 * 0.30 = 457.75
+    # Benefit standard = 1_525.83 * 0.30 = 457.75
     mt_tanf_benefit_standard: 1_525.83 * 0.30
     # Net income standard = 457.75 / 0.785 = 583.12
     mt_tanf_net_income_standard: 457.75 / 0.785
-    # Gross income standard = 583.12 * 1.85 = 1078.77
+    # Gross income standard = 583.12 * 1.85 = 1_078.77
     mt_tanf_gross_income_standard: 583.12 * 1.85
     mt_tanf_gross_income: 1_000.00
     mt_tanf_payment_standard_eligible: false
@@ -144,49 +144,49 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent1:
+      person1:
         age: 40
         employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      parent2:
+      person2:
         age: 40
         employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child1:
+      person3:
         age: 10
         is_tax_unit_dependent: true
-      child2:
+      person4:
         age: 5
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 4
-    # FPG = 1132.50 + 393.33 * (4 - 1) = 2312.50 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.50 + 393.33 * (4 - 1) = 2_312.50 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33 * (4 - 1)
-    # Payment standard = 2312.40 * 0.35 = 809.34
+    # Payment standard = 2_312.40 * 0.35 = 809.34
     mt_tanf_payment_standard: 809.38
     mt_tanf_gross_earned_income: 750.00
     # Countable earned income = gross income - $200 work expense - 25% disregard
-    # Earned income after disregard (each parent) = 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
+    # Earned income after disregard (each parent) = 375 - 200 - ((375 - 200) * 0.25) = 131.25
     mt_tanf_earned_income_after_disregard_person: [131.25, 131.25, 0, 0]
     # Countable SPM Unit earned income = 131.25 * 2 = 262.50
     mt_tanf_countable_earned_income: 131.25 * 2
     mt_tanf_countable_income: 262.50
-    # Benefit standard = 2312.50 * 0.30 = 693.75
+    # Benefit standard = 2_312.50 * 0.30 = 693.75
     mt_tanf_benefit_standard: 2_312.5 * 0.30
     # Net income standard = 693.75 / 0.785 = 883.76
     mt_tanf_net_income_standard: 693.75 / 0.785
-    # Gross income standard = 883.76 * 1.85 = 1634.95
+    # Gross income standard = 883.76 * 1.85 = 1_634.95
     mt_tanf_gross_income_standard: 883.76 * 1.85
     mt_tanf_gross_income: 750.00
     mt_tanf_payment_standard_eligible: true
@@ -204,50 +204,50 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent1:
+      person1:
         age: 40
         employment_income_before_lsr: 12_000
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      parent2:
+      person2:
         age: 40
         employment_income_before_lsr: 4_500
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child1:
+      person3:
         age: 10
         is_tax_unit_dependent: true
-      child2:
+      person4:
         age: 5
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 4
-    # FPG = 1132.50 + 393.33 * (4 - 1) = 2312.50 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.50 + 393.33 * (4 - 1) = 2_312.50 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33 * (4 - 1)
-    # Payment standard = 2312.40 * 0.35 = 809.34
+    # Payment standard = 2_312.40 * 0.35 = 809.34
     mt_tanf_payment_standard: 809.38
     mt_tanf_gross_earned_income: 1_375.00
-    # Countable earned income = gross income - $200 work expense - 25% disregard  
-    # Parent 1: 1000 - 200 - ((1000 - 200) * 0.25) = 600.00
-    # Parent 2: 375 - 200 - ((375 - 200) * 0.25) = 131.25
+    # Countable earned income = gross income - $200 work expense - 25% disregard
+    # Person 1: 1_000 - 200 - ((1_000 - 200) * 0.25) = 600.00
+    # Person 2: 375 - 200 - ((375 - 200) * 0.25) = 131.25
     mt_tanf_earned_income_after_disregard_person: [600.00, 131.25, 0, 0]
     # Countable SPM Unit earned income = 600.00 + 131.25 = 731.25
     mt_tanf_countable_earned_income: 731.25
     mt_tanf_countable_income: 731.25
-    # Benefit standard = 2312.50 * 0.30 = 693.75
+    # Benefit standard = 2_312.50 * 0.30 = 693.75
     mt_tanf_benefit_standard: 2_312.5 * 0.30
     # Net income standard = 693.75 / 0.785 = 883.76
     mt_tanf_net_income_standard: 693.75 / 0.785
-    # Gross income standard = 883.76 * 1.85 = 1634.95
+    # Gross income standard = 883.76 * 1.85 = 1_634.95
     mt_tanf_gross_income_standard: 883.76 * 1.85
     mt_tanf_gross_income: 1_375.00
     mt_tanf_payment_standard_eligible: true
@@ -265,26 +265,26 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 40
         employment_income_before_lsr: 6_000
         social_security: 2_400
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child:
+      person2:
         age: 10
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 2
-    # FPG = 1132.5 + 393.33 = 1525.83 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.5 + 393.33 = 1_525.83 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
     mt_tanf_payment_standard: 534.04
     mt_tanf_gross_earned_income: 500.00
@@ -308,27 +308,27 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 40
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child1:
+      person2:
         age: 10
         is_tax_unit_dependent: true
-      child2:
+      person3:
         age: 8
         is_tax_unit_dependent: true
         ssi: 800
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
         state_code: MT
   output:
-    # SSI child excluded from AU, so AU = parent + child1 = 2
+    # SSI child excluded from AU, so AU = person1 + person2 = 2
     mt_tanf_assistance_unit_size: 2
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
     mt_tanf_payment_standard: 534.04
@@ -345,29 +345,29 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 40
         employment_income_before_lsr: 15_600
         weekly_hours_worked: 35
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
-      child:
+      person2:
         age: 10
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: MT
   output:
     mt_tanf_assistance_unit_size: 2
     mt_tanf_assistance_unit_fpg: 1_132.5 + 393.33
     mt_tanf_gross_earned_income: 1_300.00
     mt_tanf_gross_income: 1_300.00
-    # GMI standard = 1525.83 * 0.30 / 0.785 * 1.85 = 1078.77
-    # Gross income 1300 > 1078.77 = FAIL
+    # GMI standard = 1_525.83 * 0.30 / 0.785 * 1.85 = 1_078.77
+    # Gross income 1_300 > 1_078.77 = FAIL
     mt_tanf_gmi_eligible: false
     mt_tanf_income_eligible: false
     mt_tanf_eligible: false
@@ -378,7 +378,7 @@
   absolute_error_margin: 0.1
   input:
     people:
-      parent:
+      person1:
         age: 25
         is_pregnant: true
         employment_income_before_lsr: 3_600
@@ -388,17 +388,17 @@
         ssi: 0
     spm_units:
       spm_unit:
-        members: [parent]
+        members: [person1]
     households:
       household:
-        members: [parent]
+        members: [person1]
         state_code: MT
   output:
-    # AU = 1 (just the pregnant parent)
+    # AU = 1 (just the pregnant person)
     mt_tanf_assistance_unit_size: 1
-    # FPG = 1132.50 (2022-07 FPG, since Jan < July)
+    # FPG = 1_132.50 (2022-07 FPG, since Jan < July)
     mt_tanf_assistance_unit_fpg: 1_132.50
-    # Payment standard = 1132.50 * 0.35 = 396.38
+    # Payment standard = 1_132.50 * 0.35 = 396.38
     mt_tanf_payment_standard: 396.38
     mt_tanf_gross_earned_income: 300.00
     # Earned after disregard = (300 - 200) * 0.75 = 75

@@ -1,4 +1,4 @@
-- name: Is demographic eligible, income eligible and resource eligible.
+- name: Case 1, demographic, income, and resource eligible.
   period: 2023-01
   input:
     state_code: MT
@@ -9,7 +9,7 @@
   output:
     mt_tanf_eligible: true
 
-- name: Is demographic eligible, income eligible but not resource eligible.
+- name: Case 2, demographic and income eligible but not resource eligible.
   period: 2023-01
   input:
     state_code: MT
@@ -20,7 +20,7 @@
   output:
     mt_tanf_eligible: false
 
-- name: Is demographic eligible, resource eligible but not income eligible.
+- name: Case 3, demographic and resource eligible but not income eligible.
   period: 2023-01
   input:
     state_code: MT
@@ -31,7 +31,7 @@
   output:
     mt_tanf_eligible: false
 
-- name: Is resource eligible, income eligible but not demographic eligible.
+- name: Case 4, resource and income eligible but not demographic eligible.
   period: 2023-01
   input:
     state_code: MT
@@ -42,7 +42,7 @@
   output:
     mt_tanf_eligible: false
 
-- name: Does not meet work requirement. 
+- name: Case 5, does not meet work requirement.
   period: 2023-01
   input:
     state_code: MT

@@ -1,4 +1,4 @@
-- name: All eligibility conditions pass - Eligible
+- name: Case 1, all eligibility conditions pass.
   period: 2023-01
   input:
     state_code: MT
@@ -8,7 +8,7 @@
   output:
     mt_tanf_income_eligible: true
 
-- name: GMI test fails - Not eligible
+- name: Case 2, GMI test fails.
   period: 2023-01
   input:
     state_code: MT
@@ -18,7 +18,7 @@
   output:
     mt_tanf_income_eligible: false
 
-- name: Benefit standard test fails - Not eligible
+- name: Case 3, benefit standard test fails.
   period: 2023-01
   input:
     state_code: MT
@@ -28,7 +28,7 @@
   output:
     mt_tanf_income_eligible: false
 
-- name: Payment standard test fails - Not eligible
+- name: Case 4, payment standard test fails.
   period: 2023-01
   input:
     state_code: MT
@@ -38,7 +38,7 @@
   output:
     mt_tanf_income_eligible: false
 
-- name: All eligibility conditions fail - Not eligible
+- name: Case 5, all eligibility conditions fail.
   period: 2023-01
   input:
     state_code: MT

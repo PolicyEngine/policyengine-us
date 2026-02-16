@@ -15,6 +15,9 @@ class mt_tanf_eligible(Variable):
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
+        # demographic_eligible checks for any eligible child/pregnant person;
+        # has_assistance_unit_members checks AU size > 0, since a child can be
+        # demographic-eligible but excluded from the AU by SSI or foster care.
         demographic_eligible = (
             add(spm_unit, period, ["mt_tanf_demographic_eligible_person"]) > 0
         )
