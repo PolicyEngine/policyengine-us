@@ -7,6 +7,7 @@ class mt_tanf_countable_income(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) countable income"
     unit = USD
     definition_period = MONTH
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf#page=1"
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):

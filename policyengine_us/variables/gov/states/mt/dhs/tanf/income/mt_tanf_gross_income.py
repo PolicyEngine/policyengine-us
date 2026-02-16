@@ -9,6 +9,7 @@ class mt_tanf_gross_income(Variable):
     )
     unit = USD
     definition_period = MONTH
+    reference = "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.406"
     defined_for = StateCode.MT
 
     adds = ["mt_tanf_gross_earned_income", "mt_tanf_gross_unearned_income"]

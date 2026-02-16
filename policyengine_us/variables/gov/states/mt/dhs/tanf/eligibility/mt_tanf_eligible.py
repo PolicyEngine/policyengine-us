@@ -8,7 +8,10 @@ class mt_tanf_eligible(Variable):
         "Eligible for Montana Temporary Assistance for Needy Families (TANF)"
     )
     definition_period = MONTH
-    reference = "https://dphhs.mt.gov/HCSD/tanf"
+    reference = (
+        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.206",
+        "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.228",
+    )
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):

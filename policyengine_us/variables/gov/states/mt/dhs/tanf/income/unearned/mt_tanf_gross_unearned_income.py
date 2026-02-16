@@ -7,6 +7,7 @@ class mt_tanf_gross_unearned_income(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) gross unearned income"
     unit = USD
     definition_period = MONTH
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF501-1Jan012018.pdf#page=1"
     defined_for = StateCode.MT
 
     adds = ["mt_tanf_gross_unearned_income_person"]
