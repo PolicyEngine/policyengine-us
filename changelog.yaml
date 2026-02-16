@@ -13086,3 +13086,13 @@
     - Update Iowa income tax to flat 3.8% rate for 2025 per SF 2442
     - Update Iowa alternate tax rate to 4.3% for 2025
   date: 2026-02-16 20:38:19
+- bump: patch
+  changes:
+    added:
+    - Comprehensive Kansas 2025 income tax integration tests.
+    changed:
+    - Updated Kansas disabled veteran exemption from $2,250 to $2,320 for 2025+.
+    - Added 2025 Form K-40 references to all Kansas income tax parameters.
+    - Kansas food sales tax credit removed from nonrefundable credits list for 2025+
+      (credit eliminated).
+  date: 2026-02-16 21:05:30
