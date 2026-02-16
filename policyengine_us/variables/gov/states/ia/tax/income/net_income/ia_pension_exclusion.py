@@ -8,8 +8,8 @@ class ia_pension_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=26"
-        "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=26"
+        "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=26",
+        "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=26",
     )
     defined_for = "ia_pension_exclusion_eligible"
 

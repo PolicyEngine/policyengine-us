@@ -4,7 +4,7 @@
   input:
     ia_taxable_income_indiv: 95_675
     state_code: IA
-  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+  output:  # https://revenue.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
     ia_regular_tax_indiv: 6_150
 
 - name: IA regular tax indiv unit test 2
@@ -13,7 +13,7 @@
   input:
     ia_taxable_income_indiv: 110_000
     state_code: IA
-  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+  output:  # https://revenue.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
     ia_regular_tax_indiv: 7_371.92
 
 - name: IA regular tax indiv unit test 3
@@ -22,7 +22,7 @@
   input:
     ia_taxable_income_indiv: 95_775
     state_code: IA
-  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+  output:  # https://revenue.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
     ia_regular_tax_indiv: 6_079
 
 - name: IA regular tax indiv unit test 4
@@ -31,7 +31,7 @@
   input:
     ia_taxable_income_indiv: 110_000
     state_code: IA
-  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+  output:  # https://revenue.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
     ia_regular_tax_indiv: 7_292.39
 
 - name: IA regular tax indiv unit test 5, 2023 edge case
