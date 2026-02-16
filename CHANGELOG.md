@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.561.1] - 2026-02-16 01:39:50
+
+### Changed
+
+- Add 2025 form references to North Carolina income tax parameters confirming unchanged values for standard deduction, child deduction, and other provisions.
+
 ## [1.561.0] - 2026-02-16 01:39:11
 
 ### Changed
@@ -15111,6 +15117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.0...1.561.1
 [1.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.3...1.561.0
 [1.560.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.2...1.560.3
 [1.560.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.1...1.560.2
