@@ -13051,3 +13051,9 @@
       ($1,083,150), Senior Circuit Breaker credit max ($2,820), income limits, and
       property value limit ($1,298,000).
   date: 2026-02-16 03:42:03
+- bump: patch
+  changes:
+    fixed:
+    - Fix Maryland Child Tax Credit AGI eligibility boundary to include filers with
+      exactly $24,000 AGI per Worksheet 21C.
+  date: 2026-02-16 03:46:10
