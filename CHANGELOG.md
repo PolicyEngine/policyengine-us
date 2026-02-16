@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.561.0] - 2026-02-16 01:39:11
+
+### Changed
+
+- Update Maine income tax parameters for 2025 including bracket thresholds, personal exemption, deduction and exemption phaseout thresholds, itemized deduction cap, pension exclusion cap, and add 2025 references.
+
 ## [1.560.3] - 2026-02-16 01:34:59
 
 ### Fixed
@@ -15105,6 +15111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.3...1.561.0
 [1.560.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.2...1.560.3
 [1.560.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.1...1.560.2
 [1.560.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.0...1.560.1
