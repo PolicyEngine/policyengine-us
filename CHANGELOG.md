@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.562.1] - 2026-02-16 03:09:22
+
+### Changed
+
+- Update Arkansas income tax parameters for 2025 including tax rate brackets, reduction schedule, standard deductions, low income tax tables, and additional tax credit for qualified individuals.
+
 ## [1.562.0] - 2026-02-16 02:17:35
 
 ### Added
@@ -15123,6 +15129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.562.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.562.0...1.562.1
 [1.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.1...1.562.0
 [1.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.561.0...1.561.1
 [1.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.560.3...1.561.0
