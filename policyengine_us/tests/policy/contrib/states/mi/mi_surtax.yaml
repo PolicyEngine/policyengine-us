@@ -89,3 +89,14 @@
   output:
     # (2_000_000 - 1_000_000) * 0.05 = 1_000_000 * 0.05 = 50_000
     mi_surtax: 50_000
+
+- name: Surtax is zero when in_effect is false
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: False
+    mi_taxable_income: 2_000_000
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    mi_surtax: 0
