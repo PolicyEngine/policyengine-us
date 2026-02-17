@@ -35,5 +35,51 @@
     meets_snap_abawd_work_requirements: true
     monthly_age: 18
     is_tax_unit_dependent: false
-  output: 
+  output:
     meets_snap_work_requirements: true
+
+- name: Case 5, CA pre-HR1 age 55 exempt flows through SPM.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        meets_snap_general_work_requirements: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 6, non-CA post-HR1 age 55 not exempt.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        age: 55
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        meets_snap_general_work_requirements: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_work_requirements: false

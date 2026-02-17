@@ -1,0 +1,66 @@
+- name: Case 1, CA pre-HR1 age 55 still exempt.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    age: 55
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: CA
+  output:
+    ca_meets_snap_abawd_work_requirements: true
+
+- name: Case 2, CA pre-HR1 homeless still exempt.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_homeless: true
+    state_code: CA
+  output:
+    ca_meets_snap_abawd_work_requirements: true
+
+- name: Case 3, CA pre-HR1 veteran still exempt.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_veteran: true
+    state_code: CA
+  output:
+    ca_meets_snap_abawd_work_requirements: true
+
+- name: Case 4, CA pre-HR1 parent with child under 18 exempt.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_meets_snap_abawd_work_requirements: [true, true]
+
+- name: Case 5, CA pre-HR1 non-exempt person fails.
+  period: 2026-01
+  absolute_error_margin: 0.9
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: CA
+  output:
+    ca_meets_snap_abawd_work_requirements: false

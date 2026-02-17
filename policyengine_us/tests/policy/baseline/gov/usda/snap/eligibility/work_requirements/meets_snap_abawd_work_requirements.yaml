@@ -85,8 +85,8 @@
   output:
     meets_snap_abawd_work_requirements: [false, true]
 
-- name: Case 9, baseline, age 55 exempted from general work requirement. 
-  period: 2026
+- name: Case 9, baseline, age 55 exempted from general work requirement.
+  period: 2024
   absolute_error_margin: 0.9
   input:
     age: 55
@@ -106,7 +106,7 @@
     meets_snap_abawd_work_requirements: false
 
 - name: Case 11, baseline, have a child at age 15.
-  period: 2026-01
+  period: 2024-01
   absolute_error_margin: 0.9
   input:
     people:
@@ -194,7 +194,7 @@
   output:
     meets_snap_abawd_work_requirements: [true, true]
 
-- name: Case 16, baseline, live in HI in 2026. 
+- name: Case 16, baseline, live in HI in 2026.
   period: 2026
   absolute_error_margin: 0.9
   input:
@@ -203,4 +203,37 @@
     is_disabled: false
     state_code: HI
   output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 17, ages 60-64 not ABAWD-exempt post-HR1.
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    age: 62
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+  output:
     meets_snap_abawd_work_requirements: false
+
+- name: Case 18, incapacitated person exemption works.
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      person1:
+        age: 62
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+      person2:
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    meets_snap_abawd_work_requirements: [true, true]

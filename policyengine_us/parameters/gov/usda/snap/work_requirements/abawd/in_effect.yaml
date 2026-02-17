@@ -2,12 +2,14 @@ description: The Department of Agriculture removes the exemption from Able-Bodie
 
 values:
   0000-01-01: false
-  2027-01-01: true
+  2025-07-01: true
 
 metadata:
   unit: bool
   period: year
   label: SNAP ABAWD work requirement exemption removed for homeless or veterans
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: 7 U.S.C. 2015(o)(3) - ABAWD Time Limit Exceptions
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_3

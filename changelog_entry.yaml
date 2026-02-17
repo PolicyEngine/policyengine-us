@@ -1,0 +1,9 @@
+- bump: minor
+  changes:
+    added:
+      - Added California pre-HR1 SNAP ABAWD work requirements variable for delayed June 2026 implementation.
+      - Added California HR1 ABAWD implementation status parameter.
+    changed:
+      - Updated federal SNAP ABAWD parameter effective dates from 2027-01-01 to 2025-07-01 per Public Law 119-21.
+      - Updated SNAP ABAWD formula to fix ages 60-64 work registration exemption conflict.
+      - Updated SNAP work requirements aggregator to select between CA and federal ABAWD rules.

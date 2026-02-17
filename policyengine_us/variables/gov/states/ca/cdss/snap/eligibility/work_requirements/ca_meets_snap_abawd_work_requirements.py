@@ -1,18 +1,20 @@
 from policyengine_us.model_api import *
 
 
-class meets_snap_abawd_work_requirements(Variable):
+class ca_meets_snap_abawd_work_requirements(Variable):
     value_type = bool
     entity = Person
-    label = "Person is eligible for SNAP benefits via Able-Bodied Adult Without Dependents (ABAWD) work requirements"
+    label = "Person meets California pre-HR1 SNAP ABAWD work requirements"
     definition_period = MONTH
+    defined_for = StateCode.CA
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
-        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+        "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-93.pdf",
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.usda.snap.work_requirements.abawd
+        # Pre-HR1 federal parameters (before July 2025)
+        p = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
         age = person("monthly_age", period)
         weekly_hours_worked = person(
             "weekly_hours_worked_before_lsr", period.this_year
@@ -25,25 +27,17 @@ class meets_snap_abawd_work_requirements(Variable):
         is_parent = person("is_parent", period)
         has_child = person.spm_unit.any(is_dependent & is_qualifying_child)
         exempt_parent = is_parent & has_child
-        # Non-age work registration exemption per 7 U.S.C. 2015(o)(3)(D)
-        has_incapacitated_person = person.spm_unit.any(
-            person("is_incapable_of_self_care", period)
-        )
+        meets_general = person("meets_snap_general_work_requirements", period)
         is_pregnant = person("is_pregnant", period)
         is_homeless = person.household("is_homeless", period)
         is_veteran = person("is_veteran", period)
-        state_code = person.household("state_code", period)
-        state_code_str = state_code.decode_to_str()
-        is_exempt_state = np.isin(state_code_str, p.exempt_states)
-        base_conditions = (
+        return (
             is_working
             | working_age_exempt
             | is_disabled
             | exempt_parent
-            | has_incapacitated_person
+            | meets_general
             | is_pregnant
-            | is_exempt_state
+            | is_homeless
+            | is_veteran
         )
-        if p.in_effect:
-            return base_conditions
-        return base_conditions | is_homeless | is_veteran
