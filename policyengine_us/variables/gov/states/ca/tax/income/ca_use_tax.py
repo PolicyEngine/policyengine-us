@@ -7,7 +7,7 @@ class ca_use_tax(Variable):
     label = "CA Use Tax"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=22"
+    reference = "https://www.ftb.ca.gov/forms/2025/2025-540-instructions.html"
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
