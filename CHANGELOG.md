@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.568.0] - 2026-02-17 21:11:33
+
+### Changed
+
+- Update Ohio income tax model for tax year 2025 with new brackets, exemptions, credits, and $750k/$500k personal exemption phase-out per HB 96.
+
 ## [1.567.3] - 2026-02-17 19:26:10
 
 ### Changed
@@ -15245,6 +15251,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.3...1.568.0
 [1.567.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.2...1.567.3
 [1.567.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.1...1.567.2
 [1.567.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.0...1.567.1
