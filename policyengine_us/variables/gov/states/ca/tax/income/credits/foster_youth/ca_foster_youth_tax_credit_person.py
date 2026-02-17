@@ -17,15 +17,5 @@ class ca_foster_youth_tax_credit_person(Variable):
         earned_income = person.tax_unit("tax_unit_earned_income", period)
         excess_earned_income = max_(earned_income - p.phase_out.start, 0)
         reduction_increments = excess_earned_income / p.phase_out.increment
-        # Per Form 3514: reduction is doubled when both spouses claim FYTC.
-        eligible_count = person.tax_unit.sum(
-            person.tax_unit.members(
-                "ca_foster_youth_tax_credit_eligible_person", period
-            )
-        )
-        both_claiming = eligible_count >= 2
-        phase_out_amount = where(
-            both_claiming, p.phase_out.amount * 2, p.phase_out.amount
-        )
-        reduction_amount = max_(0, reduction_increments * phase_out_amount)
+        reduction_amount = max_(0, reduction_increments * p.phase_out.amount)
         return max_(0, base_credit - reduction_amount)
