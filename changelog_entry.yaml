@@ -1,0 +1,7 @@
+- bump: minor
+  changes:
+    changed:
+    - Updated Oregon 2025 income tax parameters (tax brackets, standard deduction, exemption credit, federal tax subtraction caps, CTC/Kids Credit, kicker rate) and added 2025 references to all parameters.
+    fixed:
+    - Fixed Oregon federal tax subtraction cap rounding intervals for married filing separately (100 to 25, matching half of other filing statuses' interval of 50).
+    - Removed incorrect OR-40 page 20 references from Oregon retirement income credit parameters (page 20 contains kicker worksheet, not retirement income credit; OR-17 references remain as authoritative source).
