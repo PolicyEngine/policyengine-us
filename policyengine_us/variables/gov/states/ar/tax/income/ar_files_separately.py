@@ -5,7 +5,6 @@ class ar_files_separately(Variable):
     value_type = bool
     entity = TaxUnit
     label = "married couple files separately on the Arkansas tax return"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf"

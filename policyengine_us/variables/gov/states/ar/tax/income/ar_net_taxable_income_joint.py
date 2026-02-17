@@ -18,15 +18,15 @@ class ar_net_taxable_income_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        agi = person("ar_agi_joint", period)
-        is_head = person("is_tax_unit_head", period)
-        total_agi = is_head * person.tax_unit.sum(agi)
-        deductions = person("ar_deduction_joint", period)
-        total_deductions = person.tax_unit.sum(deductions)
-        taxable_income = max_(0, total_agi - total_deductions)
+        taxable_income = person("ar_taxable_income_joint", period)
         uses_low_income_tax_tables = person.tax_unit(
             "ar_uses_low_income_tax_tables", period
         )
+        # When the low income table is used, the standard deduction
+        # is built in, so use AGI instead of taxable income.
+        agi = person("ar_agi_joint", period)
+        is_head = person("is_tax_unit_head", period)
+        total_agi = is_head * person.tax_unit.sum(agi)
         return where(
             uses_low_income_tax_tables,
             total_agi,
