@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.567.3] - 2026-02-17 19:26:10
+
+### Changed
+
+- Add 2025 rate of 0 for repealed NH Interest and Dividends tax, add TIR 2025-001 repeal reference to remaining parameter files, fix unit metadata on age parameters, and update broken statute URLs to gc.nh.gov.
+
 ## [1.567.2] - 2026-02-17 18:18:36
 
 ### Fixed
@@ -15239,6 +15245,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.567.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.2...1.567.3
 [1.567.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.1...1.567.2
 [1.567.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.0...1.567.1
 [1.567.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.566.0...1.567.0
