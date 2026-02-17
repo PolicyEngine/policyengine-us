@@ -57,3 +57,98 @@
         state_code: OH
   output:
     oh_personal_exemptions: 3_800
+
+- name: Pre-2025 high income still receives exemption
+  period: 2024
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 1_000_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Pre-2025: no phase-out to $0, so $1,900 per person at $80k+ bracket
+    oh_personal_exemptions: 3_800
+
+- name: 2025 income below phase-out threshold receives exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 500_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Below $750k threshold in 2025, so $1,900 per person
+    oh_personal_exemptions: 3_800
+
+- name: 2025 income above phase-out threshold receives zero
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 750_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # Above $750k threshold in 2025, exemption phases out to $0
+    oh_personal_exemptions: 0
+
+- name: 2026 income below new phase-out threshold receives exemption
+  period: 2026
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 400_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Below $500k threshold in 2026, so $1,900 per person
+    oh_personal_exemptions: 3_800
+
+- name: 2026 income above phase-out threshold receives zero
+  period: 2026
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 500_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # Above $500k threshold in 2026+, exemption phases out to $0
+    oh_personal_exemptions: 0
