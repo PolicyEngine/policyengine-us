@@ -13,26 +13,20 @@ class meets_snap_work_requirements(Variable):
         general_work_requirements = person(
             "meets_snap_general_work_requirements", period
         )
-        # CA delays HR1 ABAWD changes to June 1, 2026 (ACL 25-93)
-        state_code = person.household("state_code", period)
-        is_ca = state_code == StateCode.CA
-        ca_hr1 = parameters(
-            period
-        ).gov.states.ca.cdss.snap.work_requirements.abawd.hr1_in_effect
-        use_ca_pre_hr1 = is_ca & ~ca_hr1
-        federal_abawd = person("meets_snap_abawd_work_requirements", period)
-        ca_abawd = person("ca_meets_snap_abawd_work_requirements", period)
-        abawd_work_requirements = where(
-            use_ca_pre_hr1, ca_abawd, federal_abawd
+        abawd_work_requirements = person(
+            "meets_snap_abawd_work_requirements", period
         )
         # Dependent child threshold differs: pre-HR1 (18) vs post-HR1 (14)
+        # CA delays HR1 to June 2026 (ACL 25-93)
+        state_code = person.household("state_code", period)
+        is_ca = state_code == StateCode.CA
         p = parameters(
             period
         ).gov.usda.snap.work_requirements.abawd.age_threshold
-        p_pre = parameters(
-            "2025-06-01"
-        ).gov.usda.snap.work_requirements.abawd.age_threshold
-        dep_threshold = where(use_ca_pre_hr1, p_pre.dependent, p.dependent)
+        p_ca = parameters(
+            period
+        ).gov.states.ca.cdss.snap.work_requirements.abawd.age_threshold
+        dep_threshold = where(is_ca, p_ca.dependent, p.dependent)
         age = person("monthly_age", period)
         is_dependent = person("is_tax_unit_dependent", period)
         is_child = age < dep_threshold

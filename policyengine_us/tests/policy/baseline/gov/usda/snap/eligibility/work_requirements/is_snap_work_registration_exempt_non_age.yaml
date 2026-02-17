@@ -1,0 +1,129 @@
+# 7 CFR 273.7(b)(1) — Non-age work registration exemptions
+# These feed into ABAWD exemption (D) via 7 U.S.C. 2015(o)(3)(D).
+
+# --- (ii) Physically or mentally unfit for employment ---
+
+- name: 273.7(b)(1)(ii) — disabled person is work-registration-exempt.
+  period: 2026-01
+  input:
+    is_disabled: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+# --- (iv) Responsible for care of dependent child under 6 ---
+
+- name: 273.7(b)(1)(iv) — caregiver of dependent child age 5 is exempt.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_disabled: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    is_snap_work_registration_exempt_non_age: [true, true]
+
+- name: 273.7(b)(1)(iv) — child exactly age 6 does NOT trigger under-6 exemption.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_disabled: false
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    is_snap_work_registration_exempt_non_age: [false, false]
+
+# --- (iv) Responsible for care of incapacitated person ---
+
+- name: 273.7(b)(1)(iv) — caregiver of incapacitated person is exempt.
+  period: 2026-01
+  input:
+    people:
+      caregiver:
+        age: 30
+        is_disabled: false
+      dependent:
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [caregiver, dependent]
+    tax_units:
+      tax_unit:
+        members: [caregiver, dependent]
+    households:
+      household:
+        members: [caregiver, dependent]
+  output:
+    is_snap_work_registration_exempt_non_age: [true, true]
+
+# --- (v) Receiving unemployment compensation ---
+
+- name: 273.7(b)(1)(v) — UI recipient ($12k/yr) is exempt.
+  period: 2026-01
+  input:
+    age: 30
+    is_disabled: false
+    unemployment_compensation: 12_000
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+- name: 273.7(b)(1)(v) — zero UI does not trigger exemption.
+  period: 2026-01
+  input:
+    age: 30
+    is_disabled: false
+    unemployment_compensation: 0
+  output:
+    is_snap_work_registration_exempt_non_age: false
+
+# --- (viii) Enrolled at least half-time in school/training/higher ed ---
+
+- name: 273.7(b)(1)(viii) — full-time college student is exempt.
+  period: 2026-01
+  input:
+    is_full_time_college_student: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+- name: 273.7(b)(1)(viii) — part-time college student is exempt.
+  period: 2026-01
+  input:
+    is_part_time_college_student: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+# --- Non-exempt baseline ---
+
+- name: Able-bodied adult with no exempting conditions is NOT exempt.
+  period: 2026-01
+  input:
+    age: 30
+    is_disabled: false
+    unemployment_compensation: 0
+    is_full_time_college_student: false
+    is_part_time_college_student: false
+  output:
+    is_snap_work_registration_exempt_non_age: false

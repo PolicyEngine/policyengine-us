@@ -12,27 +12,46 @@ class meets_snap_abawd_work_requirements(Variable):
     )
 
     def formula(person, period, parameters):
+        state_code = person.household("state_code", period)
+        is_ca = state_code == StateCode.CA
+        # Federal parameters
         p = parameters(period).gov.usda.snap.work_requirements.abawd
+        # CA parameters (delayed HR1 adoption per ACL 25-93)
+        p_ca = parameters(
+            period
+        ).gov.states.ca.cdss.snap.work_requirements.abawd
+        # (A) Age — 7 U.S.C. 2015(o)(3)(A)
         age = person("monthly_age", period)
+        working_age_exempt = where(
+            is_ca,
+            p_ca.age_threshold.exempted.calc(age),
+            p.age_threshold.exempted.calc(age),
+        )
+        # Work activity
         weekly_hours_worked = person(
             "weekly_hours_worked_before_lsr", period.this_year
         )
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
-        working_age_exempt = p.age_threshold.exempted.calc(age)
+        # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
+        # (C) Parent with qualifying child — 7 U.S.C. 2015(o)(3)(C)
         is_dependent = person("is_tax_unit_dependent", period)
-        is_qualifying_child = age < p.age_threshold.dependent
+        dep_threshold = where(
+            is_ca,
+            p_ca.age_threshold.dependent,
+            p.age_threshold.dependent,
+        )
+        is_qualifying_child = age < dep_threshold
         is_parent = person("is_parent", period)
         has_child = person.spm_unit.any(is_dependent & is_qualifying_child)
         exempt_parent = is_parent & has_child
-        # Non-age work registration exemption per 7 U.S.C. 2015(o)(3)(D)
-        has_incapacitated_person = person.spm_unit.any(
-            person("is_incapable_of_self_care", period)
+        # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
+        work_reg_exempt = person(
+            "is_snap_work_registration_exempt_non_age", period
         )
+        # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
         is_pregnant = person("is_pregnant", period)
-        is_homeless = person.household("is_homeless", period)
-        is_veteran = person("is_veteran", period)
-        state_code = person.household("state_code", period)
+        # State exemption
         state_code_str = state_code.decode_to_str()
         is_exempt_state = np.isin(state_code_str, p.exempt_states)
         base_conditions = (
@@ -40,10 +59,16 @@ class meets_snap_abawd_work_requirements(Variable):
             | working_age_exempt
             | is_disabled
             | exempt_parent
-            | has_incapacitated_person
+            | work_reg_exempt
             | is_pregnant
             | is_exempt_state
         )
-        if p.in_effect:
-            return base_conditions
-        return base_conditions | is_homeless | is_veteran
+        # Pre-HR1 exemptions: homeless, veteran
+        is_homeless = person.household("is_homeless", period)
+        is_veteran = person("is_veteran", period)
+        hr1_in_effect = where(is_ca, p_ca.hr1_in_effect, p.in_effect)
+        return where(
+            hr1_in_effect,
+            base_conditions,
+            base_conditions | is_homeless | is_veteran,
+        )
