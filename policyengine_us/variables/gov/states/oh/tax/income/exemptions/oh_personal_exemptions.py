@@ -20,6 +20,6 @@ class oh_personal_exemptions(Variable):
         )
 
         agi = tax_unit("oh_agi", period)
-        exemption_amount = p.amount.calc(agi, right=True)
+        exemption_amount = p.amount.calc(agi)
 
         return eligible_exemptions * exemption_amount
