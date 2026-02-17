@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.565.1] - 2026-02-17 04:22:10
+
+### Changed
+
+- {'description': 'Updates Idaho income tax parameters with 2025 references per HB 40.\nImplements military retirement full exemption for 2025 (no age requirement).\nAdds comprehensive 2025 test coverage for tax calculations, grocery credit, and CTC.\n', 'title': 'Update Idaho individual income tax for 2025'}
+
 ## [1.565.0] - 2026-02-17 00:21:20
 
 ### Added
@@ -15198,6 +15204,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.565.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.565.0...1.565.1
 [1.565.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.2...1.565.0
 [1.564.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.1...1.564.2
 [1.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.0...1.564.1
