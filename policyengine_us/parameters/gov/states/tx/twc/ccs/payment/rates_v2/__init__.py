@@ -42,12 +42,15 @@ def _build_lookup(csv_path):
         if rating not in lookup[region][ptype]:
             lookup[region][ptype][rating] = {}
         for col, (age_group, schedule) in COLUMN_MAP.items():
-            if age_group not in lookup[region][ptype][rating]:
-                lookup[region][ptype][rating][age_group] = {}
-            lookup[region][ptype][rating][age_group][schedule] = float(
-                row[col]
-            )
+            val = row[col]
+            if pd.notna(val):
+                if age_group not in lookup[region][ptype][rating]:
+                    lookup[region][ptype][rating][age_group] = {}
+                lookup[region][ptype][rating][age_group][schedule] = float(val)
     return lookup
 
 
-bcy26_rates = _build_lookup(FOLDER / "bcy26.csv")
+all_rates = {}
+for _csv_path in FOLDER.glob("bcy*.csv"):
+    _year = int(_csv_path.stem.replace("bcy", ""))
+    all_rates[_year] = _build_lookup(_csv_path)

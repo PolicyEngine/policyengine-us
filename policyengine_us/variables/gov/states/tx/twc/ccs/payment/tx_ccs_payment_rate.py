@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.parameters.gov.states.tx.twc.ccs.payment.rates_v2 import (
-    bcy26_rates,
+    all_rates,
 )
 
 
@@ -34,7 +34,9 @@ class tx_ccs_payment_rate(Variable):
         )
 
         if uses_expanded:
+            bcy_year = p.active_bcy_year
             daily_rate = _lookup_expanded_rate(
+                bcy_year,
                 region,
                 provider_type,
                 provider_rating,
@@ -50,16 +52,19 @@ class tx_ccs_payment_rate(Variable):
 
 
 def _lookup_expanded_rate(
-    region, provider_type, provider_rating, age_category, care_schedule
+    bcy_year,
+    region,
+    provider_type,
+    provider_rating,
+    age_category,
+    care_schedule,
 ):
+    rates = all_rates[int(bcy_year)]
+
     @np.vectorize
     def _lookup(r, pt, pr, ac, cs):
         return (
-            bcy26_rates.get(r, {})
-            .get(pt, {})
-            .get(pr, {})
-            .get(ac, {})
-            .get(cs, 0.0)
+            rates.get(r, {}).get(pt, {}).get(pr, {}).get(ac, {}).get(cs, 0.0)
         )
 
     return _lookup(
