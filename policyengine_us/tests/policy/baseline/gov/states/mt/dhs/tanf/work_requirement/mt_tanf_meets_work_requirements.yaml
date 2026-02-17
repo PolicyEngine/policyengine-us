@@ -1,0 +1,109 @@
+- name: Case 1, Two-Parent Household, both hours higher than 33. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person3: 
+        age: 10
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_meets_work_requirements: true
+
+- name: Case 2, Two-Parent Household, eligible children are exempt.
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 35
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 35
+      person3:
+        age: 0.5
+        mt_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_meets_work_requirements: true
+
+- name: Case 3, disabled parent exempt from work requirements.
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        is_disabled: true
+      person2:
+        age: 5
+        mt_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_meets_work_requirements: true
+
+- name: Case 4, single parent not meeting work hours requirement.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+      person2:
+        age: 10
+        mt_tanf_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_meets_work_requirements: false

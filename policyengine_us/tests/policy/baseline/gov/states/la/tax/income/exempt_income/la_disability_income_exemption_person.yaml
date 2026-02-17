@@ -63,3 +63,21 @@
         state_code: LA
   output:
     la_disability_income_exemption_person: [0, 0]
+
+- name: 2025 disability exemption cap remains $6,000 per RS 47:44.1(B)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 10_000
+        la_receives_blind_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_disability_income_exemption_person: [6_000]

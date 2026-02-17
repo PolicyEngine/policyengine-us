@@ -1,0 +1,242 @@
+# Arizona Families Tax Rebate Tests
+# Per SB1734 (Laws 2023, Chapter 147)
+#
+# Eligibility:
+# - Must have filed 2021 AZ resident return
+# - Must have claimed dependent tax credit
+# - Must have at least $1 of AZ income tax liability
+#
+# Rebate Amounts:
+# - Dependent under age 17: $250
+# - Dependent age 17 or older: $100
+# - Young dependents are prioritized for counting
+#
+# Maximum by filing status:
+# - Single/HOH/MFS: 3 dependents, $750 max
+# - MFJ: 6 dependents, $1,500 max
+
+- name: 2021 - Single filer with tax liability and two young dependents
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 35
+        employment_income: 50_000
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: AZ
+  output:
+    # Two dependents under 17 = $500
+    az_families_tax_rebate: 500
+
+- name: 2021 - Single filer with no tax liability - no rebate
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 35
+        employment_income: 0
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: AZ
+  output:
+    # No tax liability = no rebate eligibility
+    az_families_tax_rebate: 0
+
+- name: 2021 - Joint filers with three young dependents - max rebate
+  period: 2021
+  input:
+    people:
+      filer1:
+        age: 40
+        employment_income: 80_000
+        is_tax_unit_dependent: false
+      filer2:
+        age: 38
+        is_tax_unit_dependent: false
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+      child3:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer1, filer2, child1, child2, child3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [filer1, filer2, child1, child2, child3]
+        state_code: AZ
+  output:
+    # Three dependents under 17 = $750
+    az_families_tax_rebate: 750
+
+- name: 2021 - Single filer with mixed age dependents
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 60_000
+        is_tax_unit_dependent: false
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 15
+        is_tax_unit_dependent: true
+      child3:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2, child3]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child1, child2, child3]
+        state_code: AZ
+  output:
+    # 2 young dependents (2 x $250 = $500) + 1 older (1 x $100 = $100) = $600
+    az_families_tax_rebate: 600
+
+- name: 2021 - No dependents - no rebate
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: AZ
+  output:
+    # No dependents = no rebate
+    az_families_tax_rebate: 0
+
+- name: 2021 - MFJ with six young dependents - max $1,500 rebate
+  period: 2021
+  input:
+    people:
+      filer1:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_dependent: false
+      filer2:
+        age: 38
+        is_tax_unit_dependent: false
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+      child3:
+        age: 7
+        is_tax_unit_dependent: true
+      child4:
+        age: 9
+        is_tax_unit_dependent: true
+      child5:
+        age: 11
+        is_tax_unit_dependent: true
+      child6:
+        age: 13
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer1, filer2, child1, child2, child3, child4, child5, child6]
+        filing_status: JOINT
+    households:
+      household:
+        members: [filer1, filer2, child1, child2, child3, child4, child5, child6]
+        state_code: AZ
+  output:
+    # MFJ can claim up to 6 dependents: 6 x $250 = $1,500
+    az_families_tax_rebate: 1_500
+
+- name: 2021 - Single filer with four dependents - capped at $750
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 70_000
+        is_tax_unit_dependent: false
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+      child4:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2, child3, child4]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child1, child2, child3, child4]
+        state_code: AZ
+  output:
+    # Single filers capped at 3 dependents: 3 x $250 = $750
+    az_families_tax_rebate: 750
+
+- name: Non-Arizona resident - no rebate
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 35
+        employment_income: 50_000
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    # Non-Arizona residents do not receive Arizona rebate
+    az_families_tax_rebate: 0
