@@ -128,6 +128,94 @@
     oh_personal_exemptions: 0
     oh_taxable_income: 800_000
 
+- name: 2025 - Below $26,050 cliff (tax-exempt)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $28,000 (lowest exemption tier: <=$40k)
+    # Exemption: 1 * $2,400 = $2,400
+    # Taxable income: $28,000 - $2,400 = $25,600
+    # Since $25,600 < $26,050 threshold -> tax-exempt
+    oh_personal_exemptions: 2_400
+    oh_taxable_income: 25_600
+    oh_income_tax_exempt: true
+    oh_income_tax_before_non_refundable_credits: 0
+
+- name: 2025 - Just above $26,050 cliff (triggers $342 base tax)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $30,000 (lowest exemption tier: <=$40k)
+    # Exemption: 1 * $2,400 = $2,400
+    # Taxable income: $30,000 - $2,400 = $27,600
+    # Since $27,600 >= $26,050 -> NOT tax-exempt
+    # Tax: $342 base + 2.75% * ($27,600 - $26,050) = $342 + $42.63 = $385
+    oh_personal_exemptions: 2_400
+    oh_taxable_income: 27_600
+    oh_income_tax_exempt: false
+    oh_income_tax_before_non_refundable_credits: 385
+
+- name: 2025 - Entering the 3.125% bracket at $100k
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 103_800
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $103,800 (high exemption tier: >$80k)
+    # Exemption: 1 * $1,900 = $1,900
+    # Taxable income: $103,800 - $1,900 = $101,900
+    # Tax: $342 base + 2.75% * ($100,000 - $26,050) + 3.125% * ($101,900 - $100,000)
+    #     = $342 + $2,033.63 + $59.38 = $2,435
+    oh_personal_exemptions: 1_900
+    oh_taxable_income: 101_900
+    oh_income_tax_before_non_refundable_credits: 2_435
+
 - name: 2026 - High income threshold drops to $500k (exemption phases out)
   absolute_error_margin: 10
   period: 2026
