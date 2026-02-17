@@ -18,11 +18,7 @@ class ga_tanf_childcare_deduction(Variable):
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
         # PAMMS 1615: "$200 monthly for each child under the age of two"
         # and "$175 monthly for each individual age two or above"

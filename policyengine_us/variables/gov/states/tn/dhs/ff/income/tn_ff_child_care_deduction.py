@@ -15,11 +15,7 @@ class tn_ff_child_care_deduction(Variable):
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         childcare_deduction_person = (
             p.child_care_deduction.calc(age) * dependent
         )

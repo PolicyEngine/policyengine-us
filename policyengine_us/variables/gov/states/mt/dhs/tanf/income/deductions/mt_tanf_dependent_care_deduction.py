@@ -25,11 +25,7 @@ class mt_tanf_dependent_care_deduction(Variable):
             is_child | is_incapable_of_self_care
         )
 
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        dependent_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        dependent_expenses = spm_unit("childcare_expenses", period)
         dependent_deduction_person = p.amount * is_eligible_person
         total_dependent_deduction = spm_unit.sum(dependent_deduction_person)
 

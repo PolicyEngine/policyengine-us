@@ -21,10 +21,6 @@ class va_tanf_childcare_deduction(Variable):
             "is_disabled", period.this_year
         )
         care_recipient = dependent | disabled_adult
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         max_deduction = spm_unit.sum(p.full_time.calc(age) * care_recipient)
         return min_(childcare_expenses, max_deduction)

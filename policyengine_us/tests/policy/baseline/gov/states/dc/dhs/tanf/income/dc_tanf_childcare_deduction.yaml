@@ -15,7 +15,6 @@
     is_tax_unit_dependent: true
     monthly_age: 1
     childcare_expenses: 250*12
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 200
 
@@ -26,7 +25,6 @@
     is_tax_unit_dependent: true
     monthly_age: 15
     childcare_expenses: 250*12
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 175
 
@@ -37,7 +35,6 @@
     is_tax_unit_dependent: false
     monthly_age: 15
     childcare_expenses: 250*12
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 0
 
@@ -62,12 +59,10 @@
         members: [person1, person2]
         is_tanf_enrolled: false
         childcare_expenses: 4_300
-        spm_unit_pre_subsidy_childcare_expenses: 4_300
       spm_unit2:
         members: [person3, person4]
         is_tanf_enrolled: false
         childcare_expenses: 4_300
-        spm_unit_pre_subsidy_childcare_expenses: 4_300
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]

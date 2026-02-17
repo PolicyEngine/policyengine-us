@@ -5,7 +5,7 @@
     state_code: MT
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: true
-    spm_unit_pre_subsidy_childcare_expenses: 0 
+    childcare_expenses: 0 
   output:
     mt_tanf_dependent_care_deduction: 0
 
@@ -16,7 +16,7 @@
     state_code: MT
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: true
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
+    childcare_expenses: 250*12
   output:
     mt_tanf_dependent_care_deduction: 200
 
@@ -27,7 +27,7 @@
     state_code: MT
     is_tax_unit_dependent: false
     mt_tanf_eligible_child: true
-    spm_unit_pre_subsidy_childcare_expenses: 250*12 
+    childcare_expenses: 250*12 
   output:
     mt_tanf_dependent_care_deduction: 0
 
@@ -38,7 +38,7 @@
     state_code: MT
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: false
-    spm_unit_pre_subsidy_childcare_expenses: 250*12 
+    childcare_expenses: 250*12 
   output:
     mt_tanf_dependent_care_deduction: 0
 
@@ -49,7 +49,7 @@
     state_code: MT
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: true
-    spm_unit_pre_subsidy_childcare_expenses: 100*12 
+    childcare_expenses: 100*12 
   output:
     mt_tanf_dependent_care_deduction: 100
 
@@ -61,7 +61,7 @@
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
+    childcare_expenses: 250*12
   output:
     mt_tanf_dependent_care_deduction: 200
 
@@ -73,7 +73,7 @@
     is_tax_unit_dependent: false
     mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
-    spm_unit_pre_subsidy_childcare_expenses: 250*12
+    childcare_expenses: 250*12
   output:
     mt_tanf_dependent_care_deduction: 0
 
@@ -85,7 +85,7 @@
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
-    spm_unit_pre_subsidy_childcare_expenses: 0
+    childcare_expenses: 0
   output:
     mt_tanf_dependent_care_deduction: 0
 
@@ -97,7 +97,7 @@
     is_tax_unit_dependent: true
     mt_tanf_eligible_child: false
     is_incapable_of_self_care: true
-    spm_unit_pre_subsidy_childcare_expenses: 100*12
+    childcare_expenses: 100*12
   output:
     mt_tanf_dependent_care_deduction: 100
 
@@ -127,11 +127,11 @@
       spm_unit1:
         members: [person1, person2, person4]
         is_tanf_enrolled: false
-        spm_unit_pre_subsidy_childcare_expenses: 5_000
+        childcare_expenses: 5_000
       spm_unit2:
         members: [person3, person5]
         is_tanf_enrolled: false
-        spm_unit_pre_subsidy_childcare_expenses: 5_000
+        childcare_expenses: 5_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]

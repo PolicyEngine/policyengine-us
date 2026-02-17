@@ -21,11 +21,7 @@ class nm_works_childcare_deduction(Variable):
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period.this_year)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
         # Max deduction per child based on age
         childcare_max_per_child = p.amount.calc(age) * is_dependent

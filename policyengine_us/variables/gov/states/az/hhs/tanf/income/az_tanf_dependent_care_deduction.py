@@ -18,11 +18,7 @@ class az_tanf_dependent_care_deduction(Variable):
         person = spm_unit.members
         age = person("age", period.this_year)
 
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
         # Calculate eligible deduction for dependent children (based on age)
         is_dependent = person("is_tax_unit_dependent", period.this_year)

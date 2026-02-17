@@ -38,10 +38,6 @@ class nh_fanf_child_care_deduction(Variable):
         total_max_deduction = spm_unit.sum(max_deduction_per_child)
 
         # Cap at actual childcare expenses.
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
 
         return min_(childcare_expenses, total_max_deduction)

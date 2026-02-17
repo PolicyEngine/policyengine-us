@@ -15,9 +15,5 @@ class al_tanf_countable_earned_income(Variable):
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         work_expense = gross_earned * p.work_expense_rate
         # Child care is deducted from earned income per Section 3115.B
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         return max_(gross_earned - work_expense - childcare_expenses, 0)

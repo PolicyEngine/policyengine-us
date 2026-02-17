@@ -18,11 +18,7 @@ class ak_atap_childcare_deduction(Variable):
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period.this_year)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         max_per_dependent = p.childcare.calc(age) * dependent
         total_max_disregard = spm_unit.sum(max_per_dependent)
         return min_(childcare_expenses, total_max_disregard)

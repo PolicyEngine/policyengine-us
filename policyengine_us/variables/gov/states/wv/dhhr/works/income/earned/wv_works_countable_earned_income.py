@@ -17,9 +17,5 @@ class wv_works_countable_earned_income(Variable):
         # Step 2: Subtract 40% (Earned Income Disregard)
         after_disregard = gross_earned * (1 - p.earned_income_disregard.rate)
         # Step 3: Subtract Dependent Care Deduction (no maximum, per Section 4.5.2.A.2)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        dependent_care = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        dependent_care = spm_unit("childcare_expenses", period)
         return max_(after_disregard - dependent_care, 0)

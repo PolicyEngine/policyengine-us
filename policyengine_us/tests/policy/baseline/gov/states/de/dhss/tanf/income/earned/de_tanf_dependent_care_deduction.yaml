@@ -13,7 +13,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 0
-        spm_unit_pre_subsidy_childcare_expenses: 0
     households:
       household:
         members: [person1]
@@ -32,7 +31,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 3_600  # $300/month > $200 max
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1]
@@ -52,7 +50,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 3_600  # $300/month > $175 max
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1]
@@ -72,7 +69,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 1_800  # $150/month < $200 max
-        spm_unit_pre_subsidy_childcare_expenses: 1_800
     households:
       household:
         members: [person1]
@@ -92,7 +88,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 3_600  # $300/month
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1]
@@ -112,7 +107,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 3_600  # $300/month
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1]
@@ -137,7 +131,6 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 6_000  # $500/month
-        spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
       household:
         members: [person1, person2, person3]
@@ -160,7 +153,6 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600  # $300/month
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     households:
       household:
         members: [person1, person2]
@@ -180,7 +172,6 @@
       spm_unit:
         members: [person1]
         childcare_expenses: 2_400  # $200/month exactly
-        spm_unit_pre_subsidy_childcare_expenses: 2_400
     households:
       household:
         members: [person1]
@@ -208,7 +199,6 @@
       spm_unit:
         members: [person1, person2, person3, person4]
         childcare_expenses: 9_600  # $800/month
-        spm_unit_pre_subsidy_childcare_expenses: 9_600
     households:
       household:
         members: [person1, person2, person3, person4]

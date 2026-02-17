@@ -40,7 +40,6 @@
         members: [person1, person2]
         # $1,200/year = $100/month, below $175 cap
         childcare_expenses: 1_200
-        spm_unit_pre_subsidy_childcare_expenses: 1_200
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -67,7 +66,6 @@
         members: [person1, person2]
         # $3,600/year = $300/month, above $175 cap
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -94,7 +92,6 @@
         members: [person1, person2]
         # $3,600/year = $300/month, above $165 cap
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -124,7 +121,6 @@
         members: [person1, person2, person3]
         # $3,600/year = $300/month
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -154,7 +150,6 @@
         members: [person1, person2, person3]
         # $3,600/year = $300/month
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -183,7 +178,6 @@
         members: [person1, person2, person3]
         # $6,000/year = $500/month, above 2 × $175 = $350 cap
         childcare_expenses: 6_000
-        spm_unit_pre_subsidy_childcare_expenses: 6_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -210,7 +204,6 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 2_400
-        spm_unit_pre_subsidy_childcare_expenses: 2_400
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -235,7 +228,6 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -263,7 +255,6 @@
       spm_unit:
         members: [person1, person2, person3]
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -288,7 +279,6 @@
       spm_unit:
         members: [person1, person2]
         childcare_expenses: 3_600
-        spm_unit_pre_subsidy_childcare_expenses: 3_600
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -318,7 +308,6 @@
         members: [person1, person2, person3, person4]
         # $8,400/year = $700/month, above 3 × $175 = $525 cap
         childcare_expenses: 8_400
-        spm_unit_pre_subsidy_childcare_expenses: 8_400
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]

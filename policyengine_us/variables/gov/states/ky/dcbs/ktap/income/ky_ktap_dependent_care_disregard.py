@@ -24,9 +24,5 @@ class ky_ktap_dependent_care_disregard(Variable):
         age = person("age", period.this_year)
         max_per_child = p.dependent_care.calc(age)
         total_max_disregard = spm_unit.sum(max_per_child)
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         return min_(childcare_expenses, total_max_disregard)

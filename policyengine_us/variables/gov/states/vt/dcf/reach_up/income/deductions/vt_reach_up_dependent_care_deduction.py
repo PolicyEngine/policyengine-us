@@ -18,9 +18,5 @@ class vt_reach_up_dependent_care_deduction(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         num_participants = spm_unit.sum(head_or_spouse)
         max_deduction = p.dependent_care * num_participants
-        # Uses pre-subsidy expenses to avoid circular dependency
-        # through childcare subsidies and SNAP.
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("childcare_expenses", period)
         return min_(childcare_expenses, max_deduction)

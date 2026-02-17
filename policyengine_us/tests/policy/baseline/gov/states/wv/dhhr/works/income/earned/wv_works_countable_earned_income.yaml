@@ -13,7 +13,6 @@
     state_code: WV
     tanf_gross_earned_income: 1_000
     childcare_expenses: 0
-    spm_unit_pre_subsidy_childcare_expenses: 0
   output:
     # Step 1: Gross earned = $1,000/month
     # Step 2: After 40% disregard = 1,000 * 0.60 = $600
@@ -28,7 +27,6 @@
     state_code: WV
     tanf_gross_earned_income: 1_000
     childcare_expenses: 2_400  # $200/month
-    spm_unit_pre_subsidy_childcare_expenses: 2_400
   output:
     # Step 1: Gross earned = $1,000/month
     # Step 2: After 40% disregard = 1,000 * 0.60 = $600
@@ -43,7 +41,6 @@
     state_code: WV
     tanf_gross_earned_income: 1_000
     childcare_expenses: 7_200  # $600/month
-    spm_unit_pre_subsidy_childcare_expenses: 7_200
   output:
     # Step 1: Gross earned = $1,000/month
     # Step 2: After 40% disregard = 1,000 * 0.60 = $600
@@ -58,7 +55,6 @@
     state_code: WV
     tanf_gross_earned_income: 1_000
     childcare_expenses: 9_600  # $800/month
-    spm_unit_pre_subsidy_childcare_expenses: 9_600
   output:
     # Step 1: Gross earned = $1,000/month
     # Step 2: After 40% disregard = 1,000 * 0.60 = $600
@@ -74,7 +70,6 @@
     state_code: WV
     tanf_gross_earned_income: 0
     childcare_expenses: 2_400  # $200/month
-    spm_unit_pre_subsidy_childcare_expenses: 2_400
   output:
     # Step 1: Gross earned = $0
     # Step 2: After 40% disregard = 0 * 0.60 = $0
