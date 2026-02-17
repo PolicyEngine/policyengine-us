@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.567.2] - 2026-02-17 18:18:36
+
+### Fixed
+
+- Split CI state baseline tests into 3 sequential batches to fix timeout and memory issues.
+- Move NY baseline tests back into the states job as its own batch.
+
 ## [1.567.1] - 2026-02-17 15:07:07
 
 ### Fixed
@@ -15232,6 +15239,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.567.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.1...1.567.2
 [1.567.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.0...1.567.1
 [1.567.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.566.0...1.567.0
 [1.566.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.565.1...1.566.0

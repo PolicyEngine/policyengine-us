@@ -13153,3 +13153,10 @@
     - Fix Maryland CDCC to use the federal credit allowed (cdcc) instead of the potential
       credit (cdcc_potential).
   date: 2026-02-17 15:07:07
+- bump: patch
+  changes:
+    fixed:
+    - Split CI state baseline tests into 3 sequential batches to fix timeout and memory
+      issues.
+    - Move NY baseline tests back into the states job as its own batch.
+  date: 2026-02-17 18:18:36
