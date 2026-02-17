@@ -13,12 +13,13 @@ class ar_inflation_relief_credit_person(Variable):
         # the Arkansas inflationary relief tax credit is calculated based on net taxable income
         # mentioned in individual income tax return form AR1000F line 28
         filing_separately = person.tax_unit("ar_files_separately", period)
-        income_joint = person("ar_taxable_income_joint", period)
-        income_indiv = person("ar_taxable_income_indiv", period)
-        # When filing separartely, the credit is calculated based on individual income
-        income = where(
-            filing_separately, income_indiv, person.tax_unit.sum(income_joint)
-        )
+        # When using the low income tax table, the standard deduction is
+        # built in, so net taxable income equals AGI. Otherwise it equals
+        # AGI minus deductions (the regular taxable income).
+        net_income_joint = person("ar_net_taxable_income_joint", period)
+        joint_income = person.tax_unit.sum(net_income_joint)
+        indiv_income = person("ar_taxable_income_indiv", period)
+        income = where(filing_separately, indiv_income, joint_income)
         p = parameters(
             period
         ).gov.states.ar.tax.income.credits.inflationary_relief
