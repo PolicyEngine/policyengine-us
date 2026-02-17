@@ -12,6 +12,11 @@ brackets:
       2021-01-01: 80_000
     amount:
       2021-01-01: 1_900
+  - threshold:
+      2025-01-01: 750_000
+      2026-01-01: 500_000
+    amount:
+      2025-01-01: 0
 metadata:
   type: single_amount
   threshold_unit: currency-USD

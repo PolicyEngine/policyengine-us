@@ -1,6 +1,8 @@
 # Ohio 2025 Income Tax Integration Tests
 # Based on 2025 IT 1040 Booklet and Ohio Revised Code Chapter 5747
-# Tests 2025 parameter values: exemptions ($2,400/$2,150/$1,900) and rates (0%/2.75%/3.125%)
+# Tests 2025 parameter values:
+#   - Exemptions: $2,400 (≤$40k), $2,150 ($40k-$80k), $1,900 ($80k-$750k), $0 (≥$750k)
+#   - Rates: 0%, 2.75%, 3.125%
 
 - name: 2025 - Single filer medium income (2.75% bracket)
   absolute_error_margin: 5
@@ -93,3 +95,62 @@
     # Taxable income: $35,000 - $7,200 = $27,800
     oh_personal_exemptions: 7_200
     oh_taxable_income: 27_800
+
+- name: 2025 - Very high income (exemption phases out to $0 at $750k+)
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 800_000
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Income: $800,000 (>= $750k, exemption tier: $0)
+    # Per Ohio Revised Code 5747.025 and 2025 IT 1040 Booklet page 17:
+    # When MAGI >= $750,000, personal exemption amount is $0
+    # Exemptions: 2 * $0 = $0
+    # Taxable income: $800,000 - $0 = $800,000
+    oh_personal_exemptions: 0
+    oh_taxable_income: 800_000
+
+- name: 2026 - High income threshold drops to $500k (exemption phases out)
+  absolute_error_margin: 10
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 550_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $550,000 (>= $500k for 2026+, exemption tier: $0)
+    # Per Ohio Revised Code 5747.025: threshold drops to $500k for 2026+
+    # Exemptions: 1 * $0 = $0
+    # Taxable income: $550,000 - $0 = $550,000
+    oh_personal_exemptions: 0
+    oh_taxable_income: 550_000
