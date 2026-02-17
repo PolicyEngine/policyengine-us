@@ -13147,3 +13147,9 @@
       parameters (page 20 contains kicker worksheet, not retirement income credit;
       OR-17 references remain as authoritative source).
   date: 2026-02-17 05:32:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix Maryland CDCC to use the federal credit allowed (cdcc) instead of the potential
+      credit (cdcc_potential).
+  date: 2026-02-17 15:07:07
