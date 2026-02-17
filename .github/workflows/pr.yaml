@@ -126,11 +126,11 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests (states)
+      - name: Run non-structural YAML tests (states in 2 batches)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests (states)..."
+          echo "Running non-structural YAML tests (states, 2 batches)..."
           uv run make test-yaml-no-structural-states
       - name: Run Python-based tests
         env:
