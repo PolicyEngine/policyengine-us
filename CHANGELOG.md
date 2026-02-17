@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.565.0] - 2026-02-17 00:21:20
+
+### Added
+
+- Updated Arizona 2025 standard deductions ($15,750 single/$31,500 joint/$23,625 HOH).
+- Added 2025 references to Arizona income tax parameters.
+- Added comprehensive 2025 integration tests for Arizona income tax model.
+
+### Changed
+
+- Updated Arizona charitable contribution credit with 2025 references.
+- Updated Arizona capital gains subtraction rate with 2025 references.
+- Updated Arizona family tax credit, dependent credit, and exemption parameters with 2025 values.
+
 ## [1.564.2] - 2026-02-16 21:05:30
 
 ### Added
@@ -15184,6 +15198,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.565.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.2...1.565.0
 [1.564.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.1...1.564.2
 [1.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.0...1.564.1
 [1.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.563.2...1.564.0
