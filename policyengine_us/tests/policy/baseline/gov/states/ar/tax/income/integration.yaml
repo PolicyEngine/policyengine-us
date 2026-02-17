@@ -327,20 +327,22 @@
         members: [person1, person2, person3, person4]
         state_fips: 5  # AR
   output:
-    # Joint AGI: $15,066.30 * 2 = $30,132.60
-    # Low income tax table (joint, 2+ deps) at AGI $30,132.60: $233
-    # Regular rate tax on taxable income $25,312.60: ~$579
-    # Low income table is cheaper, so it is used.
+    # Joint path: low income table tax = $233, additional credit = $0
+    #   (AGI $30,132.60 > $25,800), net joint tax = $233
+    # Separate path: regular rate tax = $160.72 * 2 = $321.44,
+    #   additional credit = $60 * 2 = $120 (each indiv income
+    #   $12,656.30 < $25,800), net separate tax = $201.44
+    # Separate ($201.44) < Joint ($233), so files separately.
     ar_uses_low_income_tax_tables: true
-    ar_files_separately: false
-    ar_income_tax_before_non_refundable_credits_joint: [233, 0, 0, 0]
-    ar_income_tax_before_non_refundable_credits_unit: 233
-    # Net taxable income uses AGI when low income table applies
-    ar_net_taxable_income_joint: [30_132.60, 0, 0, 0]
-    # Additional tax credit: $0 (AGI $30,132.60 > $25,800 threshold)
-    ar_additional_tax_credit_for_qualified_individuals_person: [0, 0, 0, 0]
+    ar_files_separately: true
+    ar_income_tax_before_non_refundable_credits_indiv: [160.72, 160.72, 0, 0]
+    ar_income_tax_before_non_refundable_credits_unit: 321.44
+    # Additional credit: each person gets $60 (indiv income < threshold)
+    ar_additional_tax_credit_for_qualified_individuals_person: [60, 60, 0, 0]
     # Personal credits: 4 * $29 = $116
     ar_personal_credits: [116]
-    ar_non_refundable_credits: 116
-    # Tax: max($233 - $116, 0) = $117
-    ar_income_tax: 117
+    # Total non-refundable credits: $116 + $120 = $236
+    ar_non_refundable_credits: 236
+    # Tax: max($321.44 - $236, 0) = $85.44
+    # TaxAct reference: $86 (from TAXSIM issue #493)
+    ar_income_tax: 85
