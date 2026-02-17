@@ -109,7 +109,7 @@ jobs:
       - name: Build package
         run: uv build
   NonStructural-States:
-    name: Full Suite - States (incl NY)
+    name: Full Suite - Baseline States
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -132,7 +132,7 @@ jobs:
           echo "Running non-structural YAML tests (states, 3 batches)..."
           uv run make test-yaml-no-structural-states
   NonStructural-Other:
-    name: Full Suite - Baseline & Reform & Python
+    name: Full Suite - Baseline (excl States) & Reform & Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo

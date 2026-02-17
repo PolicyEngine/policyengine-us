@@ -50,7 +50,7 @@ jobs:
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
           fetch: false
   NonStructural-States:
-    name: States (incl NY)
+    name: Baseline States
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -76,7 +76,7 @@ jobs:
           echo "Running non-structural YAML tests (states, 3 batches)..."
           uv run make test-yaml-no-structural-states
   NonStructural-Other:
-    name: Baseline & Reform & Python
+    name: Baseline (excl States) & Reform & Python
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
