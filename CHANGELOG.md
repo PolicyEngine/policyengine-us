@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.568.1] - 2026-02-17 22:50:07
+
+### Changed
+
+- Update DC 2025 tax parameters for Property Tax Credit ($1,425 max, $66,000/$90,000 AGI limits), KCCATC max ($1,200), and KCCATC income limits ($180,100/$90,000), and add 2025 D-40 Booklet references to all DC income tax parameters.
+
 ## [1.568.0] - 2026-02-17 21:11:33
 
 ### Changed
@@ -15251,6 +15257,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.568.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.0...1.568.1
 [1.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.3...1.568.0
 [1.567.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.2...1.567.3
 [1.567.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.1...1.567.2
