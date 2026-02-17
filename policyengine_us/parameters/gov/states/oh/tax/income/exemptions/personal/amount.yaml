@@ -13,9 +13,11 @@ brackets:
     amount:
       2021-01-01: 1_900
   - threshold:
+      2021-01-01: .inf
       2025-01-01: 750_000
       2026-01-01: 500_000
     amount:
+      2021-01-01: 0
       2025-01-01: 0
 metadata:
   type: single_amount
