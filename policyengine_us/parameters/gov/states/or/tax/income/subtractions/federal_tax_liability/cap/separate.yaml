@@ -63,7 +63,7 @@ brackets:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 135_000
     amount:
@@ -78,7 +78,7 @@ brackets:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 140_000
     amount:
@@ -93,7 +93,7 @@ brackets:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 145_000
     amount:
