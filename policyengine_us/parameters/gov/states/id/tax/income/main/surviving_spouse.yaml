@@ -19,12 +19,13 @@ metadata:
       href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2024/legislation/H0521.pdf#page=2
     - title: Idaho Individual Income Tax Instructions Packet 2024
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=2
-    - title: House Bill 40
+    - title: Idaho Individual Income Tax Instructions Packet 2025
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_09-29-2025.pdf#page=4
+    - title: House Bill 40 (2025)
       href: https://legislature.idaho.gov/sessioninfo/2025/legislation/H0040/
     # Signed by Governor Little, reduces income tax rate to 5.3%
-    - title: House Bill 40 (Bill Text)
+    - title: House Bill 40 (2025) Bill Text
       href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0040.pdf#page=6
-    # Statutes don't yet reflect the signed legislation
 
 brackets:
   - threshold:
@@ -38,6 +39,7 @@ brackets:
         2022-01-01: 3_324
         2023-01-01: 8_979
         2024-01-01: 9_346
+        2025-01-01: 9_622
       metadata:
         uprating:
           parameter: gov.irs.uprating

@@ -1,0 +1,83 @@
+- name: Military retirement deduction does not apply before 2025
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 50_000
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: 0
+
+- name: Military retirement fully exempt for 2025 without age requirement
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 50_000
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: 50_000
+
+- name: Military retirement exempt for joint filers 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 30_000
+        age: 35
+      person2:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 25_000
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: 55_000
+
+- name: Only head or spouse military retirement is exempt
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        military_retirement_pay: 30_000
+        age: 35
+      person2:
+        is_tax_unit_head_or_spouse: false
+        military_retirement_pay: 20_000
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: 30_000
