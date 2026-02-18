@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+    - Fix circular dependency in NY A06774 Enhanced CDCC reform by using cdcc_potential
+      instead of cdcc, which avoids the income_tax_before_credits dependency cycle.
