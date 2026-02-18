@@ -236,3 +236,19 @@
     county: TRAVIS_COUNTY_TX
   output:
     tx_ccs_payment_rate: 0
+
+- name: BCY25 - Capital Area Relative Reg 6 months Full Time, no such rating. 
+  period: 2025-01
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    county: TRAVIS_COUNTY_TX
+  output:
+    tx_ccs_payment_rate: 0

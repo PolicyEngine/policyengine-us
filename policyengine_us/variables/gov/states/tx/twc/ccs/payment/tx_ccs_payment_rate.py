@@ -12,8 +12,8 @@ class tx_ccs_payment_rate(Variable):
     definition_period = MONTH
     defined_for = "tx_ccs_eligible_child"
     reference = (
-        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf#page=9",
-        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-8-age-groups-twc.pdf",
+        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-4-age-groups-twc.pdf",
+        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-twc.pdf",
     )
 
     def formula(person, period, parameters):
