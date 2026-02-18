@@ -13192,3 +13192,9 @@
     changed:
     - Update California income tax parameters for 2025.
   date: 2026-02-18 18:07:53
+- bump: minor
+  changes:
+    changed:
+    - Wire up all 39 state TANF programs, add takeup support, and remove tanf_reported
+      short-circuit.
+  date: 2026-02-18 21:12:35
