@@ -36,8 +36,7 @@ class co_ccap_fpg_eligible(Variable):
             )
         if mask.any():
             fpg_rate[mask] = p.entry.fpg_rate[county[mask]]
-        # SNAP FPG is monthly.
-        fpg = spm_unit("snap_fpg", period)
+        fpg = spm_unit("spm_unit_fpg", period)
         fpg_limit = np.round(fpg * fpg_rate, 2)
         meets_income_limit = monthly_gross_income < fpg_limit
         return state_eligible & meets_income_limit

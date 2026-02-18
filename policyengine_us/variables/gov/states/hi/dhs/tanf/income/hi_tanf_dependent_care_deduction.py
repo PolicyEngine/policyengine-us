@@ -15,7 +15,6 @@ class hi_tanf_dependent_care_deduction(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.hi.dhs.tanf.deductions.dependent_care
 
-        # Get actual childcare expenses (YEAR variable, auto-converts to monthly)
         expenses = spm_unit("childcare_expenses", period)
 
         # Count children in the unit for the per-child cap

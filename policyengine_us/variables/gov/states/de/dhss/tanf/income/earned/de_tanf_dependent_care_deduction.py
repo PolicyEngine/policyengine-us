@@ -26,7 +26,7 @@ class de_tanf_dependent_care_deduction(Variable):
         max_per_dependent = p.dependent_care.calc(age)
         total_max = spm_unit.sum(max_per_dependent * is_dependent)
 
-        # Cap at actual childcare expenses
+        # Cap at actual childcare expenses.
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         return min_(childcare_expenses, total_max)

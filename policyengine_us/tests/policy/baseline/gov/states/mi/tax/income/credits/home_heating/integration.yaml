@@ -97,6 +97,10 @@
       person6:
         age: 4
         employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        takes_up_tanf_if_eligible: false
     tax_units:
       tax_unit:
         # heating_expenses: 1_000

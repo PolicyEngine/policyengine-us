@@ -11,6 +11,7 @@
       person1:
         age: 30
         employment_income_before_lsr: 12_000  # $1,000/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -27,7 +28,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        housing_cost: 6_000  # $500/month (capped at $400)
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -70,6 +70,7 @@
       person1:
         age: 28
         employment_income_before_lsr: 0
+        pre_subsidy_rent: 14_400  # $1,200/month (capped at $450)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -86,7 +87,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        housing_cost: 14_400  # $1,200/month (capped at $450)
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -129,6 +129,7 @@
         age: 32
         employment_income_before_lsr: 6_000  # $500/month
         child_support_received: 1_800  # $150/month
+        pre_subsidy_rent: 4_800  # $400/month
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -140,7 +141,6 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_size: 2
-        housing_cost: 4_800  # $400/month
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -183,6 +183,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 18_000  # $1,500/month
+        pre_subsidy_rent: 9_600  # $800/month (capped at $400)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -204,7 +205,6 @@
       spm_unit:
         members: [person1, person2, person3, person4]
         spm_unit_size: 4
-        housing_cost: 9_600  # $800/month (capped at $400)
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
@@ -248,6 +248,7 @@
         age: 40
         employment_income_before_lsr: 9_600  # $800/month
         social_security: 0
+        pre_subsidy_rent: 15_600  # $1,300/month (capped at $450)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -275,7 +276,6 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5]
         spm_unit_size: 5
-        housing_cost: 15_600  # $1,300/month (capped at $450)
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -319,13 +319,13 @@
         age: 25
         employment_income_before_lsr: 0
         is_pregnant: true
+        pre_subsidy_rent: 4_800  # $400/month
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
     spm_units:
       spm_unit:
         members: [person1]
         spm_unit_size: 1
-        housing_cost: 4_800  # $400/month
     tax_units:
       tax_unit:
         members: [person1]
@@ -363,6 +363,7 @@
       person1:
         age: 30
         employment_income_before_lsr: 10_800  # $900/month
+        pre_subsidy_rent: 4_800  # $400/month
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -374,7 +375,6 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_size: 2
-        housing_cost: 4_800  # $400/month
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -417,6 +417,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 9_600  # $800/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -433,7 +434,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        housing_cost: 6_000  # $500/month (capped at $400)
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -478,6 +478,7 @@
       person1:
         age: 40
         employment_income_before_lsr: 0
+        pre_subsidy_rent: 12_000  # $1,000/month (capped at $450)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -529,7 +530,6 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
         spm_unit_size: 10
-        housing_cost: 12_000  # $1,000/month (capped at $450)
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
@@ -571,6 +571,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 9_600  # $800/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -587,7 +588,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_size: 3
-        housing_cost: 6_000  # $500/month (capped at $400)
         childcare_expenses: 3_600  # $300/month
     tax_units:
       tax_unit:

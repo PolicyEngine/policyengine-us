@@ -30,6 +30,6 @@ class me_tanf_child_care_deduction(Variable):
         max_deduction_per_person = max_per_child * is_child
         total_max_deduction = spm_unit.sum(max_deduction_per_person)
 
-        # Deduction is lesser of actual expenses or maximum
+        # Deduction is lesser of actual expenses or maximum.
         childcare_expenses = spm_unit("childcare_expenses", period)
         return min_(childcare_expenses, total_max_deduction)

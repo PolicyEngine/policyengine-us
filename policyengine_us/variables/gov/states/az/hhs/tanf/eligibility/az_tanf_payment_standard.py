@@ -24,8 +24,21 @@ class az_tanf_payment_standard(Variable):
         base_standard = p.rate * monthly_fpg_baseline
 
         # A2 = A1 reduced by 37% for those without shelter costs per A.R.S. § 46-207
-        shelter_cost = spm_unit("housing_cost", period)
-        has_shelter_costs = shelter_cost > 0
+        # Uses pre-subsidy rent to avoid circular dependency:
+        # tanf -> az_tanf -> housing_cost -> rent -> housing_assistance
+        # -> hud_annual_income -> tanf
+        pre_subsidy_rent = add(spm_unit, period, ["pre_subsidy_rent"])
+        other_housing = add(
+            spm_unit,
+            period,
+            [
+                "real_estate_taxes",
+                "homeowners_association_fees",
+                "mortgage_payments",
+                "homeowners_insurance",
+            ],
+        )
+        has_shelter_costs = (pre_subsidy_rent + other_housing) > 0
 
         reduced_standard = base_standard * (1 - p.reduction)
 
