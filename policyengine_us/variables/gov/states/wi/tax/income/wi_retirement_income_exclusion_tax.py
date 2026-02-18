@@ -16,12 +16,12 @@ class wi_retirement_income_exclusion_tax(Variable):
     def formula(tax_unit, period, parameters):
         # Schedule SB Line 16 path: tax on income reduced by the
         # exclusion amount, with zero credits applied.
+        # wi_taxable_income already includes Line 17; per the Line 17
+        # worksheet (step 4), Line 17 self-adjusts downward when
+        # Line 16 is claimed, so we simply subtract Line 16 here.
         line16 = tax_unit("wi_retirement_income_exclusion_amount", period)
-        line17 = tax_unit("wi_retirement_income_subtraction", period)
         taxinc = tax_unit("wi_taxable_income", period)
-        # Add Line 17 back because wi_taxable_income already
-        # subtracted it.
-        exclusion_taxinc = max_(0, taxinc - line16 + line17)
+        exclusion_taxinc = max_(0, taxinc - line16)
 
         fstatus = tax_unit("filing_status", period)
         statuses = fstatus.possible_values
