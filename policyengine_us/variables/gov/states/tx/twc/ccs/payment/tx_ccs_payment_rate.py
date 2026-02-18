@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.parameters.gov.states.tx.twc.ccs.payment.rates_v2 import (
-    all_rates,
+from policyengine_us.parameters.gov.states.tx.twc.ccs.payment.rates_expanded_age_groups import (
+    get_rates,
 )
 
 
@@ -34,7 +34,7 @@ class tx_ccs_payment_rate(Variable):
         )
 
         if uses_expanded:
-            bcy_year = p.active_bcy_year
+            bcy_year = int(p.active_bcy_year)
             daily_rate = _lookup_expanded_rate(
                 bcy_year,
                 region,
@@ -59,18 +59,31 @@ def _lookup_expanded_rate(
     age_category,
     care_schedule,
 ):
-    rates = all_rates[int(bcy_year)]
+    rates_df = get_rates(bcy_year)
 
-    @np.vectorize
-    def _lookup(r, pt, pr, ac, cs):
-        return (
-            rates.get(r, {}).get(pt, {}).get(pr, {}).get(ac, {}).get(cs, 0.0)
-        )
-
-    return _lookup(
-        region.decode_to_str(),
-        provider_type.decode_to_str(),
-        provider_rating.decode_to_str(),
-        age_category.decode_to_str(),
-        care_schedule.decode_to_str(),
+    df = pd.DataFrame(
+        {
+            "region": region.decode_to_str(),
+            "provider_type": provider_type.decode_to_str(),
+            "provider_rating": provider_rating.decode_to_str(),
+            "age_group": age_category.decode_to_str(),
+            "schedule": care_schedule.decode_to_str(),
+        }
     )
+    df["_idx"] = np.arange(len(df))
+
+    merged = pd.merge(
+        df,
+        rates_df,
+        how="left",
+        on=[
+            "region",
+            "provider_type",
+            "provider_rating",
+            "age_group",
+            "schedule",
+        ],
+    )
+
+    merged = merged.sort_values("_idx")
+    return merged["rate"].fillna(0.0).values

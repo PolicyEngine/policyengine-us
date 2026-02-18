@@ -3,11 +3,12 @@
 # BCY26: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-twc.pdf
 
 import pandas as pd
+from functools import lru_cache
 from pathlib import Path
 
 FOLDER = Path(__file__).parent
 
-# Column name -> (age_group_enum_name, schedule_enum_name)
+# CSV column name -> (age_group enum name, schedule enum name)
 COLUMN_MAP = {
     "age_0_11m_ft": ("AGE_0_11_MONTHS", "FULL_TIME"),
     "age_0_11m_pt": ("AGE_0_11_MONTHS", "PART_TIME"),
@@ -30,31 +31,26 @@ COLUMN_MAP = {
     "age_6_13yr_bt": ("AGE_6_13_YEARS", "BLENDED"),
 }
 
+KEY_COLS = ["region", "provider_type", "provider_rating"]
 
-def _build_lookup(csv_path):
-    """Build a nested dict: region -> provider_type -> rating -> age_group -> schedule -> rate."""
+
+def _load_long(csv_path):
+    """Load a BCY CSV and melt into long form with columns:
+    region, provider_type, provider_rating, age_group, schedule, rate
+    """
     df = pd.read_csv(csv_path)
-    lookup = {}
-    for _, row in df.iterrows():
-        region = row["region"]
-        ptype = row["provider_type"]
-        rating = row["provider_rating"]
-        if region not in lookup:
-            lookup[region] = {}
-        if ptype not in lookup[region]:
-            lookup[region][ptype] = {}
-        if rating not in lookup[region][ptype]:
-            lookup[region][ptype][rating] = {}
-        for col, (age_group, schedule) in COLUMN_MAP.items():
-            val = row[col]
-            if pd.notna(val):
-                if age_group not in lookup[region][ptype][rating]:
-                    lookup[region][ptype][rating][age_group] = {}
-                lookup[region][ptype][rating][age_group][schedule] = float(val)
-    return lookup
+    records = []
+    for col, (age_group, schedule) in COLUMN_MAP.items():
+        subset = df[KEY_COLS + [col]].copy()
+        subset = subset.rename(columns={col: "rate"})
+        subset["age_group"] = age_group
+        subset["schedule"] = schedule
+        records.append(subset)
+    long = pd.concat(records, ignore_index=True)
+    long = long.dropna(subset=["rate"])
+    return long
 
 
-all_rates = {}
-for _csv_path in FOLDER.glob("bcy*.csv"):
-    _year = int(_csv_path.stem.replace("bcy", ""))
-    all_rates[_year] = _build_lookup(_csv_path)
+@lru_cache(maxsize=None)
+def get_rates(bcy_year):
+    return _load_long(FOLDER / f"bcy{bcy_year}.csv")
