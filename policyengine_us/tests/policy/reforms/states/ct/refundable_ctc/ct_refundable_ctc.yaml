@@ -1,0 +1,274 @@
+# Connecticut Refundable Child Tax Credit
+# HB 5134 (2026) - Proposed legislation
+# $600 per child for up to 3 children under age 18
+# AGI < $100,000 (single) or AGI < $200,000 (joint)
+
+# Test: Single filer with 2 children under age limit
+- name: Single filer with 2 children under income limit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_200  # 2 children * $600
+
+# Test: Joint filers with 3 children under income limit
+- name: Joint filers with 3 children under income limit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 12
+        is_tax_unit_dependent: true
+      child2:
+        age: 9
+        is_tax_unit_dependent: true
+      child3:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        filing_status: JOINT
+        adjusted_gross_income: 199_999
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_800  # 3 children * $600
+
+# Test: Joint filers with 4 children (capped at 3)
+- name: Joint filers with 4 children capped at 3
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent1:
+        age: 42
+      parent2:
+        age: 40
+      child1:
+        age: 14
+        is_tax_unit_dependent: true
+      child2:
+        age: 11
+        is_tax_unit_dependent: true
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+      child4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3, child4]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_800  # Capped at 3 children * $600
+
+# Test: Single filer at income limit is ineligible
+- name: Single filer at income limit is ineligible
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+# Test: Single filer just under income limit is eligible
+- name: Single filer just under income limit is eligible
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 99_999
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 600
+
+# Test: Joint filers at income limit are ineligible
+- name: Joint filers at income limit are ineligible
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+# Test: Taxpayer with no children gets no credit
+- name: Taxpayer with no children gets no credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+# Test: Credit is zero when not in effect
+- name: Credit is zero when not in effect
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: false
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+# Test: Child at age limit (18) does not qualify
+- name: Child at age limit does not qualify
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent:
+        age: 45
+      child1:
+        age: 18
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 600  # Only 1 qualifying child (age 10)
+
+# Test: Child just under age limit qualifies
+- name: Child just under age limit qualifies
+  period: 2026
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      parent:
+        age: 45
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 600
