@@ -13192,3 +13192,9 @@
     changed:
     - Update California income tax parameters for 2025.
   date: 2026-02-18 18:07:53
+- bump: minor
+  changes:
+    added:
+    - Add 2024 SLCSP premiums by rating area for all states, scraped from the KFF
+      2024 subsidy calculator (age 0 benchmark).
+  date: 2026-02-18 18:30:00
