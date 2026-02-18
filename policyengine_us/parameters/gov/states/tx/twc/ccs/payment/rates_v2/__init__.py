@@ -1,3 +1,7 @@
+# Sources:
+# BCY25: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-board-max-provider-payment-rates-8-age-groups-twc.pdf
+# BCY26: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy26-board-max-provider-payment-rates-twc.pdf
+
 import pandas as pd
 from pathlib import Path
 

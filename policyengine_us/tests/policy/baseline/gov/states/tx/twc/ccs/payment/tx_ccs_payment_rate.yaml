@@ -187,3 +187,52 @@
   output:
     # BCY26 DALLAS_COUNTY LCCH TRS4 age_4yr_ft = 48.32 * 10 = 483.20
     tx_ccs_payment_rate: 483.20
+
+- name: BCY26 - Alamo LCCH Reg 5yr Full Time
+  period: 2026-01
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: LCCH
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 10
+    state_code: TX
+    county: ATASCOSA_COUNTY_TX
+  output:
+    tx_ccs_payment_rate: 398
+
+- name: BCY26 - Capital Area Relative Reg 6 months Full Time
+  period: 2026-01
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: REG
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    county: TRAVIS_COUNTY_TX
+  output:
+    # 14.44 * 20 = 288.8
+    tx_ccs_payment_rate: 288.8
+
+- name: BCY26 - Capital Area Relative TSR 6 months Full Time, no such rating. 
+  period: 2026-01
+  input:
+    age: 0.5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_citizen_or_legal_immigrant: true
+    tx_ccs_provider_type: RELATIVE
+    tx_ccs_provider_rating: TSR
+    tx_ccs_care_schedule: FULL_TIME
+    childcare_attending_days_per_month: 20
+    state_code: TX
+    county: TRAVIS_COUNTY_TX
+  output:
+    tx_ccs_payment_rate: 0
