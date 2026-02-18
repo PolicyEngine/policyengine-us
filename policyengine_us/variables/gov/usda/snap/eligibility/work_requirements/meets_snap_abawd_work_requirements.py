@@ -12,20 +12,15 @@ class meets_snap_abawd_work_requirements(Variable):
     )
 
     def formula(person, period, parameters):
-        state_code = person.household("state_code", period)
-        is_ca = state_code == StateCode.CA
-        # Federal parameters
+        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(period).gov.usda.snap.work_requirements.abawd
-        # CA parameters (delayed HR1 adoption per ACL 25-93)
-        p_ca = parameters(
-            period
-        ).gov.states.ca.cdss.snap.work_requirements.abawd
+        p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
         # (A) Age — 7 U.S.C. 2015(o)(3)(A)
         age = person("monthly_age", period)
         working_age_exempt = where(
-            is_ca,
-            p_ca.age_threshold.exempted.calc(age),
+            hr1_in_effect,
             p.age_threshold.exempted.calc(age),
+            p_pre.age_threshold.exempted.calc(age),
         )
         # Work activity
         weekly_hours_worked = person(
@@ -37,9 +32,9 @@ class meets_snap_abawd_work_requirements(Variable):
         # (C) Parent with qualifying child — 7 U.S.C. 2015(o)(3)(C)
         is_dependent = person("is_tax_unit_dependent", period)
         dep_threshold = where(
-            is_ca,
-            p_ca.age_threshold.dependent,
+            hr1_in_effect,
             p.age_threshold.dependent,
+            p_pre.age_threshold.dependent,
         )
         is_qualifying_child = age < dep_threshold
         is_parent = person("is_parent", period)
@@ -52,6 +47,7 @@ class meets_snap_abawd_work_requirements(Variable):
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
         is_pregnant = person("is_pregnant", period)
         # State exemption
+        state_code = person.household("state_code", period)
         state_code_str = state_code.decode_to_str()
         is_exempt_state = np.isin(state_code_str, p.exempt_states)
         base_conditions = (
@@ -66,7 +62,6 @@ class meets_snap_abawd_work_requirements(Variable):
         # Pre-HR1 exemptions: homeless, veteran
         is_homeless = person.household("is_homeless", period)
         is_veteran = person("is_veteran", period)
-        hr1_in_effect = where(is_ca, p_ca.hr1_in_effect, p.in_effect)
         return where(
             hr1_in_effect,
             base_conditions,

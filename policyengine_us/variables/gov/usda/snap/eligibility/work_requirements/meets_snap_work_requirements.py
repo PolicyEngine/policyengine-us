@@ -17,16 +17,14 @@ class meets_snap_work_requirements(Variable):
             "meets_snap_abawd_work_requirements", period
         )
         # Dependent child threshold differs: pre-HR1 (18) vs post-HR1 (14)
-        # CA delays HR1 to June 2026 (ACL 25-93)
-        state_code = person.household("state_code", period)
-        is_ca = state_code == StateCode.CA
+        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(
             period
         ).gov.usda.snap.work_requirements.abawd.age_threshold
-        p_ca = parameters(
-            period
-        ).gov.states.ca.cdss.snap.work_requirements.abawd.age_threshold
-        dep_threshold = where(is_ca, p_ca.dependent, p.dependent)
+        p_pre = parameters(
+            "2025-06-01"
+        ).gov.usda.snap.work_requirements.abawd.age_threshold
+        dep_threshold = where(hr1_in_effect, p.dependent, p_pre.dependent)
         age = person("monthly_age", period)
         is_dependent = person("is_tax_unit_dependent", period)
         is_child = age < dep_threshold

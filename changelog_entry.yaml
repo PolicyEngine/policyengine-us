@@ -2,6 +2,7 @@
   changes:
     added:
       - Added non-age work registration exemptions for SNAP ABAWD (student, UI recipient, child under 6) per 7 U.S.C. 2015(o)(3)(D).
+      - Added is_snap_abawd_hr1_in_effect variable to centralize state-level HR1 adoption routing.
     changed:
       - Refactored SNAP ABAWD work requirements to absorb California pre-HR1 delay logic, eliminating duplicate CA variable.
       - Updated federal SNAP ABAWD parameter effective dates from 2027-01-01 to 2025-07-01 per Public Law 119-21.

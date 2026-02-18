@@ -3,7 +3,7 @@
 
 # --- (ii) Physically or mentally unfit for employment ---
 
-- name: 273.7(b)(1)(ii) — disabled person is work-registration-exempt.
+- name: Case 1, disabled person is work-registration-exempt.
   period: 2026-01
   input:
     is_disabled: true
@@ -12,76 +12,76 @@
 
 # --- (iv) Responsible for care of dependent child under 6 ---
 
-- name: 273.7(b)(1)(iv) — caregiver of dependent child age 5 is exempt.
+- name: Case 2, caregiver of dependent child age 5 is exempt.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_disabled: false
-      child:
+      person2:
         age: 5
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
   output:
     is_snap_work_registration_exempt_non_age: [true, true]
 
-- name: 273.7(b)(1)(iv) — child exactly age 6 does NOT trigger under-6 exemption.
+- name: Case 3, child exactly age 6 does NOT trigger under-6 exemption.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_disabled: false
-      child:
+      person2:
         age: 6
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
   output:
     is_snap_work_registration_exempt_non_age: [false, false]
 
 # --- (iv) Responsible for care of incapacitated person ---
 
-- name: 273.7(b)(1)(iv) — caregiver of incapacitated person is exempt.
+- name: Case 4, caregiver of incapacitated person is exempt.
   period: 2026-01
   input:
     people:
-      caregiver:
+      person1:
         age: 30
         is_disabled: false
-      dependent:
+      person2:
         is_incapable_of_self_care: true
     spm_units:
       spm_unit:
-        members: [caregiver, dependent]
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: [caregiver, dependent]
+        members: [person1, person2]
     households:
       household:
-        members: [caregiver, dependent]
+        members: [person1, person2]
   output:
     is_snap_work_registration_exempt_non_age: [true, true]
 
 # --- (v) Receiving unemployment compensation ---
 
-- name: 273.7(b)(1)(v) — UI recipient ($12k/yr) is exempt.
+- name: Case 5, UI recipient is exempt.
   period: 2026-01
   input:
     age: 30
@@ -90,7 +90,7 @@
   output:
     is_snap_work_registration_exempt_non_age: true
 
-- name: 273.7(b)(1)(v) — zero UI does not trigger exemption.
+- name: Case 6, zero UI does not trigger exemption.
   period: 2026-01
   input:
     age: 30
@@ -101,14 +101,14 @@
 
 # --- (viii) Enrolled at least half-time in school/training/higher ed ---
 
-- name: 273.7(b)(1)(viii) — full-time college student is exempt.
+- name: Case 7, full-time college student is exempt.
   period: 2026-01
   input:
     is_full_time_college_student: true
   output:
     is_snap_work_registration_exempt_non_age: true
 
-- name: 273.7(b)(1)(viii) — part-time college student is exempt.
+- name: Case 8, part-time college student is exempt.
   period: 2026-01
   input:
     is_part_time_college_student: true
@@ -117,7 +117,7 @@
 
 # --- Non-exempt baseline ---
 
-- name: Able-bodied adult with no exempting conditions is NOT exempt.
+- name: Case 9, able-bodied adult with no exempting conditions.
   period: 2026-01
   input:
     age: 30
