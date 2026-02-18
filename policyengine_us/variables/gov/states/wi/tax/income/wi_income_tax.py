@@ -16,17 +16,15 @@ class wi_income_tax(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        before_refundable = tax_unit(
+        tax_before_refundable = tax_unit(
             "wi_income_tax_before_refundable_credits", period
         )
         p = parameters(
             period
         ).gov.states.wi.tax.income.subtractions.retirement_income.exclusion
-        reduction = where(
-            p.in_effect,
-            tax_unit("wi_retirement_income_exclusion_tax_reduction", period),
-            0,
-        )
-        after_exclusion = max_(0, before_refundable - reduction)
         refundable = tax_unit("wi_refundable_credits", period)
-        return after_exclusion - refundable
+        if p.in_effect:
+            reduction = tax_unit("wi_retirement_income_exclusion_tax_reduction", period)
+            tax_after_exclusion = max_(0, tax_before_refundable - reduction)
+            return tax_after_exclusion - refundable
+        return tax_before_refundable - refundable

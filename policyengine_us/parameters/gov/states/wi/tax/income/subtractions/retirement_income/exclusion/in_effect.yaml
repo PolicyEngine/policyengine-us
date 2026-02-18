@@ -1,4 +1,4 @@
-description: Wisconsin retirement income exclusion is in effect.
+description: Wisconsin retirement income exclusion applies if this is true.
 metadata:
   unit: bool
   label: Wisconsin retirement income exclusion in effect
@@ -9,5 +9,5 @@ metadata:
     - title: 2025 Wisconsin Schedule SB instructions, Line 16
       href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7
 values:
-  0001-01-01: false
+  2021-01-01: false
   2025-01-01: true
