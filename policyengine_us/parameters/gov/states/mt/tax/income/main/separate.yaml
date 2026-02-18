@@ -15,12 +15,10 @@ metadata:
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=18
     - title: 2024 Montana income tax tables
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2024/12/2024-Tax-Tables.pdf
+    - title: 2025 Montana Tax Tables and Deductions
+      href: https://revenue.mt.gov/files/BIT/Montana-Tax-Tables-and-Deductions/2025-Tax-Rates-and-Deductions.pdf
 # Before 2024 Montana has a consistent tax rate for each filing status
 # After 2024 the tax rate depends on the filing status
-    - title: House Bill 337 (Bill Text)
-      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=bill
-    - title: House Bill 337 (Status, signed by Governor)
-      href: https://bills.legmt.gov/#/laws/bill/2/LC1716?open_tab=status
 brackets:
   - threshold:
       2021-01-01: 0
@@ -33,6 +31,7 @@ brackets:
         2022-01-01: 3_300
         2023-01-01: 3_600
         2024-01-01: 20_500
+        2025-01-01: 21_100
         2026-01-01: 47_500
         2027-01-01: 65_000
       metadata:

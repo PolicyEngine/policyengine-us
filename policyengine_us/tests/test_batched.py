@@ -152,6 +152,7 @@ def split_into_batches(
         return [[str(base_path)]]
 
     # Special handling for states directory - support excluding specific states
+    # and splitting into multiple sequential batches for memory management
     if str(base_path).endswith("gov/states"):
         subdirs = sorted(
             [
@@ -160,10 +161,22 @@ def split_into_batches(
                 if item.is_dir() and item.name not in exclude
             ]
         )
-        # Return all non-excluded state directories as a single batch
-        if subdirs:
-            return [[str(subdir) for subdir in subdirs]]
-        return []
+        if not subdirs:
+            return []
+        # Split into num_batches sequential groups
+        if num_batches > 1:
+            chunk_size = len(subdirs) // num_batches
+            remainder = len(subdirs) % num_batches
+            batches = []
+            start = 0
+            for i in range(num_batches):
+                end = start + chunk_size + (1 if i < remainder else 0)
+                batch = [str(s) for s in subdirs[start:end]]
+                if batch:
+                    batches.append(batch)
+                start = end
+            return batches
+        return [[str(subdir) for subdir in subdirs]]
 
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):

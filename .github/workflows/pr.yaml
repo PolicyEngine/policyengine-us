@@ -45,10 +45,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 10  # Need full history for git diff
+          fetch-depth: 10
       - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+        run: git fetch origin ${{ github.base_ref }} --depth=1
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -110,7 +109,7 @@ jobs:
       - name: Build package
         run: uv build
   NonStructural-States:
-    name: Full Suite - States (excl NY) & Python
+    name: Full Suite - Baseline States
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -126,20 +125,14 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests (states)
+      - name: Run non-structural YAML tests (states in 3 batches)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests (states)..."
+          echo "Running non-structural YAML tests (states, 3 batches)..."
           uv run make test-yaml-no-structural-states
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
   NonStructural-Other:
-    name: Full Suite - Baseline (incl NY) & Reform
+    name: Full Suite - Baseline (excl States) & Reform & Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -161,6 +154,12 @@ jobs:
         run: |
           echo "Running non-structural YAML tests (other)..."
           uv run make test-yaml-no-structural-other
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          uv run make test-other
   Structural-Heavy:
     name: Full Suite - Structural (States)
     runs-on: ubuntu-latest

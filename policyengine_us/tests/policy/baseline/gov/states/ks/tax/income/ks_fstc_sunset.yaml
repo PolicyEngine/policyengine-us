@@ -1,0 +1,158 @@
+# Kansas Food Sales Tax Credit Sunset Tests
+# The Food Sales Tax Credit (FSTC) was eliminated effective January 1, 2025
+# HB 2106 (2022) phased out both the state food sales tax and the credit:
+# - 2023: State food tax reduced from 6.5% to 4.0%
+# - 2024: State food tax reduced to 2.0% (FINAL year for FSTC)
+# - 2025: State food tax reduced to 0.0% (Credit NO LONGER AVAILABLE)
+# Reference: K.S.A. 79-32,271, HB 2106 (2022)
+
+- name: FSTC sunset 2025 - elderly eligible household gets $0
+  period: 2025
+  input:
+    age_head: 65
+    blind_head: false
+    adjusted_gross_income: 25_000
+    tax_unit_size: 1
+    state_code: KS
+  output:
+    # In 2025, food sales tax credit is $0 (sunset)
+    # Even though household would be eligible (age 65+, income under limit)
+    ks_fstc: 0
+
+- name: FSTC sunset 2025 - disabled eligible household gets $0
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        head_is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # In 2025, food sales tax credit is $0 (sunset)
+    ks_fstc: 0
+
+- name: FSTC sunset 2025 - household with children gets $0
+  period: 2025
+  input:
+    people:
+      parent1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 28_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: KS
+  output:
+    # In 2025, food sales tax credit is $0 (sunset)
+    ks_fstc: 0
+
+- name: FSTC 2024 - elderly household still gets credit (final year)
+  period: 2024
+  input:
+    age_head: 65
+    blind_head: false
+    adjusted_gross_income: 25_000
+    tax_unit_size: 1
+    state_code: KS
+  output:
+    # In 2024, credit is still available
+    # 1 person * $125 = $125
+    ks_fstc: 125
+
+- name: FSTC 2024 - family with children still gets credit (final year)
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head: true
+        age: 55
+        employment_income: 28_000
+      parent2:
+        is_tax_unit_spouse: true
+        age: 53
+        employment_income: 0
+      child1:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: KS
+  output:
+    # In 2024, credit is still available
+    # Eligible because parent1 age >= 55
+    # 3 persons * $125 = $375
+    ks_fstc: 375
+
+- name: FSTC comparison 2024 vs 2025 - same eligible household
+  period: 2024
+  input:
+    age_head: 60
+    blind_head: false
+    adjusted_gross_income: 20_000
+    tax_unit_size: 2
+    state_code: KS
+  output:
+    # 2024: 2 persons * $125 = $250
+    ks_fstc: 250
+
+- name: FSTC sunset 2025 - large eligible family gets $0
+  period: 2025
+  input:
+    people:
+      parent1:
+        is_tax_unit_head: true
+        age: 60
+        employment_income: 25_000
+      parent2:
+        is_tax_unit_spouse: true
+        age: 58
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+      child3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: KS
+  output:
+    # In 2025, even a large eligible family gets $0
+    ks_fstc: 0
+
+- name: FSTC 2024 - income over limit gets $0
+  period: 2024
+  input:
+    age_head: 60
+    blind_head: false
+    adjusted_gross_income: 35_000
+    tax_unit_size: 1
+    state_code: KS
+  output:
+    # Income over $30,615 limit - ineligible even in 2024
+    ks_fstc: 0

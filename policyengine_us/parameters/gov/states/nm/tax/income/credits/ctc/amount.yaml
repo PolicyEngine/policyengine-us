@@ -13,6 +13,8 @@ metadata:
       href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc194323097/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYBOAFgGYATHwAMXAOwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA
     - title: 2024 New Mexico personal income tax form packet - Page RC-11
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/97f27f33-5e23-4a25-ad68-0980a22b802d/PITbook2024.pdf#page=91
+    - title: 2025 New Mexico personal income tax form packet - RC-11 - Table 4. 2025 Child Income Tax Credit Income Table
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/0558a902-6362-47ca-8e3b-7cca3bc69b9d/2025%20PIT%20Packet_Final.pdf#page=89
     - title: 2023 New Mexico personal income tax form packet - RC-11 - Table 4. 2023 Child Income Tax Credit Income Table 
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/90560f4e-0ef0-4e52-a003-878b84f858bb/PITbook2023.pdf#page=88 
     - title: 2022 New Mexico personal income tax form packet - absent
@@ -27,6 +29,7 @@ brackets:
       values:
         2023-01-01: 600
         2024-01-01: 622
+        2025-01-01: 637
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -35,6 +38,7 @@ brackets:
       values:
         2023-01-01: 400
         2024-01-01: 414
+        2025-01-01: 424
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -43,6 +47,7 @@ brackets:
       values:
         2023-01-01: 200
         2024-01-01: 207
+        2025-01-01: 212
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -51,6 +56,7 @@ brackets:
       values:
         2023-01-01: 100
         2024-01-01: 103
+        2025-01-01: 106
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -59,6 +65,7 @@ brackets:
       values:
         2023-01-01: 75
         2024-01-01: 77
+        2025-01-01: 79
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -67,6 +74,7 @@ brackets:
       values:
         2023-01-01: 50
         2024-01-01: 51
+        2025-01-01: 53
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -74,5 +82,6 @@ brackets:
     amount:
       values:
         2023-01-01: 25
+        2025-01-01: 26
       metadata:
         uprating: gov.irs.uprating
