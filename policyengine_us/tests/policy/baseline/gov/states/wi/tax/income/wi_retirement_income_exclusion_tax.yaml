@@ -1,4 +1,4 @@
-- name: Reduction when exclusion beneficial - no credits
+- name: Exclusion path tax - low income after exclusion
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -8,17 +8,13 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
-    wi_refundable_credits: 0
     wi_retirement_income_subtraction: 0
   output:
-    # standard_tax = 350 - 0 = 350
-    # exclusion_taxinc = 10000 - 8000 + 0 = 2000
+    # exclusion_taxinc = max(0, 10000 - 8000 + 0) = 2000
     # exclusion_tax = 2000 * 0.035 = 70
-    # reduction = max(0, 350 - 70) = 280
-    wi_retirement_income_exclusion_tax_reduction: 280
+    wi_retirement_income_exclusion_tax: 70
 
-- name: No reduction when credits make standard path better
+- name: Exclusion path tax - small exclusion, higher remaining income
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -28,17 +24,13 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
-    wi_refundable_credits: 300
     wi_retirement_income_subtraction: 0
   output:
-    # standard_tax = 350 - 300 = 50
-    # exclusion_taxinc = 10000 - 2000 + 0 = 8000
+    # exclusion_taxinc = max(0, 10000 - 2000 + 0) = 8000
     # exclusion_tax = 8000 * 0.035 = 280
-    # reduction = max(0, 50 - 280) = 0
-    wi_retirement_income_exclusion_tax_reduction: 0
+    wi_retirement_income_exclusion_tax: 280
 
-- name: No reduction when not eligible - age 64
+- name: Not eligible - age 64, exclusion amount is zero so full tax
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -48,13 +40,12 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
-    wi_refundable_credits: 0
     wi_retirement_income_subtraction: 0
   output:
-    wi_retirement_income_exclusion_tax_reduction: 0
+    # line16 = 0 (ineligible), so exclusion_taxinc = taxinc
+    wi_retirement_income_exclusion_tax: 350
 
-- name: Reduction with non-zero Line 17 subtraction add-back
+- name: Exclusion path tax with Line 17 add-back
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -64,18 +55,13 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
-    wi_refundable_credits: 0
     wi_retirement_income_subtraction: 3_000
   output:
-    # standard_tax = 350 - 0 = 350
-    # line16 = 8000, line17 = 3000
     # exclusion_taxinc = max(0, 10000 - 8000 + 3000) = 5000
     # exclusion_tax = 5000 * 0.035 = 175
-    # reduction = max(0, 350 - 175) = 175
-    wi_retirement_income_exclusion_tax_reduction: 175
+    wi_retirement_income_exclusion_tax: 175
 
-- name: Joint filing - reduction with both spouses eligible
+- name: Joint filing - both spouses eligible
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -93,8 +79,6 @@
         members: [person1, person2]
         filing_status: JOINT
         wi_taxable_income: 18_000
-        wi_income_tax_before_refundable_credits: 630
-        wi_refundable_credits: 0
         wi_retirement_income_subtraction: 0
     households:
       household:
@@ -104,6 +88,4 @@
     # exclusion_amount = min(48000, 15000) = 15000
     # exclusion_taxinc = max(0, 18000 - 15000 + 0) = 3000
     # exclusion_tax = 3000 * 0.035 = 105
-    # standard_tax = 630 - 0 = 630
-    # reduction = max(0, 630 - 105) = 525
-    wi_retirement_income_exclusion_tax_reduction: 525
+    wi_retirement_income_exclusion_tax: 105
