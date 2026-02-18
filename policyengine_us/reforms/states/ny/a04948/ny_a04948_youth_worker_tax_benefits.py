@@ -58,6 +58,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY A04948 youth EITC phase-in rate"
         unit = "/1"
         definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -69,6 +70,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY A04948 youth EITC phased-in amount"
         unit = USD
         definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
 
         def formula(tax_unit, period, parameters):
             maximum = tax_unit(
@@ -87,6 +89,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY A04948 youth EITC phase-out start"
         unit = USD
         definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -101,6 +104,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY A04948 youth EITC phase-out rate"
         unit = "/1"
         definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -112,6 +116,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY A04948 youth EITC reduction"
         unit = USD
         definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
 
         def formula(tax_unit, period, parameters):
             earnings = tax_unit("filer_adjusted_earnings", period)
@@ -328,6 +333,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         label = "NY refundable credits"
         unit = USD
         definition_period = YEAR
+        reference = "https://www.nysenate.gov/legislation/bills/2025/A4948"
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
