@@ -31,7 +31,8 @@
     filing_status: SINGLE
     md_taxable_income: 50_000
   output:
-    # First 50,000 * 0.0275 = 1,375
+    # Fixed-rate-by-bracket: $50,000 at boundary -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
     md_local_income_tax_before_credits: 1_375
 
 - name: Frederick County income tax - $50,000 income (2023, joint)
@@ -43,7 +44,8 @@
     filing_status: JOINT
     md_taxable_income: 50_000
   output:
-    # First 50,000 * 0.0275 = 1,375
+    # Fixed-rate-by-bracket: $50,000 in first bracket (< $100k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
     md_local_income_tax_before_credits: 1_375
 
 - name: Frederick County income tax - $100,000 income (2023)
@@ -55,8 +57,9 @@
     filing_status: SINGLE
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.0275 = 2,750 (first bracket only)
-    md_local_income_tax_before_credits: 2_750
+    # Fixed-rate-by-bracket: $100,000 in second bracket (>= $50k) -> 2.96% rate
+    # 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
 
 - name: Frederick County income tax - $100,000 income (2023, joint)
   period: 2023
@@ -67,7 +70,8 @@
     filing_status: JOINT
     md_taxable_income: 100_000
   output:
-    # 100,000 * 0.0275 = 2,750 (first bracket only for joint filing)
+    # Fixed-rate-by-bracket: $100,000 at boundary -> 2.75% rate
+    # 100,000 * 0.0275 = 2,750
     md_local_income_tax_before_credits: 2_750
 
 - name: Frederick County income tax - $15,000 income (first bracket, 2024)
@@ -79,6 +83,7 @@
     filing_status: SINGLE
     md_taxable_income: 15_000
   output:
+    # Fixed-rate-by-bracket: $15,000 in first bracket (< $25k) -> 2.25% rate
     # 15,000 * 0.0225 = 337.50
     md_local_income_tax_before_credits: 338
 
@@ -91,6 +96,7 @@
     filing_status: JOINT
     md_taxable_income: 15_000
   output:
+    # Fixed-rate-by-bracket: $15,000 in first bracket (< $25k) -> 2.25% rate
     # 15,000 * 0.0225 = 337.50
     md_local_income_tax_before_credits: 338
 
@@ -103,10 +109,9 @@
     filing_status: SINGLE
     md_taxable_income: 35_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 10,000 * 0.0275 = 275
-    # Total: 837.50
-    md_local_income_tax_before_credits: 838
+    # Fixed-rate-by-bracket: $35,000 in second bracket ($25k-$50k) -> 2.75% rate
+    # 35,000 * 0.0275 = 962.50
+    md_local_income_tax_before_credits: 963
 
 - name: Frederick County income tax - $35,000 income (second bracket, 2024, joint)
   period: 2024
@@ -117,10 +122,9 @@
     filing_status: JOINT
     md_taxable_income: 35_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 10,000 * 0.0275 = 275
-    # Total: 837.50
-    md_local_income_tax_before_credits: 838
+    # Fixed-rate-by-bracket: $35,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 35,000 * 0.0275 = 962.50
+    md_local_income_tax_before_credits: 963
 
 - name: Frederick County income tax - $75,000 income (third bracket, 2024)
   period: 2024
@@ -131,11 +135,9 @@
     filing_status: SINGLE
     md_taxable_income: 75_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Next 25,000 * 0.0296 = 740
-    # Total: 1,990
-    md_local_income_tax_before_credits: 1_990
+    # Fixed-rate-by-bracket: $75,000 in third bracket ($50k-$150k) -> 2.96% rate
+    # 75,000 * 0.0296 = 2,220
+    md_local_income_tax_before_credits: 2_220
 
 - name: Frederick County income tax - $75,000 income (third bracket, 2024, joint)
   period: 2024
@@ -146,10 +148,9 @@
     filing_status: JOINT
     md_taxable_income: 75_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 50,000 * 0.0275 = 1,375
-    # Total: 1,937.50
-    md_local_income_tax_before_credits: 1_938
+    # Fixed-rate-by-bracket: $75,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 75,000 * 0.0275 = 2,062.50
+    md_local_income_tax_before_credits: 2_063
 
 - name: Frederick County income tax - $200,000 income (fourth bracket, 2024)
   period: 2024
@@ -160,12 +161,9 @@
     filing_status: SINGLE
     md_taxable_income: 200_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Next 100,000 * 0.0296 = 2,960
-    # Next 50,000 * 0.032 = 1,600
-    # Total: 5,810
-    md_local_income_tax_before_credits: 5_810
+    # Fixed-rate-by-bracket: $200,000 in fourth bracket (>= $150k) -> 3.2% rate
+    # 200,000 * 0.032 = 6,400
+    md_local_income_tax_before_credits: 6_400
 
 - name: Frederick County income tax - $200,000 income (fourth bracket, 2024, joint)
   period: 2024
@@ -176,11 +174,9 @@
     filing_status: JOINT
     md_taxable_income: 200_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 75,000 * 0.0275 = 2,062.50
-    # Next 100,000 * 0.0296 = 2,960
-    # Total: 5,585
-    md_local_income_tax_before_credits: 5_585
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920
 
 - name: Frederick County income tax - married filing jointly (2024)
   period: 2024
@@ -191,11 +187,9 @@
     filing_status: JOINT
     md_taxable_income: 150_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 75,000 * 0.0275 = 2,062.50
-    # Next 50,000 * 0.0296 = 1,480
-    # Total: 4,105
-    md_local_income_tax_before_credits: 4_105
+    # Fixed-rate-by-bracket: $150,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 150,000 * 0.0296 = 4,440
+    md_local_income_tax_before_credits: 4_440
 
 - name: Frederick County income tax - $50,000 income (2025)
   period: 2025
@@ -206,10 +200,9 @@
     filing_status: SINGLE
     md_taxable_income: 50_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Total: 1,250
-    md_local_income_tax_before_credits: 1_250
+    # Fixed-rate-by-bracket: $50,000 at boundary ($25k-$50k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
 
 - name: Frederick County income tax - $50,000 income (2025, joint)
   period: 2025
@@ -220,10 +213,9 @@
     filing_status: JOINT
     md_taxable_income: 50_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Total: 1,250
-    md_local_income_tax_before_credits: 1_250
+    # Fixed-rate-by-bracket: $50,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
 
 - name: Frederick County income tax - $100,000 income (2025)
   period: 2025
@@ -234,11 +226,9 @@
     filing_status: SINGLE
     md_taxable_income: 100_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Next 50,000 * 0.0296 = 1,480
-    # Total: 2,730
-    md_local_income_tax_before_credits: 2_730
+    # Fixed-rate-by-bracket: $100,000 in third bracket ($50k-$150k) -> 2.96% rate
+    # 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
 
 - name: Frederick County income tax - $100,000 income (2025, joint)
   period: 2025
@@ -249,10 +239,9 @@
     filing_status: JOINT
     md_taxable_income: 100_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 75,000 * 0.0275 = 2,062.50
-    # Total: 2,625
-    md_local_income_tax_before_credits: 2_625
+    # Fixed-rate-by-bracket: $100,000 at boundary -> 2.75% rate
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
 
 - name: Frederick County income tax - $200,000 income (fourth bracket, 2025)
   period: 2025
@@ -263,12 +252,9 @@
     filing_status: SINGLE
     md_taxable_income: 200_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 25,000 * 0.0275 = 687.50
-    # Next 100,000 * 0.0296 = 2,960
-    # Next 50,000 * 0.032 = 1,600
-    # Total: 5,810
-    md_local_income_tax_before_credits: 5_810
+    # Fixed-rate-by-bracket: $200,000 in fourth bracket (>= $150k) -> 3.2% rate
+    # 200,000 * 0.032 = 6,400
+    md_local_income_tax_before_credits: 6_400
 
 - name: Frederick County income tax - $200,000 income (fourth bracket, 2025, joint)
   period: 2025
@@ -279,8 +265,6 @@
     filing_status: JOINT
     md_taxable_income: 200_000
   output:
-    # First 25,000 * 0.0225 = 562.50
-    # Next 75,000 * 0.0275 = 2,062.50
-    # Next 100,000 * 0.0296 = 2,960
-    # Total: 5,585
-    md_local_income_tax_before_credits: 5_585
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920

@@ -14,8 +14,13 @@ class md_flat_rate_county_tax(Variable):
         county = tax_unit.household("county_str", period)
         taxable_income = tax_unit("md_taxable_income", period)
 
+        # Guard against non-MD counties in microsimulation
+        # defined_for masks results but doesn't prevent formula execution
+        in_md = tax_unit.household("state_code_str", period) == "MD"
+        safe_county = where(in_md, county, "ALLEGANY_COUNTY_MD")
+
         p = parameters(period).gov.local.md.flat_rate
-        flat_rate = p[county]
+        flat_rate = p[safe_county]
 
         # Progressive counties should not use flat rate
         is_anne_arundel = county == "ANNE_ARUNDEL_COUNTY_MD"
