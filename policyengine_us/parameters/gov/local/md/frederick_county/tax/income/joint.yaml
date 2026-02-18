@@ -1,8 +1,8 @@
 description: Maryland sets the following county income tax rates for married filers filing jointly in Frederick County.
 metadata:
-  type: marginal_rate
+  type: single_amount
   threshold_unit: currency-USD
-  rate_unit: /1
+  amount_unit: /1
   period: year
   label: Frederick County income tax rates for married filing jointly filers
   reference:
@@ -19,7 +19,7 @@ metadata:
 brackets:
   - threshold:
       2021-01-01: 0
-    rate:
+    amount:
       2021-01-01: 0.0296
       2023-01-01: 0.0275
       2024-01-01: 0.0225
@@ -27,16 +27,16 @@ brackets:
       2021-01-01: .inf
       2023-01-01: 100_000
       2024-01-01: 25_000
-    rate:
+    amount:
       2023-01-01: 0.0296
       2024-01-01: 0.0275
   - threshold:
       2021-01-01: .inf
       2024-01-01: 100_000
-    rate:
+    amount:
       2024-01-01: 0.0296
   - threshold:
       2021-01-01: .inf
       2024-01-01: 250_000
-    rate:
+    amount:
       2024-01-01: 0.032
