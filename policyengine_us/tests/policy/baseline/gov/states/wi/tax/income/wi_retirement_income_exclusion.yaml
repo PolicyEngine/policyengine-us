@@ -49,3 +49,60 @@
     wi_retirement_income_subtraction: 0
   output:
     wi_income_tax: 350
+
+# End-to-end tests (no stubbed intermediate variables)
+
+- name: E2E - Single age 68 with pension and wages, exclusion reduces tax
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 20_000
+        employment_income: 25_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # AGI = $45k → Line 17 ineligible (> $15k), Line 16 = $20k
+    # Standard tax ≈ $1,377, exclusion tax ≈ $472
+    # min($1377, $472) = $472 → exclusion path wins
+    wi_retirement_income_exclusion_amount: 20_000
+    wi_income_tax: 472
+
+- name: E2E - Joint both 68, large pension, exclusion zeroes out tax
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 30_000
+        employment_income: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        taxable_pension_income: 20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # AGI = $60k → Line 17 ineligible (> $30k)
+    # Line 16 = min($48k, $50k) = $48k, covers all pension
+    # exclusion_taxinc = taxinc - $48k ≈ $0 → exclusion tax = $0
+    # Standard tax ≈ $1,547 → min($1547, $0) = $0
+    wi_retirement_income_exclusion_amount: 48_000
+    wi_income_tax: 0
