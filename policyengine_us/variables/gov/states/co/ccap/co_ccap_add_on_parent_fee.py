@@ -21,7 +21,7 @@ class co_ccap_add_on_parent_fee(Variable):
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate base parent fee and add on parent fee.
         gross_income = spm_unit("co_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        fpg = spm_unit("spm_unit_fpg", period)
         eligible_children = spm_unit("co_ccap_eligible_children", period)
         # Calculate add-on parent fee based on the number of eligible
         # children in a household and income:

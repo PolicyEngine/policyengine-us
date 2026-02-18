@@ -21,7 +21,7 @@ class co_ccap_base_parent_fee(Variable):
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate base parent fee and add on parent fee.
         gross_income = spm_unit("co_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        fpg = spm_unit("spm_unit_fpg", period)
         # Calculate base parent fee scaled (note income is monthly):
         # When income_scaled <= 1: income_scaled * 0.01
         # When income_scaled > 1: [1 * 0.01 + (income_scaled - 1) * 0.14]
