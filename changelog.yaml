@@ -13109,3 +13109,92 @@
     - Updated Arizona family tax credit, dependent credit, and exemption parameters
       with 2025 values.
   date: 2026-02-17 00:21:20
+- bump: patch
+  changes:
+    changed:
+    - description: 'Updates Idaho income tax parameters with 2025 references per HB
+        40.
+
+        Implements military retirement full exemption for 2025 (no age requirement).
+
+        Adds comprehensive 2025 test coverage for tax calculations, grocery credit,
+        and CTC.
+
+        '
+      title: Update Idaho individual income tax for 2025
+  date: 2026-02-17 04:22:10
+- bump: minor
+  changes:
+    added:
+    - Adds New Jersey ANCHOR property tax relief program with income-based benefit
+      amounts for homeowners and renters.
+    - Adds New Jersey Stay NJ senior property tax reimbursement program for eligible
+      seniors aged 65+.
+    changed:
+    - Updates New Jersey income tax parameters with 2025 references including tax
+      brackets, exemptions, deductions, and credits.
+  date: 2026-02-17 05:27:49
+- bump: minor
+  changes:
+    changed:
+    - Updated Oregon 2025 income tax parameters (tax brackets, standard deduction,
+      exemption credit, federal tax subtraction caps, CTC/Kids Credit, kicker rate)
+      and added 2025 references to all parameters.
+    fixed:
+    - Fixed Oregon federal tax subtraction cap rounding intervals for married filing
+      separately (100 to 25, matching half of other filing statuses' interval of 50).
+    - Removed incorrect OR-40 page 20 references from Oregon retirement income credit
+      parameters (page 20 contains kicker worksheet, not retirement income credit;
+      OR-17 references remain as authoritative source).
+  date: 2026-02-17 05:32:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix Maryland CDCC to use the federal credit allowed (cdcc) instead of the potential
+      credit (cdcc_potential).
+  date: 2026-02-17 15:07:07
+- bump: patch
+  changes:
+    fixed:
+    - Split CI state baseline tests into 3 sequential batches to fix timeout and memory
+      issues.
+    - Move NY baseline tests back into the states job as its own batch.
+  date: 2026-02-17 18:18:36
+- bump: patch
+  changes:
+    changed:
+    - Add 2025 rate of 0 for repealed NH Interest and Dividends tax, add TIR 2025-001
+      repeal reference to remaining parameter files, fix unit metadata on age parameters,
+      and update broken statute URLs to gc.nh.gov.
+  date: 2026-02-17 19:26:10
+- bump: minor
+  changes:
+    changed:
+    - Update Ohio income tax model for tax year 2025 with new brackets, exemptions,
+      credits, and $750k/$500k personal exemption phase-out per HB 96.
+  date: 2026-02-17 21:11:33
+- bump: patch
+  changes:
+    changed:
+    - Update DC 2025 tax parameters for Property Tax Credit ($1,425 max, $66,000/$90,000
+      AGI limits), KCCATC max ($1,200), and KCCATC income limits ($180,100/$90,000),
+      and add 2025 D-40 Booklet references to all DC income tax parameters.
+  date: 2026-02-17 22:50:07
+- bump: patch
+  changes:
+    changed:
+    - Update Wisconsin 2025 income tax brackets (Act 15 expanded 4.4% bracket with
+      inflation adjustment), standard deduction, and add 2025 references to all WI
+      income tax parameters.
+  date: 2026-02-17 23:10:10
+- bump: patch
+  changes:
+    changed:
+    - Update California income tax parameters for 2025.
+  date: 2026-02-18 18:07:53
+- bump: minor
+  changes:
+    changed:
+    - Wire up all 39 state TANF programs, add takeup support, and remove tanf_reported
+      short-circuit.
+  date: 2026-02-18 21:12:35

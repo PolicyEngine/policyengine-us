@@ -18,8 +18,8 @@ class md_cdcc(Variable):
         # Eligibility is based on AGI.
         eligible = agi <= p.eligibility.agi_cap[filing_status]
         # Maximum is a percent of federal.
-        # Maryland matches the potential federal credit
-        max_cdcc = p.percent * tax_unit("cdcc_potential", period)
+        # Maryland matches the federal credit allowed (after Credit Limit Worksheet)
+        max_cdcc = p.percent * tax_unit("cdcc", period)
         # Phases out based on filing status.
         phase_out_start = p.phase_out.start[filing_status]
         excess = max_(0, agi - phase_out_start)

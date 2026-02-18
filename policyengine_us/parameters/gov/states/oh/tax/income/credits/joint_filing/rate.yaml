@@ -4,8 +4,10 @@ metadata:
   amount_unit: /1
   type: single_amount
   period: year
-  label: Ohio joint filing credit income rate 
+  label: Ohio joint filing credit income rate
   reference:
+  - title: Ohio Revised Code Section 5747.05(E), Tax credits
+    href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
   - title: 2021 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
     href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
   - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
@@ -14,8 +16,10 @@ metadata:
     href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=30
   - title: Ohio Income Tax Form 2024 Instructions (line 12)
     href: https://dam.assets.ohio.gov/image/upload/v1735920104/tax.ohio.gov/forms/ohio_individual/individual/2024/it1040-booklet.pdf#page=29
-  - title: Ohio Revised Code - Section 5747.05 Tax credits. (E) 
-    href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
+  - title: Ohio Income Tax Form 2025 Instructions (Page 29)
+    href: https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=29
+  - title: House Bill 96 - Joint filing credit MAGI limit ($750k for 2025, $500k for 2026+)
+    href: https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb96/07_EN/pdf/
 
 brackets:
  - threshold: 
@@ -30,7 +34,13 @@ brackets:
      2021-01-01: 50_000
    amount:
      2021-01-01: 0.1
- - threshold: 
+ - threshold:
      2021-01-01: 75_000
    amount:
      2021-01-01: 0.05
+ - threshold:
+     2021-01-01: .inf
+     2025-01-01: 750_000
+     2026-01-01: 500_000
+   amount:
+     2021-01-01: 0

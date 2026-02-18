@@ -22,42 +22,25 @@
     # CO TANF will be calculated - just check it's positive
     tanf: 6_540  # Actual CO TANF for family of 4 with low income
 
-- name: Illinois family with reported TANF
+- name: Takeup set to false zeroes TANF for eligible household
   period: 2023
   input:
     people:
       parent:
         age: 30
-        tanf_reported: 300 * 12
+        employment_income: 500 * 12
       child:
         age: 10
     spm_units:
       spm_unit:
         members: [parent, child]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [parent, child]
-        state_code_str: IL
+        state_code_str: CO
   output:
-    tanf: 300 * 12  # Uses reported value
-
-- name: Florida family gets no TANF
-  period: 2023
-  input:
-    people:
-      parent:
-        age: 30
-      child:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code_str: FL
-  output:
-    tanf: 0  # FL not implemented
+    tanf: 0
 
 - name: DC family with no income
   period: 2023

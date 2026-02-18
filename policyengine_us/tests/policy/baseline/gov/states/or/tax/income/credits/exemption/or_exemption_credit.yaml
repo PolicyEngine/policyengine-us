@@ -7,3 +7,14 @@
     or_disabled_child_dependent_exemptions: 1
   output:
     or_exemption_credit: 213 * 3
+
+# 2025 test - exemption credit amount increased to $256
+- name: 2025 - 3 exemptions at $256 each
+  period: 2025
+  input:
+    state_code: OR
+    or_regular_exemptions: 1
+    or_severely_disabled_exemptions: 1
+    or_disabled_child_dependent_exemptions: 1
+  output:
+    or_exemption_credit: 256 * 3

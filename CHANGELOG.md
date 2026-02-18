@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.569.0] - 2026-02-18 21:12:35
+
+### Changed
+
+- Wire up all 39 state TANF programs, add takeup support, and remove tanf_reported short-circuit.
+
+## [1.568.3] - 2026-02-18 18:07:53
+
+### Changed
+
+- Update California income tax parameters for 2025.
+
+## [1.568.2] - 2026-02-17 23:10:10
+
+### Changed
+
+- Update Wisconsin 2025 income tax brackets (Act 15 expanded 4.4% bracket with inflation adjustment), standard deduction, and add 2025 references to all WI income tax parameters.
+
+## [1.568.1] - 2026-02-17 22:50:07
+
+### Changed
+
+- Update DC 2025 tax parameters for Property Tax Credit ($1,425 max, $66,000/$90,000 AGI limits), KCCATC max ($1,200), and KCCATC income limits ($180,100/$90,000), and add 2025 D-40 Booklet references to all DC income tax parameters.
+
+## [1.568.0] - 2026-02-17 21:11:33
+
+### Changed
+
+- Update Ohio income tax model for tax year 2025 with new brackets, exemptions, credits, and $750k/$500k personal exemption phase-out per HB 96.
+
+## [1.567.3] - 2026-02-17 19:26:10
+
+### Changed
+
+- Add 2025 rate of 0 for repealed NH Interest and Dividends tax, add TIR 2025-001 repeal reference to remaining parameter files, fix unit metadata on age parameters, and update broken statute URLs to gc.nh.gov.
+
+## [1.567.2] - 2026-02-17 18:18:36
+
+### Fixed
+
+- Split CI state baseline tests into 3 sequential batches to fix timeout and memory issues.
+- Move NY baseline tests back into the states job as its own batch.
+
+## [1.567.1] - 2026-02-17 15:07:07
+
+### Fixed
+
+- Fix Maryland CDCC to use the federal credit allowed (cdcc) instead of the potential credit (cdcc_potential).
+
+## [1.567.0] - 2026-02-17 05:32:19
+
+### Changed
+
+- Updated Oregon 2025 income tax parameters (tax brackets, standard deduction, exemption credit, federal tax subtraction caps, CTC/Kids Credit, kicker rate) and added 2025 references to all parameters.
+
+### Fixed
+
+- Fixed Oregon federal tax subtraction cap rounding intervals for married filing separately (100 to 25, matching half of other filing statuses' interval of 50).
+- Removed incorrect OR-40 page 20 references from Oregon retirement income credit parameters (page 20 contains kicker worksheet, not retirement income credit; OR-17 references remain as authoritative source).
+
+## [1.566.0] - 2026-02-17 05:27:49
+
+### Added
+
+- Adds New Jersey ANCHOR property tax relief program with income-based benefit amounts for homeowners and renters.
+- Adds New Jersey Stay NJ senior property tax reimbursement program for eligible seniors aged 65+.
+
+### Changed
+
+- Updates New Jersey income tax parameters with 2025 references including tax brackets, exemptions, deductions, and credits.
+
+## [1.565.1] - 2026-02-17 04:22:10
+
+### Changed
+
+- {'description': 'Updates Idaho income tax parameters with 2025 references per HB 40.\nImplements military retirement full exemption for 2025 (no age requirement).\nAdds comprehensive 2025 test coverage for tax calculations, grocery credit, and CTC.\n', 'title': 'Update Idaho individual income tax for 2025'}
+
 ## [1.565.0] - 2026-02-17 00:21:20
 
 ### Added
@@ -15198,6 +15275,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.3...1.569.0
+[1.568.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.2...1.568.3
+[1.568.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.1...1.568.2
+[1.568.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.0...1.568.1
+[1.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.3...1.568.0
+[1.567.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.2...1.567.3
+[1.567.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.1...1.567.2
+[1.567.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.0...1.567.1
+[1.567.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.566.0...1.567.0
+[1.566.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.565.1...1.566.0
+[1.565.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.565.0...1.565.1
 [1.565.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.2...1.565.0
 [1.564.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.1...1.564.2
 [1.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.564.0...1.564.1

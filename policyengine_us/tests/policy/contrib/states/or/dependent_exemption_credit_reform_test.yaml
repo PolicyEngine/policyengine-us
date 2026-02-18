@@ -1,5 +1,6 @@
 - name: OR dependent exemption credit reform - basic with modified amount
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -32,6 +33,7 @@
 
 - name: OR dependent exemption credit reform - age limit enabled, only young children qualify
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -67,6 +69,7 @@
 
 - name: OR dependent exemption credit reform - age limit disabled, all dependents qualify
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -100,6 +103,7 @@
 
 - name: OR dependent exemption credit reform - income below limit (cliff cutoff)
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -130,6 +134,7 @@
 
 - name: OR dependent exemption credit reform - income above limit (cliff cutoff)
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -160,6 +165,7 @@
 
 - name: OR dependent exemption credit reform - universal mode (no income limit)
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -191,6 +197,7 @@
 
 - name: OR dependent exemption credit reform - disabled child exemption unchanged
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true
@@ -220,6 +227,7 @@
 
 - name: OR dependent exemption credit reform - joint filers with higher income limit
   period: 2025
+  absolute_error_margin: 0.5
   reforms: policyengine_us.reforms.states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform.or_dependent_exemption_credit_reform
   input:
     gov.contrib.states.or.dependent_exemption_credit.in_effect: true

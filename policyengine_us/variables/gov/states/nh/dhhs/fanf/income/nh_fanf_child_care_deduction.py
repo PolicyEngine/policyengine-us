@@ -28,13 +28,16 @@ class nh_fanf_child_care_deduction(Variable):
         # Calculate max deduction per child based on employment status and age
         full_time_max = p.full_time.calc(age)
         part_time_max = p.part_time.calc(age)
-        max_per_child = where(any_full_time, full_time_max, part_time_max)
+        any_full_time_person = spm_unit.project(any_full_time)
+        max_per_child = where(
+            any_full_time_person, full_time_max, part_time_max
+        )
 
         # Only count children
         max_deduction_per_child = max_per_child * is_child
         total_max_deduction = spm_unit.sum(max_deduction_per_child)
 
-        # Cap at actual childcare expenses
+        # Cap at actual childcare expenses.
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         return min_(childcare_expenses, total_max_deduction)

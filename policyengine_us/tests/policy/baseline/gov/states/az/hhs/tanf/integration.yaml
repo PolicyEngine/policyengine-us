@@ -20,6 +20,7 @@
         employment_income_before_lsr: 0
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 7_200
       person2:
         age: 5
       person3:
@@ -28,7 +29,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 1_000
-        housing_cost: 600
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -66,6 +66,7 @@
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 6_600
       person2:
         age: 4
       person3:
@@ -74,7 +75,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 500
-        housing_cost: 550
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -110,6 +110,7 @@
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 4_800
       person2:
         age: 1
         is_child: true
@@ -117,7 +118,6 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 800
-        housing_cost: 400
         childcare_expenses: 3_600  # $300/month annual
     tax_units:
       tax_unit:
@@ -160,13 +160,13 @@
         employment_income_before_lsr: 9_600  # $800/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 6_000
       person2:
         age: 7
     spm_units:
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 1_200
-        housing_cost: 500
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -200,13 +200,13 @@
         employment_income_before_lsr: 0
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 6_000
       person2:
         age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 3_000  # Exceeds $2,000 limit
-        housing_cost: 500
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -232,13 +232,13 @@
         child_support_received: 1_200  # $100/month annual unearned
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 5_400
       person2:
         age: 4
     spm_units:
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 1_000
-        housing_cost: 450
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -276,6 +276,7 @@
         employment_income_before_lsr: 4_800  # $400/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 9_600
       person2:
         age: 36
         own_children_in_household: 1
@@ -289,7 +290,6 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5]
         spm_unit_assets: 1_500
-        housing_cost: 800
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -328,6 +328,7 @@
         employment_income_before_lsr: 6_000  # $500/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 8_400
       person2:
         age: 28
         employment_income_before_lsr: 4_800  # $400/month annual
@@ -342,7 +343,6 @@
       spm_unit:
         members: [person1, person2, person3, person4]
         spm_unit_assets: 1_200
-        housing_cost: 700
         childcare_expenses: 6_000  # $500/month annual
     tax_units:
       tax_unit:
@@ -395,7 +395,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 500
-        housing_cost: 0  # No shelter costs
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -435,6 +434,7 @@
         employment_income_before_lsr: 0
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 7_200
       person2:
         age: 5
       person3:
@@ -443,7 +443,6 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_assets: 1_000
-        housing_cost: 600
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -480,6 +479,7 @@
         employment_income_before_lsr: 3_600  # $300/month annual
         is_tax_unit_head: true
         own_children_in_household: 0  # Not the parent
+        pre_subsidy_rent: 6_000
       person2:
         age: 8
         is_child: true
@@ -487,7 +487,6 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_assets: 1_500
-        housing_cost: 500
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -529,6 +528,7 @@
         employment_income_before_lsr: 3_600  # $300/month annual
         is_tax_unit_head: true
         own_children_in_household: 1
+        pre_subsidy_rent: 10_800
       person2:
         age: 38
         own_children_in_household: 1
@@ -544,7 +544,6 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
         spm_unit_assets: 1_800
-        housing_cost: 900
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
