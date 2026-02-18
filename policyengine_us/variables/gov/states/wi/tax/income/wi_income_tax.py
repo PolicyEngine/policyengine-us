@@ -24,7 +24,9 @@ class wi_income_tax(Variable):
         ).gov.states.wi.tax.income.subtractions.retirement_income.exclusion
         refundable = tax_unit("wi_refundable_credits", period)
         if p.in_effect:
-            reduction = tax_unit("wi_retirement_income_exclusion_tax_reduction", period)
+            reduction = tax_unit(
+                "wi_retirement_income_exclusion_tax_reduction", period
+            )
             tax_after_exclusion = max_(0, tax_before_refundable - reduction)
             return tax_after_exclusion - refundable
         return tax_before_refundable - refundable
