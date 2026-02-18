@@ -572,3 +572,177 @@
     ny_a04948_youth_eitc: 0
     ny_a04948_youth_standard_deduction: 0
     ny_a04948_student_loan_interest_deduction: 0
+
+# Additional edge case tests
+
+- name: Youth Standard Deduction - age 18 single non-dependent is eligible (min age)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: true
+    ny_a04948_youth_standard_deduction: 10_000
+    ny_standard_deduction: 10_000
+
+- name: Youth Standard Deduction - age 24 single non-dependent is eligible (max age)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_standard_deduction_eligible: true
+    ny_a04948_youth_standard_deduction: 10_000
+    ny_standard_deduction: 10_000
+
+- name: Student Loan Interest - married filing separately gets zero (ineligible)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 2_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Per IRC 221(e)(2), MFS filers are ineligible
+    ny_a04948_student_loan_interest_deduction: 0
+
+- name: Youth EITC - high income phases out to zero
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_a04948_youth_eitc_eligible: [true]
+    # $25,000 income fully phases out the childless EITC
+    # Phase-out start ~$11,070, at 7.65% rate
+    # Reduction: ($25,000 - $11,070) * 7.65% = $1,065.595 > max $677
+    ny_a04948_youth_eitc: 0
+
+- name: Student Loan Interest - income in phase-out region (partial deduction)
+  period: 2027
+  absolute_error_margin: 50
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 2_500
+        employment_income: 92_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Single phase-out starts at $85,000, divisor $15,000
+    # At $92,500: ($92,500 - $85,000) / $15,000 = 50% reduction
+    # Deduction: $2,500 * (1 - 0.5) = $1,250
+    ny_a04948_student_loan_interest_deduction: 1_250
+
+- name: Student Loan Interest - income above phase-out complete (zero)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 2_500
+        employment_income: 105_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Single phase-out complete at $100,000
+    # At $105,000 income: 100% reduction
+    ny_a04948_student_loan_interest_deduction: 0
+
+- name: Student Loan Interest - head claimed as dependent elsewhere gets zero
+  period: 2027
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  input:
+    gov.contrib.states.ny.a04948.in_effect: true
+    people:
+      person1:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        student_loan_interest: 2_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        head_is_dependent_elsewhere: true
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Cannot be claimed as dependent elsewhere per IRC 221(e)(1)
+    ny_a04948_student_loan_interest_deduction: 0
