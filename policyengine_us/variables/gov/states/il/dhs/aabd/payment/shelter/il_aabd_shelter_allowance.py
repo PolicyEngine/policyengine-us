@@ -20,9 +20,11 @@ class il_aabd_shelter_allowance(Variable):
         renter = rent_expense > 0
         rent_allowance = min_(rent_expense, p.rent)
         # Housing cost = rent + property tax + homeowners insurance + HOA fees.
-        homestead_property_cost = (
-            person.spm_unit("housing_cost", period) - rent_expense
-        )
+        # Note: housing_cost is yearly, so we need to use period.this_year
+        housing_cost_yearly = person.spm_unit("housing_cost", period.this_year)
+        # Convert to monthly and subtract monthly rent expense
+        housing_cost_monthly = housing_cost_yearly / MONTHS_IN_YEAR
+        homestead_property_cost = housing_cost_monthly - rent_expense
         homestead_property_allowance = min_(
             homestead_property_cost, p.homestead
         )
