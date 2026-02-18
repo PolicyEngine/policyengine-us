@@ -7,8 +7,8 @@ class ar_files_separately(Variable):
     label = "married couple files separately on the Arkansas tax return"
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf"
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
     )
     defined_for = StateCode.AR
 
@@ -28,7 +28,9 @@ class ar_files_separately(Variable):
         # which can change which path is cheaper. Other credits
         # (personal, CDCC) are the same for both paths. We compute
         # the credit for each path independently to avoid a circular
-        # dependency.
+        # dependency (ar_files_separately -> credit -> ar_files_separately).
+        # KEEP IN SYNC with
+        # ar_additional_tax_credit_for_qualified_individuals_person.py
         p = parameters(
             period
         ).gov.states.ar.tax.income.credits.additional_tax_credit_for_qualified_individuals
