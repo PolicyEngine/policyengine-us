@@ -1,7 +1,4 @@
-description: >-
-  NJ gross income categories that are always non-negative.
-  Under N.J.S. 54A:5-1, these categories cannot produce a net loss
-  so they are summed directly without loss clamping.
+description: New Jersey includes these income sources in gross income without loss clamping, as they cannot produce a net loss under N.J.S. 54A:5-1.
 values:
   2021-01-01:
     - employment_income  # Line 15: Wages, salaries, tips (Category a)
