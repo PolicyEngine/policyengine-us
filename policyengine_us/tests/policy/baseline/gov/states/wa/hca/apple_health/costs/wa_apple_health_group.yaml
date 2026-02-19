@@ -1,0 +1,31 @@
+# Tests for Washington Apple Health spending group
+
+- name: Apple Health Kids eligible maps to CHILD group
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 2.0  # 200% FPL
+    state_code: WA
+  output:
+    wa_apple_health_group: CHILD
+
+- name: Apple Health Expansion eligible maps to EXPANSION_ADULT group
+  period: 2025
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_group: EXPANSION_ADULT
+
+- name: Ineligible person maps to NONE group
+  period: 2024
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_group: NONE

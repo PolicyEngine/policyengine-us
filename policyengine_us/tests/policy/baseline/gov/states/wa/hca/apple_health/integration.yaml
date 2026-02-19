@@ -1,0 +1,51 @@
+# Integration tests for Washington Apple Health
+# These state-funded programs are for people NOT eligible for federal Medicaid
+
+- name: Undocumented child eligible for Apple Health Kids but NOT federal Medicaid
+  period: 2024
+  input:
+    age: 10
+    immigration_status: UNDOCUMENTED
+    medicaid_income_level: 2.0  # 200% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+    is_medicaid_eligible: false
+    wa_apple_health_group: CHILD
+
+- name: Undocumented adult eligible for Expansion but NOT federal Medicaid
+  period: 2025
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: true
+    is_medicaid_eligible: false
+    wa_apple_health_group: EXPANSION_ADULT
+
+- name: US citizen child eligible through BOTH Apple Health Kids AND federal Medicaid
+  period: 2024
+  input:
+    age: 10
+    immigration_status: CITIZEN
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_kids_eligible: true
+    is_medicaid_eligible: true
+
+- name: Undocumented adult above income limit NOT eligible for any program
+  period: 2025
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 2.0  # 200% FPL (above 138% limit for Expansion)
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+    wa_apple_health_kids_eligible: false
+    is_medicaid_eligible: false
