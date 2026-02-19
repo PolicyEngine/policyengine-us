@@ -13208,3 +13208,9 @@
     fixed:
     - Fix MN CTC eligible child check to require dependent status.
   date: 2026-02-19 00:30:41
+- bump: patch
+  changes:
+    fixed:
+    - Fix Arkansas income tax credits to use net taxable income (AGI) when low income
+      tax table applies.
+  date: 2026-02-19 00:48:35
