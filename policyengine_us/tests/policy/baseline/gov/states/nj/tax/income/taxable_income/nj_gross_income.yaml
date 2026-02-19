@@ -78,16 +78,6 @@
     # Rental loss disregarded
     nj_gross_income: 100_000
 
-- name: NJ gross income includes unemployment compensation
-  period: 2024
-  input:
-    employment_income: 60_000
-    unemployment_compensation: 12_000
-    state_code: NJ
-  output:
-    # Line 20b: unemployment included in gross income
-    nj_gross_income: 72_000
-
 - name: NJ same-category rule with farm loss
   period: 2024
   input:
