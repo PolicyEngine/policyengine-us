@@ -15,4 +15,4 @@ class nc_tanf_household_size(Variable):
         # Eligible members are those with no SSI income
         eligible_members = ssi_income <= 0
 
-        return eligible_members.sum()
+        return spm_unit.sum(eligible_members)

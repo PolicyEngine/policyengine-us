@@ -16,4 +16,5 @@ class ri_works(Variable):
     def formula(spm_unit, period, parameters):
         payment_standard = spm_unit("ri_works_payment_standard", period)
         countable_income = spm_unit("ri_works_countable_income", period)
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

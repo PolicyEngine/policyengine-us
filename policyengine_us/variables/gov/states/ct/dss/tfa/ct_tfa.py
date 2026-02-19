@@ -18,7 +18,8 @@ class ct_tfa(Variable):
         countable_unearned_income = spm_unit(
             "ct_tfa_countable_unearned_income", period
         )
-        benefit_amount = max_(payment_standard - countable_unearned_income, 0)
+        raw_benefit = max_(payment_standard - countable_unearned_income, 0)
+        benefit_amount = min_(raw_benefit, payment_standard)
         # When gross earnings are >= 171% of FPG, reduce the benefit by 20%
         gross_earnings = add(spm_unit, period, ["tanf_gross_earned_income"])
         fpg = spm_unit("tanf_fpg", period)

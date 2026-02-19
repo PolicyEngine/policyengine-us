@@ -19,4 +19,5 @@ class fl_tca(Variable):
         countable_income = spm_unit("fl_tca_countable_income", period)
 
         # Benefit = Payment Standard - Countable Income
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

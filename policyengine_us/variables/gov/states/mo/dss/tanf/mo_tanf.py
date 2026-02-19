@@ -17,5 +17,6 @@ class mo_tanf(Variable):
         maximum_benefit = spm_unit("mo_tanf_maximum_benefit", period)
         countable_income = spm_unit("mo_tanf_countable_income", period)
         benefit = max_(maximum_benefit - countable_income, 0)
+        capped_benefit = min_(benefit, maximum_benefit)
         p = parameters(period).gov.states.mo.dss.tanf
-        return where(benefit >= p.minimum_payment, benefit, 0)
+        return where(capped_benefit >= p.minimum_payment, capped_benefit, 0)

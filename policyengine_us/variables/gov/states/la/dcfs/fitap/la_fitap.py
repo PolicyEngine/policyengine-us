@@ -15,4 +15,5 @@ class la_fitap(Variable):
         countable_income = spm_unit("la_fitap_countable_income", period)
 
         # Benefit = flat grant minus countable income
-        return max_(flat_grant - countable_income, 0)
+        benefit = max_(flat_grant - countable_income, 0)
+        return min_(benefit, flat_grant)
