@@ -6,6 +6,8 @@ class nj_unemployment_insurance_base_period_weeks(Variable):
     entity = Person
     label = "New Jersey unemployment insurance base period weeks worked"
     unit = "week"
-    documentation = "Number of weeks worked during the base period for New Jersey unemployment insurance eligibility. A base week is any week in which the claimant earned at least the minimum base week earnings threshold."
     definition_period = YEAR
+    reference = (
+        "https://law.justia.com/codes/new-jersey/title-43/section-43-21-4/"
+    )
     defined_for = StateCode.NJ

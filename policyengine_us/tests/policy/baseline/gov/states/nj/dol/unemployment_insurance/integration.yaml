@@ -39,7 +39,7 @@
       person:
         age: 35
         nj_unemployment_insurance_base_period_weeks: 0
-        nj_unemployment_insurance_base_period_wages: 10000
+        nj_unemployment_insurance_base_period_wages: 10_000
         nj_unemployment_insurance_weeks_claimed: 26
     tax_units:
       tax_unit:
@@ -66,7 +66,7 @@
       person:
         age: 40
         nj_unemployment_insurance_base_period_weeks: 26
-        nj_unemployment_insurance_base_period_wages: 20000
+        nj_unemployment_insurance_base_period_wages: 20_000
         nj_unemployment_insurance_weeks_claimed: 0
     tax_units:
       tax_unit:
@@ -171,7 +171,7 @@
       person:
         age: 34
         nj_unemployment_insurance_base_period_weeks: 19
-        nj_unemployment_insurance_base_period_wages: 14200
+        nj_unemployment_insurance_base_period_wages: 14_200
     tax_units:
       tax_unit:
         members: [person]
@@ -200,7 +200,7 @@
       person:
         age: 40
         nj_unemployment_insurance_base_period_weeks: 15
-        nj_unemployment_insurance_base_period_wages: 14200
+        nj_unemployment_insurance_base_period_wages: 14_200
     tax_units:
       tax_unit:
         members: [person]
@@ -225,7 +225,7 @@
       person:
         age: 42
         nj_unemployment_insurance_base_period_weeks: 15
-        nj_unemployment_insurance_base_period_wages: 14199
+        nj_unemployment_insurance_base_period_wages: 14_199
     tax_units:
       tax_unit:
         members: [person]
@@ -253,7 +253,7 @@
     people:
       person:
         age: 45
-        nj_unemployment_insurance_average_weekly_wage: 10000
+        nj_unemployment_insurance_average_weekly_wage: 10_000
     tax_units:
       tax_unit:
         members: [person]
@@ -277,7 +277,7 @@
     people:
       person:
         age: 50
-        nj_unemployment_insurance_average_weekly_wage: 50000
+        nj_unemployment_insurance_average_weekly_wage: 50_000
     tax_units:
       tax_unit:
         members: [person]
@@ -306,7 +306,7 @@
       person:
         age: 35
         nj_unemployment_insurance_base_period_weeks: 52
-        nj_unemployment_insurance_base_period_wages: 52000
+        nj_unemployment_insurance_base_period_wages: 52_000
         nj_unemployment_insurance_weeks_claimed: 30
     tax_units:
       tax_unit:
@@ -325,7 +325,7 @@
         # avg weekly wage = $52000/52 = $1000, WBR = $600
         # Claims 30 weeks but capped at 26 max
         # $600 * 26 = $15,600
-        nj_unemployment_insurance: 15600
+        nj_unemployment_insurance: 15_600
 
 - name: NJ UI weeks capped at base period weeks when less than 26 (2024)
   period: 2024
@@ -335,7 +335,7 @@
       person:
         age: 30
         nj_unemployment_insurance_base_period_weeks: 22
-        nj_unemployment_insurance_base_period_wages: 11000
+        nj_unemployment_insurance_base_period_wages: 11_000
         nj_unemployment_insurance_weeks_claimed: 26
     tax_units:
       tax_unit:
@@ -434,7 +434,7 @@
       person:
         age: 55
         nj_unemployment_insurance_base_period_weeks: 52
-        nj_unemployment_insurance_base_period_wages: 104000
+        nj_unemployment_insurance_base_period_wages: 104_000
         nj_unemployment_insurance_weeks_claimed: 26
     tax_units:
       tax_unit:
@@ -452,7 +452,7 @@
         nj_unemployment_insurance_eligible: true
         # avg weekly wage = $104000/52 = $2000, WBR capped at $854
         # 26 weeks * $854 = $22,204
-        nj_unemployment_insurance: 22204
+        nj_unemployment_insurance: 22_204
 
 #######################################
 # YEAR-SPECIFIC BOUNDARY TESTS
@@ -466,7 +466,7 @@
       person:
         age: 34
         nj_unemployment_insurance_base_period_weeks: 15
-        nj_unemployment_insurance_base_period_wages: 15200
+        nj_unemployment_insurance_base_period_wages: 15_200
     tax_units:
       tax_unit:
         members: [person]
@@ -491,7 +491,7 @@
       person:
         age: 38
         nj_unemployment_insurance_base_period_weeks: 15
-        nj_unemployment_insurance_base_period_wages: 15500
+        nj_unemployment_insurance_base_period_wages: 15_500
     tax_units:
       tax_unit:
         members: [person]

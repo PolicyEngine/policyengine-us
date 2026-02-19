@@ -6,6 +6,8 @@ class nj_unemployment_insurance_weeks_claimed(Variable):
     entity = Person
     label = "New Jersey unemployment insurance weeks claimed"
     unit = "week"
-    documentation = "Number of weeks for which New Jersey unemployment insurance benefits are claimed. Cannot exceed the maximum benefit weeks (26) or the number of base period weeks worked."
     definition_period = YEAR
+    reference = (
+        "https://law.justia.com/codes/new-jersey/title-43/section-43-21-3/"
+    )
     defined_for = StateCode.NJ

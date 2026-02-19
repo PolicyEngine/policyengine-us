@@ -6,6 +6,8 @@ class nj_unemployment_insurance_base_period_wages(Variable):
     entity = Person
     label = "New Jersey unemployment insurance base period wages"
     unit = USD
-    documentation = "Total wages earned during the base period for New Jersey unemployment insurance eligibility determination."
     definition_period = YEAR
+    reference = (
+        "https://law.justia.com/codes/new-jersey/title-43/section-43-21-4/"
+    )
     defined_for = StateCode.NJ
