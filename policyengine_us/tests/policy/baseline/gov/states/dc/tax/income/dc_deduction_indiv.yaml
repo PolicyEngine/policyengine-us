@@ -1,4 +1,4 @@
-- name: dc_deduction_indiv unit test 1
+- name: dc_deduction_indiv unit test 1 - optimal allocation to higher earner
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -24,4 +24,113 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_deduction_indiv: [15_000, 5_000, 0]
+    # All deductions allocated to higher earner (person1) per DC Schedule S Line F
+    dc_deduction_indiv: [20_000, 0, 0]
+
+- name: dc_deduction_indiv unit test 2 - spouse is higher earner
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 50_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+        dc_deduction_joint: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # All deductions allocated to higher earner (person2/spouse)
+    dc_deduction_indiv: [0, 25_000]
+
+- name: dc_deduction_indiv unit test 3 - equal AGI splits equally
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 100_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+        dc_deduction_joint: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Equal AGI: income gap is 0, so all deductions split equally
+    dc_deduction_indiv: [15_000, 15_000]
+
+- name: dc_deduction_indiv unit test 4 - partial equalization
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 120_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: false
+        dc_deduction_joint: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Income gap = 20k, deduction = 30k
+    # Capped at gap: 20k to head, remaining (30k-20k)/2 = 5k each
+    # Head: 20k + 5k = 25k, Spouse: 5k
+    dc_deduction_indiv: [25_000, 5_000]
+
+- name: dc_deduction_indiv unit test 5 - single filer
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_itemizes: false
+        dc_deduction_joint: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Single filer: income gap = 80k, deduction = 15k < gap
+    # All deduction goes to head
+    dc_deduction_indiv: [15_000]

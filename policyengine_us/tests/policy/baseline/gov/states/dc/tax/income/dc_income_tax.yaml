@@ -1,0 +1,36 @@
+- name: DC married separate-combined - optimal deduction allocation
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 74
+        employment_income: 32_665
+        taxable_interest_income: 2_865
+        taxable_pension_income: 6_300
+        social_security: 19_103
+      person2:
+        age: 74
+        employment_income: 83_570
+        taxable_interest_income: 2_865
+        taxable_pension_income: 6_299
+        social_security: 19_102
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 11  # DC
+  output:
+    # With optimal deduction allocation to higher earner (person2)
+    # All $32,300 standard deduction goes to the spouse with higher AGI
+    dc_deduction_indiv: [0, 32_300]
+    # Files separately when separate filing reduces combined tax
+    dc_files_separately: true
+    # Tax is approximately $5,856 (lower than TAXSIM's $6,098 due to
+    # differences in social security taxation calculations)
+    dc_income_tax: 5_856
