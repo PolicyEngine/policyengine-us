@@ -1,0 +1,176 @@
+# Tests for Section 461(l) excess business loss limitation
+# Reference: https://www.law.cornell.edu/uscode/text/26/461#l
+
+- name: S-corp loss with Section 461(l) limitation (from issue #7015)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 26
+        partnership_s_corp_income: -419_487
+        short_term_capital_gains: -111_233
+        long_term_capital_gains: -1_187
+        taxable_interest_income: 10
+        is_tax_unit_head: true
+      person2:
+        age: 27
+        employment_income: 82_813
+        partnership_s_corp_income: -419_487
+        short_term_capital_gains: -111_233
+        long_term_capital_gains: -1_187
+        taxable_interest_income: 10
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Total S-corp loss: -838,974
+    # Section 461(l) threshold for MFJ 2024: $610,000
+    # Limited business loss: $610,000
+    # Capital losses: 224,840 (111,233 + 1,187) * 2 = 224,840
+    # Limited capital loss: $3,000 (Section 1211 limit)
+    # Total loss_ald: 610,000 + 3,000 = 613,000
+    # Gross income: 82,813 + 20 (interest) = 82,833
+    # AGI: 82,833 - 613,000 = -530,167
+    loss_ald: 613_000
+    adjusted_gross_income: -530_167
+
+- name: Self-employment loss under Section 461(l) threshold - single filer
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Business loss: $100,000
+    # 461(l) threshold for single 2024: $305,000
+    # Loss is under threshold, so full deduction
+    loss_ald: 100_000
+
+- name: Combined SE and S-corp loss exceeding Section 461(l) threshold
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -200_000
+        partnership_s_corp_income: -200_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Total business loss: $400,000
+    # 461(l) threshold for single 2024: $305,000
+    # Limited to threshold
+    loss_ald: 305_000
+
+- name: Business losses plus capital losses - limits apply separately
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -400_000
+        short_term_capital_gains: -50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Business loss: $400,000
+    # 461(l) threshold for single 2024: $305,000
+    # Limited business loss: $305,000
+    # Capital loss: $50,000
+    # Limited capital loss: $3,000 (Section 1211)
+    # Total: $305,000 + $3,000 = $308,000
+    loss_ald: 308_000
+    limited_capital_loss: 3_000
+
+- name: MFJ gets higher Section 461(l) threshold
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        partnership_s_corp_income: -500_000
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Business loss: $500,000
+    # 461(l) threshold for MFJ 2024: $610,000
+    # Under threshold, so full deduction
+    loss_ald: 500_000
+
+- name: Section 461(l) sunsets after 2026 (infinite threshold)
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        partnership_s_corp_income: -1_000_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # No 461(l) limitation after 2026
+    loss_ald: 1_000_000
