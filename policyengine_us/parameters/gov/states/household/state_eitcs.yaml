@@ -13,11 +13,11 @@ values:
     - ks_total_eitc  # Kansas - combined nonrefundable and refundable components
     - la_eitc  # Louisiana
     - ma_eitc  # Massachusetts
-    - md_eitc  # Maryland
+    - md_non_refundable_eitc  # Maryland non-refundable EITC
+    - md_refundable_eitc  # Maryland refundable EITC
     - me_eitc  # Maine
     - mi_eitc  # Michigan
     - mn_wfc  # Minnesota (called "Working Family Credit") repealed in 2023
-    - mn_child_and_working_families_credits
     - mo_wftc  # Missouri (called "Working Families Tax Credit")
     - mt_eitc  # Montana
     - ne_eitc  # Nebraska
@@ -27,10 +27,13 @@ values:
     - oh_eitc  # Ohio
     - ok_eitc  # Oklahoma
     - or_eitc  # Oregon
+    - pa_eitc  # Pennsylvania
     - ri_eitc  # Rhode Island
     - sc_eitc  # South Carolina
+    - ut_eitc  # Utah
     - vt_eitc  # Vermont
-    - va_eitc  # Virginia
+    - va_non_refundable_eitc  # Virginia non-refundable EITC
+    - va_refundable_eitc  # Virginia refundable EITC
     - wa_working_families_tax_credit  # Washington
     - wi_earned_income_credit  # Wisconsin
 
