@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.570.5] - 2026-02-19 02:18:18
+
+### Fixed
+
+- Eliminate Montana federal income tax deduction for 2024+, per Senate Bill 399.
+
 ## [1.570.4] - 2026-02-19 02:12:57
 
 ### Fixed
@@ -15306,6 +15312,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.570.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.4...1.570.5
 [1.570.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.3...1.570.4
 [1.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.2...1.570.3
 [1.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.1...1.570.2
