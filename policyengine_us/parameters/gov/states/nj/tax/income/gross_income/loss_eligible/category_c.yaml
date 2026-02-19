@@ -1,0 +1,18 @@
+description: >-
+  Category (c): Net gains or income from disposition of property.
+  Short-term and long-term capital gains are combined; if the net
+  is negative, the loss is disregarded under the same-category rule
+  (N.J.S. 54A:5-1).
+values:
+  2021-01-01:
+    - short_term_capital_gains  # Line 19: Short-term capital gains
+    - long_term_capital_gains  # Line 19: Long-term capital gains
+metadata:
+  unit: list
+  period: year
+  label: NJ Category (c) - Capital gains
+  reference:
+    - title: N.J.S. 54A:5-1(c) - Net gains from disposition of property
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Line 19
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf

@@ -1,0 +1,16 @@
+description: >-
+  Category (d): Net rents, royalties, patents, and copyrights.
+  If rental income is negative, the loss is disregarded under the
+  same-category rule (N.J.S. 54A:5-1).
+values:
+  2021-01-01:
+    - rental_income  # Line 23: Rents, royalties
+metadata:
+  unit: list
+  period: year
+  label: NJ Category (d) - Rental income
+  reference:
+    - title: N.J.S. 54A:5-1(d) - Net rents and royalties
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Line 23
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf
