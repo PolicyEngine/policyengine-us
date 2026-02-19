@@ -16,18 +16,14 @@ class nj_gross_income(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.gross_income
         total = add(person, period, p.non_negative_sources)
-        # Loss-eligible categories per N.J.S. 54A:5-1: each group
-        # is summed then clamped to $0 (same-category rule).
-        loss_eligible_categories = [
-            # (b) Business profits - Line 18
-            ["self_employment_income", "farm_income"],
-            # (c) Capital gains - Line 19
-            ["short_term_capital_gains", "long_term_capital_gains"],
-            # (d) Rent and royalties - Line 23
-            ["rental_income"],
-            # (k, p) Partnership and S-corp - Lines 21-22
-            ["partnership_s_corp_income"],
-        ]
-        for cat in loss_eligible_categories:
+        # Loss-eligible categories per N.J.S. 54A:5-1: each is
+        # summed within the category then clamped to $0.
+        cats = p.loss_eligible_categories
+        for cat in [
+            cats.category_b,
+            cats.category_c,
+            cats.category_d,
+            cats.category_k_p,
+        ]:
             total += max_(add(person, period, cat), 0)
         return total
