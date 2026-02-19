@@ -10,6 +10,40 @@
     dc_self_employment_loss_addition: 8_000
     dc_agi: 68_000
 
+- name: Case 3, large SE loss capped by federal 461(l).
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -25_000_000
+    state_code: DC
+  output:
+    # Federal loss_ald caps SE loss at $305,000 (single, 2024).
+    # SE loss in federal AGI: $305,000
+    # DC addition: max(0, 305_000 - 12_000) = $293,000
+    dc_self_employment_loss_addition: 293_000
+
+- name: Case 4, SE loss below federal cap but above DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -50_000
+    state_code: DC
+  output:
+    # SE loss ($50K) is below federal cap ($305K), so full loss flows through.
+    # DC addition: max(0, 50_000 - 12_000) = $38,000
+    dc_self_employment_loss_addition: 38_000
+
+- name: Case 5, SE loss below DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -10_000
+    state_code: DC
+  output:
+    # SE loss ($10K) is below DC threshold ($12K).
+    # DC addition: max(0, 10_000 - 12_000) = $0
+    dc_self_employment_loss_addition: 0
+
 - name: dc_self_employment_loss_addition unit test 2
   absolute_error_margin: 0.01
   period: 2021
