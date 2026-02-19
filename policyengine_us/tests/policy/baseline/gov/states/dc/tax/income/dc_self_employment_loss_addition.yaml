@@ -44,6 +44,31 @@
     # DC addition: max(0, 10_000 - 12_000) = $0
     dc_self_employment_loss_addition: 0
 
+- name: Case 6, large SE loss with capital losses.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -25_000_000
+    capital_losses: 5_000
+    state_code: DC
+  output:
+    # limited_capital_loss = min(3_000, 5_000) = 3_000
+    # loss_ald = min(305_000, 25_000_000 + 3_000) = 305_000
+    # SE portion of loss_ald: 305_000 - 3_000 = 302_000
+    # DC addition: max(0, 302_000 - 12_000) = 290_000
+    dc_self_employment_loss_addition: 290_000
+
+- name: Case 7, SE loss exactly at DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -12_000
+    state_code: DC
+  output:
+    # SE loss equals DC threshold exactly.
+    # DC addition: max(0, 12_000 - 12_000) = 0
+    dc_self_employment_loss_addition: 0
+
 - name: dc_self_employment_loss_addition unit test 2
   absolute_error_margin: 0.01
   period: 2021
