@@ -17,4 +17,5 @@ class hi_tanf(Variable):
         countable_income = spm_unit("hi_tanf_countable_income", period)
 
         # Benefit = SOA - countable income, floored at 0
-        return max_(maximum_benefit - countable_income, 0)
+        benefit = max_(maximum_benefit - countable_income, 0)
+        return min_(benefit, maximum_benefit)
