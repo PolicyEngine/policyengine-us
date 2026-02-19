@@ -15,6 +15,13 @@ def get_last_finite_threshold(scale):
     return thresholds[-1]
 
 
+def get_top_rate(scale):
+    """Get the top marginal rate from a tax scale."""
+    if np.isinf(scale.thresholds[-1]):
+        return scale.rates[-2]
+    return scale.rates[-1]
+
+
 class ny_supplemental_tax(Variable):
     value_type = float
     entity = TaxUnit
@@ -72,12 +79,9 @@ class ny_supplemental_tax(Variable):
             in_each_status,
             [get_last_finite_threshold(scale) for scale in scales],
         )
-        # Create array for marginal_rates lookup
-        # Use +100 for float32 precision at $25M threshold
-        high_agi_lookup = ny_agi * 0 + high_agi_threshold + 100
         high_agi_rate = select(
             in_each_status,
-            [scale.marginal_rates(high_agi_lookup) for scale in scales],
+            [get_top_rate(scale) for scale in scales],
         )
 
         supplemental_tax_high_agi = (
