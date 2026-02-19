@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.570.3] - 2026-02-19 01:56:51
+
+### Changed
+
+- Updated state CTCs list to include Georgia CTC, Maine Dependent Exemption Credit, and corrected Massachusetts credit reference.
+- Updated state EITCs list to separate Maryland and Virginia into refundable and non-refundable components.
+
 ## [1.570.2] - 2026-02-19 00:48:35
 
 ### Fixed
@@ -15293,6 +15300,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.2...1.570.3
 [1.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.1...1.570.2
 [1.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.0...1.570.1
 [1.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.569.0...1.570.0
