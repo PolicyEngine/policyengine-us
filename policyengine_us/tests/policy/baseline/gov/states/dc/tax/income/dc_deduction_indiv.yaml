@@ -54,7 +54,7 @@
     # All deductions allocated to higher earner (person2/spouse)
     dc_deduction_indiv: [0, 25_000]
 
-- name: dc_deduction_indiv unit test 3 - equal AGI allocates to head
+- name: dc_deduction_indiv unit test 3 - equal AGI splits equally
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -78,5 +78,5 @@
         members: [person1, person2]
         state_code: DC
   output:
-    # When AGI is equal, allocate to head (>=)
-    dc_deduction_indiv: [30_000, 0]
+    # Equal AGI: income gap is 0, so all deductions split equally
+    dc_deduction_indiv: [15_000, 15_000]

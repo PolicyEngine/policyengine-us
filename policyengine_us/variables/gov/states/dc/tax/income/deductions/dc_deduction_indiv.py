@@ -17,14 +17,18 @@ class dc_deduction_indiv(Variable):
         tax_unit_deduction = person.tax_unit("dc_deduction_joint", period)
         # Per DC Schedule S, Calculation J, Line F:
         # "You may allocate this amount as you wish."
-        # Optimal strategy: allocate all deductions to higher-earning spouse
-        # to minimize combined tax (higher earner benefits more due to progressive rates)
+        # Optimal strategy: equalize taxable income across spouses
+        # to minimize combined tax under progressive rates.
         person_agi = person("dc_agi", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_agi = person.tax_unit.sum(person_agi * head)
         spouse_agi = person.tax_unit.sum(person_agi * spouse)
-        head_has_higher_agi = head_agi >= spouse_agi
-        # Allocate all deductions to the higher earner
-        is_higher_earner = where(head_has_higher_agi, head, spouse)
-        return tax_unit_deduction * is_higher_earner
+        income_difference = np.abs(head_agi - spouse_agi)
+        # Give up to the income gap to the higher earner
+        capped = min_(income_difference, tax_unit_deduction)
+        higher_earner = where(head_agi >= spouse_agi, head, spouse)
+        # Split the remainder equally
+        remaining = (tax_unit_deduction - capped) / 2
+        head_or_spouse = head | spouse
+        return capped * higher_earner + remaining * head_or_spouse
