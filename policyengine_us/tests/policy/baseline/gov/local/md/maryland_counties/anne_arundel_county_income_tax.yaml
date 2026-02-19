@@ -22,6 +22,30 @@
     # Flat rate in 2021: 100,000 * 0.0281 = 2,810
     md_local_income_tax_before_credits: 2_810
 
+- name: Anne Arundel County income tax - $50,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 50,000 * 0.0281 = 1,405
+    md_local_income_tax_before_credits: 1_405
+
+- name: Anne Arundel County income tax - $100,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 100,000 * 0.0281 = 2,810
+    md_local_income_tax_before_credits: 2_810
+
 - name: Anne Arundel County income tax - $50,000 income (2023)
   period: 2023
   absolute_error_margin: 1
