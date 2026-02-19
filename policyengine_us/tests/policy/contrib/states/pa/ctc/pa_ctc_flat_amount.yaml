@@ -1,0 +1,222 @@
+# PA CTC Flat Amount Reform Tests
+# Tests the flat $1,000 credit per child under 6 with 2% phaseout rate above $125k threshold
+
+- name: PA CTC flat amount - income below threshold, one eligible child
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 100_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # AGI $100k < threshold $125k, no phaseout
+    # Credit = 1 child * $1,000 = $1,000
+    pa_ctc_flat_amount: 1_000
+
+- name: PA CTC flat amount - income above threshold with phaseout
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 135_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # AGI $135k, threshold $125k, excess $10k
+    # Phaseout = $10,000 * 0.02 = $200
+    # Credit = $1,000 - $200 = $800
+    pa_ctc_flat_amount: 800
+
+- name: PA CTC flat amount - credit fully phased out
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 175_000
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # AGI $175k, threshold $125k, excess $50k
+    # Phaseout = $50,000 * 0.02 = $1,000
+    # Credit = $1,000 - $1,000 = $0
+    pa_ctc_flat_amount: 0
+
+- name: PA CTC flat amount - joint filer at threshold with two children
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 75_000
+      person2:
+        age: 33
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: PA
+  output:
+    # AGI $125k = threshold, no phaseout
+    # Credit = 2 children * $1,000 = $2,000
+    pa_ctc_flat_amount: 2_000
+
+- name: PA CTC flat amount - joint filer above threshold
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 80_000
+      person2:
+        age: 33
+        is_tax_unit_spouse: true
+        employment_income: 70_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: PA
+  output:
+    # AGI $150k, threshold $125k, excess $25k
+    # Phaseout = $25,000 * 0.02 = $500
+    # Credit = $1,000 - $500 = $500
+    pa_ctc_flat_amount: 500
+
+- name: PA CTC flat amount - child too old (age 6)
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 100_000
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Child age 6 not eligible (must be under 6)
+    pa_ctc_flat_amount: 0
+
+- name: PA CTC flat amount - mixed age children
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 100_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: PA
+  output:
+    # Only child age 4 is eligible (under 6)
+    # Credit = 1 child * $1,000 = $1,000
+    pa_ctc_flat_amount: 1_000
+
+- name: PA CTC flat amount - head of household
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_flat_amount.pa_ctc_flat_amount
+  input:
+    gov.contrib.states.pa.ctc.flat_amount.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 130_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # AGI $130k, threshold $125k, excess $5k
+    # Phaseout = $5,000 * 0.02 = $100
+    # Credit = $1,000 - $100 = $900
+    pa_ctc_flat_amount: 900

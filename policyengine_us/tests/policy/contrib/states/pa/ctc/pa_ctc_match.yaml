@@ -1,0 +1,164 @@
+# PA CTC Match Reform Tests
+# Tests the 50% federal CTC match for children under 6
+
+- name: PA CTC match - one young child
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Federal CTC max per child = $2,200
+    # PA match = 1 child * $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: PA CTC match - two young children
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: PA
+  output:
+    # Federal CTC max per child = $2,200
+    # PA match = 2 children * $2,200 * 0.5 = $2,200
+    pa_ctc_match: 2_200
+
+- name: PA CTC match - child at age limit (age 6)
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child1:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Child age 6 not eligible (must be under 6)
+    pa_ctc_match: 0
+
+- name: PA CTC match - mixed age children
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: PA
+  output:
+    # Only child age 3 is eligible (under 6)
+    # PA match = 1 child * $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: PA CTC match - high income (no phaseout)
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 200_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # No income phaseout for this reform
+    # PA match = 1 child * $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: PA CTC match - three young children
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 70_000
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        is_tax_unit_dependent: true
+      child3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+        state_code: PA
+  output:
+    # All 3 children under 6
+    # Federal CTC max per child = $2,200
+    # PA match = 3 children * $2,200 * 0.5 = $3,300
+    pa_ctc_match: 3_300
