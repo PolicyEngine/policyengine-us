@@ -20,4 +20,5 @@ class oh_owf(Variable):
         countable_income = spm_unit("oh_owf_countable_income", period)
 
         # Per OAC 5101:1-23-40: benefit = payment standard - countable income
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

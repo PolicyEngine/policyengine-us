@@ -14,4 +14,5 @@ class ut_fep(Variable):
         # Per R986-200-246: Benefit = payment standard - countable income
         payment_standard = spm_unit("ut_fep_payment_standard", period)
         countable_income = spm_unit("ut_fep_countable_income", period)
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

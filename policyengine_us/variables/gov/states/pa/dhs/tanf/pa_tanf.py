@@ -16,4 +16,7 @@ class pa_tanf(Variable):
         maximum_benefit = spm_unit("pa_tanf_maximum_benefit", period)
         countable_income = spm_unit("pa_tanf_countable_income", period)
 
-        return max_(maximum_benefit - countable_income, 0)
+        benefit = max_(maximum_benefit - countable_income, 0)
+        # Cap benefit at maximum to prevent negative income
+        # from inflating benefits above the maximum.
+        return min_(benefit, maximum_benefit)

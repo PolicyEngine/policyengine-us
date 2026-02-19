@@ -13,4 +13,5 @@ class md_tca(Variable):
     def formula(spm_unit, period, parameters):
         grant_standard = spm_unit("md_tca_maximum_benefit", period)
         countable_income = spm_unit("md_tca_countable_income", period)
-        return max_(grant_standard - countable_income, 0)
+        benefit = max_(grant_standard - countable_income, 0)
+        return min_(benefit, grant_standard)

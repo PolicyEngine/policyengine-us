@@ -16,5 +16,8 @@ class sc_tanf(Variable):
         fpg = spm_unit("tanf_fpg", period)
         need_standard = fpg * p.income.need_standard.rate
         countable_income = spm_unit("sc_tanf_countable_income", period)
-        excess_income = need_standard - countable_income
-        return excess_income * p.payment.rate
+        excess_income = max_(need_standard - countable_income, 0)
+        benefit = excess_income * p.payment.rate
+        # Cap benefit at need standard to prevent negative income
+        # from inflating benefits above the maximum.
+        return min_(benefit, need_standard * p.payment.rate)

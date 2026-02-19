@@ -28,4 +28,5 @@ class mn_mfip(Variable):
         # Step 2: Cap at transitional standard
         earned_based_benefit = min_(fwl_minus_earned, transitional_standard)
         # Step 3: Subtract countable unearned income, floor at zero
-        return max_(earned_based_benefit - countable_unearned, 0)
+        benefit = max_(earned_based_benefit - countable_unearned, 0)
+        return min_(benefit, transitional_standard)
