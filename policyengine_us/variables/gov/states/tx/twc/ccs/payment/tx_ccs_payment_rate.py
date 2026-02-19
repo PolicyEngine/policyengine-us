@@ -27,14 +27,14 @@ class tx_ccs_payment_rate(Variable):
         age_category = person("tx_ccs_child_age_category", period)
         care_schedule = person("tx_ccs_care_schedule", period)
 
-        uses_expanded = p.uses_expanded_age_groups
-
         attending_days_per_month = person(
             "childcare_attending_days_per_month", period.this_year
         )
 
-        if uses_expanded:
-            bcy_year = int(p.active_bcy_year)
+        if p.uses_expanded_age_groups:
+            year = period.start.year
+            month = period.start.month
+            bcy_year = year + where(month >= 10, 1, 0)
             daily_rate = _lookup_expanded_rate(
                 bcy_year,
                 region,
