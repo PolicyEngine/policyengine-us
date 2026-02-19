@@ -19,19 +19,31 @@ def create_pa_ctc_match() -> Reform:
             person = tax_unit.members
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
-            eligible = is_dependent & (age < p.age_limit)
+            young_child = is_dependent & (age < p.age_limit)
 
             # Get federal CTC maximum per child (person-level variable)
-            federal_ctc_per_child = person(
+            federal_ctc_max_per_child = person(
                 "ctc_child_individual_maximum", period
             )
 
-            # Sum only the federal CTC for eligible young children
-            eligible_ctc = where(eligible, federal_ctc_per_child, 0)
-            total_eligible_ctc = tax_unit.sum(eligible_ctc)
+            # Calculate the portion of federal CTC attributable to young children
+            young_child_max = tax_unit.sum(
+                where(young_child, federal_ctc_max_per_child, 0)
+            )
+            total_child_max = tax_unit.sum(federal_ctc_max_per_child)
+
+            # Get the actual federal CTC value (after phase-in)
+            federal_ctc_value = tax_unit("ctc_value", period)
+
+            # Calculate the young child portion of the actual CTC
+            # (proportional to their share of the maximum)
+            young_child_share = where(
+                total_child_max > 0, young_child_max / total_child_max, 0
+            )
+            young_child_ctc = federal_ctc_value * young_child_share
 
             # Apply match rate
-            return total_eligible_ctc * p.match
+            return young_child_ctc * p.match
 
     def modify_parameters(parameters):
         # Add pa_ctc_match to refundable credits list

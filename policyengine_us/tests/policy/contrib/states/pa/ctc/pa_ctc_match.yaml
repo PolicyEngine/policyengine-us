@@ -162,3 +162,81 @@
     # Federal CTC max per child = $2,200
     # PA match = 3 children * $2,200 * 0.5 = $3,300
     pa_ctc_match: 3_300
+
+- name: PA CTC match - very low income ($2,000) - no federal CTC phase-in
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 2_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Federal CTC phase-in starts at $2,500
+    # At $2,000 income, ctc_value = $0
+    # PA match = $0 * 0.5 = $0
+    pa_ctc_match: 0
+
+- name: PA CTC match - low income ($10,000) - partial federal CTC phase-in
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 10_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Federal CTC phase-in: ($10,000 - $2,500) * 0.15 = $1,125
+    # ctc_value = $1,125 (partial, less than $2,200 max)
+    # PA match = $1,125 * 0.5 = $562.50
+    pa_ctc_match: 562.5
+
+- name: PA CTC match - moderate income ($20,000) - full federal CTC phase-in
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 20_000
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Federal CTC phase-in: ($20,000 - $2,500) * 0.15 = $2,625
+    # But capped at ctc max of $2,200, so ctc_value = $2,200
+    # PA match = $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
