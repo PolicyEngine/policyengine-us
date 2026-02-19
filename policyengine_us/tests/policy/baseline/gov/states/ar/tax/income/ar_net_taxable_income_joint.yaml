@@ -1,0 +1,108 @@
+- name: Uses taxable income when low income table not used
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 30_000
+        ar_agi_joint: 20_000
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_agi_joint: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_uses_low_income_tax_tables: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Not using low income table, returns ar_taxable_income_joint
+    ar_net_taxable_income_joint: [30_000, 0]
+
+- name: Uses AGI when low income table is used
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 20_000
+        ar_agi_joint: 15_000
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_agi_joint: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_uses_low_income_tax_tables: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Using low income table, returns total AGI attributed to head
+    # Total AGI = 15_000 + 12_000 = 27_000, all on head
+    ar_net_taxable_income_joint: [27_000, 0]
+
+- name: Single filer, low income table used, returns AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 18_000
+        ar_agi_joint: 22_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_uses_low_income_tax_tables: true
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_net_taxable_income_joint: [22_000]
+
+- name: Single filer, low income table not used, returns taxable income
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 50_000
+        ar_agi_joint: 55_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_uses_low_income_tax_tables: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_net_taxable_income_joint: [50_000]
+
+- name: AGI attributed only to head, not spouse
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 25_000
+        ar_agi_joint: 10_000
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_agi_joint: 10_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_uses_low_income_tax_tables: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Total AGI = 10k + 10k = 20k, all attributed to head
+    ar_net_taxable_income_joint: [20_000, 0]

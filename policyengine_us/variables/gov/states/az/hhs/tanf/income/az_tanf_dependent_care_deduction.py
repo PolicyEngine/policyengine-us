@@ -18,7 +18,6 @@ class az_tanf_dependent_care_deduction(Variable):
         person = spm_unit.members
         age = person("age", period.this_year)
 
-        # Actual childcare expenses
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         # Calculate eligible deduction for dependent children (based on age)

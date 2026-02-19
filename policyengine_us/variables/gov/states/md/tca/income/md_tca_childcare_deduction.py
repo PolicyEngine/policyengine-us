@@ -23,6 +23,6 @@ class md_tca_childcare_deduction(Variable):
         # Maximum deduction per child based on monthly work hours
         per_child_cap = p.childcare_expenses.cap.calc(max_monthly_hours)
         max_deduction = per_child_cap * num_children
-        # Actual childcare expenses (capped at regulatory maximum)
+        # Actual childcare expenses (capped at regulatory maximum).
         childcare_expenses = spm_unit("childcare_expenses", period)
         return min_(childcare_expenses, max_deduction)

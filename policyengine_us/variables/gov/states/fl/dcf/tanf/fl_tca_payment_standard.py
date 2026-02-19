@@ -16,9 +16,22 @@ class fl_tca_payment_standard(Variable):
     def formula(spm_unit, period, parameters):
         # Per Florida Statutes 414.095(10): Payment based on shelter tier
         # Per FAC 65A-4.220(2)(b): Shelter obligation = responsibility to pay for cost of housing
+        # Uses pre-subsidy rent to avoid circular dependency:
+        # tanf -> fl_tca -> housing_cost -> rent -> housing_assistance -> hud_annual_income -> tanf
         p = parameters(period).gov.states.fl.dcf.tanf
 
-        monthly_shelter = spm_unit("housing_cost", period)
+        pre_subsidy_rent = add(spm_unit, period, ["pre_subsidy_rent"])
+        other_housing = add(
+            spm_unit,
+            period,
+            [
+                "real_estate_taxes",
+                "homeowners_association_fees",
+                "mortgage_payments",
+                "homeowners_insurance",
+            ],
+        )
+        monthly_shelter = pre_subsidy_rent + other_housing
 
         # Determine unit size, capped at max in parameter table
         size = spm_unit("spm_unit_size", period.this_year)

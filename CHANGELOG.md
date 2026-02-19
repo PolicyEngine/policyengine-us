@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.570.3] - 2026-02-19 01:56:51
+
+### Changed
+
+- Updated state CTCs list to include Georgia CTC, Maine Dependent Exemption Credit, and corrected Massachusetts credit reference.
+- Updated state EITCs list to separate Maryland and Virginia into refundable and non-refundable components.
+
+## [1.570.2] - 2026-02-19 00:48:35
+
+### Fixed
+
+- Fix Arkansas income tax credits to use net taxable income (AGI) when low income tax table applies.
+
+## [1.570.1] - 2026-02-19 00:30:41
+
+### Fixed
+
+- Fix MN CTC eligible child check to require dependent status.
+
+## [1.570.0] - 2026-02-19 00:12:01
+
+### Added
+
+- Add Wisconsin retirement income exclusion (Line 16, $24K, age 67+).
+
+## [1.569.0] - 2026-02-18 21:12:35
+
+### Changed
+
+- Wire up all 39 state TANF programs, add takeup support, and remove tanf_reported short-circuit.
+
+## [1.568.3] - 2026-02-18 18:07:53
+
+### Changed
+
+- Update California income tax parameters for 2025.
+
 ## [1.568.2] - 2026-02-17 23:10:10
 
 ### Changed
@@ -15263,6 +15300,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.2...1.570.3
+[1.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.1...1.570.2
+[1.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.0...1.570.1
+[1.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.569.0...1.570.0
+[1.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.3...1.569.0
+[1.568.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.2...1.568.3
 [1.568.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.1...1.568.2
 [1.568.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.0...1.568.1
 [1.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.567.3...1.568.0

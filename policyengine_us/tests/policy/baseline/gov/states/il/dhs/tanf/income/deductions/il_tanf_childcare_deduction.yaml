@@ -13,7 +13,7 @@
   input:
     state_code: IL
     is_tax_unit_dependent: true
-    monthly_age: 1 
+    monthly_age: 1
     childcare_expenses: 250 * 12
   output:
     il_tanf_childcare_deduction: 200 * 12
@@ -33,7 +33,7 @@
   input:
     state_code: IL
     is_tax_unit_dependent: false
-    monthly_age: 15 
-    childcare_expenses: 250 * 12 
+    monthly_age: 15
+    childcare_expenses: 250 * 12
   output:
     il_tanf_childcare_deduction: 0
