@@ -13222,3 +13222,9 @@
     - Updated state EITCs list to separate Maryland and Virginia into refundable and
       non-refundable components.
   date: 2026-02-19 01:56:51
+- bump: patch
+  changes:
+    fixed:
+    - Missouri Social Security deduction now correctly requires age 62+ (SSDI has
+      no age limit per MO Form MO-A Section C).
+  date: 2026-02-19 02:12:57
