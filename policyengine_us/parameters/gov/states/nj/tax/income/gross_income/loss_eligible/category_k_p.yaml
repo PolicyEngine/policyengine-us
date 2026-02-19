@@ -1,8 +1,4 @@
-description: >-
-  Categories (k) and (p): Distributive share of partnership income
-  and net pro rata share of S corporation income. Combined in our
-  data model; if the net is negative, the loss is disregarded under
-  the same-category rule (N.J.S. 54A:5-1).
+description: New Jersey classifies partnership and S corporation income as Categories (k) and (p) and disregards the net if negative under the same-category rule.
 values:
   2021-01-01:
     - partnership_s_corp_income  # Lines 21-22: Partnership & S-corp income
