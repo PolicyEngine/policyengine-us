@@ -13203,3 +13203,8 @@
     added:
     - Add Wisconsin retirement income exclusion (Line 16, $24K, age 67+).
   date: 2026-02-19 00:12:01
+- bump: patch
+  changes:
+    fixed:
+    - Fix MN CTC eligible child check to require dependent status.
+  date: 2026-02-19 00:30:41
