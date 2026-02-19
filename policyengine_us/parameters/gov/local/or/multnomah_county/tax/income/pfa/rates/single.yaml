@@ -1,0 +1,29 @@
+description: Multnomah County taxes income at these rates for single filers under the Preschool for All Personal Income Tax.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Multnomah County PFA income tax rates for single filers
+  reference:
+    - title: Multnomah County Code 11.512(A) and (B)
+      href: https://multco.us/file/preschool_for_all_personal_income_tax_code/download
+    - title: Multnomah County Preschool For All Personal Income Tax
+      href: https://multco.us/info/multnomah-county-preschool-all-personal-income-tax
+    - title: Ordinance 1326 (Rate Increase Delay to 2027)
+      href: https://multco.us/file/preschool_for_all_personal_income_tax_code/download
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 125_000
+    rate:
+      2021-01-01: 0.015  # 1.5%
+      2027-01-01: 0.023  # 2.3% (increased by 0.8 percentage points)
+  - threshold:
+      2021-01-01: 250_000
+    rate:
+      2021-01-01: 0.03  # 3.0% (1.5% + 1.5%)
+      2027-01-01: 0.038  # 3.8% (2.3% + 1.5%)

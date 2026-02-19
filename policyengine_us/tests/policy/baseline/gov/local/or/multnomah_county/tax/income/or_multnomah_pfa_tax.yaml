@@ -1,0 +1,119 @@
+# Tests for Multnomah County Preschool for All (PFA) Personal Income Tax
+# Tax rates (2021-2026):
+#   - Single/MFS: 1.5% over $125,000; 3.0% over $250,000
+#   - Joint/HOH/QW: 1.5% over $200,000; 3.0% over $400,000
+# Tax rates (2027+):
+#   - Single/MFS: 2.3% over $125,000; 3.8% over $250,000
+#   - Joint/HOH/QW: 2.3% over $200,000; 3.8% over $400,000
+
+- name: Below threshold - no tax (2024, single, $100,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 100_000
+    filing_status: SINGLE
+  output:
+    # Income $100,000 is below $125,000 threshold
+    # Tax = $0
+    or_multnomah_pfa_tax: 0
+
+- name: First bracket - single filer (2024, single, $175,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 175_000
+    filing_status: SINGLE
+  output:
+    # Income over $125,000: $175,000 - $125,000 = $50,000
+    # Tax = $50,000 x 1.5% = $750
+    or_multnomah_pfa_tax: 750
+
+- name: Second bracket - single filer (2024, single, $300,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 300_000
+    filing_status: SINGLE
+  output:
+    # First bracket: ($250,000 - $125,000) x 1.5% = $125,000 x 0.015 = $1,875
+    # Second bracket: ($300,000 - $250,000) x 3.0% = $50,000 x 0.03 = $1,500
+    # Total: $1,875 + $1,500 = $3,375
+    or_multnomah_pfa_tax: 3_375
+
+- name: First bracket - joint filer (2024, joint, $300,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 300_000
+    filing_status: JOINT
+  output:
+    # Income over $200,000: $300,000 - $200,000 = $100,000
+    # Tax = $100,000 x 1.5% = $1,500
+    or_multnomah_pfa_tax: 1_500
+
+- name: Second bracket - joint filer (2024, joint, $500,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 500_000
+    filing_status: JOINT
+  output:
+    # First bracket: ($400,000 - $200,000) x 1.5% = $200,000 x 0.015 = $3,000
+    # Second bracket: ($500,000 - $400,000) x 3.0% = $100,000 x 0.03 = $3,000
+    # Total: $3,000 + $3,000 = $6,000
+    or_multnomah_pfa_tax: 6_000
+
+- name: 2027 rate increase - single filer first bracket (2027, single, $175,000 income)
+  period: 2027
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 175_000
+    filing_status: SINGLE
+  output:
+    # Income over $125,000: $175,000 - $125,000 = $50,000
+    # Tax = $50,000 x 2.3% = $1,150
+    or_multnomah_pfa_tax: 1_150
+
+- name: 2027 rate increase - single filer second bracket (2027, single, $300,000 income)
+  period: 2027
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 300_000
+    filing_status: SINGLE
+  output:
+    # First bracket: ($250,000 - $125,000) x 2.3% = $125,000 x 0.023 = $2,875
+    # Second bracket: ($300,000 - $250,000) x 3.8% = $50,000 x 0.038 = $1,900
+    # Total: $2,875 + $1,900 = $4,775
+    or_multnomah_pfa_tax: 4_775
+
+- name: Head of Household uses joint thresholds (2024, head_of_household, $300,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: MULTNOMAH_COUNTY_OR
+    or_taxable_income: 300_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Per MCC 11.512(C), HOH uses joint thresholds ($200k / $400k)
+    # Income over $200,000: $300,000 - $200,000 = $100,000
+    # Tax = $100,000 x 1.5% = $1,500
+    or_multnomah_pfa_tax: 1_500
+
+- name: Non-Multnomah County resident - no tax (2024, single, $200,000 income)
+  period: 2024
+  input:
+    state_code: OR
+    county_str: WASHINGTON_COUNTY_OR
+    or_taxable_income: 200_000
+    filing_status: SINGLE
+  output:
+    # Washington County resident - PFA tax does not apply
+    # Tax = $0
+    or_multnomah_pfa_tax: 0
