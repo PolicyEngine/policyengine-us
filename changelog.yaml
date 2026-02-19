@@ -13244,3 +13244,14 @@
       countable income could produce benefits exceeding $1M per household, inflating
       total TANF microsimulation from $9B target to $17.9T.
   date: 2026-02-19 06:19:21
+- bump: patch
+  changes:
+    fixed:
+    - Cap all state TANF benefit formulas to prevent negative countable income from
+      inflating benefits above the payment standard. Fixes NC household size .sum()
+      bug and adds min_() caps to 38 state programs (AL, AK, AR, AZ, CA, CO, CT, DC,
+      FL, HI, IA, IL, IN, KS, LA, MA, MD, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ,
+      NM, NV, NY, OH, OK, OR, PA, RI, SC, SD, TX, UT, VT, WV, WY). Previously, negative
+      countable income could produce benefits exceeding $1M per household, inflating
+      total TANF microsimulation from $9B target to $17.9T.
+  date: 2026-02-19 06:54:52
