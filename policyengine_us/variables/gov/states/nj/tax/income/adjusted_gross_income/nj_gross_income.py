@@ -6,13 +6,6 @@ class nj_gross_income(Variable):
     entity = Person
     label = "New Jersey gross income"
     unit = USD
-    documentation = (
-        "Gross income calculated from specific income categories per NJ "
-        "statute, before additions and subtractions. Under the 'same "
-        "category rule' (N.J.S. 54A:5-1), if any income category has a net "
-        "loss, that loss is disregarded (treated as $0) and cannot offset "
-        "income from other categories."
-    )
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/",
@@ -21,36 +14,18 @@ class nj_gross_income(Variable):
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        # Income sources that cannot go negative (always >= 0).
-        non_negative_sources = [
-            "employment_income",
-            "taxable_interest_income",
-            "dividend_income",
-            "taxable_pension_income",
-            "taxable_ira_distributions",
-            "gambling_winnings",
-            "alimony_income",
-            "miscellaneous_income",
-        ]
-        total = add(person, period, non_negative_sources)
-
-        # Categories that can have losses. Under the same-category rule
-        # (N.J.S. 54A:5-1), if a category's net is negative it is
-        # disregarded (treated as $0) and cannot offset other categories.
-        # Each inner list is summed first, then clamped to zero.
-        loss_eligible_categories = [
-            # Category c: capital gains (short + long combined)
-            ["short_term_capital_gains", "long_term_capital_gains"],
-            # Category b: self-employment
-            ["self_employment_income"],
-            # Category b: farm
-            ["farm_income"],
-            # Categories k, p: partnership & S-corp
-            ["partnership_s_corp_income"],
-            # Category d: rental / royalties
-            ["rental_income"],
-        ]
-        for category_sources in loss_eligible_categories:
-            total += max_(add(person, period, category_sources), 0)
-
+        p = parameters(period).gov.states.nj.tax.income.gross_income
+        # Non-negative categories: summed directly.
+        total = add(person, period, p.non_negative_sources)
+        # Loss-eligible categories: each is summed within the
+        # category, then clamped to $0 per the same-category rule
+        # (N.J.S. 54A:5-1).
+        loss_eligible = p.loss_eligible
+        for cat in [
+            loss_eligible.category_b,
+            loss_eligible.category_c,
+            loss_eligible.category_d,
+            loss_eligible.category_k_p,
+        ]:
+            total += max_(add(person, period, cat), 0)
         return total
