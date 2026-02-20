@@ -20,6 +20,9 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
+from .states.ny.a04948 import (
+    create_ny_a04948_youth_worker_tax_benefits_reform,
+)
 from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
 from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
@@ -190,6 +193,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
+    ny_a04948 = create_ny_a04948_youth_worker_tax_benefits_reform(
+        parameters, period
+    )
     ny_a04038_enhanced_escc_infants = (
         create_ny_a04038_enhanced_escc_infants_reform(parameters, period)
     )
@@ -354,6 +360,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
+        ny_a04948,
         ny_a04038_enhanced_escc_infants,
         sc_h3492_eitc_refundable,
         ny_a06774_enhanced_cdcc,
