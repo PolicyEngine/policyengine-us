@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.570.7] - 2026-02-19 06:54:52
+
+### Fixed
+
+- Cap all state TANF benefit formulas to prevent negative countable income from inflating benefits above the payment standard. Fixes NC household size .sum() bug and adds min_() caps to 38 state programs (AL, AK, AR, AZ, CA, CO, CT, DC, FL, HI, IA, IL, IN, KS, LA, MA, MD, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, RI, SC, SD, TX, UT, VT, WV, WY). Previously, negative countable income could produce benefits exceeding $1M per household, inflating total TANF microsimulation from $9B target to $17.9T.
+
+## [1.570.6] - 2026-02-19 06:19:21
+
+### Fixed
+
+- Cap all state TANF benefit formulas to prevent negative countable income from inflating benefits above the payment standard. Fixes NC household size .sum() bug and adds min_() caps to 38 state programs (AL, AK, AR, AZ, CA, CO, CT, DC, FL, HI, IA, IL, IN, KS, LA, MA, MD, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, RI, SC, SD, TX, UT, VT, WV, WY). Previously, negative countable income could produce benefits exceeding $1M per household, inflating total TANF microsimulation from $9B target to $17.9T.
+
+## [1.570.5] - 2026-02-19 02:18:18
+
+### Fixed
+
+- Eliminate Montana federal income tax deduction for 2024+, per Senate Bill 399.
+
+## [1.570.4] - 2026-02-19 02:12:57
+
+### Fixed
+
+- Missouri Social Security deduction now correctly requires age 62+ (SSDI has no age limit per MO Form MO-A Section C).
+
+## [1.570.3] - 2026-02-19 01:56:51
+
+### Changed
+
+- Updated state CTCs list to include Georgia CTC, Maine Dependent Exemption Credit, and corrected Massachusetts credit reference.
+- Updated state EITCs list to separate Maryland and Virginia into refundable and non-refundable components.
+
+## [1.570.2] - 2026-02-19 00:48:35
+
+### Fixed
+
+- Fix Arkansas income tax credits to use net taxable income (AGI) when low income tax table applies.
+
+## [1.570.1] - 2026-02-19 00:30:41
+
+### Fixed
+
+- Fix MN CTC eligible child check to require dependent status.
+
+## [1.570.0] - 2026-02-19 00:12:01
+
+### Added
+
+- Add Wisconsin retirement income exclusion (Line 16, $24K, age 67+).
+
 ## [1.569.0] - 2026-02-18 21:12:35
 
 ### Changed
@@ -15275,6 +15324,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.570.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.6...1.570.7
+[1.570.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.5...1.570.6
+[1.570.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.4...1.570.5
+[1.570.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.3...1.570.4
+[1.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.2...1.570.3
+[1.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.1...1.570.2
+[1.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.570.0...1.570.1
+[1.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.569.0...1.570.0
 [1.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.3...1.569.0
 [1.568.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.2...1.568.3
 [1.568.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.568.1...1.568.2

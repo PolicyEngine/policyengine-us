@@ -19,6 +19,12 @@ class SelectiveTestRunner:
         self.repo_root = Path.cwd()
 
         # Define regex patterns for matching files to tests
+        # Paths that contain only aggregation lists and should not
+        # trigger any tests (the Full Suite already covers them).
+        self.skip_patterns = [
+            r"policyengine_us/parameters/gov/states/household/",
+        ]
+
         self.test_patterns = [
             # Rule 1: Match gov folders (excluding states and contrib) to their test directories
             {
@@ -295,6 +301,11 @@ class SelectiveTestRunner:
                     ]
                 ):
                     continue
+
+            # Skip files that are aggregation-only and need no
+            # selective tests (the Full Suite already covers them).
+            if any(re.search(sp, file) for sp in self.skip_patterns):
+                continue
 
             # Check against regex patterns
             for pattern in self.test_patterns:

@@ -16,4 +16,5 @@ class mt_tanf(Variable):
     def formula(spm_unit, period, parameters):
         standard_payment = spm_unit("mt_tanf_payment_standard", period)
         countable_income = spm_unit("mt_tanf_countable_income", period)
-        return max_(standard_payment - countable_income, 0)
+        benefit = max_(standard_payment - countable_income, 0)
+        return min_(benefit, standard_payment)

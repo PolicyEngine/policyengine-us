@@ -12,4 +12,5 @@ class ny_tanf(Variable):
     def formula(spm_unit, period, parameters):
         need_standard = spm_unit("ny_tanf_need_standard", period)
         income = spm_unit("ny_tanf_countable_income", period)
-        return max_(need_standard - income, 0)
+        benefit = max_(need_standard - income, 0)
+        return min_(benefit, need_standard)
