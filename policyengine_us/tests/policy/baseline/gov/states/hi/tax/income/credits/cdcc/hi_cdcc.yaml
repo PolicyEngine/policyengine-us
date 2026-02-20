@@ -41,3 +41,39 @@
     state_code: HI
   output:
     hi_cdcc: 15
+
+- name: Case 5, negative min_head_spouse_earned with zero expenses.
+  period: 2022
+  input:
+    hi_agi: 175_000
+    hi_cdcc_min_head_spouse_earned: -12_797
+    hi_dependent_care_benefits: 0
+    hi_cdcc_eligible: true
+    state_code: HI
+  output:
+    # min_(0, -12_797) clamped to 0 by max_(0, ...)
+    hi_cdcc: 0
+
+- name: Case 6, negative min_head_spouse_earned with positive expenses.
+  period: 2022
+  input:
+    hi_agi: 175_000
+    hi_cdcc_min_head_spouse_earned: -12_797
+    hi_dependent_care_benefits: 5_000
+    hi_cdcc_eligible: true
+    state_code: HI
+  output:
+    # min_(5_000, -12_797) clamped to 0 by max_(0, ...)
+    hi_cdcc: 0
+
+- name: Case 7, zero min_head_spouse_earned.
+  period: 2022
+  input:
+    hi_agi: 50_000
+    hi_cdcc_min_head_spouse_earned: 0
+    hi_dependent_care_benefits: 3_000
+    hi_cdcc_eligible: true
+    state_code: HI
+  output:
+    # min_(3_000, 0) = 0
+    hi_cdcc: 0
