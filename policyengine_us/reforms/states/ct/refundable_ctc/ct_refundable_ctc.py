@@ -16,10 +16,6 @@ def create_ct_refundable_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ct.refundable_ctc
 
-            # Check if the credit is in effect
-            if not p.in_effect:
-                return tax_unit("adjusted_gross_income", period) * 0
-
             # Count qualifying children (dependents under age limit)
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
@@ -42,7 +38,7 @@ def create_ct_refundable_ctc() -> Reform:
     def modify_parameters(parameters):
         parameters.gov.states.ct.tax.income.credits.refundable.update(
             start=instant("2026-01-01"),
-            stop=instant("2030-12-31"),
+            stop=instant("2035-12-31"),
             value=["ct_eitc", "ct_refundable_ctc"],
         )
         return parameters

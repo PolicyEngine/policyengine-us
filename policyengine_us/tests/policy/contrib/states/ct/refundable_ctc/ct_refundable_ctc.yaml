@@ -195,33 +195,6 @@
   output:
     ct_refundable_ctc: 0
 
-# Test: Credit is zero when not in effect
-- name: Credit is zero when not in effect
-  period: 2026
-  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
-  input:
-    gov.contrib.states.ct.refundable_ctc.in_effect: false
-    people:
-      parent:
-        age: 35
-      child1:
-        age: 10
-        is_tax_unit_dependent: true
-      child2:
-        age: 8
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [parent, child1, child2]
-        filing_status: SINGLE
-        adjusted_gross_income: 50_000
-    households:
-      household:
-        members: [parent, child1, child2]
-        state_code: CT
-  output:
-    ct_refundable_ctc: 0
-
 # Test: Child at age limit (18) does not qualify
 - name: Child at age limit does not qualify
   period: 2026
