@@ -15,4 +15,5 @@ class ma_tafdc_potential_main_benefit(Variable):
         countable_income = spm_unit(
             "ma_tafdc_applicable_income_grant_amount", period
         )
-        return max_(0, payment_standard - countable_income)
+        benefit = max_(0, payment_standard - countable_income)
+        return min_(benefit, payment_standard)

@@ -19,11 +19,11 @@ brackets:
 
 metadata:
   reference:
-    - title: LA Legal Code | Section 47:32, part (A)
+    - title: Louisiana Revised Statutes, RS 47:32 - Tax on individuals
       href: https://www.legis.la.gov/legis/Law.aspx?d=101946
-    - title: Individual Income Tax-Determination of Tax
+    # Pre-2025 graduated brackets; replaced by flat 3% rate for 2025+ per Act 11.
+    - title: Individual Income Tax - Determination of Tax
       href: https://revenue.louisiana.gov/tax-education-and-faqs/faqs/income-tax-reform/what-are-the-individual-income-tax-rates-and-brackets/
-    # tax rates not mentioned in tax forms
   label: Louisiana income tax rate surviving spouse filers pre 2025
   type: marginal_rate
   threshold_unit: currency-USD

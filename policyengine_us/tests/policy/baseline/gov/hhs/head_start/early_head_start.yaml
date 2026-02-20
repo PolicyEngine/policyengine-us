@@ -15,3 +15,13 @@
     is_early_head_start_eligible: false
   output:
     early_head_start: 0
+
+- name: Case 3, eligible but does not take up early head start.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_early_head_start_eligible: true
+    takes_up_early_head_start_if_eligible: false
+  output:
+    early_head_start: 0

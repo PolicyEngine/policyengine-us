@@ -18,8 +18,9 @@ class or_tanf(Variable):
         payment_standard = spm_unit("or_tanf_payment_standard", period)
         adjusted_income = spm_unit("or_tanf_adjusted_income", period)
         calculated_benefit = max_(payment_standard - adjusted_income, 0)
+        capped_benefit = min_(calculated_benefit, payment_standard)
         return where(
-            calculated_benefit >= p.minimum_benefit,
-            calculated_benefit,
+            capped_benefit >= p.minimum_benefit,
+            capped_benefit,
             0,
         )

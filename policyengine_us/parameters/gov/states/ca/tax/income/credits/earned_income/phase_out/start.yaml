@@ -14,6 +14,10 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
     - title: California Form 3514 instructions (2023)
       href: https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html
+    - title: 2024 California Earned Income Tax Credit Booklet
+      href: https://www.ftb.ca.gov/forms/2024/2024-3514-booklet.html
+    - title: 2025 California Earned Income Tax Credit Booklet
+      href: https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.html
 brackets:
   - threshold:
       2021-01-01: 0
@@ -22,6 +26,8 @@ brackets:
         2021-01-01: 3_922
         2022-01-01: 4_248
         2023-01-01: 4_380
+        2024-01-01: 4_525
+        2025-01-01: 4_661
       metadata:
         uprating: gov.states.ca.cpi
   - threshold:
@@ -31,6 +37,8 @@ brackets:
         2021-01-01: 5_890
         2022-01-01: 6_379
         2023-01-01: 6_577
+        2024-01-01: 6_794
+        2025-01-01: 6_998
       metadata:
         uprating: gov.states.ca.cpi
   - threshold:
@@ -40,5 +48,7 @@ brackets:
         2021-01-01: 8_268
         2022-01-01: 8_954
         2023-01-01: 9_232
+        2024-01-01: 9_537
+        2025-01-01: 9_823
       metadata:
         uprating: gov.states.ca.cpi

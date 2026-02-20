@@ -1,9 +1,9 @@
-description: Progressive rate schedule for a single filer in New Jersey. 
+description: Progressive rate schedule for a married filing separately filer in New Jersey.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: New Jersey State income tax rates for single filers
+  label: New Jersey State income tax rates for married filing separately filers
   reference:
     - title: 2022 New Jersey Revised Statutes - Title 54A - New Jersey Gross Income Tax Act Section 54A:2-1 - Imposition of tax
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-2-1/
@@ -13,6 +13,8 @@ metadata:
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=63
     - title: 2024 New Jersey Gross Income Tax — Tax Rate Schedules
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=65
+    - title: 2025 NJ-1040 Instructions - Tax Rate Schedules
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=65
 brackets:
   - threshold:
       1991-01-01: 0

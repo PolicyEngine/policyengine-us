@@ -1,0 +1,26 @@
+description: Arizona uses this share of the 1992 federal poverty guideline as the payment standard under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: /1
+  period: year
+  label: Arizona TANF payment standard rate
+  reference:
+    - title: A.R.S. § 46-207.01 - Temporary assistance for needy families; amount of cash assistance
+      href: https://www.azleg.gov/ars/46/00207-01.htm
+    - title: 2023 Arizona TANF State Plan
+      href: https://des.az.gov/sites/default/files/dl/tanf_state_plan_oct_2023.pdf#page=21
+    - title: Arizona DES CNAP Manual - What's Changed 11/27/2023 (TANF Benefit Amount Increase effective 12/01/2023)
+      href: https://dbmefaapolicy.azdes.gov/Archived_Policy/baggage/2023-11-27_WhatChanged.pdf#page=1
+
+# Per A.R.S. § 46-207.01: "shall not be less than thirty-six per cent of the 1992 federal poverty level"
+values:
+  # Statutory floor per A.R.S. 46-207.01
+  1997-01-01: 0.36
+  # 20% benefit cut during Great Recession (0.36 * 0.80 = 0.288)
+  # Sources: CBPP, CLASP, Arizona Center for Economic Progress
+  # https://www.cbpp.org/blog/arizonas-tanf-experience-highlights-problems-with-block-granting-safety-net-programs
+  # https://www.clasp.org/blog/arizona-cuts-tanf-lifetime-limit-12-months-harshest-country/
+  # https://azeconcenter.org/propublica-feature-strengthens-case-for-improving-cash-assistance-in-arizona/
+  2009-07-01: 0.288
+  # Restored to statutory floor
+  2023-12-01: 0.36

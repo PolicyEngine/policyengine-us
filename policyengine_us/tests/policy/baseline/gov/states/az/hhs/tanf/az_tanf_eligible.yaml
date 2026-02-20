@@ -1,0 +1,278 @@
+# Unit tests for Arizona TANF eligibility
+# Requires: demographic eligibility, immigration eligibility, income eligibility, resource eligibility
+# Reference: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+
+- name: Case 1, eligible family with minor child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_eligible: true
+
+- name: Case 2, ineligible due to no minor child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        pre_subsidy_rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # No minor child (single adult) - fails demographic eligibility
+    az_tanf_eligible: false
+
+- name: Case 3, ineligible due to high income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # High income fails income test
+    # $2,000 - $90 = $1,910, * 0.70 = $1,337 countable
+    # Payment standard (A1 for 2): ~$276
+    # $1,337 > $276 - fails income eligibility
+    az_tanf_eligible: false
+
+- name: Case 4, ineligible due to high assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $3,000 > $2,000 resource limit
+    az_tanf_eligible: false
+
+- name: Case 5, eligible pregnant woman.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_pregnant: true
+        pre_subsidy_rent: 4_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Pregnant woman is demographically eligible
+    az_tanf_eligible: true
+
+- name: Case 6, eligible family at income threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 7_200
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Family of 3 with low income
+    # Countable income: ($300 - $90) * 0.70 = $147
+    # Payment standard (A1): ~$347
+    # $147 < $347 - eligible
+    az_tanf_eligible: true
+
+- name: Case 7, ineligible due to undocumented immigration status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        immigration_status: UNDOCUMENTED
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Both members undocumented - fails immigration eligibility
+    az_tanf_eligible: false
+
+- name: Case 8, eligible legal permanent resident.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # LPR is qualified alien - eligible
+    az_tanf_eligible: true
+
+- name: Case 9, resources exactly at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000  # Exactly at $2,000 limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Resources exactly at $2,000 limit - eligible
+    az_tanf_eligible: true
+
+- name: Case 10, resources one dollar over limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_001  # $1 over limit
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Resources $1 over limit - ineligible
+    az_tanf_eligible: false

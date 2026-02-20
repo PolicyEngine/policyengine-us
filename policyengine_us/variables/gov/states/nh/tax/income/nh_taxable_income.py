@@ -8,7 +8,7 @@ class nh_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.gencourt.state.nh.us/rsa/html/V/77/77-4.htm",
+        "https://gc.nh.gov/rsa/html/V/77/77-mrg.htm",
         "https://www.revenue.nh.gov/forms/2023/documents/dp-10-2022-print.pdf",
     )
     defined_for = StateCode.NH

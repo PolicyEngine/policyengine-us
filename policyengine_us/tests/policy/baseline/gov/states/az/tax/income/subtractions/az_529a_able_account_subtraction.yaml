@@ -1,0 +1,118 @@
+# Arizona 529A ABLE Account Contributions Subtraction Tests
+# Per A.R.S. 43-1022 and 2025 Form 140 Instructions, Line 34b
+#
+# Subtraction limits by filing status:
+# - Single: $2,000 per beneficiary
+# - Head of Household: $2,000 per beneficiary
+# - Married Filing Jointly: $4,000 per beneficiary
+# - Married Filing Separately: $4,000 combined per beneficiary
+
+- name: Single filer with ABLE contribution under limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    able_contributions: 1_500
+  output:
+    # Contribution of $1,500 is under the $2,000 limit for single filers
+    az_529a_able_account_subtraction: 1_500
+
+- name: Single filer with ABLE contribution at limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    able_contributions: 2_000
+  output:
+    # Contribution of $2,000 equals the limit for single filers
+    az_529a_able_account_subtraction: 2_000
+
+- name: Single filer with ABLE contribution over limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    able_contributions: 3_000
+  output:
+    # Contribution of $3,000 exceeds the $2,000 limit - capped at $2,000
+    az_529a_able_account_subtraction: 2_000
+
+- name: Head of household filer with ABLE contribution
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    able_contributions: 2_500
+  output:
+    # HOH has same $2,000 limit as single - contribution capped
+    az_529a_able_account_subtraction: 2_000
+
+- name: Joint filer with ABLE contribution under limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    able_contributions: 3_500
+  output:
+    # Joint filers have $4,000 limit - $3,500 is under limit
+    az_529a_able_account_subtraction: 3_500
+
+- name: Joint filer with ABLE contribution at limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    able_contributions: 4_000
+  output:
+    # Joint filers have $4,000 limit
+    az_529a_able_account_subtraction: 4_000
+
+- name: Joint filer with ABLE contribution over limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    able_contributions: 5_000
+  output:
+    # Joint filers have $4,000 limit - contribution capped
+    az_529a_able_account_subtraction: 4_000
+
+- name: Separate filer with ABLE contribution under limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    able_contributions: 2_000
+  output:
+    # Separate filers have $4,000 combined limit per beneficiary
+    # Individual contribution of $2,000 is under combined limit
+    az_529a_able_account_subtraction: 2_000
+
+- name: Separate filer with ABLE contribution at combined limit
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    able_contributions: 4_000
+  output:
+    # Separate filers have $4,000 combined limit per beneficiary
+    az_529a_able_account_subtraction: 4_000
+
+- name: Zero ABLE contributions
+  period: 2025
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    able_contributions: 0
+  output:
+    az_529a_able_account_subtraction: 0
+
+- name: Non-Arizona resident - no subtraction
+  period: 2025
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    able_contributions: 1_500
+  output:
+    # Non-Arizona residents do not receive Arizona subtractions
+    az_529a_able_account_subtraction: 0

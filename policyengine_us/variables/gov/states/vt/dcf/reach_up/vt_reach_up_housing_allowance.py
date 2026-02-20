@@ -20,6 +20,19 @@ class vt_reach_up_housing_allowance(Variable):
         in_chittenden = county == County.CHITTENDEN_COUNTY_VT
         # Select maximum based on county
         housing_max = where(in_chittenden, p.chittenden, p.non_chittenden)
-        # Cap actual housing costs at maximum
-        housing_cost = spm_unit("housing_cost", period)
+        # Cap actual housing costs at maximum.
+        # Uses pre-subsidy rent to avoid circular dependency
+        # through housing assistance and HUD annual income.
+        pre_subsidy_rent = add(spm_unit, period, ["pre_subsidy_rent"])
+        other_housing = add(
+            spm_unit,
+            period,
+            [
+                "real_estate_taxes",
+                "homeowners_association_fees",
+                "mortgage_payments",
+                "homeowners_insurance",
+            ],
+        )
+        housing_cost = pre_subsidy_rent + other_housing
         return min_(housing_cost, housing_max)

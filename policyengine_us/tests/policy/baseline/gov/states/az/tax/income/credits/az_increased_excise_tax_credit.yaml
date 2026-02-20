@@ -68,4 +68,48 @@
     az_increased_excise_tax_credit_eligible: True
     tax_unit_size: 5
   output:
-    az_increased_excise_tax_credit: 100 
+    az_increased_excise_tax_credit: 100
+
+# =============================================================================
+# 2025 Tax Year Tests
+# Increased Excise Tax Credit: $25 per person, max $100
+#
+# Income Thresholds (unchanged):
+# - Single/Separate: $12,500
+# - Joint/HOH: $25,000
+# =============================================================================
+
+- name: 2025 - Single person eligible
+  period: 2025
+  input:
+    az_increased_excise_tax_credit_eligible: true
+    tax_unit_size: 1
+  output:
+    # 1 person * $25 = $25
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 - Family of 4 at max
+  period: 2025
+  input:
+    az_increased_excise_tax_credit_eligible: true
+    tax_unit_size: 4
+  output:
+    # 4 people * $25 = $100 (at max)
+    az_increased_excise_tax_credit: 100
+
+- name: 2025 - Large family capped at max
+  period: 2025
+  input:
+    az_increased_excise_tax_credit_eligible: true
+    tax_unit_size: 6
+  output:
+    # 6 people * $25 = $150, but capped at $100
+    az_increased_excise_tax_credit: 100
+
+- name: 2025 - Not eligible gets zero
+  period: 2025
+  input:
+    az_increased_excise_tax_credit_eligible: false
+    tax_unit_size: 4
+  output:
+    az_increased_excise_tax_credit: 0

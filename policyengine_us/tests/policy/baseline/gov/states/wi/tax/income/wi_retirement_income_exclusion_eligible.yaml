@@ -1,0 +1,53 @@
+- name: Single age 68, 2025 - eligible for retirement income exclusion
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    age: 68
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_eligible: true
+
+- name: Single age 66, 2025 - not eligible for retirement income exclusion
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    age: 66
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_eligible: false
+
+- name: Single age 67, 2025 - eligible at exact min age
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    age: 67
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_eligible: true
+
+- name: Dependent age 68 - tax unit NOT eligible
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+      person3:
+        age: 68
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_eligible: false

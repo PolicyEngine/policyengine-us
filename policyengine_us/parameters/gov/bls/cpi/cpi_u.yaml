@@ -1352,17 +1352,18 @@ values:
   2025-06-01: 321.500
   2025-07-01: 322.132
   2025-08-01: 323.364
-  # CBO projections from CBO Jan 2025 forecast for future periods.
-  2026-02-01: 325.9 # 2027 value.
-  2027-02-01: 333.5 # 2028 value.
-  2028-02-01: 341.1 # 2029 value.
-  2029-02-01: 348.7 # 2030 value.
-  2030-02-01: 356.5 # 2031 value.
-  2031-02-01: 364.5 # 2032 value.
-  2032-02-01: 372.7 # 2033 value.
-  2033-02-01: 381.0 # 2034 value.
-  2034-02-01: 389.6 # 2035 value.
-  # Values for 2035-2100 are set programmatically in uprating_extensions.py
+  # CBO projections from CBO Feb 2026 forecast for future periods.
+  2026-02-01: 331.8 # 2027 value.
+  2027-02-01: 340.3 # 2028 value.
+  2028-02-01: 348.3 # 2029 value.
+  2029-02-01: 356.3 # 2030 value.
+  2030-02-01: 364.3 # 2031 value.
+  2031-02-01: 372.6 # 2032 value.
+  2032-02-01: 381.0 # 2033 value.
+  2033-02-01: 389.6 # 2034 value.
+  2034-02-01: 398.4 # 2035 value.
+  2035-02-01: 407.3 # 2036 value.
+  # Values for 2036-2100 are set programmatically in uprating_extensions.py
 metadata:
   unit: currency-USD
   label: CPI-U
@@ -1376,3 +1377,7 @@ metadata:
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 158
       href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
+    - title: CBO | Economic Projections | February 2026
+      # Source: https://www.cbo.gov/data/budget-economic-data
+      # Sheet: 2. Calendar Year, Row 53: CPI-U
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx

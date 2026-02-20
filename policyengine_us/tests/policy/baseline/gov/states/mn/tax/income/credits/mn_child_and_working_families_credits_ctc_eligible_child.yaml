@@ -1,16 +1,18 @@
-- name: 18 year olds are not eligible
+- name: 18 year old dependent is not eligible
   period: 2024
   input:
     age: 18
+    is_tax_unit_dependent: true
     meets_eitc_identification_requirements: true
     state_code: MN
   output:
     mn_child_and_working_families_credits_ctc_eligible_child: false
 
-- name: 17 year olds are eligible
+- name: 17 year old dependent is eligible
   period: 2024
   input:
     age: 17
+    is_tax_unit_dependent: true
     meets_eitc_identification_requirements: true
     state_code: MN
   output:
@@ -20,7 +22,18 @@
   period: 2024
   input:
     age: 17
+    is_tax_unit_dependent: true
     meets_eitc_identification_requirements: false
+    state_code: MN
+  output:
+    mn_child_and_working_families_credits_ctc_eligible_child: false
+
+- name: Non-dependent minor is not eligible
+  period: 2024
+  input:
+    age: 16
+    is_tax_unit_dependent: false
+    meets_eitc_identification_requirements: true
     state_code: MN
   output:
     mn_child_and_working_families_credits_ctc_eligible_child: false

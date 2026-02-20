@@ -16,6 +16,8 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=14
     - title: 2024 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=15
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=15
 brackets:
   - threshold:
       2021-01-01: 0
@@ -25,8 +27,9 @@ brackets:
         2022-01-01: 7_250
         2023-01-01: 7_800
         2024-01-01: 8_250
+        2025-01-01: 8_500
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -39,8 +42,9 @@ brackets:
         2022-01-01: 5_800
         2023-01-01: 6_250
         2024-01-01: 6_600
-      mmetadata:
-        uprating: 
+        2025-01-01: 6_800
+      metadata:
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -53,8 +57,9 @@ brackets:
         2022-01-01: 4_350
         2023-01-01: 4_700
         2024-01-01: 5_000
+        2025-01-01: 5_100
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -67,8 +72,9 @@ brackets:
         2022-01-01: 2_900
         2023-01-01: 3_100
         2024-01-01: 3_300
+        2025-01-01: 3_400
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -81,6 +87,7 @@ brackets:
         2022-01-01: 1_450
         2023-01-01: 1_550
         2024-01-01: 1_650
+        2025-01-01: 1_700
       metadata:
         uprating: 
           parameter: gov.irs.uprating

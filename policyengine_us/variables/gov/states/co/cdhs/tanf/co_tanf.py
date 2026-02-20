@@ -19,4 +19,5 @@ class co_tanf(Variable):
                 "co_tanf_countable_gross_unearned_income",
             ],
         )
-        return max_(grant_standard - income, 0)
+        benefit = max_(grant_standard - income, 0)
+        return min_(benefit, grant_standard)

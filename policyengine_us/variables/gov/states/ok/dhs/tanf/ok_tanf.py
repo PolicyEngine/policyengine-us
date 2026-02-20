@@ -20,6 +20,9 @@ class ok_tanf(Variable):
 
         # Per OAC 340:10-3-59: Benefit = Payment Standard - Countable Income
         benefit = max_(payment_standard - countable_income, 0)
+        capped_benefit = min_(benefit, payment_standard)
 
         # Per OAC 340:10-3-59: Minimum benefit is $10; if less, no payment issues
-        return where(benefit >= p.benefit.minimum_benefit, benefit, 0)
+        return where(
+            capped_benefit >= p.benefit.minimum_benefit, capped_benefit, 0
+        )

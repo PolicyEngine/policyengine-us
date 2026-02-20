@@ -1,0 +1,155 @@
+- name: Case 1, Two-Parent Household, both hours higher than 33. 
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [true, true, false]
+
+- name: Case 2, Two-Parent Household, one parent hours lower than 33. 
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 34
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [false, true, false]
+
+- name: Case 3, Two-Parent Household, both hours lower than 33. 
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 31
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 4
+      person3: 
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [false, false, false]
+
+- name: Case 4, Single-Parent Household, has child under 6. 
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 27
+      person2: 
+        age: 5
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [true, false]
+
+- name: Case 5, Single-Parent Household, no child under 6. 
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 27
+      person2: 
+        age: 8
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [false, false]
+
+- name: Case 6, Single-Parent Household, no child under 6, eligible because worked 33 hours a week. 
+  period: 2023-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person2: 
+        age: 8
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_is_working: [true, false]

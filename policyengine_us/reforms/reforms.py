@@ -24,7 +24,6 @@ from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
 from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
 from .states.ny.s04487 import create_ny_s04487_newborn_credit_reform
-from .states.ny.s9077 import create_ny_s9077_escc_itin_reform
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -112,6 +111,7 @@ from .local.ny.mamdani_income_tax import (
 from .states.ut import (
     create_ut_refundable_eitc_reform,
     create_ut_hb210_reform,
+    create_ut_hb210_s2_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -130,6 +130,9 @@ from .states.ri.exemption.ri_exemption_reform import (
 )
 from .states.de.dependent_credit.de_dependent_credit_reform import (
     create_de_dependent_credit_reform_fn,
+)
+from .states.oregon.dependent_exemption_credit.or_dependent_exemption_credit_reform import (
+    create_or_dependent_exemption_credit_reform_fn,
 )
 from .states.va.dependent_exemption.va_dependent_exemption_reform import (
     create_va_dependent_exemption_reform_fn,
@@ -199,7 +202,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
     )
-    ny_s9077_escc_itin = create_ny_s9077_escc_itin_reform(parameters, period)
 
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
@@ -298,6 +300,8 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     ut_hb210 = create_ut_hb210_reform(parameters, period)
 
+    ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -314,6 +318,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
     de_dependent_credit = create_de_dependent_credit_reform_fn(
         parameters, period
+    )
+    or_dependent_exemption_credit = (
+        create_or_dependent_exemption_credit_reform_fn(parameters, period)
     )
     va_dependent_exemption = create_va_dependent_exemption_reform_fn(
         parameters, period
@@ -351,7 +358,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         sc_h3492_eitc_refundable,
         ny_a06774_enhanced_cdcc,
         ny_s04487_newborn_credit,
-        ny_s9077_escc_itin,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
@@ -386,6 +392,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_mamdani_income_tax,
         ut_refundable_eitc,
         ut_hb210,
+        ut_hb210_s2,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -394,6 +401,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_ctc,
         ri_exemption,
         de_dependent_credit,
+        or_dependent_exemption_credit,
         va_dependent_exemption,
         va_hb979,
         aca_ptc_additional_bracket,

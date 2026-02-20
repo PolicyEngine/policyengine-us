@@ -42,3 +42,59 @@
       members: [person1, person2]
   output:
     az_aged_exemption: [0, 2_100]
+
+# =============================================================================
+# 2025 Tax Year Tests
+# Aged Exemption: $2,100 per person 65 or older (unchanged from 2022)
+# =============================================================================
+
+- name: 2025 - Single elderly person
+  period: 2025
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 68
+    household:
+      members: [person1]
+  output:
+    az_aged_exemption: [2_100]
+
+- name: 2025 - Person at threshold age 65
+  period: 2025
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 65
+    household:
+      members: [person1]
+  output:
+    az_aged_exemption: [2_100]
+
+- name: 2025 - Person just under threshold age 64
+  period: 2025
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 64
+    household:
+      members: [person1]
+  output:
+    az_aged_exemption: [0]
+
+- name: 2025 - Elderly couple both over 65
+  period: 2025
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 70
+      person2:
+        az_aged_exemption_eligible_person: true
+        age: 68
+    household:
+      members: [person1, person2]
+  output:
+    az_aged_exemption: [2_100, 2_100]

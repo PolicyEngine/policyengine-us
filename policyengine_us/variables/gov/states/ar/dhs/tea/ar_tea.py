@@ -31,8 +31,10 @@ class ar_tea(Variable):
 
         # When gross income >= trigger: payment is 50% of max (no subtraction)
         # When gross income < trigger: payment is max - countable income
+        below_trigger_benefit = max_(maximum_benefit - countable_income, 0)
+        capped_benefit = min_(below_trigger_benefit, maximum_benefit)
         return where(
             above_trigger,
             reduced_payment,
-            max_(maximum_benefit - countable_income, 0),
+            capped_benefit,
         )

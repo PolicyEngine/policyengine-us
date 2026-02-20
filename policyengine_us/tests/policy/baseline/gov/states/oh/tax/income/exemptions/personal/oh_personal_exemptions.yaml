@@ -57,3 +57,200 @@
         state_code: OH
   output:
     oh_personal_exemptions: 3_800
+
+- name: Pre-2025 high income still receives exemption
+  period: 2024
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 1_000_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Pre-2025: no phase-out to $0, so $1,900 per person at $80k+ bracket
+    oh_personal_exemptions: 3_800
+
+- name: 2025 income below phase-out threshold receives exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 500_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Below $750k threshold in 2025, so $1,900 per person
+    oh_personal_exemptions: 3_800
+
+- name: 2025 income above phase-out threshold receives zero
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 750_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # Above $750k threshold in 2025, exemption phases out to $0
+    oh_personal_exemptions: 0
+
+- name: 2026 income below new phase-out threshold receives exemption
+  period: 2026
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 400_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # Below $500k threshold in 2026, so $1,900 per person
+    oh_personal_exemptions: 3_800
+
+- name: 2026 income above phase-out threshold receives zero
+  period: 2026
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+      person2:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 500_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # Above $500k threshold in 2026+, exemption phases out to $0
+    oh_personal_exemptions: 0
+
+- name: Zero AGI receives full exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 0
+    households:
+      household:
+        state_code: OH
+  output:
+    # AGI = $0 is in the "$40,000 or less" bracket -> $2,400
+    oh_personal_exemptions: 2_400
+
+- name: Exactly at $40,000 boundary receives highest exemption
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 40_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # "$40,000 or less" -> $2,400
+    oh_personal_exemptions: 2_400
+
+- name: Just above $40,000 boundary drops to next tier
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 40_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # "$40,001 - $80,000" -> $2,150
+    oh_personal_exemptions: 2_150
+
+- name: Exactly at $80,000 boundary stays in middle tier
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 80_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # "$40,001 - $80,000" includes $80,000 -> $2,150
+    oh_personal_exemptions: 2_150
+
+- name: Just above $80,000 boundary drops to third tier
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 80_001
+    households:
+      household:
+        state_code: OH
+  output:
+    # "$80,001 - $749,999" -> $1,900
+    oh_personal_exemptions: 1_900
+
+- name: Exactly at $750,000 receives zero exemption (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        oh_personal_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_agi: 750_000
+    households:
+      household:
+        state_code: OH
+  output:
+    # "$750,000 or greater" -> $0
+    oh_personal_exemptions: 0
