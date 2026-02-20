@@ -22,8 +22,10 @@ class wa_tanf_countable_earned_income(Variable):
         # Step 1: Deduct flat family earnings disregard (if in effect)
         # The $500 flat disregard was added by HB 1447, effective Aug 1, 2024.
         # Before that date, only the 50% disregard applied.
-        flat_disregard = where(p.in_effect, p.amount, 0)
-        remainder = max_(gross_earned - flat_disregard, 0)
+        if p.in_effect:
+            remainder = max_(gross_earned - p.amount, 0)
+        else:
+            remainder = gross_earned
 
         # Step 2: Subtract (disregard) 50% of remaining income
         # Per WAC 388-450-0170(3): "subtract 50% of the remaining...income"
