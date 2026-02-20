@@ -9,19 +9,21 @@ class itemized_taxable_income_deductions_reduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.deductions.itemized.reduction
+        p = parameters(period).gov.irs.deductions.itemized.limitation
         if p.applies:
             agi = tax_unit("adjusted_gross_income", period)
 
             filing_status = tax_unit("filing_status", period)
-            agi_threshold = p.agi_threshold[filing_status]
+            agi_threshold = p.applicable_amount[filing_status]
             agi_excess = max_(0, agi - agi_threshold)
-            agi_excess_reduction = agi_excess * p.rate.excess_agi
+            agi_excess_reduction = agi_excess * p.agi_rate
             maximum_deductions = tax_unit(
                 "total_itemized_taxable_income_deductions", period
             )
-            maximum_deductions_reduction = maximum_deductions * p.rate.base
-            if p.amended_structure.applies:
+            maximum_deductions_reduction = (
+                maximum_deductions * p.itemized_deduction_rate
+            )
+            if p.obbb.applies:
                 top_rate_threshold = parameters(
                     period
                 ).gov.irs.income.bracket.thresholds["6"][filing_status]
@@ -36,8 +38,6 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
-                return (
-                    p.amended_structure.rate * lesser_of_deductions_or_excess
-                )
+                return p.obbb.rate * lesser_of_deductions_or_excess
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0
