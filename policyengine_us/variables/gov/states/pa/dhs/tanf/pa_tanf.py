@@ -29,9 +29,8 @@ class pa_tanf(Variable):
             spm_unit, period, ["tanf_gross_earned_income"]
         )
         has_earned_income = gross_earned_income > 0
-        uses_wer = p.uses_deduction == False
         wer_amount = where(
-            uses_wer & has_earned_income,
+            ~p.deduction_applies & has_earned_income,
             p.reimbursement,
             0,
         )

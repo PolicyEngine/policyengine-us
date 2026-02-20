@@ -29,7 +29,7 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         # Apply Work Expense Deduction (WED) only when in effect (post-2020)
         # Before 2020, Work Expense Reimbursement (WER) was used instead (added to benefit)
         wed_amount = where(
-            p.work_expense.uses_deduction,
+            p.work_expense.deduction_applies,
             p.work_expense.deduction,
             0,
         )
