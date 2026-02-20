@@ -1,0 +1,14 @@
+description: Texas uses this flag to determine whether the expanded 8-category age groups apply for provider payment rates under the Child Care Services program.
+values:
+  2020-10-01: false
+  2025-01-01: true  # Actual effective date: 2025-01-13
+
+metadata:
+  unit: bool
+  period: month
+  label: Texas CCS uses expanded age groups
+  reference:
+    - title: WD 19-24, Change 1 - BCY25 Provider Payment Rates (8 age groups)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/19-24-ch1-twc.pdf#page=2
+    - title: 26 TAC §746.1601 - Child/Caregiver Ratios
+      href: https://www.law.cornell.edu/regulations/texas/26-Tex-Admin-Code-SS-746-1601

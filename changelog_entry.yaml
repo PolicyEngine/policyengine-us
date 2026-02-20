@@ -1,0 +1,6 @@
+- bump: minor
+  changes:
+    changed:
+      - Update Texas CCS copayment formula to derive linear rate equations from PSoC Sliding Fee Scale chart endpoints instead of bracket interpolation.
+      - Simplify Texas CCS copayment parameters to store only chart endpoint values (1% and 75% SMI for first child, 1% SMI for additional child).
+      - Update Texas CCS payment rate parameters for BCY25 and BCY26 with new age groups.
