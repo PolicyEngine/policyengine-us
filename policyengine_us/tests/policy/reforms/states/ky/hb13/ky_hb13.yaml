@@ -1,0 +1,154 @@
+# Test Kentucky HB 13 Graduated Income Tax Reform
+# For 2027+: 3.5% up to $250k, 6% $250k-$300k, flat 6% on ALL income if >$300k
+
+- name: KY HB 13 - income below $250k threshold (single filing)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 100000 * 0.035 = 3500
+    ky_income_tax_before_non_refundable_credits_indiv: 3500
+
+- name: KY HB 13 - income between $250k and $300k (graduated rates)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 280_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 250000 * 0.035 + 30000 * 0.06 = 8750 + 1800 = 10550
+    ky_income_tax_before_non_refundable_credits_indiv: 10550
+
+- name: KY HB 13 - income at exactly $300k threshold (still graduated)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 250000 * 0.035 + 50000 * 0.06 = 8750 + 3000 = 11750
+    ky_income_tax_before_non_refundable_credits_indiv: 11750
+
+- name: KY HB 13 - income above $300k (cliff - flat 6% on ENTIRE income)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 300_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CLIFF: 300001 * 0.06 = 18000.06
+    ky_income_tax_before_non_refundable_credits_indiv: 18000.06
+
+- name: KY HB 13 - high income above cliff
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CLIFF: 500000 * 0.06 = 30000
+    ky_income_tax_before_non_refundable_credits_indiv: 30000
+
+- name: KY HB 13 - joint filing above cliff
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_joint: 400_000
+      person2:
+        age: 43
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # CLIFF: 400000 * 0.06 = 24000 (on person1 who has the income)
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 24000
+      - 0
+
+- name: KY HB 13 - reform not in effect uses baseline
+  period: 2027
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: false
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Baseline 2027 rate: 3.5% -> 500000 * 0.035 = 17500
+    ky_income_tax_before_non_refundable_credits_indiv: 17500

@@ -148,6 +148,9 @@ from .aca import (
 from .cdcc import (
     create_cdcc_single_parent_work_requirement_reform,
 )
+from .states.ky.graduated_income_tax import (
+    create_ky_graduated_income_tax_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -338,6 +341,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     cdcc_single_parent_work_requirement = (
         create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
+    ky_graduated_income_tax = create_ky_graduated_income_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -408,6 +414,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
         cdcc_single_parent_work_requirement,
+        ky_graduated_income_tax,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
