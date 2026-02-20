@@ -1,0 +1,15 @@
+description: New Jersey classifies partnership and S corporation income as Categories (k) and (p) and disregards the net if negative under the same-category rule.
+values:
+  2021-01-01:
+    - partnership_s_corp_income  # Lines 21-22: Partnership and S-corp
+metadata:
+  unit: list
+  period: year
+  label: NJ Categories (k, p) - Partnership and S-corp
+  reference:
+    - title: N.J.S. 54A:5-1(k)
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: N.J.S. 54A:5-1(p)
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Lines 21-22
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf

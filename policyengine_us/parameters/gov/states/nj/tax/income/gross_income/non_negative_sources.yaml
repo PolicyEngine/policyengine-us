@@ -1,0 +1,20 @@
+description: New Jersey includes these income sources in gross income without loss clamping, as they cannot produce a net loss under N.J.S. 54A:5-1.
+values:
+  2021-01-01:
+    - employment_income  # Line 15: Wages, salaries, tips (Category a)
+    - taxable_interest_income  # Line 16a: Interest (Category e)
+    - dividend_income  # Line 17: Dividends (Category f)
+    - taxable_pension_income  # Line 20a: Pensions, annuities (Category j)
+    - taxable_ira_distributions  # Line 20a: IRA distributions (Category j)
+    - gambling_winnings  # Line 24: Gambling winnings (Category g)
+    - alimony_income  # Line 25: Alimony received (Category n)
+    - miscellaneous_income  # Line 26: Other income
+metadata:
+  unit: list
+  period: year
+  label: NJ non-negative gross income sources
+  reference:
+    - title: N.J.S. 54A:5-1 - New Jersey gross income defined
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Tax Form (Lines 15-27)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf
