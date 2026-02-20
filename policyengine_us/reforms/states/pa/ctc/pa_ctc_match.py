@@ -19,7 +19,12 @@ def create_pa_ctc_match() -> Reform:
             person = tax_unit.members
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
-            young_child = is_dependent & (age < p.age_limit)
+            # Child must have valid SSN to qualify for federal CTC
+            has_valid_ssn = person(
+                "meets_ctc_child_identification_requirements", period
+            )
+            ctc_eligible_child = is_dependent & has_valid_ssn
+            young_child = ctc_eligible_child & (age < p.age_limit)
 
             # Get federal CTC maximum per child (person-level variable)
             federal_ctc_max_per_child = person(
@@ -27,20 +32,29 @@ def create_pa_ctc_match() -> Reform:
             )
 
             # Calculate the portion of federal CTC attributable to young children
+            # Only include children with valid SSN who qualify for federal CTC
             young_child_max = tax_unit.sum(
                 where(young_child, federal_ctc_max_per_child, 0)
             )
-            total_child_max = tax_unit.sum(federal_ctc_max_per_child)
+            total_child_max = tax_unit.sum(
+                where(ctc_eligible_child, federal_ctc_max_per_child, 0)
+            )
 
-            # Get the actual federal CTC value (after phase-in)
-            federal_ctc_value = tax_unit("ctc_value", period)
+            # Calculate the ACTUAL federal CTC benefit received
+            # This is the refundable portion (always received) plus
+            # the nonrefundable portion (only to extent of tax liability)
+            refundable_ctc = tax_unit("refundable_ctc", period)
+            non_refundable_ctc = tax_unit("non_refundable_ctc", period)
+            tax_liability = tax_unit("ctc_limiting_tax_liability", period)
+            usable_non_refundable = min_(non_refundable_ctc, tax_liability)
+            actual_federal_ctc = refundable_ctc + usable_non_refundable
 
             # Calculate the young child portion of the actual CTC
             # (proportional to their share of the maximum)
             young_child_share = where(
                 total_child_max > 0, young_child_max / total_child_max, 0
             )
-            young_child_ctc = federal_ctc_value * young_child_share
+            young_child_ctc = actual_federal_ctc * young_child_share
 
             # Apply match rate
             return young_child_ctc * p.match

@@ -215,7 +215,7 @@
     # PA match = $1,125 * 0.5 = $562.50
     pa_ctc_match: 562.5
 
-- name: PA CTC match - moderate income ($20,000) - full federal CTC phase-in
+- name: PA CTC match - moderate income ($20,000) - refundable CTC only
   period: 2026
   reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
   input:
@@ -236,7 +236,61 @@
         members: [person1, child1]
         state_code: PA
   output:
-    # Federal CTC phase-in: ($20,000 - $2,500) * 0.15 = $2,625
-    # But capped at ctc max of $2,200, so ctc_value = $2,200
-    # PA match = $2,200 * 0.5 = $1,100
-    pa_ctc_match: 1_100
+    # Federal CTC phase-in exceeds max, but income below standard deduction
+    # so tax liability = $0. Only refundable CTC ($1,700) is received.
+    # PA match = $1,700 * 0.5 = $850
+    pa_ctc_match: 850
+
+- name: PA CTC match - low income ($15,000) - refundable CTC capped
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 15_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Federal CTC phase-in: ($15,000 - $2,500) * 0.15 = $1,875
+    # But refundable CTC capped at $1,700, and tax liability = $0
+    # Actual federal CTC received = $1,700
+    # PA match = $1,700 * 0.5 = $850
+    pa_ctc_match: 850
+
+- name: PA CTC match - child without SSN - no federal CTC
+  period: 2026
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: PA
+  output:
+    # Child without SSN does not qualify for federal CTC
+    # Federal CTC = $0 (child fails identification requirements)
+    # PA match = $0 * 0.5 = $0
+    pa_ctc_match: 0
