@@ -294,10 +294,18 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             # Cannot be claimed as dependent
             head_is_dependent = tax_unit("head_is_dependent_elsewhere", period)
             eligible = ~separate & ~head_is_dependent
-            # Apply phaseout based on MAGI
+            # Apply phaseout based on MAGI (per IRC 221)
+            # MAGI for student loan interest = AGI + student loan interest
+            # deduction (since the deduction is subtracted from AGI)
             agi = tax_unit("adjusted_gross_income", period)
+            # Add back the federal student loan interest deduction
+            federal_sli_ald = add(
+                person, period, ["student_loan_interest_ald"]
+            )
+            total_federal_sli = tax_unit.sum(federal_sli_ald)
+            magi = agi + total_federal_sli
             reduction_start = p_fed.reduction.start[filing_status]
-            income_excess = max_(0, agi - reduction_start)
+            income_excess = max_(0, magi - reduction_start)
             divisor = p_fed.reduction.divisor[filing_status]
             reduction_rate = where(divisor > 0, income_excess / divisor, 0)
             reduction_rate = min_(reduction_rate, 1)  # Cap at 100%
