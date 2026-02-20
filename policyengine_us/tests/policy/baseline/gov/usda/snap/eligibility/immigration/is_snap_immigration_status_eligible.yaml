@@ -1,0 +1,118 @@
+- name: Case 1, citizen always eligible.
+  period: 2024
+  input:
+    immigration_status: CITIZEN
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 2, refugee eligible pre-OBBBA.
+  period: 2024
+  input:
+    immigration_status: REFUGEE
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 3, undocumented never eligible.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 4, refugee ineligible post-OBBBA federal date.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 5, asylee ineligible post-OBBBA federal date.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: ASYLEE
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: false
+
+- name: Case 6, citizen still eligible post-OBBBA.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 7, LPR still eligible post-OBBBA.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 8, CA refugee still eligible in 2025 due to delayed implementation.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 9, CA refugee still eligible in January 2026 due to delayed implementation.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    is_snap_immigration_status_eligible: true
+
+- name: Case 10, CA refugee ineligible in 2027 after delayed implementation ends.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+  output:
+    is_snap_immigration_status_eligible: false
