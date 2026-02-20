@@ -35,7 +35,9 @@ class is_snap_work_registration_exempt_non_age(Variable):
         )
         # (viii) Enrolled at least half-time in school/training/higher ed
         is_student = person("is_snap_higher_ed_student", period)
-        # (v) Receiving unemployment compensation
+        # (v) Receiving unemployment compensation — 7 CFR 273.7(b)(1)(v)
+        # also exempts applicants who have applied but not yet received
+        # UI; we are not tracking that yet.
         receiving_ui = (
             person("unemployment_compensation", period.this_year) > 0
         )
