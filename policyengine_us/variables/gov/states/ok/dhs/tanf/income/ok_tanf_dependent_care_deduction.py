@@ -29,7 +29,7 @@ class ok_tanf_dependent_care_deduction(Variable):
             max_deduction_per_dependent * dependent
         )
 
-        # Cap at actual childcare expenses
+        # Cap at actual childcare expenses.
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         return min_(childcare_expenses, total_max_deduction)

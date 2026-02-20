@@ -22,6 +22,7 @@ class tx_regular_tanf(Variable):
 
         # Calculate benefit as payment standard minus countable income
         calculated_benefit = max_(payment_standard - countable_income, 0)
+        capped_benefit = min_(calculated_benefit, payment_standard)
 
         # Apply minimum grant rule
-        return max_(calculated_benefit, p.minimum_grant)
+        return max_(capped_benefit, p.minimum_grant)

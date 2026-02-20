@@ -10,7 +10,7 @@ class mn_child_and_working_families_credits(Variable):
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/290.0661#stat.290.0661.4"
         "https://www.revisor.mn.gov/statutes/cite/290.0671"
-        "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1cwfc-23_1.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2025-01/m1cwfc-23.pdf"
     )
     defined_for = StateCode.MN
 
@@ -33,7 +33,7 @@ class mn_child_and_working_families_credits(Variable):
         earnings = tax_unit("filer_adjusted_earnings", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
-        qualifying_child = person("is_child_dependent", period)
+        qualifying_child = person("is_qualifying_child_dependent", period)
         age = person("age", period)
         full_time_student = person("is_full_time_student", period)
         qualifying_older_child = (

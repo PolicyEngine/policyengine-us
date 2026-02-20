@@ -1,0 +1,79 @@
+# Tests that TANF benefits are capped at the maximum payment amount,
+# even when countable income is negative.
+# This prevents the bug where negative income inflates benefits
+# beyond the payment standard (e.g., benefit = max - (-5M) = 5M+).
+
+- name: CA TANF benefit capped at max payment when countable income is negative.
+  period: 2023
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 1_000
+    ca_tanf_countable_income_recipient: -5_000
+  output:
+    ca_tanf: 1_000
+
+- name: PA TANF benefit capped at max when countable income is negative.
+  period: 2025-01
+  input:
+    pa_tanf_eligible: true
+    pa_tanf_maximum_benefit: 500
+    pa_tanf_countable_income: -10_000
+  output:
+    pa_tanf: 500
+
+- name: NY TANF benefit capped at need standard when income is negative.
+  period: 2025-01
+  input:
+    ny_tanf_eligible: true
+    ny_tanf_need_standard: 800
+    ny_tanf_countable_income: -1_000
+  output:
+    ny_tanf: 800
+
+- name: FL TCA benefit capped at payment standard when income is negative.
+  period: 2025-01
+  input:
+    fl_tca_eligible: true
+    fl_tca_payment_standard: 300
+    fl_tca_countable_income: -50_000
+  output:
+    fl_tca: 300
+
+- name: NC TANF reduced need standard capped at need standard when income is negative.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household1:
+        members: [person1]
+        state_code: NC
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nc_tanf_need_standard: 500
+        nc_tanf_countable_earned_income: -10_000
+        nc_tanf_countable_gross_unearned_income: 0
+  output:
+    nc_tanf_reduced_need_standard: 500
+
+- name: MN MFIP benefit capped at transitional standard when unearned is negative.
+  period: 2025-01
+  input:
+    mn_mfip_eligible: true
+    mn_mfip_transitional_standard: 600
+    mn_mfip_family_wage_level: 800
+    mn_mfip_countable_earned_income: 0
+    mn_mfip_countable_unearned_income: -100_000
+  output:
+    mn_mfip: 600
+
+- name: OH OWF benefit capped at payment standard when income is negative.
+  period: 2025-01
+  input:
+    oh_owf_eligible: true
+    oh_owf_payment_standard: 400
+    oh_owf_countable_income: -5_000
+  output:
+    oh_owf: 400

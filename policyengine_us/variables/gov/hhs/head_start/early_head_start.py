@@ -18,4 +18,5 @@ class early_head_start(Variable):
         mask = enrollment > 0
         result = np.zeros_like(p.spending[state])
         result[mask] = spending[mask] / enrollment[mask]
-        return result
+        takes_up = person("takes_up_early_head_start_if_eligible", period)
+        return result * takes_up

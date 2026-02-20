@@ -15,4 +15,5 @@ class nj_wfnj(Variable):
     def formula(spm_unit, period, parameters):
         payment_levels = spm_unit("nj_wfnj_payment_levels", period)
         countable_income = spm_unit("nj_wfnj_countable_income", period)
-        return max_(payment_levels - countable_income, 0)
+        benefit = max_(payment_levels - countable_income, 0)
+        return min_(benefit, payment_levels)

@@ -1,0 +1,49 @@
+- name: Case 1, minor child under 18 who is a dependent.
+  period: 2023-01
+  input:
+    monthly_age: 10
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: MT
+  output:
+    mt_tanf_eligible_child: true
+
+- name: Case 2, child exactly 18 not in school.
+  period: 2023-01
+  input:
+    monthly_age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: MT
+  output:
+    mt_tanf_eligible_child: false
+
+- name: Case 3, 18 year old in secondary school.
+  period: 2023-01
+  input:
+    monthly_age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MT
+  output:
+    mt_tanf_eligible_child: true
+
+- name: Case 4, student dependent at 19.
+  period: 2023-01
+  input:
+    monthly_age: 19
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MT
+  output:
+    mt_tanf_eligible_child: false
+
+- name: Case 5, minor child not a dependent.
+  period: 2023-01
+  input:
+    monthly_age: 10
+    is_tax_unit_dependent: false
+    is_in_secondary_school: false
+    state_code: MT
+  output:
+    mt_tanf_eligible_child: false

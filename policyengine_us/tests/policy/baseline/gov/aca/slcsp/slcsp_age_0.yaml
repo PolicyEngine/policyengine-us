@@ -1,3 +1,59 @@
+- name: slcsp_age_0 2024 Alaska rating area 1
+  period: 2024-01
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 514
+
+- name: slcsp_age_0 2024 Colorado rating area 1
+  period: 2024-01
+  input:
+    state_code: CO
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 250
+
+- name: slcsp_age_0 2024 Florida rating area 1
+  period: 2024-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 321
+
+- name: slcsp_age_0 2024 Georgia rating area 1
+  period: 2024-01
+  input:
+    state_code: GA
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 257
+
+- name: slcsp_age_0 2024 New York rating area 1
+  period: 2024-01
+  input:
+    state_code: NY
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 593
+
+- name: slcsp_age_0 2024 Texas rating area 1
+  period: 2024-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 379
+
+- name: slcsp_age_0 2024 Washington rating area 1
+  period: 2024-01
+  input:
+    state_code: WA
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 239
+
 - name: slcsp_age_0 unit test 1 Connecticut rating area 2
   period: 2025-01
   input:

@@ -18,4 +18,5 @@ class in_tanf(Variable):
         countable_income = spm_unit(
             "in_tanf_countable_income_for_payment", period
         )
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

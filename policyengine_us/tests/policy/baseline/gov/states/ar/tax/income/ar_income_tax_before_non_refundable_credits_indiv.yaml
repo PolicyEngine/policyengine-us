@@ -77,3 +77,53 @@
   output:
     # 100_000 * 0.047 - 153.7 = 4546.3
     ar_income_tax_before_non_refundable_credits_indiv: 4546.3
+
+- name: Case 9, 2025 taxable income in 0% bracket.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 5_000
+    state_code: AR
+  output:
+    # 5_000 * 0.00 - 0 = 0
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: Case 10, 2025 taxable income in 2% bracket.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 10_000
+    state_code: AR
+  output:
+    # 10_000 * 0.02 - 112 = 88
+    ar_income_tax_before_non_refundable_credits_indiv: 88
+
+- name: Case 11, 2025 taxable income in 3.4% bracket.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+    # 20_000 * 0.034 - 288 = 392
+    ar_income_tax_before_non_refundable_credits_indiv: 392
+
+- name: Case 12, 2025 taxable income in 3.9% bracket.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 50_000
+    state_code: AR
+  output:
+    # 50_000 * 0.039 - 420 = 1_530
+    ar_income_tax_before_non_refundable_credits_indiv: 1_530
+
+- name: Case 13, 2025 taxable income at $100,000.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 100_000
+    state_code: AR
+  output:
+    # 100_000 * 0.039 - 89 = 3_811
+    ar_income_tax_before_non_refundable_credits_indiv: 3_811

@@ -23,7 +23,7 @@
     aged_blind_count: 1
     state_code: NE
   output:
-    ne_standard_deduction: 12_500
+    ne_standard_deduction: 12_450
 
 - name: Elderly married with children and one blind adult
   period: 2022
@@ -33,3 +33,32 @@
     state_code: NE
   output:
     ne_standard_deduction: 18_900
+
+# 2025 tests covering NE/federal divergence for married filers
+# NE married additional is $1,650/box vs federal $1,600/box
+- name: 2025 aged married couple filing jointly
+  period: 2025
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+    state_code: NE
+  output:
+    ne_standard_deduction: 20_500  # 17_200 + 1_650 * 2
+
+- name: 2025 aged filing separately
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+    state_code: NE
+  output:
+    ne_standard_deduction: 10_250  # 8_600 + 1_650 * 1
+
+- name: 2025 aged single filer
+  period: 2025
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+    state_code: NE
+  output:
+    ne_standard_deduction: 10_600  # 8_600 + 2_000 * 1

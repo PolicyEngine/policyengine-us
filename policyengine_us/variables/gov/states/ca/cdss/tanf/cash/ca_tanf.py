@@ -25,4 +25,8 @@ class ca_tanf(Variable):
             eligible_people_based_on_immigration_status[mask]
             / spm_unit_size[mask]
         )
-        return prorated_fraction * max_(maximum_payment - countable_income, 0)
+        benefit = max_(maximum_payment - countable_income, 0)
+        # Cap benefit at maximum payment to prevent negative income
+        # from inflating benefits above the maximum.
+        capped_benefit = min_(benefit, maximum_payment)
+        return prorated_fraction * capped_benefit

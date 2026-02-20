@@ -232,3 +232,160 @@
         state_fips: 5
   output:
     ar_income_tax: 3_410
+
+- name: Case 7, 2025 single filer with wage income.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_fips: 5  # AR
+  output:
+    # AR AGI (indiv): $60,000
+    # Standard deduction (indiv): $2,470
+    # Taxable income (indiv): $60,000 - $2,470 = $57,530
+    # Rate: 3.9% ($26,400+ bracket)
+    # Pre-reduction: 0.039 * $57,530 = $2,243.67
+    # Reduction at $26,400: $420
+    # Tax before NR credits (indiv): $2,243.67 - $420 = $1,823.67
+    ar_taxable_income_indiv: [57_530]
+    ar_income_tax_before_non_refundable_credits_indiv: [1_823.67]
+    # Files jointly (single filer), uses joint pathway
+    ar_files_separately: false
+    # Personal credits: 1 * $29 = $29
+    ar_personal_credits: [29]
+    # Additional tax credit: $0 (income $57,530 >> $27,600)
+    # Non-refundable credits: $29
+    ar_non_refundable_credits: 29
+    # Tax before refundable credits: $1,823.67 - $29 = $1,794.67
+    ar_income_tax_before_refundable_credits: 1_794.67
+    # No refundable credits
+    ar_income_tax: 1_794.67
+
+- name: Case 8, 2025 single filer with high income.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 150_000
+    households:
+      household:
+        members: [person1]
+        state_fips: 5  # AR
+  output:
+    # AR AGI (indiv): $150,000
+    # Standard deduction (indiv): $2,470
+    # Taxable income (indiv): $150,000 - $2,470 = $147,530
+    # Rate: 3.9% ($26,400+ bracket)
+    # Pre-reduction: 0.039 * $147,530 = $5,753.67
+    # Reduction at $97,901: $89
+    # Tax before NR credits (indiv): $5,753.67 - $89 = $5,664.67
+    ar_taxable_income_indiv: [147_530]
+    ar_income_tax_before_non_refundable_credits_indiv: [5_664.67]
+    ar_files_separately: false
+    # Personal credits: 1 * $29 = $29
+    # No additional tax credit (income >> $27,600)
+    ar_non_refundable_credits: 29
+    # Tax: $5,664.67 - $29 = $5,635.67
+    ar_income_tax: 5_635.67
+
+- name: Case 10, 2024 joint filer where low income table is cheaper and joint path wins.
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_000
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output:
+    # Joint AGI: $27,000 (within low income table range for 0-1 dep)
+    # Low income table tax: $376
+    # Regular rate tax on taxable income $22,180: higher → low income table used
+    ar_uses_low_income_tax_tables: true
+    # Net taxable income uses AGI ($27,000) since low income table active
+    ar_net_taxable_income_joint: [27_000, 0]
+    ar_low_income_tax_joint: [376, 0]
+    # Separate path: indiv tax $554.69, additional credit $60 (income < $25,800)
+    #   net separate = $554.69 - $60 = $494.69
+    # Joint path: low income table $376, additional credit $0 (AGI > $25,800)
+    #   net joint = $376
+    # Joint ($376) < Separate ($494.69) → files jointly
+    ar_files_separately: false
+    # Personal credits: 2 * $29 = $58
+    ar_personal_credits: [58]
+    ar_income_tax: 318
+
+- name: Case 9, 2024 joint filers using low income tax table with 2 dependents.
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 15_066.30
+      person2:
+        age: 35
+        taxable_interest_income: 15_066.30
+      person3:
+        age: 10
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 5  # AR
+  output:
+    # Joint path: low income table tax = $233, additional credit = $0
+    #   (AGI $30,132.60 > $25,800), net joint tax = $233
+    # Separate path: regular rate tax = $160.72 * 2 = $321.44,
+    #   additional credit = $60 * 2 = $120 (each indiv income
+    #   $12,656.30 < $25,800), net separate tax = $201.44
+    # Separate ($201.44) < Joint ($233), so files separately.
+    ar_uses_low_income_tax_tables: true
+    ar_files_separately: true
+    ar_income_tax_before_non_refundable_credits_indiv: [160.72, 160.72, 0, 0]
+    ar_income_tax_before_non_refundable_credits_unit: 321.44
+    # Additional credit: each person gets $60 (indiv income < threshold)
+    ar_additional_tax_credit_for_qualified_individuals_person: [60, 60, 0, 0]
+    # Personal credits: 4 * $29 = $116
+    ar_personal_credits: [116]
+    # Total non-refundable credits: $116 + $120 = $236
+    ar_non_refundable_credits: 236
+    # Tax: max($321.44 - $236, 0) = $85.44
+    # TaxAct reference: $86 (from TAXSIM issue #493)
+    ar_income_tax: 85

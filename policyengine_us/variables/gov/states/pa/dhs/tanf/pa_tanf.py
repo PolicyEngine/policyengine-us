@@ -18,19 +18,8 @@ class pa_tanf(Variable):
 
         maximum_benefit = spm_unit("pa_tanf_maximum_benefit", period)
         countable_income = spm_unit("pa_tanf_countable_income", period)
-        base_grant = max_(maximum_benefit - countable_income, 0)
 
-        # Work Expense Reimbursement (WER): $50/month bonus for families with earned income
-        # Active 2009-2020, before Work Expense Deduction (WED) replaced it
-        gross_earned_income = add(
-            spm_unit, period, ["tanf_gross_earned_income"]
-        )
-        has_earned_income = gross_earned_income > 0
-        uses_wer = p.uses_deduction == False
-        wer_amount = where(
-            uses_wer & has_earned_income,
-            p.reimbursement,
-            0,
-        )
-
-        return base_grant + wer_amount
+        benefit = max_(maximum_benefit - countable_income, 0)
+        # Cap benefit at maximum to prevent negative income
+        # from inflating benefits above the maximum.
+        return min_(benefit, maximum_benefit)
