@@ -13261,3 +13261,10 @@
     - Add 2024 SLCSP premiums by rating area for all states, scraped from the KFF
       2024 subsidy calculator (age 0 benchmark).
   date: 2026-02-20 19:38:12
+- bump: patch
+  changes:
+    added:
+    - Add historical TANF parameter data for DE, MO, RI, SD (pre-2018 values).
+    - Add PA TANF Work Expense Reimbursement (WER) for 2009-2020 era.
+    - Add PA TANF work expense mechanism toggle (deduction_applies parameter).
+  date: 2026-02-20 21:53:15
