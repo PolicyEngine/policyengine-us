@@ -21,6 +21,7 @@ class meets_snap_work_requirements(Variable):
         p = parameters(
             period
         ).gov.usda.snap.work_requirements.abawd.age_threshold
+        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
         p_pre = parameters(
             "2025-06-01"
         ).gov.usda.snap.work_requirements.abawd.age_threshold

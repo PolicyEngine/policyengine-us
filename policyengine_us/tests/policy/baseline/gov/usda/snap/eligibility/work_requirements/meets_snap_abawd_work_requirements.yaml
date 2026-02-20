@@ -369,40 +369,6 @@
   output:
     meets_snap_abawd_work_requirements: false
 
-# --- State exemption: HI and AK ---
-
-- name: Case 26, post-HR1 exempt state HI.
-  period: 2027
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person1:
-        age: 55
-        weekly_hours_worked_before_lsr: 1
-        is_disabled: false
-        is_veteran: true
-      person2:
-        age: 15
-        is_disabled: false
-        is_tax_unit_dependent: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-  output:
-    meets_snap_abawd_work_requirements: [true, true]
-
-- name: Case 27, post-HR1 live in HI in 2026.
-  period: 2026
-  absolute_error_margin: 0.1
-  input:
-    age: 18
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: HI
-  output:
-    meets_snap_abawd_work_requirements: true
-
 # =====================================================
 # California delayed adoption — ACL 25-93
 # =====================================================

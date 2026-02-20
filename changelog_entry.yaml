@@ -5,6 +5,8 @@
       - Added is_snap_abawd_hr1_in_effect variable to centralize state-level HR1 adoption routing.
     changed:
       - Refactored SNAP ABAWD work requirements to absorb California pre-HR1 delay logic, eliminating duplicate CA variable.
-      - Updated federal SNAP ABAWD parameter effective dates from 2027-01-01 to 2025-07-01 per Public Law 119-21.
+      - Updated federal SNAP ABAWD parameter effective dates to 2025-07-04 per Public Law 119-21 enactment date.
+      - Backdated ABAWD age exemption parameters to 1997-03-01 (PRWORA effective date) and added FRA 2023 phase-in history (50→51→53→55).
+      - Removed blanket HI/AK ABAWD exemption from formula; both states are implementing ABAWD. Preferential waiver authority documented in parameter file.
     removed:
       - Removed ca_meets_snap_abawd_work_requirements (functionality merged into federal variable).

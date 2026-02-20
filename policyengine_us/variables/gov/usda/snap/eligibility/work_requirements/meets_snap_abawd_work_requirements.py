@@ -14,6 +14,7 @@ class meets_snap_abawd_work_requirements(Variable):
     def formula(person, period, parameters):
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(period).gov.usda.snap.work_requirements.abawd
+        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
         p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
         # (A) Age — 7 U.S.C. 2015(o)(3)(A)
         age = person("monthly_age", period)
@@ -45,11 +46,12 @@ class meets_snap_abawd_work_requirements(Variable):
             "is_snap_work_registration_exempt_non_age", period
         )
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
+        # NOTE: (F)-(G) Native American/Indian exemptions per IHCIA
+        # definitions are not yet implemented (requires tribal
+        # membership input variable).
         is_pregnant = person("is_pregnant", period)
-        # State exemption
-        state_code = person.household("state_code", period)
-        state_code_str = state_code.decode_to_str()
-        is_exempt_state = np.isin(state_code_str, p.exempt_states)
+        # TODO: HI/AK delayed adoption (2025-11-01) to be handled
+        # in a follow-up PR via state-level hr1_in_effect parameters.
         base_conditions = (
             is_working
             | working_age_exempt
@@ -57,7 +59,6 @@ class meets_snap_abawd_work_requirements(Variable):
             | exempt_parent
             | work_reg_exempt
             | is_pregnant
-            | is_exempt_state
         )
         # Pre-HR1 exemptions: homeless, veteran
         is_homeless = person.household("is_homeless", period)

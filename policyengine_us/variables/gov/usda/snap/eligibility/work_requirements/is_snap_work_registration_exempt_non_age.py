@@ -15,6 +15,13 @@ class is_snap_work_registration_exempt_non_age(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
+        # 7 CFR 273.7(b)(1) exemptions omitted:
+        # (iii) Subject to and complying with TANF work requirements
+        #       — requires TANF enrollment input variable.
+        # (vi)  Participant in drug/alcohol treatment program
+        #       — requires treatment program input variable.
+        # (vii) Working 30+ hours/week or earning federal min wage × 30
+        #       — handled separately in ABAWD work activity check.
         # (ii) Physically or mentally unfit for employment
         is_disabled = person("is_disabled", period)
         # (iv) Responsible for care of dependent child under 6
