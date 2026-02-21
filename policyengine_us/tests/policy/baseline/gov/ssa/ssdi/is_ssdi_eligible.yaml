@@ -1,0 +1,76 @@
+- name: Eligible disabled person with sufficient work history
+  period: 2024
+  input:
+    is_disabled: true
+    is_blind: false
+    ssdi_work_credits: 40
+    ssdi_recent_work_credits: 20
+    earned_income: 12_000  # $1,000/month, below SGA
+    age: 45
+  output:
+    is_ssdi_disabled: true
+    meets_ssdi_work_history_requirements: true
+    ssdi_engaged_in_sga: false
+    is_ssdi_eligible: true
+
+- name: Not eligible - engaged in substantial gainful activity
+  period: 2024
+  input:
+    is_disabled: true
+    ssdi_work_credits: 40
+    ssdi_recent_work_credits: 20
+    earned_income: 24_000  # $2,000/month, above SGA
+    age: 45
+  output:
+    ssdi_engaged_in_sga: true
+    is_ssdi_eligible: false
+
+- name: Not eligible - insufficient work credits
+  period: 2024
+  input:
+    is_disabled: true
+    ssdi_work_credits: 30
+    ssdi_recent_work_credits: 15
+    earned_income: 6_000
+    age: 45
+  output:
+    meets_ssdi_work_history_requirements: false
+    is_ssdi_eligible: false
+
+- name: Blind person with higher SGA threshold
+  period: 2024
+  input:
+    is_blind: true
+    is_disabled: false
+    ssdi_work_credits: 40
+    ssdi_recent_work_credits: 20
+    earned_income: 30_000  # $2,500/month, below blind SGA
+    age: 50
+  output:
+    is_ssdi_disabled: true
+    ssdi_engaged_in_sga: false
+    is_ssdi_eligible: true
+
+- name: Young worker exception - age 23
+  period: 2024
+  input:
+    is_disabled: true
+    ssdi_work_credits: 6
+    ssdi_recent_work_credits: 6
+    earned_income: 6_000
+    age: 23
+  output:
+    meets_ssdi_work_history_requirements: true
+    is_ssdi_eligible: true
+
+- name: Young worker exception - age 28
+  period: 2024
+  input:
+    is_disabled: true
+    ssdi_work_credits: 14  # (28-21)*2 = 14
+    ssdi_recent_work_credits: 10
+    earned_income: 6_000
+    age: 28
+  output:
+    meets_ssdi_work_history_requirements: true
+    is_ssdi_eligible: true

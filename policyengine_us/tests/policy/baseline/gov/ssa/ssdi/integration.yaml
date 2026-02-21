@@ -1,0 +1,113 @@
+- name: Complete household with disabled worker receiving SSDI
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    people:
+      disabled_worker:
+        age: 45
+        is_disabled: true
+        ssdi_work_credits: 40
+        ssdi_recent_work_credits: 20
+        ssdi_aime: 72_000  # $6,000/month AIME
+        ssdi_months_waiting: 5
+        earned_income: 6_000  # Part-time work below SGA
+      spouse:
+        age: 43
+        is_disabled: false
+        earned_income: 30_000
+      child_1:
+        age: 10
+        is_disabled: false
+      child_2:
+        age: 14
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [disabled_worker, spouse, child_1, child_2]
+    families:
+      family:
+        members: [disabled_worker, spouse, child_1, child_2]
+    households:
+      household:
+        members: [disabled_worker, spouse, child_1, child_2]
+  output:
+    # Worker eligibility
+    is_ssdi_eligible: [true, false, false, false]
+    is_ssdi_disabled: [true, false, false, false]
+    meets_ssdi_work_history_requirements: [true, false, false, false]
+    ssdi_engaged_in_sga: [false, true, false, false]  # Spouse earning $30k/year > SGA
+
+    # PIA calculation for $6,000/month:
+    # First: $1,174 * 0.9 = $1,056.60
+    # Second: ($6,000 - $1,174) * 0.32 = $1,544.32
+    # Total monthly: $2,600.92, rounded to $2,600.90
+    ssdi_pia: [2_600.9, 0, 0, 0]
+
+    # Individual benefit (after waiting period)
+    ssdi_individual_benefit: [2_600.9, 0, 0, 0]
+
+    # Family maximum: 85% of monthly AIME = $5,100, constrained by 150% of PIA = $3,901.35
+    ssdi_family_maximum: [3_901.35, 0, 0, 0]
+
+- name: Young disabled worker with limited work history
+  period: 2024
+  input:
+    people:
+      young_worker:
+        age: 25
+        is_disabled: true
+        is_blind: false
+        ssdi_work_credits: 8  # (25-21)*2 = 8 credits needed
+        ssdi_recent_work_credits: 8
+        ssdi_aime: 36_000  # $3,000/month
+        ssdi_months_waiting: 6
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [young_worker]
+    families:
+      family:
+        members: [young_worker]
+    households:
+      household:
+        members: [young_worker]
+  output:
+    is_ssdi_eligible: true
+    meets_ssdi_work_history_requirements: true
+    # PIA for $3,000/month calculated earlier: $1,640.90
+    ssdi_pia: 1_640.9
+    ssdi_individual_benefit: 1_640.9
+
+- name: Blind worker with higher SGA threshold
+  period: 2024
+  absolute_error_margin: 0.3
+  input:
+    people:
+      blind_worker:
+        age: 50
+        is_blind: true
+        is_disabled: false
+        ssdi_work_credits: 40
+        ssdi_recent_work_credits: 20
+        ssdi_aime: 84_000  # $7,000/month
+        ssdi_months_waiting: 5
+        earned_income: 30_000  # $2,500/month - below blind SGA of $2,700
+    tax_units:
+      tax_unit:
+        members: [blind_worker]
+    families:
+      family:
+        members: [blind_worker]
+    households:
+      household:
+        members: [blind_worker]
+  output:
+    is_ssdi_eligible: true
+    is_ssdi_disabled: true  # Blind qualifies as disabled
+    ssdi_engaged_in_sga: false  # Below blind SGA threshold
+    # PIA calculation for $7,000/month:
+    # First: $1,174 * 0.9 = $1,056.60
+    # Second: ($7,000 - $1,174) * 0.32 = $1,864.32
+    # Total monthly: $2,920.92, rounded to $2,920.90
+    ssdi_pia: 2_920.9
+    ssdi_individual_benefit: 2_920.9

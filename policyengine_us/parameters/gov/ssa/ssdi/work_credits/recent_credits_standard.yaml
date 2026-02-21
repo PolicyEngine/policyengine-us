@@ -1,0 +1,13 @@
+description: The Social Security Administration requires this many work credits to be earned in the recent work period for standard Social Security Disability Insurance eligibility.
+
+values:
+  1975-01-01: 20
+
+metadata:
+  unit: credit
+  label: SSA SSDI recent credits requirement
+  reference:
+    - title: Social Security Administration - How You Earn Credits
+      href: https://www.ssa.gov/benefits/retirement/planner/credits.html
+    - title: 42 U.S. Code § 423(c)(1)(B)(i) - Recent work requirement
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_i

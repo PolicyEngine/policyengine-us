@@ -1,0 +1,13 @@
+description: Multiplier for calculating credits required (2 credits per year after age 21)
+
+values:
+  1975-01-01: 2
+
+metadata:
+  unit: credit/year
+  label: SSDI young worker credit multiplier
+  reference:
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii
+    - title: SSA - Disability Benefits
+      href: https://www.ssa.gov/benefits/disability/qualify.html

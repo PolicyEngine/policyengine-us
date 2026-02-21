@@ -1,0 +1,13 @@
+description: The Social Security Administration multiplies the years since age 21 by this factor to determine required work credits for workers aged 24 to 31 for Social Security Disability Insurance eligibility.
+
+values:
+  1975-01-01: 2
+
+metadata:
+  unit: credit
+  label: SSA SSDI young worker age 24 to 31 multiplier
+  reference:
+    - title: Social Security Administration - Young Worker Credits
+      href: https://www.ssa.gov/benefits/retirement/planner/credits.html#h3
+    - title: 42 U.S. Code § 423(c)(1)(B)(ii) - Young worker exception
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1_B_ii

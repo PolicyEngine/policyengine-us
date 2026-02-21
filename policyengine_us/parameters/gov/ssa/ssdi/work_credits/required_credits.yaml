@@ -1,0 +1,13 @@
+description: The Social Security Administration requires this many total work credits for full Social Security Disability Insurance eligibility.
+
+values:
+  1975-01-01: 40
+
+metadata:
+  unit: credit
+  label: SSA SSDI required work credits
+  reference:
+    - title: Social Security Administration - How You Earn Credits
+      href: https://www.ssa.gov/benefits/retirement/planner/credits.html
+    - title: 42 U.S. Code § 423(c)(1) - Work credit requirements
+      href: https://www.law.cornell.edu/uscode/text/42/423#c_1
