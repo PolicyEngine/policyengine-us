@@ -1,0 +1,139 @@
+- name: Crisis eligible during winter period - November
+  period: 2025-11  # November 
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during winter period - December  
+  period: 2025-12  # December
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 40_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during winter period - January
+  period: 2025-01  # January
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 30_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during winter period - February
+  period: 2025-02  # February
+  input:
+    spm_unit_size: 5
+    irs_gross_income: 60_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during winter period - March
+  period: 2025-03  # March
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 25_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during winter period - April
+  period: 2025-04  # April
+  input:
+    spm_unit_size: 6
+    irs_gross_income: 70_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis ineligible outside winter period - May
+  period: 2025-05  # May
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible outside winter period - June
+  period: 2025-06  # June
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 40_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible outside winter period - July
+  period: 2025-07  # July
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 30_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible outside winter period - August
+  period: 2025-08  # August
+  input:
+    spm_unit_size: 5
+    irs_gross_income: 60_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible outside winter period - September
+  period: 2025-09  # September
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 25_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible outside winter period - October
+  period: 2025-10  # October
+  input:
+    spm_unit_size: 6
+    irs_gross_income: 70_000
+    state_code: ME
+    me_liheap_eligible: true
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible if not LIHEAP eligible - during winter
+  period: 2025-01  # January - winter period
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 80_000  # Over income limit
+    state_code: ME
+    me_liheap_eligible: false
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible for non-Maine residents - during winter
+  period: 2025-01  # January
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: CA  # California
+    me_liheap_eligible: false
+  output:
+    me_liheap_crisis_eligible: false

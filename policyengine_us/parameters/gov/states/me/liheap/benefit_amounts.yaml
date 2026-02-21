@@ -1,0 +1,39 @@
+description: Maine LIHEAP benefit amounts for FY 2025. The minimum and maximum benefit amounts for regular heating assistance and crisis assistance programs.
+
+benefit_min:
+  description: Minimum LIHEAP heating assistance benefit amount
+  values:
+    2025-08-01: 88
+  metadata:
+    period: 1
+    unit: currency-USD
+    label: Maine LIHEAP minimum benefit
+    reference:
+      - title: Maine LIHEAP Benefit Amounts FY 2025
+        href: docs/agents/sources/me-liheap/benefit_calculation.md
+
+benefit_max:
+  description: Maximum LIHEAP heating assistance benefit amount
+  values:
+    2025-08-01: 1_012
+  metadata:
+    period: 1
+    unit: currency-USD
+    label: Maine LIHEAP maximum benefit
+    reference:
+      - title: Maine LIHEAP Benefit Amounts FY 2025
+        href: docs/agents/sources/me-liheap/benefit_calculation.md
+
+crisis_max:
+  description: Maximum LIHEAP crisis assistance benefit amount (Energy Crisis Intervention Program)
+  values:
+    2025-11-01: 800
+  metadata:
+    period: 1
+    unit: currency-USD
+    label: Maine LIHEAP crisis assistance maximum
+    reference:
+      - title: Maine LIHEAP Crisis Assistance FY 2025
+        href: docs/agents/sources/me-liheap/benefit_calculation.md
+      - title: 42 U.S.C. § 8624(b)(2) - Benefit levels and distribution
+        href: https://www.law.cornell.edu/uscode/text/42/8624

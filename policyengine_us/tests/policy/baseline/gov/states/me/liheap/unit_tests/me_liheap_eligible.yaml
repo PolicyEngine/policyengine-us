@@ -1,0 +1,26 @@
+- name: Maine LIHEAP eligible - meets income requirements
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Maine LIHEAP ineligible - over income threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 80_000  # Over $70,839 threshold
+    state_code: ME
+  output:
+    me_liheap_eligible: false
+
+- name: Maine LIHEAP eligible - zero income
+  period: 2025
+  input:
+    spm_unit_size: 2
+    me_liheap_income: 0
+    state_code: ME
+  output:
+    me_liheap_eligible: true

@@ -1,0 +1,137 @@
+- name: Eligible household - income and residency requirements met
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Ineligible household - over income threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 75_000  # Over $70,839 threshold for size 4
+    state_code: ME
+  output:
+    me_liheap_eligible: false
+
+- name: Ineligible household - non-Maine resident
+  period: 2025
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 50_000
+    state_code: CA  # California
+  output:
+    me_liheap_eligible: false
+
+- name: Eligible household - at income threshold
+  period: 2025
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 48_170  # At threshold for size 2
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Eligible household - very low income
+  period: 2025
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 10_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Eligible household - zero income
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 0
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Eligible household - large family
+  period: 2025
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 90_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Ineligible household - large family over threshold
+  period: 2025
+  input:
+    spm_unit_size: 8
+    irs_gross_income: 100_000  # Over $97,757 threshold for size 8
+    state_code: ME
+  output:
+    me_liheap_eligible: false
+
+- name: Eligible household - maximum documented size
+  period: 2025
+  input:
+    spm_unit_size: 10
+    irs_gross_income: 100_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Ineligible household - maximum size over threshold
+  period: 2025
+  input:
+    spm_unit_size: 10
+    irs_gross_income: 105_000  # Over $102,008 threshold for size 10
+    state_code: ME
+  output:
+    me_liheap_eligible: false
+
+- name: Eligible household - vulnerable population elderly
+  period: 2025
+  input:
+    spm_unit_size: 1
+    age: 65
+    irs_gross_income: 30_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Eligible household - vulnerable population disabled
+  period: 2025
+  input:
+    spm_unit_size: 2
+    is_disabled: [false, true]  # One disabled household member
+    irs_gross_income: 40_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Eligible household - vulnerable population young children
+  period: 2025
+  input:
+    spm_unit_size: 4
+    age: [30, 28, 4, 2]  # Parents with young children
+    irs_gross_income: 60_000
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Edge case - boundary income test size 1
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 36_835  # $1 under threshold
+    state_code: ME
+  output:
+    me_liheap_eligible: true
+
+- name: Edge case - boundary income test size 1 over
+  period: 2025
+  input:
+    spm_unit_size: 1
+    irs_gross_income: 36_837  # $1 over threshold
+    state_code: ME
+  output:
+    me_liheap_eligible: false

@@ -1,0 +1,145 @@
+- name: Household size 1, income eligible at threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income: 36_836  # 12-month threshold for size 1
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 1, income ineligible over threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income: 37_000  # Over 12-month threshold
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+
+- name: Household size 2, income eligible
+  period: 2025
+  input:
+    spm_unit_size: 2
+    me_liheap_income: 48_170  # At 12-month threshold for size 2
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 2, income ineligible
+  period: 2025
+  input:
+    spm_unit_size: 2
+    me_liheap_income: 48_500  # Over threshold
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+
+- name: Household size 4, income eligible
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 70_839  # At 12-month threshold for size 4
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 4, income ineligible
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 71_000  # Over threshold
+    state_code: ME
+  output:
+    me_liheap_income_eligible: false
+
+- name: Household size 6, income eligible at threshold
+  period: 2025
+  input:
+    spm_unit_size: 6
+    me_liheap_income: 93_507  # 12-month threshold for size 6
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 7, extended calculation
+  period: 2025
+  input:
+    spm_unit_size: 7
+    me_liheap_income: 95_632  # 12-month threshold for size 7
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 8, extended calculation
+  period: 2025
+  input:
+    spm_unit_size: 8
+    me_liheap_income: 97_757  # 12-month threshold for size 8
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Household size 10, at maximum documented threshold
+  period: 2025
+  input:
+    spm_unit_size: 10
+    me_liheap_income: 102_008  # 12-month threshold for size 10
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Very low income, well below threshold
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 20_000  # Well below 70,839 threshold
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Zero income household
+  period: 2025
+  input:
+    spm_unit_size: 3
+    me_liheap_income: 0
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Non-Maine resident should not be income eligible
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: CA  # California
+  output:
+    me_liheap_income_eligible: false
+
+- name: Large household size 12 calculation test
+  period: 2025
+  input:
+    spm_unit_size: 12
+    # Should use formula: (132% + (12-6) × 3%) × 4-person SMI × 0.60
+    # = (132% + 18%) × 4-person SMI × 0.60 = 150% × 4-person SMI × 0.60
+    me_liheap_income: 106_258  # Estimated based on federal formula
+    state_code: ME
+  output:
+    me_liheap_income_eligible: true
+
+- name: Monthly income test - 1 month threshold
+  period: 2025
+  input:
+    spm_unit_size: 1
+    me_liheap_income_monthly: 3_070  # 1-month threshold for size 1
+    state_code: ME
+  output:
+    me_liheap_income_eligible_monthly: true
+
+- name: Quarterly income test - 3 month threshold  
+  period: 2025
+  input:
+    spm_unit_size: 4
+    me_liheap_income_quarterly: 17_710  # 3-month threshold for size 4
+    state_code: ME
+  output:
+    me_liheap_income_eligible_quarterly: true

@@ -1,0 +1,44 @@
+- name: Crisis eligible during November
+  period: 2025-11
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during January  
+  period: 2025-01
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis eligible during April
+  period: 2025-04
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_crisis_eligible: true
+
+- name: Crisis ineligible during May (outside crisis period)
+  period: 2025-05
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 50_000
+    state_code: ME
+  output:
+    me_liheap_crisis_eligible: false
+
+- name: Crisis ineligible if not LIHEAP eligible (during crisis period)
+  period: 2025-01
+  input:
+    spm_unit_size: 4
+    me_liheap_income: 80_000  # Over income limit
+    state_code: ME
+  output:
+    me_liheap_crisis_eligible: false
