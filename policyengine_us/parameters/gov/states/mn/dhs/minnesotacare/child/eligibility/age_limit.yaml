@@ -1,0 +1,15 @@
+description: >-
+  Maximum age for children's eligibility for MinnesotaCare.
+  Per Minnesota Statutes 256L.04 subdivision 10(c), undocumented noncitizens
+  age 18 or older have restricted eligibility, meaning children must be
+  under age 18 to qualify for ongoing coverage.
+metadata:
+  unit: year
+  period: year
+  label: MinnesotaCare children maximum age
+  reference:
+    - title: Minnesota Statutes 256L.04 Subd. 10(c) - Eligibility for MinnesotaCare
+      href: https://www.revisor.mn.gov/statutes/cite/256L.04
+
+values:
+  2020-01-01: 18

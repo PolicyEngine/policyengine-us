@@ -1,0 +1,51 @@
+- name: Undocumented - eligible for state program
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        immigration_status: UNDOCUMENTED
+  output:
+    mn_minnesotacare_children_immigration_status_eligible: true
+
+- name: Citizen - should use federal programs
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        immigration_status: CITIZEN
+  output:
+    mn_minnesotacare_children_immigration_status_eligible: false
+
+- name: Legal permanent resident - should use federal programs
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    mn_minnesotacare_children_immigration_status_eligible: false
+
+- name: Refugee - should use federal programs
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        immigration_status: REFUGEE
+  output:
+    mn_minnesotacare_children_immigration_status_eligible: false

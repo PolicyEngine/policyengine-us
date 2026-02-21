@@ -1,0 +1,51 @@
+- name: Income eligible - under 200% FPL
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        medicaid_income_level: 1.5  # 150% FPL
+  output:
+    mn_minnesotacare_children_income_eligible: true
+
+- name: Income eligible - exactly at 200% FPL
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        medicaid_income_level: 2.0  # 200% FPL
+  output:
+    mn_minnesotacare_children_income_eligible: true
+
+- name: Income ineligible - above 200% FPL
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        medicaid_income_level: 2.1  # 210% FPL
+  output:
+    mn_minnesotacare_children_income_eligible: false
+
+- name: Income eligible - at 0% FPL
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [person]
+    people:
+      person:
+        medicaid_income_level: 0
+  output:
+    mn_minnesotacare_children_income_eligible: true

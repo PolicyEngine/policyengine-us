@@ -1,0 +1,87 @@
+- name: Full eligibility flow - undocumented child under 200% FPL
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5  # 150% FPL
+  output:
+    mn_minnesotacare_children_income_eligible: true
+    mn_minnesotacare_children_immigration_status_eligible: true
+    mn_minnesotacare_children_eligible: true
+    mn_minnesotacare_group: CHILD
+    mn_minnesotacare_cost_if_enrolled: 3_775.59
+
+- name: Citizen child - eligible for federal, not state program
+  period: 2025
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+  output:
+    mn_minnesotacare_children_income_eligible: true
+    mn_minnesotacare_children_immigration_status_eligible: false
+    mn_minnesotacare_children_eligible: false
+    mn_minnesotacare_group: NONE
+    mn_minnesotacare_cost_if_enrolled: 0
+
+- name: Household with undocumented child and citizen parent
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [parent, child]
+    people:
+      parent:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+      child:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+  output:
+    # Parent is not eligible (must be under 19)
+    # Child is eligible
+    mn_minnesotacare_children_eligible: [false, true]
+    mn_minnesotacare_group: [NONE, CHILD]
+    mn_minnesotacare_cost_if_enrolled: [0, 3_775.59]
+
+- name: Multiple children - mixed eligibility
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child1, child2, child3]
+    people:
+      child1:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5  # Eligible
+      child2:
+        age: 10
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5  # Not eligible - citizen
+      child3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 2.5  # Not eligible - over income
+  output:
+    mn_minnesotacare_children_eligible: [true, false, false]
+    mn_minnesotacare_cost_if_enrolled: [3_775.59, 0, 0]

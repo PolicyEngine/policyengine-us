@@ -1,0 +1,47 @@
+- name: Eligible child cost
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5  # 150% FPL
+  output:
+    mn_minnesotacare_cost_if_enrolled: 3_775.59  # 2,382,000,000 / 631,000
+
+- name: Ineligible person - zero cost
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [adult]
+    people:
+      adult:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+  output:
+    mn_minnesotacare_cost_if_enrolled: 0
+
+- name: Child over income - zero cost
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    households:
+      household:
+        state_code: MN
+        members: [child]
+    people:
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 2.5  # Over 200% FPL
+  output:
+    mn_minnesotacare_cost_if_enrolled: 0
