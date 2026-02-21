@@ -1,0 +1,134 @@
+# Cecil County Income Tax Tests
+# Uses flat rate system (not progressive brackets)
+#
+# Rates by year (from flat_rate.yaml):
+#   - 2021-2022: 3.0%
+#   - 2023: 2.8%
+#   - 2024: 2.75%
+#   - 2025+: 2.74%
+
+# ==============================================================================
+# 2021 TESTS - Flat Rate (0.03)
+# ==============================================================================
+
+- name: Cecil County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.03 = 1,500
+    md_local_income_tax_before_credits: 1_500
+
+- name: Cecil County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.03 = 3,000
+    md_local_income_tax_before_credits: 3_000
+
+- name: Cecil County income tax - high income $500,000 (2021, flat rate verification)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 500_000
+  output:
+    # Flat rate verification at high income: 500,000 * 0.03 = 15,000
+    md_local_income_tax_before_credits: 15_000
+
+# ==============================================================================
+# 2023 TESTS - Flat Rate (0.028)
+# ==============================================================================
+
+- name: Cecil County income tax - $50,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.028 = 1,400
+    md_local_income_tax_before_credits: 1_400
+
+- name: Cecil County income tax - $100,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.028 = 2,800
+    md_local_income_tax_before_credits: 2_800
+
+# ==============================================================================
+# 2024 TESTS - Flat Rate (0.0275)
+# ==============================================================================
+
+- name: Cecil County income tax - $50,000 income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Cecil County income tax - $100,000 income (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+- name: Cecil County income tax - high income $500,000 (2024, flat rate verification)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 500_000
+  output:
+    # Flat rate verification at high income: 500,000 * 0.0275 = 13,750
+    md_local_income_tax_before_credits: 13_750
+
+# ==============================================================================
+# 2025 TESTS - Flat Rate (0.0274)
+# ==============================================================================
+
+- name: Cecil County income tax - $50,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0274 = 1,370
+    md_local_income_tax_before_credits: 1_370
+
+- name: Cecil County income tax - $100,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: CECIL_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0274 = 2,740
+    md_local_income_tax_before_credits: 2_740

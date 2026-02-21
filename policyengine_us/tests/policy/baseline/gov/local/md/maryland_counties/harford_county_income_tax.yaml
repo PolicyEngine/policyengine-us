@@ -1,0 +1,21 @@
+- name: Harford County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: HARFORD_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0306 = 1,530
+    md_local_income_tax_before_credits: 1_530
+
+- name: Harford County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: HARFORD_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0306 = 3,060
+    md_local_income_tax_before_credits: 3_060
