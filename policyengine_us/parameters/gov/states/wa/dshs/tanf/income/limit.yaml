@@ -1,8 +1,8 @@
 description: Washington sets these gross earned income limits for the Temporary Assistance for Needy Families program.
-# Note: These values follow the formula: Income Limit = (Payment Standard × 2) + $500
-# This represents the break-even point where countable income equals the payment standard,
-# resulting in $0 benefit. While mathematically derived, WAC 388-478-0035 publishes these
-# as a table rather than a formula, so we preserve the table structure here.
+# Note: These values appear to follow a mathematical relationship with payment standards
+# (Income Limit ≈ Payment Standard × 2, plus $500 after Aug 1, 2024), but no legal code
+# explicitly states this formula. WAC 388-478-0035 publishes these as a table.
+# Values here are taken directly from the published WSR tables.
 
 metadata:
   unit: currency-USD
@@ -10,29 +10,77 @@ metadata:
   label: Washington TANF maximum gross earned income limit
   breakdown:
     - range(1, 11)
-  breakdown_labels:
+  breakdown_label:
     - Assistance unit size
   reference:
     - title: WAC 388-478-0035 - Maximum earned income limits for TANF, SFA, PWA, and RCA
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0035
+    - title: WAC 388-478-0035 Maximum earned income limits for TANF, SFA, PWA, and RCA. 2016
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2016/01/16-01-093.htm
+    - title: WAC 388-478-0035 Maximum earned income limits for TANF, SFA, PWA, and RCA. 2018
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2018/09/18-09-088.htm
+    - title: WAC 388-478-0035 Maximum earned income limits for TANF, SFA, PWA, and RCA. 2021
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2021/21/21-21-054.htm
+    - title: WAC 388-478-0035 Maximum earned income limits for TANF, SFA, PWA, and RCA. 2024
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2023/23/23-23-054.htm
 
 1:
-  2024-01-01: 1_400
+  2016-01-15: 665
+  2018-07-01: 726
+  2021-07-01: 834
+  2024-01-01: 900
+  2024-08-01: 1_400
 2:
-  2024-01-01: 1_640
+  2016-01-15: 839
+  2018-07-01: 918
+  2021-07-01: 1_056
+  2024-01-01: 1_140
+  2024-08-01: 1_640
 3:
-  2024-01-01: 1_912
+  2016-01-15: 1_042
+  2018-07-01: 1_138
+  2021-07-01: 1_308
+  2024-01-01: 1_412
+  2024-08-01: 1_912
 4:
-  2024-01-01: 2_166
+  2016-01-15: 1_225
+  2018-07-01: 1_340
+  2021-07-01: 1_542
+  2024-01-01: 1_666
+  2024-08-01: 2_166
 5:
-  2024-01-01: 2_418
+  2016-01-15: 1_413
+  2018-07-01: 1_544
+  2021-07-01: 1_776
+  2024-01-01: 1_918
+  2024-08-01: 2_418
 6:
-  2024-01-01: 2_680
+  2016-01-15: 1_604
+  2018-07-01: 1_754
+  2021-07-01: 2_018
+  2024-01-01: 2_180
+  2024-08-01: 2_680
 7:
-  2024-01-01: 3_016
+  2016-01-15: 1_853
+  2018-07-01: 2_026
+  2021-07-01: 2_330
+  2024-01-01: 2_516
+  2024-08-01: 3_016
 8:
-  2024-01-01: 3_284
+  2016-01-15: 2_051
+  2018-07-01: 2_242
+  2021-07-01: 2_578
+  2024-01-01: 2_784
+  2024-08-01: 3_284
 9:
-  2024-01-01: 3_558
+  2016-01-15: 2_252
+  2018-07-01: 2_462
+  2021-07-01: 2_832
+  2024-01-01: 3_058
+  2024-08-01: 3_558
 10:
-  2024-01-01: 3_824
+  2016-01-15: 2_448
+  2018-07-01: 2_676
+  2021-07-01: 3_078
+  2024-01-01: 3_324
+  2024-08-01: 3_824

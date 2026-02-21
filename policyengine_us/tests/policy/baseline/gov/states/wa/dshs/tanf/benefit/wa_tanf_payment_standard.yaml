@@ -46,3 +46,59 @@
     spm_unit_size: 3
   output:
     wa_tanf_payment_standard: 0
+
+# Historical tests - verify 2016 values apply in early 2018
+- name: Case 7, family size 1 in 2018-01.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 1
+  output:
+    # Uses 2016-02-01 value (before 2018-07-01 update)
+    wa_tanf_payment_standard: 332
+
+- name: Case 8, family size 3 in 2018-01.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+  output:
+    # Uses 2016-02-01 value (before 2018-07-01 update)
+    wa_tanf_payment_standard: 521
+
+- name: Case 9, family size 10 in 2018-01.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 10
+  output:
+    # Uses 2016-02-01 value (before 2018-07-01 update)
+    wa_tanf_payment_standard: 1_224
+
+# Historical tests - verify 2021 values apply in 2022
+- name: Case 10, family size 1 in 2022-01.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 1
+  output:
+    # Uses 2021-07-01 value (15% increase)
+    wa_tanf_payment_standard: 417
+
+- name: Case 11, family size 3 in 2022-01.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+  output:
+    # Uses 2021-07-01 value (15% increase)
+    wa_tanf_payment_standard: 654
+
+- name: Case 12, family size 10 in 2022-01.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 10
+  output:
+    # Uses 2021-07-01 value (15% increase)
+    wa_tanf_payment_standard: 1_539
