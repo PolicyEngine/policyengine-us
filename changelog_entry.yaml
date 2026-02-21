@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - Cap DC self-employment loss addition at the amount actually deducted in federal AGI via loss_ald.
