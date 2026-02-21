@@ -1,0 +1,20 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Cleveland area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Cleveland area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ASHTABULA_COUNTY_OH
+    - CUYAHOGA_COUNTY_OH
+    - GEAUGA_COUNTY_OH
+    - LAKE_COUNTY_OH
+    - LORAIN_COUNTY_OH
+    - MEDINA_COUNTY_OH
+    - PORTAGE_COUNTY_OH
+    - SUMMIT_COUNTY_OH
+    

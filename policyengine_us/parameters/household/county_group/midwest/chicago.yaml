@@ -1,0 +1,26 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Chicago area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Chicago area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - COOK_COUNTY_IL
+    - DEKALB_COUNTY_IL
+    - DUPAGE_COUNTY_IL
+    - GRUNDY_COUNTY_IL
+    - KANE_COUNTY_IL
+    - KENDALL_COUNTY_IL
+    - LAKE_COUNTY_IL
+    - MCHENRY_COUNTY_IL
+    - WILL_COUNTY_IL
+    - JASPER_COUNTY_IN
+    - LAKE_COUNTY_IN
+    - NEWTON_COUNTY_IN
+    - PORTER_COUNTY_IN
+    - KENOSHA_COUNTY_WI
+  

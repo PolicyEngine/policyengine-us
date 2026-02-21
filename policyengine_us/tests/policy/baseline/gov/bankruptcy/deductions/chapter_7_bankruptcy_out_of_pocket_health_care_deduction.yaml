@@ -1,0 +1,50 @@
+- name: Case 1, both people below age 65. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 166
+
+- name: Case 2, one above age 65, one below age 65.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 241
+
+- name: Case 3, both age above 65.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 75
+      person2:
+        age: 78
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 316

@@ -1,0 +1,31 @@
+- name: Case 1, 3 people have vehicle loan.  
+  period: 2024
+  input:
+    people:
+      p1:
+        has_vehicle_loan: true
+      p2:
+        has_vehicle_loan: true
+      p3:
+        has_vehicle_loan: true
+    spm_units:
+      spm_unit:
+        members: [p1, p2, p3]
+  output:
+    vehicles_loan_count: 3
+
+- name: Case 2, 2 people have vehivle loan. 
+  period: 2024
+  input:
+    people:
+      p1:
+        has_vehicle_loan: true
+      p2:
+        has_vehicle_loan: false
+      p3:
+        has_vehicle_loan: true
+    spm_units:
+      spm_unit:
+        members: [p1, p2, p3]
+  output:
+    vehicles_loan_count: 2

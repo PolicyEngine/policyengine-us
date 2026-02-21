@@ -1,0 +1,14 @@
+description: The IRS matches this percent of the nonpriorirty unsecured debt under the chapter 7 bankruptcy means test.
+
+values:
+  2024-01-01: 0.25
+  
+metadata:
+  unit: /1
+  period: year
+  label: Chapter 7 Bankruptcy nonpriority unsecured debt rate 
+  reference:
+    - title: Official Form 122A-2 Chapter 7 Means Test Calculation
+      href: https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=9
+    - title: 11 U.S.C. § 707(b)(2)(A)(i)(I)
+      href: https://www.law.cornell.edu/uscode/text/11/707 

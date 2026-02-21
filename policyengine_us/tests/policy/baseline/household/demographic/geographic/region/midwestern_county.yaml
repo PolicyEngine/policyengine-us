@@ -1,0 +1,23 @@
+- name: Cook county belongs to Chicago by MSA.
+  period: 2024
+  input:
+    state_code: IL
+    county_str: COOK_COUNTY_IL
+  output:
+    midwestern_county: CHICAGO
+
+- name: Slope county belongs to default midwest.
+  period: 2024
+  input:
+    state_code: ND
+    county_str: SLOPE_COUNTY_ND
+  output:
+    midwestern_county: MIDWEST_DEFAULT
+
+- name:  Not part of any midwest region.
+  period: 2024
+  input:
+    state_code: MA
+    county_str: SUFFOLK_COUNTY_MA
+  output:
+    midwestern_county: NONE

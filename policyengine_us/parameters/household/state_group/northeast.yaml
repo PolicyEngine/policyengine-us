@@ -1,0 +1,20 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default states in the northeast region under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area northeast region states
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ME
+    - NH
+    - VT
+    - MA
+    - RI
+    - CT
+    - PA
+    - NY
+    - NJ

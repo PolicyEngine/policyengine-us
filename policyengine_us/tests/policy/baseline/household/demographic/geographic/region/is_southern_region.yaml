@@ -1,0 +1,20 @@
+- name: Georgia is in south region.
+  period: 2024
+  input:
+    state_code: GA
+  output:
+    is_southern_region: true
+
+- name: Florida is in south region. 
+  period: 2024
+  input:
+    state_code: FL
+  output:
+    is_southern_region: true
+
+- name: Massachusetts is not in south region.
+  period: 2024
+  input:
+    state_code: MA
+  output:
+    is_southern_region: false

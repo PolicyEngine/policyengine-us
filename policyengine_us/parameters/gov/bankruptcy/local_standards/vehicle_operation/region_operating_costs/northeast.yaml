@@ -1,0 +1,38 @@
+description: The IRS limits the northeastern region operating costs to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
+
+NORTHEAST_DEFAULT:
+  1:
+    2024-01-01: 285
+  2:
+    2024-01-01: 570
+BOSTON:
+  1: 
+    2024-01-01: 310
+  2:
+    2024-01-01: 620
+NEW_YORK:
+  1:
+    2024-01-01: 377
+  2:
+    2024-01-01: 754
+PHILADELPHIA:
+  1: 
+    2024-01-01: 307
+  2:
+    2024-01-01: 614
+NONE:
+  1:
+    2024-01-01: 0
+  2:
+    2024-01-01: 0
+
+metadata:
+  unit: currency-USD
+  period: month
+  label:  Chapter 7 Bankruptcy northeastern region operating costs limit
+  breakdown:
+  - northeastern_county
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation

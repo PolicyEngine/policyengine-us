@@ -1,0 +1,26 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the St.Louis area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area St.Louis area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - FRANKLIN_COUNTY_MO
+    - JEFFERSON_COUNTY_MO
+    - LINCOLN_COUNTY_MO
+    - ST_CHARLES_COUNTY_MO
+    - ST_LOUIS_COUNTY_MO
+    - WARREN_COUNTY_MO
+    - ST_LOUIS_CITY_COUNTY_MO
+    - BOND_COUNTY_IL
+    - CALHOUN_COUNTY_IL
+    - CLINTON_COUNTY_IL
+    - JERSEY_COUNTY_IL
+    - MACOUPIN_COUNTY_IL
+    - MADISON_COUNTY_IL
+    - MONROE_COUNTY_IL
+    - ST_CLAIR_COUNTY_IL

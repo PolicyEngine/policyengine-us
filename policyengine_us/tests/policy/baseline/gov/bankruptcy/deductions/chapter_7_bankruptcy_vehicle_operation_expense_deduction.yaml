@@ -1,0 +1,29 @@
+- name: Case 1, deafult county in west region. 
+  period: 2024-01
+  input:
+    county_str: kern_county_ca
+    state_code: CA
+    vehicles_loan_count: 1
+    
+  output:
+    chapter_7_bankruptcy_vehicle_operation_expense_deduction: 273
+
+- name: Case 2, special county in northeast region.  
+  period: 2024-01
+  input:
+    county_str: SUFFOLK_COUNTY_MA
+    state_code: MA
+    vehicles_loan_count: 2
+    
+  output:
+    chapter_7_bankruptcy_vehicle_operation_expense_deduction: 620
+
+- name: Case 3, deafult county in west region, but no vehicle loan or owned.  
+  period: 2024-01
+  input:
+    county_str: kern_county_ca
+    state_code: CA
+    vehicles_loan_count: 0
+    
+  output:
+    chapter_7_bankruptcy_vehicle_operation_expense_deduction: 0

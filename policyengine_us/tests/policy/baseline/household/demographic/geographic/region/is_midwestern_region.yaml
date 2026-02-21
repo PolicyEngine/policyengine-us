@@ -1,0 +1,20 @@
+- name: Illinois is in midwest region.
+  period: 2024
+  input:
+    state_code: IL
+  output:
+    is_midwestern_region: true
+
+- name: North Dakota is in midwest region. 
+  period: 2024
+  input:
+    state_code: ND
+  output:
+    is_midwestern_region: true
+
+- name: Massachusetts is not in midwest region.
+  period: 2024
+  input:
+    state_code: MA
+  output:
+    is_midwestern_region: false

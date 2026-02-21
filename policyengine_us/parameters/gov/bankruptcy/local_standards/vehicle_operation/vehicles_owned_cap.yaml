@@ -1,0 +1,12 @@
+description: The IRS limits the number of owned vehicles to this amount under the chapter 7 bankruptcy means test.
+
+values:
+  2024-01-01: 2
+  
+metadata:
+  unit: float
+  period: year
+  label: Chapter 7 Bankruptcy qualified vehicles owned cap amount
+  reference:
+    - title: Form 122A-2 Chapter 7 Means Test Calculation 
+      href: https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=4

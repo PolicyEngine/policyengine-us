@@ -1,0 +1,18 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Boston area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Boston area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ESSEX_COUNTY_MA 
+    - MIDDLESEX_COUNTY_MA
+    - NORFOLK_COUNTY_MA
+    - PLYMOUTH_COUNTY_MA
+    - SUFFOLK_COUNTY_MA
+    - ROCKINGHAM_COUNTY_NH
+    - STRAFFORD_COUNTY_NH

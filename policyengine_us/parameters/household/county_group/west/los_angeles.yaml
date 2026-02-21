@@ -1,0 +1,15 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Los Angeles area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Los Angeles area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - LOS_ANGELES_COUNTY_CA
+    - ORANGE_COUNTY_CA
+    - RIVERSIDE_COUNTY_CA
+    - SAN_BERNARDINO_COUNTY_CA

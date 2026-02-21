@@ -1,0 +1,21 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Denver area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Denver area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ADAMS_COUNTY_CO
+    - ARAPAHOE_COUNTY_CO
+    - BROOMFIELD_COUNTY_CO
+    - CLEAR_CREEK_COUNTY_CO
+    - DENVER_COUNTY_CO
+    - DOUGLAS_COUNTY_CO
+    - ELBERT_COUNTY_CO
+    - GILPIN_COUNTY_CO
+    - JEFFERSON_COUNTY_CO
+    - PARK_COUNTY_CO

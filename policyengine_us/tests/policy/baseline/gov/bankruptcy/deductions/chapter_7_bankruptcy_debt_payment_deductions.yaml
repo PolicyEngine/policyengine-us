@@ -1,0 +1,15 @@
+- name: Case 1, have housing cost and vehicle mortgage expense. 
+  period: 2024-01
+  input:
+    housing_cost: 120
+    vehicle_mortgage_expense: 0   
+  output:
+    chapter_7_bankruptcy_debt_payment_deductions: 10
+
+- name: Case 2, both expenses are 0. 
+  period: 2024-01
+  input:
+    housing_cost: 0
+    vehicle_mortgage_expense: 0   
+  output:
+    chapter_7_bankruptcy_debt_payment_deductions: 0
