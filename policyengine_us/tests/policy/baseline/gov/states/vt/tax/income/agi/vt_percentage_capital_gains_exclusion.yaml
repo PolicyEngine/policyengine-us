@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: ME # Test state definition other than VT
-    adjusted_net_capital_gain: 1_000
+    vt_capital_gains_from_eligible_assets: 1_000
   output:
     vt_percentage_capital_gains_exclusion: 0
 
@@ -10,31 +10,30 @@
   period: 2022
   input:
     state_code: VT
-    adjusted_net_capital_gain: 0
+    vt_capital_gains_from_eligible_assets: 0
   output:
-    vt_percentage_capital_gains_exclusion: 0 
+    vt_percentage_capital_gains_exclusion: 0
 
-- name: VT percentage capital gain exclusion amount unit test 3
+- name: VT percentage exclusion with eligible assets
   period: 2022
   input:
     state_code: VT
-    adjusted_net_capital_gain: 1_000
+    vt_capital_gains_from_eligible_assets: 1_000
   output:
-    vt_percentage_capital_gains_exclusion: 400 
+    vt_percentage_capital_gains_exclusion: 400
 
-- name: VT percentage capital gain exclusion amount unit test 4
+- name: VT percentage exclusion capped at 350k
+  period: 2022
+  input:
+    state_code: VT
+    vt_capital_gains_from_eligible_assets: 900_000
+  output:
+    vt_percentage_capital_gains_exclusion: 350_000
+
+- name: VT percentage exclusion defaults to 0 without eligible assets
   period: 2022
   input:
     state_code: VT
     adjusted_net_capital_gain: 900_000
-  output:
-    vt_percentage_capital_gains_exclusion: 350_000      
-
-- name: Adjusted net capital reduced by dividend income
-  period: 2022
-  input:
-    state_code: VT
-    adjusted_net_capital_gain: 900_000
-    qualified_dividend_income: 1_000_000
   output:
     vt_percentage_capital_gains_exclusion: 0

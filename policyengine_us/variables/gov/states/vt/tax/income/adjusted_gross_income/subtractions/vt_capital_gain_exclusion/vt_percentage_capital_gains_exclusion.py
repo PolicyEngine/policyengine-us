@@ -6,32 +6,27 @@ class vt_percentage_capital_gains_exclusion(Variable):
     entity = TaxUnit
     label = "Vermont percentage capital gains exclusion"
     unit = USD
-    documentation = "This can be selected to be subtracted from federal adjusted gross income in Vermont as percentage capital gains exclusion."
+    documentation = (
+        "Up to 40% of net capital gains from eligible assets held "
+        "3+ years, capped at $350,000. Only applies to qualifying "
+        "assets (excludes publicly traded stocks/bonds, financial "
+        "instruments, depreciable personal property except farm "
+        "property/timber, and residential real estate). Defaults to "
+        "0 since PolicyEngine cannot distinguish asset types."
+    )
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-153-2022.pdf#page=1"  # 2022 Schedule IN-153 Vermont Capital Gains Exclusion Calculation
-        "https://legislature.vermont.gov/statutes/section/32/151/05811"  # Titl. 32 V.S.A. § 5811(21)(B)(ii)
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-153%20Instr-2022.pdf"
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-153-2024.pdf#page=2",
+        "https://legislature.vermont.gov/statutes/section/32/151/05811",
     )
 
     def formula(tax_unit, period, parameters):
-        # Get adjusted net capital gain, which is capped at 0
-        adjusted_net_capital_gain = tax_unit(
-            "adjusted_net_capital_gain", period
-        )
-        qualified_dividend_income = add(
-            tax_unit, period, ["qualified_dividend_income"]
-        )
-        reduced_adjusted_net_capital_gain = max_(
-            adjusted_net_capital_gain - qualified_dividend_income, 0
+        eligible_gains = tax_unit(
+            "vt_capital_gains_from_eligible_assets", period
         )
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
-        # The percentage exclusion equals to a percentage of
-        # the adjusted net capital gain and has a maximum value
-        percentage_exclusion = (
-            reduced_adjusted_net_capital_gain * p.percentage.rate
-        )
+        percentage_exclusion = eligible_gains * p.percentage.rate
         return min_(percentage_exclusion, p.percentage.cap)

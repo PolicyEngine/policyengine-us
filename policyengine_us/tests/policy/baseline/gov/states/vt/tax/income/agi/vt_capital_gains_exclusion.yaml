@@ -6,7 +6,7 @@
     taxable_income: 1_000
     vt_percentage_capital_gains_exclusion: 1_000
   output:
-    vt_capital_gains_exclusion: 0  
+    vt_capital_gains_exclusion: 0
 
 - name: VT capital gain exclusion amount unit test 2
   period: 2022
@@ -16,7 +16,7 @@
     taxable_income: 1_000
     vt_percentage_capital_gains_exclusion: 1_000
   output:
-    vt_capital_gains_exclusion: 400  # # min(5000,1000*0.4) = 400
+    vt_capital_gains_exclusion: 400 # min(5000,1000*0.4) = 400
 
 - name: VT capital gain exclusion amount unit test 3
   period: 2022
@@ -26,7 +26,7 @@
     taxable_income: 12_600
     vt_percentage_capital_gains_exclusion: 1_000
   output:
-    vt_capital_gains_exclusion: 5_000  # min(5000,12600*0.4) = 4000
+    vt_capital_gains_exclusion: 5_000 # min(5000,12600*0.4) = 5040 -> flat wins
 
 - name: VT capital gain exclusion amount unit test 4
   period: 2022
@@ -58,3 +58,22 @@
     qualified_dividend_income: 4_000
   output:
     vt_capital_gains_exclusion: 2_000
+
+- name: Only flat exclusion applies by default (issue 7291)
+  period: 2024
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 137_498
+    taxable_income: 137_498
+  output:
+    vt_capital_gains_exclusion: 5_000
+
+- name: Percentage exclusion applies when eligible assets specified
+  period: 2024
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 137_498
+    taxable_income: 137_498
+    vt_capital_gains_from_eligible_assets: 100_000
+  output:
+    vt_capital_gains_exclusion: 40_000 # 40% of 100k eligible gains
