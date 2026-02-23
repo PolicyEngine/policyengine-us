@@ -1,62 +1,112 @@
-- name: S-Corp loss only
+- name: Case 1, S-Corp loss only.
   period: 2024
   input:
     people:
-      person:
+      person1:
         partnership_s_corp_income: -50_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
   output:
     loss_ald: 50_000
 
-- name: S-Corp loss combined with SE loss
+- name: Case 2, S-Corp loss combined with SE loss.
   period: 2024
   input:
     people:
-      person:
+      person1:
         partnership_s_corp_income: -30_000
         self_employment_income: -20_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
   output:
     loss_ald: 50_000
 
-- name: Losses exceeding section 461(l) cap
+- name: Case 3, losses exceeding section 461(l) cap for single filer.
   period: 2024
   input:
     people:
-      person:
+      person1:
         partnership_s_corp_income: -200_000
         self_employment_income: -200_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
         filing_status: SINGLE
   output:
     loss_ald: 305_000
 
-- name: Positive S-Corp income does not affect loss_ald
+- name: Case 4, positive S-Corp income does not affect loss_ald.
   period: 2024
   input:
     people:
-      person:
+      person1:
         partnership_s_corp_income: 100_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
   output:
     loss_ald: 0
 
-- name: No losses
+- name: Case 5, no losses.
   period: 2024
   input:
     people:
-      person:
+      person1:
         employment_income: 50_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
   output:
     loss_ald: 0
+
+- name: Case 6, joint filing with losses exceeding joint cap.
+  period: 2024
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: -400_000
+      person2:
+        self_employment_income: -300_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Total losses = 400K + 300K = 700K, joint cap = 610K
+    loss_ald: 610_000
+
+- name: Case 7, mixed positive and negative across people.
+  period: 2024
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: 200_000
+      person2:
+        partnership_s_corp_income: -100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # person1 contributes 0 loss (positive income), person2 contributes 100K
+    # Losses do not net across people
+    loss_ald: 100_000
+
+- name: Case 8, capital loss combined with partnership loss.
+  period: 2024
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: -50_000
+        short_term_capital_gains: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+  output:
+    # limited_capital_loss = min(3_000, 10_000) = 3_000
+    # partnership loss = 50_000
+    # total = 50_000 + 3_000 = 53_000, below cap
+    loss_ald: 53_000

@@ -10,7 +10,10 @@ class loss_ald(Variable):
         "Above-the-line deduction from gross income for business losses."
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/165"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/461#l",
+        "https://www.law.cornell.edu/uscode/text/26/461#l_4",
+    )
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
