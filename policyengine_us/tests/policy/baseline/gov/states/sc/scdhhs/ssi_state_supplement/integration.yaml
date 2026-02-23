@@ -1,0 +1,201 @@
+- name: Case 1, aged SSI recipient in CRCF with SSI only.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: true
+        ssi_countable_income: 0
+        ssi: 11_928
+        ssi_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Eligibility: aged (70 >= 65) + in CRCF + SC + income < NIL
+    sc_ssi_state_supplement_eligible: [true]
+
+    # PNA: SSI-only (no non-SSI income) = $85/month * 12 = $1,020/year
+    sc_ssi_state_supplement_pna: [1_020]
+
+    # OSS amount:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $0 + $11,928 = $11,928
+    # OSS = $21,648 - $11,928 = $9,720
+    sc_ssi_state_supplement: [9_720]
+
+- name: Case 2, disabled person in CRCF with SSI and Social Security.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_blind: false
+        is_ssi_disabled: true
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: true
+        ssi_countable_income: 2_400
+        ssi: 11_928
+        ssi_unearned_income: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Eligibility: disabled + in CRCF + SC + income < NIL
+    # Total countable = $2,400 + $11,928 = $14,328 < $21,648 NIL
+    sc_ssi_state_supplement_eligible: [true]
+
+    # PNA: has non-SSI income ($2,400 unearned) = $105/month * 12 = $1,260/year
+    sc_ssi_state_supplement_pna: [1_260]
+
+    # OSS amount:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $2,400 + $11,928 = $14,328
+    # OSS = $21,648 - $14,328 = $7,320
+    sc_ssi_state_supplement: [7_320]
+
+- name: Case 3, blind person in CRCF, no SSI, income below NIL.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: true
+        ssi_countable_income: 15_000
+        ssi: 0
+        ssi_unearned_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Eligibility: blind + in CRCF + SC + income < NIL
+    # Total countable = $15,000 + $0 = $15,000 < $21,648 NIL
+    sc_ssi_state_supplement_eligible: [true]
+
+    # PNA: has non-SSI income ($15,000 unearned) = $105/month * 12 = $1,260/year
+    sc_ssi_state_supplement_pna: [1_260]
+
+    # OSS amount:
+    # NIL annual = $1,804 * 12 = $21,648
+    # Total countable = $15,000 + $0 = $15,000
+    # OSS = $21,648 - $15,000 = $6,648
+    sc_ssi_state_supplement: [6_648]
+
+- name: Case 4, aged person NOT in CRCF is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: false
+        ssi_countable_income: 0
+        ssi: 11_928
+        ssi_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Not in CRCF so not eligible
+    sc_ssi_state_supplement_eligible: [false]
+
+    # Not eligible so PNA = $0
+    sc_ssi_state_supplement_pna: [0]
+
+    # Not eligible so OSS = $0
+    sc_ssi_state_supplement: [0]
+
+- name: Case 5, non-disabled non-aged person in CRCF is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: false
+        is_in_residential_care_facility: true
+        ssi_countable_income: 0
+        ssi: 0
+        ssi_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Not aged/blind/disabled so not eligible
+    sc_ssi_state_supplement_eligible: [false]
+
+    # Not eligible so PNA = $0
+    sc_ssi_state_supplement_pna: [0]
+
+    # Not eligible so OSS = $0
+    sc_ssi_state_supplement: [0]
+
+- name: Case 6, income above NIL makes person ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: true
+        ssi_countable_income: 12_000
+        ssi: 11_928
+        ssi_unearned_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Income check: total countable = $12,000 + $11,928 = $23,928
+    # NIL annual = $1,804 * 12 = $21,648
+    # $23,928 > $21,648 so not eligible
+    sc_ssi_state_supplement_eligible: [false]
+
+    # Not eligible so PNA = $0
+    sc_ssi_state_supplement_pna: [0]
+
+    # Not eligible so OSS = $0
+    sc_ssi_state_supplement: [0]
+
+- name: Case 7, person in wrong state is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: true
+        is_in_residential_care_facility: true
+        ssi_countable_income: 0
+        ssi: 11_928
+        ssi_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    # Wrong state (GA, not SC) so not eligible
+    sc_ssi_state_supplement_eligible: [false]
+
+    # Not eligible so PNA = $0
+    sc_ssi_state_supplement_pna: [0]
+
+    # Not eligible so OSS = $0
+    sc_ssi_state_supplement: [0]
