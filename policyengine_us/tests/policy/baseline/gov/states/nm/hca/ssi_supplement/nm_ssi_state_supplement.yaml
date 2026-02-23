@@ -1,0 +1,76 @@
+# New Mexico SSI State Supplement Benefit Amount Unit Tests
+# Tests the flat $100/month ($1,200/year) payment for eligible individuals
+# Source: 8.106.500.10 NMAC - Payments to Adults in Residential Care
+
+- name: Case 1, eligible person receives full annual supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # $100/month * 12 months = $1,200/year
+        nm_ssi_state_supplement: 1_200
+
+- name: Case 2, not SSI-eligible receives zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible_individual: false
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        nm_ssi_state_supplement: 0
+
+- name: Case 3, not in ARSCH facility receives zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        nm_ssi_state_supplement: 0
+
+- name: Case 4, underage person receives zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        nm_ssi_state_supplement: 0

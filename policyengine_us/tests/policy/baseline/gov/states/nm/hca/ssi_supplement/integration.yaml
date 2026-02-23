@@ -1,0 +1,166 @@
+# New Mexico SSI State Supplement Integration Tests
+# Tests the full eligibility and benefit calculation pipeline
+# Source: 8.106.500.10 NMAC - Payments to Adults in Residential Care
+# Program: $100/month flat payment for SSI recipients in licensed ARSCH facilities
+
+- name: Case 1, elderly SSI recipient in ARSCH facility receives supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Eligibility: SSI-eligible (true) AND age >= 18 (70 >= 18) AND in ARSCH (true)
+        nm_ssi_state_supplement_eligible: true
+        # Benefit: $100/month * 12 = $1,200/year (flat payment)
+        nm_ssi_state_supplement: 1_200
+
+- name: Case 2, disabled adult SSI recipient in ARSCH facility receives supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Eligibility: SSI-eligible (true) AND age >= 18 (35 >= 18) AND in ARSCH (true)
+        nm_ssi_state_supplement_eligible: true
+        # Benefit: $100/month * 12 = $1,200/year
+        nm_ssi_state_supplement: 1_200
+
+- name: Case 3, SSI couple both in ARSCH facility each receive supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+      person2:
+        age: 66
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Person 1: SSI-eligible, age 68 >= 18, in ARSCH
+        nm_ssi_state_supplement_eligible: true
+        # $100/month * 12 = $1,200/year per person
+        nm_ssi_state_supplement: 1_200
+      person2:
+        # Person 2: SSI-eligible, age 66 >= 18, in ARSCH
+        # Per 8.106.400.10 NMAC: couples in ARSCH are two separate benefit groups
+        nm_ssi_state_supplement_eligible: true
+        # $100/month * 12 = $1,200/year per person
+        nm_ssi_state_supplement: 1_200
+
+- name: Case 4, NM resident not in ARSCH facility receives no supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Not in ARSCH facility: ineligible regardless of SSI status
+        nm_ssi_state_supplement_eligible: false
+        nm_ssi_state_supplement: 0
+
+- name: Case 5, age 18 boundary in ARSCH facility is eligible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Age exactly 18: meets the 18+ requirement
+        nm_ssi_state_supplement_eligible: true
+        # $100/month * 12 = $1,200/year
+        nm_ssi_state_supplement: 1_200
+
+- name: Case 6, household with one eligible and one ineligible person.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+      person2:
+        age: 45
+        is_ssi_eligible_individual: false
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    people:
+      person1:
+        # Person 1: SSI-eligible, age 60 >= 18, in ARSCH = eligible
+        nm_ssi_state_supplement_eligible: true
+        nm_ssi_state_supplement: 1_200
+      person2:
+        # Person 2: NOT SSI-eligible = ineligible even though in ARSCH
+        nm_ssi_state_supplement_eligible: false
+        nm_ssi_state_supplement: 0
+
+- name: Case 7, SSI recipient in ARSCH facility but outside NM receives nothing.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible_individual: true
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    people:
+      person1:
+        # Wrong state: defined_for = StateCode.NM excludes non-NM residents
+        nm_ssi_state_supplement_eligible: false
+        nm_ssi_state_supplement: 0
