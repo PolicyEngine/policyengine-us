@@ -13,8 +13,6 @@ class snap_assets(Variable):
     )
     label = "SNAP assets"
     unit = USD
-    reference = (
-        "https://www.law.cornell.edu/uscode/text/7/2014#g",
-    )
+    reference = ("https://www.law.cornell.edu/uscode/text/7/2014#g",)
 
     adds = ["spm_unit_cash_assets"]
