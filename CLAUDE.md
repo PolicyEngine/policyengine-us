@@ -60,10 +60,19 @@ make documentation
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
 
+## Changelog
+Every PR needs a changelog fragment in `changelog.d/`:
+```bash
+echo "Description of change." > changelog.d/<branch-name>.<type>.md
+```
+Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
+
+**DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
+
 ## Project Requirements
 - Python >= 3.10, < 3.13
 - Follow GitHub Flow with PRs targeting master branch
-- Every PR needs a changelog entry in changelog_entry.yaml
+- Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
 
 ## Project-Specific Gotchas

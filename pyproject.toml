@@ -40,8 +40,42 @@ dev = [
     "jupyter-book>=1.0.4.post1",
     "setuptools>=80.9.0",
     "build>=1.2.2.post1",
+    "towncrier>=24.8.0",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
+
+[tool.towncrier]
+package = "policyengine_us"
+directory = "changelog.d"
+filename = "CHANGELOG.md"
+title_format = "## [{version}] - {project_date}"
+issue_format = ""
+underlines = ["", "", ""]
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking changes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "added"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fixed"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removed"
+name = "Removed"
+showcontent = true
 
