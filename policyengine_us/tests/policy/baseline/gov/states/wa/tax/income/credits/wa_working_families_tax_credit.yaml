@@ -27,3 +27,57 @@
     eitc_child_count: 3
   output:
     wa_working_families_tax_credit: 0
+
+- name: At EITC AGI limit, credit phases to $50 minimum per RCW 82.08.0206(3)(f).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    eitc: 1
+    eitc_child_count: 1
+    eitc_agi_limit: 50_000
+    filer_adjusted_earnings: 50_000
+  output:
+    wa_working_families_tax_credit: 50
+
+- name: Mid-phaseout gives correctly reduced credit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    eitc: 1
+    eitc_child_count: 1
+    eitc_agi_limit: 50_000
+    filer_adjusted_earnings: 47_500
+  output:
+    wa_working_families_tax_credit: 345
+
+- name: Joint filer with 1 child and moderate income receives credit.
+  period: 2024
+  absolute_error_margin: 50
+  input:
+    people:
+      filer:
+        employment_income: 40_000
+        age: 30
+      spouse:
+        dividend_income: 11_000
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child]
+        filing_status: JOINT
+    families:
+      family:
+        members: [filer, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [filer, spouse, child]
+    households:
+      household:
+        members: [filer, spouse, child]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 640
