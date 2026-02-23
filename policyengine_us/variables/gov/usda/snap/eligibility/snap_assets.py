@@ -21,10 +21,4 @@ class snap_assets(Variable):
         "https://www.law.cornell.edu/cfr/text/7/273.8",
     )
 
-    # Liquid resources per 7 CFR 273.8(c)(1):
-    # bank_account_assets = checking, savings, money market
-    #                       (SIPP TVAL_BANK)
-    # stock_assets = stocks and mutual funds (SIPP TVAL_STMF)
-    # bond_assets = bonds and government securities
-    #               (SIPP TVAL_BOND)
-    adds = ["bank_account_assets", "stock_assets", "bond_assets"]
+    adds = "gov.usda.snap.asset_test.sources"
