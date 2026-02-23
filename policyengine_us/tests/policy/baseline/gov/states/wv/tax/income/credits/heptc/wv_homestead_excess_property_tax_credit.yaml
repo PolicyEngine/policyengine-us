@@ -70,5 +70,7 @@
         members: [person1, person2]
         state_fips: 54
   output:
-    adjusted_gross_income: -3_000
+    # Partnership/S-corp losses now recovered via loss_ald, capped at
+    # $610K (joint, 2024).
+    adjusted_gross_income: -610_000
     wv_homestead_excess_property_tax_credit: 0
