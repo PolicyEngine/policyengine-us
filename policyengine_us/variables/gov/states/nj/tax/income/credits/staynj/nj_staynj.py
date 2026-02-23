@@ -19,14 +19,11 @@ class nj_staynj(Variable):
         # Get property taxes paid
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
 
-        # Get ANCHOR benefit received (must be subtracted per NJ Treasury)
+        # Per P.L. 2024 c.88: Stay NJ = max(min(property_taxes * rate, max_benefit) - ANCHOR - Senior Freeze, 0)
+        target_benefit = min_(property_taxes * p.rate, p.max_benefit)
+
+        # Subtract ANCHOR and Senior Freeze benefits
         anchor_benefit = tax_unit("nj_anchor", period)
+        senior_freeze = tax_unit("nj_senior_freeze", period)
 
-        # Calculate 50% of (property taxes minus ANCHOR)
-        # Per NJ Treasury: Stay NJ benefit is 50% of property taxes
-        # MINUS any payments received through ANCHOR
-        net_property_taxes = max_(property_taxes - anchor_benefit, 0)
-        calculated_benefit = net_property_taxes * p.rate
-
-        # Cap at maximum benefit
-        return min_(calculated_benefit, p.max_benefit)
+        return max_(target_benefit - anchor_benefit - senior_freeze, 0)

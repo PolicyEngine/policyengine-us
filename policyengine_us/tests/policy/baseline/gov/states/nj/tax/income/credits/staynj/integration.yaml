@@ -1,6 +1,6 @@
 # Integration tests for New Jersey Stay NJ Property Tax Credit
 # Tests the full calculation pipeline from income to eligibility to benefit
-# Stay NJ: 50% of property taxes paid, maximum $6,500, age 65+, income < $500K
+# Formula per P.L. 2024 c.88: Stay NJ = max(min(property_taxes * 50%, $6,500) - ANCHOR - Senior_Freeze, 0)
 # Note: Stay NJ begins in 2026
 
 - name: Case 1, senior couple homeowner with moderate income and property tax.
@@ -30,13 +30,11 @@
   output:
     # Combined income: $100K + $50K = $150K < $500K limit
     # At least one person age 68 >= 65
-    # Homeowner with mortgage
-    # Property tax: $10,000
-    # ANCHOR benefit: $1,750 (income $150K qualifies for homeowner tier 2)
-    # Net property tax: $10,000 - $1,750 = $8,250
-    # Benefit: 50% * $8,250 = $4,125
+    # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
+    # ANCHOR = $1,750 (senior, income $150K <= $150K)
+    # max($5,000 - $1,750 - $0, 0) = $3,250
     nj_staynj_eligible: true
-    nj_staynj: 4_125
+    nj_staynj: 3_250
 
 - name: Case 2, wealthy senior homeowner capped at maximum.
   period: 2026
@@ -59,11 +57,9 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $400K < $500K limit
-    # Age 72 >= 65
-    # Property tax: $25,000
-    # 50% * $25,000 = $12,500 > $6,500 max
-    # Capped at: $6,500
+    # Income $400K < $500K limit, but > $250K ANCHOR limit - no ANCHOR
+    # min($25,000 * 50%, $6,500) = min($12,500, $6,500) = $6,500
+    # max($6,500 - $0 - $0, 0) = $6,500
     nj_staynj_eligible: true
     nj_staynj: 6_500
 
@@ -89,13 +85,11 @@
         state_fips: 34
   output:
     # Income: $36K (Social Security) < $500K
-    # Age 75 >= 65
-    # Property tax: $8,000
-    # ANCHOR benefit: $1,750 (income $36K qualifies for homeowner tier 2)
-    # Net property tax: $8,000 - $1,750 = $6,250
-    # 50% * $6,250 = $3,125
+    # min($8,000 * 50%, $6,500) = min($4,000, $6,500) = $4,000
+    # ANCHOR = $1,750 (senior, income $36K <= $150K)
+    # max($4,000 - $1,750 - $0, 0) = $2,250
     nj_staynj_eligible: true
-    nj_staynj: 3_125
+    nj_staynj: 2_250
 
 - name: Case 4, non-senior homeowner is ineligible.
   period: 2026
@@ -119,8 +113,6 @@
         state_fips: 34
   output:
     # Age 60 < 65 - fails age requirement
-    # Even though income and homeownership qualify
-    # Ineligible
     nj_staynj_eligible: false
     nj_staynj: 0
 
@@ -144,10 +136,7 @@
         members: [person1]
         state_fips: 34
   output:
-    # Age 70 >= 65 - passes age
-    # Income $80K < $500K - passes income
     # RENTER - fails homeowner requirement
-    # Stay NJ is only for homeowners
     nj_staynj_eligible: false
     nj_staynj: 0
 
@@ -172,8 +161,7 @@
         members: [person1]
         state_fips: 34
   output:
-    # Income $550K >= $500K limit
-    # Fails income requirement
+    # Income $550K >= $500K limit - fails income requirement
     nj_staynj_eligible: false
     nj_staynj: 0
 
@@ -204,10 +192,8 @@
   output:
     # At least one spouse (person1) is 65+
     # Combined income: $80K + $70K = $150K < $500K
-    # Homeowner
-    # Property tax: $11,000
-    # ANCHOR benefit: $1,750 (income $150K qualifies for homeowner tier 2)
-    # Net property tax: $11,000 - $1,750 = $9,250
-    # 50% * $9,250 = $4,625
+    # min($11,000 * 50%, $6,500) = min($5,500, $6,500) = $5,500
+    # ANCHOR = $1,750 (senior, income $150K <= $150K)
+    # max($5,500 - $1,750 - $0, 0) = $3,750
     nj_staynj_eligible: true
-    nj_staynj: 4_625
+    nj_staynj: 3_750
