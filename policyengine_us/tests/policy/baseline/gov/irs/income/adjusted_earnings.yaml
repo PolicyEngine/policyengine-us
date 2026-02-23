@@ -1,0 +1,29 @@
+# Tests that SE losses correctly reduce adjusted earnings (no per-person floor)
+# Per IRC 32(c)(2)(A)(ii) and IRS EIC Worksheet B, Line 4b:
+# SE losses reduce earned income, with the floor at zero applied only
+# to the combined tax-unit total (filer_adjusted_earnings), not per-person.
+
+- name: SE loss reduces adjusted earnings below zero
+  period: 2024
+  input:
+    employment_income: 5_000
+    self_employment_income: -10_000
+  output:
+    adjusted_earnings: -5_000
+
+- name: Positive SE income gives positive adjusted earnings
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 30_000
+    self_employment_income: 10_000
+  output:
+    adjusted_earnings: 39_293.52
+
+- name: Zero SE income gives wages-only adjusted earnings
+  period: 2024
+  input:
+    employment_income: 20_000
+    self_employment_income: 0
+  output:
+    adjusted_earnings: 20_000

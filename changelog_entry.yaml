@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    fixed:
+    - Fixed EITC and CDCC earned income computation to allow self-employment losses
+      to reduce earned income per-person, with the zero floor applied only to the
+      combined tax-unit total per IRS EIC Worksheet B Line 4b and Form 2441 instructions.

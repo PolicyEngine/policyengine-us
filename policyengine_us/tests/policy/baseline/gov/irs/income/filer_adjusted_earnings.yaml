@@ -1,0 +1,41 @@
+# Tests that the zero floor applies at the tax-unit level, not per-person.
+# Per IRS EIC Worksheet B, Line 4b:
+# "If line 4b is zero or less, You can't take the credit."
+
+- name: Joint filers - SE loss partially offsets spouse wages
+  period: 2024
+  input:
+    people:
+      head:
+        employment_income: 30_000
+        self_employment_income: 0
+      spouse:
+        employment_income: 0
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    # head adjusted_earnings = 30000
+    # spouse adjusted_earnings = -10000
+    # combined = 20000 (floor at 0 does not bind)
+    filer_adjusted_earnings: 20_000
+
+- name: Joint filers - SE loss fully offsets wages, floor at zero
+  period: 2024
+  input:
+    people:
+      head:
+        employment_income: 5_000
+        self_employment_income: 0
+      spouse:
+        employment_income: 0
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    # head adjusted_earnings = 5000
+    # spouse adjusted_earnings = -20000
+    # combined = -15000, floored at 0
+    filer_adjusted_earnings: 0
