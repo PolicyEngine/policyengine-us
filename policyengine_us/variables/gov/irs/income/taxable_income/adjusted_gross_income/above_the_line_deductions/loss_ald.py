@@ -18,5 +18,12 @@ class loss_ald(Variable):
         person = tax_unit.members
         indiv_se_loss = max_(0, -person("self_employment_income", period))
         self_employment_loss = tax_unit.sum(indiv_se_loss)
+        indiv_ps_loss = max_(0, -person("partnership_s_corp_income", period))
+        partnership_s_corp_loss = tax_unit.sum(indiv_ps_loss)
         limited_capital_loss = tax_unit("limited_capital_loss", period)
-        return min_(max_loss, self_employment_loss + limited_capital_loss)
+        return min_(
+            max_loss,
+            self_employment_loss
+            + partnership_s_corp_loss
+            + limited_capital_loss,
+        )

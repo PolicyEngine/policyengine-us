@@ -1,0 +1,62 @@
+- name: S-Corp loss only
+  period: 2024
+  input:
+    people:
+      person:
+        partnership_s_corp_income: -50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    loss_ald: 50_000
+
+- name: S-Corp loss combined with SE loss
+  period: 2024
+  input:
+    people:
+      person:
+        partnership_s_corp_income: -30_000
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    loss_ald: 50_000
+
+- name: Losses exceeding section 461(l) cap
+  period: 2024
+  input:
+    people:
+      person:
+        partnership_s_corp_income: -200_000
+        self_employment_income: -200_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+  output:
+    loss_ald: 305_000
+
+- name: Positive S-Corp income does not affect loss_ald
+  period: 2024
+  input:
+    people:
+      person:
+        partnership_s_corp_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    loss_ald: 0
+
+- name: No losses
+  period: 2024
+  input:
+    people:
+      person:
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    loss_ald: 0
