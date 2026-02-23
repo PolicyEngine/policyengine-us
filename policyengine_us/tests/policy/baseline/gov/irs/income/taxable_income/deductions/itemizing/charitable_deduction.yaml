@@ -5,7 +5,7 @@
     charitable_non_cash_donations: 500
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 0
-  output: # min(min(500, 1000 * 0.3) + 300, 1000 * 0.5)
+  output: # min(min(500, 1000 * 0.5) + 300, 1000 * 0.5)
     charitable_deduction: 500
 
 - name: 2018 filer
@@ -14,7 +14,7 @@
     charitable_cash_donations: 500
     charitable_non_cash_donations: 200
     positive_agi: 1_000
-  output: # min(min(200, 1000 * 0.3) + 500, 1000 * 0.6)
+  output: # min(min(200, 1000 * 0.5) + 500, 1000 * 0.6)
     charitable_deduction: 600
 
 - name: 2020 filer
@@ -24,7 +24,7 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 0
-  output: # min(min(200, 1000 * 0.3) + 500, 1000 * 1)
+  output: # min(min(200, 1000 * 0.5) + 500, 1000 * 1)
     charitable_deduction: 700
 
 - name: 2021 filer
@@ -34,7 +34,7 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 300
-  output: # min(min(200, 1000 * 0.3) + (500 - 300), 1000 * 0.6)
+  output: # min(min(200, 1000 * 0.5) + (500 - 300), 1000 * 0.6)
     charitable_deduction: 600
 
 - name: 2021 filer 2
@@ -44,7 +44,7 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 600
-  output: # min(min(200, 1000 * 0.3) + min(500 - 600, 0), 1000 * 0.6)
+  output: # min(min(200, 1000 * 0.5) + max(500 - 600, 0), 1000 * 0.6)
     charitable_deduction: 600
 
 - name: No AGI
@@ -97,7 +97,7 @@
   input:
     charitable_cash_donations: 0
     charitable_non_cash_donations: 500
-    charitable_non_cash_donations_to_non_50_percent_limit_orgs: 500
+    charitable_non_cash_donations_non_50_pct_orgs: 500
     positive_agi: 1_000
   output:
     # 50% org non-cash = 0
@@ -110,7 +110,7 @@
   input:
     charitable_cash_donations: 0
     charitable_non_cash_donations: 600
-    charitable_non_cash_donations_to_non_50_percent_limit_orgs: 200
+    charitable_non_cash_donations_non_50_pct_orgs: 200
     positive_agi: 1_000
   output:
     # 50% org: min(400, 500) = 400
@@ -123,7 +123,7 @@
   input:
     charitable_cash_donations: 0
     charitable_non_cash_donations: 800
-    charitable_non_cash_donations_to_non_50_percent_limit_orgs: 400
+    charitable_non_cash_donations_non_50_pct_orgs: 400
     positive_agi: 1_000
   output:
     # 50% org: min(400, 500) = 400
@@ -136,7 +136,7 @@
   input:
     charitable_cash_donations: 0
     charitable_non_cash_donations: 400
-    charitable_non_cash_donations_to_non_50_percent_limit_orgs: 400
+    charitable_non_cash_donations_non_50_pct_orgs: 400
     positive_agi: 1_000
   output:
     # non-50% org: min(400, 300) = 300
@@ -148,7 +148,7 @@
   input:
     charitable_cash_donations: 5_000
     charitable_non_cash_donations: 20_000
-    charitable_non_cash_donations_to_non_50_percent_limit_orgs: 5_000
+    charitable_non_cash_donations_non_50_pct_orgs: 5_000
     positive_agi: 100_000
   output:
     # floor = 0.005 * 100000 = 500
