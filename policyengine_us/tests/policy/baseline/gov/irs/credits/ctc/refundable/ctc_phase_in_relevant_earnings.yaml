@@ -1,13 +1,59 @@
 - name: Income below threshold
   period: 2023
   input:
-    tax_unit_earned_income: 1_000
+    filer_adjusted_earnings: 1_000
   output:
     ctc_phase_in_relevant_earnings: 0
 
 - name: Income above threshold
   period: 2023
   input:
-    tax_unit_earned_income: 5_000
+    filer_adjusted_earnings: 5_000
   output:
     ctc_phase_in_relevant_earnings: 375
+
+- name: ACTC earned income uses SE-adjusted earnings
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: 20_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person, child]
+    households:
+      household:
+        members: [person, child]
+        state_code: TX
+  output:
+    # SE tax = 20000 * 0.9235 * 0.153 = 2825.91
+    # Half of SE tax = 1412.96
+    # filer_adjusted_earnings = 20000 - 1412.96 = 18587.04
+    # Phase-in = (18587.04 - 2500) * 0.15 = 2413.06
+    ctc_phase_in_relevant_earnings: 2413.06
+
+- name: ACTC earned income for W-2 only (no SE adjustment needed)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 20_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person, child]
+    households:
+      household:
+        members: [person, child]
+        state_code: TX
+  output:
+    # No SE income, so filer_adjusted_earnings = 20000
+    # Phase-in = (20000 - 2500) * 0.15 = 2625
+    ctc_phase_in_relevant_earnings: 2625

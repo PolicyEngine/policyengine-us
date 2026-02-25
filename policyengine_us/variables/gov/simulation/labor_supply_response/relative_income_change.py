@@ -9,7 +9,8 @@ class relative_income_change(Variable):
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
-    def formula(person, period, parameters):
+    def formula(person, period, parameters):  # pragma: no cover
+        # Requires reform scenario with simulation branching - tested via microsim
         simulation = person.simulation
         measurement_branch = simulation.get_branch("lsr_measurement")
         baseline_branch = simulation.get_branch("baseline").get_branch(

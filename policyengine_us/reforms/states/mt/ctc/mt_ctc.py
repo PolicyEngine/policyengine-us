@@ -35,6 +35,11 @@ def create_mt_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.mt.ctc.income_limit
+            # Per HB 268 Section 1(1), taxpayer must be "permitted a child
+            # tax credit under section 24 of the Internal Revenue Code"
+            federal_ctc_eligible = (
+                tax_unit("ctc_qualifying_children", period) > 0
+            )
             agi = tax_unit("adjusted_gross_income", period)
             agi_eligible = agi <= p.agi
             # CTC limited to filers with investment income below a certain threshold
@@ -47,7 +52,8 @@ def create_mt_ctc() -> Reform:
             receives_earned_income = earned_income > 0
 
             return (
-                agi_eligible
+                federal_ctc_eligible
+                & agi_eligible
                 & investment_income_eligible
                 & receives_earned_income
             )

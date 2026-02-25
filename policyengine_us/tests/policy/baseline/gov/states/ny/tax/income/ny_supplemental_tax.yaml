@@ -135,7 +135,7 @@
     state_code: NY
     filing_status: SINGLE
     ny_agi: 30_000_000 # AGI > $25,000,000
-    ny_taxable_income: 21_000_000 
+    ny_taxable_income: 21_000_000
     ny_main_income_tax: 2_098_682.5
   output:
     ny_supplemental_tax: 190_317.5 # 21,000,000 * 10.9% - 2,098,682.5
@@ -196,11 +196,11 @@
 - name: Unit test 5 for 2021 New York supplemental tax head of household filer
   absolute_error_margin: 0.1
   period: 2021
-  input: 
+  input:
     state_code: NY
-    filing_status: HEAD_OF_HOUSEHOLD 
+    filing_status: HEAD_OF_HOUSEHOLD
     ny_agi: 30_000_000 # AGI > $25,000,000
-    ny_taxable_income: 28_000_000 
+    ny_taxable_income: 28_000_000
     ny_main_income_tax: 2_822_096.8
   output:
     ny_supplemental_tax: 229_903.2 # 28,000,000 * 10.9% - 2,822,096.8
@@ -295,9 +295,79 @@
   period: 2028
   input:
     state_code: NY
-    filing_status: SEPARATE 
+    filing_status: SEPARATE
     ny_agi: 220_000
     ny_taxable_income: 200_000
     ny_main_income_tax: 11_963.755
   output:
     ny_supplemental_tax: 568
+
+- name: Unit test for 2024 single filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 33_440_296
+    ny_taxable_income: 33_432_296
+    ny_main_income_tax: 3_429_049.71
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 33_432_296 * 0.109 - 3_429_049.71 = 215_070.55
+    ny_supplemental_tax: 215_070.55
+
+- name: Unit test for 2022 single filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 30_000_000
+    ny_taxable_income: 29_000_000
+    ny_main_income_tax: 2_990_000
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 29_000_000 * 0.109 - 2_990_000 = 171_000
+    ny_supplemental_tax: 171_000
+
+- name: Unit test for 2023 joint filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 30_000_000
+    ny_taxable_income: 26_000_000
+    ny_main_income_tax: 2_600_000
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 26_000_000 * 0.109 - 2_600_000 = 234_000
+    ny_supplemental_tax: 234_000
+
+- name: Unit test for 2024 separate filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    state_code: NY
+    filing_status: SEPARATE
+    ny_agi: 30_000_000
+    ny_taxable_income: 29_500_000
+    ny_main_income_tax: 3_050_000
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 29_500_000 * 0.109 - 3_050_000 = 165_500
+    ny_supplemental_tax: 165_500
+
+- name: Unit test for 2024 surviving spouse filer with AGI above $25M (flat 10.9% rate)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    state_code: NY
+    filing_status: SURVIVING_SPOUSE
+    ny_agi: 30_000_000
+    ny_taxable_income: 26_000_000
+    ny_main_income_tax: 2_600_000
+  output:
+    # For AGI > $25M, supplemental tax = (taxable_income * 10.9%) - main_tax
+    # = 26_000_000 * 0.109 - 2_600_000 = 234_000
+    ny_supplemental_tax: 234_000

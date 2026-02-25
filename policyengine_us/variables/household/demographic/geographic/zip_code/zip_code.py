@@ -12,7 +12,8 @@ class zip_code(Variable):
     def formula(household, period, parameters):
         state_code = household("state_code_str", period)
 
-        if household.simulation.has_axes:
+        if household.simulation.has_axes:  # pragma: no cover
+            # Microsimulation-specific path - tested via microsim
             # For each state, select ONE zip code randomly, with probability proportional to population.
 
             state_to_zip_code = {

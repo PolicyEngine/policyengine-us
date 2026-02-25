@@ -85,7 +85,7 @@
   output:
     mt_ctc: 0
 
-- name: Eligible 
+- name: Eligible
   period: 2023
   reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
   input:
@@ -93,11 +93,12 @@
     tax_unit_earned_income: 66_298
     adjusted_gross_income: 55_999
     eitc_relevant_investment_income: 10_299
+    ctc_qualifying_children: 1
     state_code: MT
-  output: 
+  output:
     mt_ctc_eligible: true
 
-- name: AGI ineligible 
+- name: AGI ineligible
   period: 2023
   reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
   input:
@@ -105,11 +106,12 @@
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_001
     eitc_relevant_investment_income: 10_299
+    ctc_qualifying_children: 1
     state_code: MT
-  output: 
+  output:
     mt_ctc_eligible: false
 
-- name: Investment income ineligible 
+- name: Investment income ineligible
   period: 2023
   reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
   input:
@@ -117,11 +119,12 @@
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_000
     eitc_relevant_investment_income: 10_300
+    ctc_qualifying_children: 1
     state_code: MT
-  output: 
+  output:
     mt_ctc_eligible: false
 
-- name: Earned income ineligible  
+- name: Earned income ineligible
   period: 2023
   reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
   input:
@@ -129,6 +132,108 @@
     tax_unit_earned_income: 0
     adjusted_gross_income: 0
     eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
     state_code: MT
-  output: 
+  output:
     mt_ctc_eligible: false
+
+- name: No federal CTC qualifying children - ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 50_000
+    adjusted_gross_income: 50_000
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 0
+    state_code: MT
+  output:
+    mt_ctc_eligible: false
+
+- name: AGI exactly at threshold - eligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 56_000
+    adjusted_gross_income: 56_000
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_ctc_eligible: true
+
+- name: Minimal earned income - eligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 1
+    adjusted_gross_income: 1
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_ctc_eligible: true
+
+- name: AGI at reduction threshold - no reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 50_000
+  output:
+    mt_ctc: 1_200
+    # No reduction at exactly $50,000
+
+- name: AGI just above reduction threshold - first reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 51_000
+  output:
+    mt_ctc: 1_110
+    # 1200 - 1*90 = 1110
+
+- name: End-to-end eligible with credit
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_dependent: false
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc_eligible: true
+    mt_ctc: 1_200

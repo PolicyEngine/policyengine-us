@@ -1,0 +1,31 @@
+- name: Person with 40 quarters qualifies for premium-free Part A
+  period: 2024
+  input:
+    age: 66
+    medicare_quarters_of_coverage: 40
+  output:
+    is_premium_free_part_a: true
+
+- name: Person with more than 40 quarters qualifies for premium-free Part A
+  period: 2024
+  input:
+    age: 66
+    medicare_quarters_of_coverage: 50
+  output:
+    is_premium_free_part_a: true
+
+- name: Person with less than 40 quarters does not qualify
+  period: 2024
+  input:
+    age: 66
+    medicare_quarters_of_coverage: 39
+  output:
+    is_premium_free_part_a: false
+
+- name: Person not Medicare eligible returns zero
+  period: 2024
+  input:
+    age: 50
+    medicare_quarters_of_coverage: 40
+  output:
+    is_premium_free_part_a: false

@@ -183,31 +183,62 @@ def split_into_batches(
         states_path = base_path / "gov" / "states"
 
         # If --exclude states, skip states and run everything else
+        # Split into memory-aware batches to prevent OOM on CI (~7 GB limit)
+        # Measured peak memory per gov/ subfolder (individual runs):
+        #   irs: 4.4 GB, ssa: 4.0 GB, simulation: 4.0 GB,
+        #   usda: 3.0 GB, hhs: 2.7 GB, local: 2.3 GB,
+        #   others: ~1.3-1.7 GB each
         if "states" in exclude:
-            batch = []
+            gov_path = base_path / "gov"
 
-            # Add root level files if any
-            for yaml_file in base_path.glob("*.yaml"):
-                batch.append(str(yaml_file))
+            # Heavy folders get their own batch
+            BATCH_1 = ["irs"]  # ~4.4 GB
+            BATCH_2 = ["ssa"]  # ~4.0 GB
+            BATCH_3 = ["simulation"]  # ~4.0 GB
+            BATCH_4 = ["usda", "hhs"]  # ~3-4 GB combined
+            # Everything else groups together (~3-4 GB combined)
+            HEAVY = set(BATCH_1 + BATCH_2 + BATCH_3 + BATCH_4)
 
-            # Add all directories except gov/states, household, and contrib
+            def collect_gov_paths(folder_names):
+                """Collect paths for specific gov/ subfolders."""
+                paths = []
+                for name in folder_names:
+                    p = gov_path / name
+                    if p.exists():
+                        paths.append(str(p))
+                return paths
+
+            # Collect remaining gov/ subfolders and files
+            remaining = []
+            for gov_item in gov_path.iterdir():
+                if gov_item.is_dir():
+                    if (
+                        gov_item.name not in HEAVY
+                        and gov_item.name != "states"
+                    ):
+                        remaining.append(str(gov_item))
+                elif gov_item.suffix == ".yaml":
+                    remaining.append(str(gov_item))
+
+            # Add non-gov directories and root YAML files
             for item in base_path.iterdir():
                 if item.is_dir():
-                    # Skip household and contrib directories (they'll be run separately)
-                    if item.name in ["household", "contrib"]:
+                    if item.name in ["household", "contrib", "gov"]:
                         continue
-                    elif item.name == "gov":
-                        # Add gov subdirectories except states
-                        for gov_item in item.iterdir():
-                            if gov_item.is_dir() and gov_item.name != "states":
-                                batch.append(str(gov_item))
-                            elif gov_item.suffix == ".yaml":
-                                batch.append(str(gov_item))
-                    else:
-                        # Other non-gov directories
-                        batch.append(str(item))
+                    remaining.append(str(item))
+                elif item.suffix == ".yaml":
+                    remaining.append(str(item))
 
-            return [batch] if batch else []
+            # Build batches (only include non-empty ones)
+            batches = []
+            for folder_names in [BATCH_1, BATCH_2, BATCH_3, BATCH_4]:
+                paths = collect_gov_paths(folder_names)
+                if paths:
+                    batches.append(paths)
+            if remaining:
+                batches.append(remaining)
+
+            return batches
 
     # Default: return the entire path as a single batch
     return [[str(base_path)]]
