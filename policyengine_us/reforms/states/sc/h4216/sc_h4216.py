@@ -72,14 +72,15 @@ def create_sc_h4216() -> Reform:
         reference = "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
 
         def formula(tax_unit, period, parameters):
-            # Start with federal AGI (H.4216 disallows federal standard/itemized)
+            # Start with federal AGI (H.4216 replaces federal std/itemized
+            # with SCIAD). Baseline sc_additions (QBI addback, SALT addback)
+            # exist to undo federal deductions already embedded in federal
+            # taxable_income; since we start from AGI those deductions were
+            # never taken, so additions must be excluded.
             agi = tax_unit("adjusted_gross_income", period)
-            # Apply SC additions and subtractions
-            additions = tax_unit("sc_additions", period)
             subtractions = tax_unit("sc_subtractions", period)
-            # Apply SCIAD instead of federal standard deduction
             sciad = tax_unit("sc_sciad", period)
-            return max_(0, agi + additions - subtractions - sciad)
+            return max_(0, agi - subtractions - sciad)
 
     class sc_income_tax_before_non_refundable_credits(Variable):
         value_type = float
