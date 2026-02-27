@@ -1,0 +1,14 @@
+description: The US withholds this amount from benefits for every $2 earned above the exempt amount.
+values:
+  1940-01-01: 0.5  # $1 for every $2 over limit
+metadata:
+  unit: /1
+  period: year
+  label: Earnings test reduction rate (under FRA)
+  reference:
+    - title: 42 U.S.C. § 403(f)(3)
+      href: https://www.law.cornell.edu/uscode/text/42/403#f_3
+    - title: 20 CFR § 404.434(a)
+      href: https://www.law.cornell.edu/cfr/text/20/404.434
+    - title: Social Security POMS RS 02501.021
+      href: https://secure.ssa.gov/poms.nsf/lnx/0302501021

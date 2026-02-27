@@ -1,0 +1,12 @@
+description: >-
+  When true, Social Security retirement benefits use reported
+  values from survey data rather than computing from the formula
+  chain. Set to true for microsimulation with CPS data, false
+  for the household calculator.
+values:
+  2024-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Use reported Social Security retirement benefits
+  economy: false

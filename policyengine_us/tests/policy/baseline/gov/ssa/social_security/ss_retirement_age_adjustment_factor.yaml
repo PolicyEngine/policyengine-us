@@ -1,0 +1,59 @@
+- name: At full retirement age - no adjustment
+  period: 2024
+  input:
+    age: 66  # Born 1958, FRA is 66 years 8 months
+  output:
+    ss_full_retirement_age_months: 800  # 66 years 8 months
+    # Age 66 = 792 months, FRA = 800 months, so 8 months early
+    # 8 * 0.00556 = 0.04448 reduction
+    # Factor: 1 - 0.04448 = 0.95552
+    ss_retirement_age_adjustment_factor: 0.955
+
+- name: Early retirement at 62 for someone with FRA 67
+  period: 2024
+  input:
+    age: 62  # Born 1962, FRA is 67
+  output:
+    ss_full_retirement_age_months: 804  # 67 years
+    # 60 months early:
+    # First 36 months: 36 * 0.00556 = 0.20016
+    # Next 24 months: 24 * 0.00417 = 0.10008
+    # Total reduction: 0.30024
+    # Factor: 1 - 0.30024 = 0.69976
+    ss_retirement_age_adjustment_factor: 0.700
+
+- name: Early retirement at 64 for someone with FRA 66
+  period: 2024
+  input:
+    age: 64  # Born 1960, but using age that would have FRA 66 for test
+  output:
+    ss_full_retirement_age_months: 804  # Actually 67 for 1960
+    # 36 months early (64 to 67):
+    # 36 * 0.00556 = 0.20016
+    # Factor: 1 - 0.20016 = 0.79984
+    ss_retirement_age_adjustment_factor: 0.800
+
+- name: Delayed retirement at 70 for someone born 1954
+  period: 2024
+  input:
+    age: 70  # Born 1954, FRA is 66
+  output:
+    ss_full_retirement_age_months: 792  # 66 years
+    # 4 years delayed = 48 months / 12 = 4 years
+    # Born 1954 gets 8% per year
+    # 4 * 0.08 = 0.32
+    # Factor: 1 + 0.32 = 1.32
+    ss_retirement_age_adjustment_factor: 1.32
+
+- name: Delayed retirement at 68 for someone born 1956
+  period: 2024
+  input:
+    age: 68  # Born 1956, FRA is 66 years 4 months
+  output:
+    ss_full_retirement_age_months: 796  # 66 years 4 months
+    # 20 months delayed = 1.667 years
+    # Born 1956 gets 8% per year
+    # 1.667 * 0.08 = 0.133
+    # Factor: 1 + 0.133 = 1.133
+    ss_retirement_age_adjustment_factor: 1.133
+

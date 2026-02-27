@@ -1,0 +1,12 @@
+description: Number of months per year Social Security uses for AIME calculation.
+values:
+  1900-01-01: 12
+metadata:
+  unit: month
+  period: year
+  label: Months per year
+  reference:
+    - title: 42 U.S.C. § 415(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/42/415#b_1
+    - title: Social Security POMS RS 00605.005
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300605005
