@@ -1,6 +1,7 @@
 - name: Single filer with one qualifying child under income threshold
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 30
@@ -24,6 +25,7 @@
 - name: MFJ with two qualifying children under income threshold
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent1:
         age: 35
@@ -54,6 +56,7 @@
 - name: Single filer above phase-out threshold (one increment)
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 30
@@ -81,6 +84,7 @@
 - name: Head of household above phase-out threshold (two increments)
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 35
@@ -108,6 +112,7 @@
 - name: MFJ above phase-out threshold (three increments)
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent1:
         age: 40
@@ -138,6 +143,7 @@
 - name: Single filer fully phased out
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 30
@@ -165,6 +171,7 @@
 - name: Child over age 6 not eligible
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 35
@@ -188,6 +195,7 @@
 - name: Child exactly age 6 is eligible
   period: 2026
   input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
       parent:
         age: 35
@@ -208,8 +216,8 @@
   output:
     ne_lb157_ctc: 1_000
 
-- name: Reform not in effect before 2026
-  period: 2025
+- name: Reform not in effect by default
+  period: 2026
   input:
     people:
       parent:

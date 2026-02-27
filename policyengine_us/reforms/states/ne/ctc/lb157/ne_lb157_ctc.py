@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
 
@@ -80,24 +79,9 @@ def create_ne_lb157_ctc() -> Reform:
 
 
 def create_ne_lb157_ctc_reform(parameters, period, bypass: bool = False):
-    if bypass:
-        return create_ne_lb157_ctc()
-
-    p = parameters.gov.contrib.states.ne.ctc.lb157
-
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).in_effect:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_ne_lb157_ctc()
-    else:
-        return None
+    # Always return the reform - the formula checks in_effect parameter
+    # This allows the reform to be toggled on/off via parameter changes
+    return create_ne_lb157_ctc()
 
 
 ne_lb157_ctc = create_ne_lb157_ctc_reform(None, None, bypass=True)
