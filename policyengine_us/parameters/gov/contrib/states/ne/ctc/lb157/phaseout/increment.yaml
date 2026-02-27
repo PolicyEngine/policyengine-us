@@ -1,0 +1,29 @@
+description: Income increment for Nebraska LB 157 Child Tax Credit phase-out calculation, by filing status.
+
+JOINT:
+  values:
+    2026-01-01: 2_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2026-01-01: 1_500
+
+SINGLE:
+  values:
+    2026-01-01: 1_000
+
+SEPARATE:
+  values:
+    2026-01-01: 1_000
+
+SURVIVING_SPOUSE:
+  values:
+    2026-01-01: 1_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nebraska LB 157 Child Tax Credit phase-out increment
+  reference:
+    - title: LB 157 Section 3(2)
+      href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=55861

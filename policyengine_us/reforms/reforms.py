@@ -168,6 +168,9 @@ from .states.ct.tax_rebate_2026 import (
 from .states.ct.hb5009 import (
     create_ct_hb5009_reform,
 )
+from .states.ne.ctc.lb157 import (
+    create_ne_lb157_ctc_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -368,6 +371,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ct_sb100 = create_ct_sb100_reform(parameters, period)
     ct_tax_rebate_2026 = create_ct_tax_rebate_2026_reform(parameters, period)
     ct_hb5009 = create_ct_hb5009_reform(parameters, period)
+    ne_lb157_ctc = create_ne_lb157_ctc_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -446,6 +450,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_hb5009,
         ct_sb100,
         ct_tax_rebate_2026,
+        ne_lb157_ctc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

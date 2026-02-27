@@ -1,0 +1,232 @@
+- name: Single filer with one qualifying child under income threshold
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_lb157_ctc: 1_000
+
+- name: MFJ with two qualifying children under income threshold
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        is_tax_unit_head: true
+      parent2:
+        age: 33
+        is_tax_unit_spouse: true
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+        has_itin: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: NE
+  output:
+    ne_lb157_ctc: 2_000
+
+- name: Single filer above phase-out threshold (one increment)
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 75_500
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # $75,500 AGI exceeds $75,000 threshold by $500
+    # Ceiling($500 / $1,000) = 1 increment
+    # Reduction = $1,000 * 5% * 1 = $50
+    # Credit = $1,000 - $50 = $950
+    ne_lb157_ctc: 950
+
+- name: Head of household above phase-out threshold (two increments)
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 95_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # $95,000 AGI exceeds $92,500 threshold by $2,500
+    # Ceiling($2,500 / $1,500) = 2 increments
+    # Reduction = $1,000 * 5% * 2 = $100
+    # Credit = $1,000 - $100 = $900
+    ne_lb157_ctc: 900
+
+- name: MFJ above phase-out threshold (three increments)
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        is_tax_unit_head: true
+      parent2:
+        age: 38
+        is_tax_unit_spouse: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+        adjusted_gross_income: 115_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NE
+  output:
+    # $115,000 AGI exceeds $110,000 threshold by $5,000
+    # Ceiling($5,000 / $2,000) = 3 increments
+    # Reduction = $1,000 * 5% * 3 = $150
+    # Credit = $1,000 - $150 = $850
+    ne_lb157_ctc: 850
+
+- name: Single filer fully phased out
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # $100,000 AGI exceeds $75,000 threshold by $25,000
+    # Ceiling($25,000 / $1,000) = 25 increments
+    # Reduction = $1,000 * 5% * 25 = $1,250 (capped at $1,000)
+    # Credit = max($1,000 - $1,250, 0) = $0
+    ne_lb157_ctc: 0
+
+- name: Child over age 6 not eligible
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child:
+        age: 7
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_lb157_ctc: 0
+
+- name: Child exactly age 6 is eligible
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_lb157_ctc: 1_000
+
+- name: Reform not in effect before 2026
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_lb157_ctc: 0
