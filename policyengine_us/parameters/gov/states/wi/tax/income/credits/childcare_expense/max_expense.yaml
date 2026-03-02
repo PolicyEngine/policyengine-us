@@ -1,0 +1,15 @@
+description: Wisconsin limits child and dependent care expenses per qualifying individual for the credit calculation.
+values:
+  2022-01-01: 0
+  2024-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin CDCC maximum expense per qualifying individual
+  reference:
+    - title: 2024 Wisconsin Statutes 71.07(9g)(c)5
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/9g/c/5
+    - title: 2024 Schedule WI-2441 Instructions
+      href: https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleWI-2441-Inst.pdf
+    - title: 2025 Schedule WI-2441 Instructions
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleWI-2441-Inst.pdf

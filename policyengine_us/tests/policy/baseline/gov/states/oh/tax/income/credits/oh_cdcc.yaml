@@ -1,22 +1,26 @@
-- name: child and dependent care credit low AGI (full eligibility)
+- name: Child and dependent care credit low AGI (full potential credit)
   period: 2021
   input:
     state_code: OH
     oh_modified_agi: 19_999
-    cdcc: 2_000
+    cdcc_potential: 2_000
   output:
+    # Per ORC 5747.054, filers with AGI < $20,000 get the full
+    # federal credit without regard to section 26 limitation.
     oh_cdcc: 2_000
 
-- name: child and dependent care credit test, just above lower threshold AGI (.25 * federal CDCC)
+- name: Child and dependent care credit, just above low-income threshold
   period: 2021
   input:
     state_code: OH
     oh_modified_agi: 20_000
     cdcc: 2_000
   output:
+    # Per ORC 5747.054, filers with $20,000 <= AGI < $40,000 get
+    # 25% of the federal credit (with section 26 limitation).
     oh_cdcc: 500
 
-- name: child and dependent care credit test, solidly above lower threshold AGI (.25 * federal CDCC)
+- name: Child and dependent care credit, solidly above low-income threshold
   period: 2021
   input:
     state_code: OH
@@ -25,7 +29,7 @@
   output:
     oh_cdcc: 500
 
-- name: child and dependent care credit test above upper threshold (ineligible)
+- name: Child and dependent care credit above upper threshold (ineligible)
   period: 2021
   input:
     state_code: OH
@@ -33,3 +37,25 @@
     cdcc: 2_000
   output:
     oh_cdcc: 0
+
+- name: Low AGI, potential credit exceeds actual credit
+  period: 2024
+  input:
+    state_code: OH
+    oh_modified_agi: 15_000
+    cdcc_potential: 1_000
+    cdcc: 500
+  output:
+    # Uses cdcc_potential (1000) not cdcc (500) for low-income filers
+    oh_cdcc: 1_000
+
+- name: Mid AGI, potential credit exceeds actual credit
+  period: 2024
+  input:
+    state_code: OH
+    oh_modified_agi: 25_000
+    cdcc_potential: 1_000
+    cdcc: 500
+  output:
+    # Uses cdcc (500) not cdcc_potential (1000) for mid-income filers
+    oh_cdcc: 125
