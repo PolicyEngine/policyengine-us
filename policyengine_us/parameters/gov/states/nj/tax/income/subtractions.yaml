@@ -9,3 +9,5 @@ values:
   # Social Security is already excluded from NJ gross income (not in gross_income_sources.yaml)
   # per NJ Statute 54A:6-15. No subtractions are needed.
   2021-01-01: []
+  2022-01-01:
+    - nj_529_deduction

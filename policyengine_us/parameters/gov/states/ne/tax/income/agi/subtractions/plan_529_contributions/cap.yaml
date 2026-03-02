@@ -1,0 +1,23 @@
+description: Nebraska caps the subtraction for 529 education savings plan contributions at this amount.
+metadata:
+  label: Nebraska 529 plan contribution subtraction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Nebraska Revised Statute § 77-2716(20)
+    href: https://www.nebraskalegislature.gov/laws/statutes.php?statute=77-2716
+  - title: 2025 Nebraska Individual Income Tax Booklet
+    href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=26
+
+JOINT:
+  2021-01-01: 10_000
+SURVIVING_SPOUSE:
+  2021-01-01: 10_000
+SINGLE:
+  2021-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 10_000
+SEPARATE:
+  2021-01-01: 5_000

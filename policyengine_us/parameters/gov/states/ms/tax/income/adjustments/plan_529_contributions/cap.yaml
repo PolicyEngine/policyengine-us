@@ -1,0 +1,23 @@
+description: Mississippi caps the adjustment for 529 education savings plan contributions at this amount.
+metadata:
+  label: Mississippi 529 plan contribution adjustment cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Mississippi Code § 27-7-18(2)
+    href: https://law.justia.com/codes/mississippi/2022/title-27/chapter-7/article-1/section-27-7-18/
+  - title: Mississippi Income Tax Instructions 2025
+    href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=12
+
+JOINT:
+  2021-01-01: 20_000
+SURVIVING_SPOUSE:
+  2021-01-01: 20_000
+SINGLE:
+  2021-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 10_000
+SEPARATE:
+  2021-01-01: 10_000
