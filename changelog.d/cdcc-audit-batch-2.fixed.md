@@ -1,0 +1,1 @@
+Fix MS CDCC missing from state aggregation list, NE nonrefundable CDCC using wrong federal credit variable (cdcc_potential instead of cdcc), and LA non-refundable CDCC using wrong federal credit variable (cdcc_potential instead of cdcc).

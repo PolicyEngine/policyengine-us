@@ -1,17 +1,17 @@
-- name: AGI ineligible
+- name: AGI ineligible (at or below $25,000)
   period: 2006
   input:
     adjusted_gross_income: 25_000
-    cdcc_potential: 1_000
+    cdcc: 1_000
     state_code: LA
   output:
     la_non_refundable_cdcc: 0
 
-- name: 30% match above 25k
+- name: 30% match of federal credit claimed (AGI $25,001-$35,000)
   period: 2023
   input:
     adjusted_gross_income: 25_001
-    cdcc_potential: 1_000
+    cdcc: 1_000
     state_code: LA
   output:
     la_non_refundable_cdcc: 300
@@ -20,7 +20,7 @@
   period: 2023
   input:
     adjusted_gross_income: 60_001
-    cdcc_potential: 1_000
+    cdcc: 1_000
     state_code: LA
   output:
     la_non_refundable_cdcc: 25
@@ -29,16 +29,16 @@
   period: 2023
   input:
     adjusted_gross_income: 60_001
-    cdcc_potential: 100
+    cdcc: 100
     state_code: LA
   output:
     la_non_refundable_cdcc: 10
 
-- name: Match over 60k, uncapped
+- name: 10% match of federal credit claimed (AGI $35,001-$60,000)
   period: 2023
   input:
     adjusted_gross_income: 35_001
-    cdcc_potential: 100
+    cdcc: 100
     state_code: LA
   output:
     la_non_refundable_cdcc: 10
