@@ -6,6 +6,7 @@ values:
     - nd_qdiv_subtraction  # qualified dividends
     - taxable_social_security
     - military_retirement_pay
+    - nd_529_deduction
 
   2023-01-01:
     - us_govt_interest
@@ -14,6 +15,7 @@ values:
     - taxable_social_security
     - military_retirement_pay
     - military_service_income # military pay exculsion
+    - nd_529_deduction
 
 metadata:
   unit: list  

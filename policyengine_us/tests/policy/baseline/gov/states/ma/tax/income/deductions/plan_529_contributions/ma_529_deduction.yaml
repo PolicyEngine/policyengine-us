@@ -1,0 +1,41 @@
+- name: Case 1, single filer with contribution below cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    filing_status: SINGLE
+    investment_in_529_plan: 800
+  output:
+    ma_529_deduction: 800
+
+- name: Case 2, single filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    filing_status: SINGLE
+    investment_in_529_plan: 3_000
+  output:
+    # Capped at $1,000
+    ma_529_deduction: 1_000
+
+- name: Case 3, joint filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    filing_status: JOINT
+    investment_in_529_plan: 5_000
+  output:
+    # Capped at $2,000
+    ma_529_deduction: 2_000
+
+- name: Case 4, joint filer with no contributions.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    filing_status: JOINT
+    investment_in_529_plan: 0
+  output:
+    ma_529_deduction: 0
