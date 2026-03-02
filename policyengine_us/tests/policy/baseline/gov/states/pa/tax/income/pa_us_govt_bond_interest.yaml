@@ -1,0 +1,8 @@
+- name: PA excludes US government bond interest from total taxable income
+  period: 2024
+  input:
+    state_code: PA
+    us_govt_interest: 5_000
+    irs_gross_income: 50_000
+  output:
+    pa_total_taxable_income: 45_000

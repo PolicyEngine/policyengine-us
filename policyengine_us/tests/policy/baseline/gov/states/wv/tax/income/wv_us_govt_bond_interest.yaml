@@ -1,0 +1,7 @@
+- name: WV includes US government bond interest in subtractions
+  period: 2024
+  input:
+    state_code: WV
+    us_govt_interest: 5_000
+  output:
+    wv_subtractions: 5_000
