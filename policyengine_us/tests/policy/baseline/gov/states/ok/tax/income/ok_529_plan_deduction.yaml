@@ -1,0 +1,44 @@
+- name: Single filer below cap
+  period: 2024
+  input:
+    state_code: OK
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 5_000
+  output:
+    ok_529_plan_deduction: 5_000
+
+- name: Single filer above cap
+  period: 2024
+  input:
+    state_code: OK
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 15_000
+  output:
+    ok_529_plan_deduction: 10_000
+
+- name: Joint filer below cap
+  period: 2024
+  input:
+    state_code: OK
+    filing_status: JOINT
+    investment_in_529_plan_indv: 15_000
+  output:
+    ok_529_plan_deduction: 15_000
+
+- name: Joint filer above cap
+  period: 2024
+  input:
+    state_code: OK
+    filing_status: JOINT
+    investment_in_529_plan_indv: 25_000
+  output:
+    ok_529_plan_deduction: 20_000
+
+- name: Zero contributions
+  period: 2024
+  input:
+    state_code: OK
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+  output:
+    ok_529_plan_deduction: 0

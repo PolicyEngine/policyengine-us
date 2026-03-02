@@ -1,0 +1,33 @@
+description: Oregon caps the 529 plan contribution tax credit at this amount.
+metadata:
+  label: Oregon 529 plan contribution credit maximum
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Oregon Department of Revenue - Tax benefits for families
+    href: https://www.oregon.gov/dor/programs/individuals/pages/credits.aspx
+  - title: ORS 315.643
+    href: https://oregon.public.law/statutes/ors_315.643
+
+JOINT:
+  2020-01-01: 300
+  2025-01-01: 360
+  2026-01-01: 380
+SURVIVING_SPOUSE:
+  2020-01-01: 300
+  2025-01-01: 360
+  2026-01-01: 380
+SINGLE:
+  2020-01-01: 150
+  2025-01-01: 180
+  2026-01-01: 190
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 150
+  2025-01-01: 180
+  2026-01-01: 190
+SEPARATE:
+  2020-01-01: 150
+  2025-01-01: 180
+  2026-01-01: 190

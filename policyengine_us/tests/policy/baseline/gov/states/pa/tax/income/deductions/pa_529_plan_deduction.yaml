@@ -1,0 +1,43 @@
+- name: Contribution below cap with one beneficiary
+  period: 2025
+  input:
+    state_code: PA
+    investment_in_529_plan_indv: 10_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    pa_529_plan_deduction: 10_000
+
+- name: Contribution above cap with one beneficiary
+  period: 2025
+  input:
+    state_code: PA
+    investment_in_529_plan_indv: 25_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    pa_529_plan_deduction: 19_000
+
+- name: Two beneficiaries increases the cap
+  period: 2025
+  input:
+    people:
+      person1:
+        investment_in_529_plan_indv: 25_000
+        count_529_contribution_beneficiaries: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_529_plan_deduction: 25_000
+
+- name: Zero contributions
+  period: 2025
+  input:
+    state_code: PA
+    investment_in_529_plan_indv: 0
+    count_529_contribution_beneficiaries: 0
+  output:
+    pa_529_plan_deduction: 0

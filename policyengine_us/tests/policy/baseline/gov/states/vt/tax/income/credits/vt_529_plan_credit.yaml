@@ -1,0 +1,48 @@
+- name: Single filer below cap
+  period: 2024
+  input:
+    state_code: VT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 1_000
+  output:
+    # 1_000 * 0.10 = 100
+    vt_529_plan_credit: 100
+
+- name: Single filer above cap
+  period: 2024
+  input:
+    state_code: VT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 5_000
+  output:
+    # 2_500 * 0.10 = 250
+    vt_529_plan_credit: 250
+
+- name: Joint filer below cap
+  period: 2024
+  input:
+    state_code: VT
+    filing_status: JOINT
+    investment_in_529_plan_indv: 3_000
+  output:
+    # 3_000 * 0.10 = 300
+    vt_529_plan_credit: 300
+
+- name: Joint filer above cap
+  period: 2024
+  input:
+    state_code: VT
+    filing_status: JOINT
+    investment_in_529_plan_indv: 10_000
+  output:
+    # 5_000 * 0.10 = 500
+    vt_529_plan_credit: 500
+
+- name: Zero contributions
+  period: 2024
+  input:
+    state_code: VT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+  output:
+    vt_529_plan_credit: 0

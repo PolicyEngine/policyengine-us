@@ -1,0 +1,40 @@
+description: >
+  Utah caps the 529 plan contribution amount eligible for the state tax
+  credit at this amount per beneficiary.
+metadata:
+  label: Utah 529 plan contribution credit cap per beneficiary
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Utah state tax benefits information - my529
+    href: https://my529.org/utah-state-tax-benefits-information/
+  - title: TC-40A Supplemental Schedule Instructions - my529
+    href: https://incometax.utah.gov/credits/my529
+
+JOINT:
+  2022-01-01: 4_260
+  2023-01-01: 4_580
+  2024-01-01: 4_820
+  2025-01-01: 4_980
+SURVIVING_SPOUSE:
+  2022-01-01: 4_260
+  2023-01-01: 4_580
+  2024-01-01: 4_820
+  2025-01-01: 4_980
+SINGLE:
+  2022-01-01: 2_130
+  2023-01-01: 2_290
+  2024-01-01: 2_410
+  2025-01-01: 2_490
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 2_130
+  2023-01-01: 2_290
+  2024-01-01: 2_410
+  2025-01-01: 2_490
+SEPARATE:
+  2022-01-01: 2_130
+  2023-01-01: 2_290
+  2024-01-01: 2_410
+  2025-01-01: 2_490

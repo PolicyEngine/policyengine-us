@@ -1,0 +1,56 @@
+- name: Single filer below cap with one beneficiary
+  period: 2025
+  input:
+    state_code: WI
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 3_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    wi_529_plan_deduction: 3_000
+
+- name: Single filer above cap with one beneficiary
+  period: 2025
+  input:
+    state_code: WI
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 8_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    wi_529_plan_deduction: 5_130
+
+- name: Married filing separately has lower cap
+  period: 2025
+  input:
+    state_code: WI
+    filing_status: SEPARATE
+    investment_in_529_plan_indv: 5_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    wi_529_plan_deduction: 2_560
+
+- name: Two beneficiaries increases cap
+  period: 2025
+  input:
+    people:
+      person1:
+        investment_in_529_plan_indv: 9_000
+        count_529_contribution_beneficiaries: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_529_plan_deduction: 9_000
+
+- name: Zero contributions
+  period: 2025
+  input:
+    state_code: WI
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+    count_529_contribution_beneficiaries: 0
+  output:
+    wi_529_plan_deduction: 0
