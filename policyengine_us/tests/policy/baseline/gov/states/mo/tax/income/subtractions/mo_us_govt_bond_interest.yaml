@@ -1,0 +1,15 @@
+- name: MO subtracts US government bond interest from AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        us_govt_interest_person: 5_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_agi_subtractions: 5_000

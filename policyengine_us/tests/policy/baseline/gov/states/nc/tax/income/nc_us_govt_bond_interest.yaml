@@ -1,0 +1,11 @@
+- name: NC includes US government bond interest in deductions
+  period: 2024
+  input:
+    state_code: NC
+    us_govt_interest: 5_000
+    nc_standard_or_itemized_deductions: 0
+    nc_child_deduction: 0
+    taxable_social_security: 0
+    nc_military_retirement_deduction: 0
+  output:
+    nc_deductions: 5_000
