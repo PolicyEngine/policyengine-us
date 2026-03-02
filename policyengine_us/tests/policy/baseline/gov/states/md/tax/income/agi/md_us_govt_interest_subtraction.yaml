@@ -1,0 +1,7 @@
+- name: Maryland subtracts US government bond interest from AGI
+  period: 2022
+  input:
+    us_govt_interest: 1_000
+    state_code: MD
+  output:
+    md_total_subtractions: 1_000
