@@ -18,4 +18,5 @@ class ks_agi_subtractions(Variable):
         p = parameters(period).gov.states.ks.tax.income.agi.subtractions
         oasdi_subtraction = where(agi <= p.oasdi.agi_limit, taxable_oasdi, 0)
         us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
-        return oasdi_subtraction + us_govt_interest
+        plan_529 = tax_unit("ks_529_plan_subtraction", period)
+        return oasdi_subtraction + us_govt_interest + plan_529
