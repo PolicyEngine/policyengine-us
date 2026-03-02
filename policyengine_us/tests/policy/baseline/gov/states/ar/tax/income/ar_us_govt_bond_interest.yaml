@@ -1,0 +1,7 @@
+- name: AR includes US government bond interest in exemptions
+  period: 2024
+  input:
+    state_code: AR
+    us_govt_interest_person: 5_000
+  output:
+    ar_exemptions: 5_000

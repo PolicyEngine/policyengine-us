@@ -1,0 +1,7 @@
+- name: HI includes US government bond interest in subtractions
+  period: 2024
+  input:
+    state_code: HI
+    us_govt_interest: 5_000
+  output:
+    hi_subtractions: 5_000

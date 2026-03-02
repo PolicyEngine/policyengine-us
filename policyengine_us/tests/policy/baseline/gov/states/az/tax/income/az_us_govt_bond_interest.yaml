@@ -1,0 +1,7 @@
+- name: AZ includes US government bond interest in subtractions
+  period: 2024
+  input:
+    state_code: AZ
+    us_govt_interest: 5_000
+  output:
+    az_subtractions: 5_000
