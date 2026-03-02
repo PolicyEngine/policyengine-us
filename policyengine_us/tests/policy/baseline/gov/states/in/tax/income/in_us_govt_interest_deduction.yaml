@@ -1,0 +1,7 @@
+- name: Indiana deducts US government bond interest
+  period: 2022
+  input:
+    us_govt_interest: 1_000
+    state_code: IN
+  output:
+    in_deductions: 1_000
