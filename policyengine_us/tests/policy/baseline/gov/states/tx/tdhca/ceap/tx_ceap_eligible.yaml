@@ -1,0 +1,37 @@
+- name: Household of 1 in TX with income below 150% FPG, eligible.
+  period: 2024
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Household of 4 in TX with income above both 150% FPG and 60% SMI, ineligible.
+  period: 2024
+  input:
+    # 150% FPG for HH of 4 = $46,800; 60% SMI ~ $56,680
+    # Income must exceed both limits to be ineligible
+    irs_gross_income: 60_000
+    spm_unit_size: 4
+    state_code: TX
+  output:
+    tx_ceap_eligible: false
+
+- name: Household of 1 in TX with zero income, eligible.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Not in TX, not eligible.
+  period: 2024
+  input:
+    irs_gross_income: 10_000
+    spm_unit_size: 1
+    state_code: CA
+  output:
+    tx_ceap_eligible: false

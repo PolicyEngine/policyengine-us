@@ -1,0 +1,12 @@
+description: Upper threshold of the low income bracket (as a fraction of FPG) for Texas CEAP utility assistance. Households at or below this fraction receive the highest benefit.
+
+values:
+  2023-10-01: 0.5
+
+metadata:
+  period: year
+  unit: /1
+  label: TX CEAP low income bracket threshold
+  reference:
+    - title: Texas LIHEAP State Plan FY 2024, Section 2.6 - 10 TAC 6.309(e)
+      href: https://www.tdhca.texas.gov/sites/default/files/community-affairs/ceap/docs/24-LIHEAP-Plan.pdf
