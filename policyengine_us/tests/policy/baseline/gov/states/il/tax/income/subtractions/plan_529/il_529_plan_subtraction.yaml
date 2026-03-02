@@ -1,0 +1,51 @@
+- name: Illinois 529 subtraction - single under cap
+  period: 2025
+  input:
+    state_code: IL
+    filing_status: SINGLE
+    investment_in_529_plan: 5_000
+  output:
+    # Cap for single is $10,000
+    # Subtraction = min(5,000, 10,000) = 5,000
+    il_529_plan_subtraction: 5_000
+
+- name: Illinois 529 subtraction - single over cap
+  period: 2025
+  input:
+    state_code: IL
+    filing_status: SINGLE
+    investment_in_529_plan: 15_000
+  output:
+    # Cap for single is $10,000
+    # Subtraction = min(15,000, 10,000) = 10,000
+    il_529_plan_subtraction: 10_000
+
+- name: Illinois 529 subtraction - joint under cap
+  period: 2025
+  input:
+    state_code: IL
+    filing_status: JOINT
+    investment_in_529_plan: 15_000
+  output:
+    # Cap for joint is $20,000
+    # Subtraction = min(15,000, 20,000) = 15,000
+    il_529_plan_subtraction: 15_000
+
+- name: Illinois 529 subtraction - joint over cap
+  period: 2025
+  input:
+    state_code: IL
+    filing_status: JOINT
+    investment_in_529_plan: 25_000
+  output:
+    # Cap for joint is $20,000
+    # Subtraction = min(25,000, 20,000) = 20,000
+    il_529_plan_subtraction: 20_000
+
+- name: Illinois 529 subtraction - no contribution
+  period: 2025
+  input:
+    state_code: IL
+    filing_status: SINGLE
+  output:
+    il_529_plan_subtraction: 0

@@ -10,10 +10,11 @@ values:
     - military_service_income
     # Line 7B
     - ia_pension_exclusion
-    # Railroad unemployment income 
+    # Railroad unemployment income
     # Bonus Depreciation
     # Iowa Health Insurance Deduction
     # Iowa capital gains deduction
+    - ia_529_plan_subtraction
   2024-01-01: # military_retirement_pay added in 2024.
     # Line 1B
     - us_govt_interest
@@ -26,10 +27,11 @@ values:
     - military_service_income
     # Line 7B
     - ia_pension_exclusion
-    # Railroad unemployment income 
+    # Railroad unemployment income
     # Bonus Depreciation
     # Iowa Health Insurance Deduction
     # Iowa capital gains deduction
+    - ia_529_plan_subtraction
 
 metadata:
   unit: list

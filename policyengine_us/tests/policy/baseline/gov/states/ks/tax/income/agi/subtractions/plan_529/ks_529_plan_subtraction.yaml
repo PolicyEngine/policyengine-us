@@ -1,0 +1,55 @@
+- name: Kansas 529 subtraction - single under cap, one beneficiary
+  period: 2025
+  input:
+    state_code: KS
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 2_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # Cap for single is $3,000 per beneficiary
+    # Subtraction = min(2,000, 3,000) = 2,000
+    ks_529_plan_subtraction: 2_000
+
+- name: Kansas 529 subtraction - single over cap, one beneficiary
+  period: 2025
+  input:
+    state_code: KS
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 5_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # Cap for single is $3,000 per beneficiary
+    # Subtraction = min(5,000, 3,000) = 3,000
+    ks_529_plan_subtraction: 3_000
+
+- name: Kansas 529 subtraction - joint, two beneficiaries
+  period: 2025
+  input:
+    state_code: KS
+    filing_status: JOINT
+    investment_in_529_plan_indv: 10_000
+    count_529_contribution_beneficiaries: 2
+  output:
+    # Cap for joint is $6,000 per beneficiary * 2 = $12,000
+    # Subtraction = min(10,000, 12,000) = 10,000
+    ks_529_plan_subtraction: 10_000
+
+- name: Kansas 529 subtraction - joint over cap, two beneficiaries
+  period: 2025
+  input:
+    state_code: KS
+    filing_status: JOINT
+    investment_in_529_plan_indv: 15_000
+    count_529_contribution_beneficiaries: 2
+  output:
+    # Cap for joint is $6,000 per beneficiary * 2 = $12,000
+    # Subtraction = min(15,000, 12,000) = 12,000
+    ks_529_plan_subtraction: 12_000
+
+- name: Kansas 529 subtraction - no contribution
+  period: 2025
+  input:
+    state_code: KS
+    filing_status: SINGLE
+  output:
+    ks_529_plan_subtraction: 0

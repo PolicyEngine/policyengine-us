@@ -1,0 +1,51 @@
+- name: Idaho 529 subtraction - single under cap
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: SINGLE
+    investment_in_529_plan: 4_000
+  output:
+    # Cap for single is $6,000
+    # Subtraction = min(4,000, 6,000) = 4,000
+    id_529_plan_subtraction: 4_000
+
+- name: Idaho 529 subtraction - single over cap
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: SINGLE
+    investment_in_529_plan: 8_000
+  output:
+    # Cap for single is $6,000
+    # Subtraction = min(8,000, 6,000) = 6,000
+    id_529_plan_subtraction: 6_000
+
+- name: Idaho 529 subtraction - joint under cap
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: JOINT
+    investment_in_529_plan: 10_000
+  output:
+    # Cap for joint is $12,000
+    # Subtraction = min(10,000, 12,000) = 10,000
+    id_529_plan_subtraction: 10_000
+
+- name: Idaho 529 subtraction - joint over cap
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: JOINT
+    investment_in_529_plan: 15_000
+  output:
+    # Cap for joint is $12,000
+    # Subtraction = min(15,000, 12,000) = 12,000
+    id_529_plan_subtraction: 12_000
+
+- name: Idaho 529 subtraction - no contribution
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: SINGLE
+  output:
+    id_529_plan_subtraction: 0
