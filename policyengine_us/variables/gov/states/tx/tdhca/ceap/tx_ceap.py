@@ -4,11 +4,14 @@ from policyengine_us.model_api import *
 class tx_ceap(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Texas Comprehensive Energy Assistance" " Program (CEAP) benefit"
+    label = "Texas Comprehensive Energy Assistance Program (CEAP) benefit"
     unit = USD
     definition_period = YEAR
     defined_for = "tx_ceap_eligible"
-    reference = "https://www.tdhca.texas.gov/sites/default/files/community-affairs/ceap/docs/24-LIHEAP-Plan.pdf"
+    reference = (
+        "https://www.tdhca.texas.gov/sites/default/files/community-affairs/ceap/docs/24-LIHEAP-Plan.pdf#page=11",
+        "https://www.tdhca.texas.gov/sites/default/files/community-affairs/docs/25-LIHEAP-Plan-DRAFT_0.pdf",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tx.tdhca.ceap.utility_assistance
@@ -20,10 +23,7 @@ class tx_ceap(Variable):
         fpg_ratio = where(fpg > 0, income / fpg, 0)
 
         # Maximum utility assistance by income bracket
-        # per 10 TAC 6.309(e):
-        # 0-50% FPIG: $2,400
-        # 51-75% FPIG: $2,300
-        # 76-150% FPIG: $2,200
+        # per 10 TAC 6.309(e).
         max_amount = select(
             [
                 fpg_ratio <= p.income_bracket.low,
