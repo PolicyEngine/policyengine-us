@@ -11,14 +11,10 @@ class ma_part_b_agi(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        part_b_gross_income = tax_unit(
-            "ma_part_b_gross_income", period
-        )
+        part_b_gross_income = tax_unit("ma_part_b_gross_income", period)
         p = parameters(period).gov
         federal_deductions = p.irs.ald.deductions
-        disallowed_deductions = (
-            p.states.ma.tax.income.ald.disallowed
-        )
+        disallowed_deductions = p.states.ma.tax.income.ald.disallowed
         deductions = [
             deduction
             for deduction in federal_deductions
@@ -26,12 +22,8 @@ class ma_part_b_agi(Variable):
         ]
         deduction_value = add(tax_unit, period, deductions)
         # U.S. government bond interest is exempt from MA tax.
-        us_govt_interest = add(
-            tax_unit, period, ["us_govt_interest"]
-        )
+        us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
         return max_(
             0,
-            part_b_gross_income
-            - deduction_value
-            - us_govt_interest,
+            part_b_gross_income - deduction_value - us_govt_interest,
         )
