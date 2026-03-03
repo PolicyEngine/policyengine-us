@@ -14,7 +14,10 @@ class la_non_refundable_cdcc(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.income.credits.cdcc.non_refundable
-        # Louisiana matches the potential federal credit
+        # Louisiana non-refundable tier uses the claimed federal credit (cdcc),
+        # per RS 47:297.4(B): "...claimed on the resident individual's federal
+        # tax return." This means the actual credit after the IRC 26 tax
+        # liability cap, not cdcc_potential (which ignores that cap).
         us_cdcc = tax_unit("cdcc", period)
         us_agi = tax_unit("adjusted_gross_income", period)
         match = p.match.calc(us_agi, right=True)
