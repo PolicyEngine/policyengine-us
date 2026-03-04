@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import instant
+from policyengine_core.periods import period as period_
 
 
 def create_ne_lb157_ctc() -> Reform:
@@ -33,8 +34,6 @@ def create_ne_lb157_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ne.ctc.lb157
-            # Check if reform is in effect
-            in_effect = p.in_effect
             # Count qualifying children
             qualifying_children = add(
                 tax_unit, period, ["ne_lb157_ctc_eligible_child"]
@@ -54,7 +53,7 @@ def create_ne_lb157_ctc() -> Reform:
             # Phase-out reduction per child (5% per increment)
             reduction_per_child = p.amount * rate * increments
             credit_per_child = max_(p.amount - reduction_per_child, 0)
-            return in_effect * credit_per_child * qualifying_children
+            return credit_per_child * qualifying_children
 
     def modify_parameters(parameters):
         # Add ne_lb157_ctc to Nebraska refundable credits list
@@ -79,9 +78,21 @@ def create_ne_lb157_ctc() -> Reform:
 
 
 def create_ne_lb157_ctc_reform(parameters, period, bypass: bool = False):
-    # Always return the reform - the formula checks in_effect parameter
-    # This allows the reform to be toggled on/off via parameter changes
-    return create_ne_lb157_ctc()
+    if bypass:
+        return create_ne_lb157_ctc()
+
+    p = parameters.gov.contrib.states.ne.ctc.lb157
+    reform_active = False
+    current_period = period_(period)
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
+        return create_ne_lb157_ctc()
+    return None
 
 
 ne_lb157_ctc = create_ne_lb157_ctc_reform(None, None, bypass=True)

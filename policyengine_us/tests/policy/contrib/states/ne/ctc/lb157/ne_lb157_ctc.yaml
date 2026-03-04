@@ -140,6 +140,42 @@
     # Credit = $1,000 - $150 = $850
     ne_lb157_ctc: 850
 
+- name: MFJ with two qualifying children in phase-out range
+  period: 2026
+  input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
+    people:
+      parent1:
+        age: 35
+        is_tax_unit_head: true
+      parent2:
+        age: 33
+        is_tax_unit_spouse: true
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+        has_itin: true
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        adjusted_gross_income: 114_000
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: NE
+  output:
+    # $114,000 AGI exceeds $110,000 threshold by $4,000
+    # Ceiling($4,000 / $2,000) = 2 increments
+    # Reduction per child = $1,000 * 5% * 2 = $100
+    # Credit per child = $1,000 - $100 = $900
+    # Total credit = $900 * 2 children = $1,800
+    ne_lb157_ctc: 1_800
+
 - name: Single filer fully phased out
   period: 2026
   input:
