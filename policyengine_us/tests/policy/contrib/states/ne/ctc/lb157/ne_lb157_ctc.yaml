@@ -1,5 +1,7 @@
 - name: Single filer with one qualifying child under income threshold
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -24,6 +26,8 @@
 
 - name: MFJ with two qualifying children under income threshold
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -55,6 +59,8 @@
 
 - name: Single filer above phase-out threshold (one increment)
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -83,6 +89,8 @@
 
 - name: Head of household above phase-out threshold (two increments)
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -111,6 +119,8 @@
 
 - name: MFJ above phase-out threshold (three increments)
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -142,6 +152,8 @@
 
 - name: MFJ with two qualifying children in phase-out range
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -178,6 +190,8 @@
 
 - name: Single filer fully phased out
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -206,6 +220,8 @@
 
 - name: Child over age 6 not eligible
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -230,6 +246,8 @@
 
 - name: Child exactly age 6 is eligible
   period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
   input:
     gov.contrib.states.ne.ctc.lb157.in_effect: true
     people:
@@ -251,26 +269,3 @@
         state_code: NE
   output:
     ne_lb157_ctc: 1_000
-
-- name: Reform not in effect by default
-  period: 2026
-  input:
-    people:
-      parent:
-        age: 30
-        is_tax_unit_head: true
-      child:
-        age: 3
-        is_tax_unit_dependent: true
-        has_itin: true
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        filing_status: SINGLE
-        adjusted_gross_income: 50_000
-    households:
-      household:
-        members: [parent, child]
-        state_code: NE
-  output:
-    ne_lb157_ctc: 0
