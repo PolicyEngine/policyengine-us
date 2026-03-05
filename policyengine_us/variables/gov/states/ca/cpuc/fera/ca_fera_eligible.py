@@ -23,16 +23,7 @@ class ca_fera_eligible(Variable):
         # Check income eligibility with respect to percent of the poverty line.
         # Must be above 200% of the poverty line (CARE requirements), but less
         # than or equal to 250% of the poverty line.
-        # Total household income includes market income plus government
-        # transfers (UC and SS are not market income but count toward
-        # the FERA income test).
-        uc = household.members("unemployment_compensation", period)
-        ss = household.members("social_security", period)
-        income = (
-            household("household_market_income", period)
-            + household.sum(uc)
-            + household.sum(ss)
-        )
+        income = household("ca_cpuc_countable_income", period)
         ca_care_poverty_line = household("ca_care_poverty_line", period)
         income_limit = ca_care_poverty_line * p.fpl_limit
         income_eligible = income <= income_limit
