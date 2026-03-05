@@ -6,3 +6,22 @@
     state_code: MA
   output:
     ma_part_b_agi: 49_000
+
+- name: Massachusetts Part B AGI floors at zero when bond interest exceeds income
+  period: 2022
+  input:
+    employment_income: 500
+    us_govt_interest: 1_000
+    state_code: MA
+  output:
+    # max_(0, 500 - 0 - 1000) = 0
+    ma_part_b_agi: 0
+
+- name: Massachusetts Part B AGI with zero bond interest
+  period: 2022
+  input:
+    employment_income: 50_000
+    us_govt_interest: 0
+    state_code: MA
+  output:
+    ma_part_b_agi: 50_000

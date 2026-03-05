@@ -8,3 +8,23 @@
     # AGI exceeds OASDI limit so social security is not subtracted,
     # but US government bond interest is still subtracted.
     ks_agi_subtractions: 1_000
+
+- name: Kansas subtracts both OASDI and bond interest when AGI below limit
+  period: 2022
+  input:
+    adjusted_gross_income: 50_000
+    taxable_social_security: 5_000
+    us_govt_interest: 1_000
+    state_code: KS
+  output:
+    # AGI <= 75,000 OASDI limit, so both subtractions apply.
+    ks_agi_subtractions: 6_000
+
+- name: Kansas bond interest subtraction with zero interest
+  period: 2022
+  input:
+    adjusted_gross_income: 50_000
+    us_govt_interest: 0
+    state_code: KS
+  output:
+    ks_agi_subtractions: 0
