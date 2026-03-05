@@ -2,6 +2,25 @@ from policyengine_us.model_api import *
 from policyengine_core.taxscales import MarginalRateTaxScale
 
 
+def get_last_finite_threshold(scale):
+    """Get the last non-infinity threshold from a tax scale.
+
+    For NY tax scales, the last threshold may be infinity for certain years.
+    This function returns the last finite threshold value instead.
+    """
+    thresholds = scale.thresholds
+    if np.isinf(thresholds[-1]):
+        return thresholds[-2]
+    return thresholds[-1]
+
+
+def get_top_rate(scale):
+    """Get the top marginal rate from a tax scale."""
+    if np.isinf(scale.thresholds[-1]):
+        return scale.rates[-2]
+    return scale.rates[-1]
+
+
 class ny_supplemental_tax(Variable):
     value_type = float
     entity = TaxUnit
@@ -53,20 +72,15 @@ class ny_supplemental_tax(Variable):
             applicable_amount / p.phase_in_length,
         )
 
-        # edge case for high agi
-        agi_limit = select(
+        # For AGI above the high threshold, apply flat top rate to all income
+        # Get the last finite threshold from each scale (handles infinity in 2022+)
+        high_agi_threshold = select(
             in_each_status,
-            [
-                single.thresholds[-1],
-                joint.thresholds[-1],
-                hoh.thresholds[-1],
-                surviving_spouse.thresholds[-1],
-                separate.thresholds[-1],
-            ],
+            [get_last_finite_threshold(scale) for scale in scales],
         )
         high_agi_rate = select(
             in_each_status,
-            [scale.marginal_rates(agi_limit + 1) for scale in scales],
+            [get_top_rate(scale) for scale in scales],
         )
 
         supplemental_tax_high_agi = (
@@ -105,13 +119,13 @@ class ny_supplemental_tax(Variable):
             )
 
             return where(
-                ny_agi > agi_limit,
+                ny_agi > high_agi_threshold,
                 supplemental_tax_high_agi,
                 supplemental_tax_general,
             )
 
         return where(
-            ny_agi > agi_limit,
+            ny_agi > high_agi_threshold,
             supplemental_tax_high_agi,
             0,
         )

@@ -10,6 +10,7 @@ class is_snap_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
+        "https://www.law.cornell.edu/uscode/text/7/2015#f",
     )
 
     def formula(spm_unit, period, parameters):
@@ -28,8 +29,12 @@ class is_snap_eligible(Variable):
         work_requirements_eligibility = spm_unit(
             "meets_snap_work_requirements", period
         )
+        immigration_eligible_member_present = spm_unit.any(
+            person("is_snap_immigration_status_eligible", period)
+        )
         return (
             (normal_eligibility | categorical_eligibility)
             & eligible_person_present
             & work_requirements_eligibility
+            & immigration_eligible_member_present
         )

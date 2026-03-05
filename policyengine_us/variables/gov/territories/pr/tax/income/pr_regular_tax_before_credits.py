@@ -12,7 +12,7 @@ class pr_regular_tax_before_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.regular_tax
-        gross_income = tax_unit("pr_gross_income", period)
+        gross_income = add(tax_unit, period, ["pr_gross_income_person"])
         total_normal_tax = add(
             tax_unit, period, ["pr_normal_tax", "pr_gradual_adjustment_amount"]
         )

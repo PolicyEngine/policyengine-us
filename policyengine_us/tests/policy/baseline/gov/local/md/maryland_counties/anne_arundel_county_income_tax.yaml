@@ -1,0 +1,595 @@
+# Anne Arundel County Income Tax Tests
+# Covers flat rate years (2021-2022) and progressive rate years (2023+)
+# Filing status groups:
+#   - SINGLE, SEPARATE: same brackets ($50K, $400K)
+#   - JOINT, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE: same brackets ($75K, $480K)
+
+# ==============================================================================
+# 2021 TESTS - Flat Rate (0.0281 for all)
+# ==============================================================================
+
+- name: Anne Arundel County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Flat rate in 2021: 50,000 * 0.0281 = 1,405
+    md_local_income_tax_before_credits: 1_405
+
+- name: Anne Arundel County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Flat rate in 2021: 100,000 * 0.0281 = 2,810
+    md_local_income_tax_before_credits: 2_810
+
+- name: Anne Arundel County income tax - high income $500,000 (2021, flat rate verification)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 500_000
+  output:
+    # Flat rate in 2021: 500,000 * 0.0281 = 14,050
+    md_local_income_tax_before_credits: 14_050
+
+# ==============================================================================
+# 2022 TESTS - Flat Rate (0.0281 for all)
+# ==============================================================================
+
+- name: Anne Arundel County income tax - $50,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 50,000 * 0.0281 = 1,405
+    md_local_income_tax_before_credits: 1_405
+
+- name: Anne Arundel County income tax - $100,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 100,000 * 0.0281 = 2,810
+    md_local_income_tax_before_credits: 2_810
+
+# ==============================================================================
+# 2023 TESTS - Progressive Rate (2 brackets for single)
+# ==============================================================================
+
+- name: Anne Arundel County income tax - $50,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - $50,000 income (2023, joint)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 50_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - $75,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 75_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 25,000 * 0.0281 = 702.50
+    # Total: 2,052.50
+    md_local_income_tax_before_credits: 2_053
+
+- name: Anne Arundel County income tax - $75,000 income (2023, joint)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 75_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 25,000 * 0.0281 = 702.50
+    # Total: 2,052.50
+    md_local_income_tax_before_credits: 2_053
+
+# ==============================================================================
+# 2024 TESTS - Progressive Rate with 3 brackets
+# Single/Separate: $50K, $400K thresholds
+# Joint/HoH/Surviving: $75K, $480K thresholds
+# ==============================================================================
+
+- name: Anne Arundel County income tax - $25,000 income (first bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 25_000
+  output:
+    # 25,000 * 0.027 = 675
+    md_local_income_tax_before_credits: 675
+
+- name: Anne Arundel County income tax - $25,000 income (first bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 25_000
+  output:
+    # 25,000 * 0.027 = 675
+    md_local_income_tax_before_credits: 675
+
+# --- Boundary tests at $50K for SINGLE ---
+
+- name: Anne Arundel County income tax - boundary exactly at $50,000 (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Exactly at first bracket boundary for single
+    # 50,000 * 0.027 = 1,350
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - one dollar above $50,000 boundary (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_001
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 1 * 0.0281 = 0.0281
+    # Total: 1,350.03
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - $75,000 income (second bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 75_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 25,000 * 0.0281 = 702.50
+    # Total: 2,052.50
+    md_local_income_tax_before_credits: 2_053
+
+- name: Anne Arundel County income tax - $75,000 income (second bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 75_000
+  output:
+    # 75,000 * 0.027 = 2,025 (first bracket only for joint filing)
+    md_local_income_tax_before_credits: 2_025
+
+# --- Boundary tests at $75K for JOINT ---
+
+- name: Anne Arundel County income tax - boundary exactly at $75,000 (2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 75_000
+  output:
+    # Exactly at first bracket boundary for joint
+    # 75,000 * 0.027 = 2,025
+    md_local_income_tax_before_credits: 2_025
+
+- name: Anne Arundel County income tax - one dollar above $75,000 boundary (2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 75_001
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 1 * 0.0281 = 0.0281
+    # Total: 2,025.03
+    md_local_income_tax_before_credits: 2_025
+
+- name: Anne Arundel County income tax - $200,000 income (second bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 200_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 150,000 * 0.0281 = 4,215
+    # Total: 5,565
+    md_local_income_tax_before_credits: 5_565
+
+- name: Anne Arundel County income tax - $200,000 income (second bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 200_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 125,000 * 0.0281 = 3,512.50
+    # Total: 5,537.50
+    md_local_income_tax_before_credits: 5_538
+
+# --- Boundary tests at $400K for SINGLE ---
+
+- name: Anne Arundel County income tax - boundary exactly at $400,000 (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 400_000
+  output:
+    # Exactly at second bracket boundary for single
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0281 = 9,835
+    # Total: 11,185
+    md_local_income_tax_before_credits: 11_185
+
+- name: Anne Arundel County income tax - one dollar above $400,000 boundary (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 400_001
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0281 = 9,835
+    # Next 1 * 0.032 = 0.032
+    # Total: 11,185.03
+    md_local_income_tax_before_credits: 11_185
+
+- name: Anne Arundel County income tax - $500,000 income (third bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 500_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0281 = 9,835
+    # Next 100,000 * 0.032 = 3,200
+    # Total: 14,385
+    md_local_income_tax_before_credits: 14_385
+
+- name: Anne Arundel County income tax - $500,000 income (third bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 500_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 405,000 * 0.0281 = 11,380.50
+    # Next 20,000 * 0.032 = 640
+    # Total: 14,045.50
+    md_local_income_tax_before_credits: 14_046
+
+- name: Anne Arundel County income tax - married filing jointly (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 150_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 75,000 * 0.0281 = 2,107.50
+    # Total: 4,132.50
+    md_local_income_tax_before_credits: 4_133
+
+# --- SEPARATE filing status (same brackets as SINGLE) ---
+
+- name: Anne Arundel County income tax - $75,000 income (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 75_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 25,000 * 0.0281 = 702.50
+    # Total: 2,052.50
+    md_local_income_tax_before_credits: 2_053
+
+- name: Anne Arundel County income tax - boundary exactly at $400,000 (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 400_000
+  output:
+    # Exactly at second bracket boundary (same as single)
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0281 = 9,835
+    # Total: 11,185
+    md_local_income_tax_before_credits: 11_185
+
+- name: Anne Arundel County income tax - $500,000 income (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 500_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0281 = 9,835
+    # Next 100,000 * 0.032 = 3,200
+    # Total: 14,385
+    md_local_income_tax_before_credits: 14_385
+
+# --- HEAD_OF_HOUSEHOLD filing status (same brackets as JOINT) ---
+
+- name: Anne Arundel County income tax - $75,000 income (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 75_000
+  output:
+    # Exactly at first bracket boundary (same as joint)
+    # 75,000 * 0.027 = 2,025
+    md_local_income_tax_before_credits: 2_025
+
+- name: Anne Arundel County income tax - $200,000 income (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 200_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 125,000 * 0.0281 = 3,512.50
+    # Total: 5,537.50
+    md_local_income_tax_before_credits: 5_538
+
+- name: Anne Arundel County income tax - $500,000 income (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 500_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 405,000 * 0.0281 = 11,380.50
+    # Next 20,000 * 0.032 = 640
+    # Total: 14,045.50
+    md_local_income_tax_before_credits: 14_046
+
+# --- SURVIVING_SPOUSE filing status (same brackets as JOINT) ---
+
+- name: Anne Arundel County income tax - $75,000 income (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 75_000
+  output:
+    # Exactly at first bracket boundary (same as joint)
+    # 75,000 * 0.027 = 2,025
+    md_local_income_tax_before_credits: 2_025
+
+- name: Anne Arundel County income tax - $200,000 income (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 200_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 125,000 * 0.0281 = 3,512.50
+    # Total: 5,537.50
+    md_local_income_tax_before_credits: 5_538
+
+- name: Anne Arundel County income tax - $500,000 income (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 500_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 405,000 * 0.0281 = 11,380.50
+    # Next 20,000 * 0.032 = 640
+    # Total: 14,045.50
+    md_local_income_tax_before_credits: 14_046
+
+# ==============================================================================
+# 2025 TESTS - Progressive Rate with updated second bracket rate (0.0294)
+# ==============================================================================
+
+- name: Anne Arundel County income tax - $50,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - $50,000 income (2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 50_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    md_local_income_tax_before_credits: 1_350
+
+- name: Anne Arundel County income tax - $100,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 50,000 * 0.0294 = 1,470
+    # Total: 2,820
+    md_local_income_tax_before_credits: 2_820
+
+- name: Anne Arundel County income tax - $100,000 income (2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 100_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 25,000 * 0.0294 = 735
+    # Total: 2,760
+    md_local_income_tax_before_credits: 2_760
+
+- name: Anne Arundel County income tax - $200,000 income (second bracket, 2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 200_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 150,000 * 0.0294 = 4,410
+    # Total: 5,760
+    md_local_income_tax_before_credits: 5_760
+
+- name: Anne Arundel County income tax - $200,000 income (second bracket, 2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 200_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 125,000 * 0.0294 = 3,675
+    # Total: 5,700
+    md_local_income_tax_before_credits: 5_700
+
+- name: Anne Arundel County income tax - $500,000 income (third bracket, 2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 500_000
+  output:
+    # First 50,000 * 0.027 = 1,350
+    # Next 350,000 * 0.0294 = 10,290
+    # Next 100,000 * 0.032 = 3,200
+    # Total: 14,840
+    md_local_income_tax_before_credits: 14_840
+
+- name: Anne Arundel County income tax - $500,000 income (third bracket, 2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 500_000
+  output:
+    # First 75,000 * 0.027 = 2,025
+    # Next 405,000 * 0.0294 = 11,907
+    # Next 20,000 * 0.032 = 640
+    # Total: 14,572
+    md_local_income_tax_before_credits: 14_572

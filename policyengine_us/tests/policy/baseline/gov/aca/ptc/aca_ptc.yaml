@@ -1,6 +1,6 @@
-- name: ACA PTC returns zero before 2025
+- name: ACA PTC returns zero before 2024
   absolute_error_margin: 0.01
-  period: 2024
+  period: 2023
   input:
     is_aca_ptc_eligible: true
     slcsp: 1_200

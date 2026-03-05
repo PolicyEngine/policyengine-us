@@ -24,22 +24,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 100
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
-      - name: Install dependencies
-        run: uv pip install "yaml-changelog>=0.1.7" --system
-      - name: Build changelog
-        run: make changelog
+        run: uv pip install towncrier --system
+      - name: Bump version and build changelog
+        run: |
+          python .github/bump_version.py
+          VERSION=$(python -c "import re; print(re.search(r'version = \"(.+?)\"', open('pyproject.toml').read()).group(1))")
+          towncrier build --yes --version "$VERSION"
       - name: Update changelog
         uses: EndBug/add-and-commit@v9
         with:
@@ -61,7 +60,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -87,7 +86,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -119,7 +118,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -145,7 +144,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -171,7 +170,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install package

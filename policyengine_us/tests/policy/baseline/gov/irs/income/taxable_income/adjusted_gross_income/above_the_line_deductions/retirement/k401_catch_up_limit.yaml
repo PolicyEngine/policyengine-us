@@ -1,0 +1,106 @@
+# Tests for 401(k) catch-up contribution limits
+# Standard catch-up: $7,500 for ages 50+ (2025)
+# Enhanced catch-up: $11,250 for ages 60-63 (2025+, SECURE 2.0)
+# 26 USC 414(v)(2)(E): greater of $10,000 or 150% of standard
+
+- name: Case 1, under age 50 receives no catch-up.
+  period: 2025
+  input:
+    age: 45
+  output:
+    k401_catch_up_limit: 0
+
+- name: Case 2, age 49 boundary receives no catch-up.
+  period: 2025
+  input:
+    age: 49
+  output:
+    k401_catch_up_limit: 0
+
+- name: Case 3, age 50 receives standard catch-up.
+  period: 2025
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 4, age 55 receives standard catch-up.
+  period: 2025
+  input:
+    age: 55
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 5, age 59 boundary receives standard catch-up.
+  period: 2025
+  input:
+    age: 59
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 6, age 60 receives enhanced catch-up.
+  period: 2025
+  input:
+    age: 60
+  output:
+    # 150% * $7,500 = $11,250 > $10,000
+    k401_catch_up_limit: 11_250
+
+- name: Case 7, age 62 receives enhanced catch-up.
+  period: 2025
+  input:
+    age: 62
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Case 8, age 63 upper boundary receives enhanced catch-up.
+  period: 2025
+  input:
+    age: 63
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Case 9, age 64 reverts to standard catch-up.
+  period: 2025
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 10, age 70 receives standard catch-up.
+  period: 2025
+  input:
+    age: 70
+  output:
+    k401_catch_up_limit: 7_500
+
+# Pre-SECURE 2.0 tests (before 2025)
+
+- name: Case 11, age 60 in 2024 receives standard limit.
+  period: 2024
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 12, age 50 in 2023 receives 2023 standard limit.
+  period: 2023
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 7_500
+
+- name: Case 13, age 50 in 2020 receives 2020 standard limit.
+  period: 2020
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 6_500
+
+- name: Case 14, age 63 in 2024 receives standard limit.
+  period: 2024
+  input:
+    age: 63
+  output:
+    # No enhanced catch-up before 2025
+    k401_catch_up_limit: 7_500

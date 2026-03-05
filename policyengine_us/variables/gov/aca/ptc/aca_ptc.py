@@ -13,7 +13,7 @@ class aca_ptc(Variable):
     def formula(tax_unit, period, parameters):
         return 0
 
-    def formula_2025(tax_unit, period, parameters):
+    def formula_2024(tax_unit, period, parameters):
         plan_cost = tax_unit("slcsp", period)
         income = tax_unit("aca_magi", period)
         applicable_figure = tax_unit(

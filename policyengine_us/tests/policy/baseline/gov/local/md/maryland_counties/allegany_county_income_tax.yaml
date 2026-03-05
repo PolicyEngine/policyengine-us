@@ -1,0 +1,43 @@
+- name: Allegany County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0305 = 1,525
+    md_local_income_tax_before_credits: 1_525
+
+- name: Allegany County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0305 = 3,050
+    md_local_income_tax_before_credits: 3_050
+
+- name: Allegany County income tax - $50,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+    md_taxable_income: 50_000
+  output:
+    # 50,000 * 0.0303 = 1,515
+    md_local_income_tax_before_credits: 1_515
+
+- name: Allegany County income tax - $100,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+    md_taxable_income: 100_000
+  output:
+    # 100,000 * 0.0303 = 3,030
+    md_local_income_tax_before_credits: 3_030

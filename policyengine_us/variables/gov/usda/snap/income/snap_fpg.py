@@ -12,7 +12,7 @@ class snap_fpg(Variable):
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
-        n = spm_unit("snap_unit_size", period.this_year)
+        n = spm_unit("snap_unit_size", period)
         state_group = spm_unit.household("state_group_str", period.this_year)
         year = period.start.year
         month = period.start.month

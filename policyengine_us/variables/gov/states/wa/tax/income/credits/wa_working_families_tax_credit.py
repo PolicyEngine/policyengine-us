@@ -31,9 +31,11 @@ class wa_working_families_tax_credit(Variable):
         )
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
         # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
-        # instructs DOR to revise it to get to zero by the EITC AGI limit.
+        # instructs DOR to revise it to get to the minimum amount by the EITC AGI limit.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
-        phase_out_rate = max_amount / phase_out_start_reduction
+        phase_out_rate = (
+            max_amount - p.min_amount
+        ) / phase_out_start_reduction
         earnings = tax_unit("filer_adjusted_earnings", period)
         excess = max_(0, earnings - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)

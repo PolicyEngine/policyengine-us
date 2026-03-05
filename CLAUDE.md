@@ -60,10 +60,19 @@ make documentation
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
 
+## Changelog
+Every PR needs a changelog fragment in `changelog.d/`:
+```bash
+echo "Description of change." > changelog.d/<branch-name>.<type>.md
+```
+Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
+
+**DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
+
 ## Project Requirements
-- Python >= 3.10, < 3.13
+- Python >= 3.11, < 3.15
 - Follow GitHub Flow with PRs targeting master branch
-- Every PR needs a changelog entry in changelog_entry.yaml
+- Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
 
 ## Project-Specific Gotchas
@@ -102,6 +111,18 @@ make documentation
   - Use period-appropriate parameter values
   - Document any special time-period specific logic in BOTH code comments and variable documentation
   - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
+
+## Code Coverage Exclusions
+Use `# pragma: no cover` **only** for code that cannot be tested in unit tests:
+
+**Allowed:**
+1. Microsim-specific branches: `simulation.is_over_dataset`, `simulation.has_axes`
+2. Behavioral response code with simulation branching: `simulation.get_branch()`, `simulation.baseline`
+
+**NOT allowed:**
+- Code that simply lacks tests (write tests instead)
+- Complex logic that seems hard to test (find a way)
+- Edge cases or error handling (these should be tested)
 
 ## Parameter Validation Gotchas
 - When using `breakdown` metadata in parameters, avoid using variable references for integer values. Use Python expressions like `range(1, 5)`.

@@ -28,7 +28,7 @@
     receives_housing_assistance: false
     state_code: RI
   output:
-    ri_works_payment_standard: 1_489
+    ri_works_payment_standard: 1_490
 
 - name: Case 4, family size 9 incremental formula.
   period: 2025-01
@@ -37,8 +37,8 @@
     receives_housing_assistance: false
     state_code: RI
   output:
-    # Size 8: $1,489 + $125 = $1,614
-    ri_works_payment_standard: 1_614
+    # Size 8: $1,490 + $125 = $1,615
+    ri_works_payment_standard: 1_615
 
 - name: Case 5, family size 12 large family.
   period: 2025-01
@@ -47,8 +47,8 @@
     receives_housing_assistance: false
     state_code: RI
   output:
-    # Size 8: $1,489 + 4 additional * $125 = $1,989
-    ri_works_payment_standard: 1_989
+    # Size 8: $1,490 + 4 additional * $125 = $1,990
+    ri_works_payment_standard: 1_990
 
 - name: Case 6, family size 1 with subsidized housing.
   period: 2025-01
@@ -67,8 +67,8 @@
     receives_housing_assistance: true
     state_code: RI
   output:
-    # $1,489 - $65 reduction = $1,424
-    ri_works_payment_standard: 1_424
+    # $1,490 - $65 reduction = $1,425
+    ri_works_payment_standard: 1_425
 
 - name: Case 8, family size 10 with subsidized housing.
   period: 2025-01
@@ -77,5 +77,5 @@
     receives_housing_assistance: true
     state_code: RI
   output:
-    # Size 10: $1,489 + 2*$125 = $1,739 - $65 = $1,674
-    ri_works_payment_standard: 1_674
+    # Size 10: $1,490 + 2*$125 = $1,740 - $65 = $1,675
+    ri_works_payment_standard: 1_675

@@ -1,0 +1,42 @@
+description: Maryland sets the following county income tax rates for head of household filers in Frederick County.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Frederick County income tax rates for head of household filers
+  reference:
+    - title: "Maryland 2025 Resident Tax Forms and Instructions - Local Tax Rate Chart"
+      href: "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=25"
+    - title: Maryland Local Income Tax Rates
+      href: https://services.marylandcomptroller.gov/taxes/en/maryland-income-tax-rates-and-brackets
+    - title: 2022 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2022/Resident_Booklet.pdf#page=22
+    - title: 2023 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2023/Resident_Booklet.pdf#page=23
+    - title: 2024 Maryland Income Tax Instructions - Local Tax Rate Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2024/Resident_Booklet.pdf#page=25
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.0296
+      2023-01-01: 0.0275
+      2024-01-01: 0.0225
+  - threshold:
+      2021-01-01: .inf
+      2023-01-01: 100_000
+      2024-01-01: 25_000
+    amount:
+      2023-01-01: 0.0296
+      2024-01-01: 0.0275
+  - threshold:
+      2021-01-01: .inf
+      2024-01-01: 100_000
+    amount:
+      2024-01-01: 0.0296
+  - threshold:
+      2021-01-01: .inf
+      2024-01-01: 250_000
+    amount:
+      2024-01-01: 0.032

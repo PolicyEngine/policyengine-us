@@ -1,0 +1,161 @@
+description: Minnesota provides this food portion of the Transitional Standard under the Minnesota Family Investment Program.
+# MFIP is a combined cash+food program. This parameter models the food portion
+# of the Transitional Standard. It is used internally to compute the full
+# Transitional Standard (cash + food) for FWL and benefit calculations per
+# MN Stat. 142G.17, Subd. 5 & 7. The food portion is then subtracted from
+# the final benefit because PolicyEngine models SNAP separately.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 20)
+  breakdown_labels:
+    - Assistance unit size
+  label: Minnesota MFIP Transitional Standard food portion
+  reference:
+    - title: Minnesota DHS Combined Manual October 2016 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128623
+    - title: Minnesota DHS Combined Manual October 2017 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128624
+    - title: Minnesota DHS Combined Manual October 2018 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128625
+    - title: Minnesota DHS Combined Manual October 2019 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128626
+    - title: Minnesota DHS Combined Manual February 2020 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128627
+    - title: Minnesota DHS Combined Manual October 2020 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128628
+    - title: Minnesota DHS Combined Manual October 2021 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128629
+    - title: Minnesota House Research - Cash Assistance in Minnesota December 2022
+      href: https://www.house.mn.gov/hrd/pubs/cashassist.pdf#page=10
+    - title: Minnesota DHS Combined Manual October 2023 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=139469
+    - title: Minnesota House Research - Minnesota Family Investment Program (2024)
+      href: https://www.house.mn.gov/hrd/pubs/pap_mfip.pdf#page=17
+    - title: Minnesota DHS Combined Manual October 2025 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=160643
+
+# Food portion values track federal SNAP maximum allotments, adjusted annually.
+# Pre-2016 simulations use backward-extrapolated 2016 values.
+1:
+  2016-10-01: 172
+  2017-10-01: 170
+  2018-10-01: 170
+  2019-10-01: 172
+  2020-02-01: 156
+  2020-10-01: 165
+  2021-10-01: 208
+  2022-10-01: 235
+  2023-10-01: 242
+  2024-10-01: 242
+  2025-10-01: 247
+2:
+  2016-10-01: 317
+  2017-10-01: 313
+  2018-10-01: 314
+  2019-10-01: 315
+  2020-02-01: 286
+  2020-10-01: 304
+  2021-10-01: 381
+  2022-10-01: 431
+  2023-10-01: 446
+  2024-10-01: 445
+  2025-10-01: 453
+3:
+  2016-10-01: 459
+  2017-10-01: 452
+  2018-10-01: 453
+  2019-10-01: 457
+  2020-02-01: 412
+  2020-10-01: 436
+  2021-10-01: 548
+  2022-10-01: 619
+  2023-10-01: 639
+  2024-10-01: 638
+  2025-10-01: 652
+4:
+  2016-10-01: 586
+  2017-10-01: 577
+  2018-10-01: 579
+  2019-10-01: 583
+  2020-02-01: 526
+  2020-10-01: 557
+  2021-10-01: 698
+  2022-10-01: 788
+  2023-10-01: 814
+  2024-10-01: 814
+  2025-10-01: 829
+5:
+  2016-10-01: 698
+  2017-10-01: 687
+  2018-10-01: 689
+  2019-10-01: 695
+  2020-02-01: 631
+  2020-10-01: 673
+  2021-10-01: 841
+  2022-10-01: 945
+  2023-10-01: 980
+  2024-10-01: 981
+  2025-10-01: 1_002
+6:
+  2016-10-01: 832
+  2017-10-01: 821
+  2018-10-01: 830
+  2019-10-01: 836
+  2020-02-01: 767
+  2020-10-01: 817
+  2021-10-01: 1_021
+  2022-10-01: 1_148
+  2023-10-01: 1_189
+  2024-10-01: 1_195
+  2025-10-01: 1_224
+7:
+  2016-10-01: 898
+  2017-10-01: 886
+  2018-10-01: 899
+  2019-10-01: 912
+  2020-02-01: 832
+  2020-10-01: 887
+  2021-10-01: 1_113
+  2022-10-01: 1_252
+  2023-10-01: 1_296
+  2024-10-01: 1_301
+  2025-10-01: 1_333
+8:
+  2016-10-01: 1_015
+  2017-10-01: 1_001
+  2018-10-01: 1_014
+  2019-10-01: 1_029
+  2020-02-01: 947
+  2020-10-01: 1_009
+  2021-10-01: 1_267
+  2022-10-01: 1_426
+  2023-10-01: 1_476
+  2024-10-01: 1_481
+  2025-10-01: 1_510
+9:
+  2016-10-01: 1_133
+  2017-10-01: 1_116
+  2018-10-01: 1_129
+  2019-10-01: 1_146
+  2020-02-01: 1_062
+  2020-10-01: 1_130
+  2021-10-01: 1_421
+  2022-10-01: 1_600
+  2023-10-01: 1_656
+  2024-10-01: 1_661
+  2025-10-01: 1_688
+10:
+  2016-10-01: 1_253
+  2017-10-01: 1_235
+  2018-10-01: 1_248
+  2019-10-01: 1_266
+  2020-02-01: 1_180
+  2020-10-01: 1_255
+  2021-10-01: 1_578
+  2022-10-01: 1_777
+  2023-10-01: 1_839
+  2024-10-01: 1_844
+  2025-10-01: 1_869

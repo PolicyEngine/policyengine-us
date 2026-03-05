@@ -11,7 +11,7 @@ class ut_fep(Variable):
     defined_for = "ut_fep_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per R986-200-246: Benefit = payment standard - countable income
+        # Per R986-200-239(6): Benefit = payment standard - countable income
         payment_standard = spm_unit("ut_fep_payment_standard", period)
         countable_income = spm_unit("ut_fep_countable_income", period)
         benefit = max_(payment_standard - countable_income, 0)

@@ -1,0 +1,496 @@
+# Edge case tests for Colorado TANF (Colorado Works).
+# Focuses on boundary conditions, minimum/maximum family sizes,
+# income threshold boundaries, and disregard interactions.
+
+# --- Need standard threshold boundary tests ---
+
+- name: Case 1, income one dollar below need standard is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 30
+      person2:
+        is_child: true
+        age: 8
+      person3:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    # Need standard: 1-caretaker/2-children = $421/mo = $5,052/yr
+    co_tanf_need_standard: 5_052
+    # Countable income for need (enrolled): 0 earned + 0 unearned = 0
+    # 0 < 5,052 -> eligible
+    co_tanf_income_eligible: true
+
+- name: Case 2, income exactly at need standard is ineligible (strict less-than).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_052
+    co_tanf_countable_earned_income_need: 5_052
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # $5,052 < $5,052 -> false (strict <)
+    co_tanf_income_eligible: false
+
+- name: Case 3, income one penny below need standard is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_052
+    co_tanf_countable_earned_income_need: 5_051.99
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # $5,051.99 < $5,052 -> true
+    co_tanf_income_eligible: true
+
+# --- Minimum family size: child-only with 1 child ---
+
+- name: Case 4, child-only case with single child.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_child: true
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Need standard: 0-caretakers/1-child = $117/mo = $1,404/yr
+    co_tanf_need_standard: 1_404
+    co_tanf_income_eligible: true
+    # Grant standard: 0-caretakers/1-child = $165/mo = $1,980/yr
+    co_tanf_grant_standard: 1_980
+    # Benefit: $1,980 - $0 = $1,980
+    co_tanf: 1_980
+
+# --- Children at exactly 10 boundary (max in table) ---
+
+- name: Case 5, exactly 10 children with one adult uses table max.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 10
+  output:
+    # Grant standard: 1-caretaker/10-children = $1,502/mo = $18,024/yr
+    co_tanf_grant_standard: 18_024
+
+- name: Case 6, 11 children with one adult triggers one additional child.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 11
+  output:
+    # Grant standard: base(1,10) = $1,502 + 1 * $86 additional = $1,588/mo = $19,056/yr
+    co_tanf_grant_standard: 19_056
+
+- name: Case 7, need standard for exactly 10 children with zero adults.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 10
+  output:
+    # Need standard: 0-caretakers/10-children = $977/mo = $11,724/yr
+    co_tanf_need_standard: 11_724
+
+- name: Case 8, need standard for 11 children triggers additional child.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 11
+  output:
+    # Need standard: base(0,10) = $977 + 1 * $67 = $1,044/mo = $12,528/yr
+    co_tanf_need_standard: 12_528
+
+# --- Zero income end-to-end ---
+
+- name: Case 9, zero income single parent one child gets full grant.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 25
+        employment_income: 0
+      person2:
+        is_child: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_tanf_countable_gross_earned_income: 0
+    co_tanf_countable_earned_income_need: 0
+    co_tanf_countable_gross_unearned_income: 0
+    co_tanf_need_standard: 3_972
+    co_tanf_income_eligible: true
+    # Grant standard: 1-caretaker/1-child = $466/mo = $5,592/yr
+    co_tanf_grant_standard: 5_592
+    co_tanf: 5_592
+
+# --- Income exactly equal to grant standard (benefit = $0) ---
+
+- name: Case 10, countable income exactly equals grant standard gives zero benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 5_592
+    co_tanf_countable_earned_income_grant_standard: 5_592
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # max($5,592 - $5,592, 0) = $0
+    co_tanf: 0
+
+- name: Case 11, countable income one dollar above grant standard gives zero benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 5_592
+    co_tanf_countable_earned_income_grant_standard: 5_593
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # max($5,592 - $5,593, 0) = $0
+    co_tanf: 0
+
+# --- Earned income exactly at flat disregard boundary ---
+
+- name: Case 12, earnings exactly equal to annual flat disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 1_080
+    is_tanf_enrolled: false
+  output:
+    # Not enrolled: max($1,080 - $90 * 12, 0) = max($0, 0) = $0
+    co_tanf_countable_earned_income_need: 0
+
+- name: Case 13, earnings one dollar above annual flat disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 1_081
+    is_tanf_enrolled: false
+  output:
+    # Not enrolled: max($1,081 - $1,080, 0) = $1
+    co_tanf_countable_earned_income_need: 1
+
+# --- Enrolled vs not-enrolled at same income (disregard comparison) ---
+
+- name: Case 14, enrolled applicant at moderate income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: true
+  output:
+    # Enrolled: $6,000 * (1 - 0.67) = $6,000 * 0.33 = $1,980
+    co_tanf_countable_earned_income_need: 1_980
+
+- name: Case 15, new applicant at same moderate income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: false
+  output:
+    # Not enrolled: max($6,000 - $1,080, 0) = $4,920
+    co_tanf_countable_earned_income_need: 4_920
+
+# --- Pregnancy allowance combined with max children ---
+
+- name: Case 16, pregnancy allowance with 10 children and one adult.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 10
+    is_pregnant: true
+  output:
+    # Grant: base(1,10) = $1,502 + $10 pregnancy = $1,512/mo = $18,144/yr
+    co_tanf_grant_standard: 18_144
+
+- name: Case 17, pregnancy allowance with additional children beyond table max.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 12
+    is_pregnant: true
+  output:
+    # Grant: base(1,10) = $1,502 + 2 * $86 additional = $1,674 + $10 pregnancy = $1,684/mo = $20,208/yr
+    co_tanf_grant_standard: 20_208
+
+# --- Child-only cases at various child counts ---
+
+- name: Case 18, child-only with 10 children at table max.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 10
+  output:
+    # Grant standard: 0-caretakers/10-children = $1,393/mo = $16,716/yr
+    co_tanf_grant_standard: 16_716
+
+- name: Case 19, child-only with 11 children triggers additional.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 11
+  output:
+    # Grant: base(0,10) = $1,393 + 1 * $86 = $1,479/mo = $17,748/yr
+    co_tanf_grant_standard: 17_748
+
+# --- Earned income disregard interaction with eligibility ---
+# Tests the scenario where gross income exceeds need standard,
+# but after disregard, countable income is below need standard.
+
+- name: Case 20, gross income exceeds need standard but disregard brings below for enrolled.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 30
+        employment_income: 12_000
+      person2:
+        is_child: true
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Gross earned: $12,000
+    co_tanf_countable_gross_earned_income: 12_000
+    # Need disregard (enrolled): $12,000 * 0.33 = $3,960
+    co_tanf_countable_earned_income_need: 3_960
+    # Need standard: 1-caretaker/1-child = $331/mo = $3,972/yr
+    co_tanf_need_standard: 3_972
+    # Income eligible: $3,960 < $3,972 -> true (barely!)
+    co_tanf_income_eligible: true
+    # Grant standard: 1-caretaker/1-child = $466/mo = $5,592/yr
+    co_tanf_grant_standard: 5_592
+    # Grant disregard (enrolled): $12,000 * 0.33 = $3,960
+    co_tanf_countable_earned_income_grant_standard: 3_960
+    # Benefit: $5,592 - $3,960 = $1,632
+    co_tanf: 1_632
+
+- name: Case 21, same gross income but new applicant is ineligible due to smaller disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 30
+        employment_income: 12_000
+      person2:
+        is_child: true
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Gross earned: $12,000
+    co_tanf_countable_gross_earned_income: 12_000
+    # Need disregard (not enrolled): max($12,000 - $1,080, 0) = $10,920
+    co_tanf_countable_earned_income_need: 10_920
+    # Need standard: 1-caretaker/1-child = $331/mo = $3,972/yr
+    co_tanf_need_standard: 3_972
+    # Income eligible: $10,920 >= $3,972 -> false
+    co_tanf_income_eligible: false
+    co_tanf: 0
+
+# --- 2013 era boundary tests ---
+
+- name: Case 22, grant standard boundary in 2014 era.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 10
+  output:
+    # Grant standard: 1-caretaker/10-children = $1,172/mo (2013-07-01 value) = $14,064/yr
+    co_tanf_grant_standard: 14_064
+
+- name: Case 23, grant standard 11 children in 2014 era.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 11
+  output:
+    # Grant: base(1,10) = $1,172 + 1 * $72 = $1,244/mo = $14,928/yr
+    co_tanf_grant_standard: 14_928
+
+# --- Two adults with many children (both dimensions near boundary) ---
+
+- name: Case 24, two adults with exactly 10 children grant standard in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 10
+  output:
+    # Grant standard: 2-caretakers/10-children = $1,629/mo = $19,548/yr
+    co_tanf_grant_standard: 19_548
+
+- name: Case 25, two adults with exactly 10 children need standard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 10
+  output:
+    # Need standard: 2-caretakers/10-children = $1,155/mo = $13,860/yr
+    co_tanf_need_standard: 13_860
+
+# --- Income just barely above need standard (ineligible) ---
+
+- name: Case 26, income one penny above need standard is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_052
+    co_tanf_countable_earned_income_need: 5_052.01
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # $5,052.01 is NOT < $5,052 -> ineligible
+    co_tanf_income_eligible: false
+
+# --- Grant standard for 2022 era (period 2023, uses 2022-03-01 values) ---
+
+- name: Case 27, 2022 era grant at children boundary.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 10
+  output:
+    # Grant standard: 0-caretakers/10-children = $1,315/mo (2022-03-01 value) = $15,780/yr
+    co_tanf_grant_standard: 15_780
+
+- name: Case 28, 2022 era grant with additional child.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 11
+  output:
+    # Grant: base(0,10) = $1,315 + 1 * $82 = $1,397/mo = $16,764/yr
+    co_tanf_grant_standard: 16_764
+
+# --- Benefit exactly one dollar ---
+
+- name: Case 29, benefit of exactly one dollar.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 5_592
+    co_tanf_countable_earned_income_grant_standard: 5_591
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    # max($5,592 - $5,591, 0) = $1
+    co_tanf: 1
+
+# --- Enrolled earned income at zero still yields zero countable ---
+
+- name: Case 30, enrolled with zero earnings.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 0
+    is_tanf_enrolled: true
+  output:
+    # $0 * 0.33 = $0
+    co_tanf_countable_earned_income_need: 0
+
+# --- Grant standard earned income disregard at zero ---
+
+- name: Case 31, grant standard disregard with zero earnings.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 0
+  output:
+    # $0 * 0.33 = $0
+    co_tanf_countable_earned_income_grant_standard: 0

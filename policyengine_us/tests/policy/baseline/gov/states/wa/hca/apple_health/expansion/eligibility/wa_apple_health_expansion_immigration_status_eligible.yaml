@@ -1,0 +1,49 @@
+# Tests for Washington Apple Health Expansion immigration status eligibility
+
+- name: Undocumented immigrant is eligible
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: true
+
+- name: US citizen NOT eligible
+  period: 2025
+  input:
+    immigration_status: CITIZEN
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: false
+
+- name: Legal permanent resident NOT eligible
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: false
+
+- name: Refugee NOT eligible (can access federal programs)
+  period: 2025
+  input:
+    immigration_status: REFUGEE
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: false
+
+- name: DACA recipient NOT eligible (pending HCA clarification)
+  period: 2025
+  input:
+    immigration_status: DACA
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: false
+
+- name: TPS recipient NOT eligible
+  period: 2025
+  input:
+    immigration_status: TPS
+    state_code: WA
+  output:
+    wa_apple_health_expansion_immigration_status_eligible: false

@@ -335,16 +335,16 @@
         state_code: RI
   output:
     # Earned: max($1,000 - $525, 0) * 0.5 = $237.50
-    # Payment standard: $1,489 + 2 * $125 = $1,739
-    # Benefit: $1,739 - $237.50 = $1,501.50
+    # Payment standard: $1,490 + 2 * $125 = $1,740
+    # Benefit: $1,740 - $237.50 = $1,502.50
     ri_works_income_eligible: true
     ri_works_resource_eligible: true
     ri_works_eligible: true
     ri_works_countable_earned_income: 237.5
     ri_works_countable_unearned_income: 0
     ri_works_countable_income: 237.5
-    ri_works_payment_standard: 1_739
-    ri_works: 1_501.5
+    ri_works_payment_standard: 1_740
+    ri_works: 1_502.5
 
 - name: Scenario 10, only unearned income, no earned.
   period: 2025-01

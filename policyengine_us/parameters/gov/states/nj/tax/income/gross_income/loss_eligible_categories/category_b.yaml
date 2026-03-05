@@ -1,0 +1,14 @@
+description: New Jersey combines self-employment and farm income into Category (b) and disregards the net if negative under the same-category rule.
+values:
+  2021-01-01:
+    - self_employment_income  # Line 18: Net business profits
+    - farm_income  # Line 18: Farm income
+metadata:
+  unit: list
+  period: year
+  label: NJ Category (b) - Business profits
+  reference:
+    - title: N.J.S. 54A:5-1(b)
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Line 18
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf

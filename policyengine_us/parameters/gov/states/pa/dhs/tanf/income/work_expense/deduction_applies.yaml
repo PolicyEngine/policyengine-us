@@ -1,0 +1,17 @@
+description: Pennsylvania uses a work expense deduction (true) or reimbursement (false) under the Temporary Assistance for Needy Families program.
+# Before 2020: Work Expense Reimbursement (WER) - $50/month added to benefit
+# After 2020: Work Expense Deduction (WED) - $200/month deducted from income
+
+values:
+  2009-04-01: false
+  2020-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Pennsylvania TANF uses work expense deduction
+  reference:
+    - title: PA DHS Cash Assistance Handbook Section 137.4, Work Expense Reimbursement
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/137_Cash_Initiatives/137.4_Work_Expense_Reimbursement.htm
+    - title: PA DHS TANF State Plan 2024, Work Expense Deduction
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/tanf/tanf-state-plan-effective-october-1-2024.pdf#page=13

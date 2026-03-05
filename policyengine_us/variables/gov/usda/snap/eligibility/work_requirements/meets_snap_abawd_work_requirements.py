@@ -6,51 +6,65 @@ class meets_snap_abawd_work_requirements(Variable):
     entity = Person
     label = "Person is eligible for SNAP benefits via Able-Bodied Adult Without Dependents (ABAWD) work requirements"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/cfr/text/7/273.24"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.24",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+    )
 
     def formula(person, period, parameters):
+        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(period).gov.usda.snap.work_requirements.abawd
+        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
+        p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
+        # (A) Age — 7 U.S.C. 2015(o)(3)(A)
         age = person("monthly_age", period)
+        working_age_exempt = where(
+            hr1_in_effect,
+            p.age_threshold.exempted.calc(age),
+            p_pre.age_threshold.exempted.calc(age),
+        )
+        # Work activity
         weekly_hours_worked = person(
             "weekly_hours_worked_before_lsr", period.this_year
         )
-        # Work at least 20 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
-        # Adults within an age range are exempt
-        working_age_exempt = p.age_threshold.exempted.calc(age)
-        # Unable to work due to a physical or mental limitation
+        # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
-        # Parent or other member of a household with responsibility for a dependent child under certain age
+        # (C) Parent with qualifying child — 7 U.S.C. 2015(o)(3)(C)
         is_dependent = person("is_tax_unit_dependent", period)
-        is_qualifying_child = age < p.age_threshold.dependent
+        dep_threshold = where(
+            hr1_in_effect,
+            p.age_threshold.dependent,
+            p_pre.age_threshold.dependent,
+        )
+        is_qualifying_child = age < dep_threshold
         is_parent = person("is_parent", period)
         has_child = person.spm_unit.any(is_dependent & is_qualifying_child)
         exempt_parent = is_parent & has_child
-        # Exempted from the general work requirements
-        meets_snap_general_work_requirements = person(
-            "meets_snap_general_work_requirements", period
+        # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
+        work_reg_exempt = person(
+            "is_snap_work_registration_exempt_non_age", period
         )
-        # Pregnant
+        # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
+        # NOTE: (F)-(G) Native American/Indian exemptions per IHCIA
+        # definitions are not yet implemented (requires tribal
+        # membership input variable).
         is_pregnant = person("is_pregnant", period)
-        # Homeless
-        is_homeless = person.household("is_homeless", period)
-        # A veteran
-        is_veteran = person("is_veteran", period)
-        # States exempt from work requirements.
-        state_code = person.household("state_code", period)
-        state_code_str = state_code.decode_to_str()
-        is_abawd_work_requirements_exempt_state = np.isin(
-            state_code_str, p.exempt_states
-        )
+        # TODO: HI/AK delayed adoption (2025-11-01) to be handled
+        # in a follow-up PR via state-level hr1_in_effect parameters.
         base_conditions = (
             is_working
             | working_age_exempt
             | is_disabled
             | exempt_parent
-            | meets_snap_general_work_requirements
+            | work_reg_exempt
             | is_pregnant
-            | is_abawd_work_requirements_exempt_state
         )
-        if p.in_effect:
-            return base_conditions
-        return base_conditions | is_homeless | is_veteran
+        # Pre-HR1 exemptions: homeless, veteran
+        is_homeless = person.household("is_homeless", period)
+        is_veteran = person("is_veteran", period)
+        return where(
+            hr1_in_effect,
+            base_conditions,
+            base_conditions | is_homeless | is_veteran,
+        )

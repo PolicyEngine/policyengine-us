@@ -9,10 +9,10 @@ class hi_cdcc_income_floor_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28"
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29"
-        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41"
-        "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28",
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29",
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41",
+        "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2",
     )
 
     def formula(person, period, parameters):
