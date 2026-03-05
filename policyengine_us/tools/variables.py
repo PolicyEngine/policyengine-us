@@ -13,7 +13,9 @@ def add_n(word):
 
 def print_variable_summary(variable_name: str):
     variable = variables.get(variable_name)
-    return Markdown(f"""
+    return Markdown(
+        f"""
         ## {variable.name}
         This variable models a{add_n(variable.entity.label)}**{variable.entity.label}**'s **{variable.label}**.
-        """)
+        """
+    )
