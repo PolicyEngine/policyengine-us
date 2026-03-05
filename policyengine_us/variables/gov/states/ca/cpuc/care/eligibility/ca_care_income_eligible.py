@@ -12,7 +12,16 @@ class ca_care_income_eligible(Variable):
 
     def formula(household, period, parameters):
         # Check income eligibility with respect to percent of the poverty line.
-        income = household("household_market_income", period)
+        # Total household income includes market income plus government
+        # transfers (UC and SS are not market income but count toward
+        # the CARE income test).
+        uc = household.members("unemployment_compensation", period)
+        ss = household.members("social_security", period)
+        income = (
+            household("household_market_income", period)
+            + household.sum(uc)
+            + household.sum(ss)
+        )
         p = parameters(period).gov.states.ca.cpuc.care.eligibility
         # Calculate income limit based on federal poverty line, adjusted to
         # set one-person households as two-person.
