@@ -8,8 +8,9 @@ class ks_agi_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ksrevenue.gov/pdf/ip21.pdf"
-        "https://www.ksrevenue.gov/pdf/ip22.pdf"
+        "https://www.ksrevenue.gov/pdf/ip21.pdf",
+        "https://www.ksrevenue.gov/pdf/ip22.pdf",
+        "K.S.A. 79-32,117(c)(xix) — US government interest subtraction",
     )
     defined_for = StateCode.KS
 

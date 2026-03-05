@@ -7,7 +7,10 @@ class ma_part_b_agi(Variable):
     label = "MA Part B AGI"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2",
+        "MGL c.62 s.2(a)(2)(A) — US government bond interest excluded from gross income",
+    )
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
