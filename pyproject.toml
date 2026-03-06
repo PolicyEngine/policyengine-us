@@ -43,9 +43,6 @@ dev = [
     "towncrier>=24.8.0",
 ]
 
-[tool.ruff]
-line-length = 88
-
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
 
