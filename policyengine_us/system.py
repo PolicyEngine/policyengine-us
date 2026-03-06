@@ -63,7 +63,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         "employment_income",
         "age",
     ]
-    modelled_policies = COUNTRY_DIR / "modelled_policies.yaml"
+    modelled_policies = COUNTRY_DIR / "programs.yaml"
 
     def __init__(
         self,
