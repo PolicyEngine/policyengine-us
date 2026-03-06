@@ -100,9 +100,7 @@ def create_va_dependent_exemption_reform() -> Reform:
         defined_for = StateCode.VA
 
         def formula(tax_unit, period, parameters):
-            p_base = parameters(
-                period
-            ).gov.states.va.tax.income.exemptions.personal
+            p_base = parameters(period).gov.states.va.tax.income.exemptions.personal
 
             # Calculate personal exemptions base amount (filer + spouse + older dependents)
             filing_status = tax_unit("filing_status", period)
@@ -118,9 +116,7 @@ def create_va_dependent_exemption_reform() -> Reform:
             personal_exemption_amount = personal_count * p_base
 
             # Add dependent exemption (has its own phase-out logic)
-            dependent_exemption_amount = tax_unit(
-                "va_dependent_exemption", period
-            )
+            dependent_exemption_amount = tax_unit("va_dependent_exemption", period)
 
             return personal_exemption_amount + dependent_exemption_amount
 
@@ -136,9 +132,7 @@ def create_va_dependent_exemption_reform() -> Reform:
     return reform
 
 
-def create_va_dependent_exemption_reform_fn(
-    parameters, period, bypass: bool = False
-):
+def create_va_dependent_exemption_reform_fn(parameters, period, bypass: bool = False):
     if bypass:
         return create_va_dependent_exemption_reform()
 

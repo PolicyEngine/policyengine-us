@@ -24,6 +24,4 @@ class wi_childcare_expense_subtraction(Variable):
             uncapped_expenses,
             count_eligible * subtraction.childcare_expense.max_amount,
         )
-        return min_(
-            capped_expenses, tax_unit("min_head_spouse_earned", period)
-        )
+        return min_(capped_expenses, tax_unit("min_head_spouse_earned", period))

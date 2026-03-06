@@ -14,7 +14,5 @@ class rrc_arpa_dependents_with_valid_ssn(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
-        has_valid_ssn = person(
-            "meets_eitc_identification_requirements", period
-        )
+        has_valid_ssn = person("meets_eitc_identification_requirements", period)
         return tax_unit.sum(is_dependent & has_valid_ssn)

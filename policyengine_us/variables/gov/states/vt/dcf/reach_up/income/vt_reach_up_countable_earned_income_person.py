@@ -15,9 +15,7 @@ class vt_reach_up_countable_earned_income_person(Variable):
 
     def formula(person, period, parameters):
         # Per Section 2252.3: Disregard applied to each eligible household member
-        p = parameters(
-            period
-        ).gov.states.vt.dcf.reach_up.income.earned_disregard
+        p = parameters(period).gov.states.vt.dcf.reach_up.income.earned_disregard
         gross_earned = person("tanf_gross_earned_income", period)
         after_flat = max_(gross_earned - p.flat, 0)
         return after_flat * (1 - p.rate)

@@ -79,9 +79,7 @@ def non_refundable_ss_credit_reform() -> Reform:
                 highest_rate = where(in_bracket, rate, highest_rate)
 
                 # Store this threshold as the previous for next iteration
-                prev_threshold = where(
-                    threshold != np.inf, threshold, prev_threshold
-                )
+                prev_threshold = where(threshold != np.inf, threshold, prev_threshold)
 
             return highest_rate
 
@@ -115,9 +113,7 @@ def non_refundable_ss_credit_reform() -> Reform:
     return reform
 
 
-def create_non_refundable_ss_credit_reform(
-    parameters, period, bypass: bool = False
-):
+def create_non_refundable_ss_credit_reform(parameters, period, bypass: bool = False):
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform
@@ -149,6 +145,6 @@ def create_non_refundable_ss_credit_reform(
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-non_refundable_ss_credit_reform_object = (
-    create_non_refundable_ss_credit_reform(None, None, bypass=True)
+non_refundable_ss_credit_reform_object = create_non_refundable_ss_credit_reform(
+    None, None, bypass=True
 )

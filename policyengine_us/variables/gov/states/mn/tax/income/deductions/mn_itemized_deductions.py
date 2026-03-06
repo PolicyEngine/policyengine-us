@@ -35,30 +35,20 @@ class mn_itemized_deductions(Variable):
         net_deds = max_(0, mn_itm_deds - exempt_deds)
         filing_status = tax_unit("filing_status", period)
         lower_reduction_rate = p.reduction.excess_agi_fraction.low
-        lower_reduction_threshold = p.reduction.agi_threshold.low[
-            filing_status
-        ]
+        lower_reduction_threshold = p.reduction.agi_threshold.low[filing_status]
         agi = tax_unit("adjusted_gross_income", period)
         lower_excess = max_(0, agi - lower_reduction_threshold)
         alternate_reduction_amount = p.reduction.alternate.rate * net_deds
         if p.alternate_reduction_applies:
-            higher_reduction_threshold = p.reduction.agi_threshold.high[
-                filing_status
-            ]
+            higher_reduction_threshold = p.reduction.agi_threshold.high[filing_status]
 
             spread = higher_reduction_threshold - lower_reduction_threshold
-            lower_reduction_amount = lower_reduction_rate * min_(
-                lower_excess, spread
-            )
+            lower_reduction_amount = lower_reduction_rate * min_(lower_excess, spread)
             higher_reduction_rate = p.reduction.excess_agi_fraction.high
             higher_excess = max_(0, agi - higher_reduction_threshold)
             higher_reduction_amount = higher_reduction_rate * higher_excess
-            main_reduction_amount = (
-                lower_reduction_amount + higher_reduction_amount
-            )
-            alternate_reduction_applies = (
-                agi > p.reduction.alternate.income_threshold
-            )
+            main_reduction_amount = lower_reduction_amount + higher_reduction_amount
+            alternate_reduction_applies = agi > p.reduction.alternate.income_threshold
             smaller_reduction_amount = min_(
                 alternate_reduction_amount, main_reduction_amount
             )

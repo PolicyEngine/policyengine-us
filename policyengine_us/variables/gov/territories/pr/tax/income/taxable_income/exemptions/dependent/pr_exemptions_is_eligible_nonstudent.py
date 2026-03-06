@@ -5,7 +5,9 @@ class pr_exemptions_is_eligible_nonstudent(Variable):
     value_type = bool
     entity = Person
     label = "Puerto Rico dependent exemption eligible nonstudent"
-    reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
+    reference = (
+        "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR

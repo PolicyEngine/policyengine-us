@@ -13,9 +13,7 @@ class ne_child_care_subsidy_eligible_child(Variable):
     defined_for = StateCode.NE
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ne.dhhs.child_care_subsidy.age_threshold
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.age_threshold
         age = person("age", period)
         has_special_needs = person("ne_dhhs_has_special_needs", period)
         age_threshold = where(has_special_needs, p.special_needs, p.base)

@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class slcsp_rating_area_la_county(Variable):
     value_type = int
     entity = Household
-    label = (
-        "Second-lowest ACA silver-plan cost rating area in Los Angeles County"
-    )
+    label = "Second-lowest ACA silver-plan cost rating area in Los Angeles County"
     definition_period = YEAR
     defined_for = "in_la"
 

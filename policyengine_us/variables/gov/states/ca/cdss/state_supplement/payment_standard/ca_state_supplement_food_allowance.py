@@ -11,9 +11,7 @@ class ca_state_supplement_food_allowance(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ca.cdss.state_supplement.payment_standard
+        p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
         is_married = spm_unit("spm_unit_is_married", period)
         aged_disabled_count = spm_unit(
             "ca_state_supplement_aged_disabled_count", period

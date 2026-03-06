@@ -5,9 +5,7 @@ class pr_gradual_adjustment_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "Puerto Rico gradual adjustment amount"
-    documentation = (
-        "An additional amount added to tax amount for high income filers."
-    )
+    documentation = "An additional amount added to tax amount for high income filers."
     unit = USD
     definition_period = YEAR
     defined_for = "pr_gradual_adjustment_eligible"

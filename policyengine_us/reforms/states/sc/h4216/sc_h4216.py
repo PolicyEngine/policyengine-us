@@ -41,7 +41,9 @@ def create_sc_h4216() -> Reform:
         label = "South Carolina Income Adjusted Deduction (SCIAD)"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        reference = (
+            "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        )
         defined_for = StateCode.SC
 
         def formula(tax_unit, period, parameters):
@@ -69,7 +71,9 @@ def create_sc_h4216() -> Reform:
         defined_for = StateCode.SC
         unit = USD
         definition_period = YEAR
-        reference = "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        reference = (
+            "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        )
 
         def formula(tax_unit, period, parameters):
             # Start with federal AGI (H.4216 replaces federal std/itemized
@@ -89,7 +93,9 @@ def create_sc_h4216() -> Reform:
         defined_for = StateCode.SC
         unit = USD
         definition_period = YEAR
-        reference = "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        reference = (
+            "https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm"
+        )
 
         def formula(tax_unit, period, parameters):
             taxable_income = tax_unit("sc_taxable_income", period)

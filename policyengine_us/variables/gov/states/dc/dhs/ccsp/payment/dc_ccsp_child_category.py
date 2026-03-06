@@ -8,9 +8,7 @@ class DCCCSPChildCategory(Enum):
     PRESCHOOL_BEFORE_AND_AFTER = "Preschool Before and After"
     SCHOOL_AGE_BEFORE_AND_AFTER = "School-Age Before and After"
     SCHOOL_AGE_BEFORE_OR_AFTER = "School-Age Before or After"
-    PRESCHOOL_AND_SCHOOL_AGE_SPECIAL_NEEDS = (
-        "Preschool and School-Age Special Needs"
-    )
+    PRESCHOOL_AND_SCHOOL_AGE_SPECIAL_NEEDS = "Preschool and School-Age Special Needs"
 
 
 class dc_ccsp_child_category(Variable):

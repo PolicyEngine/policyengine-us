@@ -14,8 +14,6 @@ class ms_taxable_income_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        pre_deductions_agi = person(
-            "ms_pre_deductions_taxable_income_indiv", period
-        )
+        pre_deductions_agi = person("ms_pre_deductions_taxable_income_indiv", period)
         deductions = person("ms_deductions_indiv", period)
         return max_(pre_deductions_agi - deductions, 0)

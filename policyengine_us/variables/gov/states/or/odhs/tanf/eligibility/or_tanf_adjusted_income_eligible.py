@@ -22,7 +22,6 @@ class or_tanf_adjusted_income_eligible(Variable):
         adjusted_income = spm_unit("or_tanf_adjusted_income", period)
         adjusted_limit = (
             p.income.adjusted_income_limit.amount[size_capped]
-            + additional_people
-            * p.income.adjusted_income_limit.additional_person
+            + additional_people * p.income.adjusted_income_limit.additional_person
         )
         return adjusted_income < adjusted_limit

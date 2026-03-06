@@ -14,8 +14,6 @@ class in_tanf_income_eligible(Variable):
         # 1. Countable income test (with eligibility disregards)
         # 2. Payment test (with payment disregards)
         # Must pass both tests for fiscal eligibility.
-        countable_eligible = spm_unit(
-            "in_tanf_countable_income_eligible", period
-        )
+        countable_eligible = spm_unit("in_tanf_countable_income_eligible", period)
         payment_eligible = spm_unit("in_tanf_payment_eligible", period)
         return countable_eligible & payment_eligible

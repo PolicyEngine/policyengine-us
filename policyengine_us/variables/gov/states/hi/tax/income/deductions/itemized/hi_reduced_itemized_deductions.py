@@ -28,15 +28,11 @@ class hi_reduced_itemized_deductions(Variable):
         )
 
         # eligible check 1: deduction_difference need to be greater than 0 to have reduced deduction
-        partial_deductions_less_than_total = (
-            partial_deductions < total_deductions
-        )
+        partial_deductions_less_than_total = partial_deductions < total_deductions
         total_less_partial_ded_amount = total_deductions - partial_deductions
         # Take a percentage of the difference between the total and partial deductions
         # Hawaii applies federal limits which have been revoked in 2018
-        p_2017 = parameters(
-            f"2017-01-01"
-        ).gov.irs.deductions.itemized.reduction
+        p_2017 = parameters(f"2017-01-01").gov.irs.deductions.itemized.reduction
         total_less_partial_ded_percentage = (
             total_less_partial_ded_amount * p_2017.rate.base
         )
@@ -44,9 +40,7 @@ class hi_reduced_itemized_deductions(Variable):
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         # Hawaii applies an federal AGI limit as of 2009.
-        p_hi = parameters(
-            period
-        ).gov.states.hi.tax.income.deductions.itemized.threshold
+        p_hi = parameters(period).gov.states.hi.tax.income.deductions.itemized.threshold
         agi_threshold = p_hi.reduction[filing_status]
         agi_over_threshold = agi_threshold < hi_agi
         # If the AGI is over a threshold, the AGI amount is reduced by the threshold and multiplied

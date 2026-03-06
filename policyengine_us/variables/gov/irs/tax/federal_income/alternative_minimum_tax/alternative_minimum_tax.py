@@ -25,9 +25,7 @@ class alternative_minimum_tax(Variable):
 
         amt_tax_including_cg = tax_unit("amt_tax_including_cg", period)
         smaller_tax = min_(amt_base_tax, amt_tax_including_cg)
-        total_amt_tax = where(
-            form_6251_part_iii_required, smaller_tax, amt_base_tax
-        )
+        total_amt_tax = where(form_6251_part_iii_required, smaller_tax, amt_base_tax)
 
         # Form 6251, Part II bottom
         # Line 8
@@ -35,12 +33,8 @@ class alternative_minimum_tax(Variable):
         # Line 9
         reduced_tax = total_amt_tax - foreign_tax_credit
         # Line 10 contains regular tax before credits, lump sum distributions, and capital gains tax
-        regular_tax_before_credits = tax_unit(
-            "regular_tax_before_credits", period
-        )
-        lump_sum_distributions = tax_unit(
-            "form_4972_lumpsum_distributions", period
-        )
+        regular_tax_before_credits = tax_unit("regular_tax_before_credits", period)
+        lump_sum_distributions = tax_unit("form_4972_lumpsum_distributions", period)
         capital_gains_tax = tax_unit("capital_gains_tax", period)
         tax_before_credits = regular_tax_before_credits + capital_gains_tax
         reduced_tax_before_credits = max_(

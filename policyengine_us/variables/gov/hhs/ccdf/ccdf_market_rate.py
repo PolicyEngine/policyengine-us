@@ -15,9 +15,9 @@ class ccdf_market_rate(Variable):
         duration_of_care = person("ccdf_duration_of_care", period)
         durations_of_care = duration_of_care.possible_values
         market_rate_mapping = parameters(period).gov.hhs.ccdf.amount
-        rate_per_period = market_rate_mapping[county_cluster][
-            provider_type_group
-        ][duration_of_care][child_age_group]
+        rate_per_period = market_rate_mapping[county_cluster][provider_type_group][
+            duration_of_care
+        ][child_age_group]
         # Multiply by the appropriate factor to get to annual.
         hours_per_day = person("childcare_hours_per_day", period)
         days_per_week = person("childcare_days_per_week", period)

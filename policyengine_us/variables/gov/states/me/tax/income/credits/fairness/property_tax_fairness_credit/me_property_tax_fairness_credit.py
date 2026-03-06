@@ -21,6 +21,4 @@ class me_property_tax_fairness_credit(Variable):
             "me_property_tax_fairness_credit_countable_rent_property_tax",
             period,
         )
-        return min_(
-            countable_rent_property_tax, property_tax_fairness_credit_cap
-        )
+        return min_(countable_rent_property_tax, property_tax_fairness_credit_cap)

@@ -19,6 +19,4 @@ class ma_eaedc_countable_earned_income(Variable):
             spm_unit, period, ["ma_eaedc_dependent_care_deduction_person"]
         )
 
-        return max_(
-            total_earned_income_after_disregard - dependent_care_deduction, 0
-        )
+        return max_(total_earned_income_after_disregard - dependent_care_deduction, 0)

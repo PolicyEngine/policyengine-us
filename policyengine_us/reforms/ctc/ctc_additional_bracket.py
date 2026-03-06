@@ -46,9 +46,7 @@ def create_ctc_additional_bracket() -> Reform:
     return reform
 
 
-def create_ctc_additional_bracket_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ctc_additional_bracket_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_additional_bracket()
 
@@ -69,6 +67,4 @@ def create_ctc_additional_bracket_reform(
         return None
 
 
-ctc_additional_bracket = create_ctc_additional_bracket_reform(
-    None, None, bypass=True
-)
+ctc_additional_bracket = create_ctc_additional_bracket_reform(None, None, bypass=True)

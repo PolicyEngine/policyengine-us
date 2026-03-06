@@ -11,9 +11,7 @@ class mi_home_heating_credit_eligible_rate(Variable):
     def formula(tax_unit, period, parameters):
         tax_unit_size = tax_unit("tax_unit_size", period)
         person = tax_unit.members
-        dependent_elsewhere = person(
-            "claimed_as_dependent_on_another_return", period
-        )
+        dependent_elsewhere = person("claimed_as_dependent_on_another_return", period)
         ft_student = person("is_full_time_student", period)
 
         eligible_person = ~(ft_student & dependent_elsewhere)

@@ -27,6 +27,4 @@ class ky_ktap(Variable):
         payment_maximum = spm_unit("ky_ktap_payment_maximum", period)
         deficit = max_(standard_of_need - countable_income, 0)
         calculated_benefit = min_(deficit * p.rate, payment_maximum)
-        return where(
-            countable_income == 0, payment_maximum, calculated_benefit
-        )
+        return where(countable_income == 0, payment_maximum, calculated_benefit)

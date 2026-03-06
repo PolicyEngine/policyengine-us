@@ -11,9 +11,7 @@ class de_additional_standard_deduction(Variable):
     defined_for = StateCode.DE
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.de.tax.income.deductions.standard.additional
+        p = parameters(period).gov.states.de.tax.income.deductions.standard.additional
         age_eligible = (person("age", period) >= p.age_threshold).astype(int)
         blind_eligible = person("is_blind", period).astype(int)
 

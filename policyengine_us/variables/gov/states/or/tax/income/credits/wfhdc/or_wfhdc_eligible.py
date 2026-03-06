@@ -14,9 +14,7 @@ class or_wfhdc_eligible(Variable):
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
-        household_size_eligible = tax_unit(
-            "or_wfhdc_household_size_eligible", period
-        )
+        household_size_eligible = tax_unit("or_wfhdc_household_size_eligible", period)
         income_eligible = tax_unit("or_wfhdc_income_eligible", period)
         has_qualified_individual = tax_unit(
             "or_wfhdc_has_qualified_individual_eligible", period

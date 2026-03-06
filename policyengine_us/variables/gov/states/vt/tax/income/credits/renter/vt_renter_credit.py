@@ -21,29 +21,25 @@ class vt_renter_credit(Variable):
         tax_unit_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
         # locate the values by family size and county
-        full_credit_income_limit = p.income_limit_ami.thirty_percent[
-            tax_unit_size
-        ][county]
-        partial_credit_income_limit = p.income_limit_ami.fifty_percent[
-            tax_unit_size
-        ][county]
+        full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
+            county
+        ]
+        partial_credit_income_limit = p.income_limit_ami.fifty_percent[tax_unit_size][
+            county
+        ]
         fmr = p.fair_market_rent[tax_unit_size][county]
         base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         income_diff = partial_credit_income_limit - vt_renter_credit_income
-        income_threshold_diff = (
-            partial_credit_income_limit - full_credit_income_limit
-        )
+        income_threshold_diff = partial_credit_income_limit - full_credit_income_limit
         percent_rebate_claimable = income_diff / income_threshold_diff
         # If shared residence, reduce by a given fraction.
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         shared_residence_reduction = shared_rent * p.shared_residence_reduction
         # if subsidized, get base credit
-        has_housing_assistance = (
-            tax_unit.spm_unit("housing_assistance", period) > 0
-        )
+        has_housing_assistance = tax_unit.spm_unit("housing_assistance", period) > 0
         rent_amount = add(tax_unit, period, ["rent"])
         base_credit_subsidized = rent_amount * p.fmr_rate
 

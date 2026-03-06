@@ -7,7 +7,9 @@ class nj_property_tax_deduction(Variable):
     label = "New Jersey property tax deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
+    reference = (
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
+    )
     defined_for = "nj_taking_property_tax_deduction"
 
     def formula(tax_unit, period, parameters):

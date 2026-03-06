@@ -11,9 +11,7 @@ class basic_income_before_phase_out(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.contrib.ubi_center.basic_income
         # Start with flat person-level amount.
-        total_flat_amount = p.amount.person.flat * tax_unit(
-            "tax_unit_size", period
-        )
+        total_flat_amount = p.amount.person.flat * tax_unit("tax_unit_size", period)
         # Add per-age person-level amount.
         person = tax_unit.members
         age = person("age", period)
@@ -21,9 +19,7 @@ class basic_income_before_phase_out(Variable):
         total_amount_by_age = tax_unit.sum(amount_by_age)
         # If available, apply a marriage bonus
         married = tax_unit.family("is_married", period)
-        marriage_bonus_rate = (
-            p.amount.person.marriage_bonus * total_amount_by_age
-        )
+        marriage_bonus_rate = p.amount.person.marriage_bonus * total_amount_by_age
         post_marriage_bonus_amount = total_amount_by_age + marriage_bonus_rate
         applicable_amount_by_age = where(
             married, post_marriage_bonus_amount, total_amount_by_age
@@ -36,10 +32,7 @@ class basic_income_before_phase_out(Variable):
         disabled = person("is_ssi_disabled", period)
         disabled_amount = tax_unit.sum(disabled * p.amount.person.disability)
         base_amount = (
-            total_flat_amount
-            + applicable_amount_by_age
-            + fpg_amount
-            + disabled_amount
+            total_flat_amount + applicable_amount_by_age + fpg_amount + disabled_amount
         )
         if p.phase_in.in_effect:
             phase_in_amount = tax_unit("basic_income_phase_in", period)

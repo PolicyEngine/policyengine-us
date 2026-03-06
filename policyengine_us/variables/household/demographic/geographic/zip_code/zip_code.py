@@ -17,17 +17,13 @@ class zip_code(Variable):
             # For each state, select ONE zip code randomly, with probability proportional to population.
 
             state_to_zip_code = {
-                state_code: ZIP_CODE_DATASET[
-                    ZIP_CODE_DATASET.state == state_code
-                ]
+                state_code: ZIP_CODE_DATASET[ZIP_CODE_DATASET.state == state_code]
                 .sample(1, weights="population")
                 .zip_code.iloc[0]
                 for state_code in ZIP_CODE_DATASET.state.unique()
             }
 
-            household_zip_code = (
-                pd.Series(state_code).map(state_to_zip_code).squeeze()
-            )
+            household_zip_code = pd.Series(state_code).map(state_to_zip_code).squeeze()
 
         else:
             household_zip_code = np.empty_like(state_code, dtype=object)

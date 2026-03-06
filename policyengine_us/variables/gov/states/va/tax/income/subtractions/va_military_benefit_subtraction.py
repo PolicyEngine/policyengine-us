@@ -8,15 +8,11 @@ class va_military_benefit_subtraction(Variable):
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-    )
+    reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.subtractions.military_benefit
+        p = parameters(period).gov.states.va.tax.income.subtractions.military_benefit
 
         subtractable_military_benefit = min_(
             person("military_retirement_pay", period), p.amount
@@ -28,6 +24,4 @@ class va_military_benefit_subtraction(Variable):
             head_or_spouse_eligible = head_or_spouse & age_eligible
         else:
             head_or_spouse_eligible = head_or_spouse
-        return tax_unit.sum(
-            subtractable_military_benefit * head_or_spouse_eligible
-        )
+        return tax_unit.sum(subtractable_military_benefit * head_or_spouse_eligible)

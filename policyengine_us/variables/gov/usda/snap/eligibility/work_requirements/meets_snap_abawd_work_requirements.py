@@ -24,9 +24,7 @@ class meets_snap_abawd_work_requirements(Variable):
             p_pre.age_threshold.exempted.calc(age),
         )
         # Work activity
-        weekly_hours_worked = person(
-            "weekly_hours_worked_before_lsr", period.this_year
-        )
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
         # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
@@ -42,9 +40,7 @@ class meets_snap_abawd_work_requirements(Variable):
         has_child = person.spm_unit.any(is_dependent & is_qualifying_child)
         exempt_parent = is_parent & has_child
         # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
-        work_reg_exempt = person(
-            "is_snap_work_registration_exempt_non_age", period
-        )
+        work_reg_exempt = person("is_snap_work_registration_exempt_non_age", period)
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
         # NOTE: (F)-(G) Native American/Indian exemptions per IHCIA
         # definitions are not yet implemented (requires tribal

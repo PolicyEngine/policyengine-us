@@ -15,9 +15,7 @@ class in_tanf_countable_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Initial: standard of need; Continuing: FPL * rate
         p = parameters(period).gov.states["in"].fssa.tanf
-        countable = spm_unit(
-            "in_tanf_countable_income_for_eligibility", period
-        )
+        countable = spm_unit("in_tanf_countable_income_for_eligibility", period)
         is_enrolled = spm_unit("is_tanf_enrolled", period)
 
         fpg = spm_unit("tanf_fpg", period)

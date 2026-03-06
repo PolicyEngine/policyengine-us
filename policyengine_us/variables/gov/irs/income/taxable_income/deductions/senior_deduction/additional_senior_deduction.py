@@ -7,9 +7,7 @@ class additional_senior_deduction(Variable):
     label = "Senior deduction"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
-    )
+    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.senior_deduction

@@ -13,7 +13,5 @@ class va_non_refundable_eitc(Variable):
     def formula(tax_unit, period, parameters):
         # Either claims refundable or non-refundable, but not both.
         claims = ~tax_unit("va_claims_refundable_eitc", period)
-        amount_if_claimed = tax_unit(
-            "va_non_refundable_eitc_if_claimed", period
-        )
+        amount_if_claimed = tax_unit("va_non_refundable_eitc_if_claimed", period)
         return claims * amount_if_claimed

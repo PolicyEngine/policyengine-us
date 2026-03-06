@@ -17,9 +17,7 @@ class mn_mfip_cash_portion(Variable):
         # Per MN Stat. 142G.17, Subd. 5:
         # Cash portion of the Transitional Standard by family size.
         # The food portion is in a separate variable (mn_mfip_food_portion).
-        p = parameters(
-            period
-        ).gov.states.mn.dcyf.mfip.transitional_standard.cash
+        p = parameters(period).gov.states.mn.dcyf.mfip.transitional_standard.cash
         size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(size, p.max_unit_size)
         base_amount = p.amount[capped_size]

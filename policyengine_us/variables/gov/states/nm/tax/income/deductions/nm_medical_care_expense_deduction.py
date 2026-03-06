@@ -18,9 +18,7 @@ class nm_medical_care_expense_deduction(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.deductions.medical_care_expense
+        p = parameters(period).gov.states.nm.tax.income.deductions.medical_care_expense
         # the deduction amount is based on filing status, agi, and eligible expenses.
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values

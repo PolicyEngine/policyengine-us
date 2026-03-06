@@ -13,9 +13,7 @@ class ne_child_care_subsidy_income_eligible(Variable):
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ne.dhhs.child_care_subsidy.fpg_fraction
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.fpg_fraction
         income = add(spm_unit, period, ["adjusted_gross_income"])
         fpg = spm_unit("spm_unit_fpg", period)
         income_limit = fpg * p.initial_eligibility

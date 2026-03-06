@@ -7,9 +7,7 @@ class ia_fip_eligible(Variable):
     label = "Iowa FIP eligible"
     definition_period = MONTH
     defined_for = StateCode.IA
-    reference = (
-        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
-    )
+    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
 
     def formula(spm_unit, period, parameters):
         # Must have at least one eligible child (uses federal demographic rules)
@@ -23,8 +21,5 @@ class ia_fip_eligible(Variable):
         income_eligible = spm_unit("ia_fip_income_eligible", period)
 
         return (
-            has_children
-            & immigration_eligible
-            & resources_eligible
-            & income_eligible
+            has_children & immigration_eligible & resources_eligible & income_eligible
         )

@@ -12,9 +12,7 @@ class sd_tanf_countable_earned_income_person(Variable):
 
     def formula(person, period, parameters):
         gross_earned = person("tanf_gross_earned_income", period)
-        p = parameters(
-            period
-        ).gov.states.sd.dss.tanf.income.earned_income_disregard
+        p = parameters(period).gov.states.sd.dss.tanf.income.earned_income_disregard
         # Per ARSD 67:10:03:05: Each employed member receives
         # $90 flat deduction + 20% of remaining gross earned income
         after_flat = max_(gross_earned - p.flat_deduction, 0)

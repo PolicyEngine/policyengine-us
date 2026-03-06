@@ -36,8 +36,7 @@ class rrc_caa(Variable):
         )
         count_children = where(adults_with_ssn > 0, children_with_ssn, 0)
         max_payment = (
-            rrc.caa.max.adult * count_adults
-            + rrc.caa.max.child * count_children
+            rrc.caa.max.adult * count_adults + rrc.caa.max.child * count_children
         )
         payment_reduction = rrc.caa.phase_out.rate * max_(
             0, agi - rrc.caa.phase_out.threshold[filing_status]

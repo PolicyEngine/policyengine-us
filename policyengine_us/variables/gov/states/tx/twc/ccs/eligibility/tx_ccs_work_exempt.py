@@ -6,7 +6,9 @@ class tx_ccs_work_exempt(Variable):
     entity = Person
     label = "Texas CCS work requirement exempt"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-50"
+    reference = (
+        "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-50"
+    )
     defined_for = StateCode.TX
 
     def formula(person, period):

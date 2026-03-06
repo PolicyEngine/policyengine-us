@@ -41,7 +41,5 @@ class ssi_amount_if_eligible(Variable):
 
         # Adults amount is based on scenario (see above)
         # Dependents always use individual amount.
-        ssi_per_month = where(
-            is_dependent, p.individual, head_or_spouse_amount
-        )
+        ssi_per_month = where(is_dependent, p.individual, head_or_spouse_amount)
         return ssi_per_month * MONTHS_IN_YEAR

@@ -24,16 +24,10 @@ class relative_capital_gains_mtr_change(Variable):
             period,
             person("long_term_capital_gains_before_response", period),
         )
-        baseline_mtr = baseline_person(
-            "marginal_tax_rate_on_capital_gains", period
-        )
-        del simulation.branches["baseline"].branches[
-            "baseline_cgr_measurement"
-        ]
+        baseline_mtr = baseline_person("marginal_tax_rate_on_capital_gains", period)
+        del simulation.branches["baseline"].branches["baseline_cgr_measurement"]
 
-        measurement_branch = simulation.get_branch(
-            "cgr_measurement", clone_system=True
-        )
+        measurement_branch = simulation.get_branch("cgr_measurement", clone_system=True)
         measurement_branch.tax_benefit_system.neutralize_variable(
             "capital_gains_behavioral_response"
         )
@@ -43,9 +37,7 @@ class relative_capital_gains_mtr_change(Variable):
             person("long_term_capital_gains_before_response", period),
         )
         measurement_person = measurement_branch.populations["person"]
-        reform_mtr = measurement_person(
-            "marginal_tax_rate_on_capital_gains", period
-        )
+        reform_mtr = measurement_person("marginal_tax_rate_on_capital_gains", period)
         del simulation.branches["cgr_measurement"]
 
         # Handle zeros in tax rates to prevent log(0)
@@ -81,17 +73,10 @@ class capital_gains_behavioral_response(Variable):
         if simulation.baseline is None:
             return 0
 
-        if (
-            parameters(
-                period
-            ).gov.simulation.capital_gains_responses.elasticity
-            == 0
-        ):
+        if parameters(period).gov.simulation.capital_gains_responses.elasticity == 0:
             return 0
 
-        capital_gains = person(
-            "long_term_capital_gains_before_response", period
-        )
+        capital_gains = person("long_term_capital_gains_before_response", period)
         tax_rate_change = person("relative_capital_gains_mtr_change", period)
         elasticity = person("capital_gains_elasticity", period)
 
@@ -130,7 +115,9 @@ class adult_index_cg(Variable):
 
 class marginal_tax_rate_on_capital_gains(Variable):
     label = "capital gains marginal tax rate"
-    documentation = "Percent of marginal capital gains that do not increase household net income."
+    documentation = (
+        "Percent of marginal capital gains that do not increase household net income."
+    )
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -143,14 +130,10 @@ class marginal_tax_rate_on_capital_gains(Variable):
         DELTA = 1_000
         adult_index_values = person("adult_index_cg", period)
         for adult_index in [1, 2]:
-            alt_simulation = simulation.get_branch(
-                f"adult_{adult_index}_cg_rise"
-            )
+            alt_simulation = simulation.get_branch(f"adult_{adult_index}_cg_rise")
             mask = adult_index_values == adult_index
             for variable in simulation.tax_benefit_system.variables:
-                variable_data = simulation.tax_benefit_system.variables[
-                    variable
-                ]
+                variable_data = simulation.tax_benefit_system.variables[variable]
                 if (
                     variable not in simulation.input_variables
                     and not variable_data.is_input_variable()
@@ -162,15 +145,11 @@ class marginal_tax_rate_on_capital_gains(Variable):
                 person("capital_gains", period) + mask * DELTA,
             )
             alt_person = alt_simulation.person
-            household_net_income = person.household(
-                "household_net_income", period
-            )
+            household_net_income = person.household("household_net_income", period)
             household_net_income_higher_earnings = alt_person.household(
                 "household_net_income", period
             )
-            increase = (
-                household_net_income_higher_earnings - household_net_income
-            )
+            increase = household_net_income_higher_earnings - household_net_income
             mtr_values += where(mask, 1 - increase / DELTA, 0)
 
             del simulation.branches[f"adult_{adult_index}_cg_rise"]

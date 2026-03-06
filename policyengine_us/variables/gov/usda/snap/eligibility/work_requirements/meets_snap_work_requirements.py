@@ -13,14 +13,10 @@ class meets_snap_work_requirements(Variable):
         general_work_requirements = person(
             "meets_snap_general_work_requirements", period
         )
-        abawd_work_requirements = person(
-            "meets_snap_abawd_work_requirements", period
-        )
+        abawd_work_requirements = person("meets_snap_abawd_work_requirements", period)
         # Dependent child threshold differs: pre-HR1 (18) vs post-HR1 (14)
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
-        p = parameters(
-            period
-        ).gov.usda.snap.work_requirements.abawd.age_threshold
+        p = parameters(period).gov.usda.snap.work_requirements.abawd.age_threshold
         # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
         p_pre = parameters(
             "2025-06-01"

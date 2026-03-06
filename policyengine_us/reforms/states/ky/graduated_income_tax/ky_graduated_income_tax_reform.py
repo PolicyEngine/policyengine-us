@@ -14,9 +14,7 @@ def create_ky_graduated_income_tax() -> Reform:
     for specific rates, thresholds, and effective dates.
     """
 
-    def calculate_graduated_tax_with_cliff(
-        taxable_income, p_hb13, p_hb152, p_baseline
-    ):
+    def calculate_graduated_tax_with_cliff(taxable_income, p_hb13, p_hb152, p_baseline):
         """
         Calculate tax using graduated brackets with cliff design.
 
@@ -37,9 +35,7 @@ def create_ky_graduated_income_tax() -> Reform:
         hb152_above_cliff = taxable_income >= p_hb152.cliff_threshold
         hb152_graduated_tax = p_hb152.brackets.calc(taxable_income)
         hb152_flat_tax = taxable_income * p_hb152.flat_rate
-        hb152_tax = where(
-            hb152_above_cliff, hb152_flat_tax, hb152_graduated_tax
-        )
+        hb152_tax = where(hb152_above_cliff, hb152_flat_tax, hb152_graduated_tax)
 
         # Baseline calculation
         baseline_tax = taxable_income * p_baseline.rate
@@ -98,19 +94,13 @@ def create_ky_graduated_income_tax() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(
-                ky_income_tax_before_non_refundable_credits_indiv
-            )
-            self.update_variable(
-                ky_income_tax_before_non_refundable_credits_joint
-            )
+            self.update_variable(ky_income_tax_before_non_refundable_credits_indiv)
+            self.update_variable(ky_income_tax_before_non_refundable_credits_joint)
 
     return reform
 
 
-def create_ky_graduated_income_tax_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ky_graduated_income_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ky_graduated_income_tax()
 
@@ -122,10 +112,7 @@ def create_ky_graduated_income_tax_reform(
 
     # Check if either reform will be active in the next 5 years
     for i in range(5):
-        if (
-            p_hb13(current_period).in_effect
-            or p_hb152(current_period).in_effect
-        ):
+        if p_hb13(current_period).in_effect or p_hb152(current_period).in_effect:
             reform_active = True
             break
         current_period = current_period.offset(1, "year")
@@ -136,6 +123,4 @@ def create_ky_graduated_income_tax_reform(
         return None
 
 
-ky_graduated_income_tax = create_ky_graduated_income_tax_reform(
-    None, None, bypass=True
-)
+ky_graduated_income_tax = create_ky_graduated_income_tax_reform(None, None, bypass=True)

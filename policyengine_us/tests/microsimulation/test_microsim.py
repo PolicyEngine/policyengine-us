@@ -26,9 +26,9 @@ def test_microsim_runs(dataset: str, year: int):
     ]
     for decile_var in DECILES:
         decile = sim.calc(decile_var)
-        assert np.all(decile >= -1) and np.all(
-            decile <= 10
-        ), f"{decile_var} out of bounds."
+        assert np.all(decile >= -1) and np.all(decile <= 10), (
+            f"{decile_var} out of bounds."
+        )
 
     # Check that the microsim calculates important variables as nonzero in current year.
     for var in ["employment_income", "self_employment_income"]:
@@ -67,15 +67,15 @@ def test_county_persists_across_periods():
     county_stored = sim.calculate("county", period=stored_period).values
 
     # Counties should be identical - the 2025 request should return stored value
-    assert np.array_equal(
-        county_stored, county_2025
-    ), "County values should persist across periods when running over a dataset"
+    assert np.array_equal(county_stored, county_2025), (
+        "County values should persist across periods when running over a dataset"
+    )
 
     # Verify we got NYC counties, not Albany (the bug we're fixing)
     from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
         County,
     )
 
-    assert not np.any(
-        county_2025 == County.ALBANY_COUNTY_NY.index
-    ), "Should not fall back to Albany county"
+    assert not np.any(county_2025 == County.ALBANY_COUNTY_NY.index), (
+        "Should not fall back to Albany county"
+    )

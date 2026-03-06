@@ -30,9 +30,7 @@ class ok_federal_eitc_eligible(Variable):
             "ok_federal_eitc_investment_income_eligible", period
         )
         # Check demographic (age) eligibility
-        demographic_eligible = tax_unit(
-            "ok_federal_eitc_demographic_eligible", period
-        )
+        demographic_eligible = tax_unit("ok_federal_eitc_demographic_eligible", period)
         # Define eligibility before considering separate filer limitation
         eligible = demographic_eligible & investment_income_eligible
         # This parameter is true if separate filers are eligible

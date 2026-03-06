@@ -14,9 +14,7 @@ class nm_works_childcare_deduction(Variable):
         # Per 8.102.520.12(D) NMAC, child care deduction varies by age:
         # Under age 2: up to $200
         # Age 2 or older: up to $175
-        p = parameters(
-            period
-        ).gov.states.nm.hca.nm_works.income.deductions.childcare
+        p = parameters(period).gov.states.nm.hca.nm_works.income.deductions.childcare
 
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)

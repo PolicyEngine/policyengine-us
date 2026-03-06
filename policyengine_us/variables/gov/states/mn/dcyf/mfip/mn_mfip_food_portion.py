@@ -7,9 +7,7 @@ class mn_mfip_food_portion(Variable):
     label = "Minnesota MFIP food portion of Transitional Standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.revisor.mn.gov/statutes/cite/142G.17#stat.142G.17.5"
-    )
+    reference = "https://www.revisor.mn.gov/statutes/cite/142G.17#stat.142G.17.5"
     defined_for = StateCode.MN
 
     def formula(spm_unit, period, parameters):

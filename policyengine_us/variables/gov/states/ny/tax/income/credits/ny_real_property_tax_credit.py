@@ -11,9 +11,7 @@ class ny_real_property_tax_credit(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        rptc = parameters(
-            period
-        ).gov.states.ny.tax.income.credits.real_property_tax
+        rptc = parameters(period).gov.states.ny.tax.income.credits.real_property_tax
 
         # Age-based eligibility.
         person = tax_unit.members
@@ -35,9 +33,9 @@ class ny_real_property_tax_credit(Variable):
 
         # Means-tested conditions based on property value (cliff).
         assessed_value = add(tax_unit, period, ["assessed_property_value"])
-        meets_value_conditions = (
-            assessed_value <= rptc.max_property_value
-        ) & (equivalent_rent <= rptc.max_rent)
+        meets_value_conditions = (assessed_value <= rptc.max_property_value) & (
+            equivalent_rent <= rptc.max_rent
+        )
 
         meets_income_condition = agi < rptc.max_agi
 

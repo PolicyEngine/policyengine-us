@@ -6,7 +6,9 @@ class tx_tanf_recognizable_needs_test(Variable):
     entity = SPMUnit
     label = "Meets Texas TANF recognizable needs test"
     definition_period = MONTH
-    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
+    reference = (
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
+    )
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):

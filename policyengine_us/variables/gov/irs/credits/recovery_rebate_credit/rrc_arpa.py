@@ -18,9 +18,7 @@ class rrc_arpa(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         # Count dependents with valid SSN per 26 USC 6428B(e)(2)(C)
         # ARPA expanded to all dependents (not just qualifying children)
-        count_dependents = tax_unit(
-            "rrc_arpa_dependents_with_valid_ssn", period
-        )
+        count_dependents = tax_unit("rrc_arpa_dependents_with_valid_ssn", period)
         # Count adults with valid SSN per 26 USC 6428B(e)(2)(A)-(B)
         # Armed Forces exception per 26 USC 6428B(e)(2)(E)
         armed_forces_exception = tax_unit(

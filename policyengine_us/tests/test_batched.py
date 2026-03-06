@@ -92,13 +92,7 @@ def split_into_batches(
 
         # Collect known folders/files
         all_known = set(
-            BATCH_1
-            + BATCH_2
-            + BATCH_3
-            + BATCH_4
-            + BATCH_5_DEFINED
-            + BATCH_6
-            + BATCH_7
+            BATCH_1 + BATCH_2 + BATCH_3 + BATCH_4 + BATCH_5_DEFINED + BATCH_6 + BATCH_7
         )
 
         # Find unknown folders/files (new additions go to Batch 5)
@@ -115,9 +109,7 @@ def split_into_batches(
         batch2 = get_batch_paths(BATCH_2, subdirs, root_files)
         batch3 = get_batch_paths(BATCH_3, subdirs, root_files)
         batch4 = get_batch_paths(BATCH_4, subdirs, root_files)
-        batch5 = (
-            get_batch_paths(BATCH_5_DEFINED, subdirs, root_files) + unknown
-        )
+        batch5 = get_batch_paths(BATCH_5_DEFINED, subdirs, root_files) + unknown
         batch6 = get_batch_paths(BATCH_6, subdirs, root_files)
         batch7 = get_batch_paths(BATCH_7, subdirs, root_files)
 
@@ -134,9 +126,7 @@ def split_into_batches(
     # Memory usage per state varies significantly (1.3 GB - 5.2 GB measured)
     # Note: contrib/congress runs all together (~6.3 GB total, under 7 GB limit)
     if str(base_path).endswith("contrib/states"):
-        subdirs = sorted(
-            [item for item in base_path.iterdir() if item.is_dir()]
-        )
+        subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
         # Each state folder becomes its own batch
         batches = [[str(subdir)] for subdir in subdirs]
 
@@ -212,10 +202,7 @@ def split_into_batches(
             remaining = []
             for gov_item in gov_path.iterdir():
                 if gov_item.is_dir():
-                    if (
-                        gov_item.name not in HEAVY
-                        and gov_item.name != "states"
-                    ):
+                    if gov_item.name not in HEAVY and gov_item.name != "states":
                         remaining.append(str(gov_item))
                 elif gov_item.suffix == ".yaml":
                     remaining.append(str(gov_item))
@@ -434,9 +421,7 @@ def main():
     # Split into batches
     batches = split_into_batches(test_path, args.batches, exclude_list)
     if len(batches) != args.batches:
-        print(
-            f"Actual batches: {len(batches)} (optimized for {total_tests} files)"
-        )
+        print(f"Actual batches: {len(batches)} (optimized for {total_tests} files)")
     else:
         print(f"Actual batches: {len(batches)}")
     print("=" * 60)
@@ -450,8 +435,7 @@ def main():
 
         # Show what's in this batch
         batch_test_count = sum(
-            count_yaml_files(Path(p)) if Path(p).is_dir() else 1
-            for p in batch_paths
+            count_yaml_files(Path(p)) if Path(p).is_dir() else 1 for p in batch_paths
         )
         print(f"  Test files: ~{batch_test_count}")
         print("-" * 60)

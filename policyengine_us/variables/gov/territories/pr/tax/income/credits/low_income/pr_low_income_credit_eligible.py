@@ -11,9 +11,7 @@ class pr_low_income_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits.low_income
-        eligible_people = tax_unit(
-            "pr_low_income_credit_eligible_people", period
-        )
+        eligible_people = tax_unit("pr_low_income_credit_eligible_people", period)
         income = tax_unit("pr_gross_income_person", period)
         income_limit = p.income_limit.calc(eligible_people)
         return income <= income_limit

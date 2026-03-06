@@ -41,7 +41,5 @@ def create_increase_taxable_earnings_for_social_security_reform(
 
 
 increase_taxable_earnings_for_social_security = (
-    create_increase_taxable_earnings_for_social_security_reform(
-        None, None, bypass=True
-    )
+    create_increase_taxable_earnings_for_social_security_reform(None, None, bypass=True)
 )

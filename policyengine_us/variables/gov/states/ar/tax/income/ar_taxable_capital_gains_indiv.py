@@ -22,9 +22,7 @@ class ar_taxable_capital_gains_indiv(Variable):
         # Line 7a - Net capital gain or loss
         net_capital_gain = lt_capital_gains - st_capital_loss
         # Line 7b - capped net capital gain
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.gross_income.capital_gains
+        p = parameters(period).gov.states.ar.tax.income.gross_income.capital_gains
         capped_net_cap_gain = min_(net_capital_gain, p.exempt.cap)
         # Line 8 - Tax rate applied to capital gain
         # 50% exempt if a gain, otherwise entire loss.

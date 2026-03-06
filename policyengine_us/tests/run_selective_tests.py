@@ -131,9 +131,7 @@ class SelectiveTestRunner:
             )
 
             if git_dir_result.returncode != 0:
-                print(
-                    f"Error: Not in a git repository. Error: {git_dir_result.stderr}"
-                )
+                print(f"Error: Not in a git repository. Error: {git_dir_result.stderr}")
                 return set()
 
             # Check if we're in GitHub Actions
@@ -142,9 +140,7 @@ class SelectiveTestRunner:
 
             if github_event_name == "pull_request" and github_base_ref:
                 # We're in a GitHub Actions PR build
-                print(
-                    f"Detected GitHub Actions PR build against {github_base_ref}"
-                )
+                print(f"Detected GitHub Actions PR build against {github_base_ref}")
 
                 # GitHub Actions already has the base branch fetched
                 result = subprocess.run(
@@ -175,9 +171,7 @@ class SelectiveTestRunner:
             )
 
             if fetch_result.returncode != 0:
-                print(
-                    f"Warning: Could not fetch from origin (working offline?)"
-                )
+                print(f"Warning: Could not fetch from origin (working offline?)")
 
             # Try different methods to get changed files
             changed_files = set()
@@ -288,9 +282,7 @@ class SelectiveTestRunner:
         for file in changed_files:
             # Skip non-Python and non-YAML files unless they're critical
             if not (
-                file.endswith(".py")
-                or file.endswith(".yaml")
-                or file.endswith(".yml")
+                file.endswith(".py") or file.endswith(".yaml") or file.endswith(".yml")
             ):
                 if not any(
                     critical in file
@@ -327,9 +319,7 @@ class SelectiveTestRunner:
             # Special handling for test files themselves
             if "tests" in file and file.endswith(".py"):
                 # Skip test infrastructure files that shouldn't trigger all tests
-                if file.endswith(
-                    ("run_selective_tests.py", "test_batched.py")
-                ):
+                if file.endswith(("run_selective_tests.py", "test_batched.py")):
                     continue
                 # Add the directory containing the test file
                 test_dir = os.path.dirname(file)
@@ -384,9 +374,7 @@ class SelectiveTestRunner:
                 print(f"Coverage version: {coverage.__version__}")
             except ImportError as e:
                 print(f"ERROR: Coverage module not found: {e}")
-                print(
-                    "Please ensure coverage is installed: pip install coverage"
-                )
+                print("Please ensure coverage is installed: pip install coverage")
                 return 1
 
             # Only track coverage for the specific files that changed in the PR
@@ -394,9 +382,7 @@ class SelectiveTestRunner:
             if changed_files:
                 # Only include Python files that were actually changed (excluding test directories)
                 changed_py_files = [
-                    f
-                    for f in changed_files
-                    if f.endswith(".py") and "/tests/" not in f
+                    f for f in changed_files if f.endswith(".py") and "/tests/" not in f
                 ]
                 if changed_py_files:
                     include_patterns = changed_py_files
@@ -411,9 +397,7 @@ class SelectiveTestRunner:
                         include_patterns.append(f"{var_path}/**/*.py")
                         include_patterns.append(f"{var_path}/*.py")
                     elif "tests/policy/reform/" in test_path:
-                        include_patterns.append(
-                            "policyengine_us/reforms/**/*.py"
-                        )
+                        include_patterns.append("policyengine_us/reforms/**/*.py")
                         include_patterns.append("policyengine_us/reforms/*.py")
                     elif "tests/policy/contrib/" in test_path:
                         include_patterns.append(
@@ -470,17 +454,13 @@ class SelectiveTestRunner:
         result = subprocess.run(["pytest", "policyengine_us/tests"])
         return result.returncode
 
-    def generate_test_plan(
-        self, changed_files: Set[str]
-    ) -> Dict[str, List[str]]:
+    def generate_test_plan(self, changed_files: Set[str]) -> Dict[str, List[str]]:
         """Generate a detailed test plan showing which tests will run for which files."""
         test_plan = {}
 
         for file in changed_files:
             if not (
-                file.endswith(".py")
-                or file.endswith(".yaml")
-                or file.endswith(".yml")
+                file.endswith(".py") or file.endswith(".yaml") or file.endswith(".yml")
             ):
                 continue
 
@@ -508,9 +488,7 @@ def main():
         action="store_true",
         help="Run all tests regardless of changes",
     )
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Verbose output"
-    )
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     parser.add_argument(
         "--base-branch",
         default="master",

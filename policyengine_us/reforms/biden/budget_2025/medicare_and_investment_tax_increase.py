@@ -23,9 +23,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
             base_tax = amc.rate * base
-            p_reform = parameters(
-                period
-            ).gov.contrib.biden.budget_2025.medicare
+            p_reform = parameters(period).gov.contrib.biden.budget_2025.medicare
             add_excess = max_(wages_plus_se - p_reform.threshold, 0)
             add_tax = p_reform.rate * add_excess
             return base_tax + add_tax

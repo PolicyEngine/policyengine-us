@@ -3,7 +3,9 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate_including_health_benefits(Variable):
     label = "Marginal tax rate including health benefits"
-    documentation = "Fraction of marginal income gains that do not increase household net income."
+    documentation = (
+        "Fraction of marginal income gains that do not increase household net income."
+    )
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -39,8 +41,7 @@ class marginal_tax_rate_including_health_benefits(Variable):
             alt_sim.set_input(
                 "self_employment_income",
                 period,
-                self_employment_income
-                + mask * delta * (1 - emp_self_emp_ratio),
+                self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
             )
             alt_person = alt_sim.person
             netinc_alt = alt_person.household(

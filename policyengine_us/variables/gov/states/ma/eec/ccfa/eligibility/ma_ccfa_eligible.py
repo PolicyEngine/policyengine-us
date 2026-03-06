@@ -11,9 +11,7 @@ class ma_ccfa_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Check all eligibility criteria
-        has_eligible_child = (
-            add(spm_unit, period, ["ma_ccfa_eligible_child"]) > 0
-        )
+        has_eligible_child = add(spm_unit, period, ["ma_ccfa_eligible_child"]) > 0
 
         # TAFDC recipients have categorical eligibility Section 10.05(3)(a)&(b)
         # https://regulations.justia.com/states/massachusetts/606-cmr/title-606-cmr-10-00/section-10-05/
@@ -25,10 +23,7 @@ class ma_ccfa_eligible(Variable):
         activity_eligible = spm_unit("ma_ccfa_activity_eligible", period)
 
         regular_eligible = (
-            has_eligible_child
-            & income_eligible
-            & asset_eligible
-            & activity_eligible
+            has_eligible_child & income_eligible & asset_eligible & activity_eligible
         )
 
         return regular_eligible | tafdc_eligible

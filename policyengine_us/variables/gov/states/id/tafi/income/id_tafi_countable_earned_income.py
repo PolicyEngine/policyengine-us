@@ -7,9 +7,7 @@ class id_tafi_countable_earned_income(Variable):
     label = "Idaho TAFI countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.252"
-    )
+    reference = "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.252"
     defined_for = StateCode.ID
 
     def formula(spm_unit, period, parameters):

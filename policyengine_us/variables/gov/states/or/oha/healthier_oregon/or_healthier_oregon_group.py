@@ -12,9 +12,7 @@ class or_healthier_oregon_group(Variable):
     label = "Oregon Healthier Oregon Medicaid spending group"
     definition_period = YEAR
     defined_for = StateCode.OR
-    reference = (
-        "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx"
-    )
+    reference = "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx"
 
     def formula(person, period, parameters):
         age = person("age", period)
@@ -22,20 +20,14 @@ class or_healthier_oregon_group(Variable):
         is_disabled = person("is_ssi_recipient_for_medicaid", period)
 
         # Use the Oregon Healthier Oregon child_max_age parameter
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .oha.healthier_oregon.eligibility
-        )
+        p = parameters(period).gov.states["or"].oha.healthier_oregon.eligibility
         is_child = age < p.child_max_age
 
         is_aged_disabled = is_disabled | (age >= p.aged_threshold)
 
         is_non_expansion_adult = is_pregnant & ~is_child & ~is_aged_disabled
 
-        is_expansion_adult = (
-            ~is_child & ~is_aged_disabled & ~is_non_expansion_adult
-        )
+        is_expansion_adult = ~is_child & ~is_aged_disabled & ~is_non_expansion_adult
 
         return select(
             [

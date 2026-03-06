@@ -8,7 +8,9 @@ class ky_taxable_income_indiv(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
-    reference = "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
+    reference = (
+        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
+    )
 
     def formula(person, period, parameters):
         ky_agi = person("ky_agi", period)

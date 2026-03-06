@@ -8,7 +8,9 @@ class pr_regular_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PR
-    reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=19"
+    reference = (
+        "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=19"
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.regular_tax

@@ -11,9 +11,7 @@ class ct_tfa_countable_earned_income_at_application(Variable):
     defined_for = StateCode.CT
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ct.dss.tfa.income.deduction.new_applicant
+        p = parameters(period).gov.states.ct.dss.tfa.income.deduction.new_applicant
         gross_earned_income = person("tanf_gross_earned_income", period)
 
         return max_(gross_earned_income - p.amount, 0)

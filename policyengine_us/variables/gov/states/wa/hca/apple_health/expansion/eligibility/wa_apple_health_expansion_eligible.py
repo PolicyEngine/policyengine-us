@@ -37,9 +37,7 @@ class wa_apple_health_expansion_eligible(Variable):
         age_eligible = age >= p.eligibility.min_age
 
         # Must meet income requirements
-        income_eligible = person(
-            "wa_apple_health_expansion_income_eligible", period
-        )
+        income_eligible = person("wa_apple_health_expansion_income_eligible", period)
 
         # Must have eligible immigration status
         immigration_eligible = person(

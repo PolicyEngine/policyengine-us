@@ -12,7 +12,5 @@ class nm_works_countable_unearned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        child_support_deduction = spm_unit(
-            "nm_works_child_support_deduction", period
-        )
+        child_support_deduction = spm_unit("nm_works_child_support_deduction", period)
         return max_(gross_unearned - child_support_deduction, 0)

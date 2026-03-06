@@ -84,9 +84,7 @@ def get_spending_breakdown_with_metadata():
     Returns:
         dict: Complete breakdown with amounts, percentages, and methodology notes
     """
-    spending_by_category, adjustment_factor = (
-        calculate_vermont_spending_breakdown()
-    )
+    spending_by_category, adjustment_factor = calculate_vermont_spending_breakdown()
 
     breakdown = {
         "total_billions": TOTAL_SPENDING_BILLIONS,
@@ -102,9 +100,7 @@ def get_spending_breakdown_with_metadata():
         breakdown["categories"][category] = {
             "spending_billions": round(spending_billions, 5),
             "spending_millions": round(spending_billions * 1000, 2),
-            "percentage": round(
-                (spending_billions / TOTAL_SPENDING_BILLIONS) * 100, 1
-            ),
+            "percentage": round((spending_billions / TOTAL_SPENDING_BILLIONS) * 100, 1),
         }
 
     return breakdown

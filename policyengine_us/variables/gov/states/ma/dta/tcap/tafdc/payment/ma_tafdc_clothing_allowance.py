@@ -7,7 +7,9 @@ class ma_tafdc_clothing_allowance(Variable):
     entity = Person
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) clothing allowance"
     definition_period = YEAR
-    reference = "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
+    reference = (
+        "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
+    )
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

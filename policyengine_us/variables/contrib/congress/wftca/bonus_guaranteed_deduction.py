@@ -11,9 +11,7 @@ class bonus_guaranteed_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        wftca = parameters(
-            period
-        ).gov.contrib.congress.wftca.bonus_guaranteed_deduction
+        wftca = parameters(period).gov.contrib.congress.wftca.bonus_guaranteed_deduction
         amount = wftca.amount[filing_status]
         agi = tax_unit("adjusted_gross_income", period)
         threshold = wftca.phase_out.threshold[filing_status]

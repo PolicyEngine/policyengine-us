@@ -9,9 +9,7 @@ def create_ct_hb5009() -> Reform:
         label = "Connecticut property tax credit"
         unit = USD
         definition_period = YEAR
-        reference = (
-            "https://www.cga.ct.gov/2026/TOB/H/PDF/2026HB-05009-R00-HB.PDF"
-        )
+        reference = "https://www.cga.ct.gov/2026/TOB/H/PDF/2026HB-05009-R00-HB.PDF"
         defined_for = "ct_property_tax_credit_eligible"
 
         def formula(tax_unit, period, parameters):

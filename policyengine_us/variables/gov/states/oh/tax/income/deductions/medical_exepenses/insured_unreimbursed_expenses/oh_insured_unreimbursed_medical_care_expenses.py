@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class oh_insured_unreimbursed_medical_care_expenses(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Ohio insured unreimbursed medical and health care expense deduction"
-    )
+    label = "Ohio insured unreimbursed medical and health care expense deduction"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -26,9 +26,7 @@ class tax_unit_is_filer(Variable):
         required = tax_unit("tax_unit_is_required_to_file", period)
 
         # Would file to claim refundable credits (EITC, CTC, etc.)
-        eligible_for_credits = tax_unit(
-            "eligible_for_refundable_credits", period
-        )
+        eligible_for_credits = tax_unit("eligible_for_refundable_credits", period)
         would_file_for_credits = tax_unit(
             "would_file_if_eligible_for_refundable_credit", period
         )

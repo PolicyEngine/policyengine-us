@@ -11,9 +11,7 @@ def create_pa_ctc_match() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.PA
-        reference = (
-            "https://github.com/PolicyEngine/policyengine-us/issues/7436"
-        )
+        reference = "https://github.com/PolicyEngine/policyengine-us/issues/7436"
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.pa.ctc.ctc_match
@@ -30,9 +28,7 @@ def create_pa_ctc_match() -> Reform:
             young_child = ctc_eligible_child & (age < p.age_limit)
 
             # Get federal CTC maximum per child (person-level variable)
-            federal_ctc_max_per_child = person(
-                "ctc_child_individual_maximum", period
-            )
+            federal_ctc_max_per_child = person("ctc_child_individual_maximum", period)
 
             # Calculate the portion of federal CTC attributable to young children
             # Only include children with valid SSN who qualify for federal CTC

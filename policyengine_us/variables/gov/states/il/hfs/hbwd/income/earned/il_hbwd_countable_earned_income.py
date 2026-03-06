@@ -5,7 +5,9 @@ class il_hbwd_countable_earned_income(Variable):
     value_type = float
     unit = USD
     entity = Person
-    label = "Illinois Health Benefits for Workers with Disabilities countable earned income"
+    label = (
+        "Illinois Health Benefits for Workers with Disabilities countable earned income"
+    )
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.360",
@@ -28,6 +30,4 @@ class il_hbwd_countable_earned_income(Variable):
         )
         gross_earned_income = person("il_hbwd_gross_earned_income", period)
 
-        return where(
-            is_hbwd_worker, earned_income_with_exemption, gross_earned_income
-        )
+        return where(is_hbwd_worker, earned_income_with_exemption, gross_earned_income)

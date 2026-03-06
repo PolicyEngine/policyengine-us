@@ -8,9 +8,7 @@ class dc_ctc(Variable):
     label = "DC Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.dc.tax.income.credits.ctc

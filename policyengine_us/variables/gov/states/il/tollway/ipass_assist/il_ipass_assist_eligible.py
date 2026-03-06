@@ -14,7 +14,5 @@ class il_ipass_assist_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("il_ipass_assist_income_eligible", period)
-        categorical_eligible = spm_unit(
-            "il_ipass_assist_categorical_eligible", period
-        )
+        categorical_eligible = spm_unit("il_ipass_assist_categorical_eligible", period)
         return income_eligible | categorical_eligible

@@ -18,9 +18,7 @@ class nm_aged_blind_exemption(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.exemptions.blind_and_aged
+        p = parameters(period).gov.states.nm.tax.income.exemptions.blind_and_aged
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         agi = tax_unit("adjusted_gross_income", period)
@@ -41,9 +39,7 @@ class nm_aged_blind_exemption(Variable):
         # Check if spouse is eligible.
         spouse_eligible = blind_spouse | aged_spouse
 
-        eligible_count = head_eligible.astype(int) + spouse_eligible.astype(
-            int
-        )
+        eligible_count = head_eligible.astype(int) + spouse_eligible.astype(int)
 
         # Use `right=True` to reflect "over ... but not over ...".
         amount = select(

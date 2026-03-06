@@ -15,7 +15,5 @@ class ma_ccfa_schedule_type(Variable):
     default_value = MassachusettsCCFAScheduleType.FULL_DAY
     definition_period = MONTH
     defined_for = StateCode.MA
-    label = (
-        "Massachusetts Child Care Financial Assistance (CCFA) schedule type"
-    )
+    label = "Massachusetts Child Care Financial Assistance (CCFA) schedule type"
     reference = "https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download"

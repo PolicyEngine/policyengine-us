@@ -19,9 +19,7 @@ class ut_taxpayer_credit_max(Variable):
                 "ut_federal_deductions_for_taxpayer_credit",
             ],
         )
-        rate = parameters(
-            period
-        ).gov.states.ut.tax.income.credits.taxpayer.rate
+        rate = parameters(period).gov.states.ut.tax.income.credits.taxpayer.rate
         # The exemption is not actually applied here in the form, but we include it here
         # to avoid counting the exemption as a nonrefundable credit when comparing against
         # ut_income_tax_before_credits.

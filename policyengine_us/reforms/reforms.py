@@ -181,21 +181,17 @@ import warnings
 
 
 def create_structural_reforms_from_parameters(parameters, period):
-    afa_reform = create_american_family_act_with_baby_bonus_reform(
-        parameters, period
-    )
+    afa_reform = create_american_family_act_with_baby_bonus_reform(parameters, period)
     winship_reform = create_eitc_winship_reform(parameters, period)
     dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
-    dc_tax_threshold_joint_ratio_reform = (
-        create_dc_tax_threshold_joint_ratio_reform(parameters, period)
+    dc_tax_threshold_joint_ratio_reform = create_dc_tax_threshold_joint_ratio_reform(
+        parameters, period
     )
     remove_head_of_household = create_remove_head_of_household_reform(
         parameters, period
     )
     increase_taxable_earnings_for_social_security_reform = (
-        create_increase_taxable_earnings_for_social_security_reform(
-            parameters, period
-        )
+        create_increase_taxable_earnings_for_social_security_reform(parameters, period)
     )
     medicare_and_investment_tax_increase = (
         create_medicare_and_investment_tax_increase_reform(parameters, period)
@@ -212,38 +208,30 @@ def create_structural_reforms_from_parameters(parameters, period):
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
-    halve_joint_eitc_phase_out_rate = (
-        create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
+    halve_joint_eitc_phase_out_rate = create_halve_joint_eitc_phase_out_rate_reform(
+        parameters, period
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
-    ny_a04038_enhanced_escc_infants = (
-        create_ny_a04038_enhanced_escc_infants_reform(parameters, period)
+    ny_a04038_enhanced_escc_infants = create_ny_a04038_enhanced_escc_infants_reform(
+        parameters, period
     )
     sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
         parameters, period
     )
     sc_h4216 = create_sc_h4216_reform(parameters, period)
-    ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(
-        parameters, period
-    )
+    ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(parameters, period)
     ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
     )
 
-    middle_class_tax_credit = create_middle_class_tax_credit_reform(
-        parameters, period
-    )
-    rent_relief_tax_credit = create_rent_relief_tax_credit_reform(
-        parameters, period
-    )
-    end_child_poverty_act = create_end_child_poverty_act_reform(
-        parameters, period
-    )
+    middle_class_tax_credit = create_middle_class_tax_credit_reform(parameters, period)
+    rent_relief_tax_credit = create_rent_relief_tax_credit_reform(parameters, period)
+    end_child_poverty_act = create_end_child_poverty_act_reform(parameters, period)
     edaa_end_child_poverty_act = create_edaa_end_child_poverty_act_reform(
         parameters, period
     )
-    boost_middle_class_tax_credit = (
-        create_boost_middle_class_tax_credit_reform(parameters, period)
+    boost_middle_class_tax_credit = create_boost_middle_class_tax_credit_reform(
+        parameters, period
     )
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
 
@@ -253,35 +241,27 @@ def create_structural_reforms_from_parameters(parameters, period):
     family_security_act_2024_ctc = create_family_security_act_2024_ctc_reform(
         parameters, period
     )
-    family_security_act_2024_eitc = (
-        create_family_security_act_2024_eitc_reform(parameters, period)
+    family_security_act_2024_eitc = create_family_security_act_2024_eitc_reform(
+        parameters, period
     )
     repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
         parameters, period
     )
-    harris_capital_gains = create_harris_capital_gains_reform(
-        parameters, period
-    )
+    harris_capital_gains = create_harris_capital_gains_reform(parameters, period)
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
-    repeal_state_dependent_exemptions = (
-        create_repeal_state_dependent_exemptions_reform(parameters, period)
+    repeal_state_dependent_exemptions = create_repeal_state_dependent_exemptions_reform(
+        parameters, period
     )
     ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
         parameters, period
     )
-    abolish_snap_deductions = create_abolish_snap_deductions_reform(
-        parameters, period
-    )
+    abolish_snap_deductions = create_abolish_snap_deductions_reform(parameters, period)
     abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
         parameters, period
     )
-    dc_property_tax_credit = create_dc_property_tax_credit_reform(
-        parameters, period
-    )
+    dc_property_tax_credit = create_dc_property_tax_credit_reform(parameters, period)
     limit_salt_deduction_to_property_taxes = (
-        create_limit_salt_deduction_to_property_taxes_reform(
-            parameters, period
-        )
+        create_limit_salt_deduction_to_property_taxes_reform(parameters, period)
     )
     nyc_school_tax_credit_with_phase_out = (
         create_nyc_school_tax_credit_with_phase_out_reform(parameters, period)
@@ -289,8 +269,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     mt_ctc = create_mt_ctc_reform(parameters, period)
     mt_newborn_credit = create_mt_newborn_credit_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
-    tax_employer_social_security_tax = (
-        create_tax_employer_social_security_tax_reform(parameters, period)
+    tax_employer_social_security_tax = create_tax_employer_social_security_tax_reform(
+        parameters, period
     )
     tax_employer_medicare_tax = create_tax_employer_medicare_tax_reform(
         parameters, period
@@ -309,20 +289,14 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     agi_surtax = create_agi_surtax_reform(parameters, period)
 
-    reconciled_ssn_for_llc_and_aoc = (
-        create_reconciled_ssn_for_llc_and_aoc_reform(parameters, period)
-    )
-    ctc_additional_bracket = create_ctc_additional_bracket_reform(
+    reconciled_ssn_for_llc_and_aoc = create_reconciled_ssn_for_llc_and_aoc_reform(
         parameters, period
     )
-    additional_tax_bracket = create_additional_tax_bracket_reform(
-        parameters, period
-    )
+    ctc_additional_bracket = create_ctc_additional_bracket_reform(parameters, period)
+    additional_tax_bracket = create_additional_tax_bracket_reform(parameters, period)
     mi_surtax = create_mi_surtax_reform(parameters, period)
 
-    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
-        parameters, period
-    )
+    nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(parameters, period)
 
     ut_refundable_eitc = create_ut_refundable_eitc_reform(parameters, period)
 
@@ -333,26 +307,18 @@ def create_structural_reforms_from_parameters(parameters, period):
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
-    ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
+    ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(parameters, period)
+    ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(parameters, period)
+    ctc_minimum_refundable_amount = create_ctc_minimum_refundable_amount_reform(
         parameters, period
-    )
-    ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(
-        parameters, period
-    )
-    ctc_minimum_refundable_amount = (
-        create_ctc_minimum_refundable_amount_reform(parameters, period)
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
-    de_dependent_credit = create_de_dependent_credit_reform_fn(
+    de_dependent_credit = create_de_dependent_credit_reform_fn(parameters, period)
+    or_dependent_exemption_credit = create_or_dependent_exemption_credit_reform_fn(
         parameters, period
     )
-    or_dependent_exemption_credit = (
-        create_or_dependent_exemption_credit_reform_fn(parameters, period)
-    )
-    va_dependent_exemption = create_va_dependent_exemption_reform_fn(
-        parameters, period
-    )
+    va_dependent_exemption = create_va_dependent_exemption_reform_fn(parameters, period)
     va_hb979 = create_va_hb979_reform(parameters, period)
     ct_refundable_ctc = create_ct_refundable_ctc_reform(parameters, period)
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
@@ -361,15 +327,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     aca_ptc_simplified_bracket = create_aca_ptc_simplified_bracket_reform(
         parameters, period
     )
-    aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
-        parameters, period
-    )
+    aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(parameters, period)
     cdcc_single_parent_work_requirement = (
         create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
-    ky_graduated_income_tax = create_ky_graduated_income_tax_reform(
-        parameters, period
-    )
+    ky_graduated_income_tax = create_ky_graduated_income_tax_reform(parameters, period)
     pa_ctc_flat_amount = create_pa_ctc_flat_amount_reform(parameters, period)
     pa_ctc_match = create_pa_ctc_match_reform(parameters, period)
     ct_sb100 = create_ct_sb100_reform(parameters, period)

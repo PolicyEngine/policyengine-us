@@ -24,9 +24,7 @@ class md_frederick_county_tax(Variable):
         is_single = filing_status == filing_statuses.SINGLE
         is_joint = filing_status == filing_statuses.JOINT
         is_separate = filing_status == filing_statuses.SEPARATE
-        is_head_of_household = (
-            filing_status == filing_statuses.HEAD_OF_HOUSEHOLD
-        )
+        is_head_of_household = filing_status == filing_statuses.HEAD_OF_HOUSEHOLD
         is_surviving_spouse = filing_status == filing_statuses.SURVIVING_SPOUSE
 
         # Frederick County uses fixed-rate-by-bracket (NOT marginal rates)
@@ -34,12 +32,8 @@ class md_frederick_county_tax(Variable):
         single_rate = p.single.calc(taxable_income, right=True)
         joint_rate = p.joint.calc(taxable_income, right=True)
         separate_rate = p.separate.calc(taxable_income, right=True)
-        head_of_household_rate = p.head_of_household.calc(
-            taxable_income, right=True
-        )
-        surviving_spouse_rate = p.surviving_spouse.calc(
-            taxable_income, right=True
-        )
+        head_of_household_rate = p.head_of_household.calc(taxable_income, right=True)
+        surviving_spouse_rate = p.surviving_spouse.calc(taxable_income, right=True)
 
         # Select rate based on filing status
         rate = select(

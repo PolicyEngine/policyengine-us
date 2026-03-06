@@ -13,9 +13,7 @@ class is_slmb_eligible(Variable):
 
     def formula(person, period, parameters):
         # SLMB requires income above 100% FPL but at or below 120% FPL
-        p = parameters(
-            period
-        ).gov.hhs.medicare.savings_programs.eligibility.income
+        p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
 
         medicare_eligible = person("is_medicare_eligible", period.this_year)
         asset_eligible = person("msp_asset_eligible", period)

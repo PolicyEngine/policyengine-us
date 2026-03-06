@@ -9,9 +9,7 @@ class nc_tanf_eligible(Variable):
     defined_for = StateCode.NC
 
     def formula(spm_unit, period, parameters):
-        is_demographically_eligible = spm_unit(
-            "nc_demographic_tanf_eligible", period
-        )
+        is_demographically_eligible = spm_unit("nc_demographic_tanf_eligible", period)
         is_income_eligible = spm_unit("nc_tanf_income_eligible", period)
 
         return is_income_eligible & is_demographically_eligible

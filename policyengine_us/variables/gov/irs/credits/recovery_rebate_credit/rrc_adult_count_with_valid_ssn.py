@@ -19,7 +19,5 @@ class rrc_adult_count_with_valid_ssn(Variable):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Reuse existing EITC SSN check - identical definition (SSN required)
-        has_valid_ssn = person(
-            "meets_eitc_identification_requirements", period
-        )
+        has_valid_ssn = person("meets_eitc_identification_requirements", period)
         return tax_unit.sum(head_or_spouse & has_valid_ssn)

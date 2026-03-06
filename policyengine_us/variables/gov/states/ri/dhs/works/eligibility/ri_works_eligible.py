@@ -15,7 +15,5 @@ class ri_works_eligible(Variable):
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("ri_works_income_eligible", period)
         resource_eligible = spm_unit("ri_works_resource_eligible", period)
-        demographic_eligible = (
-            spm_unit("is_demographic_tanf_eligible", period) > 0
-        )
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period) > 0
         return income_eligible & resource_eligible & demographic_eligible

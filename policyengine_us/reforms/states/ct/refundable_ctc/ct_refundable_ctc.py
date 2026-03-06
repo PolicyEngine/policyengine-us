@@ -10,7 +10,9 @@ def create_ct_refundable_ctc() -> Reform:
         label = "Connecticut refundable child tax credit"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.cga.ct.gov/2026/TOB/H/PDF/2026HB-05134-R00-HB.PDF#page=2"
+        reference = (
+            "https://www.cga.ct.gov/2026/TOB/H/PDF/2026HB-05134-R00-HB.PDF#page=2"
+        )
         defined_for = StateCode.CT
 
         def formula(tax_unit, period, parameters):

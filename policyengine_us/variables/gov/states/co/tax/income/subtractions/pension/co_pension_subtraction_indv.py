@@ -17,26 +17,18 @@ class co_pension_subtraction_indv(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
-        taxable_pension_income = person(
-            "co_pension_subtraction_income", period
-        )
+        taxable_pension_income = person("co_pension_subtraction_income", period)
         pension_survivors = person("pension_survivors", period)
         co_social_security_subtraction = person(
             "co_social_security_subtraction_indv", period
         )
         age = person("age", period)
         # The maximum subtarction amount is reduced by the social security subtraction amount
-        reduced_older_cap = max_(
-            p.cap.older - co_social_security_subtraction, 0
-        )
-        reduced_younger_cap = max_(
-            p.cap.younger - co_social_security_subtraction, 0
-        )
+        reduced_older_cap = max_(p.cap.older - co_social_security_subtraction, 0)
+        reduced_younger_cap = max_(p.cap.younger - co_social_security_subtraction, 0)
 
         capped_older_amount = min_(reduced_older_cap, taxable_pension_income)
-        capped_middle_amount = min_(
-            reduced_younger_cap, taxable_pension_income
-        )
+        capped_middle_amount = min_(reduced_younger_cap, taxable_pension_income)
         capped_younger_amount = min_(reduced_younger_cap, pension_survivors)
 
         return select(

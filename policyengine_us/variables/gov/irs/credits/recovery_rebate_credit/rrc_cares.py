@@ -36,8 +36,7 @@ class rrc_cares(Variable):
         )
         count_children = where(adults_with_ssn > 0, children_with_ssn, 0)
         max_payment = (
-            rrc.cares.max.adult * count_adults
-            + rrc.cares.max.child * count_children
+            rrc.cares.max.adult * count_adults + rrc.cares.max.child * count_children
         )
         payment_reduction = rrc.cares.phase_out.rate * max_(
             0, agi - rrc.cares.phase_out.threshold[filing_status]

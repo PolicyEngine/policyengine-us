@@ -17,7 +17,5 @@ class ny_college_tuition_deduction(Variable):
         p = parameters(
             period
         ).gov.states.ny.tax.income.deductions.itemized.college_tuition
-        allowable_expenses = tax_unit(
-            "ny_allowable_college_tuition_expenses", period
-        )
+        allowable_expenses = tax_unit("ny_allowable_college_tuition_expenses", period)
         return allowable_expenses * p.applicable_percentage

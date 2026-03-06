@@ -13,9 +13,7 @@ class il_tanf_payment_level_for_grant_calculation(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dhs.tanf.payment_level
         fpg = spm_unit("il_tanf_assistance_unit_fpg", period)
-        parent_count = add(
-            spm_unit, period, ["il_tanf_payment_eligible_parent"]
-        )
+        parent_count = add(spm_unit, period, ["il_tanf_payment_eligible_parent"])
         child_count = add(spm_unit, period, ["il_tanf_payment_eligible_child"])
 
         parent_only = (parent_count > 0) & (child_count == 0)

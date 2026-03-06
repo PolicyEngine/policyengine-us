@@ -6,7 +6,5 @@ class investment_in_529_plan_indv(Variable):
     entity = Person
     label = "Individual 529 plan investment amounts"
     unit = USD
-    documentation = (
-        "Amount invested in a 529 savings plan for each contributor."
-    )
+    documentation = "Amount invested in a 529 savings plan for each contributor."
     definition_period = YEAR

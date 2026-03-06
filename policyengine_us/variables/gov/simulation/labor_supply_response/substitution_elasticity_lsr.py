@@ -20,6 +20,4 @@ class substitution_elasticity_lsr(Variable):
         )
         earnings = max_(raw_earnings, 0)
         wage_change = person("relative_wage_change", period)
-        return (
-            earnings * wage_change * person("substitution_elasticity", period)
-        )
+        return earnings * wage_change * person("substitution_elasticity", period)

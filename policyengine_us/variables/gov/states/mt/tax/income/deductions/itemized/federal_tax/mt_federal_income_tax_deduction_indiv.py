@@ -14,9 +14,7 @@ class mt_federal_income_tax_deduction_indiv(Variable):
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        unit_deds = person.tax_unit(
-            "mt_federal_income_tax_deduction_unit", period
-        )
+        unit_deds = person.tax_unit("mt_federal_income_tax_deduction_unit", period)
         person_agi = person("mt_agi_indiv", period)
         total_agi = person.tax_unit.sum(person_agi)
 

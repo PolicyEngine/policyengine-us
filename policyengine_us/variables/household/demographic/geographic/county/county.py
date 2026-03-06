@@ -48,10 +48,7 @@ class county(Variable):
         # Check if zip_code was explicitly provided as input
         # The zip_code variable auto-generates values, so we need to check if it was user input
         input_variables = getattr(simulation, "input_dataset", {})
-        if (
-            isinstance(input_variables, dict)
-            and "zip_code" not in input_variables
-        ):
+        if isinstance(input_variables, dict) and "zip_code" not in input_variables:
             # No ZIP code was provided by user, use first county in state
             return household("first_county_in_state", period)
 

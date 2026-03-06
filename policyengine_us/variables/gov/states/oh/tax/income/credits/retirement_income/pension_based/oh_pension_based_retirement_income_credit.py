@@ -11,9 +11,7 @@ class oh_pension_based_retirement_income_credit(Variable):
     defined_for = "oh_pension_based_retirement_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.retirement.pension_based
+        p = parameters(period).gov.states.oh.tax.income.credits.retirement.pension_based
 
         person = tax_unit.members
         pension_income = person("taxable_pension_income", period)

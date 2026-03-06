@@ -7,9 +7,7 @@ class tx_tanf_payment_standard(Variable):
     label = "Texas TANF payment standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf"
-    )
+    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf"
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
@@ -20,9 +18,7 @@ class tx_tanf_payment_standard(Variable):
         p = parameters(period).gov.states.tx.tanf.payment_standard
 
         # Determine caretaker type
-        non_caretaker = (
-            caretaker_type == caretaker_type.possible_values.NON_CARETAKER
-        )
+        non_caretaker = caretaker_type == caretaker_type.possible_values.NON_CARETAKER
         caretaker_without_second = (
             caretaker_type
             == caretaker_type.possible_values.CARETAKER_WITHOUT_SECOND_PARENT

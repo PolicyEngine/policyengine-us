@@ -7,7 +7,9 @@ class ut_fep(Variable):
     label = "Utah Family Employment Program benefit"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    reference = (
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    )
     defined_for = "ut_fep_eligible"
 
     def formula(spm_unit, period, parameters):

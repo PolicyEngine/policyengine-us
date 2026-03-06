@@ -22,7 +22,5 @@ class meets_eitc_identification_requirements(Variable):
         ssn_card_type = person("ssn_card_type", period)
         ssn_card_types = ssn_card_type.possible_values
         citizen = ssn_card_type == ssn_card_types.CITIZEN
-        non_citizen_valid_ead = (
-            ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
-        )
+        non_citizen_valid_ead = ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
         return citizen | non_citizen_valid_ead

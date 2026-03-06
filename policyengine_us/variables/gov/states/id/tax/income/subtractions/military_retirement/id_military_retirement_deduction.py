@@ -14,9 +14,7 @@ class id_military_retirement_deduction(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.subtractions.military_retirement
+        p = parameters(period).gov.states.id.tax.income.subtractions.military_retirement
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = person("military_retirement_pay", period)

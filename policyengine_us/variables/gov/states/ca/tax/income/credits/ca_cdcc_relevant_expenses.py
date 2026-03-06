@@ -13,7 +13,7 @@ class ca_cdcc_relevant_expenses(Variable):
     def formula(tax_unit, period, parameters):
         year = period.start.year
         if year == 2021:
-            period_adjusted = f"{year-1}-01-01"
+            period_adjusted = f"{year - 1}-01-01"
         else:
             period_adjusted = f"{year}-01-01"
 

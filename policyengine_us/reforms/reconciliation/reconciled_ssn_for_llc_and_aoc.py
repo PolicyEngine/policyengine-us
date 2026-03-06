@@ -49,9 +49,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             education = parameters(period).gov.irs.credits.education
             aoc = education.american_opportunity_credit
             person = tax_unit.members
-            is_eligible = person(
-                "is_eligible_for_american_opportunity_credit", period
-            )
+            is_eligible = person("is_eligible_for_american_opportunity_credit", period)
             tuition_expenses = (
                 person("qualified_tuition_expenses", period) * is_eligible
             )
@@ -75,9 +73,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
             eligible_ssn_card_type = person(
                 "meets_llc_and_aoc_identification_requirements", period
             )
-            ineligible_head_or_spouse = (
-                is_head_or_spouse & ~eligible_ssn_card_type
-            )
+            ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
             return tax_unit.sum(ineligible_head_or_spouse) == 0
 
     class meets_llc_and_aoc_identification_requirements(Variable):
@@ -100,9 +96,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         def apply(self):
             self.update_variable(lifetime_learning_credit)
             self.update_variable(american_opportunity_credit)
-            self.update_variable(
-                filer_meets_llc_and_aoc_identification_requirements
-            )
+            self.update_variable(filer_meets_llc_and_aoc_identification_requirements)
             self.update_variable(meets_llc_and_aoc_identification_requirements)
 
     return reform

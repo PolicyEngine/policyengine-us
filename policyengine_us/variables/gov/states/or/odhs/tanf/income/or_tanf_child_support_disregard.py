@@ -12,9 +12,7 @@ class or_tanf_child_support_disregard(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["or"].odhs.tanf
-        child_support_received = add(
-            spm_unit, period, ["child_support_received"]
-        )
+        child_support_received = add(spm_unit, period, ["child_support_received"])
         person = spm_unit.members
         age = person("age", period.this_year)
         is_child = age < p.age_threshold.minor_child

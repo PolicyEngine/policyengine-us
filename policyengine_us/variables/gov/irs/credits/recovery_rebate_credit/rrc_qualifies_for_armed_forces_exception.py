@@ -21,9 +21,7 @@ class rrc_qualifies_for_armed_forces_exception(Variable):
         is_joint = tax_unit("tax_unit_is_joint", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_military = person("is_military", period)
-        has_valid_ssn = person(
-            "meets_eitc_identification_requirements", period
-        )
+        has_valid_ssn = person("meets_eitc_identification_requirements", period)
         # Check conditions independently (can be different spouses)
         has_military_spouse = tax_unit.any(head_or_spouse & is_military)
         has_spouse_with_ssn = tax_unit.any(head_or_spouse & has_valid_ssn)

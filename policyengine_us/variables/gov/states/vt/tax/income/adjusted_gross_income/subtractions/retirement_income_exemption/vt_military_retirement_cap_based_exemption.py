@@ -6,7 +6,9 @@ class vt_military_retirement_cap_based_exemption(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Vermont military retirement cap-based exemption"
-    reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2024.pdf#page=2"
+    reference = (
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2024.pdf#page=2"
+    )
     unit = USD
     defined_for = StateCode.VT
     documentation = "Vermont military retirement benefits exempt from Vermont taxation up to cap amount (pre-2025)."

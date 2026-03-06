@@ -16,9 +16,7 @@ class wic_fpg(Variable):
         # The normal FPG is an annual variable, so the system divides it by 12 by default.
         normal_fpg = spm_unit("spm_unit_fpg", period)
         state_group = spm_unit.household("state_group_str", period)
-        additional = parameters(period).gov.hhs.fpg.additional_person[
-            state_group
-        ]
+        additional = parameters(period).gov.hhs.fpg.additional_person[state_group]
         annual_pregnant_addition = additional * pregnant
         # The additional amount is based on a yearly parameter, so we need to manually divide it by 12.
         monthly_pregnant_addition = annual_pregnant_addition / MONTHS_IN_YEAR

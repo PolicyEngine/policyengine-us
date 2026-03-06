@@ -11,9 +11,7 @@ class wv_sctc(Variable):
     reference = "https://code.wvlegislature.gov/11-21-21/"
 
     def formula(tax_unit, period, parameters):
-        wv_taxable_property_value = tax_unit(
-            "wv_taxable_property_value", period
-        )
+        wv_taxable_property_value = tax_unit("wv_taxable_property_value", period)
         p = parameters(period).gov.states.wv.tax.income.credits.sctc
 
         return min_(wv_taxable_property_value, p.max_amount)

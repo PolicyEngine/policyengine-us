@@ -8,15 +8,11 @@ class va_federal_state_employees_subtraction(Variable):
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-    )
+    reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.subtractions.disability_income
+        p = parameters(period).gov.states.va.tax.income.subtractions.disability_income
 
         employment_income = person("irs_employment_income", period)
         state_or_federal_salary = person("state_or_federal_salary", period)
@@ -26,6 +22,4 @@ class va_federal_state_employees_subtraction(Variable):
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         is_head_or_spouse = head | spouse
-        return tax_unit.sum(
-            subtractable_federal_state_salary * is_head_or_spouse
-        )
+        return tax_unit.sum(subtractable_federal_state_salary * is_head_or_spouse)

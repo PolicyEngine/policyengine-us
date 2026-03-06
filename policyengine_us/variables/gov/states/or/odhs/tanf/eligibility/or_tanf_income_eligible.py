@@ -11,12 +11,8 @@ class or_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Standard test: countable < limit AND adjusted < limit
-        passes_countable_test = spm_unit(
-            "or_tanf_countable_income_eligible", period
-        )
-        passes_adjusted_test = spm_unit(
-            "or_tanf_adjusted_income_eligible", period
-        )
+        passes_countable_test = spm_unit("or_tanf_countable_income_eligible", period)
+        passes_adjusted_test = spm_unit("or_tanf_adjusted_income_eligible", period)
         passes_standard_test = passes_countable_test & passes_adjusted_test
 
         # ELI test: countable < (payment_standard * multiplier)

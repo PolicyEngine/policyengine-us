@@ -4,9 +4,8 @@ from policyengine_core.periods import instant
 
 WATCA_REFERENCES = [
     {
-        "title": "Working Americans' Tax Cut Act bill summary"
-        " (via Jeff Stein, WaPo)",
-        "href": "https://x.com/JStein_WaPo/status/" "2029621495295619363",
+        "title": "Working Americans' Tax Cut Act bill summary (via Jeff Stein, WaPo)",
+        "href": "https://x.com/JStein_WaPo/status/2029621495295619363",
     },
     {
         "title": "Democrat's plan would eliminate federal income"
@@ -29,9 +28,7 @@ def create_watca() -> Reform:
         def formula(tax_unit, period, parameters):
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
-            p = parameters(
-                period
-            ).gov.contrib.congress.watca.cost_of_living_exemption
+            p = parameters(period).gov.contrib.congress.watca.cost_of_living_exemption
             amount = p.amount[filing_status]
             phase_out_end = amount * p.phase_out_multiple
             phase_out_range = phase_out_end - amount
@@ -71,9 +68,7 @@ def create_watca() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             exemptions = tax_unit("exemptions", period)
             deductions = tax_unit("taxable_income_deductions", period)
-            watca_exemption = tax_unit(
-                "watca_cost_of_living_exemption", period
-            )
+            watca_exemption = tax_unit("watca_cost_of_living_exemption", period)
             return max_(0, agi - exemptions - deductions - watca_exemption)
 
     class income_tax_before_credits(Variable):
@@ -82,9 +77,7 @@ def create_watca() -> Reform:
         definition_period = YEAR
         label = "income tax before credits"
         unit = USD
-        documentation = (
-            "Total (regular + AMT) income tax liability before" " credits"
-        )
+        documentation = "Total (regular + AMT) income tax liability before credits"
 
         def formula(tax_unit, period, parameters):
             base = add(

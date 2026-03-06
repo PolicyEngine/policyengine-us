@@ -21,9 +21,7 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
 
             # Calculate eligibility.
             income_eligible = nyc_stc_income <= p.income_limit[filing_status]
-            children_eligible = (
-                tax_unit("tax_unit_children", period) >= p.min_children
-            )
+            children_eligible = tax_unit("tax_unit_children", period) >= p.min_children
 
             return income_eligible & children_eligible
 
@@ -62,6 +60,8 @@ def create_adjust_income_limit_by_filing_status_and_eligibility_by_children_refo
         return None
 
 
-adjust_income_limit_and_min_children_by_filing_status = create_adjust_income_limit_by_filing_status_and_eligibility_by_children_reform(
-    None, None, bypass=True
+adjust_income_limit_and_min_children_by_filing_status = (
+    create_adjust_income_limit_by_filing_status_and_eligibility_by_children_reform(
+        None, None, bypass=True
+    )
 )

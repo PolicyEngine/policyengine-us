@@ -6,9 +6,7 @@ class snap_fpg(Variable):
     entity = SPMUnit
     label = "SNAP federal poverty guideline"
     unit = USD
-    documentation = (
-        "The federal poverty guideline used to determine SNAP eligibility."
-    )
+    documentation = "The federal poverty guideline used to determine SNAP eligibility."
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):

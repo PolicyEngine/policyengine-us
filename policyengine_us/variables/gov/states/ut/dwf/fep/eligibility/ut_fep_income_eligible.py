@@ -6,7 +6,9 @@ class ut_fep_income_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Utah Family Employment Program due to income"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    reference = (
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    )
     defined_for = StateCode.UT
 
     def formula(spm_unit, period, parameters):

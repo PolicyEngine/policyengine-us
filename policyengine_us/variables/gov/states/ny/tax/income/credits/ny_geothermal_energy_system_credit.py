@@ -15,8 +15,6 @@ class ny_geothermal_energy_system_credit(Variable):
         qualified_expenditures = tax_unit(
             "ny_qualified_geothermal_energy_system_expenditures", period
         )
-        p = parameters(
-            period
-        ).gov.states.ny.tax.income.credits.geothermal_energy_system
+        p = parameters(period).gov.states.ny.tax.income.credits.geothermal_energy_system
         uncapped_credit = qualified_expenditures * p.rate
         return min_(uncapped_credit, p.cap)

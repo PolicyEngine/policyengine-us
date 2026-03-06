@@ -8,7 +8,9 @@ class il_tanf_countable_unearned_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
-    reference = "http://law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.101"
+    reference = (
+        "http://law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.101"
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

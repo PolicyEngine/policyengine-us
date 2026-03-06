@@ -48,9 +48,7 @@ class vt_retirement_income_exemption(Variable):
         # Get which retirement system the filer use
         use_ss = tax_unit_taxable_social_security == chosen_retirement_income
         # Get which parameter file to use
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.retirement_income_exemption
+        p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         reduction_start = where(
             use_ss,
             p.social_security.reduction.start[filing_status],
@@ -76,6 +74,4 @@ class vt_retirement_income_exemption(Variable):
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
         # Return final exemption amount based on eligibility status
-        return where(
-            partial_qualified, partial_exemption, chosen_retirement_income
-        )
+        return where(partial_qualified, partial_exemption, chosen_retirement_income)

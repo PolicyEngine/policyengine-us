@@ -42,9 +42,7 @@ def create_or_rebate_state_tax_exempt() -> Reform:
     return reform
 
 
-def create_or_rebate_state_tax_exempt_reform(
-    parameters, period, bypass: bool = False
-):
+def create_or_rebate_state_tax_exempt_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_or_rebate_state_tax_exempt()
 

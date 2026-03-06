@@ -16,9 +16,7 @@ class co_military_retirement_subtraction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.co.tax.income.subtractions.military_retirement
+        p = parameters(period).gov.states.co.tax.income.subtractions.military_retirement
         person = tax_unit.members
         age = person("age", period)
         head = person("is_tax_unit_head", period)

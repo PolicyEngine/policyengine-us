@@ -7,7 +7,9 @@ class nc_ctc(Variable):
     label = "North Carolina credit for children"
     definition_period = YEAR
     unit = USD
-    reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children"
+    reference = (
+        "https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children"
+    )
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):

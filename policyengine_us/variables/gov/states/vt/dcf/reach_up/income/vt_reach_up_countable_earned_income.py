@@ -17,7 +17,5 @@ class vt_reach_up_countable_earned_income(Variable):
         earned_after_disregard = add(
             spm_unit, period, ["vt_reach_up_countable_earned_income_person"]
         )
-        dependent_care = spm_unit(
-            "vt_reach_up_dependent_care_deduction", period
-        )
+        dependent_care = spm_unit("vt_reach_up_dependent_care_deduction", period)
         return max_(earned_after_disregard - dependent_care, 0)

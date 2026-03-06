@@ -14,7 +14,5 @@ class il_ihwap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("il_ihwap_income_eligible", period)
-        categorically_eligible = spm_unit(
-            "il_ihwap_categorically_eligible", period
-        )
+        categorically_eligible = spm_unit("il_ihwap_categorically_eligible", period)
         return income_eligible | categorically_eligible
