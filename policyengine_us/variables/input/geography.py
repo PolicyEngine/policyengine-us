@@ -1,14 +1,12 @@
+import warnings
+
 from policyengine_us.model_api import *
-from policyengine_core.parameters import homogenize_parameter_structures
-from policyengine_core.simulations import Simulation
+from policyengine_us.parameters.gov.hhs.medicaid.geography import (
+    medicaid_rating_areas,
+)
 from policyengine_us.variables.household.demographic.geographic.state_name import (
     StateName,
 )
-from policyengine_us.parameters.gov.hhs.medicaid.geography import (
-    medicaid_rating_areas,
-    second_lowest_silver_plan_cost,
-)
-import warnings
 
 warnings.filterwarnings("ignore")
 

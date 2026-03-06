@@ -1,5 +1,5 @@
+
 from policyengine_us.model_api import *
-from policyengine_core.taxscales import MarginalRateTaxScale
 
 
 def get_last_finite_threshold(scale):

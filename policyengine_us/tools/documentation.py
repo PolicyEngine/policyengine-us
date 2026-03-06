@@ -1,21 +1,22 @@
-from IPython.display import Markdown, display_markdown
+import warnings
+
 import pandas as pd
 import plotly.express as px
-import warnings
 
 warnings.filterwarnings("ignore")
 
-from policyengine_core.enums import Enum
 from policyengine_core.charts import (
-    LIGHTER_BLUE,
-    LIGHT_BLUE,
     BLUE,
     DARK_BLUE,
-    format_fig,
+    LIGHT_BLUE,
+    LIGHTER_BLUE,
     display_fig,
+    format_fig,
 )
-from policyengine_us.system import system
+from policyengine_core.enums import Enum
+
 from policyengine_us import Simulation
+from policyengine_us.system import system
 
 
 def variable_summary(variable_name: str):

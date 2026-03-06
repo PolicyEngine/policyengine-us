@@ -32,7 +32,7 @@ class hi_reduced_itemized_deductions(Variable):
         total_less_partial_ded_amount = total_deductions - partial_deductions
         # Take a percentage of the difference between the total and partial deductions
         # Hawaii applies federal limits which have been revoked in 2018
-        p_2017 = parameters(f"2017-01-01").gov.irs.deductions.itemized.reduction
+        p_2017 = parameters("2017-01-01").gov.irs.deductions.itemized.reduction
         total_less_partial_ded_percentage = (
             total_less_partial_ded_amount * p_2017.rate.base
         )

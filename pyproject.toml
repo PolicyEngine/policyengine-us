@@ -79,3 +79,19 @@ directory = "removed"
 name = "Removed"
 showcontent = true
 
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = [
+    "E402",  # module-import-not-at-top-of-file
+    "E501",  # line too long (handled by ruff format)
+    "E712",  # true-false-comparison (common in numpy/pandas code)
+    "E721",  # type-comparison
+    "E722",  # bare-except
+    "E741",  # ambiguous-variable-name
+    "F401",  # unused-import (many are intentional re-exports)
+    "F403",  # undefined-local-with-import-star
+    "F405",  # undefined-local-with-import-star-usage
+    "F811",  # redefined-while-unused
+    "F821",  # undefined-name (from star imports)
+    "F841",  # unused-variable
+]

@@ -4,13 +4,13 @@ Selective test runner for PolicyEngine US.
 Runs only tests relevant to changed files to reduce test execution time.
 """
 
+import argparse
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Set, List, Dict
-import re
-import argparse
+from typing import Dict, List, Set
 
 
 class SelectiveTestRunner:
@@ -171,7 +171,7 @@ class SelectiveTestRunner:
             )
 
             if fetch_result.returncode != 0:
-                print(f"Warning: Could not fetch from origin (working offline?)")
+                print("Warning: Could not fetch from origin (working offline?)")
 
             # Try different methods to get changed files
             changed_files = set()
@@ -550,7 +550,7 @@ def main():
                 text=True,
             )
             if result.returncode == 0:
-                print(f"  origin/master: exists (use --base-branch master)")
+                print("  origin/master: exists (use --base-branch master)")
         print()
 
     if args.all:
@@ -583,7 +583,7 @@ def main():
                 files = result.stdout.strip().split("\n")
                 changed_files.update(f for f in files if f)
 
-            print(f"Testing uncommitted changes only...")
+            print("Testing uncommitted changes only...")
         else:
             changed_files = runner.get_changed_files()
 

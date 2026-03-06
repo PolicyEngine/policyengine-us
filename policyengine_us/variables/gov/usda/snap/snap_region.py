@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 import pandas as pd
+
+from policyengine_us.model_api import *
 
 
 class SNAPRegion(Enum):

@@ -1,11 +1,13 @@
+import gzip
+from pathlib import Path
+
+import pandas as pd
+import pytest
 from policyengine_core.tools.hugging_face import download_huggingface_dataset
+
 from policyengine_us.tools.geography.county_helpers import (
     load_county_fips_dataset,
 )
-from pathlib import Path
-import pytest
-import pandas as pd
-import gzip
 
 
 @pytest.fixture

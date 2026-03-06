@@ -1,7 +1,8 @@
 """Unified script to extend all uprating factors through 2100."""
 
-from policyengine_us.model_api import *
 from policyengine_core.periods import instant
+
+from policyengine_us.model_api import *
 
 
 def get_irs_cpi(parameters: ParameterNode, year: int) -> float:

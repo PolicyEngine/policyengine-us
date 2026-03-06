@@ -1,4 +1,3 @@
-from unicodedata import category
 from policyengine_us.model_api import *
 
 

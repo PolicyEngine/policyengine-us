@@ -12,6 +12,7 @@ YEARS = list(range(2024, 2026))
 @pytest.mark.parametrize("year", YEARS)
 def test_microsim_runs(dataset: str, year: int):
     import numpy as np
+
     from policyengine_us import Microsimulation
 
     sim = Microsimulation(dataset=dataset)
@@ -46,6 +47,7 @@ def test_county_persists_across_periods():
     which doesn't store county).
     """
     import numpy as np
+
     from policyengine_us import Microsimulation
 
     sim = Microsimulation(

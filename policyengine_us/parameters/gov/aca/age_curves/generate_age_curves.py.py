@@ -1,5 +1,5 @@
+
 import yaml
-import os
 
 
 # generate age curve yamls for all states except NY and VT

@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 import numpy as np
+
+from policyengine_us.model_api import *
 
 
 class is_infant_for_medicaid_fc(Variable):

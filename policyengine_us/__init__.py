@@ -10,7 +10,7 @@ See https://openfisca.org/doc/key-concepts/tax_and_benefit_system.html
 
 from policyengine_us.system import (
     CountryTaxBenefitSystem,
-    Simulation,
-    Microsimulation,
     IndividualSim,
+    Microsimulation,
+    Simulation,
 )

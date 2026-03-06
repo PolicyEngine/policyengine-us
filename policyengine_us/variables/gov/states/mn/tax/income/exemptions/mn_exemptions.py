@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 from numpy import ceil
+
+from policyengine_us.model_api import *
 
 
 class mn_exemptions(Variable):

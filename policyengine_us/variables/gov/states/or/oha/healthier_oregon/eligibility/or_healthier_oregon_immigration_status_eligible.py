@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 import numpy as np
+
+from policyengine_us.model_api import *
 
 
 class or_healthier_oregon_immigration_status_eligible(Variable):

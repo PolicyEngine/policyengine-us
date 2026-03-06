@@ -4,15 +4,15 @@ Generic test runner that can split tests into batches for memory management.
 Can be used for any test folder with configurable batch count.
 """
 
+import argparse
+import gc
+import os
+import re
 import subprocess
 import sys
-import os
-import gc
 import time
-import argparse
-import re
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
 
 def count_yaml_files(directory: Path) -> int:
@@ -299,7 +299,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                     # No "X failed" in line means all passed
                     test_passed = True
 
-                print(f"\n    Tests completed, terminating process...")
+                print("\n    Tests completed, terminating process...")
 
                 # Give 5 seconds grace period for cleanup
                 time.sleep(5)
@@ -310,7 +310,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     # Force kill if it won't terminate
-                    print(f"    Force killing process...")
+                    print("    Force killing process...")
                     process.kill()
                     process.wait()
                 break
@@ -323,7 +323,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                 remaining_timeout = max(1800 - elapsed, 1)
                 process.wait(timeout=remaining_timeout)
             except subprocess.TimeoutExpired:
-                print(f"\n    ⏱️ Timeout - terminating process...")
+                print("\n    ⏱️ Timeout - terminating process...")
                 process.terminate()
                 try:
                     process.wait(timeout=5)
@@ -407,7 +407,7 @@ def main():
         print(f"Error: Test path does not exist: {args.test_path}")
         sys.exit(1)
 
-    print(f"PolicyEngine Test Runner")
+    print("PolicyEngine Test Runner")
     print("=" * 60)
     print(f"Test path: {test_path}")
     print(f"Requested batches: {args.batches}")

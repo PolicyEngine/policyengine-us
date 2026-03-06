@@ -17,7 +17,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
 
         def formula(tax_unit, period, parameters):
             if period.start.year >= 2023:
-                instant_str = f"2022-01-01"
+                instant_str = "2022-01-01"
             else:
                 instant_str = period
             p = parameters(instant_str).gov.states.mn.tax.income.credits

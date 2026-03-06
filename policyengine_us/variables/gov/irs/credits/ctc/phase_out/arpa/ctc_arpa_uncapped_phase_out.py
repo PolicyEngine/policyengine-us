@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 from numpy import ceil
+
+from policyengine_us.model_api import *
 
 
 class ctc_arpa_uncapped_phase_out(Variable):

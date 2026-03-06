@@ -1,10 +1,12 @@
-import pandas as pd
+from pathlib import Path
+
 import numpy as np
+import pandas as pd
+from policyengine_core.tools.hugging_face import download_huggingface_dataset
+
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
-from pathlib import Path
-from policyengine_core.tools.hugging_face import download_huggingface_dataset
 
 
 def load_county_fips_dataset() -> pd.DataFrame:

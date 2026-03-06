@@ -4,11 +4,11 @@ Script to fetch all PRs to master branch for policyengine/policyengine-us
 and pull the latest master branch.
 """
 
+import json
 import subprocess
 import sys
-import json
-from urllib.request import urlopen, Request
 from urllib.error import HTTPError
+from urllib.request import Request, urlopen
 
 
 def get_all_prs_to_master(

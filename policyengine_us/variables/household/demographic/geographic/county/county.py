@@ -1,14 +1,13 @@
-from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
+
+from policyengine_us.data import ZIP_CODE_DATASET
+from policyengine_us.model_api import *
 from policyengine_us.tools.geography.county_helpers import (
+    load_county_fips_dataset,
     map_county_string_to_enum,
 )
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
-)
-from policyengine_us.data import ZIP_CODE_DATASET
-from policyengine_us.tools.geography.county_helpers import (
-    load_county_fips_dataset,
 )
 
 

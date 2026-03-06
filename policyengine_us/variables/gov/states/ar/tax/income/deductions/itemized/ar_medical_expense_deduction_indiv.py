@@ -17,9 +17,9 @@ class ar_medical_expense_deduction_indiv(Variable):
         agi = add(tax_unit, period, ["ar_agi_indiv"])
         # Arkansas applies the federal medical expense floor rate which was established in 2013
         if year >= 2017:
-            instant_str = f"2017-01-01"
+            instant_str = "2017-01-01"
         else:
-            instant_str = f"2013-01-01"
+            instant_str = "2013-01-01"
         p = parameters(instant_str).gov.irs.deductions.itemized.medical
         medical_expenses = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
         return max_(

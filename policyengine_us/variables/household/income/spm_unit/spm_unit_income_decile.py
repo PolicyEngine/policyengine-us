@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 from microdf import MicroSeries
+
+from policyengine_us.model_api import *
 
 
 class spm_unit_income_decile(Variable):

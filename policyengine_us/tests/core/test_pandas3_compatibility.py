@@ -31,8 +31,8 @@ class TestCoreFilledArrayWithStringDtype:
         In pandas 3, numpy.full() cannot handle StringDtype, raising:
         TypeError: Cannot interpret '<StringDtype>' as a data type
         """
-        from policyengine_core.populations.population import Population
         from policyengine_core.entities import Entity
+        from policyengine_core.populations.population import Population
 
         entity = Entity(
             key="person",

@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 from policyengine_core.periods import instant
+
+from policyengine_us.model_api import *
 
 
 class ny_ctc_pre_2024(Variable):

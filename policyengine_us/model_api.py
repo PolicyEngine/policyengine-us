@@ -1,14 +1,11 @@
-from policyengine_us.variables.household.demographic.geographic.state_code import (
-    StateCode,
-)
-from functools import reduce
+import warnings
+from pathlib import Path
+
 from policyengine_core.model_api import *
+
 from policyengine_us.entities import *
 from policyengine_us.tools.general import *
-from pathlib import Path
 from policyengine_us.typing import *
-import warnings
-from policyengine_us.tools.cloning import get_stored_variables
 
 warnings.filterwarnings("ignore")
 

@@ -1,6 +1,7 @@
-from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
+from policyengine_core.periods import period as period_
+
+from policyengine_us.model_api import *
 
 
 def create_american_worker_rebate_act() -> Reform:

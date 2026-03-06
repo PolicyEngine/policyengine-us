@@ -1,19 +1,6 @@
 from pathlib import Path
-from policyengine_core.taxbenefitsystems import TaxBenefitSystem
-from policyengine_us.entities import *
-from policyengine_us.parameters.gov.irs.uprating import (
-    set_irs_uprating_parameter,
-)
-from policyengine_core.simulations import (
-    Simulation as CoreSimulation,
-    Microsimulation as CoreMicrosimulation,
-    IndividualSim as CoreIndividualSim,
-)
-from policyengine_us.variables.household.demographic.geographic.state.in_state import (
-    create_50_state_variables,
-)
-from policyengine_us.tools.parameters import backdate_parameters
-from policyengine_us.reforms import create_structural_reforms_from_parameters
+from typing import Annotated
+
 from policyengine_core.parameters.operations.homogenize_parameters import (
     homogenize_parameter_structures,
 )
@@ -26,9 +13,28 @@ from policyengine_core.parameters.operations.propagate_parameter_metadata import
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
-from .tools.default_uprating import add_default_uprating
+from policyengine_core.simulations import (
+    IndividualSim as CoreIndividualSim,
+)
+from policyengine_core.simulations import (
+    Microsimulation as CoreMicrosimulation,
+)
+from policyengine_core.simulations import (
+    Simulation as CoreSimulation,
+)
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
-from typing import Annotated
+from policyengine_us.entities import *
+from policyengine_us.parameters.gov.irs.uprating import (
+    set_irs_uprating_parameter,
+)
+from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_us.tools.parameters import backdate_parameters
+from policyengine_us.variables.household.demographic.geographic.state.in_state import (
+    create_50_state_variables,
+)
+
+from .tools.default_uprating import add_default_uprating
 
 COUNTRY_DIR = Path(__file__).parent
 

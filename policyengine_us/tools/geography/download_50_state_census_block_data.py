@@ -1,10 +1,11 @@
+import os
+import shutil
+import zipfile
+from pathlib import Path
+
 import pandas as pd
 import requests
 from tqdm import tqdm
-from pathlib import Path
-import os
-import zipfile
-import shutil
 
 STATE_NAMES = [
     "Alabama",

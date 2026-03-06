@@ -1,6 +1,5 @@
-import argparse
-import tomllib
 import os
+import tomllib
 
 
 def main():

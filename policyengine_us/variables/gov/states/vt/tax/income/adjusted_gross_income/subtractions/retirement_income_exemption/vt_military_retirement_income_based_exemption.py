@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 import numpy as np
+
+from policyengine_us.model_api import *
 
 
 class vt_military_retirement_income_based_exemption(Variable):

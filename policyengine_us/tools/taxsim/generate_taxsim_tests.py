@@ -1,16 +1,18 @@
 import collections
-import requests
-from pathlib import Path
-import pandas as pd
-import subprocess
+import platform
 import stat
+import subprocess
+from argparse import ArgumentParser
 from io import StringIO
+from pathlib import Path
+
+import pandas as pd
+import requests
 from policyengine_core.data import Dataset
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
-from policyengine_us import Microsimulation
 from tqdm import tqdm
-from argparse import ArgumentParser
-import platform
+
+from policyengine_us import Microsimulation
 
 PLATFORM_MAPPING = {
     "Windows": "windows",
@@ -258,7 +260,7 @@ class TaxSim35:
                         test_str += f"        {variable_name}: {value:_.0f}\n"
                     except:
                         test_str += f"        {variable_name}: {value}\n"
-            test_str += f"  output:\n"
+            test_str += "  output:\n"
             for variable_name in openfisca_named_taxsim_output_variables:
                 if variables[variable_name].entity.key == "tax_unit":
                     value = taxsim_df[variable_name][

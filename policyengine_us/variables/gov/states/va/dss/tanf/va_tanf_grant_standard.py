@@ -15,7 +15,7 @@ class va_tanf_grant_standard(Variable):
         p = parameters(period).gov.states.va.dss.tanf
         # Access July 2020 base values
         p_grant_standard = parameters.gov.states.va.dss.tanf.payment.grant_standard(
-            f"2020-10-01"
+            "2020-10-01"
         )
         ceiling = min_(unit_size, p.max_unit_size)
         additional = unit_size - ceiling

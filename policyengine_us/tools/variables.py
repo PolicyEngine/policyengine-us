@@ -1,5 +1,6 @@
-from policyengine_us.system import system
 from IPython.display import Markdown
+
+from policyengine_us.system import system
 
 variables = system.variables
 

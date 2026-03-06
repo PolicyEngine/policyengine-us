@@ -1,6 +1,7 @@
-from pathlib import Path
-import pandas as pd
 import os
+from pathlib import Path
+
+import pandas as pd
 
 ZIP_CODE_DATASET_PATH = Path(__file__).parent / "zip_codes.csv.gz"
 

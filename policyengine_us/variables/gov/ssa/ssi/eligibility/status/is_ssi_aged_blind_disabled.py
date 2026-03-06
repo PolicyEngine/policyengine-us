@@ -1,5 +1,6 @@
-from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
+
+from policyengine_us.model_api import *
 
 
 class is_ssi_aged_blind_disabled(Variable):
