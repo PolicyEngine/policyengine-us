@@ -8,7 +8,9 @@ class nj_cdcc(Variable):
     documentation = "New Jersey Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44"
+    reference = (
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):

@@ -11,9 +11,7 @@ class va_tanf_childcare_deduction(Variable):
     reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=56"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.va.dss.tanf.income.deductions.dependent_care
+        p = parameters(period).gov.states.va.dss.tanf.income.deductions.dependent_care
         person = spm_unit.members
         age = person("age", period.this_year)
         dependent = person("is_tax_unit_dependent", period)

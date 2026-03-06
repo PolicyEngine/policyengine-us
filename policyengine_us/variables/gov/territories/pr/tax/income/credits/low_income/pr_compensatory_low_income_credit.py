@@ -11,8 +11,6 @@ class pr_compensatory_low_income_credit(Variable):
     defined_for = "pr_low_income_credit_eligible"
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.credits.low_income.amount
+        p = parameters(period).gov.territories.pr.tax.income.credits.low_income.amount
         pension_income = person("pension_income", period)
         return p.additional.calc(pension_income, right=True)

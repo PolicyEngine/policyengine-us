@@ -15,7 +15,5 @@ class ms_self_employment_adjustment(Variable):
 
     def formula(person, period, parameters):
         self_employment_tax = person("self_employment_tax", period)
-        p = parameters(
-            period
-        ).gov.states.ms.tax.income.adjustments.self_employment
+        p = parameters(period).gov.states.ms.tax.income.adjustments.self_employment
         return self_employment_tax * p.rate

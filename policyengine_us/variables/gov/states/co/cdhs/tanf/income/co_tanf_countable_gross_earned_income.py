@@ -7,5 +7,6 @@ class co_tanf_countable_gross_earned_income(Variable):
     label = "Colorado TANF countable gross earned income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CO
 
     adds = "gov.states.co.cdhs.tanf.income.earned"

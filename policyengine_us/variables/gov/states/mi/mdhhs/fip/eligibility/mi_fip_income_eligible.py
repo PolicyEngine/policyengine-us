@@ -24,9 +24,7 @@ class mi_fip_income_eligible(Variable):
         countable_income_for_eligibility = spm_unit(
             "mi_fip_countable_income_for_eligibility", period
         )
-        passes_qualifying_test = (
-            countable_income_for_eligibility < payment_standard
-        )
+        passes_qualifying_test = countable_income_for_eligibility < payment_standard
 
         # Enrolled recipients: Use Issuance Deficit Test (BEM 520 Section D)
         # - Uses 50% deduction rate (more generous)

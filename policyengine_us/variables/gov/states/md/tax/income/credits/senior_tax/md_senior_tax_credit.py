@@ -7,7 +7,9 @@ class md_senior_tax_credit(Variable):
     label = "Maryland Senior Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15"
+    reference = (
+        "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15"
+    )
     defined_for = "md_senior_tax_credit_eligible"
 
     def formula_2022(tax_unit, period, parameters):

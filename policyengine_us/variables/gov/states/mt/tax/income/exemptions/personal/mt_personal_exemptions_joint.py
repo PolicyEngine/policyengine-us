@@ -12,7 +12,5 @@ class mt_personal_exemptions_joint(Variable):
     def formula(person, period, parameters):
         # Allocate the exemptions to the head
         head = person("is_tax_unit_head", period)
-        exemptions = add(
-            person.tax_unit, period, ["mt_personal_exemptions_indiv"]
-        )
+        exemptions = add(person.tax_unit, period, ["mt_personal_exemptions_indiv"])
         return exemptions * head

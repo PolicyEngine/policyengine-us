@@ -24,9 +24,7 @@ class medicaid_category(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        categories = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.covered
+        categories = parameters(period).gov.hhs.medicaid.eligibility.categories.covered
 
         # Federal law requires mandatory categorically needy groups to be
         # evaluated before optional groups. The ACA rules under 42 CFR 435.119
@@ -72,10 +70,7 @@ class medicaid_category(Variable):
         }
 
         return select(
-            [
-                person(variable, period)
-                for variable in variable_to_category.keys()
-            ],
+            [person(variable, period) for variable in variable_to_category.keys()],
             list(variable_to_category.values()),
             default=MedicaidCategory.NONE,
         )

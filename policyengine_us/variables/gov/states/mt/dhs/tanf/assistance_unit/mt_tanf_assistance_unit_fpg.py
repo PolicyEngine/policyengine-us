@@ -6,9 +6,7 @@ class mt_tanf_assistance_unit_fpg(Variable):
     entity = SPMUnit
     label = "Montana TANF assistance unit's federal poverty guideline"
     unit = USD
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf#page=1"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF001.pdf#page=1"
     definition_period = MONTH
     defined_for = StateCode.MT
 

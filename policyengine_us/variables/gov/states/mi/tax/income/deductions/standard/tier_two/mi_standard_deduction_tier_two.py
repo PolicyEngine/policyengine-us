@@ -24,9 +24,7 @@ class mi_standard_deduction_tier_two(Variable):
         eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_people", period
         )
-        increased_amount = (
-            p.standard.tier_two.amount.increase * eligible_people
-        )
+        increased_amount = p.standard.tier_two.amount.increase * eligible_people
         increased_base_amount = base_amount + increased_amount
         # After that we reduce the amount by the amounts from line 11 and line 14
         # just applicable to head and spouse
@@ -37,9 +35,7 @@ class mi_standard_deduction_tier_two(Variable):
             ["military_retirement_pay", "military_service_income"],
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        head_or_spouse_military_pay = tax_unit.sum(
-            military_pay * is_head_or_spouse
-        )
+        head_or_spouse_military_pay = tax_unit.sum(military_pay * is_head_or_spouse)
         standard_deduction_tier_two = max_(
             increased_base_amount - head_or_spouse_military_pay, 0
         )

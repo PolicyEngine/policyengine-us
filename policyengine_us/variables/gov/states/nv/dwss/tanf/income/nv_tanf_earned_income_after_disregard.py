@@ -14,9 +14,7 @@ class nv_tanf_earned_income_after_disregard(Variable):
         # Per Nevada TANF State Plan Section 3.4:
         # Work expense deduction is $90 or 20% of gross earnings,
         # whichever is greater, applied to each employed person.
-        p = parameters(
-            period
-        ).gov.states.nv.dwss.tanf.income.work_expense_disregard
+        p = parameters(period).gov.states.nv.dwss.tanf.income.work_expense_disregard
         gross_earned = person("tanf_gross_earned_income", period)
 
         # Calculate work expense deduction: max of flat amount or percentage

@@ -13,8 +13,6 @@ class nc_tanf(Variable):
         payment_percentage = parameters(
             period
         ).gov.states.nc.ncdhhs.tanf.benefit.payment_percentage
-        reduced_need_standard = spm_unit(
-            "nc_tanf_reduced_need_standard", period
-        )
+        reduced_need_standard = spm_unit("nc_tanf_reduced_need_standard", period)
 
         return reduced_need_standard * payment_percentage

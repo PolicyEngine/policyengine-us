@@ -23,8 +23,7 @@ class sc_state_tax_addback(Variable):
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
         federal_itemized_deduction = (
-            tax_unit("itemized_taxable_income_deductions", period)
-            * us_itemizing
+            tax_unit("itemized_taxable_income_deductions", period) * us_itemizing
         )
         # line 2
         federal_standard_deduction = standard_deduction * eligible
@@ -35,9 +34,7 @@ class sc_state_tax_addback(Variable):
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         # line 5
-        real_estate_and_property_taxes = add(
-            tax_unit, period, ["real_estate_taxes"]
-        )
+        real_estate_and_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         less_income_amount = max_(
             0,
             p_us.itemized.salt_and_real_estate.cap[filing_status]

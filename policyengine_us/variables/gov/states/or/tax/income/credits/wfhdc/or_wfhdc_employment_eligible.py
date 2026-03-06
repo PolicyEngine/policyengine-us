@@ -28,15 +28,9 @@ class or_wfhdc_employment_eligible(Variable):
         # 3) you are married filing jointly and one spouse attended school (full-time) or was disabled
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_full_time_student = person("is_full_time_student", period)
-        married_eligible = tax_unit.any(
-            is_full_time_student & is_head_or_spouse
-        )
+        married_eligible = tax_unit.any(is_full_time_student & is_head_or_spouse)
         joint_head_or_spouse_student = (
             filing_status == filing_status.possible_values.JOINT
         ) & married_eligible
 
-        return (
-            earned_income_eligible
-            | single_student
-            | joint_head_or_spouse_student
-        )
+        return earned_income_eligible | single_student | joint_head_or_spouse_student

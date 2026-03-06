@@ -11,9 +11,7 @@ class ma_ccfa_center_based_early_education_reimbursement(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ma.eec.ccfa.reimbursement_rates.center_based
+        p = parameters(period).gov.states.ma.eec.ccfa.reimbursement_rates.center_based
         region = person.household("ma_ccfa_region", period)
         age_category = person("ma_ccfa_child_age_category", period)
         return p.early_education[region][age_category]

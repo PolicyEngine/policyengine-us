@@ -7,9 +7,7 @@ class dc_tanf_earned_income_after_disregard_person(Variable):
     label = "DC Temporary Assistance for Needy Families (TANF) earned income after disregard per person"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
@@ -20,8 +18,7 @@ class dc_tanf_earned_income_after_disregard_person(Variable):
             gross_earnings - p.work_related_expense.amount, 0
         )
         percentage_disregard = (
-            earnings_after_flat_exclusion
-            * p.earned_income_disregard.percentage
+            earnings_after_flat_exclusion * p.earned_income_disregard.percentage
         )
         return where(
             enrolled,

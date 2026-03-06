@@ -47,9 +47,7 @@ def extend_parameter_values(
 
     # Set the final value for periods after the last year
     final_value = parameter(f"{end_year}{date_format}")
-    parameter.update(
-        start=instant(f"{end_year}{date_format}"), value=final_value
-    )
+    parameter.update(start=instant(f"{end_year}{date_format}"), value=final_value)
 
 
 def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:

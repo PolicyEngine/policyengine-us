@@ -109,3 +109,11 @@
     slcsp_rating_area: 15
   output:
     slcsp_age_0: 244
+
+- name: slcsp_age_0 with unknown rating area (zero)
+  period: 2025-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 0
+  output:
+    slcsp_age_0: 0

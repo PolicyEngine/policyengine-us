@@ -19,9 +19,7 @@ def create_capital_gains_tax_increase() -> Reform:
 
             cg = parameters(period).gov.irs.capital_gains
 
-            excluded_cg = tax_unit(
-                "capital_gains_excluded_from_taxable_income", period
-            )
+            excluded_cg = tax_unit("capital_gains_excluded_from_taxable_income", period)
             non_cg_taxable_income = max_(0, taxable_income - excluded_cg)
             income_less_ancg = max_(0, taxable_income - adjusted_net_cg)
 
@@ -42,9 +40,7 @@ def create_capital_gains_tax_increase() -> Reform:
             # over $1 million as ordinary income.
             # We apply this only to ANCG, not Unrecaptured Section 1250 Gain or the 28% rate CG.
 
-            p_reform = parameters(
-                period
-            ).gov.contrib.biden.budget_2025.capital_gains
+            p_reform = parameters(period).gov.contrib.biden.budget_2025.capital_gains
             income_threshold = p_reform.income_threshold[filing_status]
             excess_income = max_(0, taxable_income - income_threshold)
 
@@ -63,16 +59,11 @@ def create_capital_gains_tax_increase() -> Reform:
             )
 
             cg_in_second_bracket = min_(
-                max_(
-                    0, adjusted_net_cg - cg_in_first_bracket_below_top_bracket
-                ),
+                max_(0, adjusted_net_cg - cg_in_first_bracket_below_top_bracket),
                 max_(
                     0,
                     income_ordinarily_under_third_rate
-                    - (
-                        non_cg_taxable_income
-                        + cg_in_first_bracket_below_top_bracket
-                    ),
+                    - (non_cg_taxable_income + cg_in_first_bracket_below_top_bracket),
                 ),
             )
 
@@ -102,9 +93,7 @@ def create_capital_gains_tax_increase() -> Reform:
                 "unrecaptured_section_1250_gain", period
             )
 
-            qualified_dividends = add(
-                tax_unit, period, ["qualified_dividend_income"]
-            )
+            qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
 
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,
@@ -136,9 +125,7 @@ def create_capital_gains_tax_increase() -> Reform:
     return reform
 
 
-def create_capital_gains_tax_increase_reform(
-    parameters, period, bypass: bool = False
-):
+def create_capital_gains_tax_increase_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_capital_gains_tax_increase()
 

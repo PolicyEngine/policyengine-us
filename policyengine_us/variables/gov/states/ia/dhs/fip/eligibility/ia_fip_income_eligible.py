@@ -29,18 +29,12 @@ class ia_fip_income_eligible(Variable):
         # for initial eligibility. Continuing recipients skip step 2 entirely.
 
         is_enrolled = spm_unit("is_tanf_enrolled", period)
-        gross_income_eligible = spm_unit(
-            "ia_fip_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("ia_fip_gross_income_eligible", period)
         net_income_eligible = spm_unit("ia_fip_net_income_eligible", period)
-        countable_income_eligible = spm_unit(
-            "ia_fip_countable_income_eligible", period
-        )
+        countable_income_eligible = spm_unit("ia_fip_countable_income_eligible", period)
 
         return where(
             is_enrolled,
             gross_income_eligible & countable_income_eligible,
-            gross_income_eligible
-            & net_income_eligible
-            & countable_income_eligible,
+            gross_income_eligible & net_income_eligible & countable_income_eligible,
         )

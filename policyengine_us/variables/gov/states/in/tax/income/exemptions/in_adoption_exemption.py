@@ -20,9 +20,7 @@ class in_adoption_exemption(Variable):
         is_qualifying_adopted_dependent_child = (
             is_qualifying_dependent_child & adopted_this_year
         )
-        capped_exemption_amount = max_(
-            p.adoption.amount - p.additional.amount, 0
-        )
+        capped_exemption_amount = max_(p.adoption.amount - p.additional.amount, 0)
         return tax_unit.sum(
             is_qualifying_adopted_dependent_child * capped_exemption_amount
         )

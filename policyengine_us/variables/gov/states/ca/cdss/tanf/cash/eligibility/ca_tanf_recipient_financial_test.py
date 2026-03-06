@@ -11,8 +11,6 @@ class ca_tanf_recipient_financial_test(Variable):
 
     def formula(spm_unit, period, parameters):
         maximum_payment = spm_unit("ca_tanf_maximum_payment", period)
-        countable_income = spm_unit(
-            "ca_tanf_countable_income_recipient", period
-        )
+        countable_income = spm_unit("ca_tanf_countable_income_recipient", period)
 
         return countable_income < maximum_payment

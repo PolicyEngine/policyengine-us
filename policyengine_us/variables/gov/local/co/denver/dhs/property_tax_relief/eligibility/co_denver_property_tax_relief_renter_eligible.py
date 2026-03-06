@@ -12,9 +12,7 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.co.denver.dhs
         pays_rent = add(spm_unit, period, ["rent"]) > 0
-        has_elderly_or_disabled = spm_unit(
-            "has_co_denver_dhs_elderly_disabled", period
-        )
+        has_elderly_or_disabled = spm_unit("has_co_denver_dhs_elderly_disabled", period)
         renters_with_elderly_or_disabled = has_elderly_or_disabled & pays_rent
 
         income = spm_unit("co_denver_property_tax_relief_income", period)

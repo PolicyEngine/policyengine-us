@@ -14,9 +14,7 @@ class ri_standard_deduction_applicable_percentage(Variable):
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ri.tax.income.deductions.standard.phase_out
+        p = parameters(period).gov.states.ri.tax.income.deductions.standard.phase_out
 
         agi = tax_unit("ri_agi", period)
 

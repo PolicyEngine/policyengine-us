@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mi_interest_dividends_capital_gains_deduction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the Michigan interest dividends capital gains deduction"
-    )
+    label = "Eligible for the Michigan interest dividends capital gains deduction"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(p)

@@ -17,9 +17,7 @@ class wa_apple_health_expansion_income_eligible(Variable):
     """
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.wa.hca.apple_health.expansion.eligibility
+        p = parameters(period).gov.states.wa.hca.apple_health.expansion.eligibility
 
         # Use MAGI-based income level (as fraction of FPL)
         income_level = person("medicaid_income_level", period)

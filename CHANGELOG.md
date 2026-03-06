@@ -1,3 +1,129 @@
+## [1.592.8] - 2026-03-06
+
+### Fixed
+
+- Remove dead ZIP_CODE_DATASET infrastructure that never shipped and crashes CA state-level microsimulation.
+
+
+## [1.592.7] - 2026-03-06
+
+### Changed
+
+- Restructure Montana contributed reforms: rename mt_ctc to mt_hb268 for the bill-specific implementation, and create new flexible mt_ctc reform with three-bracket age amounts and toggleable earned income requirement.
+
+
+## [1.592.6] - 2026-03-06
+
+### Fixed
+
+- Fix verified_years in programs.yaml based on parameter and test audit.
+
+
+## [1.592.5] - 2026-03-06
+
+### Changed
+
+- Index WATCA cost-of-living exemption amounts with chained CPI (gov.irs.uprating), matching standard IRS inflation adjustments.
+
+
+## [1.592.4] - 2026-03-06
+
+### Changed
+
+- Update CLAUDE.md references from black to ruff.
+
+
+## [1.592.3] - 2026-03-06
+
+### Changed
+
+- Replace modelled_policies.yaml with structured programs.yaml containing rich metadata for all 65 modelled programs.
+
+
+## [1.592.2] - 2026-03-06
+
+### Changed
+
+- Switch from black (line-length 79) to ruff format (line-length 88).
+
+
+## [1.592.1] - 2026-03-06
+
+### Fixed
+
+- Fix double-counting of SS and UC in household_net_income by removing them from market_income_sources. Add CARE/FERA income sources list parameter tied to PG&E Form 01-9077 policy definition.
+
+
+## [1.592.0] - 2026-03-06
+
+### Added
+
+- Added the Working Americans' Tax Cut Act reform with cost of living exemption and millionaire surtax.
+
+
+## [1.591.3] - 2026-03-05
+
+### Fixed
+
+- Fix VA TANF max payment cap scaling and enhance references.
+
+
+## [1.591.2] - 2026-03-05
+
+### Changed
+
+- Backdate federal TANF earned and unearned income source parameters to 2010-07-01.
+
+
+## [1.591.1] - 2026-03-04
+
+### Changed
+
+- Reset Georgia income tax rate to constant 5.19%, removing premature conditional rate reductions scheduled for 2026-2028.
+
+
+## [1.591.0] - 2026-03-04
+
+### Added
+
+- Backdate Colorado TANF parameters.
+
+
+## [1.590.3] - 2026-03-04
+
+### Changed
+
+- Fix MN MFIP to use the full Transitional Standard (cash + food) for the Family Wage Level and benefit formula, then subtract the food portion to yield cash-only output and avoid double-counting with SNAP.
+
+
+## [1.590.2] - 2026-03-03
+
+### Fixed
+
+- Fixed MT newborn credit entity mismatch that caused credit to be applied to every household member instead of once per tax unit.
+
+
+## [1.590.1] - 2026-03-03
+
+### Changed
+
+- Add SSN identification requirements to Recovery Rebate Credits (CARES, CAA, ARPA) per 26 USC 6428(g), 6428A(g), and 6428B(e)(2). Filers and dependents without valid SSN are now correctly excluded from credit calculations.
+
+
+## [1.590.0] - 2026-03-02
+
+### Added
+
+- Add Montana newborn credit reform.
+
+
+## [1.589.1] - 2026-02-27
+
+### Fixed
+
+- Fix SC H.4216 reform: remove spurious sc_additions (QBI and SALT addbacks) from AGI-based taxable income calculation.
+
+
 ## [1.589.0] - 2026-02-26
 
 ### Added

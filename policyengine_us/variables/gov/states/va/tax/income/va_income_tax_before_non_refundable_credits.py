@@ -7,9 +7,7 @@ class va_income_tax_before_non_refundable_credits(Variable):
     label = "Virginia income tax before non-refundable credits"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-    )
+    reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     defined_for = "va_must_file"
 
     def formula(tax_unit, period, parameters):

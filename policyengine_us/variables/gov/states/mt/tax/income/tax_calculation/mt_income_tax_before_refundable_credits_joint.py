@@ -13,7 +13,5 @@ class mt_income_tax_before_refundable_credits_joint(Variable):
         income_before_credits = tax_unit(
             "mt_income_tax_before_non_refundable_credits_joint", period
         )
-        non_refundable_credits = add(
-            tax_unit, period, ["mt_non_refundable_credits"]
-        )
+        non_refundable_credits = add(tax_unit, period, ["mt_non_refundable_credits"])
         return max_(income_before_credits - non_refundable_credits, 0)

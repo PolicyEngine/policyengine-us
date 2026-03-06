@@ -8,9 +8,7 @@ class vt_taxable_income(Variable):
     unit = USD
     documentation = "VT AGI less taxable income deductions and exemptions"
     definition_period = YEAR
-    reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
-    )
+    reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):

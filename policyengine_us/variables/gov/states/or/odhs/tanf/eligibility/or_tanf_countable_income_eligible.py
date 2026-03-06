@@ -22,7 +22,6 @@ class or_tanf_countable_income_eligible(Variable):
         countable_income = spm_unit("or_tanf_countable_income", period)
         countable_limit = (
             p.income.countable_income_limit.amount[size_capped]
-            + additional_people
-            * p.income.countable_income_limit.additional_person
+            + additional_people * p.income.countable_income_limit.additional_person
         )
         return countable_income < countable_limit

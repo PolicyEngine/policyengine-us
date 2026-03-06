@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ky_income_tax_before_non_refundable_credits_joint(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky income tax before non-refundable credits when married filing jointly"
+    label = (
+        "Kentucky income tax before non-refundable credits when married filing jointly"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY

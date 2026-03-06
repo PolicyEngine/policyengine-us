@@ -23,15 +23,11 @@ class ms_itemized_deductions_indiv(Variable):
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_income = person.tax_unit.sum(pre_deductions_taxable_income * head)
-        spouse_income = person.tax_unit.sum(
-            pre_deductions_taxable_income * spouse
-        )
+        spouse_income = person.tax_unit.sum(pre_deductions_taxable_income * spouse)
         # Calculate the difference between the head and spouse income
         income_difference = np.abs(head_income - spouse_income)
         # Cap the deduction amount initially at the difference between the head and spouse income
-        deductions_capped_at_income_difference = min_(
-            income_difference, unit_deds
-        )
+        deductions_capped_at_income_difference = min_(income_difference, unit_deds)
         head_income_exceeds_spouse_income = head_income > spouse_income
 
         # The capped deductions are allocated to the spouse with the larger income
@@ -44,13 +40,9 @@ class ms_itemized_deductions_indiv(Variable):
         )
 
         # The remaining deductions are halved and allocated between the head and spouse
-        remaining_deductions = (
-            unit_deds - deductions_capped_at_income_difference
-        )
+        remaining_deductions = unit_deds - deductions_capped_at_income_difference
         head_or_spouse = head | spouse
-        halved_remaining_deductions = (
-            remaining_deductions / 2
-        ) * head_or_spouse
+        halved_remaining_deductions = (remaining_deductions / 2) * head_or_spouse
         return (
             deductions_capped_at_income_difference_allocated_to_spouse_with_larger_income
             + halved_remaining_deductions

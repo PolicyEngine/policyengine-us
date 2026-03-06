@@ -9,9 +9,7 @@ class id_special_season_rebate(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.credits.special_seasonal_rebate
+        p = parameters(period).gov.states.id.tax.income.credits.special_seasonal_rebate
         income_tax_before_credits = tax_unit(
             "id_income_tax_before_non_refundable_credits", period
         )

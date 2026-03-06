@@ -8,8 +8,6 @@ class is_older_child_for_medicaid_nfc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.older_child
+        ma = parameters(period).gov.hhs.medicaid.eligibility.categories.older_child
         age = person("age", period)
         return ma.age_range.calc(age)

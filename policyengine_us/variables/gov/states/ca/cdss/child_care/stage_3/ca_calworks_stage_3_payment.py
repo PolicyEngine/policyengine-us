@@ -12,15 +12,9 @@ class ca_calworks_stage_3_payment(Variable):
 
     def formula(person, period, parameters):
         # Uses same RMR payment structure as Stage 1 and Stage 2
-        payment_standard = person(
-            "ca_calworks_child_care_payment_standard", period
-        )
-        time_coefficient = person(
-            "ca_calworks_child_care_time_coefficient", period
-        )
-        payment_factor = person(
-            "ca_calworks_child_care_payment_factor", period
-        )
+        payment_standard = person("ca_calworks_child_care_payment_standard", period)
+        time_coefficient = person("ca_calworks_child_care_time_coefficient", period)
+        payment_factor = person("ca_calworks_child_care_payment_factor", period)
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
 
         return min_(

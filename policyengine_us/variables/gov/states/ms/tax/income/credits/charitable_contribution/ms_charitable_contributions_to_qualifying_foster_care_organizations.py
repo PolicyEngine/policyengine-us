@@ -1,9 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_charitable_contributions_to_qualifying_foster_care_organizations(
-    Variable
-):
+class ms_charitable_contributions_to_qualifying_foster_care_organizations(Variable):
     value_type = float
     entity = TaxUnit
     label = "Charitable contributions to qualifying foster care organizations in Mississippi"

@@ -14,9 +14,7 @@ class ms_charitable_contributions_credit(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ms.tax.income.credits.charitable_contribution
+        p = parameters(period).gov.states.ms.tax.income.credits.charitable_contribution
 
         foster_care_contributions = tax_unit(
             "ms_charitable_contributions_to_qualifying_foster_care_organizations",

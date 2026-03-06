@@ -15,14 +15,10 @@ class mt_medical_expense_deduction_joint(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        expense = add(
-            person.tax_unit, period, ["medical_out_of_pocket_expenses"]
-        )
+        expense = add(person.tax_unit, period, ["medical_out_of_pocket_expenses"])
         p = parameters(period).gov.irs.deductions.itemized.medical
         # Law does not define Montana AGI as the cap.
         # Tax form points to page 1, line 14, which is Montana AGI.
-        medical_floor = p.floor * add(
-            person.tax_unit, period, ["mt_agi_indiv"]
-        )
+        medical_floor = p.floor * add(person.tax_unit, period, ["mt_agi_indiv"])
         is_head = person("is_tax_unit_head", period)
         return is_head * max_(0, expense - medical_floor)

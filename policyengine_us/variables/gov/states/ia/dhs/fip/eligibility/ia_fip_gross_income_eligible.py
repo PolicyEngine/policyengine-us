@@ -7,7 +7,9 @@ class ia_fip_gross_income_eligible(Variable):
     label = "Iowa FIP gross income eligible"
     definition_period = MONTH
     defined_for = StateCode.IA
-    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=20"
+    reference = (
+        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=20"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.dhs.fip.income

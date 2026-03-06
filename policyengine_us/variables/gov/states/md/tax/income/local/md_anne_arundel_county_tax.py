@@ -24,9 +24,7 @@ class md_anne_arundel_county_tax(Variable):
         is_single = filing_status == filing_statuses.SINGLE
         is_joint = filing_status == filing_statuses.JOINT
         is_separate = filing_status == filing_statuses.SEPARATE
-        is_head_of_household = (
-            filing_status == filing_statuses.HEAD_OF_HOUSEHOLD
-        )
+        is_head_of_household = filing_status == filing_statuses.HEAD_OF_HOUSEHOLD
         is_surviving_spouse = filing_status == filing_statuses.SURVIVING_SPOUSE
 
         # Tax calculations for each filing status

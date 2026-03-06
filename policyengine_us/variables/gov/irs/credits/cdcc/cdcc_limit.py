@@ -11,7 +11,5 @@ class cdcc_limit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.cdcc
-        capped_count_cdcc_eligible = tax_unit(
-            "capped_count_cdcc_eligible", period
-        )
+        capped_count_cdcc_eligible = tax_unit("capped_count_cdcc_eligible", period)
         return p.max * capped_count_cdcc_eligible

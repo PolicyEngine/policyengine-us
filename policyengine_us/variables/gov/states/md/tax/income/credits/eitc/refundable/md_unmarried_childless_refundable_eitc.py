@@ -7,7 +7,9 @@ class md_unmarried_childless_refundable_eitc(Variable):
     label = "Maryland unmarried childless refundable EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=19"
+    reference = (
+        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=19"
+    )
     defined_for = "md_qualifies_for_unmarried_childless_eitc"
 
     def formula(tax_unit, period, parameters):

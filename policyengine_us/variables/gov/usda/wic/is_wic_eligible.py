@@ -11,15 +11,11 @@ class is_wic_eligible(Variable):
 
     def formula(person, period, parameters):
         meets_income_test = person.spm_unit("meets_wic_income_test", period)
-        meets_categorical_test = person(
-            "meets_wic_categorical_eligibility", period
-        )
+        meets_categorical_test = person("meets_wic_categorical_eligibility", period)
         nutritional_risk = person("is_wic_at_nutritional_risk", period)
         # Must be in a valid WIC demographic category per 42 U.S.C. § 1786(d)(1)
         wic_category = person("wic_category", period)
-        demographic_eligible = (
-            wic_category != wic_category.possible_values.NONE
-        )
+        demographic_eligible = wic_category != wic_category.possible_values.NONE
         return (
             demographic_eligible
             & (meets_income_test | meets_categorical_test)

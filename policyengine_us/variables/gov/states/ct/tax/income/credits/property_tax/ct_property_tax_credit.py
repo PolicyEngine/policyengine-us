@@ -17,9 +17,7 @@ class ct_property_tax_credit(Variable):
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         max_credit = min_(real_estate_taxes, p.cap)
         excess = max_(agi - p.reduction.start[filing_status], 0)
-        total_increments = np.ceil(
-            excess / p.reduction.increment[filing_status]
-        )
+        total_increments = np.ceil(excess / p.reduction.increment[filing_status])
         reduction_percent = p.reduction.rate * total_increments
         reduction_amount = max_credit * reduction_percent
         return max_(max_credit - reduction_amount, 0)

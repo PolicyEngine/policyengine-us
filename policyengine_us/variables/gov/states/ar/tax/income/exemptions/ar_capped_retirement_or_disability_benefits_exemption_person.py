@@ -20,7 +20,5 @@ class ar_capped_retirement_or_disability_benefits_exemption_person(Variable):
         military_retirement_exemption = person(
             "ar_military_retirement_income_person", period
         )
-        larger_exemption = max_(
-            eligible_pension_income, military_retirement_exemption
-        )
+        larger_exemption = max_(eligible_pension_income, military_retirement_exemption)
         return min_(larger_exemption, p.cap)

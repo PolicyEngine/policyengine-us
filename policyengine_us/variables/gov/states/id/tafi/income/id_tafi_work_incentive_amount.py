@@ -7,9 +7,7 @@ class id_tafi_work_incentive_amount(Variable):
     label = "Idaho TAFI work incentive table amount"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.251"
-    )
+    reference = "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.251"
     defined_for = StateCode.ID
 
     def formula(spm_unit, period, parameters):

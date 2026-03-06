@@ -6,7 +6,9 @@ class non_refundable_american_opportunity_credit_potential(Variable):
     entity = TaxUnit
     label = "Potential value of the Non-refundable American Opportunity Credit"
     unit = USD
-    documentation = "Value of the non-refundable portion of the American Opportunity Credit"
+    documentation = (
+        "Value of the non-refundable portion of the American Opportunity Credit"
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
 

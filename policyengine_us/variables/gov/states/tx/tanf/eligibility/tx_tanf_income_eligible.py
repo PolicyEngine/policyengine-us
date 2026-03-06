@@ -6,7 +6,9 @@ class tx_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "Meets Texas TANF income test"
     definition_period = MONTH
-    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
+    reference = (
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits"
+    )
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
@@ -28,9 +30,7 @@ class tx_tanf_income_eligible(Variable):
 
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         passes_budgetary = spm_unit("tx_tanf_budgetary_needs_test", period)
-        passes_recognizable = spm_unit(
-            "tx_tanf_recognizable_needs_test", period
-        )
+        passes_recognizable = spm_unit("tx_tanf_recognizable_needs_test", period)
 
         # Apply the appropriate test(s) based on enrollment status
         return where(

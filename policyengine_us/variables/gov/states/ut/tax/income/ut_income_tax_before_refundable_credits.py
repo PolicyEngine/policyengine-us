@@ -11,8 +11,6 @@ class ut_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit(
-            "ut_income_tax_before_non_refundable_credits", period
-        )
+        income = tax_unit("ut_income_tax_before_non_refundable_credits", period)
         credits = tax_unit("ut_non_refundable_credits", period)
         return max_(income - credits, 0)

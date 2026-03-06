@@ -24,8 +24,6 @@ class ny_salt_deduction(Variable):
     def formula(tax_unit, period, parameters):
         # NY allows sales tax and real estate taxes, but NOT income taxes
         # Per Tax Law § 615(c), state/local income taxes must be subtracted
-        sales_tax = add(
-            tax_unit, period, ["state_sales_tax", "local_sales_tax"]
-        )
+        sales_tax = add(tax_unit, period, ["state_sales_tax", "local_sales_tax"])
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         return sales_tax + real_estate_taxes

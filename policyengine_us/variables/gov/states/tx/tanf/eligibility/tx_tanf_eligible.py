@@ -18,9 +18,7 @@ class tx_tanf_eligible(Variable):
 
         # Must have at least one eligible child in certified group
         # (eligible child already includes immigration and SSI checks)
-        has_eligible_child = spm_unit.any(
-            person("tx_tanf_eligible_child", period)
-        )
+        has_eligible_child = spm_unit.any(person("tx_tanf_eligible_child", period))
 
         # Financial eligibility
         income_eligible = spm_unit("tx_tanf_income_eligible", period)

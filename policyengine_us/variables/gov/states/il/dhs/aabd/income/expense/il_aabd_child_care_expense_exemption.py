@@ -5,7 +5,9 @@ class il_aabd_child_care_expense_exemption(Variable):
     value_type = float
     entity = Person
     definition_period = MONTH
-    label = "Illinois Aid to the Aged, Blind or Disabled (AABD) childcare expense exemption"
+    label = (
+        "Illinois Aid to the Aged, Blind or Disabled (AABD) childcare expense exemption"
+    )
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.125",  # b
     )
@@ -22,9 +24,7 @@ class il_aabd_child_care_expense_exemption(Variable):
             * child_count
             * have_childcare_expenses
         )
-        child_care_expense_exemption = min_(
-            childcare_expenses, childcare_exemption
-        )
+        child_care_expense_exemption = min_(childcare_expenses, childcare_exemption)
         # Attributing the dependent care expense exemption equally to each spouse if filing jointly
         is_married = person.family("is_married", period)
         expense_amount = where(

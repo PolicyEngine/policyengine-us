@@ -18,8 +18,7 @@ class labor_supply_behavioral_response(Variable):
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
         if (  # pragma: no cover
-            hasattr(simulation, "_lsr_calculating")
-            and simulation._lsr_calculating
+            hasattr(simulation, "_lsr_calculating") and simulation._lsr_calculating
         ):
             return 0
 
@@ -69,9 +68,7 @@ class labor_supply_behavioral_response(Variable):
                 ],
             )
             simulation = person.simulation
-            del simulation.branches["baseline"].branches[
-                "baseline_lsr_measurement"
-            ]
+            del simulation.branches["baseline"].branches["baseline_lsr_measurement"]
             del simulation.branches["lsr_measurement"]
 
             simulation.macro_cache_read = False

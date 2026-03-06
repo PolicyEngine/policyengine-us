@@ -17,9 +17,7 @@ def create_additional_tax_bracket() -> Reform:
             filing_status = tax_unit("filing_status", period)
             dwks1 = tax_unit("taxable_income", period)
 
-            dwks16 = min_(
-                p.capital_gains.thresholds["1"][filing_status], dwks1
-            )
+            dwks16 = min_(p.capital_gains.thresholds["1"][filing_status], dwks1)
             dwks17 = min_(tax_unit("dwks14", period), dwks16)
             dwks20 = dwks16 - dwks17
             lowest_rate_tax = p.capital_gains.rates["1"] * dwks20
@@ -28,9 +26,7 @@ def create_additional_tax_bracket() -> Reform:
             dwks21 = min_(dwks1, dwks13)
             dwks22 = dwks20
             dwks23 = max_(0, dwks21 - dwks22)
-            dwks25 = min_(
-                p.capital_gains.thresholds["2"][filing_status], dwks1
-            )
+            dwks25 = min_(p.capital_gains.thresholds["2"][filing_status], dwks1)
             dwks19 = tax_unit("dwks19", period)
             dwks26 = min_(dwks19, dwks20)
             dwks27 = max_(0, dwks25 - dwks26)
@@ -74,9 +70,7 @@ def create_additional_tax_bracket() -> Reform:
 
             # Return to worksheet lines
             dwks42 = reg_tax
-            dwks43 = (
-                dwks29 + dwks32 + dwks38 + dwks41 + dwks42 + lowest_rate_tax
-            )
+            dwks43 = dwks29 + dwks32 + dwks38 + dwks41 + dwks42 + lowest_rate_tax
             dwks44 = tax_unit("income_tax_main_rates", period)
             dwks45 = min_(dwks43, dwks44)
             return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)
@@ -120,9 +114,7 @@ def create_additional_tax_bracket() -> Reform:
     return reform
 
 
-def create_additional_tax_bracket_reform(
-    parameters, period, bypass: bool = False
-):
+def create_additional_tax_bracket_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_additional_tax_bracket()
 
@@ -143,6 +135,4 @@ def create_additional_tax_bracket_reform(
         return None
 
 
-additional_tax_bracket = create_additional_tax_bracket_reform(
-    None, None, bypass=True
-)
+additional_tax_bracket = create_additional_tax_bracket_reform(None, None, bypass=True)

@@ -17,17 +17,13 @@ class ak_atap_eligible(Variable):
         demographic = spm_unit("is_demographic_tanf_eligible", period)
 
         # Immigration: use federal (state follows federal qualified alien rules)
-        immigration = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
-        )
+        immigration = add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
 
         # Resources eligibility
         resources_eligible = spm_unit("ak_atap_resources_eligible", period)
 
         # Gross income test (185% standard)
-        gross_income_eligible = spm_unit(
-            "ak_atap_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("ak_atap_gross_income_eligible", period)
 
         # Net income test (need standard)
         net_income_eligible = spm_unit("ak_atap_net_income_eligible", period)

@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mi_retirement_benefits_deduction_tier_three_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the Michigan tier three retirement benefits deduction"
-    )
+    label = "Eligible for the Michigan tier three retirement benefits deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -21,6 +19,4 @@ class mi_retirement_benefits_deduction_tier_three_eligible(Variable):
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
 
-        return p.age_eligibility.calc(
-            tax_unit("greater_age_head_spouse", period)
-        )
+        return p.age_eligibility.calc(tax_unit("greater_age_head_spouse", period))

@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Check formatting
-        run: uv run black . -l 79 --check
+        run: uv run ruff format --check .
   check-changelog:
     name: Check changelog fragment
     runs-on: ubuntu-latest

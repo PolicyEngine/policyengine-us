@@ -14,9 +14,7 @@ class mn_k12_education_subtraction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mn.tax.income.subtractions.k12_education
+        p = parameters(period).gov.states.mn.tax.income.subtractions.k12_education
         # Count K-12 children - simplified, using count without grade distinction
         # In practice, different limits apply for K-6 vs 7-12
         # Using average limit as approximation: (1625 + 2500) / 2 = 2062.50

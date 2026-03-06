@@ -6,17 +6,13 @@ class medicaid_work_requirement_eligible(Variable):
     entity = Person
     label = "Eligible person for Medicaid via work requirement"
     definition_period = YEAR
-    reference = (
-        "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
-    )
+    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
         # Works no less than 80 hours p.680 (2)(A)
         monthly_hours_worked = person("monthly_hours_worked", period)
-        meets_monthly_work_hours = (
-            monthly_hours_worked >= p.monthly_hours_threshold
-        )
+        meets_monthly_work_hours = monthly_hours_worked >= p.monthly_hours_threshold
         # The individual is enrolled in an educational program at least half-time. p.680 (2)(D)
         is_full_time_student = person("is_full_time_student", period)
         # pregnant or postpartum medical assistance p.681 (3)(A)(i)(II)(bb)
@@ -51,7 +47,5 @@ class medicaid_work_requirement_eligible(Variable):
             | eligible_disabled
         )
         meets_base_requirement = meets_monthly_work_hours | exempted_from_work
-        meets_conditions = (
-            meets_base_requirement | has_eligible_dependent_child
-        )
+        meets_conditions = meets_base_requirement | has_eligible_dependent_child
         return where(work_required_age, meets_conditions, True)

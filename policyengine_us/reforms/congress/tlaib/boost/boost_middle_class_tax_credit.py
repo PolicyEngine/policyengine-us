@@ -11,9 +11,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         reference = "https://d12t4t5x3vyizu.cloudfront.net/tlaib.house.indigov.us/uploads/2022/05/TLAIB_046_xml.pdf"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.harris.lift.middle_class_tax_credit
+            p = parameters(period).gov.contrib.harris.lift.middle_class_tax_credit
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             amount = where(joint, p.cap * p.joint_multiplier, p.cap)
@@ -37,9 +35,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
-            middle_class_credit = tax_unit(
-                "boost_middle_class_tax_credit", period
-            )
+            middle_class_credit = tax_unit("boost_middle_class_tax_credit", period)
             p_boost = parameters(
                 period
             ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit

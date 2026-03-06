@@ -120,14 +120,10 @@ def create_ri_exemption_reform() -> Reform:
             excess_agi = max_(0, mod_agi - p_base.reduction.start)
             increments = np.ceil(excess_agi / p_base.reduction.increment)
             reduction_rate = min_(p_base.reduction.rate * increments, 1)
-            personal_exemption_amount = personal_exemption_base * (
-                1 - reduction_rate
-            )
+            personal_exemption_amount = personal_exemption_base * (1 - reduction_rate)
 
             # Add dependent exemption (has its own phase-out logic)
-            dependent_exemption_amount = tax_unit(
-                "ri_dependent_exemption", period
-            )
+            dependent_exemption_amount = tax_unit("ri_dependent_exemption", period)
 
             return personal_exemption_amount + dependent_exemption_amount
 

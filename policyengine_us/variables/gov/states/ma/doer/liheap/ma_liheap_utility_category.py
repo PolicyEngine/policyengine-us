@@ -5,9 +5,7 @@ class MassachusettsLIHEAPUtilityCategory(Enum):
     UTILITY_AND_HEAT_IN_RENT = (
         "Utility and Heat in Rent"  # Electric, Natural Gas, Heat in Rent
     )
-    DELIVERABLE_FUEL = (
-        "Deliverable Fuel"  # Kerosene, Heating Oil, Propane, Other
-    )
+    DELIVERABLE_FUEL = "Deliverable Fuel"  # Kerosene, Heating Oil, Propane, Other
     NONE = "None"
 
 
@@ -28,9 +26,7 @@ class ma_liheap_utility_category(Variable):
 
         electricity = heating_type == heating_types.ELECTRICITY
         natural_gas = heating_type == heating_types.NATURAL_GAS
-        heating_and_oil_propane = (
-            heating_type == heating_types.HEATING_OIL_AND_PROPANE
-        )
+        heating_and_oil_propane = heating_type == heating_types.HEATING_OIL_AND_PROPANE
         kerosene = heating_type == heating_types.KEROSENE
         other = heating_type == heating_types.OTHER
 

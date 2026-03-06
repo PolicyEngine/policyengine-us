@@ -10,9 +10,7 @@ class id_retirement_benefits_deduction_eligible_person(Variable):
     defined_for = StateCode.ID
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.deductions.retirement_benefits
+        p = parameters(period).gov.states.id.tax.income.deductions.retirement_benefits
 
         age_threshold = where(
             person("is_disabled", period),

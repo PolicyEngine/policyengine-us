@@ -14,9 +14,7 @@ class de_pension_exclusion(Variable):
     defined_for = StateCode.DE
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.de.tax.income.subtractions.exclusions.pension
+        p = parameters(period).gov.states.de.tax.income.subtractions.exclusions.pension
 
         # determine age eligibility
         age = person("age", period)

@@ -14,9 +14,7 @@ class is_snap_abawd_hr1_in_effect(Variable):
     def formula(person, period, parameters):
         # States that delay HR1 adoption have their own hr1_in_effect
         # parameter with a later effective date. Add new states here.
-        federal = parameters(
-            period
-        ).gov.usda.snap.work_requirements.abawd.in_effect
+        federal = parameters(period).gov.usda.snap.work_requirements.abawd.in_effect
         state_code = person.household("state_code", period)
         ca = parameters(
             period

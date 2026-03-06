@@ -29,14 +29,10 @@ class tx_tanf_income_for_budgetary_needs_test(Variable):
         earned_after_work_expense = max_(gross_earned - work_expense, 0)
 
         # Sum across household members
-        total_earned_after_work_expense = spm_unit.sum(
-            earned_after_work_expense
-        )
+        total_earned_after_work_expense = spm_unit.sum(earned_after_work_expense)
 
         # Apply dependent care deduction
-        dependent_care_deduction = spm_unit(
-            "tx_tanf_dependent_care_deduction", period
-        )
+        dependent_care_deduction = spm_unit("tx_tanf_dependent_care_deduction", period)
         earned_after_deductions = max_(
             total_earned_after_work_expense - dependent_care_deduction, 0
         )

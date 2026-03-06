@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class il_isbe_income_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Meets income requirements for Illinois ISBE early childhood programs"
-    )
+    label = "Meets income requirements for Illinois ISBE early childhood programs"
     definition_period = YEAR
     reference = (
         "https://www.isbe.net/pages/preschool-for-all.aspx",

@@ -17,9 +17,7 @@ class lifeline(Variable):
         p = parameters(period).gov
         base_amount = p.fcc.lifeline.amount.standard
         household = spm_unit.household
-        is_rural_tribal = and_(
-            household, period, ["is_rural", "is_on_tribal_land"]
-        )
+        is_rural_tribal = and_(household, period, ["is_rural", "is_on_tribal_land"])
         state_code = household("state_code_str", period)
 
         # Check for state-specific Lifeline programs
@@ -41,7 +39,5 @@ class lifeline(Variable):
         tx_supplement = spm_unit("tx_lifeline_supplement", period.first_month)
         total_monthly_amount = federal_monthly_amount + tx_supplement
         max_amount = total_monthly_amount * MONTHS_IN_YEAR
-        phone_broadband_cost = add(
-            spm_unit, period, ["phone_cost", "broadband_cost"]
-        )
+        phone_broadband_cost = add(spm_unit, period, ["phone_cost", "broadband_cost"])
         return min_(phone_broadband_cost, max_amount)

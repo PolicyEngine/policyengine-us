@@ -22,9 +22,7 @@ class fl_tca_eligible(Variable):
         )
 
         # Must pass both income tests
-        gross_income_eligible = spm_unit(
-            "fl_tca_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("fl_tca_gross_income_eligible", period)
         net_income_eligible = spm_unit("fl_tca_net_income_eligible", period)
 
         # Must pass resource test

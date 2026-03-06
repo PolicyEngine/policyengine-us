@@ -917,9 +917,12 @@
     sc_income_tax_before_non_refundable_credits: 0
     sc_eitc: 0
 
-# SC Additions/Subtractions Interaction
+# SC Subtractions Interaction
+# Note: sc_additions (QBI addback, SALT addback) are excluded from the
+# reform formula because it starts from AGI where those federal deductions
+# were never taken. Only sc_subtractions (retirement, military) apply.
 
-- name: Case 36, SC additions increase taxable income.
+- name: Case 36, SC subtractions reduce taxable income (additions excluded).
   period: 2026
   absolute_error_margin: 0.1
   reforms: policyengine_us.reforms.states.sc.h4216.sc_h4216.sc_h4216
@@ -941,10 +944,11 @@
         members: [person1]
         state_code: SC
   output:
-    # SC taxable income = $50,000 + $5,000 - $2,000 - $0 = $53,000
-    # Tax = $30k * 1.99% + $23k * 5.21% = $597 + $1,198.30 = $1,795.30
-    sc_taxable_income: 53_000
-    sc_income_tax_before_non_refundable_credits: 1_795.3
+    # sc_additions ignored (AGI base already excludes federal deductions)
+    # SC taxable income = $50,000 - $2,000 - $0 = $48,000
+    # Tax = $30k * 1.99% + $18k * 5.21% = $597 + $937.80 = $1,534.80
+    sc_taxable_income: 48_000
+    sc_income_tax_before_non_refundable_credits: 1_534.8
 
 # Joint Filer SCIAD Greater Than AGI
 

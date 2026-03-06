@@ -28,9 +28,7 @@ class tx_tanf_earned_income_after_disregard_person(Variable):
         is_enrolled = spm_unit("is_tanf_enrolled", period)
 
         # For applicants (not enrolled): 1/3 disregard
-        applicant_disregard = (
-            after_work_expense * p.disregards.applicant_fraction
-        )
+        applicant_disregard = after_work_expense * p.disregards.applicant_fraction
 
         # For continuing recipients (enrolled): 90% disregard (capped at $1,400)
         # Note: This disregard is limited to 4 months per 12-month period (not yet implemented)

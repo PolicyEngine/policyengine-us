@@ -16,8 +16,6 @@ class co_amt(Variable):
     def formula(tax_unit, period, parameters):
         tentative_minimum_tax = tax_unit("co_tentative_minimum_tax", period)
         # Normal tax before non-refundable credits
-        normal_tax = tax_unit(
-            "co_income_tax_before_non_refundable_credits", period
-        )
+        normal_tax = tax_unit("co_income_tax_before_non_refundable_credits", period)
         # AMT is the excess of tentative minimum tax over normal tax
         return max_(0, tentative_minimum_tax - normal_tax)

@@ -1,0 +1,305 @@
+# Working Americans' Tax Cut Act tests
+
+# === Cost of Living Exemption ===
+
+- name: Single filer below exemption amount (full exemption)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 46_000
+
+- name: Single filer at exactly exemption amount (full exemption)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 46_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 46_000
+
+- name: Single filer mid-phaseout (AGI = 60_500, midpoint of 46K to 80.5K)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 63_250
+    filing_status: SINGLE
+  output:
+    # Phase-out range: 46_000 to 80_500 (46_000 * 1.75)
+    # fraction = (80_500 - 63_250) / (80_500 - 46_000) = 17_250 / 34_500 = 0.5
+    # exemption = 46_000 * 0.5 = 23_000
+    watca_cost_of_living_exemption: 23_000
+
+- name: Single filer at exactly phase-out end (AGI = 80_500)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 80_500
+    filing_status: SINGLE
+  output:
+    # Phase-out end: 46_000 * 1.75 = 80_500; fraction = 0
+    watca_cost_of_living_exemption: 0
+
+- name: Single filer above phase-out (AGI >= 80_500)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 0
+
+- name: Joint filer below exemption (full exemption)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 50_000
+    filing_status: JOINT
+  output:
+    watca_cost_of_living_exemption: 92_000
+
+- name: HOH filer at exemption amount (full exemption)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 64_400
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    watca_cost_of_living_exemption: 64_400
+
+- name: HOH filer above phase-out (AGI >= 112_700)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 120_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Phase-out end: 64_400 * 1.75 = 112_700
+    watca_cost_of_living_exemption: 0
+
+- name: Surviving spouse filer below exemption (full exemption, same as joint)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 50_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    watca_cost_of_living_exemption: 92_000
+
+- name: Separate filer below exemption (full exemption, same as single)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SEPARATE
+  output:
+    watca_cost_of_living_exemption: 46_000
+
+# === Taxable Income Reduction ===
+
+- name: Taxable income reduced by cost of living exemption
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+    taxable_income_deductions: 0
+    exemptions: 0
+  output:
+    # AGI=30K < exemption=46K, so full exemption
+    # max(0, 30_000 - 0 - 0 - 46_000) = max(0, -16_000) = 0
+    watca_cost_of_living_exemption: 46_000
+    taxable_income: 0
+
+# === Millionaire Surtax ===
+
+- name: Single filer below $1M (no surtax)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+  output:
+    watca_millionaire_surtax: 0
+
+- name: Single filer at $1.5M (in 5% bracket)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: SINGLE
+  output:
+    # (1_500_000 - 1_000_000) * 0.05 = 25_000
+    watca_millionaire_surtax: 25_000
+
+- name: Single filer at $3M (spans 5% and 10% brackets)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 3_000_000
+    filing_status: SINGLE
+  output:
+    # (2_000_000 - 1_000_000) * 0.05 + (3_000_000 - 2_000_000) * 0.10 = 50_000 + 100_000 = 150_000
+    watca_millionaire_surtax: 150_000
+
+- name: Joint filer at $2M (in 5% bracket)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 2_000_000
+    filing_status: JOINT
+  output:
+    # (2_000_000 - 1_500_000) * 0.05 = 25_000
+    watca_millionaire_surtax: 25_000
+
+- name: Joint filer at $10M (all brackets)
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 10_000_000
+    filing_status: JOINT
+  output:
+    # (3_000_000 - 1_500_000) * 0.05 + (7_500_000 - 3_000_000) * 0.10 + (10_000_000 - 7_500_000) * 0.12
+    # = 75_000 + 450_000 + 300_000 = 825_000
+    watca_millionaire_surtax: 825_000
+
+- name: Surviving spouse uses joint surtax brackets
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 2_000_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Joint brackets: (2_000_000 - 1_500_000) * 0.05 = 25_000
+    watca_millionaire_surtax: 25_000
+
+- name: Separate filer uses single surtax brackets
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: SEPARATE
+  output:
+    # Single brackets: (1_500_000 - 1_000_000) * 0.05 = 25_000
+    watca_millionaire_surtax: 25_000
+
+- name: Surtax disabled excludes surtax from income tax
+  period: 2026
+  absolute_error_margin: 3
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    gov.contrib.congress.watca.surtax.in_effect: false
+    adjusted_gross_income: 5_000_000
+    filing_status: SINGLE
+  output:
+    # (2M-1M)*0.05 + (5M-2M)*0.10 = 50K + 300K = 350K
+    watca_millionaire_surtax: 350_000
+    # Surtax computed but not included in income_tax_before_credits
+
+# === Integration: surtax flows into income_tax_before_credits ===
+
+- name: Surtax included in income_tax_before_credits
+  period: 2026
+  absolute_error_margin: 3
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: SINGLE
+  output:
+    watca_millionaire_surtax: 25_000
+
+# === CPI Indexation (post-2026) ===
+
+- name: "2027: Single filer exemption indexed to $47,200"
+  period: 2027
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 47_200
+
+- name: "2027: Joint filer exemption indexed to $94,400"
+  period: 2027
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 50_000
+    filing_status: JOINT
+  output:
+    watca_cost_of_living_exemption: 94_400
+
+- name: "2027: HOH filer exemption indexed to $66,100"
+  period: 2027
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 50_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    watca_cost_of_living_exemption: 66_100
+
+- name: "2030: Single filer exemption indexed to $50,200"
+  period: 2030
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 50_200
+
+- name: "2030: Joint filer exemption indexed to $100,450"
+  period: 2030
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 50_000
+    filing_status: JOINT
+  output:
+    watca_cost_of_living_exemption: 100_450
+
+- name: "2035: Single filer exemption indexed to $55,400"
+  period: 2035
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    watca_cost_of_living_exemption: 55_400
+
+- name: "2027: Single filer phase-out end adjusts with indexed amount"
+  period: 2027
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    adjusted_gross_income: 82_600
+    filing_status: SINGLE
+  output:
+    # Phase-out end: 47_200 * 1.75 = 82_600; fraction = 0
+    watca_cost_of_living_exemption: 0

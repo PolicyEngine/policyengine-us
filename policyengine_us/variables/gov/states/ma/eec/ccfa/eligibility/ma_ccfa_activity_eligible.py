@@ -15,9 +15,7 @@ class ma_ccfa_activity_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Individual activity requirements
-        hours_worked = person(
-            "weekly_hours_worked_before_lsr", period.this_year
-        )
+        hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         meets_work_requirement = hours_worked >= p.weekly_hours
 
         age = person("monthly_age", period)
@@ -25,9 +23,7 @@ class ma_ccfa_activity_eligible(Variable):
 
         is_student = person("is_full_time_student", period)
 
-        individually_eligible = (
-            meets_work_requirement | work_exempt_age | is_student
-        )
+        individually_eligible = meets_work_requirement | work_exempt_age | is_student
 
         # Family-level exemptions
         is_pregnant = person("is_pregnant", period)

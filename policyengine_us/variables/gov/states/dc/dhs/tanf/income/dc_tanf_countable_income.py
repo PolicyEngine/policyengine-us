@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class dc_tanf_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "DC Temporary Assistance for Needy Families (TANF) countable income"
-    )
+    label = "DC Temporary Assistance for Needy Families (TANF) countable income"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.DC
@@ -24,6 +22,4 @@ class dc_tanf_countable_income(Variable):
         # the head or spouse
         gac_countable_income = spm_unit("dc_gac_countable_income", period)
         childcare_deduction = spm_unit("dc_tanf_childcare_deduction", period)
-        return max_(
-            income_sources - gac_countable_income - childcare_deduction, 0
-        )
+        return max_(income_sources - gac_countable_income - childcare_deduction, 0)

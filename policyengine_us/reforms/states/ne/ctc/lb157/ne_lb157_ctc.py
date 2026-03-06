@@ -9,7 +9,9 @@ def create_ne_lb157_ctc() -> Reform:
         entity = Person
         label = "Nebraska LB 157 Child Tax Credit eligible child"
         definition_period = YEAR
-        reference = "https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940"
+        reference = (
+            "https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940"
+        )
         defined_for = StateCode.NE
 
         def formula(person, period, parameters):
@@ -29,15 +31,15 @@ def create_ne_lb157_ctc() -> Reform:
         label = "Nebraska LB 157 Child Tax Credit"
         unit = USD
         definition_period = YEAR
-        reference = "https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940"
+        reference = (
+            "https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940"
+        )
         defined_for = StateCode.NE
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ne.ctc.lb157
             # Count qualifying children
-            qualifying_children = add(
-                tax_unit, period, ["ne_lb157_ctc_eligible_child"]
-            )
+            qualifying_children = add(tax_unit, period, ["ne_lb157_ctc_eligible_child"])
             # Calculate base credit
             base_credit = p.amount * qualifying_children
             # Calculate phase-out

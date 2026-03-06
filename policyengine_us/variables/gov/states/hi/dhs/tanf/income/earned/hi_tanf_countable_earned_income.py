@@ -14,9 +14,7 @@ class hi_tanf_countable_earned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         # Sum person-level countable earned income
-        earned = add(
-            spm_unit, period, ["hi_tanf_countable_earned_income_person"]
-        )
+        earned = add(spm_unit, period, ["hi_tanf_countable_earned_income_person"])
 
         # Subtract dependent care deduction (work expense)
         dependent_care = spm_unit("hi_tanf_dependent_care_deduction", period)

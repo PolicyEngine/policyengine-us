@@ -13,9 +13,7 @@ class nj_income_tax(Variable):
         p = parameters(period).gov.states.nj.tax.income
         agi = tax_unit("nj_agi", period)
         filing_status = tax_unit("filing_status", period)
-        income_tax = tax_unit(
-            "nj_income_tax_before_refundable_credits", period
-        )
+        income_tax = tax_unit("nj_income_tax_before_refundable_credits", period)
         refundable_credits = tax_unit("nj_refundable_credits", period)
         # if AGI is at or below filing threshold, tax should not be positive,
         #  but tax could still be negative if filer is due refundable credits

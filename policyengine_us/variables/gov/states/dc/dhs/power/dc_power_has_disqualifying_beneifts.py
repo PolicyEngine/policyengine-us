@@ -7,8 +7,6 @@ class dc_power_has_disqualifying_benefits(Variable):
     label = "Is receiving disqualifying benefits under DC Program on Work, Employment, and Responsibility (POWER)"
     definition_period = YEAR
     defined_for = StateCode.DC
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.72#(d)"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.72#(d)"
 
     adds = "gov.states.dc.dhs.power.disqualifying_benefits"

@@ -6,7 +6,9 @@ class in_multnomah_county_or(Variable):
     entity = Household
     definition_period = YEAR
     label = "In Multnomah County, Oregon"
-    reference = "https://multco.us/info/multnomah-county-preschool-all-personal-income-tax"
+    reference = (
+        "https://multco.us/info/multnomah-county-preschool-all-personal-income-tax"
+    )
 
     def formula(household, period, parameters):
         county = household("county_str", period)

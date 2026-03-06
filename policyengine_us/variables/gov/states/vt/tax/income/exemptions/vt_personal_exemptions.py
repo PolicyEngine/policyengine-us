@@ -8,9 +8,7 @@ class vt_personal_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VT
-    reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
-    )
+    reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.exemption

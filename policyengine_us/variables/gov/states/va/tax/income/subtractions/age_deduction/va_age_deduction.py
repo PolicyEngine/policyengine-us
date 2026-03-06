@@ -11,9 +11,7 @@ class va_age_deduction(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.subtractions.age_deduction
+        p = parameters(period).gov.states.va.tax.income.subtractions.age_deduction
 
         filing_status = tax_unit("filing_status", period)
 
@@ -27,9 +25,7 @@ class va_age_deduction(Variable):
         # Calculate the number of people who are eligible for an age deduction
         head_eligible = age_head >= p.age_minimum
         spouse_eligible = age_spouse >= p.age_minimum
-        count_eligible = head_eligible.astype(int) + spouse_eligible.astype(
-            int
-        )
+        count_eligible = head_eligible.astype(int) + spouse_eligible.astype(int)
 
         # Calculate the number of people eligible for a full age deduction
         head_eligible_for_full_deduction = (
@@ -38,10 +34,9 @@ class va_age_deduction(Variable):
         spouse_eligible_for_full_deduction = (
             birth_year_spouse < p.birth_year_limit_for_full_amount
         )
-        count_eligible_for_full_deduction = (
-            head_eligible_for_full_deduction.astype(int)
-            + spouse_eligible_for_full_deduction.astype(int)
-        )
+        count_eligible_for_full_deduction = head_eligible_for_full_deduction.astype(
+            int
+        ) + spouse_eligible_for_full_deduction.astype(int)
 
         # Calculate the maximum allowable deduction amount per filing
         maximum_allowable_deduction = p.amount * count_eligible

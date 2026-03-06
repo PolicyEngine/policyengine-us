@@ -3,9 +3,13 @@ brackets:
   - threshold:
       2023-01-01: 0
     amount:
-      2023-01-01: 1_200
+      2023-01-01: 1_800
   - threshold:
       2023-01-01: 6
+    amount:
+      2023-01-01: 1_500
+  - threshold:
+      2023-01-01: 18
     amount:
       2023-01-01: 0
 
@@ -14,8 +18,4 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   period: year
-  label: Montana child tax credit base
-  reference:
-    - title: 2023 Montana Legislature, House Bill No. 268, Section 1(2) & Section 1(7)(c)
-      href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
-
+  label: Montana child tax credit amount by age

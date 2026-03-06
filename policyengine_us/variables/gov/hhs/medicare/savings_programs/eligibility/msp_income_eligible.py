@@ -14,9 +14,7 @@ class msp_income_eligible(Variable):
     def formula(person, period, parameters):
         # Income eligible if under the QI threshold (135% FPL)
         # which is the highest threshold for standard MSP levels
-        p = parameters(
-            period
-        ).gov.hhs.medicare.savings_programs.eligibility.income.qi
+        p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income.qi
         fpg = person("msp_fpg", period)
         countable_income = person("msp_countable_income", period)
 

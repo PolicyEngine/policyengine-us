@@ -6,15 +6,11 @@ class ma_tafdc_age_limit(Variable):
     entity = Person
     label = "Applicable age limit for the Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC)"
     definition_period = YEAR
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-200"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-200"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ma.dta.tcap.tafdc.eligibility.age_limit
+        p = parameters(period).gov.states.ma.dta.tcap.tafdc.eligibility.age_limit
         is_in_secondary_school = person("is_in_secondary_school", period)
         # College attendees are not considered eligible dependents
         dependent_age_limit = where(

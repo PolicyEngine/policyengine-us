@@ -12,9 +12,7 @@ class pr_dependents_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # line 8
-        dependents = add(
-            tax_unit, period, ["pr_eligible_dependent_for_exemption"]
-        )
+        dependents = add(tax_unit, period, ["pr_eligible_dependent_for_exemption"])
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period

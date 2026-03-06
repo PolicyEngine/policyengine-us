@@ -17,9 +17,7 @@ class mn_mfip_countable_earned_income(Variable):
         # Per MN Stat. 142G.17, Subd. 7 (benefit calculation):
         # Dependent care deduction does NOT apply to benefit calculation.
         # Only apply $65 per wage earner and 50% disregard.
-        p = parameters(
-            period
-        ).gov.states.mn.dcyf.mfip.income.earned_income_disregard
+        p = parameters(period).gov.states.mn.dcyf.mfip.income.earned_income_disregard
 
         # Get gross earned income per person and sum
         person = spm_unit.members

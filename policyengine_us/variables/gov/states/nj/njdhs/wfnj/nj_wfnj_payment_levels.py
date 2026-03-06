@@ -8,9 +8,7 @@ class nj_wfnj_payment_levels(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NJ
-    reference = (
-        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3"
-    )
+    reference = "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3"
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period.this_year)

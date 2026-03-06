@@ -11,11 +11,7 @@ class wv_homestead_exemption(Variable):
     reference = "https://code.wvlegislature.gov/11-21-21/"
 
     def formula(tax_unit, period, parameters):
-        assessed_property_value = add(
-            tax_unit, period, ["assessed_property_value"]
-        )
-        p = parameters(
-            period
-        ).gov.states.wv.tax.income.exemptions.homestead_exemption
+        assessed_property_value = add(tax_unit, period, ["assessed_property_value"])
+        p = parameters(period).gov.states.wv.tax.income.exemptions.homestead_exemption
 
         return min_(assessed_property_value, p.max_amount)

@@ -15,8 +15,6 @@ class meets_snap_work_exception(Variable):
         meets_hours_requirement = hours_worked >= p.working_hours_threshold
 
         # Or participating in federal/state work-study
-        participates_in_work_study = person(
-            "is_federal_work_study_participant", period
-        )
+        participates_in_work_study = person("is_federal_work_study_participant", period)
 
         return meets_hours_requirement | participates_in_work_study

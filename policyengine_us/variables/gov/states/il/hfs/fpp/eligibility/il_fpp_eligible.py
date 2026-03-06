@@ -27,14 +27,7 @@ class il_fpp_eligible(Variable):
         # maternal health programs instead)
         not_pregnant = ~person("is_pregnant", period)
         # Use shared IL HFS immigration status check
-        immigration_eligible = person(
-            "il_hfs_immigration_status_eligible", period
-        )
+        immigration_eligible = person("il_hfs_immigration_status_eligible", period)
         # Cannot be enrolled in other non-spenddown full medical coverage
         not_on_medicaid = ~person("receives_medicaid", period)
-        return (
-            income_eligible
-            & not_pregnant
-            & immigration_eligible
-            & not_on_medicaid
-        )
+        return income_eligible & not_pregnant & immigration_eligible & not_on_medicaid

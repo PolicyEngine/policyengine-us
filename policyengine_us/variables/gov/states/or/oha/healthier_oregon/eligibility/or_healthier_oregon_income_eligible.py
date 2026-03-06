@@ -13,11 +13,7 @@ class or_healthier_oregon_income_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .oha.healthier_oregon.eligibility
-        )
+        p = parameters(period).gov.states["or"].oha.healthier_oregon.eligibility
         income_level = person("medicaid_income_level", period)
 
         age = person("age", period)

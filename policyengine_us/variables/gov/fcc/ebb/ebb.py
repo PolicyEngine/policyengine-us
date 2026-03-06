@@ -14,7 +14,5 @@ class ebb(Variable):
         broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
         p = parameters(period).gov.fcc.ebb
-        max_amount = (
-            where(tribal, p.amount.tribal, p.amount.standard) * MONTHS_IN_YEAR
-        )
+        max_amount = where(tribal, p.amount.tribal, p.amount.standard) * MONTHS_IN_YEAR
         return min_(max_amount, broadband_cost)

@@ -8,9 +8,7 @@ class is_pregnant_for_medicaid_fc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.pregnant
+        ma = parameters(period).gov.hhs.medicaid.eligibility.categories.pregnant
         income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]

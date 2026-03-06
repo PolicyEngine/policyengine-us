@@ -15,16 +15,12 @@ class nc_itemized_deductions(Variable):
         filing_status = tax_unit("filing_status", period)
 
         mortgage_interest = add(tax_unit, period, ["mortgage_interest"])
-        pirs = parameters(
-            period
-        ).gov.irs.deductions.itemized.salt_and_real_estate
+        pirs = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate
         property_taxes = min_(
             add(tax_unit, period, ["real_estate_taxes"]),
             pirs.cap[filing_status],
         )
-        pco = parameters(
-            period
-        ).gov.states.nc.tax.income.deductions.itemized.cap
+        pco = parameters(period).gov.states.nc.tax.income.deductions.itemized.cap
         capped_mortage_and_property_taxes = min_(
             mortgage_interest + property_taxes, pco.mortgage_and_property_tax
         )

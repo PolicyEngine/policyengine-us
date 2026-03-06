@@ -1,0 +1,1054 @@
+# Modelled policies metadata for PolicyEngine US
+# This is the single source of truth for program coverage information.
+# Served via the /us/metadata API as modelled_policies.
+# Consumed by policyengine-model to render the model coverage page.
+
+programs:
+  # --- Tax programs ---
+  - id: federal_income_tax
+    name: Federal income taxes
+    full_name: Federal income taxes (including credits)
+    category: Taxes
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: income_tax
+    parameter_prefix: gov.irs
+    verified_start_year: 2018
+    notes: Validated against NBER TAXSIM for 2022
+
+  - id: state_income_tax
+    name: State income taxes
+    full_name: State income taxes (including credits)
+    category: Taxes
+    agency: IRS
+    status: complete
+    coverage: US
+    has_state_variation: true
+    variable: state_income_tax
+    parameter_prefix: gov.states
+    verified_start_year: 2021
+    notes: Validated against NBER TAXSIM for 2021+
+
+  - id: payroll_taxes
+    name: Payroll taxes
+    full_name: Payroll taxes
+    category: Taxes
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: employee_payroll_tax
+    parameter_prefix: gov.irs.payroll
+    verified_start_year: 2018
+    notes: Social Security and Medicare
+
+  # --- USDA programs ---
+  - id: snap
+    name: SNAP
+    full_name: Supplemental Nutrition Assistance Program
+    category: Benefits
+    agency: USDA
+    status: complete
+    coverage: US
+    has_state_variation: true
+    variable: snap
+    parameter_prefix: gov.usda.snap
+    verified_start_year: 2021
+    notes: Min allotment params from 2021-01-01; SUA from 2021-10-01; needs some special deductions in AK, AZ, HI, NY, TN, VA
+
+  - id: wic
+    name: WIC
+    full_name: Women, Infants, and Children
+    category: Benefits
+    agency: USDA
+    status: complete
+    coverage: US
+    variable: wic
+    parameter_prefix: gov.usda.wic
+    verified_start_year: 2018
+    notes: WIC benefit values start 2018
+
+  - id: school_meals
+    name: Free and reduced school meals
+    full_name: Free and reduced price school meals
+    category: Benefits
+    agency: USDA
+    status: complete
+    coverage: US
+    variable: free_school_meals
+    parameter_prefix: gov.usda.school_meals
+    verified_start_year: 2021
+    notes: Nationwide rules
+
+  - id: summer_ebt
+    name: Summer EBT
+    full_name: Summer Electronic Benefit Transfer
+    category: Benefits
+    agency: USDA
+    status: in_progress
+    coverage: US
+
+  - id: csfp
+    name: Commodity Supplemental Food Program
+    full_name: Commodity Supplemental Food Program
+    category: Benefits
+    agency: USDA
+    status: complete
+    coverage: US
+    variable: csfp
+    parameter_prefix: gov.usda.csfp
+    verified_start_year: 2024
+    verified_end_year: 2025
+    notes: Nutritious foods for low-income pregnant/postpartum women, infants, children, and seniors
+
+  - id: fdpir
+    name: FDPIR
+    full_name: Food Distribution Program on Indian Reservations
+    category: Benefits
+    agency: USDA
+    status: partial
+    coverage: US
+    variable: fdpir
+    parameter_prefix: gov.usda.fdpir
+    notes: Benefits are input variables (not computed from eligibility rules)
+
+  # --- HHS programs ---
+  - id: medicaid
+    name: Medicaid
+    full_name: Medicaid
+    category: Healthcare
+    agency: HHS
+    status: complete
+    coverage: US
+    has_state_variation: true
+    variable: medicaid
+    parameter_prefix: gov.hhs.medicaid
+    verified_start_year: 2021
+    notes: 8 pathways
+
+  - id: chip
+    name: CHIP
+    full_name: Children's Health Insurance Program
+    category: Healthcare
+    agency: HHS
+    status: complete
+    coverage: US
+    has_state_variation: true
+    variable: chip
+    parameter_prefix: gov.hhs.chip
+    verified_start_year: 2022
+    verified_end_year: 2024
+
+  - id: aca_subsidies
+    name: ACA subsidies
+    full_name: ACA subsidies (premium tax credit)
+    category: Healthcare
+    agency: ACA
+    status: complete
+    coverage: US
+    has_state_variation: true
+    variable: aca_ptc
+    parameter_prefix: gov.aca
+    verified_start_year: 2024
+
+  - id: tanf
+    name: TANF
+    full_name: Temporary Assistance for Needy Families
+    category: Benefits
+    agency: HHS
+    status: in_progress
+    coverage: US
+    parameter_prefix: gov.hhs.tanf
+    verified_start_year: 2021
+    state_implementations:
+      - state: CA
+        status: complete
+        name: CalWORKs cash benefit
+        full_name: California CalWORKs Cash Benefit
+        variable: ca_tanf
+      - state: CO
+        status: complete
+        name: Colorado TANF
+        full_name: Colorado Works Program
+        variable: co_tanf
+      - state: DC
+        status: complete
+        name: DC TANF
+        full_name: DC Temporary Assistance for Needy Families
+        variable: dc_tanf
+      - state: IL
+        status: complete
+        name: Illinois TANF
+        full_name: Illinois Temporary Assistance for Needy Families
+        variable: il_tanf
+      - state: NY
+        status: complete
+        name: NY TANF
+        full_name: New York Temporary Assistance for Needy Families
+        variable: ny_tanf
+      - state: MA
+        status: complete
+        name: Massachusetts TAFDC
+        full_name: Transitional Aid to Families with Dependent Children
+        variable: ma_tafdc
+      - state: MT
+        status: in_progress
+        name: Montana TANF
+        full_name: Montana Temporary Assistance for Needy Families
+      - state: NC
+        status: complete
+        name: North Carolina TANF
+        full_name: North Carolina Work First
+        variable: nc_tanf
+      - state: NJ
+        status: complete
+        name: New Jersey WFNJ
+        full_name: New Jersey WorkFirst
+        variable: nj_wfnj
+      - state: TX
+        status: complete
+        name: Texas TANF
+        full_name: Texas Temporary Assistance for Needy Families
+        variable: tx_tanf
+      - state: WA
+        status: complete
+        name: Washington TANF
+        full_name: WorkFirst
+        variable: wa_tanf
+      - state: AZ
+        status: complete
+        name: Arizona TANF
+        full_name: Arizona Temporary Assistance for Needy Families
+        variable: az_tanf
+      - state: OK
+        status: complete
+        name: Oklahoma TANF
+        full_name: Oklahoma Temporary Assistance for Needy Families
+        variable: ok_tanf
+      - state: MO
+        status: complete
+        name: Missouri TANF
+        full_name: Missouri Temporary Assistance
+        variable: mo_tanf
+      - state: PA
+        status: complete
+        name: Pennsylvania TANF
+        full_name: Pennsylvania Temporary Assistance for Needy Families
+        variable: pa_tanf
+      - state: MD
+        status: complete
+        name: Maryland TCA
+        full_name: Maryland Temporary Cash Assistance
+        variable: md_tca
+      - state: SD
+        status: complete
+        name: South Dakota TANF
+        full_name: South Dakota Temporary Assistance for Needy Families
+        variable: sd_tanf
+      - state: GA
+        status: complete
+        name: Georgia TANF
+        full_name: Georgia Temporary Assistance for Needy Families
+        variable: ga_tanf
+      - state: MS
+        status: complete
+        name: Mississippi TANF
+        full_name: Mississippi Temporary Assistance for Needy Families
+        variable: ms_tanf
+      - state: IN
+        status: complete
+        name: Indiana TANF
+        full_name: Indiana Temporary Assistance for Needy Families
+        variable: in_tanf
+      - state: FL
+        status: complete
+        name: Florida TCA
+        full_name: Florida Temporary Cash Assistance
+        variable: fl_tca
+      - state: ME
+        status: complete
+        name: Maine TANF
+        full_name: Maine Temporary Assistance for Needy Families
+        variable: me_tanf
+      - state: NV
+        status: complete
+        name: Nevada TANF
+        full_name: Nevada Temporary Assistance for Needy Families
+        variable: nv_tanf
+      - state: KS
+        status: complete
+        name: Kansas TANF
+        full_name: Kansas Temporary Assistance for Needy Families
+        variable: ks_tanf
+      - state: HI
+        status: complete
+        name: Hawaii TANF
+        full_name: Hawaii Temporary Assistance for Needy Families
+        variable: hi_tanf
+      - state: DE
+        status: complete
+        name: Delaware TANF
+        full_name: Delaware Temporary Assistance for Needy Families
+        variable: de_tanf
+      - state: OR
+        status: complete
+        name: Oregon TANF
+        full_name: Oregon Temporary Assistance for Needy Families
+        variable: or_tanf
+      - state: MN
+        status: complete
+        name: Minnesota MFIP
+        full_name: Minnesota Family Investment Program
+        variable: mn_mfip
+      - state: TN
+        status: complete
+        name: Tennessee Families First
+        full_name: Tennessee Families First
+        variable: tn_ff
+      - state: WV
+        status: complete
+        name: West Virginia WORKS
+        full_name: West Virginia WORKS
+        variable: wv_works
+      - state: RI
+        status: complete
+        name: Rhode Island WORKS
+        full_name: Rhode Island WORKS
+        variable: ri_works
+      - state: NH
+        status: complete
+        name: New Hampshire FANF
+        full_name: New Hampshire Family Assistance for Needy Families
+        variable: nh_fanf
+      - state: CT
+        status: complete
+        name: Connecticut TFA
+        full_name: Connecticut Temporary Family Assistance
+        variable: ct_tfa
+      - state: OH
+        status: complete
+        name: Ohio Works First
+        full_name: Ohio Works First
+        variable: oh_owf
+      - state: MI
+        status: complete
+        name: Michigan FIP
+        full_name: Michigan Family Independence Program
+        variable: mi_fip
+      - state: WI
+        status: complete
+        name: Wisconsin Works
+        full_name: Wisconsin Works (W-2)
+        variable: wi_works
+      - state: ID
+        status: complete
+        name: Idaho TAFI
+        full_name: Temporary Assistance for Families in Idaho
+        variable: id_tafi
+      - state: NE
+        status: complete
+        name: Nebraska ADC
+        full_name: Nebraska Aid to Dependent Children
+        variable: ne_adc
+      - state: AR
+        status: complete
+        name: Arkansas TEA
+        full_name: Arkansas Transitional Employment Assistance
+        variable: ar_tea
+      - state: UT
+        status: complete
+        name: Utah FEP
+        full_name: Utah Family Employment Program
+        variable: ut_fep
+      - state: KY
+        status: complete
+        name: Kentucky K-TAP
+        full_name: Kentucky Transitional Assistance Program
+        variable: ky_ktap
+      - state: AL
+        status: complete
+        name: Alabama TANF
+        full_name: Alabama Family Assistance
+        variable: al_tanf
+      - state: AK
+        status: complete
+        name: Alaska ATAP
+        full_name: Alaska Temporary Assistance Program
+        variable: ak_atap
+      - state: IA
+        status: in_progress
+        name: Iowa FIP
+        full_name: Iowa Family Investment Program
+      - state: LA
+        status: complete
+        name: Louisiana FITAP
+        full_name: Louisiana Family Independence Temporary Assistance Program
+        variable: la_fitap
+      - state: NM
+        status: complete
+        name: New Mexico Works
+        full_name: New Mexico Works
+        variable: nm_works
+      - state: ND
+        status: complete
+        name: North Dakota TANF
+        full_name: North Dakota Temporary Assistance for Needy Families
+        variable: nd_tanf
+      - state: SC
+        status: complete
+        name: South Carolina TANF
+        full_name: South Carolina Family Independence
+        variable: sc_tanf
+      - state: VT
+        status: complete
+        name: Vermont Reach Up
+        full_name: Vermont Reach Up
+        variable: vt_reach_up
+      - state: VA
+        status: complete
+        name: Virginia TANF
+        full_name: Virginia Temporary Assistance for Needy Families
+        variable: va_tanf
+      - state: WY
+        status: complete
+        name: Wyoming POWER
+        full_name: Wyoming Personal Opportunities With Employment Responsibilities
+        variable: wy_power
+
+  - id: ccdf
+    name: CCDF
+    full_name: Child Care and Development Fund
+    category: Benefits
+    agency: HHS
+    status: partial
+    coverage: CA, CO, IL, MA, DC, NC, TX
+    state_implementations:
+      - state: CA
+        status: complete
+        name: CalWORKs childcare
+        full_name: California CalWORKs Child Care
+        variable: ca_calworks_child_care
+      - state: CO
+        status: complete
+        name: CCAP
+        full_name: Colorado Child Care Assistance Program
+        variable: co_ccap_subsidy
+        notes: CCCAP
+      - state: IL
+        status: complete
+        name: CCAP
+        full_name: Child Care Assistance Program (Illinois)
+        variable: il_ccap_eligible
+        notes: Only includes eligibility rules
+      - state: MA
+        status: complete
+        name: Massachusetts CCFA
+        full_name: Massachusetts Child Care Financial Assistance
+      - state: DC
+        status: complete
+        name: DC CCSP
+        full_name: DC Child Care Subsidy Program
+        variable: dc_ccsp
+      - state: NC
+        status: complete
+        name: North Carolina SCCA
+        full_name: North Carolina Subsidized Child Care Assistance
+        variable: nc_scca
+      - state: TX
+        status: complete
+        name: Texas CCS
+        full_name: Texas Child Care Services
+        variable: tx_ccs
+
+  - id: head_start
+    name: Head Start
+    full_name: Head Start / Early Head Start
+    category: Benefits
+    agency: HHS
+    status: partial
+    coverage: US
+    variable: head_start
+    parameter_prefix: gov.hhs.head_start
+    verified_start_year: 2022
+    notes: State enrollment/spending data from FY2022 (Sep 2021); currently adding immigration rules
+
+  - id: liheap
+    name: LIHEAP
+    full_name: Low Income Home Energy Assistance Program
+    category: Benefits
+    agency: HHS
+    status: partial
+    coverage: OR, DC, Riverside County, MA, IL
+    state_implementations:
+      - state: OR
+        status: in_progress
+        name: LIHEAP
+        full_name: Low Income Home Energy Assistance Program (Oregon)
+      - state: DC
+        status: complete
+        name: DC LIHEAP
+        full_name: DC Low Income Home Energy Assistance Program
+        variable: dc_liheap
+      - state: MA
+        status: complete
+        name: Massachusetts LIHEAP
+        full_name: Massachusetts Low Income Home Energy Assistance Program
+        variable: ma_liheap
+      - state: IL
+        status: complete
+        name: Illinois LIHEAP
+        full_name: Illinois Low Income Home Energy Assistance Program
+        variable: il_liheap
+
+  # --- SSA programs ---
+  - id: ssi
+    name: SSI
+    full_name: Supplemental Security Income
+    category: Benefits
+    agency: SSA
+    status: complete
+    coverage: US
+    variable: ssi
+    parameter_prefix: gov.ssa.ssi
+    verified_start_year: 1985
+    notes: FBR amounts from 1975; resource limits from 1985; blind SGA param unused (blind exempt from SGA)
+
+  - id: ssi_state_supplement
+    name: SSI state supplement
+    full_name: SSI State Supplement
+    category: Benefits
+    agency: SSA
+    status: partial
+    coverage: All states except AZ, AR, TN, MS, WV, ND
+    notes: SSI State Supplement programs exist in 45 states plus DC
+    state_implementations:
+      - state: CA
+        status: complete
+        name: California SSP
+        full_name: California State Supplementary Payment
+        variable: ca_state_supplement
+      - state: CO
+        status: complete
+        name: Colorado SSP
+        full_name: Colorado State Supplementary Payment
+        variable: co_state_supplement
+      - state: MA
+        status: complete
+        name: Massachusetts SSP
+        full_name: Massachusetts State Supplementary Payment
+        variable: ma_state_supplement
+      - state: IL
+        status: complete
+        name: Illinois AABD
+        full_name: Illinois Aid to the Aged, Blind or Disabled
+        variable: il_aabd
+
+  - id: social_security
+    name: Social Security
+    full_name: Social Security (Retirement, Disability, Survivors)
+    category: Benefits
+    agency: SSA
+    status: partial
+    coverage: US
+    variable: social_security
+    parameter_prefix: gov.ssa.ss
+    notes: Benefits are input variables (not computed from earnings history); payroll taxes are fully modeled
+
+  - id: medicare
+    name: Medicare
+    full_name: Medicare Parts A and B
+    category: Healthcare
+    agency: HHS
+    status: complete
+    coverage: US
+    variable: is_medicare_eligible
+    parameter_prefix: gov.hhs.medicare
+    verified_start_year: 2024
+    notes: Includes Part A (hospital) and Part B (medical) premiums with IRMAA adjustments
+
+  # --- HUD programs ---
+  - id: section_8
+    name: Section 8
+    full_name: Housing Choice Voucher Program
+    category: Housing
+    agency: HUD
+    status: in_progress
+    variable: hud_hap
+    parameter_prefix: gov.hud
+    notes: "National rules; only have AMI for Los Angeles County and Colorado. Illinois, Massachusetts in progress"
+
+  # --- FCC programs ---
+  - id: lifeline
+    name: Lifeline
+    full_name: Lifeline Program
+    category: Benefits
+    agency: FCC
+    status: complete
+    coverage: US
+    variable: lifeline
+    parameter_prefix: gov.fcc.lifeline
+    verified_start_year: 2017
+    notes: Eligibility rules start 2016-12-01; first full calendar year is 2017
+
+  - id: acp
+    name: Affordable Connectivity Program
+    full_name: Affordable Connectivity Program
+    category: Benefits
+    agency: FCC
+    status: complete
+    coverage: US
+    variable: acp
+    parameter_prefix: gov.fcc.acp
+    verified_start_year: 2022
+    verified_end_year: 2024
+    notes: Program ended in 2024
+
+  # --- ED programs ---
+  - id: pell_grant
+    name: Pell Grant
+    full_name: Federal Pell Grant
+    category: Education
+    agency: ED
+    status: complete
+    coverage: US
+    variable: pell_grant
+    parameter_prefix: gov.ed.pell_grant
+    verified_start_year: 2023
+    notes: EFC params (head/dependent assessment rates, amount limits) from 2023; SAI formula from 2024
+
+  # --- Federal tax credits ---
+  - id: education_tax_credits
+    name: Education tax credits
+    full_name: Education Tax Credits (American Opportunity Credit, Lifetime Learning Credit)
+    category: Education
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: american_opportunity_credit
+    parameter_prefix: gov.irs.credits.education
+    verified_start_year: 2022
+    notes: Includes American Opportunity Credit and Lifetime Learning Credit
+
+  - id: clean_vehicle_credits
+    name: Clean vehicle credits
+    full_name: Clean Vehicle Tax Credits (New and Used)
+    category: Energy
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: clean_vehicle_credit
+    parameter_prefix: gov.irs.credits.clean_vehicle
+    verified_start_year: 2023
+    notes: Includes new clean vehicle credit and previously owned clean vehicle credit
+
+  - id: residential_clean_energy_credit
+    name: Residential clean energy credit
+    full_name: Residential Clean Energy Credit
+    category: Energy
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: residential_clean_energy_credit
+    parameter_prefix: gov.irs.credits.residential_clean_energy
+    verified_start_year: 2021
+    notes: Credit for solar, wind, geothermal, and fuel cell property
+
+  # --- IRA / DOE programs ---
+  - id: ira_tax_credits
+    name: IRA tax credits
+    full_name: Inflation Reduction Act Tax Credits
+    category: Energy
+    agency: IRS
+    status: complete
+    coverage: US
+    variable: energy_efficient_home_improvement_credit
+    parameter_prefix: gov.irs.credits
+    verified_start_year: 2023
+    notes: Energy Efficient Home Improvement Credit
+
+  - id: doe_high_efficiency_rebate
+    name: DOE high efficiency rebate
+    full_name: High Efficiency Electric Home Rebate (HOMES Rebate)
+    category: Energy
+    agency: DOE
+    status: complete
+    coverage: US
+    variable: high_efficiency_electric_home_rebate
+    parameter_prefix: gov.doe.high_efficiency_electric_home_rebate
+    verified_start_year: 2023
+    notes: Rebates for heat pumps, water heaters, electric stoves, insulation, wiring, electrical panels
+
+  - id: doe_efficiency_rebate
+    name: DOE efficiency rebate
+    full_name: Residential Efficiency and Electrification Rebate
+    category: Energy
+    agency: DOE
+    status: complete
+    coverage: US
+    variable: residential_efficiency_electrification_rebate
+    parameter_prefix: gov.doe.residential_efficiency_electrification_rebate
+    verified_start_year: 2023
+
+  # --- State programs ---
+  - id: co_oap
+    name: Colorado OAP
+    full_name: Colorado Old Age Pension
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_oap
+    parameter_prefix: gov.states.co.ssa.oap
+    verified_start_year: 2023
+
+  - id: co_chp
+    name: Colorado CHP
+    full_name: Colorado Child Health Plan Plus
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_chp
+    parameter_prefix: gov.states.co.hcpf.chp
+    verified_start_year: 2023
+
+  - id: dc_power
+    name: DC Power
+    full_name: DC Program on Work, Employment, and Responsibility
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: DC
+    variable: dc_power
+    parameter_prefix: gov.states.dc.dhc.power
+
+  - id: dc_gac
+    name: DC GAC
+    full_name: DC General Assistance for Children
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: DC
+    variable: dc_gac
+    parameter_prefix: gov.states.dc.dhc.gac
+
+  - id: ca_cvrp
+    name: California CVRP
+    full_name: California Clean Vehicle Rebate Project
+    category: Energy
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_cvrp
+    parameter_prefix: gov.states.ca.calepa.carb.cvrp
+
+  - id: ca_capi
+    name: California CAPI
+    full_name: California Cash Assistance Program for Immigrants
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_capi
+    parameter_prefix: gov.states.ca.cdss.capi
+
+  - id: care
+    name: California CARE
+    full_name: California Alternate Rates for Energy
+    category: Energy
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_care
+    parameter_prefix: gov.states.ca.cpuc.care
+
+  - id: fera
+    name: California FERA
+    full_name: Family Electric Rate Assistance Program
+    category: Energy
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_fera
+    parameter_prefix: gov.states.ca.cpuc.fera
+
+  - id: il_fpp
+    name: Illinois Family Planning Program
+    full_name: Illinois HFS Family Planning Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_fpp_eligible
+    parameter_prefix: gov.states.il.hfs.fpp
+    notes: Only includes eligibility rules
+
+  - id: il_ibccp
+    name: Illinois IBCCP
+    full_name: Illinois Health Benefits for Persons with Breast or Cervical Cancer
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_bcc_eligible
+    parameter_prefix: gov.states.il.hfs.bcc
+    notes: Only includes eligibility rules
+
+  - id: il_hbwd
+    name: Illinois HBWD
+    full_name: Illinois Health Benefits for Workers with Disabilities
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_hbwd
+    parameter_prefix: gov.states.il.hfs.hbwd
+    notes: Medicaid buy-in program for workers with disabilities
+
+  - id: il_ihwap
+    name: Illinois IHWAP
+    full_name: Illinois Home Weatherization Assistance Program
+    category: Energy
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_ihwap_eligible
+    parameter_prefix: gov.states.il.dceo.ihwap
+    notes: Only includes eligibility rules
+
+  - id: il_scretd
+    name: Illinois SCRETD
+    full_name: Illinois Senior Citizens Real Estate Tax Deferral Program
+    category: Taxes
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_scretd_deferral_amount
+    parameter_prefix: gov.states.il.idor.scretd
+    notes: Deferral amount is a loan, not a benefit
+
+  - id: il_ipass_assist
+    name: Illinois I-PASS Assist
+    full_name: Illinois Tollway I-PASS Assist Program
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: IL
+    variable: il_ipass_assist_eligible
+    parameter_prefix: gov.states.il.tollway.ipass_assist
+    notes: Only includes eligibility rules
+
+  - id: il_bap
+    name: Illinois BAP
+    full_name: Illinois Chicago Department of Aging Benefit Access Program
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Chicago
+    variable: il_bap_eligible
+    parameter_prefix: gov.states.il.idoa.bap
+    notes: Only includes eligibility rules
+
+  - id: il_cta_benefit
+    name: Illinois CTA benefit
+    full_name: Illinois Chicago Transit Authority Benefit
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Chicago
+    variable: il_cta_benefit
+    parameter_prefix: gov.states.il.rta.cta
+
+  - id: ne_childcare
+    name: Nebraska child care subsidy
+    full_name: Nebraska Child Care Subsidy
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: NE
+    variable: ne_child_care_subsidy
+    parameter_prefix: gov.states.ne.dhhs.child_care_subsidy
+
+  - id: mbta_reduced_fare
+    name: MBTA reduced fare
+    full_name: Massachusetts Bay Transportation Authority Reduced Fare Program
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: MA
+    variable: ma_mbta_income_eligible_reduced_fare_eligible
+    parameter_prefix: gov.states.ma.dot.mbta
+    notes: Includes eligibility rules for Reduced Fares, Tap Charlie Card, and Senior Charlie Card Program
+
+  - id: ma_eaedc
+    name: Massachusetts EAEDC
+    full_name: Emergency Aid to the Elderly, Disabled, and Children
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: MA
+    variable: ma_eaedc
+    parameter_prefix: gov.states.ma.dta.tcap.eaedc
+
+  - id: ny_drive_clean_rebate
+    name: NY Drive Clean Rebate
+    full_name: New York Drive Clean Rebate
+    category: Energy
+    agency: State
+    status: complete
+    coverage: NY
+    variable: ny_drive_clean_rebate
+    parameter_prefix: gov.states.ny.nyserda.drive_clean
+
+  - id: tx_fpp_benefit
+    name: Texas FPP
+    full_name: Texas Family Planning Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: TX
+    variable: tx_fpp_benefit
+    parameter_prefix: gov.states.tx.fpp
+
+  - id: tx_dart_benefit
+    name: Texas DART
+    full_name: Texas Dallas Area Rapid Transit Benefit
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Dallas County, TX
+    variable: tx_dart_benefit_person
+    parameter_prefix: gov.states.tx.dart
+
+  - id: tx_harris_rides_subsidy
+    name: Harris County Rides Subsidy
+    full_name: Harris County Transportation Subsidy
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Harris County, TX
+    variable: tx_harris_rides_subsidy
+    parameter_prefix: gov.local.tx.harris.rides
+
+  # --- Local programs ---
+  - id: ez_save
+    name: Los Angeles County EZ Save
+    full_name: Los Angeles County EZ Save
+    category: Energy
+    agency: Local
+    status: complete
+    coverage: Los Angeles County
+    variable: ca_la_ez_save
+    parameter_prefix: gov.local.ca.la.dwp.ez_save
+
+  - id: la_infant_supplement
+    name: Los Angeles County infant supplement
+    full_name: Los Angeles County Infant Supplement
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Los Angeles County
+    variable: ca_la_infant_supplement
+    parameter_prefix: gov.local.ca.la.dss.infant_supplement
+
+  - id: la_expectant_parent
+    name: Los Angeles County expectant parent payment
+    full_name: Los Angeles County Expectant Parent Payment
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Los Angeles County
+    variable: ca_la_expectant_parent_payment
+    parameter_prefix: gov.local.ca.la.dss.expectant_parent
+
+  - id: la_general_relief
+    name: Los Angeles County General Relief
+    full_name: Los Angeles County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Los Angeles County
+    variable: la_general_relief
+    parameter_prefix: gov.local.ca.la.general_relief
+
+  - id: ca_riv_general_relief
+    name: Riverside County General Relief
+    full_name: Riverside County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Riverside County
+    variable: ca_riv_general_relief
+    parameter_prefix: gov.local.ca.riv.general_relief
+
+  - id: ca_riv_liheap
+    name: Riverside County LIHEAP
+    full_name: Riverside County LIHEAP
+    category: Energy
+    agency: Local
+    status: complete
+    coverage: Riverside County
+    variable: ca_riv_liheap_eligible
+    parameter_prefix: gov.local.ca.riv.liheap
+    notes: Only includes eligibility rules
+
+  - id: share
+    name: Riverside County SHARE
+    full_name: Riverside County Sharing Households Assist Riverside Energy program
+    category: Energy
+    agency: Local
+    status: complete
+    coverage: Riverside County
+    variable: ca_riv_share_payment
+    parameter_prefix: gov.local.ca.riv.share
+
+  - id: ca_ala_general_assistance
+    name: Alameda County General Assistance
+    full_name: Alameda County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Alameda County
+    variable: ca_ala_general_assistance
+    parameter_prefix: gov.local.ca.ala.ga
+
+  - id: nyc_income_tax
+    name: NYC income tax
+    full_name: New York City Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: New York City
+    variable: nyc_income_tax
+    parameter_prefix: gov.local.ny.nyc.tax.income
+    verified_start_year: 2022
+    notes: Local income tax for NYC residents
+
+  - id: sf_wftc
+    name: San Francisco WFTC
+    full_name: San Francisco Working Families Tax Credit
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: San Francisco
+    variable: sf_wftc
+    parameter_prefix: gov.local.ca.sf.wftc
+    notes: Local supplement to state and federal EITC
+
+  - id: montgomery_county_eitc
+    name: Montgomery County EITC
+    full_name: Montgomery County Earned Income Tax Credit
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Montgomery County, MD
+    variable: md_montgomery_eitc_refundable
+    parameter_prefix: gov.local.md.montgomery.tax.income.credits.eitc.refundable
+    notes: Refundable local EITC supplement
+
+  - id: chapter_7_bankruptcy
+    name: Chapter 7 bankruptcy
+    full_name: Chapter 7 Bankruptcy
+    category: Legal
+    status: in_progress
+    coverage: US

@@ -4,22 +4,16 @@ from policyengine_us.model_api import *
 class is_aca_ptc_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Person is eligible for ACA premium tax credit and pays ACA premium"
-    )
+    label = "Person is eligible for ACA premium tax credit and pays ACA premium"
     definition_period = YEAR
 
     def formula(person, period, parameters):
         # determine status eligibility for ACA PTC
         fstatus = person.tax_unit("filing_status", period)
         separate = fstatus == fstatus.possible_values.SEPARATE
-        immigration_eligible = person(
-            "is_aca_ptc_immigration_status_eligible", period
-        )
+        immigration_eligible = person("is_aca_ptc_immigration_status_eligible", period)
         taxpayer_has_itin = person.tax_unit("taxpayer_has_itin", period)
-        is_status_eligible = (
-            taxpayer_has_itin & ~separate & immigration_eligible
-        )
+        is_status_eligible = taxpayer_has_itin & ~separate & immigration_eligible
 
         # determine coverage eligibility for ACA plan
         INELIGIBLE_COVERAGE = [

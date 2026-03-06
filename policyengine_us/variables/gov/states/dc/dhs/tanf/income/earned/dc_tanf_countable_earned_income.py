@@ -8,8 +8,6 @@ class dc_tanf_countable_earned_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.DC
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"
 
     adds = ["dc_tanf_earned_income_after_disregard_person"]

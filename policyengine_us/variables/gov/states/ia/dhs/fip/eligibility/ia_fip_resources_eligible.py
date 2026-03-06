@@ -7,7 +7,9 @@ class ia_fip_resources_eligible(Variable):
     label = "Iowa FIP resources eligible"
     definition_period = MONTH
     defined_for = StateCode.IA
-    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=16"
+    reference = (
+        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=16"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.dhs.fip.resources

@@ -14,7 +14,5 @@ class ma_part_b_taxable_income(Variable):
         taxinc_before_exemption = tax_unit(
             "ma_part_b_taxable_income_before_exemption", period
         )
-        total_exemption = tax_unit(
-            "ma_part_b_taxable_income_exemption", period
-        )
+        total_exemption = tax_unit("ma_part_b_taxable_income_exemption", period)
         return max_(0, taxinc_before_exemption - total_exemption)

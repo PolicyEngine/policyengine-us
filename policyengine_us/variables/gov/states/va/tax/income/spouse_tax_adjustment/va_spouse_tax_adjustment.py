@@ -25,13 +25,9 @@ class va_spouse_tax_adjustment(Variable):
             where(head_or_spouse, capped_agi_less_exemptions, np.inf)
         )
         # Line 6, subtract
-        reduced_taxable_income = max_(
-            taxable_income - smaller_agi_less_exemptions, 0
-        )
+        reduced_taxable_income = max_(taxable_income - smaller_agi_less_exemptions, 0)
         # Line 7, divide taxable income in half
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.exemptions.spouse_tax_adjustment
+        p = parameters(period).gov.states.va.tax.income.exemptions.spouse_tax_adjustment
         half_of_taxable_income = taxable_income / p.divisor
         # Line 8, take the smaller of the tax calculated on line 5 or line 7
         p1 = parameters(period).gov.states.va.tax.income

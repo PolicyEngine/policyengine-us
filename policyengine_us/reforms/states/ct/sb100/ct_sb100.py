@@ -65,9 +65,7 @@ def create_ct_sb100() -> Reform:
             qualifies = agi < income_threshold
 
             # Use SB-100 rates if qualifying, otherwise standard rates
-            itax_before_personal_credits = where(
-                qualifies, sb100_tax, standard_tax
-            )
+            itax_before_personal_credits = where(qualifies, sb100_tax, standard_tax)
 
             # Apply add-backs and recaptures
             add_back = tax_unit("ct_income_tax_phase_out_add_back", period)

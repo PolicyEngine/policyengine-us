@@ -10,10 +10,6 @@ class co_ccap_re_determination_eligible(Variable):
     # defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        income_eligible = spm_unit(
-            "co_ccap_re_determination_income_eligible", period
-        )
-        has_eligible_children = (
-            spm_unit("co_ccap_eligible_children", period) > 0
-        )
+        income_eligible = spm_unit("co_ccap_re_determination_income_eligible", period)
+        has_eligible_children = spm_unit("co_ccap_eligible_children", period) > 0
         return income_eligible & has_eligible_children

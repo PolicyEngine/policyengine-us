@@ -15,6 +15,4 @@ class mt_income_tax_before_refundable_credits_indiv(Variable):
         )
         non_refundable_credits = person("mt_non_refundable_credits", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return head_or_spouse * max_(
-            income_before_credits - non_refundable_credits, 0
-        )
+        return head_or_spouse * max_(income_before_credits - non_refundable_credits, 0)

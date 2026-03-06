@@ -13,12 +13,8 @@ class la_general_relief_cash_asset_limit(Variable):
 
     def formula(spm_unit, period, parameters):
         married = add(spm_unit, period, ["is_married"])
-        p = parameters(
-            period
-        ).gov.local.ca.la.general_relief.eligibility.limit.cash
-        applicant_limit = where(
-            married, p.applicant.married, p.applicant.single
-        )
+        p = parameters(period).gov.local.ca.la.general_relief.eligibility.limit.cash
+        applicant_limit = where(married, p.applicant.married, p.applicant.single)
         # Recipients of the GR have an increased cash value limit
         recipient = spm_unit("la_general_relief_recipient", period)
         return where(recipient, p.recipient, applicant_limit)

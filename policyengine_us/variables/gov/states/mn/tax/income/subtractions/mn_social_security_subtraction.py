@@ -14,9 +14,7 @@ class mn_social_security_subtraction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mn.tax.income.subtractions.social_security
+        p = parameters(period).gov.states.mn.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         reduction_start = p.reduction.start[filing_status]
@@ -52,9 +50,7 @@ class mn_social_security_subtraction(Variable):
         mn_ald = max_(0, us_ald - student_loan_int)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)
-        alt_sub_amt = max_(
-            0, alt_amount - (net_income * p.net_income_fraction)
-        )
+        alt_sub_amt = max_(0, alt_amount - (net_income * p.net_income_fraction))
         main_reduction = min_(us_taxable_oasdi, alt_sub_amt)
         if p.reduction.applies:
             return where(

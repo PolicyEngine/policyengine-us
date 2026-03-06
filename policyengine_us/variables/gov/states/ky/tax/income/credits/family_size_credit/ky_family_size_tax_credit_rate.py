@@ -7,9 +7,7 @@ class ky_family_size_tax_credit_rate(Variable):
     label = "Kentucky family size tax credit rate"
     unit = "/1"
     definition_period = YEAR
-    reference = (
-        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
-    )
+    reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):

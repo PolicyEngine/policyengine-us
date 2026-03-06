@@ -11,9 +11,7 @@ class id_pbf_liable(Variable):
 
     def formula(tax_unit, period, parameters):
         # Not required to pay if there is no income tax
-        owes_income_tax_before_credits = tax_unit(
-            "id_income_tax_liable", period
-        )
+        owes_income_tax_before_credits = tax_unit("id_income_tax_liable", period)
 
         # Not required to pay if receiving public assistance, tanf
         receives_tanf = tax_unit.spm_unit("tanf", period) > 0
@@ -23,8 +21,4 @@ class id_pbf_liable(Variable):
         blind_spouse = tax_unit("blind_spouse", period)
         blind_head_or_spouse = blind_head | blind_spouse
 
-        return (
-            owes_income_tax_before_credits
-            & ~receives_tanf
-            & ~blind_head_or_spouse
-        )
+        return owes_income_tax_before_credits & ~receives_tanf & ~blind_head_or_spouse

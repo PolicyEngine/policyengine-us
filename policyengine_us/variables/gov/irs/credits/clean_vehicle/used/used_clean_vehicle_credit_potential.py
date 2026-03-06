@@ -6,7 +6,9 @@ class used_clean_vehicle_credit_potential(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Potential value of the Used clean vehicle credit"
-    documentation = "Nonrefundable credit for the purchase of a previously-owned clean vehicle"
+    documentation = (
+        "Nonrefundable credit for the purchase of a previously-owned clean vehicle"
+    )
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=370"
     defined_for = "used_clean_vehicle_credit_eligible"

@@ -21,9 +21,7 @@ class ny_tanf_income_eligible(Variable):
         needs_test_eligible = countable_income < need_standard
 
         # Gross income test (only applies pre-October 2022)
-        gross_income_eligible = spm_unit(
-            "ny_tanf_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("ny_tanf_gross_income_eligible", period)
 
         return where(
             p.reform_2022.in_effect,

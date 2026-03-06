@@ -14,9 +14,7 @@ class mi_homestead_property_tax_credit_countable_property_tax(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.credits.homestead_property_tax
+        p = parameters(period).gov.states.mi.tax.income.credits.homestead_property_tax
         # Line 10
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         # Line 11

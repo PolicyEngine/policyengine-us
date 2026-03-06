@@ -34,7 +34,5 @@ class refundable_ctc(Variable):
         limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
         ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
-        amount_ctc_would_increase = (
-            ctc_capped_by_increased_tax - ctc_capped_by_tax
-        )
+        amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)

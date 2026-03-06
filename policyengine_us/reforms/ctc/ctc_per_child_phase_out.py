@@ -43,9 +43,7 @@ def create_ctc_per_child_phase_out() -> Reform:
 
                 # Regular phase-out applies to base CTC + remaining ARPA addition
                 ctc_before_regular = base_ctc + arpa_addition
-                base_reduction = min_(
-                    base_reduction_uncapped, ctc_before_regular
-                )
+                base_reduction = min_(base_reduction_uncapped, ctc_before_regular)
 
                 # Return only the regular phase-out
                 # ARPA phase-out is already applied in ctc_arpa_addition
@@ -96,9 +94,7 @@ def create_ctc_per_child_phase_out() -> Reform:
     return reform
 
 
-def create_ctc_per_child_phase_out_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ctc_per_child_phase_out_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_per_child_phase_out()
 
@@ -118,6 +114,4 @@ def create_ctc_per_child_phase_out_reform(
         return None
 
 
-ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(
-    None, None, bypass=True
-)
+ctc_per_child_phase_out = create_ctc_per_child_phase_out_reform(None, None, bypass=True)

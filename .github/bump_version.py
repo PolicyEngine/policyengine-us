@@ -16,9 +16,7 @@ def get_current_version(pyproject_path: Path) -> str:
 
 def infer_bump(changelog_dir: Path) -> str:
     fragments = [
-        f
-        for f in changelog_dir.iterdir()
-        if f.is_file() and f.name != ".gitkeep"
+        f for f in changelog_dir.iterdir() if f.is_file() and f.name != ".gitkeep"
     ]
     if not fragments:
         print("No changelog fragments found", file=sys.stderr)
@@ -51,9 +49,7 @@ def bump_version(version: str, bump: str) -> str:
 
 def update_file(path: Path, old_version: str, new_version: str):
     text = path.read_text()
-    updated = text.replace(
-        f'version = "{old_version}"', f'version = "{new_version}"'
-    )
+    updated = text.replace(f'version = "{old_version}"', f'version = "{new_version}"')
     if updated != text:
         path.write_text(updated)
         print(f"  Updated {path}")

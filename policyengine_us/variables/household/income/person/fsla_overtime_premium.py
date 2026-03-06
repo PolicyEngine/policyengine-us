@@ -22,8 +22,5 @@ class fsla_overtime_premium(Variable):
         base_rate = person("employment_income", period) / hour_equivalents
         # Return only the overtime premium (e.g. the 50 % in time-and-a-half)
         return (
-            base_rate
-            * (p.rate_multiplier - 1)
-            * weekly_overtime_hours
-            * WEEKS_IN_YEAR
+            base_rate * (p.rate_multiplier - 1) * weekly_overtime_hours * WEEKS_IN_YEAR
         )

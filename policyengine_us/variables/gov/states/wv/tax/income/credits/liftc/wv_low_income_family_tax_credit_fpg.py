@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class wv_low_income_family_tax_credit_fpg(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Federal poverty guidelines for the West Virginia low-income family tax credit"
+    label = (
+        "Federal poverty guidelines for the West Virginia low-income family tax credit"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = "wv_low_income_family_tax_credit_eligible"

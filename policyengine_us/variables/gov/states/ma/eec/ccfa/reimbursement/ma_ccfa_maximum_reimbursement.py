@@ -12,12 +12,8 @@ class ma_ccfa_maximum_reimbursement(Variable):
 
     def formula(person, period, parameters):
         daily_payment = person("ma_ccfa_uncapped_daily_payment", period)
-        reimbursement_multiplier = person(
-            "ma_ccfa_reimbursement_ratio", period
-        )
+        reimbursement_multiplier = person("ma_ccfa_reimbursement_ratio", period)
         attending_days_per_month = person(
             "childcare_attending_days_per_month", period.this_year
         )
-        return (
-            daily_payment * reimbursement_multiplier * attending_days_per_month
-        )
+        return daily_payment * reimbursement_multiplier * attending_days_per_month

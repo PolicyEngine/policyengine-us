@@ -12,9 +12,7 @@ class pre_subsidy_childcare_expenses(Variable):
         # distribute the SPM unit's childcare expenses evenly across
         # children in SPM unit's Tax units
         spm_unit = person.spm_unit
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
         is_child = person("is_child", period)
         spm_unit_count_children = add(spm_unit, period, ["is_child"])
         # avoid array divide-by-zero warning by not using where() function

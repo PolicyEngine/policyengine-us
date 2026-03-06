@@ -14,16 +14,12 @@ class az_long_term_capital_gains_subtraction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.tax.income.subtractions.capital_gains
+        p = parameters(period).gov.states.az.tax.income.subtractions.capital_gains
 
         # Per ARS 43-1022(22): subtraction is for "net long-term capital gain
         # included in federal adjusted gross income". When there's an overall
         # capital loss, no LTCG is included in federal AGI.
-        long_term_capital_gains = add(
-            tax_unit, period, ["long_term_capital_gains"]
-        )
+        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
         net_capital_gains = tax_unit("net_capital_gains", period)
 
         # Only include LTCG when there's a net capital gain overall

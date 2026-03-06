@@ -89,9 +89,7 @@ def create_de_dependent_credit_reform() -> Reform:
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
             total_dependents = tax_unit.sum(is_dependent)
-            eligible_dependent_credit = tax_unit(
-                "de_eligible_dependents_count", period
-            )
+            eligible_dependent_credit = tax_unit("de_eligible_dependents_count", period)
             return max_(0, total_dependents - eligible_dependent_credit)
 
     class de_personal_credit(Variable):
@@ -137,9 +135,7 @@ def create_de_dependent_credit_reform() -> Reform:
     return reform
 
 
-def create_de_dependent_credit_reform_fn(
-    parameters, period, bypass: bool = False
-):
+def create_de_dependent_credit_reform_fn(parameters, period, bypass: bool = False):
     if bypass:
         return create_de_dependent_credit_reform()
 

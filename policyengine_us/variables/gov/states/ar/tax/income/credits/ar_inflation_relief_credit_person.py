@@ -20,9 +20,7 @@ class ar_inflation_relief_credit_person(Variable):
         joint_income = person.tax_unit.sum(net_income_joint)
         indiv_income = person("ar_taxable_income_indiv", period)
         income = where(filing_separately, indiv_income, joint_income)
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.inflationary_relief
+        p = parameters(period).gov.states.ar.tax.income.credits.inflationary_relief
         filing_status = person.tax_unit("filing_status", period)
         max_amount = p.max_amount[filing_status]
         reduction_start = p.reduction.start[filing_status]

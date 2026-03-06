@@ -10,10 +10,6 @@ class ca_ala_general_assistance_personal_property_eligible(Variable):
     reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=23"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.local.ca.ala.general_assistance.personal_property
-        personal_property = add(
-            spm_unit, period.this_year, ["personal_property"]
-        )
+        p = parameters(period).gov.local.ca.ala.general_assistance.personal_property
+        personal_property = add(spm_unit, period.this_year, ["personal_property"])
         return personal_property <= p.limit
