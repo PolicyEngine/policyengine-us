@@ -86,6 +86,15 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
   - These parameters should include `economy: false` in their metadata
 - **Labor Supply Response & Negative Earnings**: Use `max_(earnings, 0)` to prevent sign flips. Negative total earnings should result in zero labor supply responses.
 
+## Program registry (programs.yaml)
+- `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata
+- Served via the `/us/metadata` API and consumed by the model coverage page
+- **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
+- **When extending year coverage**: update `verified_years` (e.g., `"2022-2026"`) after verifying parameters and tests cover the new year
+- **When adding state implementations**: add to `state_implementations` list under the parent federal program
+- **Status values**: `complete`, `partial`, `in_progress`
+- Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local
+
 ## State Program Patterns
 - When refactoring federal programs to state-specific implementations:
   - Keep shared federal components if they're from federal regulations (CFR/USC)
