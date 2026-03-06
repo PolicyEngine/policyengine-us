@@ -27,7 +27,7 @@ make install
 pip install -e .[dev]
 
 # Format code
-make format  # Runs black with line length 79 and fixes import ordering
+make format  # Runs ruff format
 
 # Run all tests
 make test
