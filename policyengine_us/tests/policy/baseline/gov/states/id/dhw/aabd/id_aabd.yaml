@@ -1,0 +1,74 @@
+- name: Single SSI recipient in Idaho receives AABD cash payment
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 11_604
+    id_aabd_living_arrangement: SINGLE
+  output:
+    id_aabd_eligible: true
+    id_aabd: 636  # $53/month * 12
+
+- name: Idaho couple on SSI receives AABD couple payment
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 8_700
+    id_aabd_living_arrangement: COUPLE
+  output:
+    id_aabd: 240  # $20/month * 12
+
+- name: Idaho AABD participant with essential person
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 11_604
+    id_aabd_living_arrangement: ESSENTIAL_PERSON
+  output:
+    id_aabd: 216  # $18/month * 12
+
+- name: Idaho AABD participant in SIGRIF
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 11_604
+    id_aabd_living_arrangement: SIGRIF
+  output:
+    id_aabd: 2_028  # $169/month * 12
+
+- name: Idaho AABD participant in room and board
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 11_604
+    id_aabd_living_arrangement: ROOM_AND_BOARD
+  output:
+    id_aabd: 2_376  # $198/month * 12
+
+- name: Idaho AABD participant in RALF is ineligible
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 11_604
+    id_aabd_living_arrangement: RALF_CFH
+  output:
+    id_aabd_eligible: false
+    id_aabd: 0
+
+- name: Idaho resident not receiving SSI is ineligible for AABD
+  period: 2025
+  input:
+    state_code: ID
+    ssi: 0
+    id_aabd_living_arrangement: SINGLE
+  output:
+    id_aabd_eligible: false
+    id_aabd: 0
+
+- name: Non-Idaho resident not eligible for AABD
+  period: 2025
+  input:
+    state_code: CA
+    ssi: 11_604
+    id_aabd_living_arrangement: SINGLE
+  output:
+    id_aabd: 0
