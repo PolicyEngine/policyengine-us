@@ -4,7 +4,7 @@
     is_veteran: false
     veteran_disability_rating: 100
   output:
-    is_disabled_veteran: false
+    is_totally_disabled_veteran: false
 
 
 - name: Return false if veteran_disability_rating < 100
@@ -13,7 +13,7 @@
     is_veteran: true
     veteran_disability_rating: 90
   output:
-    is_disabled_veteran: false
+    is_totally_disabled_veteran: false
 
 
 - name: Return true if veteran and veteran_disability_rating >= 100
@@ -22,5 +22,5 @@
     is_veteran: true
     veteran_disability_rating: 100 
   output:
-    is_disabled_veteran: true
+    is_totally_disabled_veteran: true
 
