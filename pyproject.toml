@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.592.8"
+version = "1.596.4"
 description = "Add your description here."
 readme = "README.md"
 authors = [
@@ -78,4 +78,8 @@ showcontent = true
 directory = "removed"
 name = "Removed"
 showcontent = true
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E402", "E501", "E712", "E713", "E721", "E722", "E741", "F401", "F402", "F403", "F405", "F541", "F811", "F821", "F841"]
 

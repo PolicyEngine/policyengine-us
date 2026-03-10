@@ -1,6 +1,7 @@
 all: build
 format:
 	uv run ruff format .
+	uv run ruff check .
 install:
 	pip install -e .[dev]
 test:

@@ -19,6 +19,8 @@ class nj_gross_income(Variable):
         # Loss-eligible categories per N.J.S. 54A:5-1: each is
         # summed within the category then clamped to $0.
         cats = p.loss_eligible_categories
-        for cat in cats:
-            total += max_(add(person, period, cats[cat]), 0)
+        total += max_(add(person, period, cats.category_b), 0)
+        total += max_(add(person, period, cats.category_c), 0)
+        total += max_(add(person, period, cats.category_d), 0)
+        total += max_(add(person, period, cats.category_k_p), 0)
         return total

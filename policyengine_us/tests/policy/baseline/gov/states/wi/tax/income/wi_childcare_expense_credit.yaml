@@ -1,4 +1,4 @@
-- name: The credit was introduced in 2022
+- name: WI CDCC introduced in 2022, uses federal expense limits (fraction 0.5)
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -7,11 +7,120 @@
   output:
     wi_childcare_expense_credit: 400 # 800 * 0.5
 
-- name: 2024 CDCC
+- name: WI CDCC 2023 pre-Act-101, still uses federal limits (fraction 0.5)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    cdcc_potential: 600
+    state_code: WI
+  output:
+    wi_childcare_expense_credit: 300 # 600 * 0.5
+
+- name: WI CDCC 2024 one child, expenses under federal limit - same as federal
   absolute_error_margin: 0.01
   period: 2024
   input:
-    cdcc_potential: 800
-    state_code: WI
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 2_000
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, child]
   output:
-    wi_childcare_expense_credit: 800 # 800 * 1
+    wi_childcare_expense_credit: 400 # 2000 * 0.20 * 1.0
+
+- name: WI CDCC 2024 one child, expenses between federal limit and WI limit
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 7_000
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, child]
+  output:
+    wi_childcare_expense_credit: 1_400 # 7000 * 0.20 * 1.0
+
+- name: WI CDCC 2024 two children, expenses between federal limit and WI limit
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 80_000
+      spouse:
+        age: 33
+        employment_income: 80_000
+      child1:
+        age: 4
+      child2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 15_000
+        adjusted_gross_income: 160_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+  output:
+    wi_childcare_expense_credit: 3_000 # 15000 * 0.20 * 1.0
+
+- name: WI CDCC 2024 one child, expenses above WI limit - capped at $10,000
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 80_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 12_000
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, child]
+  output:
+    wi_childcare_expense_credit: 2_000 # min(12000, 10000) * 0.20 * 1.0
