@@ -17,6 +17,7 @@
     slcsp: 1_200
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
   output:
     aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
 
@@ -28,6 +29,7 @@
     slcsp: 1_200
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.05
+    tax_unit_is_filer: true
   output:
     aca_ptc: 0  # 1200 - 0.05 * 25000 = -50, floored to 0
 
@@ -39,5 +41,19 @@
     slcsp: 1_200
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
   output:
     aca_ptc: 0
+
+- name: ACA PTC zero for non-filers
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    takes_up_aca_if_eligible: true
+    tax_unit_is_filer: false
+  output:
+    aca_ptc: 0  # Non-filers cannot claim PTC per 26 USC § 36B
