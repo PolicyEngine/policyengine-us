@@ -1,0 +1,20 @@
+- name: Return false if no conditions set
+  period: 2027
+  output:
+    has_medicaid_work_requirement_exemption: false
+
+- name: Return true if is_totally_disabled_veteran
+  period: 2027
+  input:
+    is_totally_disabled_veteran: true
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+- name: Return true if is_medically_frail
+  period: 2027
+  input:
+    is_medically_frail: true
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+
