@@ -74,3 +74,25 @@
     # Not a Vermont resident, defined_for = VT
     # Surcharge = $0
     vt_h619_income_tax_surcharge: 0
+
+- name: Case 8, zero income.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: 0
+    state_code: VT
+  output:
+    # AGI $0 < threshold $1,000,000
+    # Surcharge = $0
+    vt_h619_income_tax_surcharge: 0
+
+- name: Case 9, negative AGI from business losses.
+  period: 2026
+  input:
+    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
+    adjusted_gross_income: -50_000
+    state_code: VT
+  output:
+    # AGI -$50,000 < threshold $1,000,000
+    # Surcharge = $0
+    vt_h619_income_tax_surcharge: 0
