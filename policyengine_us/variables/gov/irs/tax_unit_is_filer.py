@@ -26,7 +26,9 @@ class tax_unit_is_filer(Variable):
         required = tax_unit("tax_unit_is_required_to_file", period)
 
         # Would file to claim refundable credits (EITC, CTC, etc.)
-        eligible_for_credits = tax_unit("eligible_for_refundable_credits", period)
+        eligible_for_credits = tax_unit(
+            "eligible_for_refundable_credits", period
+        )
         would_file_for_credits = tax_unit(
             "would_file_if_eligible_for_refundable_credit", period
         )
@@ -35,4 +37,8 @@ class tax_unit_is_filer(Variable):
         # Would file voluntarily for other reasons
         files_voluntarily = tax_unit("would_file_taxes_voluntarily", period)
 
-        return required | files_for_credits | files_voluntarily
+        # ACA marketplace enrollment creates a filing obligation:
+        # receiving APTC requires reconciliation on a tax return.
+        files_for_aca = tax_unit("takes_up_aca_if_eligible", period)
+
+        return required | files_for_credits | files_voluntarily | files_for_aca
