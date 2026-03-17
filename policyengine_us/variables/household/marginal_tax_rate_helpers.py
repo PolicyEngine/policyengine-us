@@ -6,7 +6,8 @@ def compute_component_mtr(person, period, parameters, tax_variable, branch_prefi
 
     Uses the same counterfactual branch pattern as marginal_tax_rate:
     perturbs earnings by delta and measures the change in the given
-    tax_unit-level tax variable.
+    tax_unit-level tax variable, aggregated to the household level
+    for consistency with how marginal_tax_rate uses household_net_income.
 
     Args:
         person: The person entity.
@@ -19,7 +20,8 @@ def compute_component_mtr(person, period, parameters, tax_variable, branch_prefi
     Returns:
         Array of marginal tax rates per person.
     """
-    base_tax = person.tax_unit(tax_variable, period)
+    is_head = person("is_tax_unit_head", period)
+    base_tax = person.household.sum(person.tax_unit(tax_variable, period) * is_head)
     delta = parameters(period).simulation.marginal_tax_rate_delta
     adult_count = parameters(period).simulation.marginal_tax_rate_adults
     sim = person.simulation
@@ -47,7 +49,10 @@ def compute_component_mtr(person, period, parameters, tax_variable, branch_prefi
             self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
         )
         alt_person = alt_sim.person
-        alt_tax = alt_person.tax_unit(tax_variable, period)
+        alt_is_head = alt_person("is_tax_unit_head", period)
+        alt_tax = alt_person.household.sum(
+            alt_person.tax_unit(tax_variable, period) * alt_is_head
+        )
         increase = alt_tax - base_tax
         mtr_values += where(mask, increase / delta, 0)
         del sim.branches[branch_name]
