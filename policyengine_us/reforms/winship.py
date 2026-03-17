@@ -25,7 +25,6 @@ def create_individual_eitc() -> Reform:
             p = parameters(period).gov.contrib.individual_eitc
             takes_up_eitc = tax_unit("takes_up_eitc", period)
 
-
             # Compute EITC separately for head and spouse
             person = tax_unit.members
             adj_earnings = person("adjusted_earnings", period)
