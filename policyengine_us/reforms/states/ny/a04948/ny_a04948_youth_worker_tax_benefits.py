@@ -27,9 +27,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             in_effect = p.in_effect
             # Age requirements: 17-24
             age = person("age", period)
-            age_eligible = (age >= p.youth_eitc.min_age) & (
-                age <= p.youth_eitc.max_age
-            )
+            age_eligible = (age >= p.youth_eitc.min_age) & (age <= p.youth_eitc.max_age)
             # Cannot be claimed as dependent
             not_dependent = ~person("is_tax_unit_dependent", period)
             # Cannot be a parent (no qualifying children)
@@ -73,12 +71,8 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
 
         def formula(tax_unit, period, parameters):
-            maximum = tax_unit(
-                "ny_a04948_youth_eitc_childless_maximum", period
-            )
-            phase_in_rate = tax_unit(
-                "ny_a04948_youth_eitc_phase_in_rate", period
-            )
+            maximum = tax_unit("ny_a04948_youth_eitc_childless_maximum", period)
+            phase_in_rate = tax_unit("ny_a04948_youth_eitc_phase_in_rate", period)
             earnings = tax_unit("filer_adjusted_earnings", period)
             phased_in_amount = earnings * phase_in_rate
             return min_(maximum, phased_in_amount)
@@ -122,12 +116,8 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             earnings = tax_unit("filer_adjusted_earnings", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income = max_(earnings, agi)
-            phase_out_start = tax_unit(
-                "ny_a04948_youth_eitc_phase_out_start", period
-            )
-            phase_out_rate = tax_unit(
-                "ny_a04948_youth_eitc_phase_out_rate", period
-            )
+            phase_out_start = tax_unit("ny_a04948_youth_eitc_phase_out_start", period)
+            phase_out_rate = tax_unit("ny_a04948_youth_eitc_phase_out_rate", period)
             phase_out_region = max_(0, highest_income - phase_out_start)
             return phase_out_rate * phase_out_region
 
@@ -141,9 +131,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(tax_unit, period, parameters):
             # Calculate federal childless EITC (as if 0 qualifying children)
-            maximum = tax_unit(
-                "ny_a04948_youth_eitc_childless_maximum", period
-            )
+            maximum = tax_unit("ny_a04948_youth_eitc_childless_maximum", period)
             phased_in = tax_unit("ny_a04948_youth_eitc_phased_in", period)
             reduction = tax_unit("ny_a04948_youth_eitc_reduction", period)
             limitation = max_(0, maximum - reduction)
@@ -206,9 +194,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             is_single = filing_status == filing_status.possible_values.SINGLE
             # Must be the filer
             is_filer = person("is_tax_unit_head_or_spouse", period)
-            return (
-                in_effect & age_eligible & not_dependent & is_single & is_filer
-            )
+            return in_effect & age_eligible & not_dependent & is_single & is_filer
 
     class ny_a04948_youth_standard_deduction(Variable):
         value_type = float
@@ -228,9 +214,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             in_effect = p.in_effect
             # Check if filer is eligible
             person = tax_unit.members
-            eligible = person(
-                "ny_a04948_youth_standard_deduction_eligible", period
-            )
+            eligible = person("ny_a04948_youth_standard_deduction_eligible", period)
             filer_eligible = tax_unit.any(eligible)
             enhanced_deduction = p.youth_standard_deduction.amount
             return where(in_effect & filer_eligible, enhanced_deduction, 0)
@@ -246,9 +230,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(tax_unit, period, parameters):
             # Get standard NY standard deduction based on filing status
-            dependent_elsewhere = tax_unit(
-                "head_is_dependent_elsewhere", period
-            )
+            dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
             p = parameters(period).gov.states.ny.tax.income.deductions.standard
             filing_status = tax_unit("filing_status", period)
             standard = where(
@@ -257,9 +239,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
                 p.amount[filing_status],
             )
             # Check for youth enhanced standard deduction
-            youth_deduction = tax_unit(
-                "ny_a04948_youth_standard_deduction", period
-            )
+            youth_deduction = tax_unit("ny_a04948_youth_standard_deduction", period)
             # Use the greater of standard or youth enhanced deduction
             return max_(standard, youth_deduction)
 
@@ -299,9 +279,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             # deduction (since the deduction is subtracted from AGI)
             agi = tax_unit("adjusted_gross_income", period)
             # Add back the federal student loan interest deduction
-            federal_sli_ald = add(
-                person, period, ["student_loan_interest_ald"]
-            )
+            federal_sli_ald = add(person, period, ["student_loan_interest_ald"])
             total_federal_sli = tax_unit.sum(federal_sli_ald)
             magi = agi + total_federal_sli
             reduction_start = p_fed.reduction.start[filing_status]
@@ -390,6 +368,6 @@ def create_ny_a04948_youth_worker_tax_benefits_reform(
         return None
 
 
-ny_a04948_youth_worker_tax_benefits = (
-    create_ny_a04948_youth_worker_tax_benefits_reform(None, None, bypass=True)
+ny_a04948_youth_worker_tax_benefits = create_ny_a04948_youth_worker_tax_benefits_reform(
+    None, None, bypass=True
 )
