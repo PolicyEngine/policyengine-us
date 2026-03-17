@@ -1,0 +1,9 @@
+- name: State MTR is zero in TX (no state income tax)
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    state_marginal_tax_rate: 0
