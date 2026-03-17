@@ -1,0 +1,40 @@
+- name: Federal MTR for single filer in TX (no state income tax)
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.22
+
+- name: State MTR is zero in TX (no state income tax)
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    state_marginal_tax_rate: 0
+
+- name: FICA MTR for single filer below SS wage base
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    fica_marginal_tax_rate: 0.0765
+
+- name: FICA MTR above SS wage base (Medicare + Additional Medicare Tax)
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    state_fips: 48  # TX
+  output:
+    # 1.45% Medicare + 0.9% Additional Medicare Tax (threshold is $200k)
+    fica_marginal_tax_rate: 0.0235
