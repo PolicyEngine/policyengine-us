@@ -1,6 +1,6 @@
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .dc_kccatc import create_dc_kccatc_reform
-from .winship import create_eitc_winship_reform
+from .winship import create_individual_eitc_reform
 from .dc_tax_threshold_joint_ratio import (
     create_dc_tax_threshold_joint_ratio_reform,
 )
@@ -191,7 +191,7 @@ import warnings
 
 def create_structural_reforms_from_parameters(parameters, period):
     afa_reform = create_american_family_act_with_baby_bonus_reform(parameters, period)
-    winship_reform = create_eitc_winship_reform(parameters, period)
+    winship_reform = create_individual_eitc_reform(parameters, period)
     dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
     dc_tax_threshold_joint_ratio_reform = create_dc_tax_threshold_joint_ratio_reform(
         parameters, period

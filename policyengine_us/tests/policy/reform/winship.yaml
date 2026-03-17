@@ -4,7 +4,7 @@
 - name: Case 1, individual EITC gives bonus for dual-earner couple.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
+  reforms: policyengine_us.reforms.winship.individual_eitc_reform
   input:
     gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 100_000
@@ -30,7 +30,7 @@
 - name: Case 2, EITC for 30k head income only.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
+  reforms: policyengine_us.reforms.winship.individual_eitc_reform
   input:
     gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 100_000
@@ -54,7 +54,7 @@
 - name: Case 3, EITC for 20k head income only.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
+  reforms: policyengine_us.reforms.winship.individual_eitc_reform
   input:
     gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 100_000
@@ -78,7 +78,7 @@
 - name: Case 4, AGI limit blocks EITC when AGI exceeds limit.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
+  reforms: policyengine_us.reforms.winship.individual_eitc_reform
   input:
     gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 19_000
@@ -103,9 +103,7 @@
 - name: Case 5, reform disabled returns baseline EITC.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
   input:
-    gov.contrib.individual_eitc.in_effect: false
     people:
       person1:
         employment_income: 20_000
@@ -128,7 +126,7 @@
 - name: Case 6, no AGI limit when set to 0.
   period: 2023
   absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
+  reforms: policyengine_us.reforms.winship.individual_eitc_reform
   input:
     gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 0
