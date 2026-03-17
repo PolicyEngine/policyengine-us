@@ -6,15 +6,27 @@
     employment_income: 100_000
     state_fips: 48  # TX
   output:
+    # 6.2% SS + 1.45% Medicare
     fica_marginal_tax_rate: 0.0765
 
-- name: FICA MTR above SS wage base (Medicare + Additional Medicare Tax)
+- name: FICA MTR above SS wage base but below Additional Medicare threshold
   absolute_error_margin: 0.001
   period: 2026
   input:
     age: 40
-    employment_income: 200_000
+    employment_income: 190_000
     state_fips: 48  # TX
   output:
-    # 1.45% Medicare + 0.9% Additional Medicare Tax (threshold is $200k)
+    # SS wage base is $186k in 2026, so only 1.45% Medicare applies
+    fica_marginal_tax_rate: 0.0145
+
+- name: FICA MTR above Additional Medicare Tax threshold
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 250_000
+    state_fips: 48  # TX
+  output:
+    # 1.45% Medicare + 0.9% Additional Medicare Tax
     fica_marginal_tax_rate: 0.0235

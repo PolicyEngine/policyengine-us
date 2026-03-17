@@ -7,3 +7,23 @@
     state_fips: 48  # TX
   output:
     state_marginal_tax_rate: 0
+
+- name: State MTR for CA filer in 9.3% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 6  # CA
+  output:
+    state_marginal_tax_rate: 0.093
+
+- name: State MTR for NY filer in 5.9% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 36  # NY
+  output:
+    state_marginal_tax_rate: 0.059

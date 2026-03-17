@@ -1,4 +1,14 @@
-- name: Federal MTR for single filer in TX (no state income tax)
+- name: Federal MTR in 12% bracket
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 30_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.12
+
+- name: Federal MTR in 22% bracket
   absolute_error_margin: 0.001
   period: 2026
   input:
@@ -7,3 +17,13 @@
     state_fips: 48  # TX
   output:
     federal_marginal_tax_rate: 0.22
+
+- name: Federal MTR in 32% bracket
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 250_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.32
