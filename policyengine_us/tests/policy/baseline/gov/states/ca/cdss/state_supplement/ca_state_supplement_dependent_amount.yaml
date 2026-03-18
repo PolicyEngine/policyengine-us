@@ -1,5 +1,6 @@
 - name: One eligible dependent
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -18,10 +19,11 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_state_supplement_dependent_amount: 5_988
+    ca_state_supplement_dependent_amount: 12_483.24
 
 - name: One eligible dependent, one ineligible
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -44,4 +46,4 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_dependent_amount: 5_988
+    ca_state_supplement_dependent_amount: 12_483.24
