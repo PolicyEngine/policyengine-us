@@ -9,7 +9,7 @@
     standard_deduction: 30_750
     id_standard_deduction: 30_750
 
-- name: Idaho uses its own 2025 joint base amount with one aged filer
+- name: Idaho adopts the 2025 joint base amount with one aged filer
   period: 2025
   input:
     state_code: ID
@@ -17,8 +17,8 @@
     age_head: 70
     age_spouse: 40
   output:
-    id_standard_deduction: 31_600
-    state_standard_deduction: 31_600
+    id_standard_deduction: 33_100
+    state_standard_deduction: 33_100
 
 - name: Idaho dependent worksheet caps the 2025 single standard deduction at the state amount
   period: 2025

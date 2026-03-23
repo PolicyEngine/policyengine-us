@@ -9,14 +9,15 @@ class id_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.ID
     reference = (
-        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_09-29-2025.pdf#page=9",
+        "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022/",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=8",
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=8",
     )
 
     def formula(tax_unit, period, parameters):
-        # Idaho matched the federal standard deduction through 2024. In 2025,
-        # Form 40 moved to state-specific base amounts while keeping the same
-        # aged/blind worksheet structure.
+        # Idaho adopts the federal standard deduction, but from 2025 onward the
+        # Idaho return requires worksheet-specific handling for dependents and
+        # married filing separately itemization.
         if period.start.year < 2025:
             return tax_unit("standard_deduction", period)
 
