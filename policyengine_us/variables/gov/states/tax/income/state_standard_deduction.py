@@ -13,6 +13,7 @@ class state_standard_deduction(Variable):
         # Based on comments in state_standard_deductions.yaml
         FEDERAL_STANDARD_DEDUCTION_STATES = [
             "CT",  # Connecticut
+            "ID",  # Idaho
             "ME",  # Maine
             "MO",  # Missouri
             "ND",  # North Dakota
