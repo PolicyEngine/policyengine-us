@@ -22,6 +22,7 @@ class id_standard_deduction(Variable):
             return tax_unit("standard_deduction", period)
 
         p = parameters(period).gov.states.id.tax.income.deductions.standard
+        irs_dependent = parameters(period).gov.irs.deductions.standard.dependent
         filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
         dependent_elsewhere = tax_unit(
@@ -31,7 +32,11 @@ class id_standard_deduction(Variable):
         base_amount = p.base_amount[filing_status]
         dependent_amount = min_(
             base_amount,
-            max_(tax_unit("tax_unit_earned_income", period) + 450, 1_350),
+            max_(
+                tax_unit("tax_unit_earned_income", period)
+                + irs_dependent.additional_earned_income,
+                irs_dependent.amount,
+            ),
         )
         core_deduction = select(
             [separate_filer_itemizes, dependent_elsewhere],
