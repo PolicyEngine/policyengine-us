@@ -23,9 +23,9 @@ class id_standard_deduction(Variable):
         p = parameters(period).gov.states.id.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
-        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period) | tax_unit(
-            "spouse_is_dependent_elsewhere", period
-        )
+        dependent_elsewhere = tax_unit(
+            "head_is_dependent_elsewhere", period
+        ) | tax_unit("spouse_is_dependent_elsewhere", period)
 
         base_amount = p.base_amount[filing_status]
         dependent_amount = min_(
