@@ -1,0 +1,32 @@
+- name: Idaho keeps the federal standard deduction through 2024
+  period: 2024
+  input:
+    state_code: ID
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 40
+  output:
+    standard_deduction: 30_750
+    id_standard_deduction: 30_750
+
+- name: Idaho uses its own 2025 joint base amount with one aged filer
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: JOINT
+    age_head: 70
+    age_spouse: 40
+  output:
+    id_standard_deduction: 31_600
+    state_standard_deduction: 31_600
+
+- name: Idaho dependent worksheet caps the 2025 single standard deduction at the state amount
+  period: 2025
+  input:
+    state_code: ID
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: true
+    tax_unit_earned_income: 8_000
+    age_head: 30
+  output:
+    id_standard_deduction: 8_450

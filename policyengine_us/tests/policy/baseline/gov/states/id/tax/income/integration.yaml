@@ -228,3 +228,26 @@
   output:
     # Grocery credit: 2 people * $155 = $310 (aged credit not in effect for 2025)
     id_grocery_credit: 310
+
+- name: Taxsim issue 730 - 2025 mixed-age joint filer uses Idaho standard deduction
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_interest_income: 49_998
+        rent: 10_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 16  # ID
+  output:
+    id_standard_deduction: 31_600
+    id_taxable_income: 18_398
+    id_income_tax: 165.12799
