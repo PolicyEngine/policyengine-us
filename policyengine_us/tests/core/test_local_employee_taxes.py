@@ -10,6 +10,7 @@ WAGES = 100_000
 
 def make_local_tax_simulation(
     state_code: str,
+    period: str = PERIOD,
     *,
     pa_philadelphia_wage_tax_taxable_wages: float = 0,
     pa_philadelphia_wage_tax_resident: bool = False,
@@ -27,44 +28,44 @@ def make_local_tax_simulation(
         situation={
             "people": {
                 "person": {
-                    "age": {PERIOD: 30},
-                    "employment_income": {PERIOD: WAGES},
+                    "age": {period: 30},
+                    "employment_income": {period: WAGES},
                     "pa_philadelphia_wage_tax_taxable_wages": {
-                        PERIOD: pa_philadelphia_wage_tax_taxable_wages
+                        period: pa_philadelphia_wage_tax_taxable_wages
                     },
                     "pa_philadelphia_wage_tax_resident": {
-                        PERIOD: pa_philadelphia_wage_tax_resident
+                        period: pa_philadelphia_wage_tax_resident
                     },
                     "pa_philadelphia_wage_tax_reduced_rate_eligible": {
-                        PERIOD: pa_philadelphia_wage_tax_reduced_rate_eligible
+                        period: pa_philadelphia_wage_tax_reduced_rate_eligible
                     },
                     "mo_kansas_city_earnings_tax_taxable_earnings": {
-                        PERIOD: mo_kansas_city_earnings_tax_taxable_earnings
+                        period: mo_kansas_city_earnings_tax_taxable_earnings
                     },
                     "mo_st_louis_earnings_tax_taxable_earnings": {
-                        PERIOD: mo_st_louis_earnings_tax_taxable_earnings
+                        period: mo_st_louis_earnings_tax_taxable_earnings
                     },
                     "mo_st_louis_earnings_tax_credit": {
-                        PERIOD: mo_st_louis_earnings_tax_credit
+                        period: mo_st_louis_earnings_tax_credit
                     },
                     "co_denver_employee_occupational_privilege_tax_months": {
-                        PERIOD: co_denver_employee_occupational_privilege_tax_months
+                        period: co_denver_employee_occupational_privilege_tax_months
                     },
                     "co_glendale_employee_occupational_privilege_tax_months": {
-                        PERIOD: co_glendale_employee_occupational_privilege_tax_months
+                        period: co_glendale_employee_occupational_privilege_tax_months
                     },
                     "co_greenwood_village_employee_occupational_privilege_tax_months": {
-                        PERIOD: co_greenwood_village_employee_occupational_privilege_tax_months
+                        period: co_greenwood_village_employee_occupational_privilege_tax_months
                     },
                     "co_sheridan_employee_occupational_privilege_tax_months": {
-                        PERIOD: co_sheridan_employee_occupational_privilege_tax_months
+                        period: co_sheridan_employee_occupational_privilege_tax_months
                     },
                 }
             },
             "households": {
                 "household": {
                     "members": ["person"],
-                    "state_code": {PERIOD: state_code},
+                    "state_code": {period: state_code},
                 }
             },
             "tax_units": {"tax_unit": {"members": ["person"]}},
@@ -75,8 +76,8 @@ def make_local_tax_simulation(
     )
 
 
-def calculate(sim: Simulation, variable: str) -> float:
-    return sim.calculate(variable, PERIOD)[0]
+def calculate(sim: Simulation, variable: str, period: str = PERIOD) -> float:
+    return sim.calculate(variable, period)[0]
 
 
 @pytest.mark.parametrize(
@@ -152,6 +153,19 @@ def test_local_income_tax_components(
 ):
     sim = make_local_tax_simulation(state_code, **inputs)
     assert calculate(sim, variable) == pytest.approx(expected, abs=0.01)
+
+
+def test_philadelphia_wage_tax_uses_historical_rate_schedule():
+    sim = make_local_tax_simulation(
+        "PA",
+        period="2024",
+        pa_philadelphia_wage_tax_taxable_wages=WAGES,
+        pa_philadelphia_wage_tax_resident=True,
+    )
+
+    assert calculate(sim, "pa_philadelphia_wage_tax", "2024") == pytest.approx(
+        3_750, abs=0.01
+    )
 
 
 def test_local_occupational_tax_components():
