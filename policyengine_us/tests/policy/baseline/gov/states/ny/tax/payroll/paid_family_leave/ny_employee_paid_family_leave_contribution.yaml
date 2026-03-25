@@ -1,35 +1,71 @@
-- name: Low income earner at $10,000
+- name: 2024 low income at $10,000
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: NY
     irs_employment_income: 10_000
   output:
-    ny_employee_paid_family_leave_contribution: 37.30  # $10,000 × 0.00373
+    ny_employee_paid_family_leave_contribution: 37.30  # $10,000 x 0.00373
 
-- name: Middle income earner at $50,000
+- name: 2024 middle income at $50,000
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: NY
     irs_employment_income: 50_000
   output:
-    ny_employee_paid_family_leave_contribution: 186.50  # $50,000 × 0.00373
+    ny_employee_paid_family_leave_contribution: 186.50  # $50,000 x 0.00373
 
-- name: High income earner at $100,000 - should hit cap
+- name: 2024 high income hits cap
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: NY
     irs_employment_income: 100_000
   output:
-    ny_employee_paid_family_leave_contribution: 333.25  # Capped at maximum contribution (would be $373 uncapped)
+    ny_employee_paid_family_leave_contribution: 333.25  # Capped at max ($100,000 x 0.00373 = $373 uncapped)
 
-- name: Outside New York state - should return 0
+- name: 2024 non-NY resident
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: CA
     irs_employment_income: 50_000
   output:
-    ny_employee_paid_family_leave_contribution: 0  # Not in NY, so no NY PFL contribution
+    ny_employee_paid_family_leave_contribution: 0
+
+- name: 2025 middle income at $50,000
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 50_000
+  output:
+    ny_employee_paid_family_leave_contribution: 194.00  # $50,000 x 0.00388
+
+- name: 2021 middle income at $50,000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 50_000
+  output:
+    ny_employee_paid_family_leave_contribution: 255.50  # $50,000 x 0.00511
+
+- name: 2024 zero income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 0
+  output:
+    ny_employee_paid_family_leave_contribution: 0
+
+- name: 2024 near cap boundary
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    irs_employment_income: 89_344
+  output:
+    ny_employee_paid_family_leave_contribution: 333.25  # $89,344 x 0.00373 = $333.25, exactly at cap

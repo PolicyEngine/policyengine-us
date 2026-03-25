@@ -5,7 +5,10 @@ class ny_employee_paid_family_leave_contribution(Variable):
     value_type = float
     entity = Person
     label = "New York employee paid family leave contribution"
-    documentation = "Employee-side New York Paid Family Leave contribution."
+    reference = (
+        "https://paidfamilyleave.ny.gov/cost",
+        "https://www.nysenate.gov/legislation/laws/WKC/209",
+    )
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.NY
