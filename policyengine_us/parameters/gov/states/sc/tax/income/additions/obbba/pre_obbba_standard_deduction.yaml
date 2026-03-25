@@ -1,0 +1,27 @@
+description: >-
+  South Carolina conforms to this standard deduction amount,
+  which is the pre-OBBBA indexed value for 2025.
+
+SINGLE:
+  2025-01-01: 15_000
+JOINT:
+  2025-01-01: 30_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 22_500
+SEPARATE:
+  2025-01-01: 15_000
+SURVIVING_SPOUSE:
+  2025-01-01: 30_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: SC pre-OBBBA conformity standard deduction
+  breakdown:
+    - filing_status
+  propagate_metadata_to_children: true
+  reference:
+    - title: SC 1040 Instructions 2025 - Line 2e Other additions
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=3
+    - title: CBO Tax Parameters 2025 (pre-OBBBA projections)
+      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx

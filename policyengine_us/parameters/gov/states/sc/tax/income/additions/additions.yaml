@@ -7,6 +7,10 @@ values:
     # - Interest income on obligations of states and political subdivisions other than South Carolina
     # - Other additions to income
     - qualified_business_income_deduction
+  2025-01-01:
+    - sc_state_tax_addback
+    - qualified_business_income_deduction
+    - sc_obbba_addback
 
 metadata:
   unit: list
