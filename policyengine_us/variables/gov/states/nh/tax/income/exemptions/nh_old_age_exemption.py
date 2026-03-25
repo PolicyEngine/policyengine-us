@@ -14,9 +14,9 @@ class nh_old_age_exemption(Variable):
         p = parameters(period).gov.states.nh.tax.income.exemptions
 
         # Check if the individual's eligibility.
-        head_eligible = (
-            tax_unit("age_head", period) >= p.old_age_eligibility
-        ).astype(int)
+        head_eligible = (tax_unit("age_head", period) >= p.old_age_eligibility).astype(
+            int
+        )
 
         # Check if the individual spouse's eligibility.
         spouse_eligible = (

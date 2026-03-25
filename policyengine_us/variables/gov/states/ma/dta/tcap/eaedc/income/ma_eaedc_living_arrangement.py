@@ -20,6 +20,4 @@ class ma_eaedc_living_arrangement(Variable):
     definition_period = MONTH
     label = "Massachusetts EAEDC living arrangement"
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-435"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-435"

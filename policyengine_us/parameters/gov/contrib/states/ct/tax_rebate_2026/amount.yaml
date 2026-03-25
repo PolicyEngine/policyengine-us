@@ -1,0 +1,26 @@
+description: Connecticut provides this rebate amount by filing status under the proposed 2026 tax rebate.
+
+metadata:
+  label: Connecticut 2026 tax rebate amount
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: CT Mirror - Gov. Lamont's tax rebate proposal
+      href: https://ctmirror.org/2026/02/16/gov-lamonts-tax-rebate-what-you-need-to-know/
+
+JOINT:
+  2026-01-01: 400
+
+SINGLE:
+  2026-01-01: 200
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 320
+
+SEPARATE:
+  2026-01-01: 200
+
+SURVIVING_SPOUSE:
+  2026-01-01: 400

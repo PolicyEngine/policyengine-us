@@ -21,9 +21,7 @@ class tx_tanf_countable_resources(Variable):
         cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
 
         # Vehicle resources (apply vehicle exemption: one automobile up to $4,650)
-        vehicle_value = spm_unit.household(
-            "household_vehicles_value", period.this_year
-        )
+        vehicle_value = spm_unit.household("household_vehicles_value", period.this_year)
         p = parameters(period).gov.states.tx.tanf.resources
         countable_vehicle_value = max_(vehicle_value - p.vehicle_exemption, 0)
 

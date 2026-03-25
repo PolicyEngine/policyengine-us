@@ -38,16 +38,12 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
             expenses = tax_unit("cdcc_relevant_expenses", period)
             ny_rate = tax_unit("ny_cdcc_rate", period)
             federal_rate = tax_unit("cdcc_rate", period)
-            standard_ny_cdcc = min_(
-                cdcc_max, expenses * ny_rate * federal_rate
-            )
+            standard_ny_cdcc = min_(cdcc_max, expenses * ny_rate * federal_rate)
 
             # Use enhanced credit if reform is in effect and income is
             # at or below the threshold
             eligible_for_enhanced = ny_agi <= income_threshold
-            return where(
-                eligible_for_enhanced, enhanced_cdcc, standard_ny_cdcc
-            )
+            return where(eligible_for_enhanced, enhanced_cdcc, standard_ny_cdcc)
 
     class reform(Reform):
         def apply(self):
@@ -56,9 +52,7 @@ def create_ny_a06774_enhanced_cdcc() -> Reform:
     return reform
 
 
-def create_ny_a06774_enhanced_cdcc_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ny_a06774_enhanced_cdcc_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ny_a06774_enhanced_cdcc()
 
@@ -70,6 +64,4 @@ def create_ny_a06774_enhanced_cdcc_reform(
         return None
 
 
-ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(
-    None, None, bypass=True
-)
+ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(None, None, bypass=True)

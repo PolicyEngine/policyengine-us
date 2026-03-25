@@ -21,9 +21,7 @@ class sc_two_wage_earner_credit(Variable):
         person = tax_unit.members
         income = person("sc_gross_earned_income", period)
         head_income = tax_unit.max(income * person("is_tax_unit_head", period))
-        spouse_income = tax_unit.max(
-            income * person("is_tax_unit_spouse", period)
-        )
+        spouse_income = tax_unit.max(income * person("is_tax_unit_spouse", period))
         # Determine lesser of head and spouse income.
         lesser_head_spouse_income = min_(head_income, spouse_income)
         # Calculate credit based on rate.

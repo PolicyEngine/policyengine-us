@@ -1,5 +1,5 @@
 - name: Age ineligible
-  period: 2024
+  period: 2019
   input:
     school_meal_fpg_ratio: 1.3
     age: 59
@@ -7,7 +7,7 @@
     commodity_supplemental_food_program: 0
 
 - name: Income ineligible
-  period: 2024
+  period: 2019
   input:
     school_meal_fpg_ratio: 1.31
     age: 60
@@ -15,9 +15,25 @@
     commodity_supplemental_food_program: 0
 
 - name: Eligible
-  period: 2024
+  period: 2019
   input:
     school_meal_fpg_ratio: 1.30
     age: 60
   output:
     commodity_supplemental_food_program: 330
+
+- name: Case 4, eligible in 2024.
+  period: 2024
+  input:
+    school_meal_fpg_ratio: 1.30
+    age: 60
+  output:
+    commodity_supplemental_food_program: 531
+
+- name: Case 5, eligible in 2025 with updated amount.
+  period: 2025
+  input:
+    school_meal_fpg_ratio: 1.50
+    age: 60
+  output:
+    commodity_supplemental_food_program: 601

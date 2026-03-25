@@ -7,9 +7,7 @@ class ok_tanf_payment_standard(Variable):
     label = "Oklahoma TANF payment standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-59"
-    )
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-59"
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):

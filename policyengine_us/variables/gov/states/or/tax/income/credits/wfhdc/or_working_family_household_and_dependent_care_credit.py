@@ -18,9 +18,7 @@ class or_working_family_household_and_dependent_care_credit(Variable):
         income_category = tax_unit("or_wfhdc_income_category", period)
 
         # Get the corresponding table column for each household.
-        eligibility_category = tax_unit(
-            "or_wfhdc_eligibility_category", period
-        )
+        eligibility_category = tax_unit("or_wfhdc_eligibility_category", period)
 
         # Get the OR WFHDC percentage based on the table letter and column.
         match_percentage = p.match[income_category][eligibility_category]

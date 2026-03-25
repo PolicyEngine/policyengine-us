@@ -20,9 +20,7 @@ class tx_tanf_countable_earned_income(Variable):
         )
 
         # Apply dependent care deduction (per § 372.409 (a)(3))
-        dependent_care_deduction = spm_unit(
-            "tx_tanf_dependent_care_deduction", period
-        )
+        dependent_care_deduction = spm_unit("tx_tanf_dependent_care_deduction", period)
 
         # Countable earned income after all deductions
         return max_(earned_after_disregards - dependent_care_deduction, 0)

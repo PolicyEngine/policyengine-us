@@ -10,9 +10,7 @@ class vt_child_care_contributions(Variable):
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.child_care_contributions
+        p = parameters(period).gov.states.vt.tax.income.child_care_contributions
         if p.applies:
             income = add(tax_unit, period, ["self_employment_income"])
             applicable_income = max_(0, income) * p.rate.income

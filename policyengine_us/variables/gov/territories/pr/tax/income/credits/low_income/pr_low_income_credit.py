@@ -11,10 +11,6 @@ class pr_low_income_credit(Variable):
     defined_for = "pr_low_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.credits.low_income.amount
-        eligible_people = tax_unit(
-            "pr_low_income_credit_eligible_people", period
-        )
+        p = parameters(period).gov.territories.pr.tax.income.credits.low_income.amount
+        eligible_people = tax_unit("pr_low_income_credit_eligible_people", period)
         return p.base * eligible_people

@@ -12,9 +12,7 @@ class oh_lump_sum_distribution_credit_eligible(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.lump_sum_distribution
+        p = parameters(period).gov.states.oh.tax.income.credits.lump_sum_distribution
         lump_sum_distribution_received = (
             tax_unit("form_4972_lumpsum_distributions", period) > 0
         )

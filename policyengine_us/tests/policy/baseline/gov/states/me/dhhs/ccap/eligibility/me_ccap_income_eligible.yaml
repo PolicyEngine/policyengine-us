@@ -1,0 +1,247 @@
+# Income eligibility tests use me_ccap_countable_income as direct input
+# to isolate from TANF/SSI feedback loop in income pipeline.
+
+- name: Case 1, family of 4 just below 125% SMI threshold, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # SMI for ME family of 4 (2024-10-01) = $113,259.
+        # 125% = $141,573.75/yr.
+        # Monthly limit = $11,797.81.
+        # Set monthly income just below.
+        me_ccap_countable_income: 11_750
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    me_ccap_income_eligible: true
+
+- name: Case 2, family of 4 above 125% SMI, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        # 125% SMI for size 4 = $141,573.75/yr = $11,797.81/mo.
+        # Set monthly income above.
+        me_ccap_countable_income: 12_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    me_ccap_income_eligible: false
+
+- name: Case 3, family of 2 low income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_countable_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ccap_income_eligible: true
+
+- name: Case 4, family of 2 moderate income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # 125% SMI for size 2 (2024-10-01) = $96,270.15/yr = $8,022.51/mo.
+        me_ccap_countable_income: 6_667
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ccap_income_eligible: true
+
+# === Edge cases: income boundary tests ===
+# SMI for ME (2025-10-01) 4-person = $118,065.
+
+- name: Case 5, income exactly at 125% SMI for size 2, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Size 2 annual SMI = 118,065 * 0.68 = $80,284.20.
+        # 125% SMI = $100,355.25/yr.
+        # Monthly limit = $8,362.94.
+        me_ccap_countable_income: 8_362.92
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # 8362.92 <= 8362.94 => eligible.
+    me_ccap_income_eligible: true
+
+- name: Case 6, income just above 125% SMI for size 2, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Monthly limit = $8,362.94.
+        me_ccap_countable_income: 8_363
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # 8363 > 8362.94 => ineligible.
+    me_ccap_income_eligible: false
+
+- name: Case 7, zero income, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_countable_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ccap_income_eligible: true
+
+- name: Case 8, family size 1, income at boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Size 1 annual SMI = 118,065 * 0.52 = $61,393.80.
+        # 125% SMI = $76,742.25/yr.
+        # Monthly limit = $6,395.19.
+        me_ccap_countable_income: 6_395.17
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 6395.17 <= 6395.19 => eligible.
+    me_ccap_income_eligible: true
+
+- name: Case 9, large family size 10.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 5
+      person8:
+        age: 4
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        # Size 10: adjustment = 0.52 + 5*0.16 + 4*0.03 = 1.44.
+        # Annual SMI = 118,065 * 1.44 = $170,013.60.
+        # 125% SMI = $212,517.00/yr.
+        # Monthly limit = $17,709.75.
+        me_ccap_countable_income: 15_833.33
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: ME
+  output:
+    # $15,833.33 <= $17,709.75 => eligible.
+    me_ccap_income_eligible: true

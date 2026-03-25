@@ -35,9 +35,7 @@ class hud_income_level(Variable):
         moderate_threshold = spm_unit("hud_moderate_income_factor", period)
         low_threshold = spm_unit("hud_low_income_factor", period)
         very_low_threshold = spm_unit("hud_very_low_income_factor", period)
-        especially_low_threshold = spm_unit(
-            "hud_especially_low_income_factor", period
-        )
+        especially_low_threshold = spm_unit("hud_especially_low_income_factor", period)
         # Return the lowest matching one.
         return select(
             [

@@ -15,9 +15,7 @@ class az_military_retirement_subtraction(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.tax.income.subtractions.military_retirement
+        p = parameters(period).gov.states.az.tax.income.subtractions.military_retirement
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = person("military_retirement_pay", period)

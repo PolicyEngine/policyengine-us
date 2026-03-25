@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ma_ccfa_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Massachusetts Child Care Financial Assistance (CCFA) federal poverty guideline"
+    label = (
+        "Massachusetts Child Care Financial Assistance (CCFA) federal poverty guideline"
+    )
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.MA

@@ -1,5 +1,6 @@
-- name: Case 1, no income receives full transitional standard.
+- name: Case 1, no income receives full cash transitional standard.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -15,15 +16,16 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # Transitional standard for 2: $1,087
-    # Family wage level: $1,196
-    # Countable earned: $0
-    # Countable unearned: $0
-    # Benefit = min(1196-0, 1087) - 0 = $1,087
-    mn_mfip: 1_087
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: 1087 * 1.1 = $1,195.7
+    # Earned-based: min(1195.7-0, 1087) = $1,087
+    # Gross: max(1087-0, 0) = $1,087
+    # Cash benefit: max(1087-445, 0) = $642
+    mn_mfip: 642
 
 - name: Case 2, earned income reduces benefit.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -40,17 +42,18 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # Transitional standard for 2: $1,087
-    # Family wage level: 1,087 * 1.10 = $1,195.70
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: $1,195.7
     # Gross earned: $500/month
     # Countable earned: (500-65)*0.5 = $217.50
-    # Countable unearned: $0
     # Earned-based: min(1195.7-217.5, 1087) = min(978.2, 1087) = $978.20
-    # Benefit = max(978.2 - 0, 0) = $978.20
-    mn_mfip: 978.2
+    # Gross: max(978.2-0, 0) = $978.20
+    # Cash benefit: max(978.2-445, 0) = $533.20
+    mn_mfip: 533.2
 
 - name: Case 3, unearned income reduces benefit.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -67,16 +70,17 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # Transitional standard for 2: $1,087
-    # Family wage level: $1,196
-    # Countable earned: $0
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: $1,195.7
     # Child support: $300, disregard: $100, countable: $200
-    # Earned-based: min(1196-0, 1087) = $1,087
-    # Benefit = max(1087 - 200, 0) = $887
-    mn_mfip: 887
+    # Earned-based: min(1195.7-0, 1087) = $1,087
+    # Gross: max(1087-200, 0) = $887
+    # Cash benefit: max(887-445, 0) = $442
+    mn_mfip: 442
 
 - name: Case 4, both earned and unearned income.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -94,17 +98,19 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # Transitional standard for 2: $1,087
-    # Family wage level: 1,087 * 1.10 = $1,195.70
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: $1,195.7
     # Gross earned: $500/month
     # Countable earned: (500-65)*0.5 = $217.50
     # Child support: $200, disregard: $100, countable: $100
     # Earned-based: min(1195.7-217.5, 1087) = min(978.2, 1087) = $978.20
-    # Benefit = max(978.2 - 100, 0) = $878.20
-    mn_mfip: 878.2
+    # Gross: max(978.2-100, 0) = $878.20
+    # Cash benefit: max(878.2-445, 0) = $433.20
+    mn_mfip: 433.2
 
 - name: Case 5, ineligible due to no children.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -122,6 +128,7 @@
 
 - name: Case 6, family of three with no income.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -139,5 +146,63 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # Transitional standard for 3: $1,394
-    mn_mfip: 1_394
+    # Cash TS for 3: $756, Food: $638, Full TS: $1,394
+    # FWL: $1,533.4
+    # Earned-based: min(1533.4-0, 1394) = $1,394
+    # Gross: max(1394-0, 0) = $1,394
+    # Cash benefit: max(1394-638, 0) = $756
+    mn_mfip: 756
+
+- name: Case 7, high unearned income floors gross benefit to zero.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 14_400  # $1,200/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: $1,195.7
+    # Child support: $1,200, disregard: $100, countable unearned: $1,100
+    # Earned-based: min(1195.7-0, 1087) = $1,087
+    # Gross: max(1087-1100, 0) = $0 (unearned floor hit)
+    # Cash benefit: max(0-445, 0) = $0
+    mn_mfip: 0
+
+- name: Case 8, food subtraction floors cash benefit to zero.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 9_600  # $800/month
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Cash TS for 2: $642, Food: $445, Full TS: $1,087
+    # FWL: $1,195.7
+    # Child support: $800, disregard: $100, countable unearned: $700
+    # Earned-based: min(1195.7-0, 1087) = $1,087
+    # Gross: max(1087-700, 0) = $387
+    # Cash benefit: max(387-445, 0) = $0 (food subtraction floor hit)
+    mn_mfip: 0

@@ -54,9 +54,7 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
                 "is_aca_ptc_immigration_status_eligible", period
             )
             taxpayer_has_itin = person.tax_unit("taxpayer_has_itin", period)
-            is_status_eligible = (
-                taxpayer_has_itin & ~separate & immigration_eligible
-            )
+            is_status_eligible = taxpayer_has_itin & ~separate & immigration_eligible
 
             # determine coverage eligibility for ACA plan
             INELIGIBLE_COVERAGE = [
@@ -65,9 +63,7 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
                 "is_aca_eshi_eligible",
                 "is_medicare_eligible",
             ]
-            is_coverage_eligible = (
-                add(person, period, INELIGIBLE_COVERAGE) == 0
-            )
+            is_coverage_eligible = add(person, period, INELIGIBLE_COVERAGE) == 0
 
             # determine income eligibility for ACA PTC (using reform parameter)
             p = parameters(period).gov.contrib.aca.ptc_700_fpl_cliff
@@ -77,9 +73,7 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
             # determine which people pay an age-based ACA plan premium
             p_aca = parameters(period).gov.aca
             is_aca_adult = person("age", period) > p_aca.slcsp.max_child_age
-            child_pays = (
-                person("aca_child_index", period) <= p_aca.max_child_count
-            )
+            child_pays = person("aca_child_index", period) <= p_aca.max_child_count
             pays_aca_premium = is_aca_adult | child_pays
 
             return (
@@ -97,9 +91,7 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
     return reform
 
 
-def create_aca_ptc_700_fpl_cliff_reform(
-    parameters, period, bypass: bool = False
-):
+def create_aca_ptc_700_fpl_cliff_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_aca_ptc_700_fpl_cliff()
 
@@ -120,6 +112,4 @@ def create_aca_ptc_700_fpl_cliff_reform(
         return None
 
 
-aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(
-    None, None, bypass=True
-)
+aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(None, None, bypass=True)

@@ -1,13 +1,21 @@
-description: Texas applies this monthly copayment rate for each additional child in care beyond the first, based on household income as a percentage of State Median Income under the Child Care Services program.
+description: Texas uses this share as the additional child copayment factor under the Child Care Services program.
+
+# The BCY2025 chart says "Add 0.15% for each additional child", which is
+# the rate increment per 10% SMI bracket step (e.g., 0.30% at 20%, 0.45% at 30%).
+# The BCY2026 chart shows the rate at each bracket explicitly (0.015% at 1% SMI).
+# Both describe the same linear formula: rate = SMI% * 1.5%, so the factor is 0.015.
+# At higher SMI brackets, the 7% total cap reduces the effective rate.
 
 values:
-  2024-10-01: 0.0015
+  2024-10-01: 0.015
 metadata:
   unit: /1
   period: month
-  label: Texas CCS monthly copayment rate per additional child
+  label: Texas CCS additional child copayment factor
   reference:
     - title: 40 TAC §809.19 - Parent Share of Cost
       href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
     - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
-      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-psoc-chart-twc.pdf
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf
+    - title: TWC BCY2026 Parent Share of Cost Sliding Fee Scale
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy-26-psoc-chart-twc.pdf

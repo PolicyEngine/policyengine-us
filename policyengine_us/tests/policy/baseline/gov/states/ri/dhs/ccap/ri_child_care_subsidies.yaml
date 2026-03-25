@@ -1,0 +1,35 @@
+# Tests for ri_child_care_subsidies (YEAR wrapper)
+# Verifies annual aggregation of monthly ri_ccap.
+
+- name: Annual child care subsidies equals 12 times monthly benefit.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 13_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Monthly ri_ccap = 850 (from integration test Case 1)
+    # Annual = 850 * 12 = 10_200
+    ri_child_care_subsidies: 10_200

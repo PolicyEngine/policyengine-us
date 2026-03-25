@@ -31,9 +31,7 @@ class pa_tax_forgiveness_rate(Variable):
         p = parameters(period).gov.states.pa.tax.income.forgiveness
         base = p.base * base_multiplier
         rate_per_dependent = p.dependent_rate
-        eligibility_income_increment = base + (
-            rate_per_dependent * child_dependents
-        )
+        eligibility_income_increment = base + (rate_per_dependent * child_dependents)
         excess = eligibility_income - eligibility_income_increment
         forgiveness_increment = p.rate_increment
         increments = excess / forgiveness_increment

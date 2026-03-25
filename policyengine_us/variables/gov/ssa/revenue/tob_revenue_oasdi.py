@@ -61,9 +61,7 @@ class tob_revenue_oasdi(Variable):
 
         # Clear only non-input cached calculations before setting new value
         input_vars = set(branch_capped.input_variables)
-        for var_name in list(
-            branch_capped.tax_benefit_system.variables.keys()
-        ):
+        for var_name in list(branch_capped.tax_benefit_system.variables.keys()):
             if var_name not in input_vars:
                 try:
                     branch_capped.delete_arrays(var_name)

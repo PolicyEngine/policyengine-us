@@ -6,7 +6,5 @@ class tax_exempt_403b_distributions(Variable):
     entity = Person
     label = "tax-exempt 403(b) distributions"
     unit = USD
-    documentation = (
-        "Tax-exempt distributions from 403(b) accounts (typically Roth)."
-    )
+    documentation = "Tax-exempt distributions from 403(b) accounts (typically Roth)."
     definition_period = YEAR

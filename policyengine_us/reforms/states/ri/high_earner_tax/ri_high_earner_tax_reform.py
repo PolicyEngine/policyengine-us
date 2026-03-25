@@ -11,18 +11,26 @@ def create_ri_high_earner_tax() -> Reform:
         defined_for = StateCode.RI
         unit = USD
         definition_period = YEAR
+        documentation = """
+        Rhode Island H7317 additional tax on high-income filers.
+        For tax years beginning on or after January 1, 2027, an additional
+        3% tax is imposed on taxable income exceeding the inflation-adjusted
+        threshold of $640,000 (in 2026 dollars).
+        """
 
         def formula(tax_unit, period, parameters):
             income = tax_unit("ri_taxable_income", period)
             p_baseline = parameters(period).gov.states.ri.tax.income.rate
             p_reform = parameters(period).gov.contrib.states.ri.high_earner_tax
 
-            # Use reform brackets if in effect, otherwise use baseline
-            reform_active = p_reform.in_effect
-            reform_tax = p_reform.brackets.calc(income)
+            # Calculate baseline tax
             baseline_tax = p_baseline.calc(income)
 
-            return where(reform_active, reform_tax, baseline_tax)
+            # Add surtax if reform is in effect
+            reform_active = p_reform.in_effect
+            surtax = p_reform.brackets.calc(income)
+
+            return baseline_tax + where(reform_active, surtax, 0)
 
     class reform(Reform):
         def apply(self):

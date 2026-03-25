@@ -1,0 +1,74 @@
+description: The IRS limits 401(k) catch-up contributions to this amount based on the individual's age.
+
+brackets:
+  - threshold:
+      values:
+        2018-01-01: 0
+    amount:
+      values:
+        2018-01-01: 0
+  - threshold:
+      values:
+        2018-01-01: 50
+    amount:
+      values:
+        2018-01-01: 6_000
+        2020-01-01: 6_500
+        2023-01-01: 7_500
+        2024-01-01: 7_500
+        2025-01-01: 7_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 500
+  - threshold:
+      values:
+        2018-01-01: 60
+    amount:
+      values:
+        2018-01-01: 6_000
+        2020-01-01: 6_500
+        2023-01-01: 7_500
+        2024-01-01: 7_500
+        # SECURE 2.0 enhanced catch-up begins in 2025
+        # The greater of $10,000 or 150% of the standard catch-up
+        2025-01-01: 11_250
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 500
+  - threshold:
+      values:
+        2018-01-01: 64
+    amount:
+      values:
+        2018-01-01: 6_000
+        2020-01-01: 6_500
+        2023-01-01: 7_500
+        2024-01-01: 7_500
+        2025-01-01: 7_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 500
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  amount_period: year
+  label: 401(k) catch-up contribution limit by age
+  reference:
+    - title: 26 CFR 1.414(v)-1(c)(2) - Applicable dollar catch-up limit
+      href: https://www.law.cornell.edu/cfr/text/26/1.414(v)-1#c_2
+    - title: 26 USC 414(v)(2)(E) - Increased catch-up contribution limit for individuals aged 60-63
+      href: https://www.law.cornell.edu/uscode/text/26/414#v_2_E
+    - title: IRS announcement - 401(k) limit increases for 2025
+      href: https://www.irs.gov/newsroom/401k-limit-increases-to-23500-for-2025-ira-limit-remains-7000
+    - title: Cost-of-Living Adjustments for Retirement Items
+      href: https://www.irs.gov/pub/irs-tege/cola-table.pdf#page=1

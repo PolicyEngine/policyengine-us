@@ -1,4 +1,10 @@
 description: Kentucky sets this payment maximum under the Kentucky Transitional Assistance Program.
+# NOTE: Nov 2025 values are sourced from the KY FACES state web application,
+# not a regulatory instrument (KAR amendment or administrative order).
+# The KY FACES table uses "Number of Children" while the KAR regulation uses
+# "Number of Eligible Persons." FACES "Number of Children" values are mapped
+# directly to assistance unit size (e.g., 1 child = size 1). This mapping
+# should be verified when the official regulatory source becomes available.
 
 metadata:
   unit: currency-USD
@@ -6,23 +12,41 @@ metadata:
   breakdown:
     - range(1, 8)
   breakdown_labels:
-    - Assistance group size
+    - Assistance unit size
   label: Kentucky K-TAP payment maximum
   reference:
     - title: 921 KAR 2:016 Section 9(2)(a)
       href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+    - title: 921 KAR 2:016 Section 9(2)(a) (pre-2023 version)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/10142/
+    - title: KY FACES - Kentucky Transitional Assistance Program (KTAP)
+      href: https://prd.webapps.chfs.ky.gov/kyfaces/Kinship/KTAP
 
 1:
-  2023-03-01: 372
+  1997-07-01: 186
+  2023-02-16: 372
+  2025-11-01: 242
 2:
-  2023-03-01: 450
+  1997-07-01: 225
+  2023-02-16: 450
+  2025-11-01: 293
 3:
-  2023-03-01: 524
+  1997-07-01: 262
+  2023-02-16: 524
+  2025-11-01: 341
 4:
-  2023-03-01: 656
+  1997-07-01: 328
+  2023-02-16: 656
+  2025-11-01: 426
 5:
-  2023-03-01: 766
+  1997-07-01: 383
+  2023-02-16: 766
+  2025-11-01: 498
 6:
-  2023-03-01: 864
+  1997-07-01: 432
+  2023-02-16: 864
+  2025-11-01: 562
 7:
-  2023-03-01: 964
+  1997-07-01: 482
+  2023-02-16: 964
+  2025-11-01: 627

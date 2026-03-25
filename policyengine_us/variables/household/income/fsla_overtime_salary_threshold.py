@@ -14,9 +14,7 @@ class fsla_overtime_salary_threshold(Variable):
 
     def formula_2014(person, period, parameters):
         p = parameters(period).gov.irs.income.exemption.overtime
-        category = person(
-            "fsla_overtime_occupation_exemption_category", period
-        )
+        category = person("fsla_overtime_occupation_exemption_category", period)
 
         # Initialize all thresholds to HCE - this applies to everyone by default
         # except for those who are always exempt (military, never worked)
@@ -24,17 +22,13 @@ class fsla_overtime_salary_threshold(Variable):
 
         # Special category thresholds (these override HCE if they're lower)
         is_computer = category == OvertimeExemptionCategory.COMPUTER_SCIENTIST
-        is_exec_admin = (
-            category == OvertimeExemptionCategory.EXECUTIVE_ADMINISTRATIVE
-        )
+        is_exec_admin = category == OvertimeExemptionCategory.EXECUTIVE_ADMINISTRATIVE
         is_farmer_fisher = category == OvertimeExemptionCategory.FARMER_FISHER
 
         threshold = np.where(
             is_computer,
             np.minimum(
-                p.computer_salary_threshold
-                * WEEKS_IN_YEAR
-                * p.hours_threshold,
+                p.computer_salary_threshold * WEEKS_IN_YEAR * p.hours_threshold,
                 p.hce_salary_threshold,
             ),
             threshold,

@@ -43,7 +43,5 @@ def create_limit_salt_deduction_to_property_taxes_reform(
 
 
 limit_salt_deduction_to_property_taxes = (
-    create_limit_salt_deduction_to_property_taxes_reform(
-        None, None, bypass=True
-    )
+    create_limit_salt_deduction_to_property_taxes_reform(None, None, bypass=True)
 )

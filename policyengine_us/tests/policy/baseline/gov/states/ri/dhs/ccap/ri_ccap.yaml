@@ -1,0 +1,214 @@
+# ri_ccap: SPMUnit, float, MONTH
+# monthly benefit = min(max(pre_subsidy_childcare_expenses - copay, 0), max_weekly_benefit * 52) / 12
+# 2025 FPG family of 3: 15_650 + 5_500 * 2 = 26_650
+
+- name: Case 1, basic eligible family with childcare expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPG family of 2: 15_650 + 5_500 = 21_150
+    # FPL ratio = 30_000 / 21_150 = 1.4184 -> 5% copay rate
+    # annual copay = 30_000 * 0.05 = 1_500
+    # max weekly = $236 (Center FT Star 1 Preschool)
+    # max annual = 236 * 52 = 12_272
+    # uncapped = max(12_000 - 1_500, 0) = 10_500
+    # annual benefit = min(10_500, 12_272) = 10_500
+    # monthly = 10_500 / 12 = 875
+    ri_ccap: 875
+
+- name: Case 2, ineligible family gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # income 70,000 > 261% FPL of 21,150 = 55,201.50 -> ineligible
+    ri_ccap: 0
+
+- name: Case 3, benefit capped at maximum annual rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPG family of 2: 21_150
+    # FPL ratio = 15_000 / 21_150 = 0.709 -> 0% copay rate
+    # copay = 0
+    # max weekly = $236 (Center FT Star 1 Preschool)
+    # max annual = 236 * 52 = 12_272
+    # uncapped = max(20_000 - 0, 0) = 20_000
+    # annual benefit = min(20_000, 12_272) = 12_272
+    # monthly = 12_272 / 12 = 1_022.67
+    ri_ccap: 1_022.67
+
+- name: Case 4, zero childcare expenses gives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap: 0
+
+- name: Case 5, zero income family gets zero copay and full subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # $0 income -> FPL ratio = 0 -> copay rate = 0% -> copay = 0
+    # max weekly = $236 (Center FT Star 1 Preschool)
+    # max annual = 236 * 52 = 12_272
+    # uncapped = max(10_000 - 0, 0) = 10_000
+    # annual benefit = min(10_000, 12_272) = 10_000
+    # monthly = 10_000 / 12 = 833.33
+    ri_ccap: 833.33
+
+- name: Case 6, copay exceeds expenses gives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 5
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPG family of 2: 21_150
+    # FPL ratio = 50_000 / 21_150 = 2.364 -> 7% copay rate
+    # annual copay = 50_000 * 0.07 = 3_500
+    # uncapped = max(2_000 - 3_500, 0) = 0
+    # benefit = 0
+    ri_ccap: 0

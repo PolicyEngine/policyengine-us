@@ -1,0 +1,9 @@
+description: When true, the Montana Child Tax Credit requires at least $1 of earned income. When false, no earned income is required.
+
+values:
+  0000-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Montana child tax credit earned income requirement in effect

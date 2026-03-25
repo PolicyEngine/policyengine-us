@@ -20,8 +20,6 @@ class me_tanf_countable_unearned_income(Variable):
 
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])
-        child_support_deduction = min_(
-            child_support, p.child_support_deduction
-        )
+        child_support_deduction = min_(child_support, p.child_support_deduction)
 
         return max_(gross_unearned - child_support_deduction, 0)

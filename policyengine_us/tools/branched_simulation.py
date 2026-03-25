@@ -26,8 +26,8 @@ class BranchedSimulation:
         return self.branched_simulation
 
     def __exit__(self, type, value, traceback):
-        added_variables = set(
-            get_stored_variables(self.branched_simulation)
-        ) - set(self.computed_variables)
+        added_variables = set(get_stored_variables(self.branched_simulation)) - set(
+            self.computed_variables
+        )
         for variable in added_variables:
             self.simulation.get_holder(variable).delete_arrays()

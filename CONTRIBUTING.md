@@ -173,6 +173,25 @@ This will align the code to the black Python formatting standard, and ensure eac
 **Remember to run `git pull upstream master` every time before you *Sync* or *Create a new PR* **
 
 
+### Code coverage exclusions
+
+We aim for 100% code coverage, but some code paths cannot be tested in unit tests. Use `# pragma: no cover` **only** for these specific cases:
+
+1. **Microsimulation-specific branches** - Code that only executes during microsimulation over datasets:
+   - `simulation.is_over_dataset` branches
+   - `simulation.has_axes` branches
+
+2. **Behavioral response code requiring reform scenarios** - Code that uses simulation branching to compare baseline vs reform:
+   - `simulation.get_branch()` calls
+   - `simulation.baseline` access
+
+**Do NOT use `# pragma: no cover` for:**
+- Code that simply lacks tests (write tests instead)
+- Complex logic that seems hard to test (find a way to test it)
+- Edge cases or error handling (these should be tested)
+
+If you're unsure whether code qualifies for exclusion, write a test. The above categories represent code that fundamentally cannot execute in a unit test context.
+
 ### Peer reviews
 
 All pull requests must be reviewed by someone else than their original author.

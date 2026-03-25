@@ -29,8 +29,7 @@ class co_omnisalud_immigration_status_eligible(Variable):
 
         # Check if undocumented
         undocumented = (
-            immigration_status
-            == immigration_status.possible_values.UNDOCUMENTED
+            immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )
 
         # Check if DACA (covered before 2025)

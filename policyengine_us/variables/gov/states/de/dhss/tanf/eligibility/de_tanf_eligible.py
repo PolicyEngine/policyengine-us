@@ -20,9 +20,7 @@ class de_tanf_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         # State-specific eligibility tests
-        gross_income_eligible = spm_unit(
-            "de_tanf_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("de_tanf_gross_income_eligible", period)
         net_income_eligible = spm_unit("de_tanf_net_income_eligible", period)
         resources_eligible = spm_unit("de_tanf_resources_eligible", period)
 

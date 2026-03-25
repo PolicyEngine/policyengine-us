@@ -1,0 +1,48 @@
+- name: Indiana overtime income deduction in 2026 with overtime
+  period: 2026
+  input:
+    state_code: IN
+    fsla_overtime_premium: 5_000
+    employment_income: 50_000
+  output:
+    in_overtime_income_deduction: 5_000
+
+- name: Indiana overtime income deduction zero with no overtime
+  period: 2026
+  input:
+    state_code: IN
+    fsla_overtime_premium: 0
+    employment_income: 50_000
+  output:
+    in_overtime_income_deduction: 0
+
+- name: Indiana overtime deduction not in in_deductions before 2026
+  period: 2025
+  input:
+    state_code: IN
+    fsla_overtime_premium: 5_000
+    employment_income: 50_000
+  output:
+    in_overtime_income_deduction: 5_000
+    in_deductions: 0
+
+- name: Indiana overtime deduction in in_deductions in 2026
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    state_code: IN
+    fsla_overtime_premium: 5_000
+    employment_income: 50_000
+  output:
+    in_overtime_income_deduction: 5_000
+    in_deductions: 5_000
+
+- name: Indiana overtime deduction not in in_deductions after 2026 (sunset)
+  period: 2027
+  input:
+    state_code: IN
+    fsla_overtime_premium: 5_000
+    employment_income: 50_000
+  output:
+    in_overtime_income_deduction: 5_000
+    in_deductions: 0

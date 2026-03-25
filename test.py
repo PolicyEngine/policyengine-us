@@ -125,9 +125,7 @@ def main():
         subprocess.run(["git", "status"], check=True, capture_output=True)
     except subprocess.CalledProcessError:
         print("Error: Not in a git repository!")
-        print(
-            "Please run this script from within the policyengine-us repository."
-        )
+        print("Please run this script from within the policyengine-us repository.")
         sys.exit(1)
 
     # Fetch all PRs

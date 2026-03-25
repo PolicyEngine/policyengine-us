@@ -8,9 +8,7 @@ class ma_state_supplement(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
     exhaustive_parameter_dependencies = "gov.states.ma.dta.ssp"
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-330"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-330"
 
     def formula(person, period, parameters):
         uncapped_ssi = person("uncapped_ssi", period)

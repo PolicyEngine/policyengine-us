@@ -16,31 +16,27 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Check formatting
-        run: uv run black . -l 79 --check
-  check-version:
-    name: Check version
+        run: uv run ruff format --check .
+  check-changelog:
+    name: Check changelog fragment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 100
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install dependencies
+      - name: Check for changelog fragment
         run: |
-          uv pip install -e . --system
-          uv pip install "yaml-changelog>=0.1.7" --system
-      - name: Build changelog
-        run: make changelog
+          FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
+          if [ "$FRAGMENTS" -eq 0 ]; then
+            echo "::error::No changelog fragment found in changelog.d/"
+            echo "Add one with: echo 'Description.' > changelog.d/\$(git branch --show-current).<type>.md"
+            echo "Types: added, changed, fixed, removed, breaking"
+            exit 1
+          fi
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
+    env:
+      SELECTIVE_TEST_MAX_TARGETS: 25
+      SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -51,7 +47,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -117,7 +113,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -140,7 +136,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -169,7 +165,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -192,7 +188,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies

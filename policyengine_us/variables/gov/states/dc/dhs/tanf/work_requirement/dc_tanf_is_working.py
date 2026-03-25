@@ -6,15 +6,11 @@ class dc_tanf_is_working(Variable):
     entity = Person
     label = "Person is working under the work requirement for DC Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19b"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19b"
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.dc.dhs.tanf.work_requirement.required_hours
+        p = parameters(period).gov.states.dc.dhs.tanf.work_requirement.required_hours
         weekly_hours_worked = person("weekly_hours_worked", period.this_year)
         age = person("monthly_age", period)
         # For single parent with a child under 6, work 20 hours pr week
@@ -22,8 +18,8 @@ class dc_tanf_is_working(Variable):
         spm_unit = person.spm_unit
         is_youngest_member = person.get_rank(spm_unit, age, spm_unit) == 0
         youngest_age = spm_unit.sum(is_youngest_member * age)
-        single_parent_requirement = (
-            weekly_hours_worked >= p.single_parent.amount.calc(youngest_age)
+        single_parent_requirement = weekly_hours_worked >= p.single_parent.amount.calc(
+            youngest_age
         )
         # For 2-parent, work 35 hours pr week (combined)
         # Or 55 hours per week if family receives federally-funded childcare and

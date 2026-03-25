@@ -12,9 +12,7 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.co.denver.dhs
         pays_property_taxes = add(spm_unit, period, ["real_estate_taxes"]) > 0
-        has_elderly_or_disabled = spm_unit(
-            "has_co_denver_dhs_elderly_disabled", period
-        )
+        has_elderly_or_disabled = spm_unit("has_co_denver_dhs_elderly_disabled", period)
         count_dependents = add(spm_unit, period, ["tax_unit_dependents"])
         has_dependents = count_dependents > 0
         homeowners_with_elderly_or_disabled_or_dependents = (

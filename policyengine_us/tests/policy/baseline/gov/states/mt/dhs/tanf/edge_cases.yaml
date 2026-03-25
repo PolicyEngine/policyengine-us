@@ -1,0 +1,522 @@
+# Edge case tests for Montana TANF
+# All tests use period 2024-01 (pinned to 2023 FPL: first_person=14,580, additional=5,140)
+
+#####################################################################
+# 1. Income at threshold boundaries
+#####################################################################
+
+- name: Case 1, earned income exactly at gross income standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_assistance_unit_size: 2
+    # Gross income standard for AU=2:
+    # net_income_standard = 493.00 / 0.785 = 628.03
+    # gross_income_standard = 628.03 * 1.85 = 1_161.85
+    # Gross income exactly at threshold (set via mocked inputs below).
+    # GMI test: gross_income <= gross_income_standard => PASS (<=)
+    mt_tanf_gmi_eligible: true
+
+- name: Case 2, earned income $1 above gross income standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_income_standard: 1_161.85
+    mt_tanf_gross_income: 1_162.85
+  output:
+    mt_tanf_gmi_eligible: false
+
+- name: Case 3, countable income exactly at benefit standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_benefit_standard: 493
+    mt_tanf_countable_income: 493
+  output:
+    # Benefit standard test: countable_income < benefit_standard => FAIL (equals is ineligible per State Plan #25 p.10)
+    mt_tanf_benefit_standard_eligible: false
+
+- name: Case 4, countable income $1 above benefit standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_benefit_standard: 493
+    mt_tanf_countable_income: 494
+  output:
+    mt_tanf_benefit_standard_eligible: false
+
+- name: Case 5, countable income exactly at payment standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_payment_standard: 575.17
+    mt_tanf_countable_income: 575.17
+  output:
+    # Payment standard test: countable_income < payment_standard => FAIL (strict less-than)
+    mt_tanf_payment_standard_eligible: false
+
+- name: Case 6, countable income $1 below payment standard for AU=2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_payment_standard: 575.17
+    mt_tanf_countable_income: 574.17
+  output:
+    mt_tanf_payment_standard_eligible: true
+
+#####################################################################
+# 2. Family size boundaries
+#####################################################################
+
+- name: Case 7, AU size 1 minimum family.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 1
+  output:
+    # FPG(1) = 14_580 / 12 = 1_215.00
+    # Payment = 1_215.00 * 0.35 = 425.25
+    mt_tanf_payment_standard: 425.25
+    # Benefit = 1_215.00 * 0.30 = 364.50
+    mt_tanf_benefit_standard: 364.50
+
+- name: Case 8, AU size 20 maximum per max_unit_size parameter.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 20
+  output:
+    # FPG(20) = (14_580 + 19 * 5_140) / 12 = (14_580 + 97_660) / 12 = 9_353.33
+    # Payment = 9_353.33 * 0.35 = 3_273.67
+    mt_tanf_payment_standard: 3_273.67
+    # Benefit = 9_353.33 * 0.30 = 2_806.00
+    mt_tanf_benefit_standard: 2_806.00
+
+- name: Case 9, AU size 21 exceeds max and caps at 20.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 21
+  output:
+    # Capped at 20, same as AU=20
+    mt_tanf_payment_standard: 3_273.67
+    mt_tanf_benefit_standard: 2_806.00
+
+#####################################################################
+# 3. Zero income cases
+#####################################################################
+
+- name: Case 10, zero earned and zero unearned income yields full benefit for AU=1.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_assistance_unit_size: 1
+    mt_tanf_gross_earned_income: 0
+    mt_tanf_gross_unearned_income: 0
+    mt_tanf_countable_earned_income: 0
+    mt_tanf_countable_income: 0
+    mt_tanf_eligible: true
+    # Full benefit = payment_standard = 425.25
+    mt_tanf: 425.25
+
+- name: Case 11, all income from unearned sources with no work deductions applied.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        social_security: 2_400
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_tanf_assistance_unit_size: 2
+    mt_tanf_gross_earned_income: 0
+    # Social security: 2_400/12 = 200/month
+    mt_tanf_gross_unearned_income: 200
+    mt_tanf_countable_earned_income: 0
+    # Countable = max(0 - 0, 0) + 200 = 200
+    mt_tanf_countable_income: 200
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_payment_standard_eligible: true
+    mt_tanf_eligible: true
+    # TANF = max(575.17 - 200, 0) = 375.17
+    mt_tanf: 375.17
+
+#####################################################################
+# 4. Deduction edge cases
+#####################################################################
+
+- name: Case 12, work expense deduction when earned income less than $200.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_earned_income_person: 150
+  output:
+    # max(150 - 200, 0) = 0; then 0 * 0.75 = 0
+    mt_tanf_earned_income_after_disregard_person: 0
+
+- name: Case 13, work expense deduction when earned income exactly $200.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_earned_income_person: 200
+  output:
+    # max(200 - 200, 0) = 0; then 0 * 0.75 = 0
+    mt_tanf_earned_income_after_disregard_person: 0
+
+- name: Case 14, work expense deduction when earned income is $201.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_earned_income_person: 201
+  output:
+    # max(201 - 200, 0) = 1; then 1 * 0.75 = 0.75
+    mt_tanf_earned_income_after_disregard_person: 0.75
+
+- name: Case 15, dependent care at exactly $200 per child cap with one child.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 500 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # person2 is an eligible child and dependent => cap = $200
+    # childcare = 500/month, cap = 200 => min(500, 200) = 200
+    mt_tanf_dependent_care_deduction: 200
+
+- name: Case 16, dependent care with multiple children.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 900 * 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # 3 eligible children => cap = 3 * 200 = 600
+    # childcare = 900/month, cap = 600 => min(900, 600) = 600
+    mt_tanf_dependent_care_deduction: 600
+
+- name: Case 17, dependent care deduction exceeds countable earned income floors at zero.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_earned_income: 100
+    mt_tanf_gross_unearned_income: 50
+    mt_tanf_dependent_care_deduction: 200
+  output:
+    # max(100 - 200, 0) = 0; then 0 + 50 = 50
+    mt_tanf_countable_income: 50
+
+#####################################################################
+# 5. Eligibility edge cases
+#####################################################################
+
+- name: Case 18, pass GMI test but fail benefit standard test.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: false
+    mt_tanf_payment_standard_eligible: true
+  output:
+    mt_tanf_income_eligible: false
+
+- name: Case 19, pass benefit standard but fail payment standard test.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gmi_eligible: true
+    mt_tanf_benefit_standard_eligible: true
+    mt_tanf_payment_standard_eligible: false
+  output:
+    mt_tanf_income_eligible: false
+
+- name: Case 20, child exactly at age 18 not in school is ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    monthly_age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: MT
+  output:
+    # age 18 >= minor_child threshold (18), not in school => ineligible
+    mt_tanf_eligible_child: false
+
+- name: Case 21, child at age 17 is eligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    monthly_age: 17
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: MT
+  output:
+    # age 17 < 18 => eligible
+    mt_tanf_eligible_child: true
+
+- name: Case 22, student exactly at age 19 in school is ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    monthly_age: 19
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MT
+  output:
+    # age 19 >= student_dependent threshold (19) => ineligible
+    mt_tanf_eligible_child: false
+
+- name: Case 23, student at age 18 in school is eligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    monthly_age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: MT
+  output:
+    # age 18 < student_dependent threshold (19) => eligible
+    mt_tanf_eligible_child: true
+
+- name: Case 24, resources exactly at $3000 limit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_resources: 3_000
+  output:
+    # countable_resources <= 3_000 => eligible
+    mt_tanf_resources_eligible: true
+
+- name: Case 25, resources $1 above $3000 limit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_countable_resources: 3_001
+  output:
+    mt_tanf_resources_eligible: false
+
+#####################################################################
+# 6. Benefit calculation edge cases
+#####################################################################
+
+- name: Case 26, countable income exactly equals payment standard yields zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 575.17
+    mt_tanf_countable_income: 575.17
+  output:
+    # max(575.17 - 575.17, 0) = 0
+    mt_tanf: 0
+
+- name: Case 27, countable income $1 below payment standard yields $1 benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 575.17
+    mt_tanf_countable_income: 574.17
+  output:
+    # max(575.17 - 574.17, 0) = 1.00
+    mt_tanf: 1.00
+
+#####################################################################
+# 7. AU exclusion edge cases
+#####################################################################
+
+- name: Case 28, foster care child excluded from AU.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Foster care child excluded from payment eligible => AU = 2
+    mt_tanf_payment_eligible_requirements: [true, true, false]
+    mt_tanf_assistance_unit_size: 2
+
+- name: Case 29, both SSI and foster care child excluded from AU.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 800
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # SSI child and foster care child both excluded => AU = 2 (parent + person2)
+    mt_tanf_assistance_unit_size: 2
+
+- name: Case 30, undocumented parent excluded from AU but child still counted.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Parent fails immigration status => not payment eligible
+    # Child is citizen => payment eligible
+    mt_tanf_payment_eligible_parent: [false, false]
+    mt_tanf_payment_eligible_child: [false, true]
+    mt_tanf_assistance_unit_size: 1

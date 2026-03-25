@@ -7,7 +7,9 @@ class tx_dart_reduced_fare_program_eligible(Variable):
     label = "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program due to qualifying program enrollment"
     definition_period = YEAR
     defined_for = StateCode.TX
-    reference = "https://www.dart.org/fare/general-fares-and-overview/discount-gopass-tap-card"
+    reference = (
+        "https://www.dart.org/fare/general-fares-and-overview/discount-gopass-tap-card"
+    )
 
     # The Discount GoPass program provides 50% fare reduction for riders enrolled
     # in qualifying assistance programs. It is the same as Reduced Fare program.

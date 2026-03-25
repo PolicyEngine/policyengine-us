@@ -11,7 +11,7 @@
     unemployment_compensation: 0
     gi_cash_assistance: 0
     social_security: 0
-    ssi: 0
+
     child_support_received: 0
     is_tanf_enrolled: false
   output:
@@ -30,7 +30,7 @@
     unemployment_compensation: 0
     gi_cash_assistance: 0
     social_security: 0
-    ssi: 0
+
     child_support_received: 5_000
     is_tanf_enrolled: true
   output:
@@ -49,13 +49,13 @@
     unemployment_compensation: 0
     gi_cash_assistance: 0
     social_security: 0
-    ssi: 0
+
     child_support_received: 5_000
     is_tanf_enrolled: false
   output:
     co_tanf_countable_gross_unearned_income: 5_000
 
-- name: $1,000 of each unearned income and no child support, $5,000 per year
+- name: $1,000 of each unearned income and no child support, $9,000 per year.
   period: 2023
   input:
     state_code: CO
@@ -68,8 +68,54 @@
     unemployment_compensation: 1_000
     gi_cash_assistance: 1_000
     social_security: 1_000
-    ssi: 1_000
     child_support_received: 0
     is_tanf_enrolled: false
   output:
-    co_tanf_countable_gross_unearned_income: 10_000
+    co_tanf_countable_gross_unearned_income: 9_000
+
+# --- 2013 era (period 2014; unearned income rules unchanged) ---
+
+- name: Case 5, child support excluded when enrolled in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    child_support_received: 3_600
+    is_tanf_enrolled: true
+  output:
+    co_tanf_countable_gross_unearned_income: 0
+
+- name: Case 6, child support counted when not enrolled in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    child_support_received: 3_600
+    is_tanf_enrolled: false
+  output:
+    co_tanf_countable_gross_unearned_income: 3_600
+
+# --- 2024 era (period 2025; unearned income rules still unchanged) ---
+
+- name: Case 7, child support excluded when enrolled in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    child_support_received: 4_800
+    is_tanf_enrolled: true
+  output:
+    co_tanf_countable_gross_unearned_income: 0
+
+- name: Case 8, mixed unearned income in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    veterans_benefits: 2_400
+    social_security: 3_600
+    child_support_received: 1_200
+    is_tanf_enrolled: false
+  output:
+    # $2,400 + $3,600 + $1,200 (not enrolled, so child support counted) = $7,200
+    co_tanf_countable_gross_unearned_income: 7_200

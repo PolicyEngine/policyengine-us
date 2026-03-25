@@ -42,12 +42,8 @@ class tax_unit_taxable_social_security(Variable):
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
 
-        combined_income_excess = tax_unit(
-            "tax_unit_ss_combined_income_excess", period
-        )
-        excess_over_adjusted_base = max_(
-            0, combined_income - adjusted_base_amount
-        )
+        combined_income_excess = tax_unit("tax_unit_ss_combined_income_excess", period)
+        excess_over_adjusted_base = max_(0, combined_income - adjusted_base_amount)
 
         # Tier 1: Between base and adjusted base thresholds
         # Per IRC §86(a)(1), "the amount determined under paragraph (1)"
@@ -72,8 +68,7 @@ class tax_unit_taxable_social_security(Variable):
         # (A) 85% of excess over adjusted base + bracket amount, or
         # (B) 85% of social security benefits
         amount_if_over_second_threshold = min_(
-            p.rate.additional.excess * excess_over_adjusted_base
-            + bracket_amount,
+            p.rate.additional.excess * excess_over_adjusted_base + bracket_amount,
             p.rate.additional.benefit_cap * gross_ss,
         )
 

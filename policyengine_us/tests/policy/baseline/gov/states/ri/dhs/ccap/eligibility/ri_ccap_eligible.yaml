@@ -1,0 +1,128 @@
+# 2025 FPG family of 3: 15_650 + 5_500 * 2 = 26_650
+# 261% FPL = 69_556.50
+
+- name: Case 1, eligible family with child under 13 and low income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_eligible: true
+
+- name: Case 2, ineligible due to income above 261 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 2025 FPG family of 2: 15_650 + 5_500 = 21_150
+    # 261% FPL = 21_150 * 2.61 = 55_201.50
+    # income 70,000 > 55,201.50 -> ineligible
+    ri_ccap_eligible: false
+
+- name: Case 3, ineligible with no eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # no child in unit -> no eligible child -> ineligible
+    ri_ccap_eligible: false
+
+- name: Case 4, ineligible due to assets above limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_eligible: false
+
+- name: Case 5, ineligible when child is undocumented.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_eligible: false

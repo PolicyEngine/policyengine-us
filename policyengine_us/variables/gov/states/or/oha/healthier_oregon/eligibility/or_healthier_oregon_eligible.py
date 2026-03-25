@@ -13,11 +13,7 @@ class or_healthier_oregon_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .oha.healthier_oregon.eligibility
-        )
+        p = parameters(period).gov.states["or"].oha.healthier_oregon.eligibility
 
         # Program must be in effect
         in_effect = p.in_effect

@@ -19,9 +19,7 @@ class va_itemized_deductions(Variable):
         )
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         va_itm_deds = (
-            itm_deds_less_salt
-            + uncapped_property_taxes
-            + uncapped_state_and_local_tax
+            itm_deds_less_salt + uncapped_property_taxes + uncapped_state_and_local_tax
         )
 
         federal_agi = tax_unit("adjusted_gross_income", period)

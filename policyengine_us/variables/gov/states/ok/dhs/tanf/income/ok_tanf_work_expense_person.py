@@ -7,9 +7,7 @@ class ok_tanf_work_expense_person(Variable):
     label = "Oklahoma TANF work expense deduction per person"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-33"
-    )
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-33"
     defined_for = StateCode.OK
 
     def formula(person, period, parameters):

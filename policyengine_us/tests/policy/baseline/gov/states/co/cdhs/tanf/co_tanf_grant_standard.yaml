@@ -34,3 +34,125 @@
     is_pregnant: true
   output:
     co_tanf_grant_standard: 450 * 12
+
+# --- 2013 era (period 2014 uses 2013-07-01 parameter values) ---
+
+- name: Case 5, one adult zero children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_grant_standard: 278 * 12
+
+- name: Case 6, zero adults two children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 269 * 12
+
+- name: Case 7, two adults twelve children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    # base(2,10) = $1,271 + 2 * $72 additional_child = $1,415/mo
+    co_tanf_grant_standard: 1_415 * 12
+
+- name: Case 8, one pregnant adult and one child in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 1
+    is_pregnant: true
+  output:
+    # base(1,1) = $364 + $10 pregnancy allowance = $374/mo
+    co_tanf_grant_standard: 374 * 12
+
+- name: Case 9, one adult two children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 462 * 12
+
+# --- 2024 era (period 2025 uses 2024-07-01 parameter values) ---
+
+- name: Case 10, one adult zero children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_grant_standard: 357 * 12
+
+- name: Case 11, two adults two children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 752 * 12
+
+- name: Case 12, two adults twelve children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    # base(2,10) = $1,629 + 2 * $86 additional_child = $1,801/mo
+    co_tanf_grant_standard: 1_801 * 12
+
+- name: Case 13, one adult two children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 592 * 12
+
+# --- Edge cases ---
+
+- name: Case 14, zero adults zero children degenerate case.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 0
+  output:
+    # grant_standard.main[0][0] = $0
+    co_tanf_grant_standard: 0
+
+- name: Case 15, adults capped at two.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 5
+    co_tanf_count_children: 2
+  output:
+    # Adults capped at 2: grant_standard.main[2][2] = $752/mo
+    co_tanf_grant_standard: 752 * 12

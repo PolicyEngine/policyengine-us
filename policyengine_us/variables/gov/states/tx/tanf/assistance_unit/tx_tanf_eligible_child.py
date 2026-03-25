@@ -17,8 +17,6 @@ class tx_tanf_eligible_child(Variable):
         age_eligible = person("tx_tanf_age_eligible_child", period)
 
         # And meet inclusion requirements (immigration eligible, not receiving SSI)
-        inclusion_requirements = person(
-            "tx_tanf_categorically_eligible_person", period
-        )
+        inclusion_requirements = person("tx_tanf_categorically_eligible_person", period)
 
         return age_eligible & inclusion_requirements

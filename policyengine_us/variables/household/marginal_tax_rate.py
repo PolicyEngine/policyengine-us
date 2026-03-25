@@ -3,7 +3,9 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Fraction of marginal income gains that do not increase household net income."
+    documentation = (
+        "Fraction of marginal income gains that do not increase household net income."
+    )
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -37,8 +39,7 @@ class marginal_tax_rate(Variable):
             alt_sim.set_input(
                 "self_employment_income",
                 period,
-                self_employment_income
-                + mask * delta * (1 - emp_self_emp_ratio),
+                self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
             )
             alt_person = alt_sim.person
             netinc_alt = alt_person.household("household_net_income", period)

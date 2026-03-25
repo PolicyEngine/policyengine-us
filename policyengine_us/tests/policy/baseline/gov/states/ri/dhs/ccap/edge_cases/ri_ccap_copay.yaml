@@ -1,0 +1,161 @@
+# Edge cases for ri_ccap_copay
+# 2025 FPG family of 2: 21_150
+# Tests homeless exemption, zero income
+
+- name: Case 1, housing insecure family with moderate income gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+        is_homeless: true
+  output:
+    # Housing insecure -> $0 copay regardless of income
+    ri_ccap_copay: 0
+
+- name: Case 2, zero income gives zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # income 0 -> FPL ratio 0 -> 0% rate -> copay = 0 * 0 = 0
+    ri_ccap_copay: 0
+
+- name: Case 3, very high income at 7 percent rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPL ratio = 55_000 / 21_150 = 2.6005 -> 7% rate
+    # annual copay = 55_000 * 0.07 = 3_850
+    # monthly copay = 3_850 / 12 = 320.83
+    ri_ccap_copay: 320.83
+
+# Copay bracket boundary tests
+# 2025 FPG family of 2: 21,150
+
+- name: Case 4, income at exactly 100 percent FPL stays in 0 percent bracket.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_150
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPL ratio = 21_150 / 21_150 = 1.0 -> 0% bracket (<=100%)
+    ri_ccap_copay: 0
+
+- name: Case 5, income just above 100 percent FPL enters 2 percent bracket.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_153
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPL ratio = 21_153 / 21_150 = 1.000142 -> 2% bracket (>100%)
+    # annual copay = 21_153 * 0.02 = 423.06
+    # monthly = 423.06 / 12 = 35.255
+    ri_ccap_copay: 35.26
+
+- name: Case 6, income at exactly 125 percent FPL stays in 2 percent bracket.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 26_437.50
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPL ratio = 26_437.50 / 21_150 = 1.25 -> 2% bracket (<=125%)
+    # annual copay = 26_437.50 * 0.02 = 528.75
+    # monthly = 528.75 / 12 = 44.0625
+    ri_ccap_copay: 44.06
+
+- name: Case 7, income just above 150 percent FPL enters 7 percent bracket.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_728
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # FPL ratio = 31_728 / 21_150 = 1.50014 -> 7% bracket (>150%)
+    # annual copay = 31_728 * 0.07 = 2_220.96
+    # monthly = 2_220.96 / 12 = 185.08
+    ri_ccap_copay: 185.08

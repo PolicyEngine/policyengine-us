@@ -14,11 +14,11 @@ class eitc_demographic_eligible(Variable):
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.
-        min_age_non_student = (
-            parameters.gov.irs.credits.eitc.eligibility.age.min(period)
+        min_age_non_student = parameters.gov.irs.credits.eitc.eligibility.age.min(
+            period
         )
-        min_age_student = (
-            parameters.gov.irs.credits.eitc.eligibility.age.min_student(period)
+        min_age_student = parameters.gov.irs.credits.eitc.eligibility.age.min_student(
+            period
         )
         student = person("is_full_time_student", period)
         min_age = where(student, min_age_student, min_age_non_student)

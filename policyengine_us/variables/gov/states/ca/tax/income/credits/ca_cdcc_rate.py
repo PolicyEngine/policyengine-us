@@ -15,7 +15,7 @@ class ca_cdcc_rate(Variable):
 
         year = period.start.year
         if year == 2021:
-            period_adjusted = f"{year-1}-01-01"
+            period_adjusted = f"{year - 1}-01-01"
         else:
             period_adjusted = f"{year}-01-01"
 
@@ -26,13 +26,12 @@ class ca_cdcc_rate(Variable):
         increments = np.ceil(excess_agi / p.phase_out.increment)
         percentage_reduction = increments * p.phase_out.rate
         phased_out_rate = max_(
-            p.phase_out.min, p.phase_out.max - percentage_reduction  # max
+            p.phase_out.min,
+            p.phase_out.max - percentage_reduction,  # max
         )
 
         # Second phase-out
-        second_excess_agi = max_(
-            0, agi - p.phase_out.second_start
-        )  # second_start
+        second_excess_agi = max_(0, agi - p.phase_out.second_start)  # second_start
         second_increments = np.ceil(second_excess_agi / p.phase_out.increment)
         second_percentage_reduction = second_increments * p.phase_out.rate
 

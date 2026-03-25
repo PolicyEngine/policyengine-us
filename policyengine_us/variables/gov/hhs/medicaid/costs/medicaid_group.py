@@ -42,9 +42,7 @@ class medicaid_group(Variable):
 
         # Pregnant OR Parent OR Young adult (19–20) → NON_EXPANSION_ADULT
         non_expansion_adult = (
-            (cat == cats.PREGNANT)
-            | (cat == cats.PARENT)
-            | (cat == cats.YOUNG_ADULT)
+            (cat == cats.PREGNANT) | (cat == cats.PARENT) | (cat == cats.YOUNG_ADULT)
         )
 
         # Expansion adult → EXPANSION_ADULT
@@ -52,9 +50,7 @@ class medicaid_group(Variable):
 
         # Any child category → CHILD
         child = (
-            (cat == cats.INFANT)
-            | (cat == cats.YOUNG_CHILD)
-            | (cat == cats.OLDER_CHILD)
+            (cat == cats.INFANT) | (cat == cats.YOUNG_CHILD) | (cat == cats.OLDER_CHILD)
         )
 
         # Illinois HBI-specific mapping (for those who fail immigration check

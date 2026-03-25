@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Alaska.
+values:
+  0000-01-01: 49_700
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Alaska unemployment taxable wage base
+  reference:
+    - title: Alaska Statutes Section 23.20.175
+      href: https://www.akleg.gov/basis/statutes.asp?media=print&secStart=23.20.175&secEnd=23.20.175
+    - title: Alaska 2026 industry rates
+      href: https://labor.alaska.gov/estax/2026-industry-rates.html
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=11

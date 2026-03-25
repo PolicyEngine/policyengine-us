@@ -1,5 +1,5 @@
 - name: Case 1 - Low income family with childcare expenses below copay
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:
@@ -23,7 +23,8 @@
     tx_ccs: 0
 
 - name: Case 2 - Family with childcare expenses exceeding copay
-  period: 2024-01
+  period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       parent1:
@@ -47,11 +48,11 @@
         state_code: TX
         county: DALLAS_COUNTY_TX
   output:
-    # Childcare expense ($500/month) - copay ($115, rate-based) = $385
-    tx_ccs: 385
+    # Childcare expense ($500/month) - copay (~$105.95) = ~$394.05
+    tx_ccs: 394.05
 
 - name: Case 3 - Two children with high childcare expenses
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:
@@ -83,7 +84,7 @@
     tx_ccs: 840  # Limited by max reimbursement: ($40.20 × 10) + ($43.80 × 10) = $840
 
 - name: Case 4 - Single parent with childcare expenses at maximum reimbursement
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:
@@ -108,7 +109,7 @@
     tx_ccs: 600  # Limited to maximum reimbursement amount
 
 - name: Case 5 - Not eligible household means no benefit
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:

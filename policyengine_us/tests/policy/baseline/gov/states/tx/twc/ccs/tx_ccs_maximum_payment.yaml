@@ -1,5 +1,6 @@
 - name: Case 1 - Low income family maximum payment calculation
-  period: 2024-01
+  period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       parent1:
@@ -20,11 +21,12 @@
         members: [parent1, child1]
         state_code: TX
   output:
-    # Reimbursement ($500) - copay ($22.70, rate-based) = $477.30
-    tx_ccs_maximum_payment: 477.3
+    # Reimbursement ($500) - copay (~$28.59, interpolated) = ~$469.23
+    tx_ccs_maximum_payment: 469.23
 
 - name: Case 2 - Family with two children maximum payment
-  period: 2024-01
+  period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       parent1:
@@ -52,11 +54,12 @@
         members: [parent1, parent2, child1, child2]
         state_code: TX
   output:
-    # Total reimbursement ($1,300) - copay ($243.20, rate-based) = $1,056.80
-    tx_ccs_maximum_payment: 1_056.8
+    # Total reimbursement ($1,300) - copay (~$229.08, interpolated) = ~$1,070.92
+    tx_ccs_maximum_payment: 1_070.92
 
 - name: Case 3 - High income family with lower maximum payment
-  period: 2024-01
+  period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       parent1:
@@ -93,7 +96,7 @@
     tx_ccs_maximum_payment: 860
 
 - name: Case 4 - Copay exceeds reimbursement results in zero maximum payment
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:
@@ -117,7 +120,7 @@
     tx_ccs_maximum_payment: 0  # Reimbursement ($200) < copay ($310), max(0, -110) = $0
 
 - name: Case 5 - Not eligible household has zero maximum payment
-  period: 2024-01
+  period: 2025-01
   input:
     people:
       parent1:

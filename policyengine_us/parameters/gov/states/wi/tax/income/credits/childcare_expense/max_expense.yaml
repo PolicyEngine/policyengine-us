@@ -1,0 +1,14 @@
+description: Wisconsin caps child and dependent care expenses at this amount per qualifying individual.
+metadata:
+  unit: currency-USD
+  label: Wisconsin CDCC maximum expense per qualifying individual
+  period: year
+  reference:
+    - title: Wisconsin Statute § 71.07(9g)(c)5 (2023 Wisconsin Act 101)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/9g
+    - title: 2024 Schedule WI-2441 Instructions - Additional Child and Dependent Care Credit
+      href: https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleWI-2441-Inst.pdf
+
+values:
+  2022-01-01: 0
+  2024-01-01: 10_000

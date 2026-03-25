@@ -6,7 +6,9 @@ class nj_eitc_income_eligible(Variable):
     entity = TaxUnit
     label = "New Jersey Eligible for EITC"
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+    reference = (
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):

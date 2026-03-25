@@ -99,3 +99,21 @@
         meets_snap_categorical_eligibility: false
   output:
     is_snap_eligible: true
+
+- name: Case 8, single undocumented ineligible student.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: false

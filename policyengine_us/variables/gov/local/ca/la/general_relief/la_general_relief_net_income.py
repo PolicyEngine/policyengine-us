@@ -11,12 +11,8 @@ class la_general_relief_net_income(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
-        gross_income = add(
-            spm_unit, period, ["la_general_relief_gross_income"]
-        )
-        paycheck_withholdings = spm_unit(
-            "spm_unit_paycheck_withholdings", period
-        )
+        gross_income = add(spm_unit, period, ["la_general_relief_gross_income"])
+        paycheck_withholdings = spm_unit("spm_unit_paycheck_withholdings", period)
         return max_(
             gross_income - paycheck_withholdings,
             0,

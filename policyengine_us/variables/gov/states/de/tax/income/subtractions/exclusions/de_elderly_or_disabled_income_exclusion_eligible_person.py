@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class de_elderly_or_disabled_income_exclusion_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Eligible person for the Delaware elderly or disabled income exclusion"
-    )
+    label = "Eligible person for the Delaware elderly or disabled income exclusion"
     definition_period = YEAR
     defined_for = StateCode.DE
 
@@ -35,9 +33,7 @@ class de_elderly_or_disabled_income_exclusion_eligible_person(Variable):
         income_eligible = earned_income < income_threshold
 
         pre_exclusions_agi = person("de_pre_exclusions_agi", period)
-        agi_eligible = (
-            pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
-        )
+        agi_eligible = pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 

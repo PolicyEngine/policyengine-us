@@ -10,9 +10,7 @@ class co_sales_tax_refund_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.co.tax.income.credits.sales_tax_refund
+        p = parameters(period).gov.states.co.tax.income.credits.sales_tax_refund
         age_head = tax_unit("age_head", period)
         head_age_eligible = age_head >= p.age_threshold
         age_spouse = tax_unit("age_spouse", period)

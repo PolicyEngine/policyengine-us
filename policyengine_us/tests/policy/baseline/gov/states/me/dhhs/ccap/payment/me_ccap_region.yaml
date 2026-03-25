@@ -1,0 +1,63 @@
+- name: Case 1, Cumberland County, Region 1.
+  period: 2025-01
+  input:
+    county_str: CUMBERLAND_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: REGION_1
+
+- name: Case 2, York County, Region 1.
+  period: 2025-01
+  input:
+    county_str: YORK_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: REGION_1
+
+- name: Case 3, Sagadahoc County, Region 1.
+  period: 2025-01
+  input:
+    county_str: SAGADAHOC_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: REGION_1
+
+- name: Case 4, Penobscot County, PENOBSCOT region.
+  period: 2025-01
+  input:
+    county_str: PENOBSCOT_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: PENOBSCOT
+
+- name: Case 5, Kennebec County, KENNEBEC region.
+  period: 2025-01
+  input:
+    county_str: KENNEBEC_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: KENNEBEC
+
+- name: Case 6, Aroostook County, Region 2.
+  period: 2025-01
+  input:
+    county_str: AROOSTOOK_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: REGION_2
+
+- name: Case 7, Knox county maps to KNOX_WALDO region.
+  period: 2025-01
+  input:
+    county_str: KNOX_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: KNOX_WALDO
+
+- name: Case 8, Waldo county maps to KNOX_WALDO region.
+  period: 2025-01
+  input:
+    county_str: WALDO_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: KNOX_WALDO

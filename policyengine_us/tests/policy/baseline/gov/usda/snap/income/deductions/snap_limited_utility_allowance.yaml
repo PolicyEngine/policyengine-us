@@ -7,7 +7,7 @@
     phone_expense: 20
     water_expense: 1
   output:
-    snap_limited_utility_allowance: 1_728 # 144 * 12
+    snap_limited_utility_allowance: 1_746 # 144*9 (FY22) + 150*3 (FY23)
 
 - name: Limited Utility Allowance 2
   period: 2021
@@ -18,7 +18,7 @@
     phone_expense: 20
     water_expense: 1
   output:
-    snap_limited_utility_allowance: 432 # 144 * 3
+    snap_limited_utility_allowance: 1_683 # 139*9 (FY21) + 144*3 (FY22)
 
 - name: Limited Utility Allowance 3
   period: 2023
@@ -29,7 +29,7 @@
     phone_expense: 20
     water_expense: 1
   output:
-    snap_limited_utility_allowance: 1_770 # 144 * 9 + 158 * 3
+    snap_limited_utility_allowance: 1_824 # 150*9 (FY23) + 158*3 (FY24)
 
 - name: Limited Utility Allowance 4
   period: 2025
@@ -41,7 +41,7 @@
     phone_expense: 20
     water_expense: 1
   output:
-    snap_limited_utility_allowance: 4_584 # 382 * 12
+    snap_limited_utility_allowance: 4_614 # 382*9 (FY25) + 392*3 (FY26)
 
 - name: Limited Utility Allowance 5
   period: 2025
@@ -52,4 +52,66 @@
     phone_expense: 20
     water_expense: 1
   output:
-    snap_limited_utility_allowance: 6_588 # 549 * 12 
+    snap_limited_utility_allowance: 6_633 # 549*9 (FY25) + 564*3 (FY26)
+
+- name: Case 6, wrong allowance type returns zero for LUA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CO
+  output:
+    snap_limited_utility_allowance: 0
+    # LUA formula returns 0 when allowance type is not LUA
+
+- name: Case 7, NC household-size-varying LUA FY2019.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NC
+    spm_unit_size: 3
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 297
+    # NC size 3 LUA = 297 per FY2019 SNAP QC Tech Doc Table F.7
+
+- name: Case 8, NC household-size-varying LUA FY2021 size 5.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NC
+    spm_unit_size: 5
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 378
+    # NC size 5+ LUA = 378 per FY2021 SNAP QC Tech Doc Table F.7
+
+- name: Case 9, TN flat LUA FY2018.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: TN
+    spm_unit_size: 4
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 133
+    # TN LUA = 133 for all sizes per FY2018 SNAP QC Tech Doc Table F.7
+
+- name: Case 10, AZ no LUA in FY2019.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: AZ
+    spm_unit_size: 3
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 0
+    # AZ had no LUA in FY2019 (main.yaml = 0, not in by_household_size states list)

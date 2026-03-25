@@ -1,0 +1,29 @@
+description: The maximum federal AGI for eligibility for the Connecticut renter's tax credit, by filing status.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut HB-5114 income threshold
+  reference:
+    - title: Connecticut HB-5114, Sec. 1(c)
+      href: https://www.cga.ct.gov/2026/TOB/H/PDF/2026HB-05114-R01-HB.PDF#page=2
+
+SINGLE:
+  values:
+    2027-01-01: 75_000
+
+JOINT:
+  values:
+    2027-01-01: 150_000
+
+SEPARATE:
+  values:
+    2027-01-01: 75_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2027-01-01: 75_000
+
+SURVIVING_SPOUSE:
+  values:
+    2027-01-01: 150_000

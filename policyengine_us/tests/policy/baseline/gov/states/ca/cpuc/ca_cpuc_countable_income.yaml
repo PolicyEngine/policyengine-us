@@ -1,0 +1,42 @@
+- name: CPUC countable income includes wages
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_cpuc_countable_income: 50_000
+
+- name: CPUC countable income includes SS and UC (not just market income)
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 50_000
+        social_security: 15_000
+        unemployment_compensation: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_cpuc_countable_income: 75_000
+
+- name: CPUC countable income includes alimony and child support
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 50_000
+        alimony_income: 12_000
+        child_support_received: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_cpuc_countable_income: 68_000

@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for New Jersey.
+values:
+  0000-01-01: 42_300
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: New Jersey unemployment taxable wage base
+  reference:
+    - title: New Jersey Unemployment Compensation Law Section 43:21-7
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=46
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=40

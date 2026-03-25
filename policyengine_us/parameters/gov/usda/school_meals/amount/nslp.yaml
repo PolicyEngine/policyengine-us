@@ -3,6 +3,11 @@ description: The USDA's National School Lunch Program reimburses these amounts p
 # Use the under-60% numbers.
 CONTIGUOUS_US:
   PAID:
+    2015-07-01: 0.29
+    2016-07-01: 0.30
+    2017-07-01: 0.31
+    2018-07-01: 0.31
+    2019-07-01: 0.32
     2020-07-01: 0.33
     2021-07-01: 0.35
     2022-07-01: 0.37
@@ -10,6 +15,11 @@ CONTIGUOUS_US:
     2024-07-01: 0.42
     2025-01-01: 0.46
   REDUCED:
+    2015-07-01: 2.67
+    2016-07-01: 2.76
+    2017-07-01: 2.83
+    2018-07-01: 2.91
+    2019-07-01: 3.01
     2020-07-01: 3.11
     2021-07-01: 3.26
     2022-07-01: 3.53
@@ -17,6 +27,11 @@ CONTIGUOUS_US:
     2024-07-01: 4.03
     2025-01-01: 4.20
   FREE:
+    2015-07-01: 3.07
+    2016-07-01: 3.16
+    2017-07-01: 3.23
+    2018-07-01: 3.31
+    2019-07-01: 3.41
     2020-07-01: 3.51
     2021-07-01: 3.66
     2022-07-01: 3.93
@@ -25,6 +40,11 @@ CONTIGUOUS_US:
     2025-01-01: 4.60
 AK:
   PAID:
+    2015-07-01: 0.48
+    2016-07-01: 0.49
+    2017-07-01: 0.50
+    2018-07-01: 0.51
+    2019-07-01: 0.53
     2020-07-01: 0.54
     2021-07-01: 0.57
     2022-07-01: 0.61
@@ -32,6 +52,11 @@ AK:
     2024-07-01: 0.69
     2025-01-01: 0.71
   REDUCED:
+    2015-07-01: 4.59
+    2016-07-01: 4.72
+    2017-07-01: 4.84
+    2018-07-01: 4.98
+    2019-07-01: 5.14
     2020-07-01: 5.30
     2021-07-01: 5.54
     2022-07-01: 5.97
@@ -39,6 +64,11 @@ AK:
     2024-07-01: 6.78
     2025-01-01: 7.05
   FREE:
+    2015-07-01: 4.99
+    2016-07-01: 5.12
+    2017-07-01: 5.24
+    2018-07-01: 5.38
+    2019-07-01: 5.54
     2020-07-01: 5.70
     2021-07-01: 5.94
     2022-07-01: 6.37
@@ -47,6 +77,11 @@ AK:
     2025-01-01: 7.45
 HI:
   PAID:
+    2015-07-01: 0.34
+    2016-07-01: 0.35
+    2017-07-01: 0.36
+    2018-07-01: 0.37
+    2019-07-01: 0.38
     2020-07-01: 0.39
     2021-07-01: 0.41
     2022-07-01: 0.44
@@ -54,6 +89,11 @@ HI:
     2024-07-01: 0.55
     2025-01-01: 0.57
   REDUCED:
+    2015-07-01: 3.20
+    2016-07-01: 3.29
+    2017-07-01: 3.38
+    2018-07-01: 3.48
+    2019-07-01: 3.60
     2020-07-01: 3.71
     2021-07-01: 3.88
     2022-07-01: 4.20
@@ -61,6 +101,11 @@ HI:
     2024-07-01: 5.36
     2025-01-01: 5.58
   FREE:
+    2015-07-01: 3.60
+    2016-07-01: 3.69
+    2017-07-01: 3.78
+    2018-07-01: 3.88
+    2019-07-01: 4.00
     2020-07-01: 4.11
     2021-07-01: 4.28
     2022-07-01: 4.60
@@ -71,6 +116,16 @@ HI:
 metadata:
   unit: currency-USD
   reference:
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2015
+      href: https://www.federalregister.gov/documents/2015/07/17/2015-17600/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2016
+      href: https://www.federalregister.gov/documents/2016/08/05/2016-18650/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2017
+      href: https://www.federalregister.gov/documents/2017/07/28/2017-15956/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2018
+      href: https://www.federalregister.gov/documents/2018/07/19/2018-15465/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2019
+      href: https://www.federalregister.gov/documents/2019/08/07/2019-16903/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2020
       href: https://www.federalregister.gov/documents/2020/07/22/2020-15764/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2021
@@ -80,10 +135,9 @@ metadata:
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2023
       href: https://www.federalregister.gov/documents/2023/07/07/2023-14313/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2024
-      href: https://www.regulations.gov/document/FNS-2024-0022-0001
+      href: https://www.federalregister.gov/documents/2024/07/10/2024-15175/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
     - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2025
       href: https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf#page=3
-
   period: day
   label: National School Lunch Program value
   breakdown:

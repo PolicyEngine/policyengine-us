@@ -1,0 +1,153 @@
+# Streamlined EITC Reform Tests
+# Tests the structural reform that adds filing status dimension to max credit
+# The reform uses contrib parameters that already have default values set
+
+- name: Single filer with 1 child - check child count
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 15_000
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    eitc_child_count: 1
+    eitc_maximum: 3_995
+
+- name: Joint filer with 1 child - higher max credit
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 20_000
+        age: 30
+      spouse:
+        employment_income: 0
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+  output:
+    eitc_child_count: 1
+    eitc_maximum: 4_993
+
+- name: Single filer with 2 children - same max as 1 child
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 15_000
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    eitc_child_count: 2
+    eitc_maximum: 3_995
+
+- name: Childless single filer - zero max
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 15_000
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    eitc_child_count: 0
+    eitc_maximum: 0
+
+- name: Childless joint filer - zero max despite filing status
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 15_000
+        age: 30
+      spouse:
+        employment_income: 10_000
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # Joint filers get higher max only if they have children
+    # With zero children, max is still 0
+    eitc_child_count: 0
+    eitc_maximum: 0
+
+- name: Joint filer with 3 children - same max as 1 child
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 25_000
+        age: 35
+      spouse:
+        employment_income: 15_000
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        filing_status: JOINT
+  output:
+    # Streamlined EITC: same max for 1+ children
+    # Joint filers with children get $4,993
+    eitc_child_count: 3
+    eitc_maximum: 4_993
+
+- name: Single filer at phase-out region - max unchanged
+  period: 2025
+  reforms: policyengine_us.reforms.eitc.streamlined_eitc.streamlined_eitc
+  input:
+    gov.contrib.streamlined_eitc.in_effect: true
+    people:
+      head:
+        employment_income: 40_000
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Even in phase-out region, eitc_maximum stays at $3,995
+    # Phase-out affects eitc amount, not maximum
+    eitc_child_count: 1
+    eitc_maximum: 3_995

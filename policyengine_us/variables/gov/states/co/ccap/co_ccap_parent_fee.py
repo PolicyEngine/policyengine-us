@@ -28,15 +28,11 @@ class co_ccap_parent_fee(Variable):
         # have to calculate parent fee one by one and sum them up.
         person = spm_unit.members
         child_age_eligible = person("co_ccap_child_eligible", period)
-        childcare_hours_per_day = person(
-            "childcare_hours_per_day", period.this_year
-        )
+        childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
         rate = p.parent_fee_rate_by_child_care_hours.calc(
             childcare_hours_per_day, right=True
         )
-        childs_parent_fee = spm_unit.project(
-            base_parent_fee + add_on_parent_fee
-        )
+        childs_parent_fee = spm_unit.project(base_parent_fee + add_on_parent_fee)
         unrounded_non_discounted_fee = spm_unit.sum(
             child_age_eligible * childs_parent_fee * rate
         )
@@ -46,9 +42,7 @@ class co_ccap_parent_fee(Variable):
         # For households utilizing multiple child care providers, only one
         # child care provider is required to be eligible for the reduced
         # parent fee to apply.
-        rating = person(
-            "co_quality_rating_of_child_care_facility", period.this_year
-        )
+        rating = person("co_quality_rating_of_child_care_facility", period.this_year)
         maximum_rating = spm_unit.max(rating * child_age_eligible)
         discounted_rate = p.is_quality_rating_discounted.calc(maximum_rating)
         unrounded = non_discounted_fee * discounted_rate

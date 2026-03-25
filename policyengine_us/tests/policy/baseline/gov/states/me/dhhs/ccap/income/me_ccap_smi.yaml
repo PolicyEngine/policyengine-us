@@ -1,0 +1,117 @@
+# Tests for me_ccap_smi: monthly SMI dollar values by family size.
+# The formula uses an October 1 fiscal year cutover:
+#   month >= 10 -> uses current year's SMI
+#   month < 10 -> uses prior year's SMI
+#
+# SMI adjustment factors (from hhs_smi):
+#   size 1: 0.52, size 2: 0.68, size 4: 0.52 + 3*0.16 = 1.00
+
+- name: Family of 2, January 2026 uses 2025-10-01 SMI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # SMI base (2025-10-01 ME) = $118,065.
+    # Size 2 adjustment = 0.68.
+    # Annual SMI = 118,065 * 0.68 = $80,284.20.
+    # Monthly = $80,284.20 / 12 = $6,690.35.
+    me_ccap_smi: 6_690.35
+
+- name: Family of 4, January 2025 uses 2024-10-01 SMI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    # SMI base (2024-10-01 ME) = $113,259.
+    # Size 4 adjustment = 1.00.
+    # Annual SMI = $113,259.00.
+    # Monthly = $113,259.00 / 12 = $9,438.25.
+    me_ccap_smi: 9_438.25
+
+- name: Family of 4, January 2026 uses 2025-10-01 SMI (verifies fiscal year crossover).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ME
+  output:
+    # SMI base (2025-10-01 ME) = $118,065.
+    # Size 4 adjustment = 1.00.
+    # Annual SMI = $118,065.00.
+    # Monthly = $118,065.00 / 12 = $9,838.75.
+    me_ccap_smi: 9_838.75
+
+- name: Family of 1, January 2026 uses 2025-10-01 SMI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # SMI base (2025-10-01 ME) = $118,065.
+    # Size 1 adjustment = 0.52.
+    # Annual SMI = 118,065 * 0.52 = $61,393.80.
+    # Monthly = $61,393.80 / 12 = $5,116.15.
+    me_ccap_smi: 5_116.15

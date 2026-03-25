@@ -5,7 +5,9 @@ class lives_in_vehicle(Variable):
     value_type = bool
     entity = Household
     definition_period = YEAR
-    documentation = "Whether a household is using their vehicle as their primary residence "
+    documentation = (
+        "Whether a household is using their vehicle as their primary residence "
+    )
     label = "Lives in vehicle"
 
     def formula(household, period, parameters):

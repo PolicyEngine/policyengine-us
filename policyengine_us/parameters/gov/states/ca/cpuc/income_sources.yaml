@@ -1,0 +1,64 @@
+description: >-
+  Income sources counted toward CA CPUC CARE/FERA eligibility.
+  Total gross annual household income includes all taxable and
+  nontaxable revenues from all people living in the home, from
+  whatever sources derived, including, but not limited to, wages,
+  salaries, interest, dividends, spousal and child support payments,
+  public assistance payments, Social Security and pensions, housing
+  and military subsidies, rental income, income from self-employment
+  and all employment-related, non-cash income.
+# PG&E Form 01-9077, CARE/FERA Program Application.
+values:
+  0000-01-01:
+  # Wages, salaries
+  - employment_income
+  # Self-employment
+  - self_employment_income
+  - partnership_s_corp_income
+  - farm_income
+  # Interest
+  - interest_income
+  # Dividends
+  - dividend_income
+  # Spousal support
+  - alimony_income
+  # Child support
+  - child_support_received
+  # Public assistance payments
+  - tanf
+  - ssi
+  - snap
+  - wic
+  # Social Security
+  - social_security
+  # Pensions
+  - pension_income
+  - retirement_distributions
+  # Housing subsidies
+  - spm_unit_capped_housing_subsidy
+  # Military subsidies
+  - veterans_benefits
+  - military_service_income
+  # Rental income
+  - rental_income
+  - farm_rent_income
+  # Other income sources (from whatever sources derived)
+  - capital_gains
+  - unemployment_compensation
+  - miscellaneous_income
+  - gi_cash_assistance
+  - debt_relief
+  - illicit_income
+
+
+metadata:
+  unit: list
+  period: year
+  label: CA CPUC CARE/FERA income sources
+  reference:
+    - title: PG&E Form 01-9077, CARE/FERA Program Application
+      href: https://bha.berkeleyca.gov/sites/default/files/2022-04/PGE%20CARE%20FERA%20Application.pdf
+    - title: CA PUC 739.1 (CARE)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
+    - title: CA PUC 739.12 (FERA)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12

@@ -26,16 +26,14 @@ def test_all_uprating_factors_extend_to_2100():
 
         for year in test_years:
             value = param(f"{year}{date_suffix}")
-            assert (
-                value > 0
-            ), f"No positive {name} uprating value for year {year}"
+            assert value > 0, f"No positive {name} uprating value for year {year}"
             values.append(value)
 
         # Test that values are monotonically increasing
         for i in range(1, len(values)):
-            assert (
-                values[i] > values[i - 1]
-            ), f"{name} uprating should increase from {test_years[i-1]} to {test_years[i]}"
+            assert values[i] > values[i - 1], (
+                f"{name} uprating should increase from {test_years[i - 1]} to {test_years[i]}"
+            )
 
         # Test that growth is consistent in the extended period
         # Use years after the projection period ends
@@ -48,9 +46,9 @@ def test_all_uprating_factors_extend_to_2100():
         growth_rate_2 = val3 / val2
 
         # Growth rates should be approximately equal (within 0.1%)
-        assert (
-            abs(growth_rate_1 - growth_rate_2) < 0.001
-        ), f"{name} growth rate should be consistent: {growth_rate_1:.5f} vs {growth_rate_2:.5f}"
+        assert abs(growth_rate_1 - growth_rate_2) < 0.001, (
+            f"{name} growth rate should be consistent: {growth_rate_1:.5f} vs {growth_rate_2:.5f}"
+        )
 
 
 def test_uprating_growth_rates_are_reasonable():
@@ -82,9 +80,9 @@ def test_uprating_growth_rates_are_reasonable():
         value_year2 = param(f"{year2}{date_suffix}")
         growth_rate = value_year2 / value_year1
 
-        assert (
-            min_annual_growth <= growth_rate <= max_annual_growth
-        ), f"{name} growth rate {growth_rate:.4f} outside reasonable bounds [{min_annual_growth:.3f}, {max_annual_growth:.3f}]"
+        assert min_annual_growth <= growth_rate <= max_annual_growth, (
+            f"{name} growth rate {growth_rate:.4f} outside reasonable bounds [{min_annual_growth:.3f}, {max_annual_growth:.3f}]"
+        )
 
 
 def test_cpi_relationships():

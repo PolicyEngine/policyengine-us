@@ -9,7 +9,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_agi: 30_000
+        va_subtractions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -28,10 +28,34 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_agi: 8_000
+        va_subtractions: 2_000
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
     va_agi_person: [8_000, 0]
+
+- name: Age deduction applied directly to eligible person, not prorated
+  period: 2021
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 11_753
+        age: 75
+        is_tax_unit_head_or_spouse: true
+      person2:
+        adjusted_gross_income_person: 55_728
+        age: 40
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_subtractions: 12_000
+        va_age_deduction: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_agi_person: [-247, 55_728]

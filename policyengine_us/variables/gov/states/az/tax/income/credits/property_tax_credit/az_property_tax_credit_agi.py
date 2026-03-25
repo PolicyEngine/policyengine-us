@@ -37,9 +37,7 @@ class az_property_tax_credit_agi(Variable):
         # Federal AGI only includes the TAXABLE portion of Social Security,
         # but for property tax credit, ALL Social Security should be excluded.
         # So we subtract the taxable portion that's in Federal AGI.
-        taxable_social_security = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
+        taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
 
         # NOTE: We do NOT subtract Arizona's regular subtractions here because:
         # - Pension exclusions (az_public_pension_exclusion,

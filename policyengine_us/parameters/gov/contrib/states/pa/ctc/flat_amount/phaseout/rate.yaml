@@ -1,0 +1,12 @@
+description: Pennsylvania reduces the flat amount Child Tax Credit by this rate per dollar of income above the phaseout threshold.
+
+values:
+  2026-01-01: 0.02
+
+metadata:
+  unit: /1
+  period: year
+  label: Pennsylvania Child Tax Credit flat amount phaseout rate
+  reference:
+    - title: PolicyEngine PA CTC reform proposal
+      href: https://github.com/PolicyEngine/policyengine-us/issues/7436

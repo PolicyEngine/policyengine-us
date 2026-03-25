@@ -14,9 +14,7 @@ class slcsp_family_tier_amount(Variable):
         base_cost = tax_unit.household("slcsp_age_0", period)
 
         # Get the family tier multiplier based on composition
-        family_tier_multiplier = tax_unit(
-            "slcsp_family_tier_multiplier", period
-        )
+        family_tier_multiplier = tax_unit("slcsp_family_tier_multiplier", period)
 
         # Calculate the total premium amount for the family tier
         return base_cost * family_tier_multiplier

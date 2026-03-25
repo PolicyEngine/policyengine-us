@@ -1,0 +1,12 @@
+description: Effective base FUTA rate before any credit-reduction add-on, assuming wages are subject to state unemployment tax and state taxes are paid on time.
+values:
+  0000-01-01: 0.006
+metadata:
+  unit: /1
+  period: year
+  label: Federal unemployment base rate
+  reference:
+    - title: Instructions for Form 940 (2025)
+      href: https://www.irs.gov/pub/irs-pdf/i940.pdf#page=6
+    - title: FUTA Credit Reductions
+      href: https://oui.doleta.gov/unemploy/futa_credit.asp

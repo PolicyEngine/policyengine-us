@@ -7,7 +7,7 @@ class nv_tanf_payment_standard(Variable):
     label = "Nevada TANF payment standard"
     unit = USD
     definition_period = MONTH
-    reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf"
+    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/eligibility/chapter-c_140.pdf"
     defined_for = StateCode.NV
 
     def formula(spm_unit, period, parameters):
@@ -19,8 +19,6 @@ class nv_tanf_payment_standard(Variable):
         # For sizes > 8, use base at size 8 + increment per additional person
         base_amount = p.payment_standard.amount[min_(size, max_explicit_size)]
         additional_persons = max_(size - max_explicit_size, 0)
-        additional_amount = (
-            additional_persons * p.payment_standard.additional_person
-        )
+        additional_amount = additional_persons * p.payment_standard.additional_person
 
         return base_amount + additional_amount

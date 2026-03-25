@@ -1,0 +1,423 @@
+# PA CTC Match Reform Tests
+# Tests the 50% federal CTC match for children under 6
+
+- name: Case 1, one young child.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Actual federal CTC = $2,200 (full amount at this income)
+    # PA match = $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: Case 2, two young children.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Actual federal CTC = 2 * $2,200 = $4,400 (full amount at this income)
+    # PA match = $4,400 * 0.5 = $2,200
+    pa_ctc_match: 2_200
+
+- name: Case 3, child at age limit (age 6).
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Child age 6 not eligible (must be under 6)
+    pa_ctc_match: 0
+
+- name: Case 4, mixed age children.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Only child age 3 is eligible (under 6)
+    # Young child share of actual federal CTC = $2,200
+    # PA match = $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: Case 5, high income with no phaseout.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 200_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # No income phaseout for this reform
+    # Actual federal CTC = $2,200 (full amount at this income)
+    # PA match = $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: Case 6, three young children.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 70_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    # All 3 children under 6
+    # Actual federal CTC = 3 * $2,200 = $6,600 (full amount at this income)
+    # PA match = $6,600 * 0.5 = $3,300
+    pa_ctc_match: 3_300
+
+- name: Case 7, very low income with no federal CTC phase-in.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 2_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Federal CTC phase-in starts at $2,500
+    # At $2,000 income, ctc_value = $0
+    # PA match = $0 * 0.5 = $0
+    pa_ctc_match: 0
+
+- name: Case 8, low income with partial federal CTC phase-in.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 10_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Federal CTC phase-in: ($10,000 - $2,500) * 0.15 = $1,125
+    # ctc_value = $1,125 (partial, less than $2,200 max)
+    # PA match = $1,125 * 0.5 = $562.50
+    pa_ctc_match: 562.5
+
+- name: Case 9, moderate income with refundable CTC only.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 20_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Federal CTC phase-in exceeds max, but income below standard deduction
+    # so tax liability = $0. Only refundable CTC ($1,700) is received.
+    # PA match = $1,700 * 0.5 = $850
+    pa_ctc_match: 850
+
+- name: Case 10, low income with refundable CTC capped.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 15_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Federal CTC phase-in: ($15,000 - $2,500) * 0.15 = $1,875
+    # But refundable CTC capped at $1,700, and tax liability = $0
+    # Actual federal CTC received = $1,700
+    # PA match = $1,700 * 0.5 = $850
+    pa_ctc_match: 850
+
+- name: Case 11, child without SSN gets no federal CTC.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Child without SSN does not qualify for federal CTC
+    # Federal CTC = $0 (child fails identification requirements)
+    # PA match = $0 * 0.5 = $0
+    pa_ctc_match: 0
+
+- name: Case 12, non-PA resident gets zero match.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    pa_ctc_match: 0
+
+- name: Case 13, child at age 5 (last eligible age).
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Child age 5 is eligible (under 6)
+    # Actual federal CTC = $2,200 (full amount at this income)
+    # PA match = $2,200 * 0.5 = $1,100
+    pa_ctc_match: 1_100
+
+- name: Case 14, single filer in federal CTC phaseout range.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 205_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Federal CTC phaseout starts at $200k for single
+    # Excess = $205k - $200k = $5k
+    # Phaseout = $5k / $1k * $50 = $250
+    # Federal CTC = $2,200 - $250 = $1,950
+    # PA match = $1,950 * 0.5 = $975
+    pa_ctc_match: 975
+
+- name: Case 15, joint filer in federal CTC phaseout range.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.pa.ctc.pa_ctc_match.pa_ctc_match
+  input:
+    gov.contrib.states.pa.ctc.ctc_match.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 250_000
+      person2:
+        age: 33
+        is_tax_unit_spouse: true
+        employment_income: 155_000
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Federal CTC phaseout starts at $400k for joint
+    # AGI = $405k, excess = $5k
+    # Phaseout = $5k / $1k * $50 = $250
+    # Federal CTC = $2,200 - $250 = $1,950
+    # PA match = $1,950 * 0.5 = $975
+    pa_ctc_match: 975

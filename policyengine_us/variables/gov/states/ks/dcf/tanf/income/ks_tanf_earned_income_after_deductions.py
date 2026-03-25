@@ -24,9 +24,7 @@ class ks_tanf_earned_income_after_deductions(Variable):
         # UNLESS the person received TANF in one of the four preceding months.
         # PolicyEngine cannot track benefit history across periods, so we apply
         # the 60% disregard to all applicants.
-        p = parameters(
-            period
-        ).gov.states.ks.dcf.tanf.income.earned_income_disregard
+        p = parameters(period).gov.states.ks.dcf.tanf.income.earned_income_disregard
         gross_earned = person("tanf_gross_earned_income", period)
         # Apply $90 work expense (capped at person's gross earned)
         work_expense = min_(gross_earned, p.flat)

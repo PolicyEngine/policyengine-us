@@ -22,8 +22,6 @@ class or_wfhdc_has_qualified_individual_eligible(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
         head = person("is_tax_unit_head", period)
-        qualifying_individuals = (age <= p.child_age_limit) | (
-            disabled & ~head
-        )
+        qualifying_individuals = (age <= p.child_age_limit) | (disabled & ~head)
 
         return tax_unit.any(qualifying_individuals)

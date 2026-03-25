@@ -1,0 +1,26 @@
+description: South Carolina H.4216 begins phasing out the SCIAD when AGI exceeds this threshold.
+
+metadata:
+  label: South Carolina H.4216 SCIAD phase-out start
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: South Carolina H.4216 Section 3 - Section 12-6-1140(15)(b)
+      href: https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm
+
+SINGLE:
+  2026-01-01: 40_000
+
+SEPARATE:
+  2026-01-01: 40_000
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 60_000
+
+JOINT:
+  2026-01-01: 80_000
+
+SURVIVING_SPOUSE:
+  2026-01-01: 80_000

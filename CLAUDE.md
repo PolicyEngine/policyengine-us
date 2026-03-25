@@ -27,7 +27,7 @@ make install
 pip install -e .[dev]
 
 # Format code
-make format  # Runs black with line length 79 and fixes import ordering
+make format  # Runs ruff format
 
 # Run all tests
 make test
@@ -60,10 +60,19 @@ make documentation
   - **ALWAYS run `make format` before committing** - this ensures code meets style guidelines and is non-negotiable
   - Use `git push` to push changes to the PR branch
 
+## Changelog
+Every PR needs a changelog fragment in `changelog.d/`:
+```bash
+echo "Description of change." > changelog.d/<branch-name>.<type>.md
+```
+Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
+
+**DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
+
 ## Project Requirements
-- Python >= 3.10, < 3.13
+- Python >= 3.11, < 3.15
 - Follow GitHub Flow with PRs targeting master branch
-- Every PR needs a changelog entry in changelog_entry.yaml
+- Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
 
 ## Project-Specific Gotchas
@@ -76,6 +85,15 @@ make documentation
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
 - **Labor Supply Response & Negative Earnings**: Use `max_(earnings, 0)` to prevent sign flips. Negative total earnings should result in zero labor supply responses.
+
+## Program registry (programs.yaml)
+- `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata
+- Served via the `/us/metadata` API and consumed by the model coverage page
+- **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
+- **When extending year coverage**: update `verified_years` (e.g., `"2022-2026"`) after verifying parameters and tests cover the new year
+- **When adding state implementations**: add to `state_implementations` list under the parent federal program
+- **Status values**: `complete`, `partial`, `in_progress`
+- Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local
 
 ## State Program Patterns
 - When refactoring federal programs to state-specific implementations:
@@ -93,6 +111,11 @@ make documentation
 - Consider real-world examples to validate implementation, including official calculators
 
 ## Code Integrity
+- **BEFORE DELETING ANY CODE, VERIFY IT IS ACTUALLY UNUSED**
+  - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`
+  - Code that lives near dead code is not necessarily dead — verify each piece independently
+  - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
+
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases
@@ -102,6 +125,18 @@ make documentation
   - Use period-appropriate parameter values
   - Document any special time-period specific logic in BOTH code comments and variable documentation
   - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
+
+## Code Coverage Exclusions
+Use `# pragma: no cover` **only** for code that cannot be tested in unit tests:
+
+**Allowed:**
+1. Microsim-specific branches: `simulation.is_over_dataset`, `simulation.has_axes`
+2. Behavioral response code with simulation branching: `simulation.get_branch()`, `simulation.baseline`
+
+**NOT allowed:**
+- Code that simply lacks tests (write tests instead)
+- Complex logic that seems hard to test (find a way)
+- Edge cases or error handling (these should be tested)
 
 ## Parameter Validation Gotchas
 - When using `breakdown` metadata in parameters, avoid using variable references for integer values. Use Python expressions like `range(1, 5)`.

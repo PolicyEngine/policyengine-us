@@ -11,9 +11,7 @@ class nm_net_capital_gains_deduction(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.deductions.net_capital_gains
+        p = parameters(period).gov.states.nm.tax.income.deductions.net_capital_gains
         net_capital_gains = max_(0, add(tax_unit, period, ["capital_gains"]))
         # Filers can deduct 100% of CG up to a cap, or 40% uncapped, whichever is greater.
         uncapped_element = p.uncapped_element_percent * net_capital_gains

@@ -14,8 +14,6 @@ class ssi_blind_or_disabled_working_student_exclusion(Variable):
         p = parameters(
             period
         ).gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student
-        monthly_earned_income = (
-            person("ssi_earned_income", period) / MONTHS_IN_YEAR
-        )
+        monthly_earned_income = person("ssi_earned_income", period) / MONTHS_IN_YEAR
         max_amount = min_(p.amount, monthly_earned_income) * MONTHS_IN_YEAR
         return min_(max_amount, p.cap)

@@ -23,9 +23,7 @@ class dc_self_employment_loss_addition(Variable):
         se_loss_in_ald = max_(0, loss_ald - limited_capital_loss)
         effective_loss = min_(loss_taxunit, se_loss_in_ald)
         p = parameters(period).gov.states.dc.tax.income.additions
-        addition_taxunit = max_(
-            0, effective_loss - p.self_employment_loss.threshold
-        )
+        addition_taxunit = max_(0, effective_loss - p.self_employment_loss.threshold)
         # allocate taxunit addition in proportion to head and spouse losses
         filing_status = person.tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT

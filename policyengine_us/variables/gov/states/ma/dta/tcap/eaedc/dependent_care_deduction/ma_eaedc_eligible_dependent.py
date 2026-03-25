@@ -6,9 +6,7 @@ class ma_eaedc_eligible_dependent(Variable):
     entity = Person
     label = "Eligible dependent for the Massachusetts EAEDC dependent care deduction"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-200"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-200"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

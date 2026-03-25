@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for California.
+values:
+  0000-01-01: 7_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: California unemployment taxable wage base
+  reference:
+    - title: California Unemployment Insurance Code Section 930
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=930.
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=14

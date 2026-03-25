@@ -19,9 +19,7 @@ class mi_expanded_retirement_benefits_deduction_eligible(Variable):
         ).gov.states.mi.tax.income.deductions.retirement_benefits.expanded
 
         if p.availability:
-            older_spouse_birth_year = tax_unit(
-                "older_spouse_birth_year", period
-            )
+            older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
             return p.birth_year.calc(older_spouse_birth_year)
         else:
             return False

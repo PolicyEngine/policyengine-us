@@ -23,9 +23,7 @@ class md_two_income_subtraction(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         head_gross_income = tax_unit.sum(where(is_head, gross_income, 0))
-        couple_gross_income = tax_unit.sum(
-            where(is_head | is_spouse, gross_income, 0)
-        )
+        couple_gross_income = tax_unit.sum(where(is_head | is_spouse, gross_income, 0))
         # Compute the head's share of the couple's cross income.
         # Use a mask rather than where to avoid a divide-by-zero warning. Default to one.
         head_frac = np.ones_like(couple_gross_income)

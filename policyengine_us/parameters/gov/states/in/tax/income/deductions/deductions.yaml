@@ -5,7 +5,7 @@ values:
     - in_homeowners_property_tax_deduction
     - salt_refund_last_year
     - us_govt_interest
-    - tax_unit_taxable_social_security # includes railroad retirement benefits
+    - tax_unit_taxable_social_security  # includes railroad retirement benefits
     - in_military_service_deduction
     - in_nonpublic_school_deduction
     - in_nol
@@ -36,7 +36,7 @@ values:
     # IC 6-3-2-4 (b)
     - military_basic_pay
 
-2024-01-01:
+  2024-01-01:
     # IC 6-3-2-6
     - in_renters_deduction
     # IC 6-1.1
@@ -59,12 +59,70 @@ values:
     - in_other_deductions
     # IC 6-3-2-4 (b)
     - military_basic_pay
-    # IC 6-3-2-28
+    # IC 6-3-2-28
     - in_healthcare_sharing_deduction
 
-metadata: 
+  2026-01-01:
+    # IC 6-3-2-6
+    - in_renters_deduction
+    # IC 6-1.1
+    - in_homeowners_property_tax_deduction
+    # IC 6-3.1-19-1
+    - salt_refund_last_year
+    # IC 6-8-5-1
+    - us_govt_interest
+    # US Code 26-A-1-B-II-§86
+    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    # IC 6-3-2-4-(a)(1)
+    - in_military_service_deduction
+    # IC 6-3-2-22-(d)(1)
+    - in_nonpublic_school_deduction
+    # IC 6-3-2-2.5
+    - in_nol
+    # IC 6-3-2-10
+    - in_unemployment_compensation_deduction
+    # IC 6-3-2
+    - in_other_deductions
+    # IC 6-3-2-4 (b)
+    - military_basic_pay
+    # IC 6-3-2-28
+    - in_healthcare_sharing_deduction
+    # IC 6-3-2-31 (SB 243 OBBBA conformity - 2026 only)
+    - in_tip_income_deduction
+    # IC 6-3-2-32 (SB 243 OBBBA conformity - 2026 only)
+    - in_overtime_income_deduction
+    # IC 6-3-2-33 (SB 243 OBBBA conformity - 2026 only)
+    - in_auto_loan_interest_deduction
+
+  2027-01-01:
+    # IC 6-3-2-6
+    - in_renters_deduction
+    # IC 6-1.1
+    - in_homeowners_property_tax_deduction
+    # IC 6-3.1-19-1
+    - salt_refund_last_year
+    # IC 6-8-5-1
+    - us_govt_interest
+    # US Code 26-A-1-B-II-§86
+    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    # IC 6-3-2-4-(a)(1)
+    - in_military_service_deduction
+    # IC 6-3-2-22-(d)(1)
+    - in_nonpublic_school_deduction
+    # IC 6-3-2-2.5
+    - in_nol
+    # IC 6-3-2-10
+    - in_unemployment_compensation_deduction
+    # IC 6-3-2
+    - in_other_deductions
+    # IC 6-3-2-4 (b)
+    - military_basic_pay
+    # IC 6-3-2-28
+    - in_healthcare_sharing_deduction
+
+metadata:
   unit: list
-  Period: year
+  period: year
   label: Indiana Deductions
   reference:
     - title: Indiana General Assembly Legal Code Title 6 Taxation

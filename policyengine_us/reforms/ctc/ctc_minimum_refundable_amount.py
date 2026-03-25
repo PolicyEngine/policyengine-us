@@ -25,9 +25,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         entity = TaxUnit
         label = "refundable CTC"
         unit = USD
-        documentation = (
-            "The portion of the Child Tax Credit that is refundable."
-        )
+        documentation = "The portion of the Child Tax Credit that is refundable."
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
@@ -48,9 +46,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             phase_in = tax_unit("ctc_phase_in", period)
 
             phase_in_with_minimum = phase_in + minimum_refundable_ctc
-            ctc_capped_by_increased_tax = min_(
-                total_ctc, phase_in_with_minimum
-            )
+            ctc_capped_by_increased_tax = min_(total_ctc, phase_in_with_minimum)
 
             return min_(maximum_refundable_ctc, ctc_capped_by_increased_tax)
 
@@ -77,9 +73,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
             child_amount = tax_unit.sum(individual_max + arpa_max)
             ctc = parameters(period).gov.irs.credits.ctc
             qualifying_children = tax_unit("ctc_qualifying_children", period)
-            refundable_max = (
-                ctc.refundable.individual_max * qualifying_children
-            )
+            refundable_max = ctc.refundable.individual_max * qualifying_children
             return min_(child_amount, refundable_max)
 
     class non_refundable_ctc(Variable):
@@ -87,9 +81,7 @@ def create_ctc_minimum_refundable_amount() -> Reform:
         entity = TaxUnit
         label = "non-refundable CTC"
         unit = USD
-        documentation = (
-            "The portion of the Child Tax Credit that is not refundable."
-        )
+        documentation = "The portion of the Child Tax Credit that is not refundable."
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):

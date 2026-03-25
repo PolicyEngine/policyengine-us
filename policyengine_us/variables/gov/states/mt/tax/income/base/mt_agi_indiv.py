@@ -31,8 +31,6 @@ class mt_agi_indiv(Variable):
         # in all years
         # allocate any dependent net_income to tax unit head
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(
-            is_dependent * tax_unit_mt_agi
-        )
+        sum_dep_net_income = person.tax_unit.sum(is_dependent * tax_unit_mt_agi)
         is_head = person("is_tax_unit_head", period)
         return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income

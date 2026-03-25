@@ -1,0 +1,100 @@
+# Center age groups:
+#   Infant: age < 2
+#   Toddler: age 2 (i.e., age < 3)
+#   Preschool: age 3+ and not in K-12 school
+#   School Age: in K-12 school
+
+- name: Case 1, infant age 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: INFANT
+
+- name: Case 2, toddler age 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: TODDLER
+
+- name: Case 3, preschool age 4 not in school.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: PRESCHOOL
+
+- name: Case 4, school age child in K-12.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 7
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: SCHOOL_AGE
+
+- name: Case 5, preschool age 3 not in school.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: PRESCHOOL
+
+- name: Case 6, age 5 in school is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: SCHOOL_AGE
+
+- name: Case 7, age 0 is infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: INFANT

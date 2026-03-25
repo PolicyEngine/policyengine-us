@@ -1,0 +1,55 @@
+description: Texas Child Care Services uses these upper age limits for expanded age categories.
+# Actual effective date: 2025-01-13
+metadata:
+  reference:
+    - title: WD 19-24, Change 1 - BCY25 Provider Payment Rates (8 age groups)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/19-24-ch1-twc.pdf
+age_0_11_months:
+  values:
+    2025-01-01: 12
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 0-11 months upper limit
+age_12_17_months:
+  values:
+    2025-01-01: 18
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 12-17 months upper limit
+age_18_23_months:
+  values:
+    2025-01-01: 24
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 18-23 months upper limit
+age_2_years:
+  values:
+    2025-01-01: 36
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 2 years upper limit
+age_3_years:
+  values:
+    2025-01-01: 48
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 3 years upper limit
+age_4_years:
+  values:
+    2025-01-01: 60
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 4 years upper limit
+age_5_years:
+  values:
+    2025-01-01: 72
+  metadata:
+    unit: month
+    period: month
+    label: Texas CCS 5 years upper limit

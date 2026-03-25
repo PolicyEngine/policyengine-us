@@ -17,7 +17,5 @@ class or_tanf_payment_standard(Variable):
         size_capped = min_(size, max_size)
         additional_people = max_(size - max_size, 0)
         base_amount = p.payment_standard.amount[size_capped]
-        additional_amount = (
-            additional_people * p.payment_standard.additional_person
-        )
+        additional_amount = additional_people * p.payment_standard.additional_person
         return base_amount + additional_amount

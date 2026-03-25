@@ -14,9 +14,7 @@ class dc_tanf_demographic_eligible_person(Variable):
 
     def formula(person, period, parameters):
         pap_eligible_child = person("dc_pap_eligible_child", period)
-        related_to_head_or_spouse = person(
-            "is_related_to_head_or_spouse", period
-        )
+        related_to_head_or_spouse = person("is_related_to_head_or_spouse", period)
         pregnant = person("is_pregnant", period)
         immigration_status_eligible = person(
             "dc_tanf_immigration_status_eligible_person", period

@@ -27,9 +27,7 @@ class ma_ccfa_total_copay(Variable):
             base_copay * p.additional_child
         )
 
-        total_copay = (
-            first_child_fee + second_child_fee + additional_children_fee
-        )
+        total_copay = first_child_fee + second_child_fee + additional_children_fee
 
         # Return zero copay for TAFDC recipients
         return where(tafdc_eligible, 0, total_copay)

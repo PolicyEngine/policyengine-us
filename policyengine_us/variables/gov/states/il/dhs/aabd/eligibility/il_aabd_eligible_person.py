@@ -9,10 +9,6 @@ class il_aabd_eligible_person(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        financial_eligible = person(
-            "il_aabd_financial_eligible_person", period
-        )
-        non_financial_eligible = person(
-            "il_aabd_non_financial_eligible_person", period
-        )
+        financial_eligible = person("il_aabd_financial_eligible_person", period)
+        non_financial_eligible = person("il_aabd_non_financial_eligible_person", period)
         return financial_eligible & non_financial_eligible

@@ -26,8 +26,6 @@ class sc_retirement_deduction_indv(Variable):
             max_deduction_allowed - military_retirement_pay, 0
         )
         # line 4
-        retirement_income = (
-            person("taxable_pension_income", period) * head_or_spouse
-        )
+        retirement_income = person("taxable_pension_income", period) * head_or_spouse
         # line 5
         return min_(retirement_deduction_available, retirement_income)

@@ -21,11 +21,7 @@ class or_multnomah_pfa_tax(Variable):
 
         # Per MCC 11.512(C): Joint thresholds apply to joint, HOH, and surviving spouse
         # Single thresholds apply to single and married filing separately
-        p = (
-            parameters(period)
-            .gov.local["or"]
-            .multnomah_county.tax.income.pfa.rates
-        )
+        p = parameters(period).gov.local["or"].multnomah_county.tax.income.pfa.rates
 
         return select(
             [

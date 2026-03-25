@@ -8,9 +8,7 @@ class ny_tanf_need_standard(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NY
-    reference = (
-        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.1"
-    )
+    reference = "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.1"
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period.this_year)

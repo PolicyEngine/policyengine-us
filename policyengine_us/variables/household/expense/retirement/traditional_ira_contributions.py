@@ -6,7 +6,5 @@ class traditional_ira_contributions(Variable):
     entity = Person
     label = "Traditional IRA contributions"
     unit = USD
-    documentation = (
-        "Contributions to traditional Individual Retirement Accounts."
-    )
+    documentation = "Contributions to traditional Individual Retirement Accounts."
     definition_period = YEAR

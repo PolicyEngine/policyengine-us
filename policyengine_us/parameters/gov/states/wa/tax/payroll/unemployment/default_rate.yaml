@@ -1,0 +1,17 @@
+description: Default employer-side unemployment insurance tax rate for Washington.
+values:
+  0000-01-01: 0.0125
+
+metadata:
+  period: year
+  unit: /1
+  label: Washington default unemployment tax rate
+  reference:
+    - title: Revised Code of Washington Section 50.29.025
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=50.29.025
+    - title: Washington Administrative Code 192-320-025
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=192-320-025
+    - title: Washington Employment Security Department how tax rates are determined
+      href: https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=59

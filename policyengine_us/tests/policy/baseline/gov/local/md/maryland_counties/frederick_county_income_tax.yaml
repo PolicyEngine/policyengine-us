@@ -1,0 +1,584 @@
+# Frederick County Income Tax Tests
+# Uses fixed-rate-by-bracket system (not marginal rates)
+# The entire income is taxed at the rate for the bracket it falls into
+#
+# Filing status groups:
+#   - SINGLE, SEPARATE: brackets at $25K, $50K, $150K
+#   - JOINT, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE: brackets at $25K, $100K, $250K
+#
+# 2024 Rates:
+#   - Single: $0-$25K (2.25%), $25K-$50K (2.75%), $50K-$150K (2.96%), $150K+ (3.2%)
+#   - Joint: $0-$25K (2.25%), $25K-$100K (2.75%), $100K-$250K (2.96%), $250K+ (3.2%)
+
+# ==============================================================================
+# 2021 TESTS - Flat Rate (0.0296 for all)
+# ==============================================================================
+
+- name: Frederick County income tax - $50,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Flat rate in 2021: 50,000 * 0.0296 = 1,480
+    md_local_income_tax_before_credits: 1_480
+
+- name: Frederick County income tax - $100,000 income (2021)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Flat rate in 2021: 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
+
+- name: Frederick County income tax - high income $500,000 (2021, flat rate verification)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 500_000
+  output:
+    # Flat rate in 2021: 500,000 * 0.0296 = 14,800
+    md_local_income_tax_before_credits: 14_800
+
+# ==============================================================================
+# 2022 TESTS - Flat Rate (0.0296 for all)
+# ==============================================================================
+
+- name: Frederick County income tax - $50,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 50,000 * 0.0296 = 1,480
+    md_local_income_tax_before_credits: 1_480
+
+- name: Frederick County income tax - $100,000 income (2022)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Flat rate in 2022 (before progressive started in 2023): 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
+
+# ==============================================================================
+# 2023 TESTS - Fixed-rate-by-bracket (2 brackets)
+# Single: $50K boundary
+# Joint: $100K boundary
+# ==============================================================================
+
+- name: Frederick County income tax - $50,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Fixed-rate-by-bracket: $50,000 at boundary -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - $50,000 income (2023, joint)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 50_000
+  output:
+    # Fixed-rate-by-bracket: $50,000 in first bracket (< $100k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - $100,000 income (2023)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Fixed-rate-by-bracket: $100,000 in second bracket (>= $50k) -> 2.96% rate
+    # 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
+
+- name: Frederick County income tax - $100,000 income (2023, joint)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 100_000
+  output:
+    # Fixed-rate-by-bracket: $100,000 at boundary -> 2.75% rate
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+# ==============================================================================
+# 2024 TESTS - Fixed-rate-by-bracket (4 brackets)
+# Single/Separate: $25K, $50K, $150K thresholds
+# Joint/HoH/Surviving: $25K, $100K, $250K thresholds
+# ==============================================================================
+
+- name: Frederick County income tax - $15,000 income (first bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 15_000
+  output:
+    # Fixed-rate-by-bracket: $15,000 in first bracket (< $25k) -> 2.25% rate
+    # 15,000 * 0.0225 = 337.50
+    md_local_income_tax_before_credits: 338
+
+- name: Frederick County income tax - $15,000 income (first bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 15_000
+  output:
+    # Fixed-rate-by-bracket: $15,000 in first bracket (< $25k) -> 2.25% rate
+    # 15,000 * 0.0225 = 337.50
+    md_local_income_tax_before_credits: 338
+
+# --- Boundary tests at $25K ---
+
+- name: Frederick County income tax - boundary exactly at $25,000 (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 25_000
+  output:
+    # Exactly at first bracket boundary ($0-$25k) -> 2.25% rate
+    # With right=True, boundary falls in the lower bracket
+    # 25,000 * 0.0225 = 562.50
+    md_local_income_tax_before_credits: 563
+
+- name: Frederick County income tax - one dollar below $25,000 boundary (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 24_999
+  output:
+    # Just below first bracket boundary -> 2.25% rate
+    # 24,999 * 0.0225 = 562.48
+    md_local_income_tax_before_credits: 562
+
+- name: Frederick County income tax - $35,000 income (second bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 35_000
+  output:
+    # Fixed-rate-by-bracket: $35,000 in second bracket ($25k-$50k) -> 2.75% rate
+    # 35,000 * 0.0275 = 962.50
+    md_local_income_tax_before_credits: 963
+
+- name: Frederick County income tax - $35,000 income (second bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 35_000
+  output:
+    # Fixed-rate-by-bracket: $35,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 35,000 * 0.0275 = 962.50
+    md_local_income_tax_before_credits: 963
+
+# --- Boundary tests at $50K for SINGLE ---
+
+- name: Frederick County income tax - boundary exactly at $50,000 (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Exactly at second bracket boundary ($25k-$50k) -> 2.75% rate
+    # With right=True, boundary falls in the lower bracket
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - one dollar below $50,000 boundary (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 49_999
+  output:
+    # Just below second bracket boundary -> 2.75% rate
+    # 49,999 * 0.0275 = 1,375.0
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - $75,000 income (third bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 75_000
+  output:
+    # Fixed-rate-by-bracket: $75,000 in third bracket ($50k-$150k) -> 2.96% rate
+    # 75,000 * 0.0296 = 2,220
+    md_local_income_tax_before_credits: 2_220
+
+- name: Frederick County income tax - $75,000 income (third bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 75_000
+  output:
+    # Fixed-rate-by-bracket: $75,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 75,000 * 0.0275 = 2,062.50
+    md_local_income_tax_before_credits: 2_063
+
+# --- Boundary tests at $100K for JOINT ---
+
+- name: Frederick County income tax - boundary exactly at $100,000 (2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 100_000
+  output:
+    # Exactly at second bracket boundary ($25k-$100k) -> 2.75% rate
+    # With right=True, boundary falls in the lower bracket
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+- name: Frederick County income tax - one dollar below $100,000 boundary (2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 99_999
+  output:
+    # Just below second bracket boundary -> 2.75% rate
+    # 99,999 * 0.0275 = 2,749.97
+    md_local_income_tax_before_credits: 2_750
+
+# --- Boundary tests at $150K for SINGLE ---
+
+- name: Frederick County income tax - boundary exactly at $150,000 (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 150_000
+  output:
+    # Exactly at third bracket boundary ($50k-$150k) -> 2.96% rate
+    # With right=True, boundary falls in the lower bracket
+    # 150,000 * 0.0296 = 4,440
+    md_local_income_tax_before_credits: 4_440
+
+- name: Frederick County income tax - one dollar below $150,000 boundary (2024, single)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 149_999
+  output:
+    # Just below third bracket boundary -> 2.96% rate
+    # 149,999 * 0.0296 = 4,439.97
+    md_local_income_tax_before_credits: 4_440
+
+- name: Frederick County income tax - $200,000 income (fourth bracket, 2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in fourth bracket (>= $150k) -> 3.2% rate
+    # 200,000 * 0.032 = 6,400
+    md_local_income_tax_before_credits: 6_400
+
+- name: Frederick County income tax - $200,000 income (fourth bracket, 2024, joint)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920
+
+- name: Frederick County income tax - married filing jointly (2024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 150_000
+  output:
+    # Fixed-rate-by-bracket: $150,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 150,000 * 0.0296 = 4,440
+    md_local_income_tax_before_credits: 4_440
+
+# --- SEPARATE filing status (same brackets as SINGLE) ---
+
+- name: Frederick County income tax - $75,000 income (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 75_000
+  output:
+    # Fixed-rate-by-bracket: $75,000 in third bracket ($50k-$150k) -> 2.96% rate
+    # 75,000 * 0.0296 = 2,220
+    md_local_income_tax_before_credits: 2_220
+
+- name: Frederick County income tax - boundary exactly at $150,000 (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 150_000
+  output:
+    # Exactly at third bracket boundary ($50k-$150k) -> 2.96% rate
+    # With right=True, boundary falls in the lower bracket
+    # 150,000 * 0.0296 = 4,440
+    md_local_income_tax_before_credits: 4_440
+
+- name: Frederick County income tax - $200,000 income (2024, separate)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SEPARATE
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in fourth bracket (>= $150k) -> 3.2% rate
+    # 200,000 * 0.032 = 6,400
+    md_local_income_tax_before_credits: 6_400
+
+# --- HEAD_OF_HOUSEHOLD filing status (same brackets as JOINT) ---
+
+- name: Frederick County income tax - $75,000 income (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 75_000
+  output:
+    # Fixed-rate-by-bracket: $75,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 75,000 * 0.0275 = 2,062.50
+    md_local_income_tax_before_credits: 2_063
+
+- name: Frederick County income tax - boundary exactly at $100,000 (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 100_000
+  output:
+    # Exactly at second bracket boundary ($25k-$100k) -> 2.75% rate
+    # With right=True, boundary falls in the lower bracket
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+- name: Frederick County income tax - $200,000 income (2024, head of household)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: HEAD_OF_HOUSEHOLD
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920
+
+# --- SURVIVING_SPOUSE filing status (same brackets as JOINT) ---
+
+- name: Frederick County income tax - $75,000 income (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 75_000
+  output:
+    # Fixed-rate-by-bracket: $75,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 75,000 * 0.0275 = 2,062.50
+    md_local_income_tax_before_credits: 2_063
+
+- name: Frederick County income tax - boundary exactly at $100,000 (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 100_000
+  output:
+    # Exactly at second bracket boundary ($25k-$100k) -> 2.75% rate
+    # With right=True, boundary falls in the lower bracket
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+- name: Frederick County income tax - $200,000 income (2024, surviving spouse)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SURVIVING_SPOUSE
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920
+
+# ==============================================================================
+# 2025 TESTS - Same bracket structure as 2024
+# ==============================================================================
+
+- name: Frederick County income tax - $50,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 50_000
+  output:
+    # Fixed-rate-by-bracket: $50,000 at boundary ($25k-$50k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - $50,000 income (2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 50_000
+  output:
+    # Fixed-rate-by-bracket: $50,000 in second bracket ($25k-$100k) -> 2.75% rate
+    # 50,000 * 0.0275 = 1,375
+    md_local_income_tax_before_credits: 1_375
+
+- name: Frederick County income tax - $100,000 income (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 100_000
+  output:
+    # Fixed-rate-by-bracket: $100,000 in third bracket ($50k-$150k) -> 2.96% rate
+    # 100,000 * 0.0296 = 2,960
+    md_local_income_tax_before_credits: 2_960
+
+- name: Frederick County income tax - $100,000 income (2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 100_000
+  output:
+    # Fixed-rate-by-bracket: $100,000 at boundary -> 2.75% rate
+    # 100,000 * 0.0275 = 2,750
+    md_local_income_tax_before_credits: 2_750
+
+- name: Frederick County income tax - $200,000 income (fourth bracket, 2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in fourth bracket (>= $150k) -> 3.2% rate
+    # 200,000 * 0.032 = 6,400
+    md_local_income_tax_before_credits: 6_400
+
+- name: Frederick County income tax - $200,000 income (fourth bracket, 2025, joint)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: JOINT
+    md_taxable_income: 200_000
+  output:
+    # Fixed-rate-by-bracket: $200,000 in third bracket ($100k-$250k) -> 2.96% rate
+    # 200,000 * 0.0296 = 5,920
+    md_local_income_tax_before_credits: 5_920

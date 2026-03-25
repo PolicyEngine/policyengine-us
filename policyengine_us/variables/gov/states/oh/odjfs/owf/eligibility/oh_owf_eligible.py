@@ -32,8 +32,4 @@ class oh_owf_eligible(Variable):
         # are NOT considered in determining eligibility"
 
         # All requirements must be met
-        return (
-            demographic_eligible
-            & immigration_status_eligible
-            & income_eligible
-        )
+        return demographic_eligible & immigration_status_eligible & income_eligible

@@ -11,9 +11,7 @@ class is_premium_free_part_a(Variable):
         "Approximately 99% of Medicare beneficiaries qualify for premium-free Part A."
     )
     definition_period = YEAR
-    reference = (
-        "https://www.medicare.gov/basics/costs/medicare-costs/part-a-costs"
-    )
+    reference = "https://www.medicare.gov/basics/costs/medicare-costs/part-a-costs"
     defined_for = "is_medicare_eligible"
 
     def formula(person, period, parameters):

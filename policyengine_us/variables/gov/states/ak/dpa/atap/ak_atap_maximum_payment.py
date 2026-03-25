@@ -23,9 +23,7 @@ class ak_atap_maximum_payment(Variable):
         is_pregnant_woman_alone = (unit_size == 1) & is_pregnant
 
         # Adult-included: $821 base + $102 per additional child
-        adult_included_payment = (
-            p.base + additional_children * p.additional_child
-        )
+        adult_included_payment = p.base + additional_children * p.additional_child
         adult_included_eligible = num_dependents >= 1
 
         # Return pregnant woman max payment if alone, otherwise adult-included

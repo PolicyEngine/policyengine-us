@@ -1,0 +1,294 @@
+- name: Joint filer with income below 0% bracket threshold pays no tax
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_taxable_income: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Income $8,000 < $10,000 (0% bracket threshold for 2026 joint)
+    ny_main_income_tax: 0
+    ny_supplemental_tax: 0
+
+- name: Joint filer with income in 4% bracket
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_taxable_income: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 0% on first $10,000 = $0
+    # 4% on ($15,000 - $10,000) = $5,000 * 0.04 = $200
+    ny_main_income_tax: 200
+
+- name: Single filer with income below 0% bracket threshold
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ny_taxable_income: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Income $4,000 < $5,000 (0% bracket threshold for 2026 single)
+    ny_main_income_tax: 0
+
+- name: Single filer with income in 4% bracket only
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ny_taxable_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # 0% on first $5,000 = $0
+    # 4% on ($50,000 - $5,000) = $45,000 * 0.04 = $1,800
+    ny_main_income_tax: 1_800
+
+- name: Head of household filer in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_taxable_income: 30_000
+    households:
+      household:
+        members: [person1, child]
+        state_code: NY
+  output:
+    # 0% on first $7,500 = $0
+    # 4% on ($30,000 - $7,500) = $22,500 * 0.04 = $900
+    ny_main_income_tax: 900
+
+- name: Married filing separately in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        ny_taxable_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # 0% on first $5,000 = $0
+    # 4% on ($25,000 - $5,000) = $20,000 * 0.04 = $800
+    ny_main_income_tax: 800
+
+- name: Joint filer spanning multiple brackets in 2026
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_taxable_income: 1_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 0% on $0-$10,000 = $0
+    # 4% on $10,000-$500,000 = $490,000 * 0.04 = $19,600
+    # 5% on $500,000-$1,000,000 = $500,000 * 0.05 = $25,000
+    # Total: $44,600
+    ny_main_income_tax: 44_600
+
+- name: Joint filer in 2033 with reduced top rate
+  period: 2033
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_taxable_income: 500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 2033: 0% bracket at $80,000
+    # 0% on $0-$80,000 = $0
+    # 4% on $80,000-$500,000 = $420,000 * 0.04 = $16,800
+    ny_main_income_tax: 16_800
+
+- name: Joint filer in 2035 with full $100K exemption
+  period: 2035
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_taxable_income: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 2035: 0% bracket up to $100,000 for joint filers
+    ny_main_income_tax: 0
+
+- name: Single filer exactly at 4% bracket threshold
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ny_taxable_income: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Income exactly at $5,000 (0% bracket threshold)
+    ny_main_income_tax: 0
+
+- name: Supplemental tax returns zero under S9110
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 55
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ny_taxable_income: 5_000_000
+        ny_agi: 5_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Supplemental tax is neutralized (returns 0)
+    ny_supplemental_tax: 0
+
+- name: Surviving spouse uses Section 1 rates
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s9110.ny_s9110
+  input:
+    gov.contrib.states.ny.s9110.in_effect: true
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        ny_taxable_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Surviving spouse uses joint rates (Section 1)
+    # 0% on first $10,000 = $0
+    # 4% on ($15,000 - $10,000) = $5,000 * 0.04 = $200
+    ny_main_income_tax: 200

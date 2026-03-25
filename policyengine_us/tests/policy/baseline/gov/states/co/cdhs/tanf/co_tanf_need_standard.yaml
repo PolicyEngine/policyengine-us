@@ -24,3 +24,81 @@
     co_tanf_count_children: 12
   output:
     co_tanf_need_standard: 1_289 * 12
+
+# --- 2013 era (period 2014 uses 2013-07-01 values; need standard is unchanged) ---
+
+- name: Case 4, one adult zero children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_need_standard: 253 * 12
+
+- name: Case 5, one adult two children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_need_standard: 421 * 12
+
+- name: Case 6, zero adults three children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 3
+  output:
+    co_tanf_need_standard: 368 * 12
+
+- name: Case 7, two adults twelve children in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    # base(2,10) = $1,155 + 2 * $67 = $1,289/mo (same as 2023)
+    co_tanf_need_standard: 1_289 * 12
+
+# --- 2024 era (period 2025; need standard unchanged from 2013) ---
+
+- name: Case 8, one adult two children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_need_standard: 421 * 12
+
+- name: Case 9, two adults five children in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 5
+  output:
+    co_tanf_need_standard: 787 * 12
+
+# --- Edge cases ---
+
+- name: Case 10, zero adults zero children degenerate case.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 0
+  output:
+    # need_standard.main[0][0] = $0
+    co_tanf_need_standard: 0

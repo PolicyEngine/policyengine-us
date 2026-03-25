@@ -1,165 +1,314 @@
-- name: Case 1 - Minimum copay for income below 20% SMI
-  period: 2024-01
+- name: Case 1, minimum copay for income below 20% SMI.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
+      person1:
         age: 30
         employment_income: 12_000  # Annual income ($1,000/month)
-      parent2:
+      person2:
         age: 28
-      child1:
+      person3:
         age: 3
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1]
+        members: [person1, person2, person3]
         spm_unit_size: 3
     households:
       household:
-        members: [parent1, parent2, child1]
+        members: [person1, person2, person3]
         state_code: TX
   output:
-    # Calculation: Income ~14% SMI → first child rate 2.27%
-    # Copay = 0.0227 * $1,000 = $22.70
-    tx_ccs_copay: 22.7
+    # Income $1,000/month, SMI ~$7,225/month → 13.84% SMI
+    # Interpolated rate between 5% (2.27%) and 20% (3.27%) = ~2.86%
+    # Copay = 0.0286 * $1,000 = $28.59
+    tx_ccs_copay: 28.59
 
-- name: Case 2 - Single child in 30% SMI bracket
-  period: 2024-01
+- name: Case 2, single child in 30% SMI bracket.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
+      person1:
         age: 35
-        employment_income: 30_000  # Annual income ($2,500/month, ~35% of SMI for family of 3)
-      parent2:
+        employment_income: 30_000  # Annual income ($2,500/month)
+      person2:
         age: 32
-      child1:
+      person3:
         age: 4
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1]
+        members: [person1, person2, person3]
         spm_unit_size: 3
     households:
       household:
-        members: [parent1, parent2, child1]
+        members: [person1, person2, person3]
         state_code: TX
   output:
-    # Calculation: Income ~35% SMI → first child rate 4.6%
-    # Copay = 0.046 * $2,500 = $115
-    tx_ccs_copay: 115
+    # Income $2,500/month, ~34.6% SMI
+    # Interpolated rate between 30% (3.93%) and 40% (4.60%) = ~4.24%
+    # Copay = ~$105.96
+    tx_ccs_copay: 105.96
 
-- name: Case 3 - Two children in 50% SMI bracket
-  period: 2024-01
+- name: Case 3, two children in 50% SMI bracket.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
+      person1:
         age: 35
-        employment_income: 48_000  # Annual income ($4,000/month, ~55% of SMI for family of 4)
-      parent2:
+        employment_income: 48_000  # Annual income ($4,000/month)
+      person2:
         age: 32
-      child1:
+      person3:
         age: 5
         is_disabled: false
         is_citizen_or_legal_immigrant: true
-      child2:
+      person4:
         age: 2
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         spm_unit_size: 4
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: TX
   output:
-    # Calculation: Income ~55% SMI → first child rate 5.93%
-    # First child copay = 0.0593 * $4,000 = $237.20
-    # Additional child copay = 0.0015 * $4,000 * 1 = $6.00
-    # Total = $237.20 + $6.00 = $243.20
-    tx_ccs_copay: 243.2
+    # Income $4,000/month, ~46.5% SMI
+    # Interpolated first child rate ~5.03% = ~$201
+    # Interpolated additional child rate ~0.70% = ~$28
+    # Total = ~$229.08 (official calculator: $229)
+    tx_ccs_copay: 229.08
 
-- name: Case 4 - Three children in 75% SMI bracket
-  period: 2024-01
+- name: Case 4, three children in 75% SMI bracket.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
+      person1:
         age: 40
-        employment_income: 84_000  # Annual income ($7,000/month, ~75-80% of SMI for family of 5)
-      parent2:
+        employment_income: 84_000  # Annual income ($7,000/month)
+      person2:
         age: 38
-      child1:
+      person3:
         age: 8
         is_disabled: false
         is_citizen_or_legal_immigrant: true
-      child2:
+      person4:
         age: 5
         is_disabled: false
         is_citizen_or_legal_immigrant: true
-      child3:
+      person5:
         age: 2
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2, child3]
+        members: [person1, person2, person3, person4, person5]
         spm_unit_size: 5
     households:
       household:
-        members: [parent1, parent2, child1, child2, child3]
+        members: [person1, person2, person3, person4, person5]
         state_code: TX
   output:
-    # Calculation: Income ~77% SMI → first child rate would be 6.97%
-    # First child copay = 0.0697 * $7,000 = $487.90
-    # Additional child copay = 0.0015 * $7,000 * 2 = $21.00
-    # Subtotal = $487.90 + $21.00 = $508.90
-    # Capped at max: 0.07 * $7,000 = $490
+    # Income $7,000/month, ~70% SMI
+    # Capped at 7% of income = $490
     tx_ccs_copay: 490
 
-- name: Case 5 - Single child in above 85% SMI bracket
-  period: 2024-01
+- name: Case 5, single child above 85% SMI bracket.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
+      person1:
         age: 35
-        employment_income: 78_000  # Annual income ($6,500/month, >85% of SMI for family of 2)
-        weekly_hours_worked: 40  # Meets work requirement
-      child1:
+        employment_income: 78_000  # Annual income ($6,500/month, >85% SMI)
+        weekly_hours_worked: 40
+      person2:
         age: 6
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, child1]
+        members: [person1, person2]
         spm_unit_size: 2
     households:
       household:
-        members: [parent1, child1]
+        members: [person1, person2]
         state_code: TX
   output:
     tx_ccs_copay: 0
 
-- name: Case 6 - No eligible children means no copay
-  period: 2024-01
+- name: Case 7, three children with high income capped at 7%.
+  period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
-      parent1:
-        age: 30
-        employment_income: 36_000  # Annual income ($3,000/month)
-      teenager:
-        age: 14  # Too old for CCS
+      person1:
+        age: 40
+        employment_income: 96_000  # Annual income ($8,000/month)
+      person2:
+        age: 38
+      person3:
+        age: 8
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+      person4:
+        age: 5
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+      person5:
+        age: 2
         is_disabled: false
         is_citizen_or_legal_immigrant: true
     spm_units:
       spm_unit:
-        members: [parent1, teenager]
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_size: 5
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    # Income $8,000/month, ~80% SMI
+    # Capped at 7% of income = $560
+    tx_ccs_copay: 560
+
+- name: Case 8, single parent with two children in care.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_020  # Annual income ($4,335/month)
+      person2:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 2
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Income $4,335/month, household size 3, 2 children
+    # Official calculator: $296
+    tx_ccs_copay: 296
+
+- name: Case 9, single parent with one child in care at higher income.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 61_200  # Annual income ($5,100/month)
+      person2:
+        age: 28
+      person3:
+        age: 3
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Income $5,100/month, household size 3, 1 child
+    # Official calculator: $338
+    tx_ccs_copay: 338.37
+
+- name: Case 10, very low income single parent with one child.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_200  # Annual income ($100/month)
+      person2:
+        age: 28
+      person3:
+        age: 3
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Income $100/month, household size 3, 1 child
+    # Official calculator: $2
+    tx_ccs_copay: 2.03
+
+- name: Case 6, no eligible children means no copay.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 14
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
         spm_unit_size: 2
     households:
       household:
-        members: [parent1, teenager]
+        members: [person1, person2]
         state_code: TX
   output:
-    tx_ccs_copay: 0  # No eligible children = no copay
+    tx_ccs_copay: 0
+
+- name: Zero income produces zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 28
+      person3:
+        age: 3
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # smi_ratio = 0 / SMI = 0, below 1% threshold, rate = 0
+    tx_ccs_copay: 0

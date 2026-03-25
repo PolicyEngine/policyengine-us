@@ -1,5 +1,5 @@
-- name: If the household has one person and is located in region 1, income limit is $862/yr.
-  period: 2023
+- name: If the household has one person and is located in region 1, income limit is $862/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -7,8 +7,8 @@
   output:
     ca_tanf_income_limit: 862 * 12
 
-- name: If the household has ten people and is located in region 1, income limit is $3,760/yr.
-  period: 2023
+- name: If the household has ten people and is located in region 1, income limit is $3,760/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -16,8 +16,8 @@
   output:
     ca_tanf_income_limit: 3_760 * 12
 
-- name: If the household has eleven people and is located in region 1, income limit is $3,794/yr.
-  period: 2023
+- name: If the household has eleven people and is located in region 1, income limit is $3,794/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 11
@@ -25,8 +25,8 @@
   output:
     ca_tanf_income_limit: (3_760 + 34) * 12
 
-- name: If the household has one person and is located in region 2, income limit is $818/yr.
-  period: 2023
+- name: If the household has one person and is located in region 2, income limit is $818/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -34,8 +34,8 @@
   output:
     ca_tanf_income_limit: 818 * 12
 
-- name: If the household has ten people and is located in region 2, income limit is $3,576/yr.
-  period: 2023
+- name: If the household has ten people and is located in region 2, income limit is $3,576/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -43,11 +43,196 @@
   output:
     ca_tanf_income_limit: 3_576 * 12
 
-- name: If the household has twelve people and is located in region 2, income limit is $3,644/yr.
-  period: 2023
+- name: If the household has twelve people and is located in region 2, income limit is $3,644/mo.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 12
     ca_tanf_region1: false
   output:
     ca_tanf_income_limit: (3_576 + 2 * 34) * 12
+
+- name: Region 1 MBSAC for 1-person household in 2025 uses 2024-07-01 value ($899/mo).
+  period: 2025
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 899 * 12
+
+- name: Region 1 MBSAC for 3-person household in 2025 uses 2024-07-01 value ($1,829/mo).
+  period: 2025
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 1_829 * 12
+
+- name: Region 2 MBSAC for 1-person household in 2025 uses 2024-07-01 value ($853/mo).
+  period: 2025
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 853 * 12
+
+- name: Region 2 MBSAC for 10-person household in 2025 uses 2024-07-01 value ($3,730/mo).
+  period: 2025
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 3_730 * 12
+
+- name: Region 2 MBSAC for 11-person household in 2025 uses $35 additional.
+  period: 2025
+  input:
+    state_code: CA
+    spm_unit_size: 11
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: (3_730 + 35) * 12
+
+- name: Region 1 MBSAC for 1-person household in 2026 uses 2025-07-01 value ($930/mo).
+  period: 2026
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 930 * 12
+
+- name: Region 2 MBSAC for 10-person household in 2026 uses 2025-07-01 value ($3,858/mo).
+  period: 2026
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 3_858 * 12
+
+- name: Case 1, historical 2019 Region 1 size 1 MBSAC is $714/mo.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 714 * 12
+
+- name: Case 2, historical 2019 Region 2 size 3 MBSAC is $1,379/mo.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 1_379 * 12
+
+- name: Case 3, family size 11 Region 1 2026 uses additional $36 per person.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 11
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: (4_056 + 36) * 12
+
+- name: Case 4, family size 15 Region 2 2025 uses $35 additional per extra person.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 15
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: (3_730 + 5 * 35) * 12
+
+# Historical MBSAC period transition tests
+
+- name: Case 5, 2016 R1 family of 3 gets Jul 2015 MBSAC $1,257.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 1_257 * 12
+
+- name: Case 6, 2016 R2 family of 3 gets Jul 2015 MBSAC $1,194.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 1_194 * 12
+
+- name: Case 7, 2018 R1 family of 3 gets Jul 2017 MBSAC $1,342.
+  period: 2018
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 1_342 * 12
+
+- name: Case 8, 2018 R2 family of 3 gets Jul 2017 MBSAC $1,274.
+  period: 2018
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 1_274 * 12
+
+- name: Case 9, 2022 R1 family of 3 gets Jul 2021 MBSAC $1,539.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 1_539 * 12
+
+- name: Case 10, 2022 R2 family of 3 gets Jul 2021 MBSAC $1,460.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 1_460 * 12
+
+- name: Case 11, 2016 R1 11-person household uses additional $24 above size 10.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 11
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: (2_698 + 24) * 12
+
+- name: Case 12, 2016 R1 family of 10 gets Jul 2015 MBSAC $2,698.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 2_698 * 12

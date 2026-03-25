@@ -11,9 +11,7 @@ class ne_child_care_subsidy(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
-        childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        childcare_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
         income = spm_unit("spm_unit_net_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         fpg_fraction = fpg * p.fpg_fraction.fee_free_limit

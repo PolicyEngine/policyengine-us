@@ -1,9 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
-    Variable
-):
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan non-retired tier three retirement benefits deduction"
@@ -20,9 +18,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
 
     def formula(tax_unit, period, parameters):
         # Modeled after 2022 Michigan Pension Schedule (Form 4884) Section C
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits
+        p = parameters(period).gov.states.mi.tax.income.deductions.retirement_benefits
         #  Recipients should receive retirement benefits from employment exempt from Social Security
         eligible_people = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people",
@@ -34,9 +30,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount
-        cap = (
-            p.tier_three.ss_exempt.not_retired.amount * eligible_people
-        )  # Line 9
+        cap = p.tier_three.ss_exempt.not_retired.amount * eligible_people  # Line 9
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse
         )

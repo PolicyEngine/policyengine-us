@@ -6,4 +6,3 @@ class is_pregnant(Variable):
     entity = Person
     label = "Is pregnant"
     definition_period = YEAR
-    adds = ["current_pregnancies"]

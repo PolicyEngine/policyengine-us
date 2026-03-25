@@ -14,9 +14,7 @@ class mi_standard_deduction_tier_three_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.standard.tier_three
+        p = parameters(period).gov.states.mi.tax.income.deductions.standard.tier_three
 
         older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
 

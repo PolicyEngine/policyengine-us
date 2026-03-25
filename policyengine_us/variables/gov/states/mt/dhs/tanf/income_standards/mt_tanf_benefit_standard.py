@@ -7,12 +7,21 @@ class mt_tanf_benefit_standard(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) benefit standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/TANF/TANFStatePlan.pdf#page=10"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/TANF/TANFStatePlan.pdf#page=10"
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mt.dhs.tanf.income_standards
-        fpg = spm_unit("mt_tanf_assistance_unit_fpg", period)
-        return fpg * p.benefit_fpg_rate
+        p = parameters(period).gov.states.mt.dhs.tanf
+        p_fpg = parameters(
+            f"{int(p.income_standards.benefit_fpg_year)}-01-01"
+        ).gov.hhs.fpg
+        capped_size = min_(
+            spm_unit("mt_tanf_assistance_unit_size", period),
+            p.max_unit_size,
+        )
+        state_group = spm_unit.household("state_group_str", period)
+        monthly_fpg = (
+            p_fpg.first_person[state_group]
+            + p_fpg.additional_person[state_group] * (capped_size - 1)
+        ) / MONTHS_IN_YEAR
+        return monthly_fpg * p.income_standards.benefit_fpg_rate

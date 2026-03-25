@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for North Carolina.
+values:
+  0000-01-01: 31_400
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: North Carolina unemployment taxable wage base
+  reference:
+    - title: North Carolina General Statutes Section 96-9.3
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_96/GS_96-9.3.html
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=43

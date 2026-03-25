@@ -29,9 +29,7 @@ def create_ri_social_security_exemption() -> Reform:
             baseline_age_eligible = birth_year <= p_baseline.birth_year
             baseline_income_limit = p_baseline.income[filing_status]
             baseline_income_eligible = income < baseline_income_limit
-            baseline_eligible = (
-                baseline_age_eligible & baseline_income_eligible
-            )
+            baseline_eligible = baseline_age_eligible & baseline_income_eligible
 
             # Reform eligibility depends on which phase:
             # - income_limit_applies=True: universal exemption (2029+)
@@ -43,9 +41,7 @@ def create_ri_social_security_exemption() -> Reform:
                 birth_year <= p_baseline.birth_year,
                 True,
             )
-            reform_eligible_with_limits = (
-                reform_age_eligible & reform_income_eligible
-            )
+            reform_eligible_with_limits = reform_age_eligible & reform_income_eligible
 
             # Universal exemption when income limit is repealed
             reform_eligible = where(
@@ -55,9 +51,7 @@ def create_ri_social_security_exemption() -> Reform:
             )
 
             # Select based on whether reform is in effect
-            return where(
-                p_reform.in_effect, reform_eligible, baseline_eligible
-            )
+            return where(p_reform.in_effect, reform_eligible, baseline_eligible)
 
     class ri_social_security_modification(Variable):
         value_type = float
@@ -94,15 +88,11 @@ def create_ri_social_security_exemption() -> Reform:
             aged_head_or_spouse_ss = tax_unit.sum(
                 total_social_security * head_or_spouse_aged
             )
-            head_or_spouse_ss = tax_unit.sum(
-                total_social_security * head_or_spouse
-            )
+            head_or_spouse_ss = tax_unit.sum(total_social_security * head_or_spouse)
 
             aged_ss_ratio = np.zeros_like(head_or_spouse_ss)
             mask = head_or_spouse_ss != 0
-            aged_ss_ratio[mask] = (
-                aged_head_or_spouse_ss[mask] / head_or_spouse_ss[mask]
-            )
+            aged_ss_ratio[mask] = aged_head_or_spouse_ss[mask] / head_or_spouse_ss[mask]
 
             baseline_amount = head_or_spouse_taxable_ss * aged_ss_ratio
 

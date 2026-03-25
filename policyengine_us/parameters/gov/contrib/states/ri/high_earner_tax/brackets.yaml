@@ -1,25 +1,26 @@
-description: Rhode Island high earner tax brackets from Governor Dan Mckee's FY2027 Budget Proposal.
+description: Rhode Island places this additional tax on high-income filers per H7317.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
   period: year
-  label: Rhode Island high earner tax brackets
+  label: Rhode Island H7317 high earner surtax brackets
+  reference:
+    - title: Rhode Island H7317 - Additional tax on high-income filers
+      href: https://webserver.rilegislature.gov/BillText26/HouseText26/H7317.pdf
 
 brackets:
   - threshold:
       2027-01-01: 0
     rate:
-      2027-01-01: 0.0375
+      2027-01-01: 0
   - threshold:
-      2027-01-01: 55_000
+      values:
+        2026-01-01: 640_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
-      2027-01-01: 0.0475
-  - threshold:
-      2027-01-01: 125_000
-    rate:
-      2027-01-01: 0.0599
-  - threshold:
-      2027-01-01: 648_398
-    rate:
-      2027-01-01: 0.0899
+      2027-01-01: 0.03

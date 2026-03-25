@@ -1,13 +1,18 @@
 description: Oklahoma limit on taxable pension benefit AGI subtraction per person.
 values:
   2021-01-01: 10_000
-  2024-01-01: 20_000
 
 metadata:
   period: year
   unit: currency-USD
   label: Oklahoma limit on taxable pension benefit AGI subtraction per person
   reference:
+    - title: Oklahoma Statutes Title 68, Section 2358v3(A)(8), public retirement benefit subtraction
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1012
+    - title: Oklahoma Statutes Title 68, Section 2358v3(A)(13)(c), retirement benefit definition
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1013
+    - title: Oklahoma Statutes Title 68, Section 2358v3(A)(13)(d), $10,000 retirement benefit limit
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1014
     - title: 2021 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf#page=17
     - title: 2022 Form 511 instructions
@@ -18,5 +23,3 @@ metadata:
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2024/511-Pkt.pdf#page=17
     - title: 2025 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=17
-    - title: HB 2020 - Pension Exemption Increase
-      href: https://www.okhouse.gov/posts/news-20230324_4

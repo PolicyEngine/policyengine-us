@@ -56,15 +56,12 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
             unit_allowance = p.mo_ss_or_ssd_deduction_allowance[filing_status]
             unit_agi_over_allowance = max_(0, unit_mo_agi - unit_allowance)
             unit_eligible_ben = tax_unit.sum(eligible_taxable_benefits)
-            unit_deduction = max_(
-                0, unit_eligible_ben - unit_agi_over_allowance
-            )
+            unit_deduction = max_(0, unit_eligible_ben - unit_agi_over_allowance)
             # Compute individual's share of tax unit deduction
             ind_frac = np.zeros_like(eligible_taxable_benefits)
             ben_mask = eligible_taxable_benefits > 0
             ind_frac[ben_mask] = (
-                eligible_taxable_benefits[ben_mask]
-                / unit_eligible_ben[ben_mask]
+                eligible_taxable_benefits[ben_mask] / unit_eligible_ben[ben_mask]
             )
             return ind_frac * unit_deduction
 

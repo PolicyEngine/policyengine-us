@@ -1,0 +1,229 @@
+- name: Case 1, child under 13, citizen, dependent, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [true]
+
+- name: Case 2, child age 13, not disabled, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [false]
+
+- name: Case 3, child age 12, boundary eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [true]
+
+- name: Case 4, disabled child age 18, eligible under special needs.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [true]
+
+- name: Case 5, disabled child age 19, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [false]
+
+- name: Case 6, not a dependent, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [false]
+
+- name: Case 7, undocumented child, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [false]
+
+- name: Case 8, non-Maine resident, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    me_ccap_eligible_child: [false]
+
+# === Edge cases ===
+
+- name: Case 9, disabled child exactly age 13, eligible under special needs.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # age 13 < 19 (special needs limit) => eligible.
+    me_ccap_eligible_child: [true]
+
+- name: Case 10, non-disabled child age 0 (newborn), eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [true]
+
+- name: Case 11, disabled child exactly age 18, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # age 18 < 19 => eligible.
+    me_ccap_eligible_child: [true]
+
+- name: Case 12, adult age 30, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # age 30 >= 13 and not dependent => ineligible.
+    me_ccap_eligible_child: [false]
+
+- name: Case 13, child age 12 but legal permanent resident, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ccap_eligible_child: [true]
+
+- name: Case 14, disabled child age 15 but DACA, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: DACA
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Age 15 < 19 (special needs) but DACA is not a qualified status.
+    me_ccap_eligible_child: [false]

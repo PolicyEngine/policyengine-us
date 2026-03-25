@@ -6,3 +6,4 @@ class current_pregnancies(Variable):
     entity = Person
     definition_period = YEAR
     label = "The number of children a pregnant person is expecting"
+    adds = ["is_pregnant"]

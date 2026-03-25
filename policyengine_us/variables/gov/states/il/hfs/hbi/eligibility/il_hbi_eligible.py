@@ -27,9 +27,7 @@ class il_hbi_eligible(Variable):
         p = parameters(period).gov.states.il.hfs.hbi.eligibility
 
         # Check base eligibility criteria
-        immigration_eligible = person(
-            "il_hbi_immigration_status_eligible", period
-        )
+        immigration_eligible = person("il_hbi_immigration_status_eligible", period)
         age_eligible = person("il_hbi_age_eligible", period)
         income_eligible = person("il_hbi_income_eligible", period)
         resource_eligible = person("il_hbi_resource_eligible", period)

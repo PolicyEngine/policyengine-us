@@ -1,0 +1,26 @@
+description: Connecticut HB-5009 reduces the property tax credit in this increment of state adjusted gross income exceeding the threshold, based on filing status.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut HB-5009 property tax credit reduction increment
+  breakdown:
+    - filing_status
+  reference:
+    - title: CT House GOP Press Release - Property Tax Relief
+      href: https://www.cthousegop.com/post/property-tax-relief
+
+SINGLE:
+  2026-01-01: 10_000
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 10_000
+
+JOINT:
+  2026-01-01: 10_000
+
+SURVIVING_SPOUSE:
+  2026-01-01: 10_000
+
+SEPARATE:
+  2026-01-01: 5_000

@@ -13,9 +13,7 @@ class nm_eitc_eligible(Variable):
         # Use federal EITC eligibility, but replace demographic eligibility
         # with NM version.
         eitc = parameters.gov.irs.credits.eitc(period)
-        investment_income_eligible = tax_unit(
-            "eitc_investment_income_eligible", period
-        )
+        investment_income_eligible = tax_unit("eitc_investment_income_eligible", period)
         demographic_eligible = tax_unit("nm_eitc_demographic_eligible", period)
         # Define eligibility before considering separate filer limitation.
         eligible = demographic_eligible & investment_income_eligible

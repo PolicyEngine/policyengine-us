@@ -7,9 +7,7 @@ class additional_medicare_tax(Variable):
     definition_period = YEAR
     label = "Additional Medicare Tax"
     unit = USD
-    documentation = (
-        "Additional Medicare Tax from Form 8959 (included in payrolltax)"
-    )
+    documentation = "Additional Medicare Tax from Form 8959 (included in payrolltax)"
 
     def formula(tax_unit, period, parameters):
         amc = parameters(period).gov.irs.payroll.medicare.additional
