@@ -1,6 +1,10 @@
 description: Employee-side New York Paid Family Leave contribution rate.
 values:
-  0000-01-01: 0
+  2021-01-01: 0.00511
+  2022-01-01: 0.00511
+  2023-01-01: 0.00455
+  2024-01-01: 0.00373
+  2025-01-01: 0.00388
   2026-01-01: 0.00432
 
 metadata:
@@ -10,5 +14,17 @@ metadata:
   reference:
     - title: New York Workers' Compensation Law Section 209
       href: https://www.nysenate.gov/legislation/laws/WKC/209
+    - title: Cost and Deductions - New York State Paid Family Leave
+      href: https://paidfamilyleave.ny.gov/cost
+    - title: Health Insurers - PFL Decision on Premium Rate for Paid Family Leave Benefits 2021
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2021_page
+    - title: Health Insurers - PFL Decision on Premium Rate for Paid Family Leave Benefits 2022
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2022
+    - title: Health Insurers - PFL Decision on Premium Rate for Paid Family Leave Benefits 2023
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2023
+    - title: Health Insurers - PFL Decision on Premium Rate for Paid Family Leave Benefits 2024
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2024_page
+    - title: New York Workers' Compensation Board 2025 Paid Family Leave payroll deduction notice
+      href: https://www.wcb.ny.gov/content/main/forms/PFLDocs/pfl-pay-deduction-notice-2025.pdf#page=1
     - title: New York Workers' Compensation Board 2026 Paid Family Leave payroll deduction notice
       href: https://www.wcb.ny.gov/content/main/forms/PFLDocs/pfl-pay-deduction-notice-2026.pdf#page=1
