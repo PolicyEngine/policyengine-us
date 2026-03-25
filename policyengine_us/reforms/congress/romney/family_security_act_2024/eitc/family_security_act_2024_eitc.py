@@ -3,7 +3,6 @@ from policyengine_core.periods import period as period_
 
 
 def create_family_security_act_2024_eitc() -> Reform:
-
     class eitc_maximum(Variable):
         value_type = float
         entity = TaxUnit

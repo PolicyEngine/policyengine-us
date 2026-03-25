@@ -63,7 +63,6 @@ class TestCountyFIPSDatasetFile:
     COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
 
     def test_when_downloading_county_fips__download_is_successful(self, tmp_fips_dir):
-
         download_huggingface_dataset(
             repo=self.HUGGINGFACE_REPO,
             repo_filename=self.COUNTY_FIPS_DATASET_FILENAME,
@@ -77,7 +76,6 @@ class TestCountyFIPSDatasetFile:
     def test_when_downloading_and_parsing_county_fips__result_is_correct(
         self, tmp_fips_dir
     ):
-
         download_huggingface_dataset(
             repo=self.HUGGINGFACE_REPO,
             repo_filename=self.COUNTY_FIPS_DATASET_FILENAME,

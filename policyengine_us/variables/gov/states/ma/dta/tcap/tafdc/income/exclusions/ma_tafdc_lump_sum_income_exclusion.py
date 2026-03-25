@@ -7,10 +7,7 @@ class ma_tafdc_lump_sum_income_exclusion(Variable):
     entity = Person
     label = "Massachusetts TAFDC lump sum income exclusion"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts"
-        "/106-CMR-704-250"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

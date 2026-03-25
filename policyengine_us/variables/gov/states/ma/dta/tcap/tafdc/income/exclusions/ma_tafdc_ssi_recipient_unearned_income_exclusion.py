@@ -5,12 +5,9 @@ class ma_tafdc_ssi_recipient_unearned_income_exclusion(Variable):
     value_type = float
     unit = USD
     entity = Person
-    label = "Massachusetts TAFDC SSI recipient" " unearned income exclusion"
+    label = "Massachusetts TAFDC SSI recipient unearned income exclusion"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts"
-        "/106-CMR-704-250"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

@@ -7,10 +7,7 @@ class ma_tafdc_noncountable_income(Variable):
     entity = SPMUnit
     label = "Massachusetts TAFDC noncountable income (informational)"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts"
-        "/106-CMR-704-250"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
@@ -19,9 +16,7 @@ class ma_tafdc_noncountable_income(Variable):
         unconditional = add(
             spm_unit,
             period,
-            parameters(
-                period
-            ).gov.states.ma.dta.tcap.tafdc.income.noncountable.sources,
+            parameters(period).gov.states.ma.dta.tcap.tafdc.income.noncountable.sources,
         )
         # Conditional exclusions per 106 CMR 704.250
         conditional = add(

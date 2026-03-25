@@ -5,15 +5,9 @@ class ma_tafdc_gross_earned_income(Variable):
     value_type = float
     unit = USD
     entity = Person
-    label = (
-        "Massachusetts TAFDC gross earned income"
-        " after noncountable exclusions"
-    )
+    label = "Massachusetts TAFDC gross earned income after noncountable exclusions"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts"
-        "/106-CMR-704-250"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

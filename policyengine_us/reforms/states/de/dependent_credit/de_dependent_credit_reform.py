@@ -71,7 +71,6 @@ def create_de_dependent_credit_reform() -> Reform:
         defined_for = StateCode.DE
 
         def formula(tax_unit, period, parameters):
-
             maximum = tax_unit("de_dependent_credit_maximum", period)
             phaseout = tax_unit("de_dependent_credit_phaseout", period)
 

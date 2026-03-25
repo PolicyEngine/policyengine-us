@@ -68,7 +68,6 @@ def create_va_dependent_exemption_reform() -> Reform:
         defined_for = StateCode.VA
 
         def formula(tax_unit, period, parameters):
-
             maximum = tax_unit("va_dependent_exemption_maximum", period)
             phaseout = tax_unit("va_dependent_exemption_phaseout", period)
 

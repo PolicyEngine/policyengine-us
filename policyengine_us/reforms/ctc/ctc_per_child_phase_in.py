@@ -13,7 +13,6 @@ def create_ctc_per_child_phase_in() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
         def formula(tax_unit, period, parameters):
-
             ctc = parameters(period).gov.irs.credits.ctc
 
             earnings = tax_unit("tax_unit_earned_income", period)

@@ -11,7 +11,9 @@ class ma_tafdc_countable_unearned_income(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        total_unearned_income = add(spm_unit, period, ["ma_tafdc_gross_unearned_income"])
+        total_unearned_income = add(
+            spm_unit, period, ["ma_tafdc_gross_unearned_income"]
+        )
         child_support_deduction = add(
             spm_unit, period, ["ma_tafdc_child_support_deduction"]
         )
