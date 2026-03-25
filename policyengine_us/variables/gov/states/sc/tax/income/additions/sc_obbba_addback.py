@@ -11,13 +11,13 @@ class sc_obbba_addback(Variable):
     reference = (
         "https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update",
         "https://dor.sc.gov/sites/dor/files/forms/SC1040_2025.pdf",
-        "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=3",
+        "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=5",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.additions.obbba
         # SC has not conformed to the One Big Beautiful Bill Act
-        # (signed July 4, 2025). SC1040 line 1e adds back federal
+        # (signed July 4, 2025). SC1040 line e adds back federal
         # deductions SC does not recognize.
         #
         # 1. Standard deduction increase ($750 S/MFS, $1,125 HOH,
