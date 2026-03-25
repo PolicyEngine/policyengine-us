@@ -5,10 +5,10 @@
   output:
     household_state_income_tax: 100
 
-- name: Household state income tax with switch
+- name: Household state income tax ignores reported toggle inputs
   period: 2022
   input:
-    dc_income_tax: 100
-    simulation.reported_state_income_tax: true
+    dc_income_tax_before_refundable_credits: 100
+    spm_unit_state_tax_reported: 999
   output:
-    household_state_income_tax: 0
+    household_state_income_tax: 100

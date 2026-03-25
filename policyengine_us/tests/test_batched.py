@@ -57,7 +57,6 @@ def split_into_batches(
             "dc_single_joint_threshold_ratio.yaml",
             "reconciliation",
             "dc_kccatc.yaml",
-            "reported_state_income_tax.yaml",
         ]
         BATCH_6 = ["crfb"]  # ~8.9 GB, always alone
         BATCH_7 = ["congress"]  # ~6.3 GB

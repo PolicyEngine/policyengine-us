@@ -39,6 +39,27 @@
   output:
     snap: 6
 
+- name: SNAP ignores reported values when computing modeled benefits.
+  period: 2024
+  input:
+    snap_reported: 99
+    snap_normal_allotment: 1
+    snap_emergency_allotment:
+      2024-01: 2
+      2024-02: 0
+      2024-03: 0
+      2024-04: 0
+      2024-05: 0
+      2024-06: 0
+      2024-07: 0
+      2024-08: 0
+      2024-09: 0
+      2024-10: 0
+      2024-11: 0
+      2024-12: 0
+  output:
+    snap: 3
+
 - name: North Carolina 2025, yearly integration test
   period: 2025
   absolute_error_margin: 0.3

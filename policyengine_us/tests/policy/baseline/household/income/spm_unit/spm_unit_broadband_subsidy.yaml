@@ -1,15 +1,15 @@
-- name: By default only use reported amount.
+- name: Broadband subsidy ignores reported amount
   period: 2023
   input:
     spm_unit_broadband_subsidy_reported: 1
+    acp: 2
+    ebb: 3
   output:
-    spm_unit_broadband_subsidy: 1
+    spm_unit_broadband_subsidy: 5
 
-- name: Otherwise sum ACP, EBB, and Lifeline.
+- name: Broadband subsidy sums ACP and EBB
   period: 2023
   input:
-    gov.simulation.reported_broadband_subsidy: false
-    lifeline: 1
     acp: 2
     ebb: 3
   output:
@@ -18,9 +18,7 @@
 - name: Baseline subsidy test with relevant inputs
   period: 2023
   input:
-    gov.simulation.reported_broadband_subsidy: false
     acp: 1
     ebb: 2
   output:
     spm_unit_broadband_subsidy: 3
-
