@@ -1,4 +1,5 @@
-- name: Countable Income
+- name: Case 1, countable income reduces supplement in 2023.
+  absolute_error_margin: 0.1
   period: 2023
   input:
     co_state_supplement_eligible: true
@@ -7,7 +8,8 @@
   output:
     co_state_supplement: 9_968
 
-- name: Has some SSI
+- name: Case 2, SSI income reduces supplement in 2023.
+  absolute_error_margin: 0.1
   period: 2023
   input:
     co_state_supplement_eligible: true
@@ -16,7 +18,8 @@
   output:
     co_state_supplement: 8_968
 
-- name: More total income than grant standard
+- name: Case 3, total income exceeds grant standard in 2023.
+  absolute_error_margin: 0.1
   period: 2023
   input:
     co_state_supplement_eligible: true
@@ -24,3 +27,93 @@
     ssi: 6_000
   output:
     co_state_supplement: 0
+
+- name: Case 4, full SSI recipient gets zero supplement in 2023.
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 10_968
+  output:
+    co_state_supplement: 0
+
+- name: Case 5, historical 2002 grant standard of 582.
+  absolute_error_margin: 0.1
+  period: 2002
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 500
+    ssi: 0
+  output:
+    co_state_supplement: 6_484
+
+- name: Case 6, historical 2005 grant standard of 604.
+  absolute_error_margin: 0.1
+  period: 2005
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 6_000
+  output:
+    co_state_supplement: 1_248
+
+- name: Case 7, historical 2009 grant standard of 699.
+  absolute_error_margin: 0.1
+  period: 2009
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 8_388
+  output:
+    co_state_supplement: 0
+
+- name: Case 8, transition year 2012 grant standard of 698.
+  absolute_error_margin: 0.1
+  period: 2012
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 1_000
+    ssi: 0
+  output:
+    co_state_supplement: 7_376
+
+- name: Case 9, historical 2014 grant standard of 721.
+  absolute_error_margin: 0.1
+  period: 2014
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 5_000
+  output:
+    co_state_supplement: 3_652
+
+- name: Case 10, ineligible person gets zero.
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    co_state_supplement_eligible: false
+    ssi_countable_income: 0
+    ssi: 0
+  output:
+    co_state_supplement: 0
+
+- name: Case 11, 2024 grant standard of 943.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 10_000
+  output:
+    co_state_supplement: 1_316
+
+- name: Case 12, 2025 grant standard of 967.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 2_000
+    ssi: 5_000
+  output:
+    co_state_supplement: 4_604

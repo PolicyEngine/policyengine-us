@@ -111,6 +111,11 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
 - Consider real-world examples to validate implementation, including official calculators
 
 ## Code Integrity
+- **BEFORE DELETING ANY CODE, VERIFY IT IS ACTUALLY UNUSED**
+  - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`
+  - Code that lives near dead code is not necessarily dead — verify each piece independently
+  - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
+
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases

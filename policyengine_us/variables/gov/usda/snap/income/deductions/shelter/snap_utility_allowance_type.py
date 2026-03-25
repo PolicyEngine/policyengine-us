@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class SNAPUttilityAllowanceType(Enum):
+class SNAPUtilityAllowanceType(Enum):
     SUA = "Standard Utility Allowance"
     LUA = "Limited Utility Allowance"
     IUA = "Individual Utility Allowance"
@@ -10,10 +10,10 @@ class SNAPUttilityAllowanceType(Enum):
 
 class snap_utility_allowance_type(Variable):
     value_type = Enum
-    possible_values = SNAPUttilityAllowanceType
+    possible_values = SNAPUtilityAllowanceType
     entity = SPMUnit
     label = "SNAP utility allowance eligibility"
-    default_value = SNAPUttilityAllowanceType.NONE
+    default_value = SNAPUtilityAllowanceType.NONE
     documentation = "The type of utility allowance that is eligible for the SPM unit"
     definition_period = MONTH
 
@@ -31,9 +31,9 @@ class snap_utility_allowance_type(Variable):
                 distinct_utility_bills > 0,
             ],
             [
-                SNAPUttilityAllowanceType.SUA,
-                SNAPUttilityAllowanceType.LUA,
-                SNAPUttilityAllowanceType.IUA,
+                SNAPUtilityAllowanceType.SUA,
+                SNAPUtilityAllowanceType.LUA,
+                SNAPUtilityAllowanceType.IUA,
             ],
-            default=SNAPUttilityAllowanceType.NONE,
+            default=SNAPUtilityAllowanceType.NONE,
         )

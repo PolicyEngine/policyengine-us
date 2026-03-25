@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Illinois.
+values:
+  0000-01-01: 13_590
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois unemployment taxable wage base
+  reference:
+    - title: Illinois Compiled Statutes 820 ILCS 405/235
+      href: https://www.ilga.gov/documents/legislation/ilcs/documents/082004050K235.htm
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=23

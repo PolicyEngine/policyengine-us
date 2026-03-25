@@ -1,0 +1,20 @@
+# Trigger a rebuild of the policyengine-model site when a new release is published.
+# The model site pre-fetches metadata at build time for instant page loads.
+# Requires MODEL_SITE_DEPLOY_HOOK secret (Vercel Deploy Hook URL).
+name: Rebuild model site
+on:
+  release:
+    types: [published]
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deploy
+        env:
+          DEPLOY_HOOK: ${{ secrets.MODEL_SITE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "MODEL_SITE_DEPLOY_HOOK secret not set, skipping"
+            exit 0
+          fi
+          curl -X POST "$DEPLOY_HOOK"

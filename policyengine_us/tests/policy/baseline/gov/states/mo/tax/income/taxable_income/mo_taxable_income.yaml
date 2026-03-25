@@ -11,7 +11,7 @@
   output:
     mo_taxable_income: 0.0
 
-- name:  Low agi
+- name: Low agi
   period: 2021
   absolute_error_margin: 0
   input:
@@ -21,5 +21,37 @@
     standard_deduction: 0
     mo_itemized_deductions: 0
     state_code: MO
-  output: 
+  output:
     mo_taxable_income: 60.00
+
+# Integration test from issue #7793:
+# Verifies the $1,400 HoH additional exemption (Line 15) is subtracted.
+- name: MO HoH additional exemption reduces taxable income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    mo_adjusted_gross_income: 51_830
+    mo_federal_income_tax_deduction: 0
+    tax_unit_itemizes: false
+    standard_deduction: 21_900
+    mo_itemized_deductions: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    # 51,830 - 21,900 - 1,400 = 28,530
+    mo_taxable_income: 28_530
+
+- name: MO Single filer gets no HoH exemption
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    mo_adjusted_gross_income: 51_830
+    mo_federal_income_tax_deduction: 0
+    tax_unit_itemizes: false
+    standard_deduction: 14_600
+    mo_itemized_deductions: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    # 51,830 - 14,600 = 37,230 (no HoH exemption)
+    mo_taxable_income: 37_230

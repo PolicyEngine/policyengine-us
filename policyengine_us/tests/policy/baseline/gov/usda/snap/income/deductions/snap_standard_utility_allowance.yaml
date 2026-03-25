@@ -10,7 +10,7 @@
     trash_expense: 400
     sewage_expense: 1
   output:
-    snap_standard_utility_allowance: 5_844 # 487 * 12
+    snap_standard_utility_allowance: 6_063 # 487*9 (FY22) + 560*3 (FY23)
 
 - name: Standard Utility Allowance 2
   period: 2021
@@ -24,7 +24,7 @@
     trash_expense: 400
     sewage_expense: 1
   output:
-    snap_standard_utility_allowance: 1_461 # 487*3 
+    snap_standard_utility_allowance: 5_403 # 438*9 (FY21) + 487*3 (FY22)
 
 - name: Standard Utility Allowance 3
   period: 2020
@@ -38,7 +38,7 @@
     trash_expense: 400
     sewage_expense: 1
   output:
-    snap_standard_utility_allowance: 0
+    snap_standard_utility_allowance: 5_202 # 432*9 (FY20) + 438*3 (FY21)
 
 - name: Standard Utility Allowance NC 1 member
   period: 2025
@@ -47,7 +47,7 @@
     snap_utility_region_str: NC
     spm_unit_size: 1
   output:
-    snap_standard_utility_allowance: 7_440 # 620 * 12
+    snap_standard_utility_allowance: 7_491 # 620*9 (FY25) + 637*3 (FY26)
 
 - name: Standard Utility Allowance NC a lot of members
   period: 2025
@@ -56,4 +56,101 @@
     snap_utility_region_str: NC
     spm_unit_size: 11
   output:
-    snap_standard_utility_allowance: 10_656 # 888 * 12
+    snap_standard_utility_allowance: 10_728 # 888*9 (FY25) + 912*3 (FY26)
+
+- name: Case 6, AK Anchorage end-to-end county to SUA amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_utility_allowance_type: SUA
+  output:
+    snap_utility_region: AK_C
+    snap_standard_utility_allowance: 609
+    # AK_C SUA FY25 (2024-10-01): $609/month
+
+- name: Case 7, wrong allowance type returns zero for SUA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CO
+  output:
+    snap_standard_utility_allowance: 0
+    # SUA formula returns 0 when allowance type is not SUA
+
+- name: Case 8, household size zero edge case.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 0
+  output:
+    snap_standard_utility_allowance: 620
+    # max_(1, min_(10, 0)) = 1; NC size-1 FY25 (2024-10-01): $620/month
+
+- name: Case 9, AZ household-size-varying SUA FY2019 small family.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: AZ
+    spm_unit_size: 2
+  output:
+    snap_standard_utility_allowance: 278
+    # AZ size 1-3 HCSUA = 278 per FY2019 SNAP QC Tech Doc Table F.7
+
+- name: Case 10, AZ household-size-varying SUA FY2019 large family.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: AZ
+    spm_unit_size: 5
+  output:
+    snap_standard_utility_allowance: 375
+    # AZ size 4+ HCSUA = 375 per FY2019 SNAP QC Tech Doc Table F.7
+
+- name: Case 11, VA household-size-varying SUA FY2021.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: VA
+    spm_unit_size: 4
+  output:
+    snap_standard_utility_allowance: 377
+    # VA size 4+ HCSUA = 377 per FY2021 SNAP QC Tech Doc Table F.7
+
+- name: Case 12, NC household-size-varying SUA FY2018 size 1.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 1
+  output:
+    snap_standard_utility_allowance: 400
+    # NC size 1 HCSUA = 400 per FY2018 SNAP QC Tech Doc Table F.7
+
+- name: Case 13, TN household-size-varying SUA FY2020 size 7.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: TN
+    spm_unit_size: 7
+  output:
+    snap_standard_utility_allowance: 387
+    # TN size 7 HCSUA = 387 per FY2020 SNAP QC Tech Doc Table F.7

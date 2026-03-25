@@ -1,4 +1,5 @@
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
+from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
 from .winship import create_eitc_winship_reform
 from .dc_tax_threshold_joint_ratio import (
@@ -19,8 +20,10 @@ from .biden.budget_2025 import (
 )
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
+from .eitc import create_streamlined_eitc_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
+from .states.ny.s9110 import create_ny_s9110_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
 from .states.sc.h4216 import create_sc_h4216_reform
 from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
@@ -70,6 +73,7 @@ from .ctc import (
     create_ctc_per_child_phase_in_reform,
     create_ctc_per_child_phase_out_reform,
     create_ctc_minimum_refundable_amount_reform,
+    create_ctc_linear_phase_out_reform,
 )
 from .snap import (
     create_abolish_snap_deductions_reform,
@@ -174,16 +178,31 @@ from .states.ct.tax_rebate_2026 import (
 from .states.ct.hb5009 import (
     create_ct_hb5009_reform,
 )
+from .states.ct.hb5114 import (
+    create_ct_hb5114_reform,
+)
 from .states.ne.ctc.lb157 import (
     create_ne_lb157_ctc_reform,
 )
 from .congress.watca import (
     create_watca_reform,
 )
+from .states.wa.sb6346.sb6346 import (
+    create_wa_sb6346_reform,
+)
 
 
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
+)
+from .states.hi.hb2306_cdcc import (
+    create_hi_hb2306_cdcc_reform,
+)
+from .states.nc.eitc import (
+    create_nc_eitc_reform,
+)
+from .states.mi.ctc import (
+    create_mi_ctc_reform,
 )
 from policyengine_core.reforms import Reform
 import warnings
@@ -224,6 +243,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ny_a04038_enhanced_escc_infants = create_ny_a04038_enhanced_escc_infants_reform(
         parameters, period
     )
+    ny_s9110 = create_ny_s9110_reform(parameters, period)
     sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
         parameters, period
     )
@@ -341,15 +361,25 @@ def create_structural_reforms_from_parameters(parameters, period):
     cdcc_single_parent_work_requirement = (
         create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
+    streamlined_eitc = create_streamlined_eitc_reform(parameters, period)
+    ctc_linear_phase_out = create_ctc_linear_phase_out_reform(parameters, period)
     ky_graduated_income_tax = create_ky_graduated_income_tax_reform(parameters, period)
     pa_ctc_flat_amount = create_pa_ctc_flat_amount_reform(parameters, period)
     pa_ctc_match = create_pa_ctc_match_reform(parameters, period)
     ct_sb100 = create_ct_sb100_reform(parameters, period)
     ct_tax_rebate_2026 = create_ct_tax_rebate_2026_reform(parameters, period)
     ct_hb5009 = create_ct_hb5009_reform(parameters, period)
+    ct_hb5114 = create_ct_hb5114_reform(parameters, period)
+    al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
+        parameters, period
+    )
     ne_lb157_ctc = create_ne_lb157_ctc_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
+    hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
+    nc_eitc = create_nc_eitc_reform(parameters, period)
+    mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
+    wa_sb6346 = create_wa_sb6346_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -367,6 +397,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
         ny_a04038_enhanced_escc_infants,
+        ny_s9110,
         sc_h3492_eitc_refundable,
         sc_h4216,
         ny_a06774_enhanced_cdcc,
@@ -424,15 +455,23 @@ def create_structural_reforms_from_parameters(parameters, period):
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
         cdcc_single_parent_work_requirement,
+        streamlined_eitc,
+        ctc_linear_phase_out,
         ky_graduated_income_tax,
         pa_ctc_flat_amount,
         pa_ctc_match,
         ct_hb5009,
+        ct_hb5114,
         ct_sb100,
         ct_tax_rebate_2026,
+        al_hb527_overtime_deduction,
         ne_lb157_ctc,
         ga_sb520,
+        hi_hb2306_cdcc,
+        nc_eitc,
+        mi_ctc,
         watca,
+        wa_sb6346,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

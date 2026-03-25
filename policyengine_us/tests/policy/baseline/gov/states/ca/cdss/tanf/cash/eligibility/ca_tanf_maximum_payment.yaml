@@ -1,5 +1,5 @@
-- name: If the household has one person, is located in region 1 and exempt eligible, income limit is $862 * 12/yr.
-  period: 2023
+- name: If the household has one person, is located in region 1 and exempt eligible, MAP is $807 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -8,8 +8,8 @@
   output:
     ca_tanf_maximum_payment: 807 * 12
 
-- name: If the household has ten persons, is located in region 1 and exempt eligible, income limit is $3,205 * 12/yr.
-  period: 2023
+- name: If the household has ten persons, is located in region 1 and exempt eligible, MAP is $3,205 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -18,8 +18,8 @@
   output:
     ca_tanf_maximum_payment: 3_205 * 12
 
-- name: If the household has twelve persons, is located in region 1 and exempt eligible, income limit is $3,205 * 12/yr.
-  period: 2023
+- name: If the household has twelve persons, is located in region 1 and exempt eligible, MAP is $3,205 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 12
@@ -28,8 +28,8 @@
   output:
     ca_tanf_maximum_payment: 3_205 * 12
 
-- name: If the household has one person, is located in region 1 and exempt ineligible, income limit is $732 * 12/yr.
-  period: 2023
+- name: If the household has one person, is located in region 1 and exempt ineligible, MAP is $732 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -38,8 +38,8 @@
   output:
     ca_tanf_maximum_payment: 732 * 12
 
-- name: If the household has ten persons, is located in region 1 and exempt ineligible, income limit is $2,867 * 12/yr.
-  period: 2023
+- name: If the household has ten persons, is located in region 1 and exempt ineligible, MAP is $2,867 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -48,8 +48,8 @@
   output:
     ca_tanf_maximum_payment: 2_867 * 12
 
-- name: If the household has twelve persons, is located in region 1 and exempt ineligible, income limit is $2,867 * 12/yr.
-  period: 2023
+- name: If the household has twelve persons, is located in region 1 and exempt ineligible, MAP is $2,867 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 12
@@ -58,8 +58,8 @@
   output:
     ca_tanf_maximum_payment: 2_867 * 12
 
-- name: If the household has one person, is located in region 2 and exempt eligible, income limit is $768 * 12/yr.
-  period: 2023
+- name: If the household has one person, is located in region 2 and exempt eligible, MAP is $768 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -68,8 +68,8 @@
   output:
     ca_tanf_maximum_payment: 768 * 12
 
-- name: If the household has ten persons, is located in region 2 and exempt eligible, income limit is $3,045 * 12/yr.
-  period: 2023
+- name: If the household has ten persons, is located in region 2 and exempt eligible, MAP is $3,045 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -78,8 +78,8 @@
   output:
     ca_tanf_maximum_payment: 3_045 * 12
 
-- name: If the household has twelve persons, is located in region 2 and exempt eligible, income limit is $3,045 * 12/yr.
-  period: 2023
+- name: If the household has twelve persons, is located in region 2 and exempt eligible, MAP is $3,045 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 12
@@ -88,8 +88,8 @@
   output:
     ca_tanf_maximum_payment: 3_045 * 12
 
-- name: If the household has one person, is located in region 2 and exempt ineligible, income limit is $693 * 12/yr.
-  period: 2023
+- name: If the household has one person, is located in region 2 and exempt ineligible, MAP is $693 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 1
@@ -98,8 +98,8 @@
   output:
     ca_tanf_maximum_payment: 693 * 12
 
-- name: If the household has ten persons, is located in region 2 and exempt ineligible, income limit is $2,723 * 12/yr.
-  period: 2023
+- name: If the household has ten persons, is located in region 2 and exempt ineligible, MAP is $2,723 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 10
@@ -108,8 +108,8 @@
   output:
     ca_tanf_maximum_payment: 2_723 * 12
 
-- name: If the household has twelve persons, is located in region 2 and exempt ineligible, income limit is $2,723 * 12/yr.
-  period: 2023
+- name: If the household has twelve persons, is located in region 2 and exempt ineligible, MAP is $2,723 * 12/yr.
+  period: 2024
   input:
     state_code: CA
     spm_unit_size: 12
@@ -237,3 +237,203 @@
     ca_tanf_exempt: false
   output:
     ca_tanf_maximum_payment: 2_731 * 12
+
+# Historical MAP transition tests (backdated parameters)
+
+- name: Case 1, 2016 R1 non-exempt family of 3 gets Jul 2015 MAP $704.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 704 * 12
+
+- name: Case 2, 2016 R1 exempt family of 3 gets Jul 2015 MAP $788.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 788 * 12
+
+- name: Case 3, 2016 R2 non-exempt family of 3 gets Jul 2015 MAP $670.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 670 * 12
+
+- name: Case 4, 2016 R2 exempt family of 3 gets Jul 2015 MAP $751.
+  period: 2016
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 751 * 12
+
+- name: Case 5, 2017 R1 non-exempt family of 3 gets Oct 2016 MAP $714 after 1.43% COLA.
+  period: 2017
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 714 * 12
+
+- name: Case 6, 2017 R1 exempt family of 3 gets Oct 2016 MAP $799 after 1.43% COLA.
+  period: 2017
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 799 * 12
+
+- name: Case 7, 2017 R2 non-exempt family of 3 gets Oct 2016 MAP $680.
+  period: 2017
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 680 * 12
+
+- name: Case 8, 2017 R2 exempt family of 3 gets Oct 2016 MAP $762.
+  period: 2017
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 762 * 12
+
+- name: Case 9, 2020 R1 non-exempt family of 3 gets Oct 2019 SB 80 MAP $878.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 878 * 12
+
+- name: Case 10, 2020 R1 exempt family of 3 gets Oct 2019 SB 80 MAP $983.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 983 * 12
+
+- name: Case 11, 2020 R2 non-exempt family of 3 gets Oct 2019 SB 80 MAP $834.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 834 * 12
+
+- name: Case 12, 2020 R2 exempt family of 3 gets Oct 2019 SB 80 MAP $934.
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 934 * 12
+
+- name: Case 13, 2022 R1 non-exempt family of 3 gets Oct 2021 MAP after 5.3% increase.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 925 * 12
+
+- name: Case 14, 2022 R1 exempt family of 3 gets Oct 2021 MAP after 5.3% increase.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 1_035 * 12
+
+- name: Case 15, 2022 R2 non-exempt family of 3 gets Oct 2021 MAP.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 878 * 12
+
+- name: Case 16, 2022 R2 exempt family of 3 gets Oct 2021 MAP.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 984 * 12
+
+- name: Case 17, 2023 R1 non-exempt family of 3 gets Oct 2022 MAP after 11% increase.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 1_130 * 12
+
+- name: Case 18, 2023 R2 exempt family of 3 gets Oct 2022 MAP.
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 1_201 * 12

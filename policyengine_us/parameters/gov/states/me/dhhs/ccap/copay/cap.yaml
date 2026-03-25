@@ -1,0 +1,20 @@
+description: Maine limits total parent fees to this share of eligibility income based on State Median Income level under the Child Care Affordability Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Maine CCAP copay cap by SMI percentage
+  reference:
+    - title: 10-148 C.M.R. Chapter 6 §5.A.7
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=27
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0.07
+  - threshold:
+      2024-01-01: 0.85
+    amount:
+      2024-01-01: 0.1

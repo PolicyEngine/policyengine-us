@@ -222,7 +222,46 @@
     ms_tanf_eligible: false
     ms_tanf: 0
 
-- name: Case 7, large family of 5 with mixed income.
+- name: Case 7, 2017 family of 3 with no income receives pre-2021 benefit.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Household size: 3
+    spm_unit_size: 3
+    # Pre-2021 payment standard: $110 + $36 + $24 = $170
+    ms_tanf_maximum_benefit: 170
+    # Resources: $500 <= $2,000
+    ms_tanf_resources_eligible: true
+    # Need standard size 3 = $368
+    # Limit: $368 * 1.85 = $680.80
+    # $0 <= $680.80
+    ms_tanf_income_eligible: true
+    ms_tanf_eligible: true
+    # Benefit: $170 - $0 = $170
+    ms_tanf: 170
+
+- name: Case 8, large family of 5 with mixed income.
   period: 2026-01
   input:
     people:

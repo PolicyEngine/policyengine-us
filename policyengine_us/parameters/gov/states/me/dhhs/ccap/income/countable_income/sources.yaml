@@ -1,0 +1,33 @@
+description: Maine uses these income sources for countable income under the Child Care Affordability Program.
+values:
+  2024-07-01:
+    # Earned income (Rule §2.C.3)
+    - employment_income
+    - self_employment_income
+    - farm_income
+    - rental_income
+    # Unearned income (Rule §2.C.4)
+    - social_security
+    - pension_income
+    - retirement_distributions
+    - disability_benefits
+    - ssi
+    # TANF is countable per Rule §2.C.4, but excluded here to avoid
+    # circular dependency: tanf → childcare_expenses → me_ccap → me_ccap_countable_income → tanf
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - interest_income
+    - dividend_income
+    - child_support_received
+    - alimony_income
+    - capital_gains
+
+metadata:
+  unit: list
+  period: year
+  label: Maine CCAP countable income sources
+  reference:
+    - title: 10-148 C.M.R. Chapter 6 §2.C.3-4
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=13

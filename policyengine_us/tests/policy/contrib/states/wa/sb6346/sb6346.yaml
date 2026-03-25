@@ -1,0 +1,638 @@
+# WA SSB 6346 Income Tax Reform Tests
+# Tests the 9.9% income tax on Washington taxable income:
+#   tax = max(0, AGI - charitable_deduction - standard_deduction) * 0.099
+# Standard deduction: $1,000,000 (same for single and married)
+# Charitable deduction cap: $100,000 individual, $100,000 joint
+
+- name: Case 1, single high earner with charitable below cap.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+        charitable_cash_donations: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $2,000,000
+    wa_income_tax_base_income: 2_000_000
+    # Charitable: $50,000 < $100,000 cap -> full $50,000
+    wa_income_tax_charitable_deduction: 50_000
+    # Standard deduction: $1,000,000
+    wa_income_tax_standard_deduction: 1_000_000
+    # Taxable: $2,000,000 - $50,000 - $1,000,000 = $950,000
+    wa_income_tax_taxable_income: 950_000
+    # Tax: $950,000 * 0.099 = $94,050
+    wa_income_tax: 94_050
+
+- name: Case 2, single filer below threshold.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $500,000
+    # Taxable: max(0, $500,000 - $0 - $1,000,000) = $0
+    wa_income_tax_taxable_income: 0
+    # Tax: $0
+    wa_income_tax: 0
+
+- name: Case 3, married joint high earners with charitable under joint cap.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 1_500_000
+        charitable_cash_donations: 40_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        employment_income: 1_500_000
+        charitable_cash_donations: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # AGI = $1,500,000 + $1,500,000 = $3,000,000
+    wa_income_tax_base_income: 3_000_000
+    # Charitable: $40,000 + $40,000 = $80,000 < $100,000 joint cap
+    wa_income_tax_charitable_deduction: 80_000
+    # Standard deduction: $1,000,000
+    wa_income_tax_standard_deduction: 1_000_000
+    # Taxable: $3,000,000 - $80,000 - $1,000,000 = $1,920,000
+    wa_income_tax_taxable_income: 1_920_000
+    # Tax: $1,920,000 * 0.099 = $190,080
+    wa_income_tax: 190_080
+
+- name: Case 4, married joint below threshold.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 400_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        employment_income: 400_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # AGI = $800,000 < $1,000,000 standard deduction
+    # Taxable: max(0, $800,000 - $0 - $1,000,000) = $0
+    wa_income_tax: 0
+
+- name: Case 5, single filer just above threshold with modest charitable.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 1_050_000
+        charitable_cash_donations: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $1,050,000
+    # Charitable: $20,000 < $100,000 cap -> full $20,000
+    wa_income_tax_charitable_deduction: 20_000
+    # Taxable: $1,050,000 - $20,000 - $1,000,000 = $30,000
+    wa_income_tax_taxable_income: 30_000
+    # Tax: $30,000 * 0.099 = $2,970
+    wa_income_tax: 2_970
+
+- name: Case 6, exactly at standard deduction threshold.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $1,000,000
+    # Taxable: max(0, $1,000,000 - $0 - $1,000,000) = $0
+    wa_income_tax_taxable_income: 0
+    wa_income_tax: 0
+
+- name: Case 7, non-WA resident gets zero tax.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # defined_for = StateCode.WA, so CA resident gets $0
+    wa_income_tax: 0
+
+- name: Case 8, single filer with charitable exceeding individual cap.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+        charitable_cash_donations: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $2,000,000
+    wa_income_tax_base_income: 2_000_000
+    # Charitable: $200,000 > $100,000 individual cap -> capped at $100,000
+    wa_income_tax_charitable_deduction: 100_000
+    # Standard deduction: $1,000,000
+    wa_income_tax_standard_deduction: 1_000_000
+    # Taxable: $2,000,000 - $100,000 - $1,000,000 = $900,000
+    wa_income_tax_taxable_income: 900_000
+    # Tax: $900,000 * 0.099 = $89,100
+    wa_income_tax: 89_100
+
+- name: Case 9, WFTC age expansion - single age 22, no children, $10,000 earnings.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 22
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Age 22 < 25 so no federal EITC, but SSB 6346 expands WFTC to age 18+.
+    # With $10,000 earned income and 0 children, should receive the maximum WFTC for childless filers.
+    wa_working_families_tax_credit: 367
+
+- name: Case 10, WFTC age expansion - single age 22, no children, $0 earnings.
+  period: 2029
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 22
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # No earned income -> not eligible for WFTC even with age expansion.
+    wa_working_families_tax_credit: 0
+
+- name: Case 11, WFTC existing path - single age 30, no children, $15,000 earnings.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Age 30 qualifies for federal EITC (age 25-64), earned income > 0.
+    # Should receive WFTC via the existing EITC-eligible path.
+    wa_working_families_tax_credit: 367
+
+- name: Case 12, married joint filer with charitable exceeding joint cap.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 1_500_000
+        charitable_cash_donations: 60_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        employment_income: 1_500_000
+        charitable_cash_donations: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Charitable: $60,000 + $60,000 = $120,000 > $100,000 joint cap.
+    wa_income_tax_charitable_deduction: 100_000
+    # Taxable: $3,000,000 - $100,000 - $1,000,000 = $1,900,000
+    wa_income_tax_taxable_income: 1_900_000
+    # Tax: $1,900,000 * 0.099 = $188,100
+    wa_income_tax: 188_100
+
+- name: Case 13, WFTC age expansion - single age 17, no children, $10,000 earnings.
+  period: 2029
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Age 17 is below the SSB 6346 minimum age threshold.
+    wa_working_families_tax_credit: 0
+
+- name: Case 14, WFTC age expansion - single age 18, no children, $10,000 earnings.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 18
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Age 18 qualifies for the SSB 6346 WFTC expansion.
+    wa_working_families_tax_credit: 367
+
+- name: Case 15, reform toggle off leaves WA income tax unchanged.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: false
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_income_tax: 0
+
+- name: Case 16, WFTC spouse age expansion - head under 18, spouse 22, joint filers.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 16
+        is_tax_unit_head: true
+        employment_income: 5_000
+      person2:
+        age: 22
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Head age 16 < 18 and both < 25 so no federal EITC.
+    # SSB 6346 expansion: age_spouse (22) >= min_age (18) -> eligible.
+    # Combined earned income = $10,000, 0 children -> childless maximum WFTC.
+    wa_working_families_tax_credit: 367
+
+- name: Case 17, non-cash charitable donations capped at individual limit.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 1_500_000
+        charitable_non_cash_donations: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI = $1,500,000
+    wa_income_tax_base_income: 1_500_000
+    # Non-cash charitable: $150,000 > $100,000 individual cap -> capped at $100,000
+    wa_income_tax_charitable_deduction: 100_000
+    # Standard deduction: $1,000,000
+    wa_income_tax_standard_deduction: 1_000_000
+    # Taxable: $1,500,000 - $100,000 - $1,000,000 = $400,000
+    wa_income_tax_taxable_income: 400_000
+    # Tax: $400,000 * 0.099 = $39,600
+    wa_income_tax: 39_600
+
+- name: Case 18, capital gains combined with SSB 6346 income tax.
+  period: 2028
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+        long_term_capital_gains: 1_500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI includes employment + LTCG = $3,500,000
+    wa_income_tax_base_income: 3_500_000
+    # SSB 6346 taxable: $3,500,000 - $0 charitable - $1,000,000 std = $2,500,000
+    wa_income_tax_taxable_income: 2_500_000
+    # SSB 6346 income tax: $2,500,000 * 0.099 = $247,500
+    # WA capital gains tax on the same return is $89,998 in 2028 under current parameters.
+    wa_capital_gains_tax: 89_998
+    # before_credits = $247,500 + $89,998 = $337,498
+    wa_income_tax_before_refundable_credits: 337_498
+    # WFTC = $0 (income far above EITC limit)
+    # wa_income_tax = before_credits - 0 = before_credits
+    wa_income_tax: 337_498
+
+- name: Case 19, negative AGI floors taxable income and tax at zero.
+  period: 2029
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        self_employment_income: -500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # AGI is negative from self-employment losses
+    # Taxable: max(0, negative_AGI - deductions) = 0
+    wa_income_tax_taxable_income: 0
+    # Tax: 0 (no tax on negative/zero income)
+    wa_income_tax: 0
+
+- name: Case 20, WFTC offsets WA income tax when refundable credits are smaller than tax due.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 22
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        wa_capital_gains_tax: 500
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Base income is below the $1M standard deduction, so SSB 6346 tax is $0.
+    wa_income_tax_taxable_income: 0
+    # A direct capital gains tax input creates positive WA tax before refundable credits.
+    wa_income_tax_before_refundable_credits: 500
+    # Age 22 + earned income triggers the expanded WFTC path.
+    wa_working_families_tax_credit: 367
+    # Final WA income tax remains positive because tax due exceeds the refundable credit.
+    wa_income_tax: 133.3
+
+- name: Case 21, WFTC age expansion does not apply in 2028.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 22
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # The income tax reform is active in 2028, but the WFTC age expansion is not.
+    wa_working_families_tax_credit: 0
+
+- name: Case 22, WFTC can exceed WA tax owed and produce a negative net tax.
+  period: 2029
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 22
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # No SSB 6346 income tax is due below the $1M standard deduction.
+    wa_income_tax_before_refundable_credits: 0
+    # The expanded WFTC remains refundable when it exceeds tax owed.
+    wa_working_families_tax_credit: 367
+    wa_income_tax: -367
+
+- name: Case 23, head of household uses the individual charitable deduction cap.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 2_000_000
+        charitable_cash_donations: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_income_tax_charitable_deduction: 100_000
+    wa_income_tax_taxable_income: 900_000
+    wa_income_tax: 89_100
+
+- name: Case 24, one dollar above the standard deduction threshold.
+  period: 2028
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.wa.sb6346.sb6346.wa_sb6346
+  input:
+    gov.contrib.states.wa.sb6346.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_income_tax_taxable_income: 1
+    wa_income_tax_before_refundable_credits: 0.099
+    wa_income_tax: 0.099

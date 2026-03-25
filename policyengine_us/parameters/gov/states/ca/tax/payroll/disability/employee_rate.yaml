@@ -1,0 +1,15 @@
+description: Employee-side California State Disability Insurance contribution rate.
+values:
+  0000-01-01: 0.013
+
+metadata:
+  period: year
+  unit: /1
+  label: California employee SDI contribution rate
+  reference:
+    - title: California Unemployment Insurance Code Section 984
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=984.
+    - title: California Unemployment Insurance Code Section 985
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=UIC&sectionNum=985.
+    - title: 2026 California Payroll Taxes (DE 201)
+      href: https://edd.ca.gov/siteassets/files/pdf_pub_ctr/de201.pdf#page=1

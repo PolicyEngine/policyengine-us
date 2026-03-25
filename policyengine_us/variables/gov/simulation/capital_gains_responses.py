@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_core.simulations import *
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    calculate_relative_capital_gains_mtr_change,
+    get_behavioral_response_measurements,
+)
 
 
 class relative_capital_gains_mtr_change(Variable):
@@ -10,43 +13,8 @@ class relative_capital_gains_mtr_change(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):  # pragma: no cover
-        # Requires reform scenario with baseline comparison - tested via microsim
-        simulation: Simulation = person.simulation
-        baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_cgr_measurement", clone_system=True
-        )
-        baseline_person = baseline_branch.populations["person"]
-        baseline_branch.tax_benefit_system.neutralize_variable(
-            "capital_gains_behavioral_response"
-        )
-        baseline_branch.set_input(
-            "long_term_capital_gains_before_response",
-            period,
-            person("long_term_capital_gains_before_response", period),
-        )
-        baseline_mtr = baseline_person("marginal_tax_rate_on_capital_gains", period)
-        del simulation.branches["baseline"].branches["baseline_cgr_measurement"]
-
-        measurement_branch = simulation.get_branch("cgr_measurement", clone_system=True)
-        measurement_branch.tax_benefit_system.neutralize_variable(
-            "capital_gains_behavioral_response"
-        )
-        measurement_branch.set_input(
-            "long_term_capital_gains_before_response",
-            period,
-            person("long_term_capital_gains_before_response", period),
-        )
-        measurement_person = measurement_branch.populations["person"]
-        reform_mtr = measurement_person("marginal_tax_rate_on_capital_gains", period)
-        del simulation.branches["cgr_measurement"]
-
-        # Handle zeros in tax rates to prevent log(0)
-        min_rate = 0.001
-        baseline_mtr_adj = np.maximum(baseline_mtr, min_rate)
-        reform_mtr_adj = np.maximum(reform_mtr, min_rate)
-
-        # Calculate log difference
-        return np.log(reform_mtr_adj) - np.log(baseline_mtr_adj)
+        measurements = get_behavioral_response_measurements(person, period)
+        return calculate_relative_capital_gains_mtr_change(measurements)
 
 
 class capital_gains_elasticity(Variable):
@@ -77,7 +45,8 @@ class capital_gains_behavioral_response(Variable):
             return 0
 
         capital_gains = person("long_term_capital_gains_before_response", period)
-        tax_rate_change = person("relative_capital_gains_mtr_change", period)
+        measurements = get_behavioral_response_measurements(person, period)
+        tax_rate_change = calculate_relative_capital_gains_mtr_change(measurements)
         elasticity = person("capital_gains_elasticity", period)
 
         # Calculate response using log differences

@@ -21,9 +21,8 @@ class mt_tanf_is_working(Variable):
 
         able_parents = is_head_or_spouse & ~is_disabled
         is_two_parent_unit = spm_unit.sum(able_parents) > 1
-        # For single parent with a child under 6, work 27 hours per week
-        # For single parent with a child at 6 or older, work 33 hours per week
-        # For two-parent household, work-eligible heads of the household must individually meet the 33-hour/week requirement
+        # Single-parent hours depend on youngest child's age per the scale parameter.
+        # Two-parent hours are a flat requirement per the two_parents parameter.
         required_hours = where(
             is_two_parent_unit,
             p.two_parents.amount,

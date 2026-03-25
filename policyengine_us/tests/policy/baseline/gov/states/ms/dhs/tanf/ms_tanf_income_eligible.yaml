@@ -146,7 +146,63 @@
     # Income: $2,641 <= $2,641.80 = true
     ms_tanf_income_eligible: true
 
-- name: Case 13, not in Mississippi.
+- name: Case 13, single person at 2017 income limit.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+    tanf_gross_earned_income: 403
+    tanf_gross_unearned_income: 0
+  output:
+    # Need standard size 1 = $218
+    # Limit: $218 * 1.85 = $403.30
+    # Income: $403 <= $403.30 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 14, single person above 2017 income limit.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+    tanf_gross_earned_income: 404
+    tanf_gross_unearned_income: 0
+  output:
+    # Need standard size 1 = $218
+    # Limit: $218 * 1.85 = $403.30
+    # Income: $404 > $403.30 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 15, family of 3 below 2017 income limit.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 0
+  output:
+    # Need standard size 3 = $368
+    # Limit: $368 * 1.85 = $680.80
+    # Income: $500 <= $680.80 = true
+    ms_tanf_income_eligible: true
+
+- name: Case 16, family of 3 above 2017 income limit.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+    tanf_gross_earned_income: 681
+    tanf_gross_unearned_income: 0
+  output:
+    # Need standard size 3 = $368
+    # Limit: $368 * 1.85 = $680.80
+    # Income: $681 > $680.80 = false
+    ms_tanf_income_eligible: false
+
+- name: Case 17, not in Mississippi.
   period: 2026-01
   input:
     state_code: NY

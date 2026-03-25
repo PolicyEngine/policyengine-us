@@ -1,0 +1,135 @@
+# Time authorization thresholds:
+#   0-9 hrs -> QUARTER_TIME (enum index 4)
+#   10-19 hrs -> HALF_TIME (enum index 3)
+#   20-29 hrs -> THREE_QUARTER_TIME (enum index 2)
+#   30+ hrs -> FULL_TIME (enum index 1)
+
+- name: Case 1, full time 35 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: FULL_TIME
+
+- name: Case 2, full time exactly 30 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: FULL_TIME
+
+- name: Case 3, three quarter time 25 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 25
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: THREE_QUARTER_TIME
+
+- name: Case 4, three quarter time exactly 20 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: THREE_QUARTER_TIME
+
+- name: Case 5, half time 15 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: HALF_TIME
+
+- name: Case 6, half time exactly 10 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 10
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: HALF_TIME
+
+- name: Case 7, quarter time 5 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 5
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: QUARTER_TIME
+
+- name: Case 8, quarter time zero hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: QUARTER_TIME
+
+- name: Case 9, boundary at 29 hours is three quarter time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 29
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: THREE_QUARTER_TIME
+
+- name: Case 10, boundary at 9 hours is quarter time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 9
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: QUARTER_TIME

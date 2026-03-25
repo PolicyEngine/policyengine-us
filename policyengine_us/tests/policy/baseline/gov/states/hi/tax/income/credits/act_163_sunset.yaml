@@ -1,0 +1,112 @@
+# Tests for Act 163 (SLH 2023) sunset on December 31, 2027
+# Act 163 enhanced CDCC expense limits, EITC match rate, and Food/Excise credit amounts
+
+- name: Hawaii EITC - during Act 163 period (2027) - 40% match
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    hi_eitc: 400
+
+- name: Hawaii EITC - after Act 163 sunset (2028) - 20% match
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    hi_eitc: 200
+
+- name: Hawaii Food/Excise credit - joint filer during Act 163 (2027)
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+        exemptions_count: 2
+        head_is_dependent_elsewhere: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # $220 per exemption during Act 163, 2 exemptions = $440
+    hi_food_excise_credit: 440
+
+- name: Hawaii Food/Excise credit - joint filer after sunset (2028)
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 4_000
+        filing_status: JOINT
+        exemptions_count: 2
+        head_is_dependent_elsewhere: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # $110 per exemption after sunset, 2 exemptions = $220
+    hi_food_excise_credit: 220
+
+- name: Hawaii Food/Excise credit - single filer during Act 163 (2027)
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+        filing_status: SINGLE
+        exemptions_count: 1
+        head_is_dependent_elsewhere: false
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # $220 per exemption during Act 163, 1 exemption = $220
+    hi_food_excise_credit: 220
+
+- name: Hawaii Food/Excise credit - single filer after sunset (2028)
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions_count: 1
+        head_is_dependent_elsewhere: false
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # $110 per exemption after sunset, 1 exemption = $110
+    hi_food_excise_credit: 110

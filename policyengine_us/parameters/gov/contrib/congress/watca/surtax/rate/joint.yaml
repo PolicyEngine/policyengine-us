@@ -1,4 +1,4 @@
-description: The Working Americans' Tax Cut Act millionaire surtax rate for joint filers, based on adjusted gross income.
+description: The Working Americans' Tax Cut Act millionaire surtax rate for joint filers, based on modified AGI.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
@@ -6,23 +6,32 @@ metadata:
   period: year
   label: WATCA millionaire surtax joint rate
   reference:
-    - title: Working Americans' Tax Cut Act bill summary (via Jeff Stein, WaPo)
-      href: https://x.com/JStein_WaPo/status/2029621495295619363
+    - title: Working Americans' Tax Cut Act Section 59B(a), (c)
+      href: https://www.vanhollen.senate.gov/imo/media/doc/working_americans_tax_cut_act_bill_text.pdf#page=5
 
 brackets:
   - threshold:
-      0000-01-01: 0
+      2026-01-01: 0
     rate:
-      0000-01-01: 0
+      2026-01-01: 0
   - threshold:
-      0000-01-01: 1_500_000
+      values:
+        2026-01-01: 1_500_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
     rate:
-      0000-01-01: 0.05
+      2026-01-01: 0.05
   - threshold:
-      0000-01-01: 3_000_000
+      values:
+        2026-01-01: 3_000_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
     rate:
-      0000-01-01: 0.10
+      2026-01-01: 0.10
   - threshold:
-      0000-01-01: 7_500_000
+      values:
+        2026-01-01: 7_500_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
     rate:
-      0000-01-01: 0.12
+      2026-01-01: 0.12

@@ -1,6 +1,24 @@
-description: Grant Standard for Colorado State Supplement
+description: Colorado AND-CS (Aid to the Needy Disabled - Colorado Supplement) grant standard for individuals living independently.
 
 values:
+  2002-01-01: 582
+  2003-01-01: 589
+  2004-01-01: 601
+  2005-01-01: 604
+  2006-01-01: 628
+  2007-01-01: 648
+  2008-01-01: 662
+  2009-01-01: 699
+  2012-01-01: 698
+  2013-01-01: 710
+  2014-01-01: 721
+  2015-01-01: 733
+  2017-01-01: 735
+  2018-01-01: 750
+  2019-01-01: 771
+  2020-01-01: 783
+  2021-01-01: 794
+  2022-01-01: 841
   2023-01-01: 914
   2024-01-01: 943
   2025-01-01: 967
@@ -8,7 +26,13 @@ values:
 metadata:
   unit: currency-USD
   period: month
-  label: "Colorado State Supplement grant standard"
+  label: "Colorado AND-CS grant standard"
   reference:
-    - title: ADULT FINANCIAL PROGRAMS | Income Maintenance (Volume 3)
+    - title: SSA State Assistance Programs for SSI Recipients, January 2002 - Colorado
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2002/co.html
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Colorado
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/co.html
+    - title: 9 CCR 2503-5, Section 3.546, AND-CS Program (effective 2014)
+      href: https://www.coloradosos.gov/CCR/GenerateRulePdf.do?ruleVersionId=5834#page=73
+    - title: 9 CCR 2503-5, Section 3.546, AND-CS Program (effective 2023)
       href: https://www.coloradosos.gov/CCR/GenerateRulePdf.do?ruleVersionId=10694#page=73

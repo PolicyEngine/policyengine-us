@@ -1,0 +1,17 @@
+description: The USDA uses this list of states that vary their individual utility allowances by household size under the Supplemental Nutrition Assistance Program.
+values:
+  2017-10-01:
+    - GU
+    - HI
+
+metadata:
+  unit: list
+  label: States with SNAP individual utility allowances varying with household size
+  period: year
+  reference:
+    - title: USDA SNAP utility allowances by state spreadsheet (FY2024)
+      href: https://docs.google.com/spreadsheets/d/10otJJisAYUDyZ0d7XpZPn8rEql-rteVE/edit?gid=1837348310#gid=1837348310
+    - title: USDA SNAP utility allowances by state spreadsheet (FY2025)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
+    - title: FY 2018 SNAP QC Technical Documentation, Table F.7
+      href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177

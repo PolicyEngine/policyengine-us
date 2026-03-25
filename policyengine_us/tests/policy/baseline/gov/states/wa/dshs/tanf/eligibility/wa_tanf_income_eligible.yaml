@@ -1,16 +1,17 @@
-- name: Zero gross earned income - eligible
-  period: 2024-01
+# Tests for Aug 2024+ income limits
+- name: Case 1, zero gross earned income.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 0
   output:
-    # Income limit for family of 3: $1,912
+    # Income limit for family of 3: $1,912 (Aug 2024+)
     # Gross earned: $0 <= $1,912
     wa_tanf_income_eligible: true
 
-- name: Gross earned income below threshold - eligible
-  period: 2024-01
+- name: Case 2, gross earned income below threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
@@ -20,8 +21,8 @@
     # Gross earned: $1,500 <= $1,912
     wa_tanf_income_eligible: true
 
-- name: Gross earned income exactly at threshold - eligible
-  period: 2024-01
+- name: Case 3, gross earned income exactly at threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
@@ -31,8 +32,8 @@
     # Gross earned: $1,912 <= $1,912
     wa_tanf_income_eligible: true
 
-- name: Gross earned income one dollar over threshold - ineligible
-  period: 2024-01
+- name: Case 4, gross earned income one dollar over threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
@@ -42,8 +43,8 @@
     # Gross earned: $1,913 > $1,912
     wa_tanf_income_eligible: false
 
-- name: Gross earned income far over threshold - ineligible
-  period: 2024-01
+- name: Case 5, gross earned income far over threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
@@ -53,30 +54,30 @@
     # Gross earned: $3,000 > $1,912
     wa_tanf_income_eligible: false
 
-- name: Family size 1 - at threshold
-  period: 2024-01
+- name: Case 6, family size 1 at threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 1
     tanf_gross_earned_income: 1_400
   output:
-    # Income limit for family of 1: $1,400
+    # Income limit for family of 1: $1,400 (Aug 2024+)
     # Gross earned: $1,400 <= $1,400
     wa_tanf_income_eligible: true
 
-- name: Family size 10 - at maximum threshold
-  period: 2024-01
+- name: Case 7, family size 10 at maximum threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 10
     tanf_gross_earned_income: 3_824
   output:
-    # Income limit for family of 10: $3,824
+    # Income limit for family of 10: $3,824 (Aug 2024+)
     # Gross earned: $3,824 <= $3,824
     wa_tanf_income_eligible: true
 
-- name: Family size 15 - capped at size 10 limit
-  period: 2024-01
+- name: Case 8, family size 15 capped at size 10 limit.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 15
@@ -86,11 +87,80 @@
     # Gross earned: $3,824 <= $3,824
     wa_tanf_income_eligible: true
 
-- name: Only calculate for WA
-  period: 2024-01
+- name: Case 9, only calculate for WA.
+  period: 2025-01
   input:
     state_code: MT
     spm_unit_size: 3
     tanf_gross_earned_income: 1_000
   output:
+    wa_tanf_income_eligible: false
+
+# Historical tests - verify 2024-01 income limits (before Aug 2024 increase)
+- name: Case 10, 2024-01 uses Jan 2024 income limits.
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_412
+  output:
+    # Income limit for family of 3 in Jan 2024: $1,412
+    # Gross earned: $1,412 <= $1,412
+    wa_tanf_income_eligible: true
+
+- name: Case 11, 2024-01 over Jan 2024 limit.
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_413
+  output:
+    # Income limit for family of 3 in Jan 2024: $1,412
+    # Gross earned: $1,413 > $1,412
+    wa_tanf_income_eligible: false
+
+# Historical tests - verify 2018-01 income limits (2016 values)
+- name: Case 12, 2018-01 uses 2016 income limits.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_042
+  output:
+    # Income limit for family of 3 in 2018-01: $1,042 (2016 value)
+    # Gross earned: $1,042 <= $1,042
+    wa_tanf_income_eligible: true
+
+- name: Case 13, 2018-01 over 2016 income limit.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_043
+  output:
+    # Income limit for family of 3 in 2018-01: $1,042
+    # Gross earned: $1,043 > $1,042
+    wa_tanf_income_eligible: false
+
+# Historical tests - verify 2021-07 income limits (15% increase)
+- name: Case 14, 2022-01 uses July 2021 income limits.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_308
+  output:
+    # Income limit for family of 3 in 2022-01: $1,308 (15% increase)
+    # Gross earned: $1,308 <= $1,308
+    wa_tanf_income_eligible: true
+
+- name: Case 15, 2022-01 over July 2021 limit.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_309
+  output:
+    # Income limit for family of 3 in 2022-01: $1,308
+    # Gross earned: $1,309 > $1,308
     wa_tanf_income_eligible: false

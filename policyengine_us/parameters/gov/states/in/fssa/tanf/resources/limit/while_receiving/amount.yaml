@@ -1,12 +1,17 @@
 description: Indiana limits resources to this amount while receiving the Temporary Assistance for Needy Families program.
 
 values:
-  2023-07-01: 10_000
+  1997-10-01: 1_500
+  2022-07-01: 10_000
 
 metadata:
   unit: currency-USD
   period: month
   label: Indiana TANF resource limit while receiving amount
   reference:
-    - title: IC 12-14-1-1(b)
+    - title: IC 12-14-1-1(b), as amended by P.L.83-2022, SEC.2
       href: https://iga.in.gov/laws/2025/ic/titles/12/#12-14-1-1
+    - title: FSSA DFR Chapter 3000, Section 3005.10.00 (resource limits effective 7/1/2022)
+      href: https://www.in.gov/fssa/dfr/files/3000.pdf#page=2
+    - title: Urban Institute Welfare Rules Database, Table L8 ($1,500 recipient limit as of July 1998)
+      href: https://wrd.urban.org/sites/default/files/documents/2023-09/311111-The-Welfare-Rules-Databook-State-Policies-as-of-July--.PDF#page=160

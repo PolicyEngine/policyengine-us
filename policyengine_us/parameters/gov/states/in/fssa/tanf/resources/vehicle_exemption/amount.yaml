@@ -1,7 +1,10 @@
 description: Indiana excludes this amount of vehicle equity from countable resources under the Temporary Assistance for Needy Families program.
 
 values:
-  2023-07-01: 20_000
+  1997-10-01: 1_000
+  1999-07-01: 5_000
+  2021-07-01: 10_000
+  2022-07-01: 20_000
 
 metadata:
   unit: currency-USD
@@ -10,3 +13,7 @@ metadata:
   reference:
     - title: IC 12-14-2-1(b)(2)
       href: https://iga.in.gov/laws/2025/ic/titles/12/#12-14-2-1
+    - title: FSSA DFR Chapter 2600, Section 2615.60.15 ($10,000 until 6/30/2022, $20,000 effective 7/1/2022)
+      href: https://www.in.gov/fssa/dfr/files/2600.pdf#page=30
+    - title: Urban Institute Welfare Rules Database, Table L9 ($1,000 at inception, $5,000 from July 1999, $10,000 from July 2021)
+      href: https://wrd.urban.org/sites/default/files/documents/2023-09/311111-The-Welfare-Rules-Databook-State-Policies-as-of-July--.PDF#page=162

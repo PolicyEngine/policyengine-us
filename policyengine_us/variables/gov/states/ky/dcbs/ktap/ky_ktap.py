@@ -9,18 +9,13 @@ class ky_ktap(Variable):
     definition_period = MONTH
     reference = (
         "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/",
-        "https://law.justia.com/codes/kentucky/chapter-205/section-205-200/",
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=54926",
     )
     defined_for = "ky_ktap_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per 921 KAR 2:016 Section 9(4):
-        # Benefit = min(0.55 × deficit, payment_maximum)
-        # where deficit = standard_of_need - countable_income
-        #
-        # Per KRS 205.200(2): "In no instance shall grants to families
-        # with no income be less than the appropriate grant maximum."
-        # So families with zero countable income receive payment_maximum.
+        # Per KRS 205.200(2): families with zero countable income
+        # receive the payment maximum.
         p = parameters(period).gov.states.ky.dcbs.ktap.benefit
         standard_of_need = spm_unit("ky_ktap_standard_of_need", period)
         countable_income = spm_unit("ky_ktap_countable_income", period)

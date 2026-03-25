@@ -1,0 +1,180 @@
+# === 2026: Simplified two-category system (uses_simplified_time = true) ===
+
+- name: Case 1, 40 hours per week, full time (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 8
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    me_ccap_time_category: FULL_TIME
+
+- name: Case 2, 30 hours per week, full time boundary (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    me_ccap_time_category: FULL_TIME
+
+- name: Case 3, 25 hours per week, part time (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    me_ccap_time_category: PART_TIME
+
+- name: Case 4, 29 hours per week, part time boundary (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 5.8
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    me_ccap_time_category: PART_TIME
+
+- name: Case 5, 10 hours per week, part time (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 2
+    state_code: ME
+  output:
+    me_ccap_time_category: PART_TIME
+
+# === Edge cases (simplified) ===
+
+- name: Case 6, 1 hour per week, minimum part time (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 1
+    childcare_days_per_week: 1
+    state_code: ME
+  output:
+    # 1 hour < 30 => PART_TIME.
+    me_ccap_time_category: PART_TIME
+
+- name: Case 7, zero hours per week (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 0
+    childcare_days_per_week: 0
+    state_code: ME
+  output:
+    # 0 hours < 30 => PART_TIME.
+    me_ccap_time_category: PART_TIME
+
+- name: Case 8, 50 hours per week, maximum full time (simplified).
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 10
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 50 hours >= 30 => FULL_TIME.
+    me_ccap_time_category: FULL_TIME
+
+# === 2025: Four-category system (uses_simplified_time = false) ===
+
+- name: Case 9, 35 hours per week, full time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 7
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 35 hours >= 30 => FULL_TIME.
+    me_ccap_time_category: FULL_TIME
+
+- name: Case 10, 30 hours per week, full time boundary (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 30 hours >= 30 => FULL_TIME.
+    me_ccap_time_category: FULL_TIME
+
+- name: Case 11, 25 hours per week, part time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 25 hours >= 20 => PART_TIME.
+    me_ccap_time_category: PART_TIME
+
+- name: Case 12, 20 hours per week, part time boundary (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 4
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 20 hours >= 20 => PART_TIME.
+    me_ccap_time_category: PART_TIME
+
+- name: Case 13, 15 hours per week, half time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 15 hours >= 10 => HALF_TIME.
+    me_ccap_time_category: HALF_TIME
+
+- name: Case 14, 10 hours per week, half time boundary (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 10 hours >= 10 => HALF_TIME.
+    me_ccap_time_category: HALF_TIME
+
+- name: Case 15, 5 hours per week, quarter time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 1
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 5 hours < 10 => QUARTER_TIME.
+    me_ccap_time_category: QUARTER_TIME
+
+- name: Case 16, 9 hours per week, quarter time boundary (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 3
+    state_code: ME
+  output:
+    # 9 hours < 10 => QUARTER_TIME.
+    me_ccap_time_category: QUARTER_TIME
+
+- name: Case 17, zero hours per week, quarter time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 0
+    childcare_days_per_week: 0
+    state_code: ME
+  output:
+    # 0 hours < 10 => QUARTER_TIME.
+    me_ccap_time_category: QUARTER_TIME
+
+- name: Case 18, 19 hours per week, half time (4-category).
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 3.8
+    childcare_days_per_week: 5
+    state_code: ME
+  output:
+    # 19 hours >= 10 but < 20 => HALF_TIME.
+    me_ccap_time_category: HALF_TIME

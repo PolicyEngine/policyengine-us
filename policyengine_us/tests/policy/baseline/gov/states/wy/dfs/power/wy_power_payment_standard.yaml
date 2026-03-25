@@ -57,3 +57,825 @@
     wy_power_shelter_qualified: false
   output:
     wy_power_payment_standard: 783
+
+# =============================================================================
+# BACKDATED PAYMENT STANDARD TESTS (FY2017 through FY2025)
+# Source: Wyoming DFS Table II POWER Income Limits
+# https://drive.google.com/file/d/1gM2Kh49bKoOTL1M6bS8Qj16GJkxKB8am/view?usp=sharing
+# =============================================================================
+
+# --- FY2017 (2016-07-01) — period 2017-01 ---
+
+- name: Case 7, FY2017 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 374
+
+- name: Case 8, FY2017 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 618
+
+- name: Case 9, FY2017 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 657
+
+- name: Case 10, FY2017 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 737
+
+- name: Case 11, FY2017 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 737
+
+- name: Case 12, FY2017 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 219
+
+- name: Case 13, FY2017 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 394
+
+- name: Case 14, FY2017 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 453
+
+- name: Case 15, FY2017 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 570
+
+- name: Case 16, FY2017 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 570
+
+# --- FY2018 (2017-07-01) — period 2018-01 ---
+
+- name: Case 17, FY2018 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 376
+
+- name: Case 18, FY2018 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 621
+
+- name: Case 19, FY2018 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 660
+
+- name: Case 20, FY2018 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 741
+
+- name: Case 21, FY2018 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 741
+
+- name: Case 22, FY2018 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 220
+
+- name: Case 23, FY2018 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 396
+
+- name: Case 24, FY2018 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 455
+
+- name: Case 25, FY2018 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 573
+
+- name: Case 26, FY2018 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 573
+
+# --- FY2020 (2019-07-01) — period 2020-01 ---
+
+- name: Case 27, FY2020 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 396
+
+- name: Case 28, FY2020 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 655
+
+- name: Case 29, FY2020 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 697
+
+- name: Case 30, FY2020 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 783
+
+- name: Case 31, FY2020 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 783
+
+- name: Case 32, FY2020 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 232
+
+- name: Case 33, FY2020 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 418
+
+- name: Case 34, FY2020 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 480
+
+- name: Case 35, FY2020 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 605
+
+- name: Case 36, FY2020 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 605
+
+# --- FY2021 (2020-07-01) — period 2021-01 ---
+
+- name: Case 37, FY2021 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 404
+
+- name: Case 38, FY2021 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 669
+
+- name: Case 39, FY2021 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 712
+
+- name: Case 40, FY2021 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 800
+
+- name: Case 41, FY2021 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 800
+
+- name: Case 42, FY2021 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 237
+
+- name: Case 43, FY2021 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 427
+
+- name: Case 44, FY2021 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 490
+
+- name: Case 45, FY2021 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 618
+
+- name: Case 46, FY2021 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 618
+
+# --- FY2022 (2021-07-01) — period 2022-01 ---
+
+- name: Case 47, FY2022 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 401
+
+- name: Case 48, FY2022 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 662
+
+- name: Case 49, FY2022 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 707
+
+- name: Case 50, FY2022 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 795
+
+- name: Case 51, FY2022 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 795
+
+- name: Case 52, FY2022 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 233
+
+- name: Case 53, FY2022 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 423
+
+- name: Case 54, FY2022 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 486
+
+- name: Case 55, FY2022 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 613
+
+- name: Case 56, FY2022 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2022-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 613
+
+# --- FY2023 (2022-07-01) — period 2023-01 ---
+
+- name: Case 57, FY2023 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 425
+
+- name: Case 58, FY2023 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 702
+
+- name: Case 59, FY2023 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 749
+
+- name: Case 60, FY2023 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 843
+
+- name: Case 61, FY2023 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 843
+
+- name: Case 62, FY2023 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 247
+
+- name: Case 63, FY2023 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 449
+
+- name: Case 64, FY2023 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 515
+
+- name: Case 65, FY2023 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 650
+
+- name: Case 66, FY2023 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 650
+
+# --- FY2024 (2023-07-01) — period 2024-01 ---
+
+- name: Case 67, FY2024 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 461
+
+- name: Case 68, FY2024 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 762
+
+- name: Case 69, FY2024 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 812
+
+- name: Case 70, FY2024 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 914
+
+- name: Case 71, FY2024 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 914
+
+- name: Case 72, FY2024 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 268
+
+- name: Case 73, FY2024 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 487
+
+- name: Case 74, FY2024 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 558
+
+- name: Case 75, FY2024 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 705
+
+- name: Case 76, FY2024 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 705
+
+# --- FY2025 (2024-07-01) — period 2025-01 ---
+
+- name: Case 77, FY2025 size 1 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 485
+
+- name: Case 78, FY2025 size 2 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 801
+
+- name: Case 79, FY2025 size 3 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 854
+
+- name: Case 80, FY2025 size 7 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 961
+
+- name: Case 81, FY2025 size 12 shelter qualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: true
+  output:
+    wy_power_payment_standard: 961
+
+- name: Case 82, FY2025 size 1 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 282
+
+- name: Case 83, FY2025 size 2 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 2
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 512
+
+- name: Case 84, FY2025 size 3 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 3
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 587
+
+- name: Case 85, FY2025 size 7 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 7
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 742
+
+- name: Case 86, FY2025 size 12 shelter disqualified.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    spm_unit_size: 12
+    state_code: WY
+    wy_power_shelter_qualified: false
+  output:
+    wy_power_payment_standard: 742

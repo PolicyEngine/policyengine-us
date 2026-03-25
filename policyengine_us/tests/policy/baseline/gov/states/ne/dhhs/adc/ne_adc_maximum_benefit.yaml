@@ -23,12 +23,12 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 464
     ne_adc_countable_earned_income: 0
-    ne_adc_maximum_benefit: 408
-    # Gap = $741 - $0 = $741
-    # Benefit = min($741, $408) = $408
+    ne_adc_maximum_benefit: 464
+    # Gap = $843 - $0 = $843
+    # Benefit = min($843, $463.65) = $463.65
 
 - name: Case 2, income reduces gap below payment standard.
   period: 2024-01
@@ -49,12 +49,12 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 464
     ne_adc_countable_earned_income: 350
-    ne_adc_maximum_benefit: 391
-    # Gap = $741 - $350 = $391
-    # Benefit = min($391, $408) = $391
+    ne_adc_maximum_benefit: 464
+    # Gap = $843 - $350 = $493
+    # Benefit = min($493, $463.65) = $463.65
 
 - name: Case 3, high income negative gap becomes zero.
   period: 2024-01
@@ -75,11 +75,11 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_need_standard: 741
+    ne_adc_need_standard: 843
     ne_adc_countable_earned_income: 1_000
     ne_adc_maximum_benefit: 0
-    # Gap = $741 - $1,000 = -$259 -> max(-259, 0) = $0
-    # Benefit = min($0, $408) = $0
+    # Gap = $843 - $1,000 = -$157 -> max(-157, 0) = $0
+    # Benefit = min($0, $463.65) = $0
 
 - name: Case 4, larger family higher standards.
   period: 2024-01
@@ -102,9 +102,9 @@
         members: [person1, person2, person3]
         state_code: NE
   output:
-    ne_adc_need_standard: 881
-    ne_adc_payment_standard: 485
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 552
     ne_adc_countable_earned_income: 500
-    ne_adc_maximum_benefit: 381
-    # Gap = $881 - $500 = $381
-    # Benefit = min($381, $485) = $381
+    ne_adc_maximum_benefit: 503
+    # Gap = $1,003 - $500 = $503
+    # Benefit = min($503, $551.65) = $503

@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Nevada.
+values:
+  0000-01-01: 40_600
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Nevada unemployment taxable wage base
+  reference:
+    - title: Nevada Revised Statutes Section 612.545
+      href: https://www.leg.state.nv.us/NRS/NRS-612.html#NRS612Sec545
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=38

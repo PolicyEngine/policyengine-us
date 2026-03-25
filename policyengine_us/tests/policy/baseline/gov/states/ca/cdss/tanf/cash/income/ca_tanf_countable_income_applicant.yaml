@@ -27,3 +27,74 @@
     ca_tanf_other_unearned_income: 0
   output:
     ca_tanf_countable_income_applicant: 0
+
+- name: Historical 2019 applicant EID is $90 per employed person.
+  period: 2019
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 6_000
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # yearly: 6000 - (90 * 12) = 6000 - 1080 = 4920
+    ca_tanf_countable_income_applicant: 4_920
+
+- name: Case 1, earned income exactly at $450/mo disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 5_400
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # yearly: max(5400 - 5400, 0) = 0
+    ca_tanf_countable_income_applicant: 0
+
+- name: Case 2, earned income one dollar above $450/mo disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 5_412
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # yearly: max(5412 - 5400, 0) = 12
+    ca_tanf_countable_income_applicant: 12
+
+- name: Case 3, zero income yields zero countable.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 0
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    ca_tanf_countable_income_applicant: 0
+
+- name: Case 4, only unearned income no disregard applied.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 0
+    ca_tanf_db_unearned_income: 6_000
+    ca_tanf_other_unearned_income: 3_000
+  output:
+    # disregard only applies to earned income
+    ca_tanf_countable_income_applicant: 9_000
+
+- name: Case 5, earned below disregard with unearned income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 2_400
+    ca_tanf_db_unearned_income: 1_200
+    ca_tanf_other_unearned_income: 600
+  output:
+    # earned: max(2400 - 5400, 0) = 0
+    # total: 0 + 1200 + 600 = 1800
+    ca_tanf_countable_income_applicant: 1_800

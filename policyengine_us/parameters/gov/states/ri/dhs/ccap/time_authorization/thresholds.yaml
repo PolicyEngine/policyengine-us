@@ -1,0 +1,30 @@
+description: Rhode Island sets these time authorization levels under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Rhode Island CCAP time authorization thresholds
+  reference:
+    - title: 218-RICR-20-00-4, Section 4.7.1.A.2
+      href: https://rules.sos.ri.gov/regulations/part/218-20-00-4#4.7.1
+    - title: 218-RICR-20-00-4, Section 4.12.B.1
+      href: https://rules.sos.ri.gov/regulations/part/218-20-00-4#4.12
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 3
+  - threshold:
+      2020-01-01: 10
+    amount:
+      2020-01-01: 2
+  - threshold:
+      2020-01-01: 20
+    amount:
+      2020-01-01: 1
+  - threshold:
+      2020-01-01: 30
+    amount:
+      2020-01-01: 0

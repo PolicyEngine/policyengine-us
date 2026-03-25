@@ -1,0 +1,208 @@
+description: Maine provides these weekly reimbursement rates for licensed family child care under the Child Care Affordability Program.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Maine CCAP licensed family weekly rates
+  breakdown:
+    - me_ccap_region
+    - me_ccap_age_group
+    - me_ccap_time_category
+  reference:
+    - title: 10-148 C.M.R. Chapter 6 §4.D
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=26
+    - title: Maine CCAP Market Rates, effective July 6, 2024
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/July%206%202024%20Market%20Rates_5_0.pdf
+    - title: Maine CCAP Market Rates, effective May 19, 2025
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/5.19.25%20Child%20Care%20Market%20Rates.pdf
+
+REGION_1:
+  INFANT:
+    FULL_TIME:
+      2024-07-06: 245
+    PART_TIME:
+      2024-07-06: 183.75
+    HALF_TIME:
+      2024-07-06: 122.5
+    QUARTER_TIME:
+      2024-07-06: 61.25
+  TODDLER:
+    FULL_TIME:
+      2024-07-06: 230.77
+    PART_TIME:
+      2024-07-06: 173.08
+    HALF_TIME:
+      2024-07-06: 115.38
+    QUARTER_TIME:
+      2024-07-06: 57.69
+  PRESCHOOL:
+    FULL_TIME:
+      2024-07-06: 225
+    PART_TIME:
+      2024-07-06: 168.75
+    HALF_TIME:
+      2024-07-06: 112.5
+    QUARTER_TIME:
+      2024-07-06: 56.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2024-07-06: 175
+    PART_TIME:
+      2024-07-06: 131.25
+      2025-05-19: 140.46
+    HALF_TIME:
+      2024-07-06: 87.5
+    QUARTER_TIME:
+      2024-07-06: 43.75
+REGION_2:
+  INFANT:
+    FULL_TIME:
+      2024-07-06: 210
+    PART_TIME:
+      2024-07-06: 157.5
+    HALF_TIME:
+      2024-07-06: 105
+    QUARTER_TIME:
+      2024-07-06: 52.5
+  TODDLER:
+    FULL_TIME:
+      2024-07-06: 200
+    PART_TIME:
+      2024-07-06: 150
+    HALF_TIME:
+      2024-07-06: 100
+    QUARTER_TIME:
+      2024-07-06: 50
+  PRESCHOOL:
+    FULL_TIME:
+      2024-07-06: 190
+    PART_TIME:
+      2024-07-06: 142.5
+    HALF_TIME:
+      2024-07-06: 95
+    QUARTER_TIME:
+      2024-07-06: 47.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2024-07-06: 170
+    PART_TIME:
+      2024-07-06: 127.5
+      2025-05-19: 136.45
+    HALF_TIME:
+      2024-07-06: 85
+    QUARTER_TIME:
+      2024-07-06: 42.5
+KENNEBEC:
+  INFANT:
+    FULL_TIME:
+      2024-07-06: 210
+    PART_TIME:
+      2024-07-06: 157.5
+    HALF_TIME:
+      2024-07-06: 105
+    QUARTER_TIME:
+      2024-07-06: 52.5
+  TODDLER:
+    FULL_TIME:
+      2024-07-06: 200
+    PART_TIME:
+      2024-07-06: 150
+    HALF_TIME:
+      2024-07-06: 100
+    QUARTER_TIME:
+      2024-07-06: 50
+  PRESCHOOL:
+    FULL_TIME:
+      2024-07-06: 190
+    PART_TIME:
+      2024-07-06: 142.5
+    HALF_TIME:
+      2024-07-06: 95
+    QUARTER_TIME:
+      2024-07-06: 47.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2024-07-06: 170
+    PART_TIME:
+      2024-07-06: 127.5
+      2025-05-19: 136.45
+    HALF_TIME:
+      2024-07-06: 85
+    QUARTER_TIME:
+      2024-07-06: 42.5
+KNOX_WALDO:
+  INFANT:
+    FULL_TIME:
+      2024-07-06: 210
+    PART_TIME:
+      2024-07-06: 157.5
+    HALF_TIME:
+      2024-07-06: 105
+    QUARTER_TIME:
+      2024-07-06: 52.5
+  TODDLER:
+    FULL_TIME:
+      2024-07-06: 200
+    PART_TIME:
+      2024-07-06: 150
+    HALF_TIME:
+      2024-07-06: 100
+    QUARTER_TIME:
+      2024-07-06: 50
+  PRESCHOOL:
+    FULL_TIME:
+      2024-07-06: 190
+    PART_TIME:
+      2024-07-06: 142.5
+    HALF_TIME:
+      2024-07-06: 95
+    QUARTER_TIME:
+      2024-07-06: 47.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2024-07-06: 170
+    PART_TIME:
+      2024-07-06: 127.5
+      2025-05-19: 136.45
+    HALF_TIME:
+      2024-07-06: 85
+    QUARTER_TIME:
+      2024-07-06: 42.5
+PENOBSCOT:
+  INFANT:
+    FULL_TIME:
+      2024-07-06: 210
+    PART_TIME:
+      2024-07-06: 157.5
+    HALF_TIME:
+      2024-07-06: 105
+    QUARTER_TIME:
+      2024-07-06: 52.5
+  TODDLER:
+    FULL_TIME:
+      2024-07-06: 200
+    PART_TIME:
+      2024-07-06: 150
+    HALF_TIME:
+      2024-07-06: 100
+    QUARTER_TIME:
+      2024-07-06: 50
+  PRESCHOOL:
+    FULL_TIME:
+      2024-07-06: 190
+    PART_TIME:
+      2024-07-06: 142.5
+    HALF_TIME:
+      2024-07-06: 95
+    QUARTER_TIME:
+      2024-07-06: 47.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2024-07-06: 170
+    PART_TIME:
+      2024-07-06: 127.5
+      2025-05-19: 136.45
+    HALF_TIME:
+      2024-07-06: 85
+    QUARTER_TIME:
+      2024-07-06: 42.5

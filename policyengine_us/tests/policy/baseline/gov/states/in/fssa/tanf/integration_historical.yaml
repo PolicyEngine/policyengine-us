@@ -1,0 +1,109 @@
+# Historical integration tests (pre-SEA 265 era)
+# Tests the full benefit calculation pipeline with 1997-2023 parameter values
+
+- name: Pre-reform family of 3 with no income receives $288
+  period: 2020-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_payment_standard: 288
+    in_tanf_countable_income_for_payment: 0
+    in_tanf_countable_income_eligible: true
+    in_tanf_payment_eligible: true
+    in_tanf: 288
+
+- name: Pre-reform family of 3 with earned income
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 200
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        spm_unit_cash_assets: 800
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_payment_standard: 288
+    in_tanf_countable_earned_income: 50
+    # $200 * 0.25 = $50
+    in_tanf_countable_income_for_payment: 50
+    in_tanf_countable_earned_income_for_eligibility: 53.34
+    # $200 - $90 = $110 -> $110 - $30 = $80 -> $80 * 0.6667 = $53.34
+    in_tanf_countable_income_for_eligibility: 53.34
+    in_tanf_countable_income_eligible: true
+    in_tanf_payment_eligible: true
+    in_tanf: 238
+    # $288 - $50 = $238
+
+- name: Pre-reform January 2023 family of 3 gets old benefit
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_payment_standard: 288
+    in_tanf: 288
+
+- name: Post-reform January 2024 family of 3 gets new benefit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_payment_standard: 320
+    in_tanf: 320

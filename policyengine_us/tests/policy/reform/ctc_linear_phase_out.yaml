@@ -1,0 +1,230 @@
+# CTC Linear Phase-Out Reform Tests
+# Tests the structural reform for linear phase-out (CTC phases out completely
+# between the IRS threshold and the end parameter)
+
+- name: Below phase-out threshold - full CTC
+  period: 2025
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 50_000
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+  output:
+    # Below phase-out threshold ($200,000), no phase-out
+    ctc_phase_out: 0
+
+- name: Phase-out at mid-range income - single filer
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 220_000
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+  output:
+    # Phase-out threshold: $200,000 (default 2025)
+    # Phase-out range: $240,000 - $200,000 = $40,000
+    # Excess income: $220,000 - $200,000 = $20,000
+    # Phase-out rate: $2,200 / $40,000 = 0.055
+    # Reduction: $20,000 * 0.055 = $1,100
+    ctc_phase_out: 1_100
+
+- name: Full phase-out beyond end threshold
+  period: 2025
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 250_000
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+  output:
+    # Above $240,000, fully phased out
+    ctc_phase_out: 2_200
+
+- name: Joint filers - higher phase-out end
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.JOINT: 440_000
+    people:
+      head:
+        employment_income: 200_000
+        age: 30
+      spouse:
+        employment_income: 200_000
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+  output:
+    # Phase-out threshold (JOINT): $400,000 (default 2025)
+    # Phase-out range: $440,000 - $400,000 = $40,000
+    # Excess income: $400,000 - $400,000 = $0
+    # No phase-out yet
+    ctc_phase_out: 0
+
+- name: Joint filers - partial phase-out
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.JOINT: 440_000
+    people:
+      head:
+        employment_income: 210_000
+        age: 30
+      spouse:
+        employment_income: 210_000
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+  output:
+    # Phase-out threshold (JOINT): $400,000 (default 2025)
+    # Phase-out range: $440,000 - $400,000 = $40,000
+    # Excess income: $420,000 - $400,000 = $20,000
+    # Phase-out rate: $2,200 / $40,000 = 0.055
+    # Reduction: $20,000 * 0.055 = $1,100
+    ctc_phase_out: 1_100
+
+- name: Multiple children - linear phase-out
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 220_000
+        age: 30
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: SINGLE
+  output:
+    # Total CTC max: $2,200 + $2,200 = $4,400
+    # Phase-out range: $240,000 - $200,000 = $40,000
+    # Excess income: $220,000 - $200,000 = $20,000
+    # Phase-out rate: $4,400 / $40,000 = 0.11
+    # Reduction: $20,000 * 0.11 = $2,200
+    ctc_phase_out: 2_200
+
+- name: Exactly at phase-out threshold - zero reduction
+  period: 2025
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 200_000
+        age: 30
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+  output:
+    # Income exactly at threshold ($200,000)
+    # Excess income: $200,000 - $200,000 = $0
+    # No phase-out reduction
+    ctc_phase_out: 0
+
+- name: Exactly at phase-out end - full reduction
+  period: 2025
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.SINGLE: 240_000
+    people:
+      head:
+        employment_income: 240_000
+        age: 30
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+  output:
+    # Income exactly at end ($240,000)
+    # Excess income: $240,000 - $200,000 = $40,000
+    # Phase-out rate: $2,200 / $40,000 = 0.055
+    # Reduction: $40,000 * 0.055 = $2,200 (full CTC)
+    ctc_phase_out: 2_200
+
+- name: Head of household filing status
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.ctc.ctc_linear_phase_out.ctc_linear_phase_out
+  input:
+    gov.contrib.ctc.linear_phase_out.in_effect: true
+    gov.contrib.ctc.linear_phase_out.end.HEAD_OF_HOUSEHOLD: 240_000
+    people:
+      head:
+        employment_income: 220_000
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Phase-out threshold (HOH): $200,000 (default 2025)
+    # Phase-out range: $240,000 - $200,000 = $40,000
+    # Excess income: $220,000 - $200,000 = $20,000
+    # Phase-out rate: $2,200 / $40,000 = 0.055
+    # Reduction: $20,000 * 0.055 = $1,100
+    ctc_phase_out: 1_100

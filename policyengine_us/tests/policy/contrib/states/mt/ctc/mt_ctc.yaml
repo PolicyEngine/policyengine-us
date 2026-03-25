@@ -16,8 +16,12 @@
         members: [head, child]
         mt_ctc_eligible: true
         adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_800
+    mt_ctc: [1_800, 0]
 
 - name: Child age 6-17 gets $1,500
   period: 2023
@@ -34,8 +38,12 @@
         members: [head, child]
         mt_ctc_eligible: true
         adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_500
+    mt_ctc: [1_500, 0]
 
 - name: Child age 18+ gets $0
   period: 2023
@@ -52,8 +60,12 @@
         members: [head, child]
         mt_ctc_eligible: true
         adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 0
+    mt_ctc: [0, 0]
 
 - name: Multiple children different age brackets
   period: 2023
@@ -74,8 +86,12 @@
         members: [head, child1, child2, child3]
         mt_ctc_eligible: true
         adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: MT
   output:
-    mt_ctc: 4_800
+    mt_ctc: [4_800, 0, 0, 0]
     # 1800 + 1500 + 1500
 
 # Earned income requirement tests
@@ -135,8 +151,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 60_000
         filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_800
+    mt_ctc: [1_800, 0]
 
 - name: AGI $1k above threshold - first reduction (single)
   period: 2023
@@ -154,8 +174,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 61_000
         filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_750
+    mt_ctc: [1_750, 0]
     # 1800 - 1*50 = 1750
 
 - name: AGI $500 above threshold - ceiling triggers reduction
@@ -174,8 +198,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 60_500
         filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_750
+    mt_ctc: [1_750, 0]
     # 1800 - ceil(500/1000)*50 = 1800 - 50 = 1750
 
 - name: AGI $5k above threshold - 5 reductions (single)
@@ -194,8 +222,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 65_000
         filing_status: SINGLE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
   output:
-    mt_ctc: 1_550
+    mt_ctc: [1_550, 0]
     # 1800 - 5*50 = 1550
 
 # Joint filer tests (threshold $120k)
@@ -217,8 +249,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 120_000
         filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
   output:
-    mt_ctc: 1_800
+    mt_ctc: [1_800, 0, 0]
 
 - name: Joint filer $10k above threshold - 10 reductions
   period: 2023
@@ -238,8 +274,12 @@
         mt_ctc_eligible: true
         adjusted_gross_income: 130_000
         filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
   output:
-    mt_ctc: 1_300
+    mt_ctc: [1_300, 0, 0]
     # 1800 - 10*50 = 1300
 
 # No qualifying children test
@@ -254,6 +294,165 @@
     state_code: MT
   output:
     mt_ctc_eligible: false
+
+# Age boundary tests
+- name: Newborn (age 0) gets $1,800
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 25
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_800, 0]
+
+- name: Age 5 (upper boundary of 0-5 bracket) gets $1,800
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_800, 0]
+
+- name: Age 6 (lower boundary of 6-17 bracket) gets $1,500
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_500, 0]
+
+- name: Age 17 (upper boundary of 6-17 bracket) gets $1,500
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 40
+      child:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_500, 0]
+
+# Filing status tests
+- name: Head of household filer at threshold - no reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 35
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 60_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_800, 0]
+
+- name: Separate filer at threshold - no reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 35
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 60_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_800, 0]
+
+- name: Surviving spouse filer at threshold - no reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 35
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 120_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_ctc: [1_800, 0]
 
 # End-to-end test
 - name: End-to-end eligible with credit
@@ -278,4 +477,4 @@
         state_code: MT
   output:
     mt_ctc_eligible: true
-    mt_ctc: 1_800
+    mt_ctc: [1_800, 0]

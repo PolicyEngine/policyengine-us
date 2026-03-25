@@ -1,0 +1,206 @@
+# Edge cases for ri_ccap_income_eligible
+# 2025 FPG (Contiguous US):
+#   Family of 1: 15_650
+#   Family of 2: 21_150
+#   Family of 3: 26_650
+# 261% FPL (family of 2): 21_150 * 2.61 = 55_201.50
+# 300% FPL (family of 2): 21_150 * 3.00 = 63_450.00
+
+- name: Case 1, new applicant income below 261 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 55_000 <= ~55_201 (261% of 21_150) -> eligible
+    ri_ccap_income_eligible: true
+
+- name: Case 2, new applicant income above 261 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_500
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 55_500 > ~55_201 (261% of 21_150) -> ineligible
+    ri_ccap_income_eligible: false
+
+- name: Case 3, new applicant income well below 261 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_100
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 55_100 <= ~55_201 -> eligible
+    ri_ccap_income_eligible: true
+
+- name: Case 4, enrolled family income exactly at 300 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 63_450
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # enrolled: 63_450 <= 63_450 -> eligible (at boundary)
+    ri_ccap_income_eligible: true
+
+- name: Case 5, enrolled family income one cent above 300 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 63_450.01
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # enrolled: 63_450.01 > 63_450 -> ineligible
+    ri_ccap_income_eligible: false
+
+- name: Case 6, enrolled family income one cent below 300 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 63_449.99
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # enrolled: 63_449.99 <= 63_450 -> eligible
+    ri_ccap_income_eligible: true
+
+- name: Case 7, enrolled family exactly at 261 percent FPL uses transitional limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_201.50
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # enrolled: 55_201.50 <= 63_450 (300% FPL limit) -> eligible
+    ri_ccap_income_eligible: true
+
+- name: Case 8, non-enrolled between 261 and 300 percent is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_202
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # not enrolled: 55_202 > 55_201.50 (261% FPL) -> ineligible
+    ri_ccap_income_eligible: false
+
+- name: Case 9, large family of 8 at 261 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        # FPG family of 8: 15_650 + 5_500 * 7 = 54_150
+        # 261% = 54_150 * 2.61 = 141_331.50
+        employment_income: 141_331.50
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 6
+      person5:
+        age: 4
+      person6:
+        age: 3
+      person7:
+        age: 1
+      person8:
+        age: 38
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: RI
+  output:
+    # 141_331.50 <= 141_331.50 -> eligible
+    ri_ccap_income_eligible: true

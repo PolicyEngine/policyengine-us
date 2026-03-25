@@ -1,0 +1,286 @@
+# Tests for ri_ccap_maximum_weekly_benefit
+# Rates effective: center July 2025, family July 2024, exempt Jan 2022
+# Person-level variable; parent output is 0 (default), child gets rate
+
+- name: Case 1, licensed center full time star 1 preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center FT Star 1 Preschool = $236
+    ri_ccap_maximum_weekly_benefit: [0, 236]
+
+- name: Case 2, licensed center full time star 5 infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        childcare_hours_per_week: 40
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center FT Star 5 Infant = $378
+    ri_ccap_maximum_weekly_benefit: [0, 378]
+
+- name: Case 3, licensed center three quarter time star 3 toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        childcare_hours_per_week: 25
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center 3QT Star 3 Toddler = $222.00
+    ri_ccap_maximum_weekly_benefit: [0, 222]
+
+- name: Case 4, licensed center half time star 4 school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_in_k12_school: true
+        childcare_hours_per_week: 15
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center HT Star 4 School Age = $125.00
+    ri_ccap_maximum_weekly_benefit: [0, 125]
+
+- name: Case 5, licensed family full time star 2 infant toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Family FT Star 2 Infant/Toddler = $266.86
+    ri_ccap_maximum_weekly_benefit: [0, 266.86]
+
+- name: Case 6, licensed family quarter time star 4 preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_k12_school: false
+        childcare_hours_per_week: 5
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Family QT Star 4 Preschool = $62.78
+    ri_ccap_maximum_weekly_benefit: [0, 62.78]
+
+- name: Case 7, licensed family three quarter time star 5 school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_in_k12_school: true
+        childcare_hours_per_week: 22
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Family 3QT Star 5 School Age = $185.18
+    ri_ccap_maximum_weekly_benefit: [0, 185.18]
+
+- name: Case 8, license exempt full time step 1 infant toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Exempt FT Step 1 Infant/Toddler = $100.96
+    ri_ccap_maximum_weekly_benefit: [0, 100.96]
+
+- name: Case 9, license exempt half time step 3 preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_k12_school: false
+        childcare_hours_per_week: 12
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Exempt HT Step 3 Preschool = $30.54
+    ri_ccap_maximum_weekly_benefit: [0, 30.54]
+
+- name: Case 10, license exempt quarter time step 4 school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_in_k12_school: true
+        childcare_hours_per_week: 5
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Exempt QT Step 4 School Age = $15.13
+    ri_ccap_maximum_weekly_benefit: [0, 15.13]
+
+- name: Case 11, licensed center quarter time star 2 infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        childcare_hours_per_week: 8
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center QT Star 2 Infant = $85.25
+    ri_ccap_maximum_weekly_benefit: [0, 85.25]
+
+- name: Case 12, license exempt three quarter time step 2 school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 22
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Exempt 3QT Step 2 School Age = $44.53
+    ri_ccap_maximum_weekly_benefit: [0, 44.53]
