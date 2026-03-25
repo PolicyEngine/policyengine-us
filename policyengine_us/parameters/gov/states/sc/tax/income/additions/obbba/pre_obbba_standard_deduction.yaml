@@ -1,9 +1,4 @@
-description: >-
-  South Carolina uses this standard deduction amount for
-  federal non-conformity purposes under the One Big Beautiful
-  Bill Act. These are the pre-OBBBA indexed values; the
-  difference from the federal standard deduction is added back
-  on SC1040 line 1e.
+description: South Carolina uses this amount as the pre-One Big Beautiful Bill Act standard deduction for federal non-conformity additions under the individual income tax program.
 
 SINGLE:
   2025-01-01: 15_000
@@ -24,9 +19,9 @@ metadata:
     - filing_status
   propagate_metadata_to_children: true
   reference:
-    - title: SC DOR - Internal Revenue Code Conformity Update
+    - title: SC DOR Internal Revenue Code Conformity Update
       href: https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update
-    - title: SC 1040 Instructions 2025 - Line 1e Other additions
+    - title: SC 1040 Instructions 2025, Line 1e
       href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=3
-    - title: CBO Tax Parameters 2025 (pre-OBBBA projections)
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates, Jan 2025
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
