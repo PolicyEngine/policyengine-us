@@ -187,3 +187,33 @@
     # Conditional (B): lump sum capped at 600
     # Total: 50 + 600 = 650
     ma_tafdc_noncountable_income: 650
+
+- name: Non-MA resident gets zero noncountable income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wic: 50
+        ssi_reported: 10_000  # YEAR
+        employment_income_before_lsr: 12_000  # YEAR -> 1000/mo
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Non-MA resident: defined_for = StateCode.MA returns 0
+    ma_tafdc_noncountable_income: 0

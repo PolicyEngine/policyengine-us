@@ -83,3 +83,61 @@
     ma_tafdc_dependent_child_earned_income_exclusion:
       - 0  # parent
       - 0  # child1: 16+ non-student, NOT excluded
+
+- name: Child exactly age 16, not a student, no exclusion.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 16
+        is_full_time_student: false
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_child_earned_income_exclusion:
+      - 0  # parent
+      - 0  # child1: age 16, NOT under 16, not a student -> no exclusion
+
+- name: Child exactly age 16, full-time student, gets exclusion.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 16
+        is_full_time_student: true
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_child_earned_income_exclusion:
+      - 0  # parent
+      - 500  # child1: age 16, full-time student -> full exclusion

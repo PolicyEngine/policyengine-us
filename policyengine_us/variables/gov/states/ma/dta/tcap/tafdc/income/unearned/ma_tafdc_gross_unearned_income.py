@@ -18,14 +18,9 @@ class ma_tafdc_gross_unearned_income(Variable):
 
     def formula(person, period, parameters):
         gross = person("ma_tcap_gross_unearned_income", period)
-        # Section (A): SSI recipient unearned income
+        # Section (A): SSI recipient unearned income exclusion
         ssi_exclusion = person(
             "ma_tafdc_ssi_recipient_unearned_income_exclusion",
             period,
         )
-        # Section (B): Lump sum income exclusion
-        lump_sum_exclusion = person(
-            "ma_tafdc_lump_sum_income_exclusion", period
-        )
-        total_exclusion = ssi_exclusion + lump_sum_exclusion
-        return max_(0, gross - total_exclusion)
+        return max_(0, gross - ssi_exclusion)

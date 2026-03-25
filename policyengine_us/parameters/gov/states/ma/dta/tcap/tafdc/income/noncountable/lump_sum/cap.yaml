@@ -1,13 +1,10 @@
-description: >-
-  Maximum amount of lump sum income excluded from TAFDC
-  countable income in the month of receipt. Lump sum income
-  above this amount is countable.
+description: Massachusetts sets the maximum noncountable lump sum income to this amount under the Transitional Aid to Families with Dependent Children program.
 metadata:
   unit: currency-USD
   period: month
   label: Massachusetts TAFDC lump sum income exclusion cap
   reference:
-    - title: 106 CMR 704.250(B) - Noncountable Income
+    - title: 106 CMR 704.250(B) - Lump Sum Income Exclusion
       href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250
 values:
   0001-01-01: 600

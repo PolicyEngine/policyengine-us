@@ -5,7 +5,7 @@ class ma_tafdc_noncountable_income(Variable):
     value_type = float
     unit = USD
     entity = SPMUnit
-    label = "Massachusetts TAFDC noncountable income"
+    label = "Massachusetts TAFDC noncountable income (informational)"
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts"
@@ -23,36 +23,15 @@ class ma_tafdc_noncountable_income(Variable):
                 period
             ).gov.states.ma.dta.tcap.tafdc.income.noncountable.sources,
         )
-        # Conditional exclusions
-        # (A) SSI recipient income
-        ssi = add(
+        # Conditional exclusions per 106 CMR 704.250
+        conditional = add(
             spm_unit,
             period,
             [
                 "ma_tafdc_ssi_recipient_income_exclusion",
-            ],
-        )
-        # (U) Dependent child earned income
-        child = add(
-            spm_unit,
-            period,
-            [
                 "ma_tafdc_dependent_child_earned_income_exclusion",
+                "ma_tafdc_lump_sum_income_exclusion",
+                "ma_tafdc_child_support_deduction",
             ],
         )
-        # (B) Lump sum income exclusion
-        lump_sum = add(
-            spm_unit,
-            period,
-            ["ma_tafdc_lump_sum_income_exclusion"],
-        )
-        # (GG) Child support pass-through (already in
-        # deductions pipeline but counted here for
-        # informational purposes)
-        child_support = add(
-            spm_unit,
-            period,
-            ["ma_tafdc_child_support_deduction"],
-        )
-        conditional = ssi + child + lump_sum + child_support
         return unconditional + conditional

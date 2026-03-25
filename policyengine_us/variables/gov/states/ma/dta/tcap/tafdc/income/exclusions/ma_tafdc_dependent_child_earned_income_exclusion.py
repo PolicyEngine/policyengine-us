@@ -22,8 +22,6 @@ class ma_tafdc_dependent_child_earned_income_exclusion(Variable):
         age_threshold = threshold.age_threshold
         is_student = person("is_full_time_student", period.this_year)
         is_dependent = person("is_tax_unit_dependent", period.this_year)
-        eligible = is_dependent & (
-            (age < age_threshold) | ((age >= age_threshold) & is_student)
-        )
+        eligible = is_dependent & ((age < age_threshold) | is_student)
         gross_earned = person("ma_tcap_gross_earned_income", period)
         return where(eligible, gross_earned, 0)

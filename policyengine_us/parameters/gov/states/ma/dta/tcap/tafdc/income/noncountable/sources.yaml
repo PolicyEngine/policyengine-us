@@ -1,15 +1,10 @@
-description: >-
-  Income sources unconditionally excluded from TAFDC eligibility
-  and grant calculations per 106 CMR 704.250. Does not include
-  conditional exclusions (e.g. SSI recipients' other income,
-  lump sum caps, child support pass-through) which require
-  separate variable logic.
+description: Massachusetts excludes these income sources from countable income under the Transitional Aid to Families with Dependent Children program.
 metadata:
   type: list
   period: month
   label: Massachusetts TAFDC noncountable income sources
   reference:
-    - title: 106 CMR 704.250 - Noncountable Income
+    - title: 106 CMR 704.250 - Noncountable Income Sources
       href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250
 values:
   0001-01-01:

@@ -1,0 +1,1 @@
+Implement Massachusetts TAFDC noncountable income per 106 CMR 704.250, including conditional exclusions for SSI recipients (A), dependent child earned income (U), and lump sum income cap (B), wired into countable income calculations.
