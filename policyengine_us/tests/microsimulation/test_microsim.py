@@ -79,3 +79,23 @@ def test_county_persists_across_periods():
     assert not np.any(county_2025 == County.ALBANY_COUNTY_NY.index), (
         "Should not fall back to Albany county"
     )
+
+
+def test_microsim_snap_uses_modeled_amount_times_takeup():
+    import numpy as np
+    from policyengine_us import Microsimulation
+
+    sim = Microsimulation(
+        dataset="hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
+    )
+    sim.subsample(500)
+
+    snap = sim.calc("snap", period=2024).values
+    takes_up = sim.calc("takes_up_snap_if_eligible", period=2024).values.astype(float)
+    modeled_amount = (
+        sim.calc("snap_normal_allotment", period=2024).values
+        + sim.calc("snap_emergency_allotment", period=2024).values
+        + sim.calc("dc_snap_temporary_local_benefit", period=2024).values
+    )
+
+    np.testing.assert_allclose(snap, modeled_amount * takes_up)
