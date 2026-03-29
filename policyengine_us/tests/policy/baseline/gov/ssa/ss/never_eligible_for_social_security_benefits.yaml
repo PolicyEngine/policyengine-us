@@ -2,7 +2,7 @@
   period: 2022
   input:
     age: 69
-    social_security: 0
+    social_security_retirement: 0
   output:
     never_eligible_for_social_security_benefits: false
 
@@ -10,17 +10,25 @@
   period: 2022
   input:
     age: 70
-    social_security: 1
+    social_security_retirement: 1
   output:
     never_eligible_for_social_security_benefits: false
 
-- name: If 70 or older with no Social Security income, infer never eligible.
+- name: If 70 or older with no component Social Security income, infer never eligible.
+  period: 2022
+  input:
+    age: 70
+    social_security_retirement: 0
+  output:
+    never_eligible_for_social_security_benefits: true
+
+- name: Missing Social Security component data should not trigger the heuristic.
   period: 2022
   input:
     age: 70
     social_security: 0
   output:
-    never_eligible_for_social_security_benefits: true
+    never_eligible_for_social_security_benefits: false
 
 - name: If explicitly reported, treat the filer as never eligible.
   period: 2022
@@ -33,7 +41,7 @@
   period: 2022
   input:
     age: 70
-    social_security: 0
+    social_security_retirement: 0
     never_eligible_for_social_security_benefits: false
   output:
     never_eligible_for_social_security_benefits: false
