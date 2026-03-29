@@ -14,9 +14,26 @@
   output:
     never_eligible_for_social_security_benefits: false
 
+- name: If 70 or older with no Social Security income, infer never eligible.
+  period: 2022
+  input:
+    age: 70
+    social_security: 0
+  output:
+    never_eligible_for_social_security_benefits: true
+
 - name: If explicitly reported, treat the filer as never eligible.
   period: 2022
   input:
     never_eligible_for_social_security_benefits: true
   output:
     never_eligible_for_social_security_benefits: true
+
+- name: Explicit reporting can override the heuristic.
+  period: 2022
+  input:
+    age: 70
+    social_security: 0
+    never_eligible_for_social_security_benefits: false
+  output:
+    never_eligible_for_social_security_benefits: false
