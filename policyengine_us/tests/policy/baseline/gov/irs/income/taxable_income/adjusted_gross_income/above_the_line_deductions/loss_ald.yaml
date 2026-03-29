@@ -90,8 +90,8 @@
         members: [person1, person2]
         filing_status: JOINT
   output:
-    # person1 contributes 0 loss (positive income), person2 contributes 100K
-    # Losses do not net across people
+    # The positive partnership income is still included in AGI separately,
+    # so the full 100K loss remains deductible.
     loss_ald: 100_000
 
 - name: Case 8, capital loss combined with partnership loss.
@@ -110,3 +110,38 @@
     # partnership loss = 50_000
     # total = 50_000 + 3_000 = 53_000, below cap
     loss_ald: 53_000
+
+- name: Case 9, business gains expand the allowed section 461(l) deduction.
+  period: 2024
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: 400_000
+      person2:
+        partnership_s_corp_income: -1_100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Net business loss is 700K, so the 610K joint threshold still allows
+    # 400K of gain plus 610K of loss deductions in AGI.
+    loss_ald: 1_010_000
+
+- name: Case 10, capital losses sit outside the section 461(l) cap.
+  period: 2024
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: -1_100_000
+        short_term_capital_gains: -10_000
+      person2:
+        partnership_s_corp_income: 400_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # 1,010,000 of business loss is deductible under section 461(l), plus
+    # the separate 3,000 capital-loss deduction.
+    loss_ald: 1_013_000

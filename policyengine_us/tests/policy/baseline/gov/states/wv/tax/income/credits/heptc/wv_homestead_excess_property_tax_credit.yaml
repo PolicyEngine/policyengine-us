@@ -70,7 +70,7 @@
         members: [person1, person2]
         state_fips: 54
   output:
-    # Partnership/S-corp losses now recovered via loss_ald, capped at
-    # $610K (joint, 2024).
-    adjusted_gross_income: -610_000
+    # Partnership/S-corp losses are capped at the 610K joint section 461(l)
+    # threshold, with the separate 3K capital-loss deduction still allowed.
+    adjusted_gross_income: -613_000
     wv_homestead_excess_property_tax_credit: 0
