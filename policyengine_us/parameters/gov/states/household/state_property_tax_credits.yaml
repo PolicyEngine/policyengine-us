@@ -6,14 +6,17 @@ values:
     # Exclude ca_renter_credit as it is for renters, not homeowners.
     - dc_ptc  # DC Property Tax Credit
     # Exclude hi_tax_credit_for_low_income_household_renters as it is for renters, not homeowners.
+    - il_property_tax_credit  # Illinois Property Tax Credit
     - ma_senior_circuit_breaker  # Massachusetts Senior Circuit Breaker Credit
     - me_property_tax_fairness_credit  # Maine Property Tax Fairness Credit
     - mi_homestead_property_tax_credit  # Michigan homestead property tax credit
     - mo_property_tax_credit  # Missouri property tax credit
     - mt_elderly_homeowner_or_renter_credit  # Montana Elderly Homeowner/Renter Credit
+    - mt_property_tax_rebate  # Montana Property Tax Rebate
     - nj_property_tax_credit  # New Jersey property tax credit
     - nm_property_tax_rebate  # New Mexico property tax rebate
     - ny_real_property_tax_credit  # New York real property tax credit
+    - ok_ptc  # Oklahoma Property Tax Credit
     - ri_property_tax_credit  # Rhode Island property tax credit
     # Omit vt_renter_credit
     - wi_homestead_credit  # Wisconsin homestead credit

@@ -17,6 +17,7 @@ values:
     - la_refundable_cdcc  # Louisiana
     - ma_dependent_care_credit  # Massachusetts
     - md_cdcc  # Maryland
+    - md_refundable_cdcc  # Maryland (refundable component)
     - me_child_care_credit  # Maine
     - mn_cdcc  # Minnesota
     - ms_cdcc  # Mississippi
@@ -26,7 +27,7 @@ values:
     - nm_cdcc  # New Mexico
     - ny_cdcc  # New York
     - oh_cdcc  # Ohio
-    - ok_child_care_child_tax_credit  # Oklahoma Child Care/Child Tax Credit - note, also in state_ctcs.
+    - ok_cdcc_component  # Oklahoma Child Care Credit component (split from combined credit)
     - or_working_family_household_and_dependent_care_credit  # Oregon
     - pa_cdcc  # Pennsylvania
     - ri_cdcc  # Rhode Island
@@ -34,6 +35,7 @@ values:
     - vt_cdcc  # Vermont
     - vt_low_income_cdcc  # Vermont low-income CDCC
     - wi_childcare_expense_credit  # Wisconsin
+    - wv_cdcc  # West Virginia
 
 metadata:
   unit: list
