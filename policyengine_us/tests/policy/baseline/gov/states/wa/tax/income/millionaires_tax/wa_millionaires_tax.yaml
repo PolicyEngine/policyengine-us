@@ -1,0 +1,103 @@
+# Washington Millionaires Tax tests
+# ESSB 6346 imposes a 9.9% tax on Washington taxable income above $1,000,000
+# Effective January 1, 2028
+
+- name: Single filer with $2M income in 2028 owes millionaires tax
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+  output:
+    # Taxable income = $2M - $1M standard deduction = $1M
+    # Tax = $1M * 9.9% = $99,000
+    wa_millionaires_tax: 99_000
+
+- name: Single filer with $1.5M income in 2028 owes millionaires tax
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_500_000
+  output:
+    # Taxable income = $1.5M - $1M standard deduction = $500K
+    # Tax = $500K * 9.9% = $49,500
+    wa_millionaires_tax: 49_500
+
+- name: Single filer below $1M threshold owes no millionaires tax
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 900_000
+  output:
+    # Income below $1M standard deduction, no tax owed
+    wa_millionaires_tax: 0
+
+- name: Single filer exactly at $1M threshold owes no millionaires tax
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_000_000
+  output:
+    # Taxable income = $1M - $1M = $0
+    wa_millionaires_tax: 0
+
+- name: Single filer just above $1M threshold owes small tax
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_001_000
+  output:
+    # Taxable income = $1,001,000 - $1M = $1,000
+    # Tax = $1,000 * 9.9% = $99
+    wa_millionaires_tax: 99
+
+- name: Tax not in effect in 2027
+  period: 2027
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+  output:
+    # Tax doesn't take effect until 2028
+    wa_millionaires_tax: 0
+
+- name: Non-WA resident not subject to millionaires tax
+  period: 2028
+  input:
+    state_code: CA
+    adjusted_gross_income: 2_000_000
+  output:
+    wa_millionaires_tax: 0
+
+- name: Charitable deduction reduces taxable income
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+    charitable_cash_donations: 50_000
+  output:
+    # Taxable = $2M - $1M standard - $50K charitable = $950K
+    # Tax = $950K * 9.9% = $94,050
+    wa_millionaires_tax: 94_050
+
+- name: Charitable deduction capped at $100K
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_500_000
+    charitable_cash_donations: 200_000
+  output:
+    # Charitable deduction capped at $100K
+    # Taxable = $2.5M - $1M standard - $100K charitable = $1.4M
+    # Tax = $1.4M * 9.9% = $138,600
+    wa_millionaires_tax: 138_600
+
+- name: Joint filers share $1M standard deduction
+  period: 2028
+  input:
+    state_code: WA
+    filing_status: JOINT
+    adjusted_gross_income: 2_000_000
+  output:
+    # Married couples share the $1M deduction (not doubled)
+    # Taxable = $2M - $1M = $1M
+    # Tax = $1M * 9.9% = $99,000
+    wa_millionaires_tax: 99_000
