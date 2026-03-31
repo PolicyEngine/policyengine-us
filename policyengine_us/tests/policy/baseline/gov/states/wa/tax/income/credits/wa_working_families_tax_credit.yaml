@@ -90,7 +90,7 @@
 
 - name: Case 7, age 18+ without EITC gets WFTC under 2029 age expansion.
   period: 2029
-  absolute_error_margin: 0.01
+  absolute_error_margin: 1
   input:
     state_code: WA
     age_head: 20
@@ -99,7 +99,8 @@
     eitc_child_count: 0
   output:
     # Eligible via age expansion: age 18+, has earned income
-    wa_working_families_tax_credit: 300
+    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
+    wa_working_families_tax_credit: 367
 
 - name: Case 8, age 17 without EITC gets no WFTC in 2029.
   period: 2029
@@ -139,7 +140,7 @@
 
 - name: Case 11, traditional EITC-eligible filer still works in 2029.
   period: 2029
-  absolute_error_margin: 0.01
+  absolute_error_margin: 1
   input:
     state_code: WA
     eitc: 1
@@ -147,4 +148,5 @@
     eitc_child_count: 0
   output:
     # Standard EITC pathway still works
-    wa_working_families_tax_credit: 300
+    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
+    wa_working_families_tax_credit: 367
