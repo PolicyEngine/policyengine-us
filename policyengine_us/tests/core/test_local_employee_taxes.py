@@ -80,6 +80,39 @@ def calculate(sim: Simulation, variable: str, period: str = PERIOD) -> float:
     return sim.calculate(variable, period)[0]
 
 
+def make_nyc_credit_simulation(
+    *,
+    period: str = PERIOD,
+    nyc_income_tax_before_refundable_credits: float = 0,
+    nyc_refundable_credits: float = 0,
+) -> Simulation:
+    return Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {"person": {"age": {period: 30}}},
+            "households": {
+                "household": {
+                    "members": ["person"],
+                    "state_code": {period: "NY"},
+                    "in_nyc": {period: True},
+                }
+            },
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["person"],
+                    "nyc_income_tax_before_refundable_credits": {
+                        period: nyc_income_tax_before_refundable_credits
+                    },
+                    "nyc_refundable_credits": {period: nyc_refundable_credits},
+                }
+            },
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+
 @pytest.mark.parametrize(
     ("label", "state_code", "inputs", "variable", "expected"),
     [
@@ -184,6 +217,63 @@ def test_local_occupational_tax_components():
     )
     assert calculate(sim, "co_sheridan_employee_occupational_privilege_tax") == 36
     assert calculate(sim, "local_occupational_tax") == 189
+
+
+def test_local_income_tax_before_refundable_credits_keeps_nyc_pre_credit_amount():
+    baseline = make_nyc_credit_simulation()
+    reformed = make_nyc_credit_simulation(
+        nyc_income_tax_before_refundable_credits=500,
+        nyc_refundable_credits=200,
+    )
+
+    assert calculate(reformed, "local_income_tax") - calculate(
+        baseline, "local_income_tax"
+    ) == pytest.approx(300, abs=0.01)
+    assert calculate(
+        reformed, "household_state_tax_before_refundable_credits"
+    ) - calculate(
+        baseline, "household_state_tax_before_refundable_credits"
+    ) == pytest.approx(500, abs=0.01)
+    assert calculate(reformed, "household_tax_before_refundable_credits") - calculate(
+        baseline, "household_tax_before_refundable_credits"
+    ) == pytest.approx(500, abs=0.01)
+
+
+def test_st_louis_credit_does_not_pool_across_people():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person1": {
+                    "age": {PERIOD: 30},
+                    "is_tax_unit_head": {PERIOD: True},
+                    "mo_st_louis_earnings_tax_taxable_earnings": {PERIOD: 10_000},
+                    "mo_st_louis_earnings_tax_credit": {PERIOD: 200},
+                },
+                "person2": {
+                    "age": {PERIOD: 30},
+                    "is_tax_unit_spouse": {PERIOD: True},
+                    "mo_st_louis_earnings_tax_taxable_earnings": {PERIOD: 10_000},
+                    "mo_st_louis_earnings_tax_credit": {PERIOD: 0},
+                },
+            },
+            "households": {
+                "household": {
+                    "members": ["person1", "person2"],
+                    "state_code": {PERIOD: "MO"},
+                }
+            },
+            "tax_units": {"tax_unit": {"members": ["person1", "person2"]}},
+            "spm_units": {"spm_unit": {"members": ["person1", "person2"]}},
+            "families": {"family": {"members": ["person1", "person2"]}},
+            "marital_units": {"marital_unit": {"members": ["person1", "person2"]}},
+        },
+    )
+
+    assert calculate(sim, "mo_st_louis_earnings_tax_before_credit") == pytest.approx(
+        200, abs=0.01
+    )
+    assert calculate(sim, "mo_st_louis_earnings_tax") == pytest.approx(100, abs=0.01)
 
 
 def test_local_taxes_feed_household_net_income():

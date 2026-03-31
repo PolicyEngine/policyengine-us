@@ -16,8 +16,9 @@ class mo_st_louis_earnings_tax(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        tax_before_credit = tax_unit("mo_st_louis_earnings_tax_before_credit", period)
-        credits = tax_unit.sum(
-            tax_unit.members("mo_st_louis_earnings_tax_credit", period)
-        )
-        return max_(0, tax_before_credit - credits)
+        person = tax_unit.members
+        p = parameters(period).gov.local.mo.st_louis.tax.income
+        taxable_earnings = person("mo_st_louis_earnings_tax_taxable_earnings", period)
+        credits = person("mo_st_louis_earnings_tax_credit", period)
+        person_tax = taxable_earnings * p.rate
+        return tax_unit.sum(max_(0, person_tax - credits))
