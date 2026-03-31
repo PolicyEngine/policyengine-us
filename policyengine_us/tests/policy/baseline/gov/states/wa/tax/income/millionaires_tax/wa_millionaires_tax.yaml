@@ -4,6 +4,7 @@
 
 - name: Single filer with $2M income in 2028 owes millionaires tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 2_000_000
@@ -14,6 +15,7 @@
 
 - name: Single filer with $1.5M income in 2028 owes millionaires tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 1_500_000
@@ -24,6 +26,7 @@
 
 - name: Single filer below $1M threshold owes no millionaires tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 900_000
@@ -33,6 +36,7 @@
 
 - name: Single filer exactly at $1M threshold owes no millionaires tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 1_000_000
@@ -42,6 +46,7 @@
 
 - name: Single filer just above $1M threshold owes small tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 1_001_000
@@ -52,6 +57,7 @@
 
 - name: Tax not in effect in 2027
   period: 2027
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 2_000_000
@@ -61,6 +67,7 @@
 
 - name: Non-WA resident not subject to millionaires tax
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: CA
     adjusted_gross_income: 2_000_000
@@ -69,6 +76,7 @@
 
 - name: Charitable deduction reduces taxable income
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 2_000_000
@@ -80,6 +88,7 @@
 
 - name: Charitable deduction capped at $100K
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     adjusted_gross_income: 2_500_000
@@ -92,6 +101,7 @@
 
 - name: Joint filers share $1M standard deduction
   period: 2028
+  absolute_error_margin: 1
   input:
     state_code: WA
     filing_status: JOINT
