@@ -6,6 +6,7 @@ class wa_millionaires_tax_applies(Variable):
     entity = TaxUnit
     label = "Washington millionaires tax applies"
     definition_period = YEAR
+    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=8"
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):

@@ -81,3 +81,66 @@
         state_code: WA
   output:
     wa_working_families_tax_credit: 640
+
+# ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2029)
+
+- name: Age 18+ without EITC gets WFTC under 2029 age expansion.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Eligible via age expansion: age 18+, has earned income
+    wa_working_families_tax_credit: 300
+
+- name: Age 17 without EITC gets no WFTC in 2029.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 17
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Not EITC eligible and under age 18 minimum
+    wa_working_families_tax_credit: 0
+
+- name: Age 18+ without earned income gets no WFTC in 2029.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 25
+    eitc: 0
+    filer_adjusted_earnings: 0
+    eitc_child_count: 0
+  output:
+    # Age expansion requires earned income
+    wa_working_families_tax_credit: 0
+
+- name: WFTC age expansion not in effect for 2028.
+  period: 2028
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Age expansion starts 2029, no EITC eligibility
+    wa_working_families_tax_credit: 0
+
+- name: Traditional EITC-eligible filer still works in 2029.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    eitc: 1
+    filer_adjusted_earnings: 0
+    eitc_child_count: 0
+  output:
+    # Standard EITC pathway still works
+    wa_working_families_tax_credit: 300
