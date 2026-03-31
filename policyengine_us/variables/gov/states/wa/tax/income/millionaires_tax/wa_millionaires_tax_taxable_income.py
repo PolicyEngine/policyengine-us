@@ -12,7 +12,7 @@ class wa_millionaires_tax_taxable_income(Variable):
         "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=12",
         "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=13",
     )
-    defined_for = StateCode.WA
+    defined_for = "wa_millionaires_tax_applies"
     documentation = """
     Washington taxable income is Washington base income minus the standard
     deduction ($1,000,000) and charitable contribution deduction (up to $100,000).
@@ -22,9 +22,6 @@ class wa_millionaires_tax_taxable_income(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.wa.tax.income.millionaires_tax
-        if not p.in_effect:
-            return 0
         base_income = tax_unit("wa_millionaires_tax_base_income", period)
         charitable_deduction = tax_unit(
             "wa_millionaires_tax_charitable_deduction", period

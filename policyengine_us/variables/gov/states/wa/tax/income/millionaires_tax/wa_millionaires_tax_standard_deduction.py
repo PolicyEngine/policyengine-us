@@ -8,10 +8,8 @@ class wa_millionaires_tax_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=13"
-    defined_for = StateCode.WA
+    defined_for = "wa_millionaires_tax_applies"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wa.tax.income.millionaires_tax
-        if not p.in_effect:
-            return 0
         return p.deductions.standard

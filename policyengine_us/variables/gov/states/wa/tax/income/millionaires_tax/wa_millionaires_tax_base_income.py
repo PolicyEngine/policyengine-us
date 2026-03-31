@@ -11,7 +11,7 @@ class wa_millionaires_tax_base_income(Variable):
         "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=5",
         "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=9",
     )
-    defined_for = StateCode.WA
+    defined_for = "wa_millionaires_tax_applies"
     documentation = """
     Washington base income is federal adjusted gross income as modified by
     Sections 302 through 308 and 401 through 407 of ESSB 6346.
