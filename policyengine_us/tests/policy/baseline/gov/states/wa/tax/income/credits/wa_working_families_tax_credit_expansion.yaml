@@ -11,7 +11,8 @@
   output:
     # Under normal EITC rules, childless filers must be 25-64
     # With expansion, filers age 18+ with earned income qualify
-    wa_working_families_tax_credit: 300
+    # Amount is uprated from 2025 base of $335
+    wa_working_families_tax_credit: 366.7
 
 - name: Age 22 single filer with earnings NOT eligible in 2028
   period: 2028
@@ -51,4 +52,5 @@
     employment_income: 15_000
   output:
     # Normal EITC eligibility applies (age 25-64)
-    wa_working_families_tax_credit: 300
+    # Amount is uprated from 2025 base of $335
+    wa_working_families_tax_credit: 366.7
