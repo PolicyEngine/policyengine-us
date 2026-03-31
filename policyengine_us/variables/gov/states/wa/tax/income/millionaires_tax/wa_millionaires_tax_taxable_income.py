@@ -22,15 +22,12 @@ class wa_millionaires_tax_taxable_income(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        in_effect = parameters(
-            period
-        ).gov.states.wa.tax.income.millionaires_tax.in_effect
+        p = parameters(period).gov.states.wa.tax.income.millionaires_tax
+        if not p.in_effect:
+            return 0
         base_income = tax_unit("wa_millionaires_tax_base_income", period)
         charitable_deduction = tax_unit(
             "wa_millionaires_tax_charitable_deduction", period
         )
         standard_deduction = tax_unit("wa_millionaires_tax_standard_deduction", period)
-        taxable_income = max_(
-            base_income - charitable_deduction - standard_deduction, 0
-        )
-        return where(in_effect, taxable_income, 0)
+        return max_(base_income - charitable_deduction - standard_deduction, 0)

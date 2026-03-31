@@ -12,4 +12,6 @@ class wa_millionaires_tax_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wa.tax.income.millionaires_tax
+        if not p.in_effect:
+            return 0
         return p.deductions.standard

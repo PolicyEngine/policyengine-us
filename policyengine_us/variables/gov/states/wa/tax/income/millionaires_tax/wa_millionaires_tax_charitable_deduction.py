@@ -17,13 +17,12 @@ class wa_millionaires_tax_charitable_deduction(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.wa.tax.income.millionaires_tax.deductions.charitable
+        p = parameters(period).gov.states.wa.tax.income.millionaires_tax
+        if not p.in_effect:
+            return 0
         charitable = add(
             tax_unit,
             period,
             ["charitable_cash_donations", "charitable_non_cash_donations"],
         )
-        # Cap applies per tax unit (combined for spouses)
-        return min_(charitable, p.cap)
+        return min_(charitable, p.deductions.charitable.cap)
