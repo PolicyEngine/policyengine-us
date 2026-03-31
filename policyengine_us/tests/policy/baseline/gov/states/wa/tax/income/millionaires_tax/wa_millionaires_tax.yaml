@@ -2,7 +2,7 @@
 # ESSB 6346 imposes a 9.9% tax on Washington taxable income above $1,000,000
 # Effective January 1, 2028
 
-- name: Single filer with $2M income in 2028 owes millionaires tax
+- name: Case 1, single filer with $2M income.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -13,7 +13,7 @@
     # Tax = $1M * 9.9% = $99,000
     wa_millionaires_tax: 99_000
 
-- name: Single filer with $1.5M income in 2028 owes millionaires tax
+- name: Case 2, single filer with $1.5M income.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -24,7 +24,7 @@
     # Tax = $500K * 9.9% = $49,500
     wa_millionaires_tax: 49_500
 
-- name: Single filer below $1M threshold owes no millionaires tax
+- name: Case 3, single filer below $1M threshold.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -34,7 +34,7 @@
     # Income below $1M standard deduction, no tax owed
     wa_millionaires_tax: 0
 
-- name: Single filer exactly at $1M threshold owes no millionaires tax
+- name: Case 4, single filer exactly at $1M threshold.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -44,7 +44,7 @@
     # Taxable income = $1M - $1M = $0
     wa_millionaires_tax: 0
 
-- name: Single filer just above $1M threshold owes small tax
+- name: Case 5, single filer just above $1M threshold.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -55,7 +55,7 @@
     # Tax = $1,000 * 9.9% = $99
     wa_millionaires_tax: 99
 
-- name: Non-WA resident not subject to millionaires tax
+- name: Case 6, non-WA resident not subject to tax.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -64,7 +64,7 @@
   output:
     wa_millionaires_tax: 0
 
-- name: Charitable deduction reduces taxable income
+- name: Case 7, charitable deduction reduces taxable income.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -76,7 +76,7 @@
     # Tax = $950K * 9.9% = $94,050
     wa_millionaires_tax: 94_050
 
-- name: Charitable deduction capped at $100K
+- name: Case 8, charitable deduction capped at $100K.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -89,7 +89,7 @@
     # Tax = $1.4M * 9.9% = $138,600
     wa_millionaires_tax: 138_600
 
-- name: Joint filers share $1M standard deduction
+- name: Case 9, joint filers share $1M standard deduction.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -102,7 +102,7 @@
     # Tax = $1M * 9.9% = $99,000
     wa_millionaires_tax: 99_000
 
-- name: No millionaires tax before 2028
+- name: Case 10, no tax before 2028.
   period: 2027
   input:
     state_code: WA
@@ -110,7 +110,7 @@
   output:
     wa_millionaires_tax: 0
 
-- name: Non-cash charitable donations reduce taxable income
+- name: Case 11, non-cash charitable donations reduce taxable income.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -122,7 +122,7 @@
     # Tax = $925K * 9.9% = $91,575
     wa_millionaires_tax: 91_575
 
-- name: Combined cash and non-cash donations capped at $100K
+- name: Case 12, combined cash and non-cash donations capped at $100K.
   period: 2028
   absolute_error_margin: 1
   input:
@@ -136,7 +136,7 @@
     # Tax = $1.4M * 9.9% = $138,600
     wa_millionaires_tax: 138_600
 
-- name: Zero income owes no millionaires tax
+- name: Case 13, zero income.
   period: 2028
   input:
     state_code: WA
@@ -144,7 +144,7 @@
   output:
     wa_millionaires_tax: 0
 
-- name: Negative AGI from self-employment losses
+- name: Case 14, negative AGI from self-employment losses.
   period: 2028
   input:
     state_code: WA
@@ -152,7 +152,7 @@
   output:
     wa_millionaires_tax: 0
 
-- name: Large charitable deduction zeroes out taxable income
+- name: Case 15, charitable deduction zeroes out taxable income.
   period: 2028
   input:
     state_code: WA
