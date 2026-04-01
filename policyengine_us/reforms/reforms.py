@@ -184,9 +184,6 @@ from .states.ct.hb5114 import (
 from .congress.watca import (
     create_watca_reform,
 )
-from .states.wa.sb6346.sb6346 import (
-    create_wa_sb6346_reform,
-)
 
 
 from .states.ga.sb520 import (
@@ -411,7 +408,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     nc_eitc = create_nc_eitc_reform(parameters, period)
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
-    wa_sb6346 = create_wa_sb6346_reform(parameters, period)
     al_eitc = create_al_eitc_reform(parameters, period)
     ar_eitc = create_ar_eitc_reform(parameters, period)
     az_eitc = create_az_eitc_reform(parameters, period)
@@ -516,7 +512,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         nc_eitc,
         mi_ctc,
         watca,
-        wa_sb6346,
         al_eitc,
         ar_eitc,
         az_eitc,
