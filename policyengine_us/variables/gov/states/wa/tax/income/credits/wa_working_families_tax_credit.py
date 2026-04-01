@@ -9,7 +9,7 @@ class wa_working_families_tax_credit(Variable):
     definition_period = YEAR
     reference = (
         "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206",
-        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=59",
+        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=61",
     )
     defined_for = StateCode.WA
 
@@ -18,27 +18,17 @@ class wa_working_families_tax_credit(Variable):
         eitc = tax_unit("eitc", period)
         eitc_eligible = eitc > 0
 
-        # ESSB 6346 Sec. 901(2)(a)(ii)(D): individuals who do not meet the
-        # EITC age requirement but are at least age 18 (effective 2029).
+        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
+        age_expansion_eligible = tax_unit(
+            "wa_working_families_tax_credit_age_expansion_eligible", period
+        )
+
+        eligible = eitc_eligible | age_expansion_eligible
+
+        # Parameters are based on EITC-eligible children.
         p = parameters(
             period
         ).gov.states.wa.tax.income.credits.working_families_tax_credit
-        age_expansion = p.age_expansion
-        expansion_in_effect = age_expansion.in_effect
-        age_head = tax_unit("age_head", period)
-        age_spouse = tax_unit("age_spouse", period)
-        filer_meets_min_age = (age_head >= age_expansion.min_age) | (
-            age_spouse >= age_expansion.min_age
-        )
-        earned_income = tax_unit("filer_adjusted_earnings", period)
-        has_earned_income = earned_income > 0
-        expansion_eligible = (
-            expansion_in_effect & filer_meets_min_age & has_earned_income
-        )
-
-        eligible = eitc_eligible | expansion_eligible
-
-        # Parameters are based on EITC-eligible children.
         eitc_child_count = tax_unit("eitc_child_count", period)
         max_amount = p.amount.calc(eitc_child_count)
         # WFTC phases out at a certain amount below the EITC maximum AGI.
