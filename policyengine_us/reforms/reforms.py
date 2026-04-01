@@ -184,6 +184,9 @@ from .states.ct.hb5114 import (
 from .congress.watca import (
     create_watca_reform,
 )
+from .states.wa.sb6346.sb6346 import (
+    create_wa_sb6346_reform,
+)
 
 
 from .states.ga.sb520 import (
@@ -197,6 +200,42 @@ from .states.nc.eitc import (
 )
 from .states.mi.ctc import (
     create_mi_ctc_reform,
+)
+from .states.al.eitc import (
+    create_al_eitc_reform,
+)
+from .states.ar.eitc import (
+    create_ar_eitc_reform,
+)
+from .states.az.eitc import (
+    create_az_eitc_reform,
+)
+from .states.ga.eitc import (
+    create_ga_eitc_reform,
+)
+from .states.id.eitc import (
+    create_id_eitc_reform,
+)
+from .states.ky.eitc import (
+    create_ky_eitc_reform,
+)
+from .states.ms.eitc import (
+    create_ms_eitc_reform,
+)
+from .states.nd.eitc import (
+    create_nd_eitc_reform,
+)
+from .states.wv.eitc import (
+    create_wv_eitc_reform,
+)
+from .states.mo.eitc import (
+    create_mo_refundable_eitc_reform,
+)
+from .states.oh.eitc import (
+    create_oh_refundable_eitc_reform,
+)
+from .states.ut.child_poverty_eitc import (
+    create_ut_fully_refundable_eitc_reform,
 )
 from policyengine_core.reforms import Reform
 import warnings
@@ -372,6 +411,21 @@ def create_structural_reforms_from_parameters(parameters, period):
     nc_eitc = create_nc_eitc_reform(parameters, period)
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
+    wa_sb6346 = create_wa_sb6346_reform(parameters, period)
+    al_eitc = create_al_eitc_reform(parameters, period)
+    ar_eitc = create_ar_eitc_reform(parameters, period)
+    az_eitc = create_az_eitc_reform(parameters, period)
+    ga_eitc = create_ga_eitc_reform(parameters, period)
+    id_eitc = create_id_eitc_reform(parameters, period)
+    ky_eitc = create_ky_eitc_reform(parameters, period)
+    ms_eitc = create_ms_eitc_reform(parameters, period)
+    nd_eitc = create_nd_eitc_reform(parameters, period)
+    wv_eitc = create_wv_eitc_reform(parameters, period)
+    mo_refundable_eitc = create_mo_refundable_eitc_reform(parameters, period)
+    oh_refundable_eitc = create_oh_refundable_eitc_reform(parameters, period)
+    ut_fully_refundable_eitc = create_ut_fully_refundable_eitc_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -462,6 +516,19 @@ def create_structural_reforms_from_parameters(parameters, period):
         nc_eitc,
         mi_ctc,
         watca,
+        wa_sb6346,
+        al_eitc,
+        ar_eitc,
+        az_eitc,
+        ga_eitc,
+        id_eitc,
+        ky_eitc,
+        ms_eitc,
+        nd_eitc,
+        wv_eitc,
+        mo_refundable_eitc,
+        oh_refundable_eitc,
+        ut_fully_refundable_eitc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
