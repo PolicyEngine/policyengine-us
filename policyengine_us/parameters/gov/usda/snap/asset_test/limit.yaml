@@ -2,63 +2,35 @@ description: The USDA restricts SNAP to households with assets not exceeding thi
 standard:
   description: Maximum value of SNAP-visible assets for households without elderly or disabled members
   values:
-    2020-10-01:
-      value: 2_250
-      reference:
-        - title: SNAP - Fiscal Year 2021 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLAMemoFY2021.pdf#page=5
-    2021-10-01:
-      value: 2_500
-      reference:
-        - title: SNAP - Fiscal Year 2022 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLA%20Memo%20FY2022%20Without%20Maximum%20Allotments.pdf#page=3
-    2022-10-01:
-      value: 2_750
-      reference:
-        - title: SNAP - Fiscal Year 2023 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
-        - title: SNAP - Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Income Eligibility Standards
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY24-SNAP-COLA-Memo.pdf#page=1
-    2024-10-01:
-      value: 3_000
-      reference:
-        - title: SNAP - Fiscal Year 2025 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy25.pdf#page=6
-        - title: SNAP - Fiscal Year 2026 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy26memo.pdf#page=7
+    2015-10-01: 2_250
+    2021-10-01: 2_500
+    2022-10-01: 2_750
+    2024-10-01: 3_000
 
 elderly_disabled:
   description: Maximum value of SNAP-visible assets for households with elderly or disabled members
   values:
-    2020-10-01:
-      value: 3_500
-      reference:
-        - title: SNAP - Fiscal Year 2021 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLAMemoFY2021.pdf#page=5
-    2021-10-01:
-      value: 3_750
-      reference:
-        - title: SNAP - Fiscal Year 2022 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLA%20Memo%20FY2022%20Without%20Maximum%20Allotments.pdf#page=3
-    2022-10-01:
-      value: 4_250
-      reference:
-        - title: SNAP - Fiscal Year 2023 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
-        - title: SNAP - Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Income Eligibility Standards
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY24-SNAP-COLA-Memo.pdfpage=1
-    2024-10-01:
-      value: 4_500
-      reference:
-        - title: SNAP - Fiscal Year 2025 Cost-of-Living Adjustments, Supplemental Nutrition Assistance Program Maximum Asset Limits
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy25.pdf#page=6
-        - title: SNAP - Fiscal Year 2026 Cost-of-Living Adjustments
-          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy26memo.pdf#page=7
+    2015-10-01: 3_250
+    2017-10-01: 3_500
+    2021-10-01: 3_750
+    2022-10-01: 4_250
+    2024-10-01: 4_500
 
 metadata:
   unit: currency-USD
+  period: year
   label: SNAP asset limit
   reference:
     - title: 7 U.S. Code § 2014(g)(1)(A)
       href: https://www.law.cornell.edu/uscode/text/7/2014#g_1_A
+    - title: SNAP FY2015 Resource Limit Memo
+      href: https://www.fns.usda.gov/snap/fy-2015-snap-resource-limit-memo
+    - title: SNAP FY2018 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/fy-2018-cost-of-living-adjustments
+    - title: SNAP FY2022 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
+    - title: SNAP FY2023 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/fy-2023-cola
+    - title: SNAP FY2025 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/fy-2025-cola
   uprating: gov.usda.snap.uprating

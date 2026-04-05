@@ -1,5 +1,4 @@
 # Tests for Oklahoma pension subtraction (Line 6 on Schedule 511-A)
-# The limit changed from $10,000 to $20,000 per person effective 2024 (HB 2020)
 
 - name: OK pension subtraction - 2021 - both at limit ($10,000)
   absolute_error_margin: 0.01
@@ -85,7 +84,7 @@
     # Person: $25,000 pension, capped at $10,000 limit
     ok_pension_subtraction: 10_000
 
-- name: OK pension subtraction - 2024 - under new $20,000 limit
+- name: OK pension subtraction - 2024 - still capped at $10,000
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -108,11 +107,10 @@
         members: [person1]
         state_code: OK
   output:
-    # Person: $15,000 pension, under new $20,000 limit = $15,000
-    # This test validates HB 2020 - pension limit increased to $20,000
-    ok_pension_subtraction: 15_000
+    # Person: $15,000 pension, capped at $10,000
+    ok_pension_subtraction: 10_000
 
-- name: OK pension subtraction - 2024 - at new $20,000 limit
+- name: OK pension subtraction - 2024 - above $10,000 cap
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -135,10 +133,10 @@
         members: [person1]
         state_code: OK
   output:
-    # Person: $20,000 pension, exactly at new $20,000 limit = $20,000
-    ok_pension_subtraction: 20_000
+    # Person: $20,000 pension, capped at $10,000
+    ok_pension_subtraction: 10_000
 
-- name: OK pension subtraction - 2024 - over new $20,000 limit (capped)
+- name: OK pension subtraction - 2024 - well over $10,000 cap
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -161,10 +159,10 @@
         members: [person1]
         state_code: OK
   output:
-    # Person: $35,000 pension, capped at new $20,000 limit
-    ok_pension_subtraction: 20_000
+    # Person: $35,000 pension, capped at $10,000
+    ok_pension_subtraction: 10_000
 
-- name: OK pension subtraction - 2025 - married couple with new limits
+- name: OK pension subtraction - 2025 - married couple with per-person caps
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -191,10 +189,10 @@
         members: [person1, person2]
         state_code: OK
   output:
-    # Person1: $30,000 pension, capped at $20,000 limit
-    # Person2: $18,000 pension, under $20,000 limit = $18,000
-    # Total: $20,000 + $18,000 = $38,000
-    ok_pension_subtraction: 20_000 + 18_000
+    # Person1: $30,000 pension, capped at $10,000
+    # Person2: $18,000 pension, capped at $10,000
+    # Total: $10,000 + $10,000 = $20,000
+    ok_pension_subtraction: 20_000
 
 - name: OK pension subtraction - 2025 - both spouses over limit
   absolute_error_margin: 0.01
@@ -223,7 +221,7 @@
         members: [person1, person2]
         state_code: OK
   output:
-    # Person1: $50,000 pension, capped at $20,000 limit
-    # Person2: $45,000 pension, capped at $20,000 limit
-    # Total: $20,000 + $20,000 = $40,000
-    ok_pension_subtraction: 40_000
+    # Person1: $50,000 pension, capped at $10,000
+    # Person2: $45,000 pension, capped at $10,000
+    # Total: $10,000 + $10,000 = $20,000
+    ok_pension_subtraction: 20_000

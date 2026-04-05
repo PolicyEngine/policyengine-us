@@ -1,7 +1,146 @@
-- name: SNAP utility region inferred from state.
-  period: 2020
-  absolute_error_margin: 0
+- name: Case 1, non-AK/NY state uses state code.
+  period: 2025
   input:
     state_code: IL
   output:
     snap_utility_region: IL
+
+- name: Case 2, Alaska Central region.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    snap_utility_region: AK_C
+
+- name: Case 3, Alaska Northern region (Copper River per FSP-77).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: COPPER_RIVER_CENSUS_AREA_AK
+  output:
+    snap_utility_region: AK_N
+
+- name: Case 4, Alaska Northwest region.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: NOME_CENSUS_AREA_AK
+  output:
+    snap_utility_region: AK_NW
+
+- name: Case 5, Alaska South Central region.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KENAI_PENINSULA_BOROUGH_AK
+  output:
+    snap_utility_region: AK_SC
+
+- name: Case 6, Alaska Southeast region.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: JUNEAU_CITY_AND_BOROUGH_AK
+  output:
+    snap_utility_region: AK_SE
+
+- name: Case 7, Alaska Southwest region (Bristol Bay per FSP-77).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: BRISTOL_BAY_BOROUGH_AK
+  output:
+    snap_utility_region: AK_SW
+
+- name: Case 8, Alaska default fallback to Central.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: UNKNOWN_AK
+  output:
+    snap_utility_region: AK_C
+
+- name: Case 9, New York City county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        county_str: KINGS_COUNTY_NY
+  output:
+    snap_utility_region: NY_NYC
+
+- name: Case 10, New York Nassau/Suffolk county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        county_str: NASSAU_COUNTY_NY
+  output:
+    snap_utility_region: NY_NAS
+
+- name: Case 11, New York other county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        county_str: ALBANY_COUNTY_NY
+  output:
+    snap_utility_region: NY_ONY

@@ -1,0 +1,179 @@
+- name: Case 1, eligible individual with no income reduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # per_person_amount = $140 (individual)
+    # reduction = max(0, -(0/12)) = 0
+    # supplement = max(0, 140 - 0) = $140
+    de_ssp: 140
+
+- name: Case 2, eligible individual with partial income reduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -600
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # per_person_amount = $140 (individual)
+    # uncapped_ssi monthly = -600/12 = -$50
+    # reduction = max(0, -(-50)) = $50
+    # supplement = max(0, 140 - 50) = $90
+    de_ssp: 90
+
+- name: Case 3, eligible individual with income exceeding supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -2_400
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # per_person_amount = $140 (individual)
+    # uncapped_ssi monthly = -2,400/12 = -$200
+    # reduction = max(0, -(-200)) = $200
+    # supplement = max(0, 140 - 200) = $0
+    de_ssp: 0
+
+- name: Case 4, eligible couple with no income reduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 0
+      person2:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # per_person_amount = $448/2 = $224 (couple)
+    # Each person: reduction = 0, supplement = $224
+    # joint path: sum(224, 224) / 2 = $224 per person
+    de_ssp: [224, 224]
+
+- name: Case 5, ineligible person gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # defined_for = de_ssp_eligible, which is false
+    de_ssp: 0
+
+- name: Case 6, couple with partial income reduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: -1_200
+      person2:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # per_person_amount = $448/2 = $224 (couple)
+    # person1: uncapped_ssi monthly = -1,200/12 = -$100
+    #   reduction = max(0, 100) = $100
+    #   supplement = max(0, 224 - 100) = $124
+    # person2: uncapped_ssi monthly = 0/12 = $0
+    #   reduction = max(0, 0) = $0
+    #   supplement = max(0, 224 - 0) = $224
+    # joint path: sum(124, 224) / 2 = $174 per person
+    de_ssp: [174, 174]
+
+- name: Case 7, large positive uncapped SSI does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 120_000
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # uncapped_ssi monthly = 120,000/12 = $10,000 (positive = low income)
+    # reduction = max(0, -10,000) = 0
+    # supplement = max(0, 140 - 0) = $140 (capped at max, not inflated)
+    de_ssp: 140
+
+- name: Case 8, couple with one eligible and one ineligible spouse.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        de_ssp_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 0
+      person2:
+        de_ssp_eligible: false
+        ssi_claim_is_joint: true
+        uncapped_ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # both_eligible = sum(true, false) = 1 != 2, so is_couple = false
+    # person1: individual path, per_person_amount = $140
+    #   supplement = max(0, 140 - 0) = $140
+    #   result = supplement * eligible = 140 * 1 = $140
+    # person2: individual path, per_person_amount = $140
+    #   supplement = max(0, 140 - 0) = $140
+    #   result = supplement * eligible = 140 * 0 = $0
+    de_ssp: [140, 0]

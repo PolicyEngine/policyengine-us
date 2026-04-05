@@ -8,10 +8,11 @@ class mo_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.mo.gov/forms/MO-A_2021.pdf"
-        "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8"
-        "https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=8"
-        "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl="
+        "https://dor.mo.gov/forms/MO-A_2021.pdf",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=8",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=8",
+        "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl=",
     )
     defined_for = StateCode.MO
 
@@ -37,11 +38,13 @@ class mo_taxable_income(Variable):
             mo_deduction
             + tax_unit("mo_federal_income_tax_deduction", period)
             + tax_unit("mo_pension_and_ss_or_ssd_deduction", period)
+            + tax_unit("mo_head_of_household_exemption", period)
         )
-        # Note: There would also be a personal and/or dependent exemptions
+        # Note: There would also be personal and/or dependent exemptions
         # as part of this formula, but they are legally based on eligibility
         # for the federal versions of those exemptions, both of which are
-        # suspended through 2025 federally.
+        # suspended through 2025 federally. The HoH/QW additional exemption
+        # on Line 15 is a separate Missouri provision and is included above.
 
         # calculate taxable income for tax unit
         unit_taxinc = max_(0, unit_mo_agi - unit_mo_deductions)

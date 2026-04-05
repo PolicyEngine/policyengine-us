@@ -1,0 +1,53 @@
+- name: Case 1 - AZ EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AZ
+    eitc: 1_000
+  output:
+    az_eitc: 100
+    az_refundable_credits: 100
+
+- name: Case 2 - AZ EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: AZ
+    eitc: 2_500
+  output:
+    az_eitc: 500
+    az_refundable_credits: 500
+
+- name: Case 3 - AZ EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: AZ
+    eitc: 1_000
+  output:
+    az_eitc: 0
+    az_refundable_credits: 0
+
+- name: Case 4 - AZ EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AZ
+    eitc: 0
+  output:
+    az_eitc: 0
+    az_refundable_credits: 0
+
+- name: Case 5 - AZ EITC is 0 for non-AZ residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    az_eitc: 0

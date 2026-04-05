@@ -78,4 +78,5 @@ STATES = [
     "WI",
     "WY",
     "PR",
+    "VI",
 ]

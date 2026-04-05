@@ -2,7 +2,7 @@
   period: 2024
   input:
     long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 2_500
+    mt_taxable_income_joint: 2_500
     filing_status: SINGLE
     state_code: MT
   output:
@@ -12,7 +12,7 @@
   period: 2024
   input:
     long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 1_000
+    mt_taxable_income_joint: 1_000
     filing_status: SINGLE
     state_code: MT
   output:
@@ -22,7 +22,7 @@
   period: 2024
   input:
     long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 40_000
+    mt_taxable_income_joint: 40_000
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: MT
   output:
@@ -32,8 +32,19 @@
   period: 2024
   input:
     long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 40_000
+    mt_taxable_income_joint: 40_000
     filing_status: JOINT
     state_code: MT
   output:
     mt_capital_gains_tax_applicable_threshold_joint: 3_000
+
+- name: Short-term losses reduce the remaining joint CG threshold
+  period: 2024
+  input:
+    long_term_capital_gains: 50_000
+    short_term_capital_gains: -20_000
+    mt_taxable_income_joint: 40_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_capital_gains_tax_applicable_threshold_joint: 31_000

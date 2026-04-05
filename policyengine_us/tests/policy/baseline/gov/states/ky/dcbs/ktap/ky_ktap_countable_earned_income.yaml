@@ -92,10 +92,98 @@
         members: [person1, person2]
         state_code: KY
   output:
-    # Total gross: $600 + $400 = $1,000
-    # $1,000 - $175 work expense = $825
-    # $825 * 0.5 (50% disregard) = $412.50
-    ky_ktap_countable_earned_income: 412.5
+    # Per-person deductions per MS 2840:
+    # Person1: max($600 - $175, 0) = $425, 50%: $212.50
+    # Person2: max($400 - $175, 0) = $225, 50%: $112.50
+    # Unit total: $325
+    ky_ktap_countable_earned_income: 325
+
+- name: Case 8, two earners with dependent care.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 600
+      person2:
+        age: 28
+        tanf_gross_earned_income: 400
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $300/month * 12 = $3,600/year
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Dependent care: min($300, $175 cap for age 5) = $175
+    # Allocated to Person1 (highest earner) per MS 2840 B.2.c
+    # Person1: max($600 - $175, 0) = $425, dep care $175 → $250, 50%: $125
+    # Person2: max($400 - $175, 0) = $225, no dep care, 50%: $112.50
+    # Unit total: $237.50
+    ky_ktap_countable_earned_income: 237.5
+
+- name: Case 9, pre-2023 two earners with per-person $30 plus one-third EID.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 600
+      person2:
+        tanf_gross_earned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Per-person deductions per MS 2840 (pre-2023: $90 work expense, $30+1/3 EID):
+    # Person1: max($600 - $90, 0) = $510
+    #   flat=$30, remainder=$480, disregard=$30+0.333*$480=$189.84
+    #   countable = $510 - $189.84 = $320.16
+    # Person2: max($400 - $90, 0) = $310
+    #   flat=$30, remainder=$280, disregard=$30+0.333*$280=$123.24
+    #   countable = $310 - $123.24 = $186.76
+    # Unit total: $506.92
+    ky_ktap_countable_earned_income: 506.92
+
+- name: Case 10, tied earners split dependent care evenly.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 28
+        tanf_gross_earned_income: 500
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # $300/month * 12 = $3,600/year
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Dependent care: min($300, $175 cap for age 5) = $175
+    # Tied earners: $175 / 2 = $87.50 each
+    # Person1: max($500 - $175, 0) = $325, dep care $87.50 → $237.50, 50%: $118.75
+    # Person2: max($500 - $175, 0) = $325, dep care $87.50 → $237.50, 50%: $118.75
+    # Unit total: $237.50
+    ky_ktap_countable_earned_income: 237.5
 
 - name: Case 7, non-KY state returns zero.
   period: 2024-01

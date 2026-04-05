@@ -16,11 +16,13 @@ class mt_regular_income_tax_joint(Variable):
         status = filing_status.possible_values
 
         if p.capital_gains.in_effect:
-            capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
-            # Only subtract positive capital gains (they're taxed separately)
-            # Negative capital gains should not create phantom taxable income
-            capital_gains = max_(capital_gains, 0)
-            taxable_income = max_(taxable_income - capital_gains, 0)
+            ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+            stcg = add(tax_unit, period, ["short_term_capital_gains"])
+            net_cg = ltcg + stcg
+            # Montana Form 2 line 2 uses the federal net long-term capital gain
+            # amount, which is limited by any short-term capital losses.
+            cg_to_subtract = max_(min_(ltcg, net_cg), 0)
+            taxable_income = max_(taxable_income - cg_to_subtract, 0)
         return select(
             [
                 filing_status == status.SINGLE,

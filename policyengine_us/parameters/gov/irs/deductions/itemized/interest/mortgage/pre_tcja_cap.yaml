@@ -1,0 +1,19 @@
+description: The IRS allows an itemized deduction for interest paid on pre-TCJA grandfathered home acquisition debt up to this mortgage balance, based on filing status.
+SINGLE:
+  1900-01-01: 1_000_000
+JOINT:
+  1900-01-01: 1_000_000
+SEPARATE:
+  1900-01-01: 500_000
+HEAD_OF_HOUSEHOLD:
+  1900-01-01: 1_000_000
+SURVIVING_SPOUSE:
+  1900-01-01: 1_000_000
+metadata:
+  breakdown: filing_status
+  unit: currency-USD
+  period: year
+  label: IRS pre-TCJA home mortgage value cap
+  reference:
+    - title: 26 U.S. Code § 163 - Interest, (h)(3)(F)
+      href: https://www.law.cornell.edu/uscode/text/26/163

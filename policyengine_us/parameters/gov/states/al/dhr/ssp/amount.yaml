@@ -1,0 +1,32 @@
+description: Alabama provides this amount as the monthly supplement under the State Supplementary Payment program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Alabama SSP supplement amount
+  breakdown:
+    - al_ssp_living_arrangement
+  reference:
+    - title: Ala. Admin. Code r. 660-2-4-.19a -- Attachment, Special Needs of Applicants and Recipients
+      href: https://admincode.legislature.state.al.us/api/chapter/660-2-4#page=24
+
+FCMP_NURSING_CARE:
+  1995-01-01: 100
+
+NURSING_CARE:
+  1995-01-01: 60
+
+IHC_LEVEL_A:
+  1995-01-01: 60
+
+IHC_LEVEL_B:
+  1995-01-01: 56
+
+FOSTER_CARE:
+  1995-01-01: 110
+
+CEREBRAL_PALSY:
+  1995-01-01: 196
+
+NONE:
+  1995-01-01: 0

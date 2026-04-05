@@ -1,0 +1,53 @@
+- name: Case 1 - MS EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ms.eitc.ms_eitc
+  input:
+    gov.contrib.states.ms.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: MS
+    eitc: 1_000
+  output:
+    ms_eitc: 100
+    ms_refundable_credits: 100
+
+- name: Case 2 - MS EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ms.eitc.ms_eitc
+  input:
+    gov.contrib.states.ms.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: MS
+    eitc: 2_500
+  output:
+    ms_eitc: 500
+    ms_refundable_credits: 500
+
+- name: Case 3 - MS EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ms.eitc.ms_eitc
+  input:
+    gov.contrib.states.ms.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: MS
+    eitc: 1_000
+  output:
+    ms_eitc: 0
+    ms_refundable_credits: 0
+
+- name: Case 4 - MS EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ms.eitc.ms_eitc
+  input:
+    gov.contrib.states.ms.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: MS
+    eitc: 0
+  output:
+    ms_eitc: 0
+    ms_refundable_credits: 0
+
+- name: Case 5 - MS EITC is 0 for non-MS residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.ms.eitc.ms_eitc
+  input:
+    gov.contrib.states.ms.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    ms_eitc: 0

@@ -31,14 +31,14 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 464
     ne_adc_countable_earned_income: 350
     # Gross = $700, after 50% disregard = $350
-    ne_adc_maximum_benefit: 391
-    # Gap = $741 - $350 = $391
-    # Benefit = min($391, $408) = $391 (gap < payment standard)
-    ne_adc: 391
+    ne_adc_maximum_benefit: 464
+    # Gap = $843 - $350 = $493
+    # Benefit = min($493, $463.65) = $463.65 (gap > payment standard)
+    ne_adc: 464
 
 - name: Edge case, gap greater than payment standard benefit equals payment standard.
   period: 2024-01
@@ -59,13 +59,13 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 464
     ne_adc_countable_earned_income: 0
-    ne_adc_maximum_benefit: 408
-    # Gap = $741 - $0 = $741
-    # Benefit = min($741, $408) = $408 (gap > payment standard)
-    ne_adc: 408
+    ne_adc_maximum_benefit: 464
+    # Gap = $843 - $0 = $843
+    # Benefit = min($843, $463.65) = $463.65 (gap > payment standard)
+    ne_adc: 464
 
 # =============================================================================
 # EDGE CASES - UNEARNED INCOME
@@ -79,7 +79,7 @@
       person1:
         age: 30
         employment_income_before_lsr: 0
-        social_security: 4_896  # $408/month unearned = payment standard
+        social_security: 5_568  # $464/month unearned >= payment standard
       person2:
         age: 10
     spm_units:
@@ -91,12 +91,12 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_payment_standard: 408
-    ne_adc_maximum_benefit: 408
-    # Gap = $741 - $0 = $741
-    # Benefit = min($741, $408) = $408
+    ne_adc_payment_standard: 464
+    ne_adc_maximum_benefit: 464
+    # Gap = $843 - $0 = $843
+    # Benefit = min($843, $463.65) = $463.65
     ne_adc: 0
-    # Final = $408 - $408 = $0
+    # Final = $463.65 - $464 = -$0.35 -> $0
 
 - name: Edge case, unearned income exceeds max benefit no negative.
   period: 2024-01
@@ -118,10 +118,10 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_payment_standard: 408
-    ne_adc_maximum_benefit: 408
+    ne_adc_payment_standard: 464
+    ne_adc_maximum_benefit: 464
     ne_adc: 0
-    # Final = $408 - $500 = -$92 -> $0 (no negative benefits)
+    # Final = $463.65 - $500 = -$36.35 -> $0 (no negative benefits)
 
 # =============================================================================
 # EDGE CASES - STATE RESIDENCY

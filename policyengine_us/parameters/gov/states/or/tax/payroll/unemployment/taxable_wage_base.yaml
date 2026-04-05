@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Oregon.
+values:
+  0000-01-01: 52_800
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Oregon unemployment taxable wage base
+  reference:
+    - title: Oregon Revised Statutes Section 657.095
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors657.html
+    - title: Oregon Employment Department employer news December 11 2025
+      href: https://www.oregon.gov/employ/Businesses/Documents/Employer%20News%20Archived%20issues/Employer%20News%2012.11.2025.pdf#page=1
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=47

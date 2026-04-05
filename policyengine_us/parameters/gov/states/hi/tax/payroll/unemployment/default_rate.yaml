@@ -1,0 +1,15 @@
+description: Default employer-side unemployment insurance tax rate for Hawaii.
+values:
+  0000-01-01: 0.03
+
+metadata:
+  period: year
+  unit: /1
+  label: Hawaii default unemployment tax rate
+  reference:
+    - title: Hawaii Revised Statutes Section 383-66
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0066.htm
+    - title: Hawaii unemployment tax rate schedule and weekly benefit amount
+      href: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=21

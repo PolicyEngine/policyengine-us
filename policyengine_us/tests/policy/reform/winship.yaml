@@ -1,72 +1,127 @@
-- name: Winship reform gives a bonus
-  period: 2023
-  absolute_error_margin: 10
-  reforms: policyengine_us.reforms.winship.winship_reform
-  input:
-    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
-    people:
-      head:
-        employment_income: 20_000
-      spouse:
-        employment_income: 30_000
-      child_1:
-        age: 5
-      child_2:
-        age: 6
-  output:
-    eitc: 6210 + 6604 # The sum of the EITCs for the two tests below.
-    original_eitc: 2_000
+# Individual-income EITC (Winship) reform tests
+# Tests that EITC is calculated separately for head and spouse earnings
 
-- name: EITC for 30k/0k income, to inform the first test.
+- name: Case 1, individual EITC gives bonus for dual-earner couple.
   period: 2023
   absolute_error_margin: 10
   reforms: policyengine_us.reforms.winship.winship_reform
   input:
+    gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 100_000
     people:
-      head:
+      person1:
+        employment_income: 20_000
+        is_tax_unit_head: true
+      person2:
         employment_income: 30_000
-      spouse:
-        employment_income: 0
-      child_1:
+        is_tax_unit_spouse: true
+      person3:
         age: 5
-      child_2:
+      person4:
         age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    # Sum of individual EITCs: head (20k income) + spouse (30k income)
+    # = 6604 + 6210 = 12814
+    eitc: 12_814
+
+- name: Case 2, EITC for 30k head income only.
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
+    people:
+      person1:
+        employment_income: 30_000
+        is_tax_unit_head: true
+      person2:
+        employment_income: 0
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+      person4:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
   output:
     eitc: 6_210
 
-- name: EITC for 20k/0k income, to inform the first test.
+- name: Case 3, EITC for 20k head income only.
   period: 2023
   absolute_error_margin: 10
   reforms: policyengine_us.reforms.winship.winship_reform
   input:
+    gov.contrib.individual_eitc.in_effect: true
     gov.contrib.individual_eitc.agi_eitc_limit: 100_000
     people:
-      head:
+      person1:
         employment_income: 20_000
-      spouse:
+        is_tax_unit_head: true
+      person2:
         employment_income: 0
-      child_1:
+        is_tax_unit_spouse: true
+      person3:
         age: 5
-      child_2:
+      person4:
         age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
   output:
     eitc: 6_604
 
-- name: EITC for 20k/0k income, to inform the first test.
+- name: Case 4, AGI limit blocks EITC when AGI exceeds limit.
   period: 2023
   absolute_error_margin: 10
   reforms: policyengine_us.reforms.winship.winship_reform
   input:
-    gov.contrib.individual_eitc.agi_eitc_limit:  19_000
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 19_000
     people:
-      head:
+      person1:
         employment_income: 20_000
-      spouse:
+        is_tax_unit_head: true
+      person2:
         employment_income: 0
-      child_1:
+        is_tax_unit_spouse: true
+      person3:
         age: 5
-      child_2:
+      person4:
         age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
   output:
+    # AGI (20k) >= limit (19k), so no EITC
     eitc: 0
+
+- name: Case 5, no AGI limit when set to 0.
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.in_effect: true
+    gov.contrib.individual_eitc.agi_eitc_limit: 0
+    people:
+      person1:
+        employment_income: 20_000
+        is_tax_unit_head: true
+      person2:
+        employment_income: 0
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+      person4:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    # AGI limit of 0 means no limit - should get individual EITC
+    # Head with 20k income gets full EITC (same as Case 3)
+    eitc: 6_604

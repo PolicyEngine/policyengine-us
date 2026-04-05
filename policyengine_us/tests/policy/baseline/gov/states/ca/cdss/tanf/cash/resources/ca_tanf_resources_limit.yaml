@@ -117,3 +117,81 @@
         state_code: CA
   output:
     ca_tanf_resources_limit: 18_206
+
+- name: Case 1, age exactly at 60 threshold triggers higher limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+      person2:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 18_206
+
+- name: Case 2, age one below threshold gets lower limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 59
+        is_disabled: false
+      person2:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 12_137
+
+- name: Case 3, single person household with disability gets higher limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 18_206
+
+- name: Case 4, single young non-disabled person gets lower limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 12_137

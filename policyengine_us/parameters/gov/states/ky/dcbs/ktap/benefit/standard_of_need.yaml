@@ -1,4 +1,7 @@
 description: Kentucky sets this standard of need amount under the Kentucky Transitional Assistance Program.
+# NOTE: The standard of need was not changed in November 2025 when payment
+# maximums were reduced. The Nov 2025 reduction applied only to payment
+# maximums per CHFS policy; the standard of need remains at 2023-02-16 levels.
 
 metadata:
   unit: currency-USD
@@ -6,23 +9,32 @@ metadata:
   breakdown:
     - range(1, 8)
   breakdown_labels:
-    - Assistance group size
+    - Assistance unit size
   label: Kentucky K-TAP standard of need
   reference:
     - title: 921 KAR 2:016 Section 9(2)(a)
       href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+    - title: 921 KAR 2:016 Section 9(2)(a) (pre-2023 version)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/10142/
 
 1:
-  2023-03-01: 481
+  1997-07-01: 401
+  2023-02-16: 481
 2:
-  2023-03-01: 552
+  1997-07-01: 460
+  2023-02-16: 552
 3:
-  2023-03-01: 631
+  1997-07-01: 526
+  2023-02-16: 631
 4:
-  2023-03-01: 710
+  1997-07-01: 592
+  2023-02-16: 710
 5:
-  2023-03-01: 790
+  1997-07-01: 658
+  2023-02-16: 790
 6:
-  2023-03-01: 869
+  1997-07-01: 724
+  2023-02-16: 869
 7:
-  2023-03-01: 948
+  1997-07-01: 790
+  2023-02-16: 948

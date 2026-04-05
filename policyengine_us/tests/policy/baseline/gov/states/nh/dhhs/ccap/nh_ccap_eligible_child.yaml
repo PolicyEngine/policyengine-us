@@ -1,0 +1,184 @@
+# Tests for nh_ccap_eligible_child (Person, MONTH)
+# Child must be: under 13 (or disabled under disabled age limit),
+# a tax unit dependent, and immigration-status eligible.
+# He-C 6910.07(b)(2)-(3), He-C 6910.07(e)
+
+- name: Case 1, child age 5, citizen, dependent, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: true
+
+- name: Case 2, child age 13, not disabled, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: false
+
+- name: Case 3, child age 12, not disabled, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: true
+
+- name: Case 4, child age 14, disabled, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 14
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: true
+
+- name: Case 5, child age 5, undocumented, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: false
+
+- name: Case 6, child age 5, not dependent, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: false
+
+- name: Case 7, child age 5, refugee, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: true
+
+# --- Edge Cases ---
+
+- name: Case 8, disabled child exactly age 17, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # disabled_child_age_limit = 18, age < 18 → true
+    nh_ccap_eligible_child: true
+
+- name: Case 9, disabled child exactly age 18, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # disabled_child_age_limit = 18, age < 18 → false
+    nh_ccap_eligible_child: false
+
+- name: Case 10, non-disabled child age 0, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: true
+
+- name: Case 11, adult age 30, not a dependent, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: false

@@ -6,8 +6,8 @@ values:
   2023-01-01: 1_250
   2024-01-01: 1_300
   2025-01-01: 1_350
-  # CBO forecast.
   2026-01-01: 1_350
+  # CBO forecast.
   2027-01-01: 1_400
   2028-01-01: 1_400
   2029-01-01: 1_450
@@ -20,6 +20,8 @@ values:
 metadata:
   unit: currency-USD
   reference:
+    - title: 2026 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12 
     - title: 2024 IRS data release

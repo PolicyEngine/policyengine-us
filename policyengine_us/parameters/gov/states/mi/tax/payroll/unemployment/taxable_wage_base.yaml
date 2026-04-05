@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Michigan.
+values:
+  0000-01-01: 9_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan unemployment taxable wage base
+  reference:
+    - title: Michigan Compiled Laws Section 421.13
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-421-13
+    - title: Michigan taxable wage base for employers
+      href: https://www.michigan.gov/leo/bureaus-agencies/uia/employers/frequently-asked-questions-for-employers/for-employers/taxable-wage-base
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=32

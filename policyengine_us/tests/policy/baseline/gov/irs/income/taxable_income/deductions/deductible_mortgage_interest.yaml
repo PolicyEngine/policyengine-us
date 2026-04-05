@@ -1,0 +1,69 @@
+- name: Grandfathered mortgage remains fully deductible
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_interest: 45_000
+    first_home_mortgage_origination_year: 2017
+  output:
+    deductible_mortgage_interest_tax_unit: 45_000
+    interest_deduction: 45_000
+    mortgage_interest: 45_000
+
+- name: Post-TCJA mortgage is limited by the lower cap
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_interest: 45_000
+    first_home_mortgage_origination_year: 2018
+  output:
+    deductible_mortgage_interest_tax_unit: 37_500
+    interest_deduction: 37_500
+    mortgage_interest: 45_000
+
+- name: Mixed-vintage mortgages use the combined statutory balance limit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_balance: 800_000
+    first_home_mortgage_interest: 40_000
+    first_home_mortgage_origination_year: 2017
+    second_home_mortgage_balance: 300_000
+    second_home_mortgage_interest: 15_000
+    second_home_mortgage_origination_year: 2018
+  output:
+    deductible_mortgage_interest_tax_unit: 40_000
+    interest_deduction: 40_000
+    mortgage_interest: 55_000
+
+- name: Married filing separately uses the lower post-TCJA cap
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_balance: 500_000
+    first_home_mortgage_interest: 25_000
+    first_home_mortgage_origination_year: 2018
+  output:
+    deductible_mortgage_interest_tax_unit: 18_750
+    interest_deduction: 18_750
+    mortgage_interest: 25_000
+
+- name: No structural mortgage inputs yields zero deductible interest
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+  output:
+    deductible_mortgage_interest_tax_unit: 0
+    non_deductible_mortgage_interest_tax_unit: 0

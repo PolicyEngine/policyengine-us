@@ -1,0 +1,9 @@
+description: Ohio applies a refundable EITC when this parameter is in effect. By default, the OH EITC is nonrefundable.
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Ohio refundable EITC in effect

@@ -1,0 +1,46 @@
+description: Connecticut provides this amount as the Region C payment standard under the Temporary Family Assistance program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 9)
+  breakdown_labels:
+    - Household size
+  label: Connecticut TFA Region C payment amount
+  reference:
+    - title: State of Connecticut TANF State Plan 2021-2023
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-plan-2021-2023--draft.pdf#page=57
+    - title: SSA POMS SI BOS00830.403 (Effective July 1, 2014)
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500830403BOS
+    - title: SSA POMS SI BOS00830.403 (Effective July 1, 1995, archived)
+      href: https://web.archive.org/web/20111030193758/https://secure.ssa.gov/poms.nsf/lnx/0500830403BOS
+
+0:
+  # TANF program start; amounts from SSA POMS effective July 1, 1995
+  1997-01-01: 0
+  2014-07-01: 0
+1:
+  1997-01-01: 333
+  2014-07-01: 366
+2:
+  1997-01-01: 443
+  2014-07-01: 487
+3:
+  1997-01-01: 536
+  2014-07-01: 589
+4:
+  1997-01-01: 622
+  2014-07-01: 684
+5:
+  1997-01-01: 708
+  2014-07-01: 779
+6:
+  1997-01-01: 805
+  2014-07-01: 885
+7:
+  1997-01-01: 904
+  2014-07-01: 994
+8:
+  1997-01-01: 1_001
+  2014-07-01: 1_100

@@ -361,6 +361,36 @@
   output:
     mn_child_and_working_families_credits: 3_129.2
 
+- name: 2025 Joint filers with high investment income should get zero credit
+  # Per M1CWFC form: "Do not complete Schedule M1CWFC if you are
+  # otherwise restricted from claiming the federal Earned Income Credit."
+  # Investment income ($53K) exceeds EIC limit ($11,950 in 2025),
+  # so the entire credit (CTC + WFC) should be zero.
+  # Matches TaxAct and TAXSIM (policyengine-taxsim#766).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        tax_exempt_interest_income: 53_000
+      person2:
+        age: 38
+      person3:
+        age: 4
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 0
+
 - name: 2025 Single filer with one CTC-eligible child, partial phase-out
   # Calculation:
   # WFC base: min($40,000, $9,480) * 0.04 = $379.20

@@ -1,0 +1,55 @@
+- name: FCMP Nursing Care individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: FCMP_NURSING_CARE
+  output:
+    al_ssp: 100
+
+- name: Nursing Care individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: NURSING_CARE
+  output:
+    al_ssp: 60
+
+- name: IHC Level A individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: IHC_LEVEL_A
+  output:
+    al_ssp: 60
+
+- name: IHC Level B individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: IHC_LEVEL_B
+  output:
+    al_ssp: 56
+
+- name: Foster Home Care individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: FOSTER_CARE
+  output:
+    al_ssp: 110
+
+- name: Cerebral Palsy individual
+  period: 2025-01
+  input:
+    al_ssp_eligible: true
+    al_ssp_living_arrangement: CEREBRAL_PALSY
+  output:
+    al_ssp: 196
+
+- name: Not eligible
+  period: 2025-01
+  input:
+    al_ssp_eligible: false
+    al_ssp_living_arrangement: IHC_LEVEL_A
+  output:
+    al_ssp: 0

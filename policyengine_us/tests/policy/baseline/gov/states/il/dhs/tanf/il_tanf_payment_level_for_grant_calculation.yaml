@@ -97,3 +97,185 @@
   output:
     il_tanf_assistance_unit_fpg: 1_132.5
     il_tanf_payment_level_for_grant_calculation: 84.94
+
+# Pre-2018 regional flat grant tests (Nov 2008 era)
+# Source: SSA POMS SI CHI00830.403
+
+- name: Case 5, pre-2018 Group I with-adult family size 3.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 432
+
+- name: Case 6, pre-2018 Group II with-adult family size 2.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 307
+
+- name: Case 7, pre-2018 Group III with-adult family size 4.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+      person4:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 445
+
+- name: Case 8, pre-2018 Group I child-only family size 2.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: false
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 230
+
+- name: Case 9, pre-2018 Group II child-only family size 1.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: false
+      person2:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 111
+
+- name: Case 10, pre-2018 Group III child-only family size 3.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: false
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+      person4:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_grant_calculation: 271
+
+# Transition boundary test: 2019-01 should use FPG-based, NOT flat grant
+- name: Case 11, transition boundary 2019 uses FPG not flat grant.
+  period: 2019-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    # Post-COIN Act: 30% FPG for size 3
+    # FPG 2018 for size 3 = $20,780/yr => $1,731.67/mo
+    # 30% * $1,731.67 = $519.50
+    il_tanf_payment_level_for_grant_calculation: 519.5

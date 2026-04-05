@@ -1,0 +1,55 @@
+- name: MI CTC with 50% match when in effect
+  period: 2025
+  reforms: policyengine_us.reforms.states.mi.ctc.mi_ctc
+  input:
+    gov.contrib.states.mi.ctc.in_effect: true
+    gov.contrib.states.mi.ctc.match: 0.5
+    state_code: MI
+    ctc: 2_000
+  output:
+    mi_ctc: 1_000
+
+- name: MI CTC with 25% match when in effect
+  period: 2025
+  reforms: policyengine_us.reforms.states.mi.ctc.mi_ctc
+  input:
+    gov.contrib.states.mi.ctc.in_effect: true
+    gov.contrib.states.mi.ctc.match: 0.25
+    state_code: MI
+    ctc: 4_000
+  output:
+    mi_ctc: 1_000
+
+- name: MI income tax reduced by CTC refundable credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.mi.ctc.mi_ctc
+  input:
+    gov.contrib.states.mi.ctc.in_effect: true
+    gov.contrib.states.mi.ctc.match: 0.5
+    state_code: MI
+    ctc: 2_000
+    mi_income_tax_before_refundable_credits: 500
+    mi_eitc: 0
+    mi_home_heating_credit: 0
+    mi_homestead_property_tax_credit: 0
+  output:
+    mi_ctc: 1_000
+    mi_refundable_credits: 1_000
+    mi_income_tax: -500
+
+- name: MI CTC creates refund when credit exceeds tax liability
+  period: 2025
+  reforms: policyengine_us.reforms.states.mi.ctc.mi_ctc
+  input:
+    gov.contrib.states.mi.ctc.in_effect: true
+    gov.contrib.states.mi.ctc.match: 0.5
+    state_code: MI
+    ctc: 6_000
+    mi_income_tax_before_refundable_credits: 1_000
+    mi_eitc: 200
+    mi_home_heating_credit: 0
+    mi_homestead_property_tax_credit: 0
+  output:
+    mi_ctc: 3_000
+    mi_refundable_credits: 3_200
+    mi_income_tax: -2_200

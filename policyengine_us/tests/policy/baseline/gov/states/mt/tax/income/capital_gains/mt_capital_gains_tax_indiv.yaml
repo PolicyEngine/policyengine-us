@@ -17,3 +17,27 @@
     state_code: MT
   output:
     mt_capital_gains_tax_indiv: 0
+
+- name: Indiv CG tax uses net LTCG after STCG losses when MFSS is enabled
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.mt.tax.income.enable_mt_mfss_2024_reform.enable_mt_mfss_2024_reform
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: -20_000
+        mt_capital_gains_tax_applicable_threshold_indiv: 10_000
+      person2:
+        long_term_capital_gains: 0
+        short_term_capital_gains: 0
+        mt_capital_gains_tax_applicable_threshold_indiv: 20_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_indiv: [1_120, 0]

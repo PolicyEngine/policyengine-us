@@ -16,6 +16,7 @@ JOINT:
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 1
 SURVIVING_SPOUSE:
-  2013-01-01: 0.5
-SEPARATE:
   2013-01-01: 1
+SEPARATE:
+  # 26 U.S. Code § 55(b)(1)(C): MFS uses 50% of the dollar amount
+  2013-01-01: 0.5

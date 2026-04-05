@@ -1,0 +1,73 @@
+- name: Case 1, earned income above $450 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: 1000 - 450 = 550
+    ca_tanf_earned_income_after_disregard_person: [550]
+
+- name: Case 2, earned income exactly at $450 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 5_400
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: 450 - 450 = 0
+    ca_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 3, earned income below $450 disregard floors at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: max(200 - 450, 0) = 0
+    ca_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 4, zero earned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 5, historical 2019 applicant EID is $90 per person.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: 500 - 90 = 410
+    ca_tanf_earned_income_after_disregard_person: [410]

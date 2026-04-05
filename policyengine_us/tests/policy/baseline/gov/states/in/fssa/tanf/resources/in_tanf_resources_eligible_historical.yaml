@@ -1,0 +1,58 @@
+# Historical resource eligibility tests (pre-SEA 265)
+# While-receiving limit was $1,500 before July 2022, changed to $10,000
+
+- name: Pre-reform enrolled family at $1,400 passes (under $1,500 limit)
+  period: 2020-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 1_400
+    is_tanf_enrolled: true
+  output:
+    in_tanf_resources_eligible: true
+
+- name: Pre-reform enrolled family at $1,500 passes (at $1,500 limit)
+  period: 2020-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 1_500
+    is_tanf_enrolled: true
+  output:
+    in_tanf_resources_eligible: true
+
+- name: Pre-reform enrolled family at $1,501 fails (over $1,500 limit)
+  period: 2020-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 1_501
+    is_tanf_enrolled: true
+  output:
+    in_tanf_resources_eligible: false
+
+- name: Pre-reform applicant at $999 passes (under $1,000 limit)
+  period: 2020-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 999
+    is_tanf_enrolled: false
+  output:
+    in_tanf_resources_eligible: true
+
+# Transition boundary tests
+
+- name: Pre-reform 2021 enrolled at $5,000 fails (old $1,500 limit)
+  period: 2021-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 5_000
+    is_tanf_enrolled: true
+  output:
+    in_tanf_resources_eligible: false
+
+- name: Post-reform 2024 enrolled at $5,000 passes (new $10,000 limit)
+  period: 2024-01
+  input:
+    state_code: IN
+    in_tanf_countable_resources: 5_000
+    is_tanf_enrolled: true
+  output:
+    in_tanf_resources_eligible: true

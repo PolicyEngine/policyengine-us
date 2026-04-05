@@ -1,0 +1,13 @@
+- name: Employer payroll tax aggregates FICA and unemployment taxes.
+  period: 2025
+  input:
+    state_code: TX
+    payroll_tax_gross_wages: 100_000
+    taxable_earnings_for_social_security: 100_000
+  output:
+    employer_social_security_tax: 6_200
+    employer_medicare_tax: 1_450
+    employer_federal_unemployment_tax: 42
+    employer_state_unemployment_tax: 243
+    employer_payroll_tax: 7_935
+    employer_cost_of_employment: 107_935

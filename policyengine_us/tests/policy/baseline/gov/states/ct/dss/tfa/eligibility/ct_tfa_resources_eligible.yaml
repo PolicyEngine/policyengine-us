@@ -3,6 +3,7 @@
 
 - name: Case 1, resources exactly at limit.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     spm_unit_assets: 6_000
     state_code: CT
@@ -11,6 +12,7 @@
 
 - name: Case 2, resources one dollar above limit.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     spm_unit_assets: 6_001
     state_code: CT
@@ -19,6 +21,7 @@
 
 - name: Case 3, resources one dollar below limit.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     spm_unit_assets: 5_999
     state_code: CT
@@ -27,6 +30,7 @@
 
 - name: Case 4, zero resources.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     spm_unit_assets: 0
     state_code: CT
@@ -35,8 +39,87 @@
 
 - name: Case 5, very high resources.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     spm_unit_assets: 100_000
     state_code: CT
   output:
+    ct_tfa_resources_eligible: false
+
+# --- Historical period: pre-2023 resource limit was $3,000 ---
+
+- name: Case 6, pre-2023 resources at old limit.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 3_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 7, pre-2023 resources above old limit.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 3_001
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
+
+- name: Case 8, pre-2023 resources between old and new limit.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 5_000
+    state_code: CT
+  output:
+    # $5,000 > $3,000 old limit, so ineligible pre-2023
+    ct_tfa_resources_eligible: false
+
+- name: Case 9, 2020 resources at old limit.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 3_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 10, 2020 resources above old limit.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 3_001
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: false
+
+- name: Case 11, 2024 resources at new limit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 6_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+# --- Transition boundary: 2023-01 still uses $3,000 limit (change is 2023-10-01) ---
+
+- name: Case 12, 2023-01 resources at old limit.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 3_000
+    state_code: CT
+  output:
+    ct_tfa_resources_eligible: true
+
+- name: Case 13, 2023-01 resources above old limit but below new.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_assets: 5_000
+    state_code: CT
+  output:
+    # $5,000 > $3,000 old limit, ineligible before 10/1/2023
     ct_tfa_resources_eligible: false

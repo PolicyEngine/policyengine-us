@@ -1,0 +1,14 @@
+description: Taxable wage base for Rhode Island TDI employee contributions.
+values:
+  0000-01-01: 0
+  2026-01-01: 100_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Rhode Island TDI wage base
+  reference:
+    - title: Rhode Island General Laws Section 28-40-1
+      href: https://webserver.rilegislature.gov/Statutes/TITLE28/28-40/28-40-1_28-40-1.htm
+    - title: 2026 Rhode Island tax rates for unemployment insurance and temporary disability insurance
+      href: https://dlt.ri.gov/press-releases/2026-tax-rates-unemployment-insurance-and-temporary-disability-insurance

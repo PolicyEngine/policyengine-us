@@ -91,7 +91,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_capital_gains_subtraction: 1_000
+    mo_capital_gains_subtraction: 1_500
 
 
 - name: Post capital gains subtraction law and qualified premiums, health insurance
@@ -139,7 +139,7 @@
         members: [person1]
         state_code: MO
   output:
-    mo_agi_subtractions: 13_000
+    mo_agi_subtractions: 13_500
 
 
 - name: Married couple - capital gains allocated by person

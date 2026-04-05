@@ -18,7 +18,7 @@ class ca_tanf_countable_income_recipient(Variable):
             spm_unit("ca_tanf_other_unearned_income", period)
         ) / MONTHS_IN_YEAR
 
-        # Flat exlusion only applies to disability-based unearned income and earned income.
+        # Flat exclusion only applies to disability-based unearned income and earned income.
         countable_db_unearned = max_(db_unearned - p.flat, 0)
         remaining_flat_exclusion = max_(p.flat - db_unearned, 0)
         countable_earned = max_(earned - remaining_flat_exclusion, 0) * (

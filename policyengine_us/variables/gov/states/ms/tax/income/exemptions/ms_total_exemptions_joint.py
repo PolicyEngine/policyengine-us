@@ -8,9 +8,12 @@ class ms_total_exemptions_joint(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
-    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=6"
+    reference = (
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=6",
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-21/",  # MS Code 27-7-21
+    )
 
     def formula(person, period, parameters):
         total_exemptions = person.tax_unit("ms_total_exemptions", period)
-        is_head = person("is_tax_unit_head", period)
-        return is_head * total_exemptions
+        prorate_fraction = person("ms_prorate_fraction", period)
+        return prorate_fraction * total_exemptions

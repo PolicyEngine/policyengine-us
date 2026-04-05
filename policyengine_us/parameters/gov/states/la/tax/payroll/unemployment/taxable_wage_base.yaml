@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Louisiana.
+values:
+  0000-01-01: 7_700
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Louisiana unemployment taxable wage base
+  reference:
+    - title: Louisiana Revised Statutes Section 23:1474
+      href: https://www.legis.la.gov/legis/Law.aspx?d=83557
+    - title: Louisiana Workforce Commission employer tax rates
+      href: https://www.louisianaworks.net/hire/admins/employertaxrates.asp
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=28

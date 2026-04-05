@@ -15,3 +15,33 @@
     ca_tanf_income_limit: 2_000
   output:
     ca_tanf_applicant_financial_test: false
+
+- name: Case 1, zero income always passes.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_countable_income_applicant: 0
+    ca_tanf_income_limit: 10_788
+  output:
+    ca_tanf_applicant_financial_test: true
+
+- name: Case 2, income one dollar above limit fails.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_countable_income_applicant: 10_789
+    ca_tanf_income_limit: 10_788
+  output:
+    ca_tanf_applicant_financial_test: false
+
+- name: Case 3, income exactly at limit passes (uses <=).
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_countable_income_applicant: 10_788
+    ca_tanf_income_limit: 10_788
+  output:
+    ca_tanf_applicant_financial_test: true

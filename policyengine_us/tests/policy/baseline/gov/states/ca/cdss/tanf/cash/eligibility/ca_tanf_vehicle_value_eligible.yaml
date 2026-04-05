@@ -30,3 +30,30 @@
   output:
     ca_tanf_vehicle_value_eligible: false
 
+- name: Case 1, zero vehicle value always eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    household_vehicles_value: 0
+  output:
+    ca_tanf_vehicle_value_eligible: true
+
+- name: Case 2, historical 2023 vehicle limit at exact boundary $32,045.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    household_vehicles_value: 32_045
+  output:
+    ca_tanf_vehicle_value_eligible: true
+
+- name: Case 3, historical 2023 vehicle limit one dollar over $32,045.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    household_vehicles_value: 32_046
+  output:
+    ca_tanf_vehicle_value_eligible: false
+

@@ -34,6 +34,9 @@ jobs:
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
+    env:
+      SELECTIVE_TEST_MAX_TARGETS: 25
+      SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

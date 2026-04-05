@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Washington.
+values:
+  0000-01-01: 68_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Washington unemployment taxable wage base
+  reference:
+    - title: Revised Code of Washington Section 50.24.010
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=50.24.010
+    - title: Washington Employment Security Department how tax rates are determined
+      href: https://esd.wa.gov/employer-requirements/unemployment-taxes/how-we-determine-tax-rates
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=59

@@ -1,0 +1,119 @@
+- name: Case 1, eligible individual with zero countable income.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: 0
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # uncapped_ssi = 0 => reduction = max(0, -0) = 0
+    # supplement = max(0, 4_344 - 0) = 4_344
+    # Not joint => 4_344 * eligible(1) = 4_344
+    ak_ssp: 4_344
+
+- name: Case 2, SSI recipient with positive uncapped SSI gets full supplement.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: 5_000
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # uncapped_ssi > 0 => reduction = max(0, -5_000) = 0
+    # supplement = max(0, 4_344 - 0) = 4_344
+    ak_ssp: 4_344
+
+- name: Case 3, income overspill reduces supplement.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: -1_000
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # uncapped_ssi = -1_000 => reduction = max(0, 1_000) = 1_000
+    # supplement = max(0, 4_344 - 1_000) = 3_344
+    ak_ssp: 3_344
+
+- name: Case 4, large income overspill floors benefit at zero.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: -10_000
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+    ssi_countable_income: 18_088
+  output:
+    # uncapped_ssi = -10_000 => reduction = 10_000
+    # supplement = max(0, 4_344 - 10_000) = 0
+    # ssi_countable_income = 18_088 >= need_std 12_432 => $0
+    ak_ssp: 0
+
+- name: Case 5, ineligible individual gets zero benefit.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: false
+    uncapped_ssi: 0
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # Not eligible => supplement * 0 = 0
+    ak_ssp: 0
+
+- name: Case 6, very large negative uncapped SSI floors benefit at zero.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: -60_000_000
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # uncapped_ssi = -60_000_000 => income_excess = 60_000_000
+    # supplement = max(0, 4_344 - 60_000_000) = 0
+    ak_ssp: 0
+
+- name: Case 7, income excess exactly equals payment standard so supplement is zero.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_eligible: true
+    uncapped_ssi: -4_344
+    ak_ssp_payment_standard: 4_344
+    ssi_claim_is_joint: false
+  output:
+    # uncapped_ssi = -4_344 => income_excess = 4_344
+    # supplement = max(0, 4_344 - 4_344) = 0
+    ak_ssp: 0
+
+- name: Case 8, joint claim couple splits supplement evenly.
+  period: 2011
+  input:
+    people:
+      person1:
+        ak_ssp_eligible: true
+        uncapped_ssi: 0
+        ak_ssp_payment_standard: 3_168
+        ssi_claim_is_joint: true
+      person2:
+        ak_ssp_eligible: true
+        uncapped_ssi: 0
+        ak_ssp_payment_standard: 3_168
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Each person: supplement = max(0, 3_168 - 0) * 1 = 3_168
+    # marital_unit.sum = 3_168 + 3_168 = 6_336
+    # Each gets 6_336 / 2 = 3_168
+    ak_ssp: [3_168, 3_168]

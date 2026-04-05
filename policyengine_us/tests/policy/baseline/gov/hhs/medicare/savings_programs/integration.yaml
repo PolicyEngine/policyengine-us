@@ -8,12 +8,16 @@
       spouse1:
         age: 68
         is_medicare_eligible: true
-        # $9,000 unearned each -> ($750 - $20) = $730/month countable each
+        # Combined $18,000 unearned -> ($1,500 - $20) = $1,480/month combined countable
+        # $1,480 < $1,703.33 (100% couple FPL) -> QMB
         ssi_unearned_income: 9_000
       spouse2:
         age: 66
         is_medicare_eligible: true
         ssi_unearned_income: 9_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
     spm_units:
       spm_unit:
         members: [spouse1, spouse2]
@@ -28,6 +32,147 @@
   output:
     msp_eligible: [true, true]
     msp_category: [QMB, QMB]
+
+- name: MSP integration - married couple, combined income over all thresholds
+  period: 2024-01
+  # Regression test: each spouse's individual income ($14k) is below the couple
+  # QMB threshold ($20,440), but combined ($28k) exceeds the QI 135% limit ($27,594).
+  # The old (buggy) code compared each individual income against the couple threshold
+  # separately, making both appear QMB-eligible. The fix aggregates couple income first.
+  # Combined $28,000 -> ($2,333.33 - $20) = $2,313.33/month > $2,299.50 (135% FPL) -> not eligible
+  input:
+    people:
+      spouse1:
+        age: 68
+        is_medicare_eligible: true
+        ssi_unearned_income: 14_000
+      spouse2:
+        age: 66
+        is_medicare_eligible: true
+        ssi_unearned_income: 14_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000  # Under $14,130 couple limit
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [false, false]
+    msp_category: [NONE, NONE]
+
+- name: MSP integration - married couple, asymmetric income, both SLMB
+  period: 2024-01
+  # Edge case: one spouse has all the income, the other has none.
+  # Combined $21,000 -> ($1,750 - $20) = $1,730/month countable.
+  # $1,703.33 < $1,730 < $2,044 (100-120% couple FPL) -> both SLMB.
+  # The old (buggy) code would assign SLMB to spouse1 and QMB to spouse2
+  # (treating each income individually against the couple threshold).
+  input:
+    people:
+      spouse1:
+        age: 68
+        is_medicare_eligible: true
+        ssi_unearned_income: 21_000
+      spouse2:
+        age: 66
+        is_medicare_eligible: true
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [true, true]
+    msp_category: [SLMB, SLMB]
+
+- name: MSP integration - married couple, only one Medicare-eligible, no income aggregation
+  period: 2024-01
+  # Edge case: only one spouse is Medicare-eligible.
+  # person.marital_unit.sum(is_medicare_eligible) == 1, not 2, so no aggregation.
+  # Spouse1 is tested on their own income ($10,000) against the couple FPL.
+  # ($10,000 - $240) / 12 = $813.33/month < $1,703.33 -> QMB.
+  # Spouse2 is not Medicare-eligible and cannot qualify for MSP.
+  input:
+    people:
+      spouse1:
+        age: 67
+        is_medicare_eligible: true
+        ssi_unearned_income: 10_000
+      spouse2:
+        age: 55
+        is_medicare_eligible: false
+        ssi_unearned_income: 20_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [true, false]
+    msp_category: [QMB, NONE]
+
+- name: MSP integration - married couple, both QI eligible
+  period: 2024-01
+  # Edge case: combined income falls in the QI range (120-135% of couple FPL).
+  # Combined $26,400 -> ($2,200 - $20) = $2,180/month countable.
+  # $2,044 < $2,180 < $2,299.50 (120-135% couple FPL) -> both QI.
+  # The old (buggy) code would assign QMB to each ($1,080/month individually).
+  input:
+    people:
+      spouse1:
+        age: 68
+        is_medicare_eligible: true
+        is_medicaid_eligible: false
+        ssi_unearned_income: 13_200
+      spouse2:
+        age: 66
+        is_medicare_eligible: true
+        is_medicaid_eligible: false
+        ssi_unearned_income: 13_200
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+        spm_unit_is_married: true
+        spm_unit_cash_assets: 10_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+  output:
+    msp_eligible: [true, true]
+    msp_category: [QI, QI]
 
 - name: MSP integration - single senior, SLMB level
   period: 2024-01

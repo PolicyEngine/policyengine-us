@@ -5,3 +5,19 @@
     snap_utility_region: IL
   output:
     snap_utility_region_str: IL
+
+- name: SNAP utility region string for AK sub-region.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    snap_utility_region: AK_C
+  output:
+    snap_utility_region_str: AK_C
+
+- name: SNAP utility region string for NY sub-region.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    snap_utility_region: NY_NYC
+  output:
+    snap_utility_region_str: NY_NYC

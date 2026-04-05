@@ -1,24 +1,34 @@
 description: Indiana provides this amount as the standard of need under the Temporary Assistance for Needy Families program.
 
 1:
+  1997-10-01: 139
   2023-07-01: 155
 2:
+  1997-10-01: 229
   2023-07-01: 255
 3:
+  1997-10-01: 288
   2023-07-01: 320
 4:
+  1997-10-01: 346
   2023-07-01: 385
 5:
+  1997-10-01: 405
   2023-07-01: 450
 6:
+  1997-10-01: 463
   2023-07-01: 515
 7:
+  1997-10-01: 522
   2023-07-01: 580
 8:
+  1997-10-01: 580
   2023-07-01: 645
 9:
+  1997-10-01: 639
   2023-07-01: 710
 10:
+  1997-10-01: 697
   2023-07-01: 775
 
 metadata:
@@ -27,10 +37,12 @@ metadata:
   breakdown:
     - range(1, 11)
   breakdown_labels:
-    - Household size
+    - Assistance unit size
   label: Indiana TANF standard of need amount
   reference:
     - title: 470 IAC 10.3-4-3(a)(1)
       href: https://iar.iga.in.gov/code/2026/470/10.3#470-10.3-4-3
-    - title: IC 12-14-2-5
+    - title: IC 12-14-2-5 (amount of assistance; standard of need)
       href: https://iga.in.gov/laws/2025/ic/titles/12/#12-14-2-5
+    - title: Indiana DCS Unlicensed Relative Placements, Table 3 (corroborates pre-2023 standard of need values)
+      href: https://www.in.gov/dcs/files/16.2%20Assistance%20for%20Unlicensed%20Relative%20Placements.pdf#page=7

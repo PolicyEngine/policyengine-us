@@ -1,0 +1,19 @@
+description: Illinois uses this indicator to determine whether the regional county-group payment system applies under the Temporary Assistance for Needy Families program.
+
+values:
+  2008-11-01: true
+  2018-10-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Illinois TANF regional payment system in effect
+  reference:
+    - title: MR #18.17 - COIN Act Eliminates County Groups (October 2018)
+      href: https://www.dhs.state.il.us/page.aspx?item=112906
+    - title: SSA POMS SI CHI00830.403 - Illinois TANF County Group Payment Amounts
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500830403chi
+    # Note on effective date: The 2008-11-01 date follows the WAG desk aid
+    # implementation date. SSA POMS labels the same county-group payment
+    # table as "Effective July 2008". We use the November 2008 WAG date as
+    # it reflects when the rates were operationally implemented by IDHS.

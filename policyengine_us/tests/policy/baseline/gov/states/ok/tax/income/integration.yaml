@@ -118,7 +118,7 @@
     ok_standard_deduction: 6_350
     ok_income_tax_before_credits: 1_600
 
-- name: OK Integration - 2025 - joint with pension (testing new $20k limit)
+- name: OK Integration - 2025 - joint with pension subtraction caps
   absolute_error_margin: 2
   period: 2025
   input:
@@ -155,16 +155,54 @@
         state_fips: 40
   output:
     # Gross income: $20,000 + $25,000 + $15,000 = $60,000
-    # Pension subtraction (HB 2020 - $20k limit):
-    #   Person1: min($25,000, $20,000) = $20,000
-    #   Person2: min($15,000, $20,000) = $15,000
-    #   Total: $35,000
-    # OK AGI: $60,000 - $35,000 = $25,000
+    # Pension subtraction:
+    #   Person1: min($25,000, $10,000) = $10,000
+    #   Person2: min($15,000, $10,000) = $10,000
+    #   Total: $20,000
+    # OK AGI: $60,000 - $20,000 = $40,000
     # Standard deduction (joint): $12,700
     # Personal exemptions: 2 * $1,000 = $2,000
-    # Taxable income: $25,000 - $12,700 - $2,000 = $10,300
-    ok_pension_subtraction: 35_000
+    # Taxable income: $40,000 - $12,700 - $2,000 = $25,300
+    ok_pension_subtraction: 20_000
     ok_standard_deduction: 12_700
+
+- name: OK single retirement filer matches 2024 Form 511 (issue 7841)
+  absolute_error_margin: 2
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 11_847.052
+        taxable_interest_income: 111.15076
+        social_security_retirement: 19_409.176
+        taxable_private_pension_income: 16_756.773
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 40
+  output:
+    ok_pension_subtraction: 10_000
+    ok_agi: 18_714.977
+    ok_taxable_income: 11_364.977
+    ok_income_tax_before_credits: 351.3364
+    ok_stc: 40
+    ok_income_tax: 311.3364
 
 - name: OK Integration - 2025 - HOH with EITC eligible child
   absolute_error_margin: 5
@@ -248,7 +286,7 @@
         members: [person1, person2]
         state_fips: 40
   output:
-    # Pension subtraction: min($8,000, $20,000) = $8,000
+    # Pension subtraction: min($8,000, $10,000) = $8,000
     ok_pension_subtraction: 8_000
     # Sales tax credit: elderly, 2 exemptions * $40 = $80
     ok_stc: 80

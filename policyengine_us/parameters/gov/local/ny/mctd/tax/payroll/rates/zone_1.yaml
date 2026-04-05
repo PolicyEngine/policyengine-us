@@ -1,0 +1,33 @@
+description: New York MCTMT employer tax rates for payroll expense in Zone 1.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: New York MCTMT employer tax rates for Zone 1
+  reference:
+    - title: New York Tax Law Section 801
+      href: https://www.nysenate.gov/legislation/laws/TAX/801
+    - title: New York MCTMT for employers
+      href: https://www.tax.ny.gov/bus/mctmt/emp.htm
+brackets:
+  - threshold:
+      2025-07-01: 0
+    amount:
+      2025-07-01: 0
+  - threshold:
+      2025-07-01: 312_500
+    amount:
+      2025-07-01: 0.00055
+  - threshold:
+      2025-07-01: 375_000
+    amount:
+      2025-07-01: 0.00115
+  - threshold:
+      2025-07-01: 437_500
+    amount:
+      2025-07-01: 0.006
+  - threshold:
+      2025-07-01: 2_500_000
+    amount:
+      2025-07-01: 0.00895

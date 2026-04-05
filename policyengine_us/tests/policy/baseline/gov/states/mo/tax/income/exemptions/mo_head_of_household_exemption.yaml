@@ -1,0 +1,55 @@
+- name: HoH filer gets $1,400 additional exemption
+  period: 2024
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 1_400
+
+- name: Qualifying surviving spouse gets $1,400 additional exemption
+  period: 2024
+  input:
+    filing_status: SURVIVING_SPOUSE
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 1_400
+
+- name: Single filer gets no additional exemption
+  period: 2024
+  input:
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 0
+
+- name: Joint filer gets no additional exemption
+  period: 2024
+  input:
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 0
+
+- name: Separate filer gets no additional exemption
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 0
+
+- name: HoH filer in 2021 gets $1,400 exemption (statute in effect per RSMo 143.161(2))
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 1_400
+
+- name: HoH filer in 2022 gets $1,400 exemption
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    mo_head_of_household_exemption: 1_400

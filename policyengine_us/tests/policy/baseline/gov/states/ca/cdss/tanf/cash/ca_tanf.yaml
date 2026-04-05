@@ -32,3 +32,114 @@
         ca_tanf_countable_income_recipient: 200
   output:
     ca_tanf: 400
+
+- name: Zero income yields full MAP benefit.
+  period: 2025
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 14_100
+    ca_tanf_countable_income_recipient: 0
+  output:
+    ca_tanf: 14_100
+
+- name: Benefit is capped at MAP even when countable income is negative.
+  period: 2025
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 10_000
+    ca_tanf_countable_income_recipient: -5_000
+  output:
+    ca_tanf: 10_000
+
+- name: Case 1, countable income equals MAP yields zero benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 10_000
+    ca_tanf_countable_income_recipient: 10_000
+  output:
+    # MAP - income = 10000 - 10000 = 0
+    ca_tanf: 0
+
+- name: Case 2, countable income one dollar below MAP yields one dollar benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 10_000
+    ca_tanf_countable_income_recipient: 9_999
+  output:
+    ca_tanf: 1
+
+- name: Case 3, countable income exceeds MAP yields zero benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 10_000
+    ca_tanf_countable_income_recipient: 15_000
+  output:
+    ca_tanf: 0
+
+- name: Case 4, all members immigration eligible full benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+      person3:
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_tanf_eligible: true
+        ca_tanf_maximum_payment: 12_000
+        ca_tanf_countable_income_recipient: 6_000
+  output:
+    # all 3 of 3 eligible, fraction = 1.0
+    # benefit = max(12000 - 6000, 0) = 6000
+    ca_tanf: 6_000
+
+- name: Case 5, one of three members immigration ineligible prorates benefit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+      person3:
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_tanf_eligible: true
+        ca_tanf_maximum_payment: 12_000
+        ca_tanf_countable_income_recipient: 6_000
+  output:
+    # 2 of 3 eligible, fraction = 2/3
+    # benefit = max(12000 - 6000, 0) * 2/3 = 4000
+    ca_tanf: 4_000
+
+- name: Case 6, single person household zero income full MAP.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf_eligible: true
+        ca_tanf_maximum_payment: 8_808
+        ca_tanf_countable_income_recipient: 0
+  output:
+    # 1 of 1 eligible, fraction = 1.0
+    # benefit = 8808
+    ca_tanf: 8_808

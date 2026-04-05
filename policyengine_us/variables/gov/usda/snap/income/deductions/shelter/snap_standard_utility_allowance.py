@@ -16,7 +16,7 @@ class snap_standard_utility_allowance(Variable):
         region = spm_unit.household("snap_utility_region_str", period)
         spm_size = spm_unit("spm_unit_size", period)
         MAX_SPM_SIZE = 10
-        capped_size = min_(MAX_SPM_SIZE, spm_size)
+        capped_size = max_(1, min_(MAX_SPM_SIZE, spm_size))
         sua_household_size_dependent = spm_unit(
             "snap_standard_utility_allowance_by_household_size", period
         )

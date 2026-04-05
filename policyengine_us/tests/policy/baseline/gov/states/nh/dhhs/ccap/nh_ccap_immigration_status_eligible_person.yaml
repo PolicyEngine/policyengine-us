@@ -1,0 +1,81 @@
+# Tests for nh_ccap_immigration_status_eligible_person (Person, MONTH)
+# Child must be US citizen or qualifying non-citizen.
+# He-C 6910.07(b)(2)
+
+- name: Case 1, citizen, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: true
+
+- name: Case 2, legal permanent resident, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: true
+
+- name: Case 3, refugee, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: true
+
+- name: Case 4, asylee, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: ASYLEE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: true
+
+- name: Case 5, undocumented, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: false
+
+- name: Case 6, DACA, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: DACA
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_immigration_status_eligible_person: false

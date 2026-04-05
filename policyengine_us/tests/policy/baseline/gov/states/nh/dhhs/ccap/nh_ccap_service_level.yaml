@@ -1,0 +1,222 @@
+# Tests for nh_ccap_service_level (Person, MONTH)
+# Service level based on parent's authorized activity hours per week.
+# He-C 6910.07(o),(p), BCDHSC Form 2533
+# Full-time: 31 or more hours/week
+# Half-time: Greater than 15 but less than or equal to 30 hours/week
+# Part-time: 1 to 15 hours/week
+# He-C 6910.07(p): two-parent households use the lowest hours
+
+- name: Case 1, single parent 40 hours, full-time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_service_level: [FULL_TIME, FULL_TIME]
+
+- name: Case 2, single parent 31 hours, full-time boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 31
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_service_level: [FULL_TIME, FULL_TIME]
+
+- name: Case 3, single parent 30 hours, half-time boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # 30 is not >= 31, so not full-time. 30 > 15 → half-time
+    nh_ccap_service_level: [HALF_TIME, HALF_TIME]
+
+- name: Case 4, single parent 20 hours, half-time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_service_level: [HALF_TIME, HALF_TIME]
+
+- name: Case 5, single parent 15 hours, part-time boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 15
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # 15 is not > 15 → part-time
+    nh_ccap_service_level: [PART_TIME, PART_TIME]
+
+- name: Case 6, single parent 16 hours, half-time boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 16
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # 16 > 15 → half-time
+    nh_ccap_service_level: [HALF_TIME, HALF_TIME]
+
+- name: Case 7, single parent 10 hours, part-time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 10
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_service_level: [PART_TIME, PART_TIME]
+
+- name: Case 8, two parents 40 and 20 hours, half-time (uses lower).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+      person3:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # He-C 6910.07(p): min(40, 20) = 20 → half-time
+    nh_ccap_service_level: [HALF_TIME, HALF_TIME, HALF_TIME]
+
+- name: Case 9, two parents both 35 hours, full-time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 35
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 35
+      person3:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # min(35, 35) = 35 >= 31 → full-time
+    nh_ccap_service_level: [FULL_TIME, FULL_TIME, FULL_TIME]
+
+- name: Case 10, two parents 40 and 10 hours, part-time (uses lower).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 10
+      person3:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # He-C 6910.07(p): min(40, 10) = 10 → part-time
+    nh_ccap_service_level: [PART_TIME, PART_TIME, PART_TIME]

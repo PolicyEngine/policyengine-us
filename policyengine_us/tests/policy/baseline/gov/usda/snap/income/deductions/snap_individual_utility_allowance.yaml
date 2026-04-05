@@ -22,16 +22,63 @@
   period: 2022-01
   input:
     snap_utility_allowance_type: IUA
-    snap_utility_region_str: AK
+    snap_utility_region_str: AK_C
     trash_expense: 20
   output:
-    snap_individual_utility_allowance: 299
+    snap_individual_utility_allowance: 380
+    # AK_C FY22: elec=110 + gas=114 + water=56 + sewer=55 + trash=30 + phone=15
 
 - name: Test in 2024 with trash expenses
   period: 2024-01
   input:
     snap_utility_allowance_type: IUA
-    snap_utility_region_str: AK
+    snap_utility_region_str: AK_C
     trash_expense: 20
   output:
     snap_individual_utility_allowance: 638
+
+# HI individual utility allowances vary by household size
+# HH1 FY2025: elec=291 + gas=291 + water=65 + sewage=97 + trash=97 + phone=42 = 883
+- name: HI IUA HH size 1 in FY2025
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: HI
+    spm_unit_size: 1
+  output:
+    snap_individual_utility_allowance: 883
+
+# HH3 FY2025: elec=366 + gas=366 + water=81 + sewage=97 + trash=97 + phone=42 = 1049
+- name: HI IUA HH size 3 in FY2025
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: HI
+    spm_unit_size: 3
+  output:
+    snap_individual_utility_allowance: 1_049
+
+# GU individual utility allowances vary by household size
+# HH1 FY2025: elec=188 + gas=36 + water=38 + sewage/trash/phone uprated from FY2024
+- name: GU IUA HH size 1 in FY2025
+  period: 2025-01
+  absolute_error_margin: 3
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: GU
+    spm_unit_size: 1
+  output:
+    snap_individual_utility_allowance: 350
+
+# HH2 FY2025: elec=218 + gas=36 + water=50 + sewage/trash/phone uprated from FY2024
+- name: GU IUA HH size 2 in FY2025
+  period: 2025-01
+  absolute_error_margin: 3
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: GU
+    spm_unit_size: 2
+  output:
+    snap_individual_utility_allowance: 392

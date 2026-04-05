@@ -50,3 +50,127 @@
     ca_tanf_other_unearned_income: 1_000
   output:
     ca_tanf_countable_income_recipient: 7_600
+
+- name: Historical 2020 EID is $500 flat plus 50% of remaining earned.
+  period: 2021
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly: (1000 - 500) * 0.5 = 250 | * 12 = 3000
+    ca_tanf_countable_income_recipient: 3_000
+
+- name: Historical 2019 EID is $225 flat plus 50% of remaining earned.
+  period: 2019
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly: (1000 - 225) * 0.5 = 387.5 | * 12 = 4650
+    ca_tanf_countable_income_recipient: 4_650
+
+- name: Zero income yields zero countable income.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 0
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    ca_tanf_countable_income_recipient: 0
+
+- name: DBI-only income below $600 disregard yields zero countable.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 0
+    ca_tanf_db_unearned_income: 7_200
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly: max(600 - 600, 0) = 0 | * 12 = 0
+    ca_tanf_countable_income_recipient: 0
+
+- name: DBI above $600 disregard plus other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 0
+    ca_tanf_db_unearned_income: 12_000
+    ca_tanf_other_unearned_income: 2_400
+  output:
+    # monthly DBI: max(1000 - 600, 0) = 400 | * 12 = 4800
+    # monthly other: 200 | * 12 = 2400
+    # total: 4800 + 2400 = 7200
+    ca_tanf_countable_income_recipient: 7_200
+
+- name: Case 1, earned income exactly $600/mo fully disregarded by flat exclusion.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 7_200
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly: max(600 - 600, 0) * 0.5 = 0 | * 12 = 0
+    ca_tanf_countable_income_recipient: 0
+
+- name: Case 2, earned income one dollar above $600/mo disregard.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 7_212
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly: 601 - 600 = 1; 1 * 0.5 = 0.5 | * 12 = 6
+    ca_tanf_countable_income_recipient: 6
+
+- name: Case 3, DBI exactly at $600/mo flat exclusion exhausts it, leaving zero for earned.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+    ca_tanf_db_unearned_income: 7_200
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly DBI: 600; countable DBI: max(600 - 600, 0) = 0
+    # remaining flat: max(600 - 600, 0) = 0
+    # earned: max(1000 - 0, 0) * 0.5 = 500 | * 12 = 6000
+    ca_tanf_countable_income_recipient: 6_000
+
+- name: Case 4, DBI partially uses flat exclusion leaving remainder for earned.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+    ca_tanf_db_unearned_income: 3_600
+    ca_tanf_other_unearned_income: 0
+  output:
+    # monthly DBI: 300; countable DBI: max(300 - 600, 0) = 0
+    # remaining flat: max(600 - 300, 0) = 300
+    # earned: max(1000 - 300, 0) * 0.5 = 350 | * 12 = 4200
+    ca_tanf_countable_income_recipient: 4_200
+
+- name: Case 5, all three income types with partial flat exclusion split.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 24_000
+    ca_tanf_db_unearned_income: 2_400
+    ca_tanf_other_unearned_income: 6_000
+  output:
+    # monthly DBI: 200; countable DBI: max(200 - 600, 0) = 0
+    # remaining flat: max(600 - 200, 0) = 400
+    # earned: 2000 - 400 = 1600; 1600 * 0.5 = 800
+    # other: 500
+    # total monthly: 800 + 0 + 500 = 1300 | * 12 = 15600
+    ca_tanf_countable_income_recipient: 15_600

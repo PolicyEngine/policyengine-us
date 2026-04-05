@@ -76,3 +76,60 @@
   output:
     tanf_fpg: 1_919.17
     ct_tfa_income_eligible: false
+
+- name: Case 7, new applicant, income just below need standard.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: false
+    ct_tfa_countable_income_at_application: 1_139.41
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    ct_tfa_need_standard: 1_139.42
+    # 1,139.41 < 1,139.42 need standard, so eligible
+    ct_tfa_income_eligible: true
+
+# --- Boundary precision tests for FPG-based thresholds ---
+
+- name: Case 8, existing recipient 2024, income at exact 230 percent FPG.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    # 230% FPG = 2.3 * 2,071.67 = 4,764.83
+    tanf_gross_earned_income: 4_764.83
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    # 4,764.83 <= 4,764.83, so eligible
+    ct_tfa_income_eligible: true
+
+- name: Case 9, existing recipient 2024, income one dollar above 230 percent FPG.
+  period: 2024-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    tanf_gross_earned_income: 4_766
+    state_code: CT
+  output:
+    tanf_fpg: 2_071.67
+    # 4,766 > 4,764.83, so ineligible
+    ct_tfa_income_eligible: false
+
+- name: Case 10, existing recipient 2023, income just below 100 percent FPG.
+  period: 2023-01
+  absolute_error_margin: 0.3
+  input:
+    is_tanf_enrolled: true
+    spm_unit_size: 3
+    # 100% FPG = 23,030/12 = 1,919.1667
+    tanf_gross_earned_income: 1_919.16
+    state_code: CT
+  output:
+    tanf_fpg: 1_919.17
+    # 1,919.16 <= 1,919.1667, so eligible
+    ct_tfa_income_eligible: true

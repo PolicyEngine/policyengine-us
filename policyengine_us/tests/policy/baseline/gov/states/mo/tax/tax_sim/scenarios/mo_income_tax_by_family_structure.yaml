@@ -158,7 +158,7 @@
     income_tax: -7_940
     #taxsim output: $6,740 ("Income Tax Balance"), offset by $1,200 error.
     mo_adjusted_gross_income: [50_000, 0, 0]
-    mo_taxable_income: [31_200, 0, 0]
+    # HoH gets $1,400 additional exemption per RSMo 143.161(2)
+    mo_taxable_income: [29_800, 0, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_497.66
     #taxsim output: 1_469.64

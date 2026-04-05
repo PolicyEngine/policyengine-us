@@ -1,29 +1,222 @@
-- name: $1,000 earned, $1,000 disabli disability-based unearned, and $1,000 other unearned.
+- name: Case 1, single earner above $450 disregard with unearned income.
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    state_code: CA
-    ca_tanf_earned_income: 5_412 # 451 monthly
-    ca_tanf_db_unearned_income: 1_000
-    ca_tanf_other_unearned_income: 2_000
+    people:
+      person1:
+        employment_income: 5_412
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf_db_unearned_income: 1_000
+        ca_tanf_other_unearned_income: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
   output:
+    # earned monthly: 451; after disregard: 451 - 450 = 1; yearly: 12
+    # total: 12 + 1000 + 2000 = 3012
     ca_tanf_countable_income_applicant: 3_012
 
-- name: Test that the flat $450 disregard is only subtracted (with floor $0) from earned income as opposed to from the total sum.
+- name: Case 2, single earner one dollar below $450 disregard with unearned income.
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    state_code: CA
-    ca_tanf_earned_income: 5_388 # 449 monthly
-    ca_tanf_db_unearned_income: 1_000
-    ca_tanf_other_unearned_income: 2_000
+    people:
+      person1:
+        employment_income: 5_388
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf_db_unearned_income: 1_000
+        ca_tanf_other_unearned_income: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
   output:
+    # earned monthly: 449; after disregard: max(449 - 450, 0) = 0; yearly: 0
+    # total: 0 + 1000 + 2000 = 3000
     ca_tanf_countable_income_applicant: 3_000
 
-- name: Test that the flat $450 disregard is only subtracted (with floor $0) from earned income.
+- name: Case 3, single earner below disregard with no unearned income.
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    state_code: CA
-    ca_tanf_earned_income: 5_388 # 449 monthly
-    ca_tanf_db_unearned_income: 0
-    ca_tanf_other_unearned_income: 0
+    people:
+      person1:
+        employment_income: 5_388
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
   output:
     ca_tanf_countable_income_applicant: 0
+
+- name: Case 4, historical 2019 applicant EID is $90 per person.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: 500 - 90 = 410; yearly: 4920
+    ca_tanf_countable_income_applicant: 4_920
+
+- name: Case 5, earned income exactly at $450/mo disregard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 5_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # monthly: max(450 - 450, 0) = 0; yearly: 0
+    ca_tanf_countable_income_applicant: 0
+
+- name: Case 6, zero income yields zero countable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_countable_income_applicant: 0
+
+- name: Case 7, only unearned income no disregard applied.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf_db_unearned_income: 6_000
+        ca_tanf_other_unearned_income: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_countable_income_applicant: 9_000
+
+- name: Case 8, two earners each get $450 disregard per WIC 11450.12.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+      person2:
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person1 monthly: 1000 - 450 = 550; yearly: 6600
+    # person2 monthly: 1000 - 450 = 550; yearly: 6600
+    # total: 6600 + 6600 = 13200
+    ca_tanf_countable_income_applicant: 13_200
+
+- name: Case 9, two earners one below disregard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+      person2:
+        employment_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person1 monthly: 1000 - 450 = 550; yearly: 6600
+    # person2 monthly: max(200 - 450, 0) = 0; yearly: 0
+    # total: 6600 + 0 = 6600
+    ca_tanf_countable_income_applicant: 6_600
+
+- name: Case 10, two earners with unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+      person2:
+        employment_income: 7_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf_db_unearned_income: 2_400
+        ca_tanf_other_unearned_income: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # person1 monthly: 1000 - 450 = 550; yearly: 6600
+    # person2 monthly: 600 - 450 = 150; yearly: 1800
+    # earned total: 6600 + 1800 = 8400
+    # total: 8400 + 2400 + 1200 = 12000
+    ca_tanf_countable_income_applicant: 12_000
+
+- name: Case 11, direct earned-income input still counts for 2025 debugging scenarios.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+    ca_tanf_db_unearned_income: 2_400
+    ca_tanf_other_unearned_income: 1_200
+  output:
+    # legacy aggregate fallback: monthly earned 1000 - 450 = 550; yearly = 6600
+    # total: 6600 + 2400 + 1200 = 10200
+    ca_tanf_countable_income_applicant: 10_200
+
+- name: Case 12, direct earned-income input uses the historical 2020 applicant disregard.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000
+  output:
+    # legacy aggregate fallback: monthly earned 1000 - 90 = 910; yearly = 10920
+    ca_tanf_countable_income_applicant: 10_920

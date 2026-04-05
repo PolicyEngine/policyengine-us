@@ -54,6 +54,38 @@
   output:
     slcsp_age_0: 239
 
+- name: slcsp_age_0 2018 Alaska rating area 1
+  period: 2018-01
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 424
+
+- name: slcsp_age_0 2021 Texas rating area 8
+  period: 2021-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 8
+  output:
+    slcsp_age_0: 254
+
+- name: slcsp_age_0 2022 California rating area 15
+  period: 2022-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 15
+  output:
+    slcsp_age_0: 196
+
+- name: slcsp_age_0 2023 Vermont rating area 1
+  period: 2023-01
+  input:
+    state_code: VT
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 841
+
 - name: slcsp_age_0 unit test 1 Connecticut rating area 2
   period: 2025-01
   input:

@@ -19,9 +19,9 @@
         state_code: NE
   output:
     ne_adc_countable_income: 0
-    ne_adc_need_standard: 741
+    ne_adc_need_standard: 843
     ne_adc_income_eligible: true
-    # Countable ($0) < Need Standard ($741) -> true
+    # Countable ($0) < Need Standard ($843) -> true
 
 - name: Case 2, income below threshold is eligible.
   period: 2024-01
@@ -42,9 +42,9 @@
         state_code: NE
   output:
     ne_adc_countable_income: 500
-    ne_adc_need_standard: 741
+    ne_adc_need_standard: 843
     ne_adc_income_eligible: true
-    # Countable ($500) < Need Standard ($741) -> true
+    # Countable ($500) < Need Standard ($843) -> true
 
 - name: Case 3, income above threshold is ineligible.
   period: 2024-01
@@ -65,9 +65,9 @@
         state_code: NE
   output:
     ne_adc_countable_income: 1_000
-    ne_adc_need_standard: 741
+    ne_adc_need_standard: 843
     ne_adc_income_eligible: false
-    # Countable ($1,000) < Need Standard ($741) -> false
+    # Countable ($1,000) > Need Standard ($843) -> false
 
 - name: Case 4, income exactly at threshold is ineligible.
   # Tests strict less-than comparison
@@ -76,7 +76,7 @@
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 17_784  # $1,482/month -> $741 countable
+        employment_income_before_lsr: 20_232  # $1,686/month -> $843 countable
       person2:
         age: 10
     spm_units:
@@ -88,10 +88,10 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_countable_income: 741
-    ne_adc_need_standard: 741
+    ne_adc_countable_income: 843
+    ne_adc_need_standard: 843
     ne_adc_income_eligible: false
-    # Countable ($741) < Need Standard ($741) -> false (not strictly less)
+    # Countable ($843) < Need Standard ($843) -> false (not strictly less)
 
 - name: Case 5, mixed income at threshold is ineligible.
   period: 2024-01
@@ -100,7 +100,7 @@
       person1:
         age: 30
         employment_income_before_lsr: 6_000  # $500/month -> $250 countable earned
-        social_security: 5_892  # $491/month unearned
+        social_security: 7_116  # $593/month unearned
       person2:
         age: 10
     spm_units:
@@ -113,8 +113,8 @@
         state_code: NE
   output:
     ne_adc_countable_earned_income: 250
-    ne_adc_countable_income: 741
-    # Total = $250 + $491 = $741
-    ne_adc_need_standard: 741
+    ne_adc_countable_income: 843
+    # Total = $250 + $593 = $843
+    ne_adc_need_standard: 843
     ne_adc_income_eligible: false
-    # Countable ($741) < Need Standard ($741) -> false
+    # Countable ($843) < Need Standard ($843) -> false

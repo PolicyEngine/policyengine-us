@@ -1,6 +1,8 @@
 description: Connecticut limits the Temporary Family Assistance program to households with up to this resource amount.
 
 values:
+  2017-10-01: 3_000
+  # PA 22-118 authorized the increase; 2021-2023 State Plan (through 9/30/2023) still shows $3,000, so the $6,000 limit was implemented in the 2024-2026 State Plan effective 10/1/2023
   2023-10-01: 6_000
 
 metadata:
@@ -8,7 +10,9 @@ metadata:
   period: month
   label: Connecticut TFA resource limit
   reference:
-    - title: State of Connecticut TANF State Plan 2024-2026
+    - title: State of Connecticut TANF State Plan 2024-2026, Resource Limit
       href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-state-plan-2024---2026---41524-amendment.pdf#page=10
-    - title: Connecticut General Statutes § 17b-112
-      href: https://cga.ct.gov/current/pub/chap_319s.htm#sec_17b-112
+    - title: "OLR Report 2023-R-0100: Benefits Cliffs, Resource Limit (historical $3,000)"
+      href: https://www.cga.ct.gov/2023/rpt/pdf/2023-R-0100.pdf#page=3
+    - title: CT TANF State Plan 2021-2023, Resource Limit
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/state-plans-and-federal-reports/tanf-state-plan/ct-tanf-plan-2021-2023--draft.pdf#page=47

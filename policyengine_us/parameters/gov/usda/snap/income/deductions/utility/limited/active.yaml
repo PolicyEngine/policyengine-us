@@ -1,5 +1,20 @@
 description: Whether households without heating/cooling expenses and at least two other utilities are given the Limited Utility Allowance.
-AK:
+AK_C:
+  2010-01-01: false
+  2021-10-01: false
+AK_N:
+  2010-01-01: false
+  2021-10-01: false
+AK_NW:
+  2010-01-01: false
+  2021-10-01: false
+AK_SC:
+  2010-01-01: false
+  2021-10-01: false
+AK_SE:
+  2010-01-01: false
+  2021-10-01: false
+AK_SW:
   2010-01-01: false
   2021-10-01: false
 AL:
@@ -49,7 +64,7 @@ IL:
   2021-10-01: true
 IN:
   2010-01-01: false
-  2021-10-01: true
+  2021-05-01: true
 KS:
   2010-01-01: false
   2021-10-01: true
@@ -64,7 +79,7 @@ MA:
   2021-10-01: true
 MD:
   2010-01-01: false
-  2021-10-01: true
+  2020-01-01: true
 ME:
   2010-01-01: false
   2021-10-01: true
@@ -104,7 +119,13 @@ NM:
 NV:
   2010-01-01: false
   2021-10-01: true
-NY:
+NY_NAS:
+  2010-01-01: false
+  2021-10-01: true
+NY_NYC:
+  2010-01-01: false
+  2021-10-01: true
+NY_ONY:
   2010-01-01: false
   2021-10-01: true
 OH:
@@ -160,6 +181,14 @@ WY:
   2021-10-01: true
 metadata:
   unit: bool
+  period: year
   label: SNAP Limited Utility Allowance active
   breakdown:
   - snap_utility_region
+  reference:
+  - title: USDA | Food and Nutrition Service | SNAP | Standard Utility Allowances
+    href: https://www.fns.usda.gov/snap/eligibility/deduction/standard-utility-allowances
+  - title: USDA utility allowances by state spreadsheet (FY2019)
+    href: https://docs.google.com/spreadsheets/d/1JWtEF0wRlQqM3ajMFnUYs_lGwEzSXGit/edit?usp=sharing&ouid=116242521439357911562&rtpof=true&sd=true
+  - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
+    href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx

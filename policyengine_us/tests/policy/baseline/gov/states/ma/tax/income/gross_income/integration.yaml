@@ -26,3 +26,145 @@
   output:
     ma_part_c_taxable_income: 0
     ma_income_tax: 0
+
+- name: MA single 2024 interest income offset by self-employment loss
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        taxable_interest_income: 100_000
+        self_employment_income: -100_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    adjusted_gross_income: 0
+    ma_gross_income: 0
+    ma_income_tax: 0
+
+- name: MA single 2024 partial self-employment loss offset
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        taxable_interest_income: 100_000
+        self_employment_income: -50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    adjusted_gross_income: 50_000
+    ma_gross_income: 50_000
+
+# Form 1 Line 6b: Farm loss offsets other income
+- name: MA single 2024 farm loss offsets wage income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 80_000
+        farm_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    ma_gross_income: 50_000
+
+# Form 1 Line 7: Rental/partnership loss offsets other income
+- name: MA single 2024 rental loss offsets wage income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 80_000
+        rental_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    ma_gross_income: 60_000
+
+# Form 1 Line 7: Partnership/S-corp loss offsets other income
+- name: MA single 2024 partnership loss offsets wage income
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 80_000
+        partnership_s_corp_income: -80_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    ma_gross_income: 0
+    ma_income_tax: 0
+
+# Multiple loss types combined
+- name: MA single 2024 multiple loss types offset wages
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 100_000
+        self_employment_income: -20_000
+        rental_income: -15_000
+        farm_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_fips: 25
+  output:
+    ma_gross_income: 55_000

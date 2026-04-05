@@ -1,35 +1,234 @@
 # Tests for CT TFA payment standard
-# Payment amounts by size: 1=$489, 2=$661, 3=$833, 4=$1,044, 5=$1,177, 6=$1,349, 7=$1,520, 8=$1,693
-# Maximum unit size: 8 (capped)
+# Statewide: payment_standard = 0.73 * need_standard = 0.73 * 0.55 * tanf_fpg
+# Regional (pre-2022-07-01): flat-dollar amounts by region and family size
+# No statutory cap on family size for the FPG-based formula (CGS 17b-104)
+
+# --- Statewide period (2024) ---
 
 - name: Case 1, household size 1.
   period: 2024-01
+  absolute_error_margin: 0.3
   input:
     spm_unit_size: 1
     state_code: CT
   output:
-    ct_tfa_payment_standard: 489
+    # 0.73 * 0.55 * (14,580 / 12) = 0.4015 * 1,215 = 487.82
+    ct_tfa_payment_standard: 487.82
 
 - name: Case 2, household size 3.
   period: 2024-01
+  absolute_error_margin: 0.3
   input:
     spm_unit_size: 3
     state_code: CT
   output:
-    ct_tfa_payment_standard: 833
+    # 0.73 * 0.55 * (24,860 / 12) = 0.4015 * 2,071.67 = 831.77
+    ct_tfa_payment_standard: 831.77
 
-- name: Case 3, household size 8, at maximum.
+- name: Case 3, household size 8.
   period: 2024-01
+  absolute_error_margin: 0.3
   input:
     spm_unit_size: 8
     state_code: CT
   output:
-    ct_tfa_payment_standard: 1_693
+    # 0.73 * 0.55 * (50,560 / 12) = 0.4015 * 4,213.33 = 1,691.65
+    ct_tfa_payment_standard: 1_691.65
 
-- name: Case 4, household size 10, capped at 8.
+- name: Case 4, household size 10, no cap under FPG-based formula.
   period: 2024-01
+  absolute_error_margin: 0.3
   input:
     spm_unit_size: 10
     state_code: CT
   output:
-    ct_tfa_payment_standard: 1_693
+    # 0.73 * 0.55 * (60,840 / 12) = 0.4015 * 5,070 = 2,035.61
+    ct_tfa_payment_standard: 2_035.61
+
+# --- 2025 payment standard (2026-01 uses 2025 FPG via Oct convention) ---
+
+- name: Case 5, 2025 FPG-based payment for size 1.
+  period: 2026-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 1
+    state_code: CT
+  output:
+    # 0.73 * 0.55 * (15,650 / 12) = 0.4015 * 1,304.17 = 523.62
+    ct_tfa_payment_standard: 523.62
+
+- name: Case 6, 2025 FPG-based payment for size 3.
+  period: 2026-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # 0.73 * 0.55 * (26,650 / 12) = 0.4015 * 2,220.83 = 891.66
+    ct_tfa_payment_standard: 891.66
+
+- name: Case 7, 2025 FPG-based payment for size 8.
+  period: 2026-01
+  absolute_error_margin: 0.3
+  input:
+    spm_unit_size: 8
+    state_code: CT
+  output:
+    # 0.73 * 0.55 * (54,150 / 12) = 0.4015 * 4,512.50 = 1,811.77
+    ct_tfa_payment_standard: 1_811.77
+
+# --- Regional period (pre-July 2022) ---
+
+- name: Case 8, regional period default Region B, size 3.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # Region B, size 3 = $597
+    ct_tfa_payment_standard: 597
+
+- name: Case 9, regional period Region A, size 3.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_A
+  output:
+    # Region A, size 3 = $698
+    ct_tfa_payment_standard: 698
+
+- name: Case 10, regional period Region C, size 3.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_C
+  output:
+    # Region C, size 3 = $589
+    ct_tfa_payment_standard: 589
+
+- name: Case 11, regional period Region B, size 1.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 1
+    state_code: CT
+  output:
+    # Region B, size 1 = $366
+    ct_tfa_payment_standard: 366
+
+- name: Case 12, regional period Region A, size 8.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 8
+    state_code: CT
+    ct_tfa_region: REGION_A
+  output:
+    # Region A, size 8 = $1,257
+    ct_tfa_payment_standard: 1_257
+
+- name: Case 13, regional period capped at size 8.
+  period: 2021-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 10
+    state_code: CT
+    ct_tfa_region: REGION_B
+  output:
+    # Region B, capped to size 8 = $1,134
+    ct_tfa_payment_standard: 1_134
+
+# --- Regional period (2020) ---
+
+- name: Case 14, Region A family of 3 in 2020.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_A
+  output:
+    # Region A, size 3 = $698
+    ct_tfa_payment_standard: 698
+
+- name: Case 15, Region B family of 3 in 2020.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # Region B (default), size 3 = $597
+    ct_tfa_payment_standard: 597
+
+- name: Case 16, Region C family of 3 in 2020.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_C
+  output:
+    # Region C, size 3 = $589
+    ct_tfa_payment_standard: 589
+
+- name: Case 17, default Region B family of 1 in 2020.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 1
+    state_code: CT
+  output:
+    # Region B (default), size 1 = $366
+    ct_tfa_payment_standard: 366
+
+# --- Post-2014 regional amounts (effective 2014-07-01) ---
+
+- name: Case 18, post-2014 Region B, size 3 in 2015.
+  period: 2015-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # After 2014-07-01: Region B, size 3 = $597
+    ct_tfa_payment_standard: 597
+
+# --- Pre-2014 regional amounts (1997-01-01 values) ---
+
+- name: Case 19, pre-2014 Region B, size 3 in 2013.
+  period: 2013-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+  output:
+    # Before 2014-07-01: Region B, size 3 = $543
+    ct_tfa_payment_standard: 543
+
+- name: Case 20, pre-2014 Region A, size 3 in 2013.
+  period: 2013-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_A
+  output:
+    # Before 2014-07-01: Region A, size 3 = $636
+    ct_tfa_payment_standard: 636
+
+- name: Case 21, pre-2014 Region C, size 3 in 2013.
+  period: 2013-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: CT
+    ct_tfa_region: REGION_C
+  output:
+    # Before 2014-07-01: Region C, size 3 = $536
+    ct_tfa_payment_standard: 536

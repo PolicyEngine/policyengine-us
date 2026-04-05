@@ -1,0 +1,27 @@
+description: New Hampshire sets these authorized activity hour thresholds for child care service levels under the Child Care Scholarship Program.
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 2  # PART_TIME
+  - threshold:
+      2024-01-01: 15.0001  # "Greater than 15 hours"
+    amount:
+      2024-01-01: 1  # HALF_TIME
+  - threshold:
+      2024-01-01: 31  # "31 or more hours"
+    amount:
+      2024-01-01: 0  # FULL_TIME
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: New Hampshire CCAP service level hour thresholds
+  reference:
+    - title: He-C 6910.07(o)
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-C-6910.07
+    - title: BCDHSC Form 2533, Maximum Weekly Standard Rates (August 2024)
+      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/bcdhsc-form-2533.pdf#page=2

@@ -1,0 +1,51 @@
+- name: NC EITC with 10% match
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    state_code: NC
+    eitc: 1_000
+  output:
+    nc_eitc: 100
+    nc_refundable_credits: 100
+
+- name: NC EITC with 20% match
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.2
+    state_code: NC
+    eitc: 2_500
+  output:
+    nc_eitc: 500
+    nc_refundable_credits: 500
+
+- name: NC income tax reduced by EITC refundable credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    state_code: NC
+    eitc: 1_000
+    nc_income_tax_before_credits: 500
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+  output:
+    nc_eitc: 100
+    nc_refundable_credits: 100
+    nc_income_tax: 400
+
+- name: NC EITC creates refund when credit exceeds tax liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.5
+    state_code: NC
+    eitc: 6_000
+    nc_income_tax_before_credits: 1_000
+    nc_use_tax: 0
+    nc_non_refundable_credits: 500
+  output:
+    nc_eitc: 3_000
+    nc_refundable_credits: 3_000
+    nc_income_tax: -2_500

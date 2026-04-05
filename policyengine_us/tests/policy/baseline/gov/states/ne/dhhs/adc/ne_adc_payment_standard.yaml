@@ -1,7 +1,7 @@
 # Nebraska ADC Payment Standard Tests
 # Payment standard = Need Standard * 0.55 (55%)
-# Values effective September 1, 2015:
-#   Size 1: $331, Size 2: $408, Size 3: $485, Size 4: $562, etc.
+# Values effective July 1, 2023:
+#   Size 1: $376, Size 2: $464, Size 3: $552, Size 4: $640, etc.
 
 - name: Case 1, single person household.
   period: 2024-01
@@ -18,8 +18,8 @@
         members: [person1]
         state_code: NE
   output:
-    ne_adc_payment_standard: 331
-    # Need standard $601 * 0.55 = $330.55, rounded to $331
+    ne_adc_payment_standard: 376
+    # Need standard $683 * 0.55 = $375.65, rounded to $376
 
 - name: Case 2, family of 2.
   period: 2024-01
@@ -38,8 +38,8 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_adc_payment_standard: 408
-    # Need standard $741 * 0.55 = $407.55, rounded to $408
+    ne_adc_payment_standard: 464
+    # Need standard $843 * 0.55 = $463.65, rounded to $464
 
 - name: Case 3, family of 3.
   period: 2024-01
@@ -60,8 +60,8 @@
         members: [person1, person2, person3]
         state_code: NE
   output:
-    ne_adc_payment_standard: 485
-    # Need standard $881 * 0.55 = $484.55, rounded to $485
+    ne_adc_payment_standard: 552
+    # Need standard $1,003 * 0.55 = $551.65, rounded to $552
 
 - name: Case 4, family of 4.
   period: 2024-01
@@ -84,5 +84,119 @@
         members: [person1, person2, person3, person4]
         state_code: NE
   output:
-    ne_adc_payment_standard: 562
-    # Need standard $1,021 * 0.55 = $561.55, rounded to $562
+    ne_adc_payment_standard: 640
+    # Need standard $1,163 * 0.55 = $639.65, rounded to $640
+
+# Historical period tests
+# Payment standard = Need Standard * 0.55
+# Each test uses a January period that falls within a specific parameter bracket.
+
+- name: Case 5, family of 3 in 2016 uses 2015 values.
+  period: 2016-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 436
+    # Need standard $793 * 0.55 = $436.15
+
+- name: Case 6, family of 3 in 2018 uses 2017 values.
+  period: 2018-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 449
+    # Need standard $816 * 0.55 = $448.80
+
+- name: Case 7, family of 3 in 2020 uses 2019 values.
+  period: 2020-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 467
+    # Need standard $849 * 0.55 = $466.95
+
+- name: Case 8, family of 3 in 2022 uses 2021 values.
+  period: 2022-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 485
+    # Need standard $881 * 0.55 = $484.55
+
+- name: Case 9, family of 3 in 2026 uses 2025 values.
+  period: 2026-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_adc_payment_standard: 587
+    # Need standard $1,067 * 0.55 = $586.85

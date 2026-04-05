@@ -1,0 +1,89 @@
+- name: Case 1, SSI-eligible adult in residential care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        de_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    de_ssp_eligible: true
+
+- name: Case 2, child in residential care is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        de_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    de_ssp_eligible: false
+
+- name: Case 3, adult not in residential care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        de_ssp_living_arrangement: NONE
+  output:
+    de_ssp_eligible: false
+
+- name: Case 4, SSI-ineligible adult in residential care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        de_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    de_ssp_eligible: false
+
+- name: Case 5, non-DE resident.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        de_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    de_ssp_eligible: false
+
+- name: Case 6, adult exactly at age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        de_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    de_ssp_eligible: true

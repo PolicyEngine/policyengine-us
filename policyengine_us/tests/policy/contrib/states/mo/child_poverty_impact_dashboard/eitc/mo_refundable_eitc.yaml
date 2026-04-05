@@ -1,0 +1,38 @@
+- name: Case 1 - MO WFTC is refundable when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
+  input:
+    state_code: MO
+    mo_wftc: 500
+  output:
+    mo_refundable_wftc: 500
+    mo_non_refundable_wftc: 0
+
+- name: Case 2 - MO WFTC is 0 when WFTC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
+  input:
+    state_code: MO
+    mo_wftc: 0
+  output:
+    mo_refundable_wftc: 0
+    mo_non_refundable_wftc: 0
+
+- name: Case 3 - MO refundable WFTC is 0 for non-MO residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
+  input:
+    state_code: CA
+    mo_wftc: 500
+  output:
+    mo_refundable_wftc: 0
+    mo_non_refundable_wftc: 0
+
+- name: Case 4 - MO non-refundable credits is 0 when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
+  input:
+    state_code: MO
+    mo_wftc: 500
+  output:
+    mo_non_refundable_credits: 0

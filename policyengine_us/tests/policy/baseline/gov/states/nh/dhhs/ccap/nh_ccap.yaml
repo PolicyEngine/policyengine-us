@@ -1,0 +1,336 @@
+# Tests for nh_ccap (SPMUnit, MONTH)
+# Final benefit = sum over eligible children of:
+#   max(0, min(provider charge, payment rate) - per-child cost share) + disability supplement
+#   * weeks_per_month
+# He-C 6910.17(e), He-C 6910.18(f)
+#
+# Uses direct input overrides for intermediate variables
+# to isolate benefit calculation logic.
+# weeks_per_month = 52/12 = 4.3333...
+
+- name: Case 1, eligible, rate lower than charge, benefit is rate minus cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 300
+        pre_subsidy_childcare_expenses: 18_720
+        # $18,720/yr = $360/week (> $300 rate)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # min($360/wk charge, $300 rate) = $300
+    # 1 eligible child: per-child cost share = $10/1 = $10
+    # Weekly: $300 - $10 = $290
+    # Monthly: $290 * (52/12) = $1,256.67
+    nh_ccap: 1_256.67
+
+- name: Case 2, eligible, charge lower than rate, benefit is charge minus cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 300
+        pre_subsidy_childcare_expenses: 10_400
+        # $10,400/yr = $200/week (< $300 rate)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # min($200/wk charge, $300 rate) = $200
+    # 1 eligible child: per-child cost share = $5/1 = $5
+    # Weekly: $200 - $5 = $195
+    # Monthly: $195 * (52/12) = $845
+    nh_ccap: 845
+
+- name: Case 3, ineligible, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 300
+        pre_subsidy_childcare_expenses: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: false
+        nh_ccap_cost_share: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap: 0
+
+- name: Case 4, two eligible children, cost share split equally.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 300
+        pre_subsidy_childcare_expenses: 18_720
+        # $360/week charge
+      person3:
+        age: 3
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 350
+        pre_subsidy_childcare_expenses: 20_280
+        # $390/week charge
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 20
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # Person2: min($360, $300) - $20/2 = $300 - $10 = $290/week
+    # Person3: min($390, $350) - $20/2 = $350 - $10 = $340/week
+    # Total weekly: $290 + $340 = $630
+    # Monthly: $630 * (52/12) = $2,730
+    nh_ccap: 2_730
+
+- name: Case 5, cost share exceeds rate, benefit floors at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 50
+        pre_subsidy_childcare_expenses: 2_600
+        # $50/week charge
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 70
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # min($50, $50) - $70/1 = $50 - $70 = -$20 → $0
+    nh_ccap: 0
+
+- name: Case 6, disabled child, disability supplement adds to rate in benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 280
+        nh_ccap_disability_supplement: 100
+        pre_subsidy_childcare_expenses: 20_800
+        # $20,800/yr = $400/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # min($400/wk charge, $280 base rate) = $280
+    # 1 eligible child: per-child cost share = $10/1 = $10
+    # base_payment = max($280 - $10, 0) = $270
+    # Weekly: $270 + $100 disability supplement = $370
+    # Monthly: $370 * (52/12) = $1,603.33
+    nh_ccap: 1_603.33
+
+# --- Edge Cases ---
+
+- name: Case 7, zero childcare expenses, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 300
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # weekly_expense = $0/52 = $0
+    # min($0, $300) = $0; $0 - $0 = $0/week → $0/month
+    nh_ccap: 0
+
+- name: Case 8, cost share exactly equals capped rate, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 200
+        pre_subsidy_childcare_expenses: 15_600
+        # $15,600/yr = $300/week (> $200 rate)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # min($300/wk, $200) = $200; $200 - $200/1 = $0 → $0/month
+    nh_ccap: 0
+
+- name: Case 9, three eligible children, cost share split three ways.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 280
+        pre_subsidy_childcare_expenses: 18_200
+        # $18,200/yr = $350/week
+      person3:
+        age: 5
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 250
+        pre_subsidy_childcare_expenses: 15_600
+        # $15,600/yr = $300/week
+      person4:
+        age: 8
+        nh_ccap_eligible_child: true
+        nh_ccap_payment_rate: 200
+        pre_subsidy_childcare_expenses: 13_000
+        # $13,000/yr = $250/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 30
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NH
+  output:
+    # Per-child cost share: $30/3 = $10/week each
+    # Person2: min($350, $280) - $10 = $280 - $10 = $270/week
+    # Person3: min($300, $250) - $10 = $250 - $10 = $240/week
+    # Person4: min($250, $200) - $10 = $200 - $10 = $190/week
+    # Total weekly: $270 + $240 + $190 = $700/week
+    # Monthly: $700 * (52/12) = $700 * 4.3333 = $3,033.33
+    nh_ccap: 3_033.33
+
+- name: Case 10, no eligible children in spm unit, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        nh_ccap_eligible_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # No eligible children → no per-child payments → $0
+    nh_ccap: 0
+
+- name: Case 11, negative countable income does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+      person2:
+        age: 4
+        nh_ccap_eligible_child: true
+        pre_subsidy_childcare_expenses: 15_000
+        nh_ccap_payment_rate: 300
+        nh_ccap_disability_supplement: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nh_ccap_eligible: true
+        nh_ccap_cost_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Negative income → cost share = 0
+    # Weekly expense = 15,000 / 52 = $288.46
+    # Capped rate = min(288.46, 300) = $288.46
+    # Per-child payment = max(288.46 - 0, 0) = $288.46
+    # Monthly = 288.46 * 52/12 = $1,250
+    # Benefit capped at actual expenses, NOT inflated by negative income
+    nh_ccap: 1_250

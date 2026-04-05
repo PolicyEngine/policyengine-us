@@ -1,0 +1,68 @@
+# Tests for nh_ccap_disability_supplement (Person, MONTH)
+# Weekly disability supplement by service level.
+# He-C 6910.17(g)
+# Full-time: $100/week, Half-time: $75/week, Part-time: $50/week
+
+- name: Case 1, disabled child, full-time, $100 supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_service_level: FULL_TIME
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_disability_supplement: 100
+
+- name: Case 2, disabled child, half-time, $75 supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_service_level: HALF_TIME
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_disability_supplement: 75
+
+- name: Case 3, disabled child, part-time, $50 supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_disabled: true
+        nh_ccap_eligible_child: true
+        nh_ccap_service_level: PART_TIME
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_disability_supplement: 50
+
+- name: Case 4, non-disabled child, no supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_disabled: false
+        nh_ccap_eligible_child: true
+        nh_ccap_service_level: FULL_TIME
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_disability_supplement: 0

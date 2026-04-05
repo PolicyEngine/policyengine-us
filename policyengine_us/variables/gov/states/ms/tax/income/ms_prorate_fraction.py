@@ -4,21 +4,68 @@ from policyengine_us.model_api import *
 class ms_prorate_fraction(Variable):
     value_type = float
     entity = Person
-    label = "Share of Mississippi AGI within tax unit"
-    unit = USD
+    label = "Share of allocable Mississippi joint deductions and exemptions"
+    unit = "/1"
     definition_period = YEAR
     defined_for = StateCode.MS
+    reference = (
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-17/",  # MS Code 27-7-17: deductions may be divided in any manner
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-21/",  # MS Code 27-7-21: exemptions may be divided in any manner
+    )
 
     def formula(person, period, parameters):
+        tax_unit = person.tax_unit
+        tax = parameters(period).gov.states.ms.tax.income
+        rate = tax.rate
+
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         agi = person("ms_agi", period)
-        total_agi = person.tax_unit.sum(agi)
-        # avoid divide-by-zero warnings when using where() function
-        fraction = np.zeros_like(total_agi)
-        mask = total_agi != 0
-        fraction[mask] = agi[mask] / total_agi[mask]
-        # if no net income, then assign entirely to head.
-        return where(
-            total_agi == 0,
-            person("is_tax_unit_head", period),
-            fraction,
+
+        head_agi = tax_unit.sum(agi * is_head)
+        spouse_agi = tax_unit.sum(agi * is_spouse)
+
+        filing_status = tax_unit("filing_status", period)
+        standard_deduction = tax.deductions.standard.amount[filing_status]
+        itemized_deductions = tax_unit("ms_itemized_deductions_unit", period)
+        total_exemptions = tax_unit("ms_total_exemptions", period)
+        total_allocable_deductions = (
+            max_(standard_deduction, itemized_deductions) + total_exemptions
         )
+
+        # Mississippi lets joint filers split their combined deduction and
+        # exemption amounts between spouses however they want, so choose the
+        # split that minimizes combined liability.
+        best_head_allocation = total_allocable_deductions
+        best_tax = rate.calc(max_(head_agi - best_head_allocation, 0)) + rate.calc(
+            max_(spouse_agi - (total_allocable_deductions - best_head_allocation), 0)
+        )
+
+        for threshold in rate.thresholds:
+            if not np.isfinite(threshold):
+                continue
+
+            for candidate in (
+                np.clip(head_agi - threshold, 0, total_allocable_deductions),
+                np.clip(
+                    total_allocable_deductions - (spouse_agi - threshold),
+                    0,
+                    total_allocable_deductions,
+                ),
+            ):
+                candidate_tax = rate.calc(max_(head_agi - candidate, 0)) + rate.calc(
+                    max_(spouse_agi - (total_allocable_deductions - candidate), 0)
+                )
+                improves_tax = candidate_tax < (best_tax - 1e-9)
+                best_tax = where(improves_tax, candidate_tax, best_tax)
+                best_head_allocation = where(
+                    improves_tax, candidate, best_head_allocation
+                )
+
+        head_fraction = where(
+            total_allocable_deductions > 0,
+            best_head_allocation / total_allocable_deductions,
+            is_head,
+        )
+
+        return where(is_head, head_fraction, where(is_spouse, 1 - head_fraction, 0))

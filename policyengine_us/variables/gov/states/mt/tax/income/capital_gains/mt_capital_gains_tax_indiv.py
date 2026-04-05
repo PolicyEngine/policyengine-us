@@ -16,8 +16,10 @@ class mt_capital_gains_tax_indiv(Variable):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
         # the tax for capital gains comes into effect after 2024
         if p.in_effect:
-            capital_gains = person("long_term_capital_gains", period)
-            # No tax on zero or negative capital gains
+            ltcg = person("long_term_capital_gains", period)
+            stcg = person("short_term_capital_gains", period)
+            net_cg = ltcg + stcg
+            capital_gains = max_(min_(ltcg, net_cg), 0)
             filing_status = person.tax_unit(
                 "state_filing_status_if_married_filing_separately_on_same_return",
                 period,

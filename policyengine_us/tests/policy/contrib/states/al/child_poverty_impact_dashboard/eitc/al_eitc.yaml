@@ -1,0 +1,53 @@
+- name: Case 1 - AL EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.al.eitc.al_eitc
+  input:
+    gov.contrib.states.al.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AL
+    eitc: 1_000
+  output:
+    al_eitc: 100
+    al_refundable_credits: 100
+
+- name: Case 2 - AL EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.al.eitc.al_eitc
+  input:
+    gov.contrib.states.al.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: AL
+    eitc: 2_500
+  output:
+    al_eitc: 500
+    al_refundable_credits: 500
+
+- name: Case 3 - AL EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.al.eitc.al_eitc
+  input:
+    gov.contrib.states.al.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: AL
+    eitc: 1_000
+  output:
+    al_eitc: 0
+    al_refundable_credits: 0
+
+- name: Case 4 - AL EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.al.eitc.al_eitc
+  input:
+    gov.contrib.states.al.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AL
+    eitc: 0
+  output:
+    al_eitc: 0
+    al_refundable_credits: 0
+
+- name: Case 5 - AL EITC is 0 for non-AL residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.al.eitc.al_eitc
+  input:
+    gov.contrib.states.al.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    al_eitc: 0
