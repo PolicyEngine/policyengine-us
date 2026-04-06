@@ -13,6 +13,9 @@ class ny_inflation_refund_credit(Variable):
     )
     defined_for = StateCode.NY
 
+    def formula(tax_unit, period, parameters):
+        return 0
+
     def formula_2023(tax_unit, period, parameters):
         # Based on 2023 tax year returns per NY Tax Department.
         # Delivered as mailed checks, not claimed on IT-201.
