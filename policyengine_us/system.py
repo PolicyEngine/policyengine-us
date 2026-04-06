@@ -27,6 +27,11 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from policyengine_us.data.dataset_schema import (
+    US_ENTITIES,
+    USSingleYearDataset,
+    USMultiYearDataset,
+)
 
 from typing import Annotated
 
@@ -175,6 +180,43 @@ class Simulation(CoreSimulation):
             cg_holder.delete_arrays(known_period)
 
 
+def _resolve_dataset_path(dataset_str):
+    """Resolve a dataset string to a local file path, downloading if needed."""
+    if "hf://" in dataset_str:
+        from policyengine_core.tools.hugging_face import (
+            parse_hf_url,
+            download_huggingface_dataset,
+        )
+
+        owner, repo, filename, version = parse_hf_url(dataset_str)
+        return download_huggingface_dataset(
+            repo=f"{owner}/{repo}",
+            repo_filename=filename,
+            version=version,
+        )
+    elif Path(dataset_str).exists():
+        return dataset_str
+    else:
+        raise FileNotFoundError(f"Dataset file not found: {dataset_str}")
+
+
+def _is_hdfstore_format(file_path):
+    """Check if an HDF5 file uses entity-level HDFStore format.
+
+    Entity-level files have top-level keys like 'person', 'household', etc.
+    Variable-centric h5py files have variable names as top-level keys.
+    """
+    import pandas as pd
+
+    entity_names = set(US_ENTITIES)
+    try:
+        with pd.HDFStore(file_path, mode="r") as store:
+            keys = {k.strip("/").split("/")[0] for k in store.keys()}
+            return bool(entity_names & keys)
+    except (OSError, IOError, KeyError, ValueError):
+        return False
+
+
 class Microsimulation(CoreMicrosimulation):
     """
     A microsimulation of the tax-benefit system for the United States,
@@ -207,6 +249,33 @@ class Microsimulation(CoreMicrosimulation):
         dataset = kwargs.get("dataset")
         if dataset is not None and isinstance(dataset, str) and "cps_2023" in dataset:
             self.default_input_period = 2023
+
+        # Dataset interception for entity-level HDFStore format.
+        #
+        # USSingleYearDataset and USMultiYearDataset duck-type the
+        # policyengine-core Dataset interface (load(), data_format,
+        # time_period, name) so that core's build_from_dataset() can
+        # consume them.  Long-term, core should natively support
+        # entity-level datasets, making this interception unnecessary.
+        if dataset is not None and isinstance(dataset, str):
+            local_path = _resolve_dataset_path(dataset)
+            if _is_hdfstore_format(local_path):
+                from policyengine_us.data.economic_assumptions import (
+                    extend_single_year_dataset,
+                )
+
+                single = USSingleYearDataset(file_path=local_path)
+                multi = extend_single_year_dataset(single)
+                kwargs["dataset"] = multi
+        elif isinstance(dataset, USSingleYearDataset):
+            from policyengine_us.data.economic_assumptions import (
+                extend_single_year_dataset,
+            )
+
+            multi = extend_single_year_dataset(dataset)
+            kwargs["dataset"] = multi
+        # USMultiYearDataset instances are already extended and pass
+        # through to core unchanged.
 
         super().__init__(*args, **kwargs)
 

@@ -184,6 +184,12 @@ from .states.ct.hb5114 import (
 from .congress.watca import (
     create_watca_reform,
 )
+from .states.nj.stay_nj import (
+    create_nj_stay_nj_reform,
+)
+from .states.nj.anchor import (
+    create_nj_anchor_reform,
+)
 
 
 from .states.ga.sb520 import (
@@ -212,6 +218,9 @@ from .states.ga.eitc import (
 )
 from .states.id.eitc import (
     create_id_eitc_reform,
+)
+from .states.id.s1450 import (
+    create_id_s1450_reform,
 )
 from .states.ky.eitc import (
     create_ky_eitc_reform,
@@ -413,6 +422,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     az_eitc = create_az_eitc_reform(parameters, period)
     ga_eitc = create_ga_eitc_reform(parameters, period)
     id_eitc = create_id_eitc_reform(parameters, period)
+    id_s1450 = create_id_s1450_reform(parameters, period)
     ky_eitc = create_ky_eitc_reform(parameters, period)
     ms_eitc = create_ms_eitc_reform(parameters, period)
     nd_eitc = create_nd_eitc_reform(parameters, period)
@@ -422,6 +432,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     ut_fully_refundable_eitc = create_ut_fully_refundable_eitc_reform(
         parameters, period
     )
+    nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
+    nj_anchor = create_nj_anchor_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -517,6 +529,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         az_eitc,
         ga_eitc,
         id_eitc,
+        id_s1450,
         ky_eitc,
         ms_eitc,
         nd_eitc,
@@ -524,6 +537,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         mo_refundable_eitc,
         oh_refundable_eitc,
         ut_fully_refundable_eitc,
+        nj_stay_nj,
+        nj_anchor,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

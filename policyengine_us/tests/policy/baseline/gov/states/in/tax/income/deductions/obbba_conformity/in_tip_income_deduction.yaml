@@ -2,6 +2,7 @@
   period: 2026
   input:
     state_code: IN
+    treasury_tipped_occupation_code: 102
     tip_income: 10_000
     employment_income: 50_000
   output:
@@ -20,6 +21,7 @@
   period: 2025
   input:
     state_code: IN
+    treasury_tipped_occupation_code: 102
     tip_income: 10_000
     employment_income: 50_000
   output:
@@ -31,6 +33,7 @@
   absolute_error_margin: 1
   input:
     state_code: IN
+    treasury_tipped_occupation_code: 102
     tip_income: 5_000
     employment_income: 50_000
   output:
@@ -41,6 +44,7 @@
   period: 2027
   input:
     state_code: IN
+    treasury_tipped_occupation_code: 102
     tip_income: 10_000
     employment_income: 50_000
   output:

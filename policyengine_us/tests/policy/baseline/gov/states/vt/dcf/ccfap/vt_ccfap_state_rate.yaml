@@ -1,0 +1,456 @@
+- name: Case 1, licensed center full time infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 2025-01-01 is before 2025-07-13, so 2024-06-30 rates apply
+    # Licensed center, full time, infant = $471
+    vt_ccfap_state_rate: [471]
+
+- name: Case 2, registered home part time school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 7
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, part time, school age = $176
+    vt_ccfap_state_rate: [176]
+
+- name: Case 3, licensed center extended care toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, extended care, toddler = $602
+    vt_ccfap_state_rate: [602]
+
+- name: Case 4, registered home full time preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, full time, preschool = $361
+    vt_ccfap_state_rate: [361]
+
+- name: Case 5, licensed center part time preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, part time, preschool = $240
+    vt_ccfap_state_rate: [240]
+
+- name: Case 6, registered home extended care infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, extended care, infant = $527
+    vt_ccfap_state_rate: [527]
+
+- name: Case 7, licensed center full time school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, full time, school age = $371
+    vt_ccfap_state_rate: [371]
+
+- name: Case 8, registered home full time toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, full time, toddler = $364
+    vt_ccfap_state_rate: [364]
+
+- name: Case 9, registered home part time infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, part time, infant = $212
+    vt_ccfap_state_rate: [212]
+
+- name: Case 10, registered home part time toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, part time, toddler = $200
+    vt_ccfap_state_rate: [200]
+
+- name: Case 11, registered home part time preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, part time, preschool = $198
+    vt_ccfap_state_rate: [198]
+
+- name: Case 12, registered home extended care toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, extended care, toddler = $494
+    vt_ccfap_state_rate: [494]
+
+- name: Case 13, registered home extended care preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, extended care, preschool = $491
+    vt_ccfap_state_rate: [491]
+
+- name: Case 14, registered home extended care school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, extended care, school age = $436
+    vt_ccfap_state_rate: [436]
+
+- name: Case 15, registered home full time school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 7
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, full time, school age = $321
+    vt_ccfap_state_rate: [321]
+
+- name: Case 16, registered home full time infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Registered home, full time, infant = $387
+    vt_ccfap_state_rate: [387]
+
+- name: Case 17, licensed center part time infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, part time, infant = $258
+    vt_ccfap_state_rate: [258]
+
+- name: Case 18, licensed center part time toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, part time, toddler = $243
+    vt_ccfap_state_rate: [243]
+
+- name: Case 19, licensed center part time school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, part time, school age = $204
+    vt_ccfap_state_rate: [204]
+
+- name: Case 20, licensed center extended care preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, extended care, preschool = $597
+    vt_ccfap_state_rate: [597]
+
+- name: Case 21, licensed center extended care school age.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, extended care, school age = $505
+    vt_ccfap_state_rate: [505]
+
+- name: Case 22, licensed center extended care infant.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, extended care, infant = $640
+    vt_ccfap_state_rate: [640]
+
+- name: Case 23, licensed center full time toddler.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, full time, toddler = $443
+    vt_ccfap_state_rate: [443]
+
+- name: Case 24, licensed center full time preschool.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # Licensed center, full time, preschool = $439
+    vt_ccfap_state_rate: [439]

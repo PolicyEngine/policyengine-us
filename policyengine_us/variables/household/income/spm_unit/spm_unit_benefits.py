@@ -41,7 +41,7 @@ class spm_unit_benefits(Variable):
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-            BENEFITS.append("aca_ptc")
+            BENEFITS.append("assigned_aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
         return add(spm_unit, period, BENEFITS)

@@ -1,3 +1,60 @@
+- name: Case 0, Cumberland infant full-time licensed center before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: CUMBERLAND
+  output:
+    # Cumberland Licensed Center Infant FT = $303/week on the 2021 schedule.
+    me_ccap_market_rate: [303]
+
+- name: Case 0b, Franklin toddler part-time licensed family before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: FRANKLIN
+  output:
+    # Franklin Licensed Family Toddler PT = $129.38/week on the 2021 schedule.
+    me_ccap_market_rate: [129.38]
+
+- name: Case 0c, Androscoggin preschool full-time license-exempt before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: ANDROSCOGGIN
+  output:
+    # Androscoggin License-Exempt Preschool FT = $105/week on the 2021 schedule.
+    me_ccap_market_rate: [105]
+
 - name: Case 1, Region 1 infant full-time licensed center.
   period: 2026-01
   absolute_error_margin: 0.01

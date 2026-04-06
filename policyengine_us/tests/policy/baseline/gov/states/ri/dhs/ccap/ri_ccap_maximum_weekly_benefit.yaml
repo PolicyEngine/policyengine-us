@@ -1,5 +1,5 @@
 # Tests for ri_ccap_maximum_weekly_benefit
-# Rates effective: center July 2025, family July 2024, exempt Jan 2022
+# Rates effective: center July 2024 until the July 2025 split, family July 2024, exempt Jan 2022
 # Person-level variable; parent output is 0 (default), child gets rate
 
 - name: Case 1, licensed center full time star 1 preschool.
@@ -27,7 +27,7 @@
     ri_ccap_maximum_weekly_benefit: [0, 236]
 
 - name: Case 2, licensed center full time star 5 infant.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -239,7 +239,7 @@
     ri_ccap_maximum_weekly_benefit: [0, 15.13]
 
 - name: Case 11, licensed center quarter time star 2 infant.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

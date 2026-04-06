@@ -1,21 +1,648 @@
-description: Maine provides these weekly reimbursement rates for licensed child care centers under the Child Care Affordability Program.
-
+description: Maine provides these weekly reimbursement rates for licensed child care
+  centers under the Child Care Affordability Program.
 metadata:
   period: week
   unit: currency-USD
   label: Maine CCAP licensed center weekly rates
   breakdown:
-    - me_ccap_region
-    - me_ccap_age_group
-    - me_ccap_time_category
+  - me_ccap_region
+  - me_ccap_age_group
+  - me_ccap_time_category
   reference:
-    - title: 10-148 C.M.R. Chapter 6 §4.D
-      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=26
-    - title: Maine CCAP Market Rates, effective July 6, 2024
-      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/July%206%202024%20Market%20Rates_5_0.pdf
-    - title: Maine CCAP Market Rates, effective May 19, 2025
-      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/5.19.25%20Child%20Care%20Market%20Rates.pdf
-
+  - title: 10-148 C.M.R. Chapter 6 §4.D
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/CCAP%20Full%20Rule%208.18.2025_1.pdf#page=26
+  - title: Maine Child Care Market Rates, effective July 3, 2021
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/2021%20Maine%20Market%20Rate%207-3-21_0.pdf
+  - title: Maine CCAP Market Rates, effective July 6, 2024
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/July%206%202024%20Market%20Rates_5_0.pdf
+  - title: Maine CCAP Market Rates, effective May 19, 2025
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/5.19.25%20Child%20Care%20Market%20Rates.pdf
+ANDROSCOGGIN:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 215.0
+    PART_TIME:
+      2021-07-03: 161.25
+    HALF_TIME:
+      2021-07-03: 107.5
+    QUARTER_TIME:
+      2021-07-03: 53.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 200.0
+    PART_TIME:
+      2021-07-03: 150.0
+    HALF_TIME:
+      2021-07-03: 100.0
+    QUARTER_TIME:
+      2021-07-03: 50.0
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 165.0
+    PART_TIME:
+      2021-07-03: 123.75
+    HALF_TIME:
+      2021-07-03: 82.5
+    QUARTER_TIME:
+      2021-07-03: 41.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 155.0
+    PART_TIME:
+      2021-07-03: 116.25
+    HALF_TIME:
+      2021-07-03: 77.5
+    QUARTER_TIME:
+      2021-07-03: 38.75
+AROOSTOOK:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 185.0
+    PART_TIME:
+      2021-07-03: 138.75
+    HALF_TIME:
+      2021-07-03: 92.5
+    QUARTER_TIME:
+      2021-07-03: 46.25
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 154.0
+    PART_TIME:
+      2021-07-03: 115.5
+    HALF_TIME:
+      2021-07-03: 77.0
+    QUARTER_TIME:
+      2021-07-03: 38.5
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 148.0
+    PART_TIME:
+      2021-07-03: 111.0
+    HALF_TIME:
+      2021-07-03: 74.0
+    QUARTER_TIME:
+      2021-07-03: 37.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 140.0
+    PART_TIME:
+      2021-07-03: 105.0
+    HALF_TIME:
+      2021-07-03: 70.0
+    QUARTER_TIME:
+      2021-07-03: 35.0
+CUMBERLAND:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 303.0
+    PART_TIME:
+      2021-07-03: 227.25
+    HALF_TIME:
+      2021-07-03: 151.5
+    QUARTER_TIME:
+      2021-07-03: 75.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 279.0
+    PART_TIME:
+      2021-07-03: 209.25
+    HALF_TIME:
+      2021-07-03: 139.5
+    QUARTER_TIME:
+      2021-07-03: 69.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 263.08
+    PART_TIME:
+      2021-07-03: 197.31
+    HALF_TIME:
+      2021-07-03: 131.54
+    QUARTER_TIME:
+      2021-07-03: 65.77
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 180.0
+    PART_TIME:
+      2021-07-03: 135.0
+    HALF_TIME:
+      2021-07-03: 90.0
+    QUARTER_TIME:
+      2021-07-03: 45.0
+FRANKLIN:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 205.0
+    PART_TIME:
+      2021-07-03: 153.75
+    HALF_TIME:
+      2021-07-03: 102.5
+    QUARTER_TIME:
+      2021-07-03: 51.25
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 196.0
+    PART_TIME:
+      2021-07-03: 147.0
+    HALF_TIME:
+      2021-07-03: 98.0
+    QUARTER_TIME:
+      2021-07-03: 49.0
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 181.67
+    PART_TIME:
+      2021-07-03: 136.25
+    HALF_TIME:
+      2021-07-03: 90.84
+    QUARTER_TIME:
+      2021-07-03: 45.42
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 125.0
+    PART_TIME:
+      2021-07-03: 93.75
+    HALF_TIME:
+      2021-07-03: 62.5
+    QUARTER_TIME:
+      2021-07-03: 31.25
+HANCOCK:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 227.0
+    PART_TIME:
+      2021-07-03: 170.25
+    HALF_TIME:
+      2021-07-03: 113.5
+    QUARTER_TIME:
+      2021-07-03: 56.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 197.0
+    PART_TIME:
+      2021-07-03: 147.75
+    HALF_TIME:
+      2021-07-03: 98.5
+    QUARTER_TIME:
+      2021-07-03: 49.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 149.0
+    PART_TIME:
+      2021-07-03: 111.75
+    HALF_TIME:
+      2021-07-03: 74.5
+    QUARTER_TIME:
+      2021-07-03: 37.25
+KENNEBEC:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 220.0
+      2024-07-06: 275
+    PART_TIME:
+      2021-07-03: 165.0
+      2024-07-06: 206.25
+    HALF_TIME:
+      2021-07-03: 110.0
+      2024-07-06: 137.5
+    QUARTER_TIME:
+      2021-07-03: 55.0
+      2024-07-06: 68.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 200.0
+      2024-07-06: 250
+    PART_TIME:
+      2021-07-03: 150.0
+      2024-07-06: 187.5
+    HALF_TIME:
+      2021-07-03: 100.0
+      2024-07-06: 125
+    QUARTER_TIME:
+      2021-07-03: 50.0
+      2024-07-06: 62.5
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 267.0
+      2024-07-06: 267
+    PART_TIME:
+      2021-07-03: 200.25
+      2024-07-06: 200.25
+    HALF_TIME:
+      2021-07-03: 133.5
+      2024-07-06: 133.5
+    QUARTER_TIME:
+      2021-07-03: 66.75
+      2024-07-06: 66.75
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 145.0
+      2024-07-06: 180
+    PART_TIME:
+      2021-07-03: 108.75
+      2024-07-06: 135
+      2025-05-19: 144.47
+    HALF_TIME:
+      2021-07-03: 72.5
+      2024-07-06: 90
+    QUARTER_TIME:
+      2021-07-03: 36.25
+      2024-07-06: 45
+KNOX:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 209.0
+    PART_TIME:
+      2021-07-03: 156.75
+    HALF_TIME:
+      2021-07-03: 104.5
+    QUARTER_TIME:
+      2021-07-03: 52.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 220.0
+    PART_TIME:
+      2021-07-03: 165.0
+    HALF_TIME:
+      2021-07-03: 110.0
+    QUARTER_TIME:
+      2021-07-03: 55.0
+LINCOLN:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 210.0
+    PART_TIME:
+      2021-07-03: 157.5
+    HALF_TIME:
+      2021-07-03: 105.0
+    QUARTER_TIME:
+      2021-07-03: 52.5
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 200.0
+    PART_TIME:
+      2021-07-03: 150.0
+    HALF_TIME:
+      2021-07-03: 100.0
+    QUARTER_TIME:
+      2021-07-03: 50.0
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 200.0
+    PART_TIME:
+      2021-07-03: 150.0
+    HALF_TIME:
+      2021-07-03: 100.0
+    QUARTER_TIME:
+      2021-07-03: 50.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 178.75
+    PART_TIME:
+      2021-07-03: 134.06
+    HALF_TIME:
+      2021-07-03: 89.38
+    QUARTER_TIME:
+      2021-07-03: 44.69
+OXFORD:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 205.0
+    PART_TIME:
+      2021-07-03: 153.75
+    HALF_TIME:
+      2021-07-03: 102.5
+    QUARTER_TIME:
+      2021-07-03: 51.25
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 196.0
+    PART_TIME:
+      2021-07-03: 147.0
+    HALF_TIME:
+      2021-07-03: 98.0
+    QUARTER_TIME:
+      2021-07-03: 49.0
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 181.67
+    PART_TIME:
+      2021-07-03: 136.25
+    HALF_TIME:
+      2021-07-03: 90.84
+    QUARTER_TIME:
+      2021-07-03: 45.42
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 125.0
+    PART_TIME:
+      2021-07-03: 93.75
+    HALF_TIME:
+      2021-07-03: 62.5
+    QUARTER_TIME:
+      2021-07-03: 31.25
+PENOBSCOT:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 255.0
+      2024-07-06: 275
+    PART_TIME:
+      2021-07-03: 191.25
+      2024-07-06: 206.25
+    HALF_TIME:
+      2021-07-03: 127.5
+      2024-07-06: 137.5
+    QUARTER_TIME:
+      2021-07-03: 63.75
+      2024-07-06: 68.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 230.0
+      2024-07-06: 250
+    PART_TIME:
+      2021-07-03: 172.5
+      2024-07-06: 187.5
+    HALF_TIME:
+      2021-07-03: 115.0
+      2024-07-06: 125
+    QUARTER_TIME:
+      2021-07-03: 57.5
+      2024-07-06: 62.5
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 205.0
+      2024-07-06: 244
+    PART_TIME:
+      2021-07-03: 153.75
+      2024-07-06: 183
+    HALF_TIME:
+      2021-07-03: 102.5
+      2024-07-06: 122
+    QUARTER_TIME:
+      2021-07-03: 51.25
+      2024-07-06: 61
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 200.0
+      2024-07-06: 200
+    PART_TIME:
+      2021-07-03: 150.0
+      2024-07-06: 150
+      2025-05-19: 160.53
+    HALF_TIME:
+      2021-07-03: 100.0
+      2024-07-06: 100
+    QUARTER_TIME:
+      2021-07-03: 50.0
+      2024-07-06: 50
+PISCATAQUIS:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 185.0
+    PART_TIME:
+      2021-07-03: 138.75
+    HALF_TIME:
+      2021-07-03: 92.5
+    QUARTER_TIME:
+      2021-07-03: 46.25
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 154.0
+    PART_TIME:
+      2021-07-03: 115.5
+    HALF_TIME:
+      2021-07-03: 77.0
+    QUARTER_TIME:
+      2021-07-03: 38.5
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 148.0
+    PART_TIME:
+      2021-07-03: 111.0
+    HALF_TIME:
+      2021-07-03: 74.0
+    QUARTER_TIME:
+      2021-07-03: 37.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 140.0
+    PART_TIME:
+      2021-07-03: 105.0
+    HALF_TIME:
+      2021-07-03: 70.0
+    QUARTER_TIME:
+      2021-07-03: 35.0
+SAGADAHOC:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 210.0
+    PART_TIME:
+      2021-07-03: 157.5
+    HALF_TIME:
+      2021-07-03: 105.0
+    QUARTER_TIME:
+      2021-07-03: 52.5
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 200.0
+    PART_TIME:
+      2021-07-03: 150.0
+    HALF_TIME:
+      2021-07-03: 100.0
+    QUARTER_TIME:
+      2021-07-03: 50.0
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 200.0
+    PART_TIME:
+      2021-07-03: 150.0
+    HALF_TIME:
+      2021-07-03: 100.0
+    QUARTER_TIME:
+      2021-07-03: 50.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 178.75
+    PART_TIME:
+      2021-07-03: 134.06
+    HALF_TIME:
+      2021-07-03: 89.38
+    QUARTER_TIME:
+      2021-07-03: 44.69
+SOMERSET:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 185.0
+    PART_TIME:
+      2021-07-03: 138.75
+    HALF_TIME:
+      2021-07-03: 92.5
+    QUARTER_TIME:
+      2021-07-03: 46.25
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 154.0
+    PART_TIME:
+      2021-07-03: 115.5
+    HALF_TIME:
+      2021-07-03: 77.0
+    QUARTER_TIME:
+      2021-07-03: 38.5
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 148.0
+    PART_TIME:
+      2021-07-03: 111.0
+    HALF_TIME:
+      2021-07-03: 74.0
+    QUARTER_TIME:
+      2021-07-03: 37.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 140.0
+    PART_TIME:
+      2021-07-03: 105.0
+    HALF_TIME:
+      2021-07-03: 70.0
+    QUARTER_TIME:
+      2021-07-03: 35.0
+WALDO:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 209.0
+    PART_TIME:
+      2021-07-03: 156.75
+    HALF_TIME:
+      2021-07-03: 104.5
+    QUARTER_TIME:
+      2021-07-03: 52.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 220.0
+    PART_TIME:
+      2021-07-03: 165.0
+    HALF_TIME:
+      2021-07-03: 110.0
+    QUARTER_TIME:
+      2021-07-03: 55.0
+WASHINGTON:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 227.0
+    PART_TIME:
+      2021-07-03: 170.25
+    HALF_TIME:
+      2021-07-03: 113.5
+    QUARTER_TIME:
+      2021-07-03: 56.75
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 219.0
+    PART_TIME:
+      2021-07-03: 164.25
+    HALF_TIME:
+      2021-07-03: 109.5
+    QUARTER_TIME:
+      2021-07-03: 54.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 197.0
+    PART_TIME:
+      2021-07-03: 147.75
+    HALF_TIME:
+      2021-07-03: 98.5
+    QUARTER_TIME:
+      2021-07-03: 49.25
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 149.0
+    PART_TIME:
+      2021-07-03: 111.75
+    HALF_TIME:
+      2021-07-03: 74.5
+    QUARTER_TIME:
+      2021-07-03: 37.25
+YORK:
+  INFANT:
+    FULL_TIME:
+      2021-07-03: 270.0
+    PART_TIME:
+      2021-07-03: 202.5
+    HALF_TIME:
+      2021-07-03: 135.0
+    QUARTER_TIME:
+      2021-07-03: 67.5
+  TODDLER:
+    FULL_TIME:
+      2021-07-03: 255.0
+    PART_TIME:
+      2021-07-03: 191.25
+    HALF_TIME:
+      2021-07-03: 127.5
+    QUARTER_TIME:
+      2021-07-03: 63.75
+  PRESCHOOL:
+    FULL_TIME:
+      2021-07-03: 240.0
+    PART_TIME:
+      2021-07-03: 180.0
+    HALF_TIME:
+      2021-07-03: 120.0
+    QUARTER_TIME:
+      2021-07-03: 60.0
+  SCHOOL_AGE:
+    FULL_TIME:
+      2021-07-03: 204.0
+    PART_TIME:
+      2021-07-03: 153.0
+    HALF_TIME:
+      2021-07-03: 102.0
+    QUARTER_TIME:
+      2021-07-03: 51.0
 REGION_1:
   INFANT:
     FULL_TIME:
@@ -92,44 +719,6 @@ REGION_2:
       2024-07-06: 90
     QUARTER_TIME:
       2024-07-06: 45
-KENNEBEC:
-  INFANT:
-    FULL_TIME:
-      2024-07-06: 275
-    PART_TIME:
-      2024-07-06: 206.25
-    HALF_TIME:
-      2024-07-06: 137.5
-    QUARTER_TIME:
-      2024-07-06: 68.75
-  TODDLER:
-    FULL_TIME:
-      2024-07-06: 250
-    PART_TIME:
-      2024-07-06: 187.5
-    HALF_TIME:
-      2024-07-06: 125
-    QUARTER_TIME:
-      2024-07-06: 62.5
-  PRESCHOOL:
-    FULL_TIME:
-      2024-07-06: 267
-    PART_TIME:
-      2024-07-06: 200.25
-    HALF_TIME:
-      2024-07-06: 133.5
-    QUARTER_TIME:
-      2024-07-06: 66.75
-  SCHOOL_AGE:
-    FULL_TIME:
-      2024-07-06: 180
-    PART_TIME:
-      2024-07-06: 135
-      2025-05-19: 144.47
-    HALF_TIME:
-      2024-07-06: 90
-    QUARTER_TIME:
-      2024-07-06: 45
 KNOX_WALDO:
   INFANT:
     FULL_TIME:
@@ -168,41 +757,3 @@ KNOX_WALDO:
       2024-07-06: 110
     QUARTER_TIME:
       2024-07-06: 55
-PENOBSCOT:
-  INFANT:
-    FULL_TIME:
-      2024-07-06: 275
-    PART_TIME:
-      2024-07-06: 206.25
-    HALF_TIME:
-      2024-07-06: 137.5
-    QUARTER_TIME:
-      2024-07-06: 68.75
-  TODDLER:
-    FULL_TIME:
-      2024-07-06: 250
-    PART_TIME:
-      2024-07-06: 187.5
-    HALF_TIME:
-      2024-07-06: 125
-    QUARTER_TIME:
-      2024-07-06: 62.5
-  PRESCHOOL:
-    FULL_TIME:
-      2024-07-06: 244
-    PART_TIME:
-      2024-07-06: 183
-    HALF_TIME:
-      2024-07-06: 122
-    QUARTER_TIME:
-      2024-07-06: 61
-  SCHOOL_AGE:
-    FULL_TIME:
-      2024-07-06: 200
-    PART_TIME:
-      2024-07-06: 150
-      2025-05-19: 160.53
-    HALF_TIME:
-      2024-07-06: 100
-    QUARTER_TIME:
-      2024-07-06: 50

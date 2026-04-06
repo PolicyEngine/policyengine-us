@@ -1,3 +1,27 @@
+- name: Case 0, Cumberland County used county-specific rates before July 2024.
+  period: 2024-01
+  input:
+    county_str: CUMBERLAND_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: CUMBERLAND
+
+- name: Case 0b, Knox County used county-specific rates before July 2024.
+  period: 2024-01
+  input:
+    county_str: KNOX_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: KNOX
+
+- name: Case 0c, Waldo County used county-specific rates before July 2024.
+  period: 2024-01
+  input:
+    county_str: WALDO_COUNTY_ME
+    state_code: ME
+  output:
+    me_ccap_region: WALDO
+
 - name: Case 1, Cumberland County, Region 1.
   period: 2025-01
   input:

@@ -123,17 +123,17 @@
     ri_ccap_copay: 0
 
     # === Provider rates ===
-    # child1 (age 1): INFANT center group, FT Star 2 = $341
+    # child1 (age 1): INFANT_TODDLER center group, FT Star 2 = $284
     # child2 (age 5, not in school): PRESCHOOL center group, FT Star 2 = $247
-    ri_ccap_center_age_group: [PRESCHOOL, INFANT, PRESCHOOL]
+    ri_ccap_center_age_group: [PRESCHOOL, INFANT_TODDLER, PRESCHOOL]
     # Parent: 0 hrs/wk -> QUARTER_TIME; Children: FT
     ri_ccap_time_category: [QUARTER_TIME, FULL_TIME, FULL_TIME]
-    ri_ccap_maximum_weekly_benefit: [0, 341, 247]
+    ri_ccap_maximum_weekly_benefit: [0, 284, 247]
 
     # === Benefit ===
-    # max annual per child: 341*52 = 17,732 + 247*52 = 12,844 = 30,576
+    # max annual per child: 284*52 = 14,768 + 247*52 = 12,844 = 27,612
     # uncapped = max(25,000 - 0, 0) = 25,000
-    # annual benefit = min(25,000, 30,576) = 25,000
+    # annual benefit = min(25,000, 27,612) = 25,000
     # monthly = 25,000 / 12 = 2,083.33
     ri_ccap: 2_083.33
 
@@ -417,17 +417,17 @@
     ri_ccap_copay: 50
 
     # === Provider rates ===
-    # child1 (age 1): Center FT Star 4 Infant = $364
+    # child1 (age 1): Center FT Star 4 Infant/Toddler = $303
     # child2 (age 8, in school): Exempt HT Step 1 School Age = $29.40
-    ri_ccap_center_age_group: [PRESCHOOL, INFANT, SCHOOL_AGE]
+    ri_ccap_center_age_group: [PRESCHOOL, INFANT_TODDLER, SCHOOL_AGE]
     # Parent: 0 hrs/wk -> QUARTER_TIME; child1: 35 hrs -> FULL_TIME; child2: 10 hrs -> HALF_TIME
     ri_ccap_time_category: [QUARTER_TIME, FULL_TIME, HALF_TIME]
-    ri_ccap_maximum_weekly_benefit: [0, 364, 29.40]
+    ri_ccap_maximum_weekly_benefit: [0, 303, 29.40]
 
     # === Benefit ===
-    # max annual = (364 + 29.40) * 52 = 393.40 * 52 = 20,456.80
+    # max annual = (303 + 29.40) * 52 = 332.40 * 52 = 17,284.80
     # uncapped = max(15,000 - 600, 0) = 14,400
-    # annual benefit = min(14,400, 20,456.80) = 14,400
+    # annual benefit = min(14,400, 17,284.80) = 14,400
     # monthly = 14,400 / 12 = 1,200
     ri_ccap: 1_200
 
