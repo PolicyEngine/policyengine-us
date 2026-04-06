@@ -16,9 +16,9 @@ class ny_inflation_refund_credit(Variable):
     def formula(tax_unit, period, parameters):
         return 0
 
-    def formula_2023(tax_unit, period, parameters):
-        # Based on 2023 tax year returns per NY Tax Department.
-        # Delivered as mailed checks, not claimed on IT-201.
+    def formula_2025(tax_unit, period, parameters):
+        # Credit is for tax year 2025 per Tax Law §606(qqq), but eligibility
+        # is determined using 2023 tax return data (NY AGI from IT-201 line 33).
         p = parameters(period).gov.states.ny.tax.income.credits.inflation_refund
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
@@ -41,5 +41,5 @@ class ny_inflation_refund_credit(Variable):
             ],
         )
 
-    def formula_2024(tax_unit, period, parameters):
+    def formula_2026(tax_unit, period, parameters):
         return 0
