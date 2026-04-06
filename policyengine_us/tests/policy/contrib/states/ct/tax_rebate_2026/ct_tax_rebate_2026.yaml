@@ -1,0 +1,275 @@
+# Connecticut 2026 Tax Rebate
+# Gov. Lamont's proposed tax rebate
+# Single: $200 if AGI <= $200,000
+# Joint: $400 if AGI <= $400,000
+# Head of Household: $320 if AGI <= $320,000
+
+- name: Case 1, single filer under income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 200
+
+- name: Case 2, single filer at income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 200
+
+- name: Case 3, single filer over income limit gets no rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_001
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 0
+
+- name: Case 4, joint filer under income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 300_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 400
+
+- name: Case 5, joint filer at income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 400
+
+- name: Case 6, joint filer over income limit gets no rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 400_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 0
+
+- name: Case 7, head of household under income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 250_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 320
+
+- name: Case 8, head of household at income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 320_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 320
+
+- name: Case 9, head of household over income limit gets no rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 320_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 0
+
+- name: Case 10, married filing separately under income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 200
+
+- name: Case 11, surviving spouse under income limit receives rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+        adjusted_gross_income: 350_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_tax_rebate_2026: 400
+
+- name: Case 12, non-CT resident gets no rebate.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.tax_rebate_2026.ct_tax_rebate_2026.ct_tax_rebate_2026
+  input:
+    gov.contrib.states.ct.tax_rebate_2026.in_effect: true
+    people:
+      person1:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_tax_rebate_2026: 0

@@ -8,9 +8,7 @@ def create_american_worker_rebate_act() -> Reform:
         value_type = bool
         entity = TaxUnit
         label = "American Worker Tax Rebate eligible"
-        documentation = (
-            "Eligible for tax rebate under the American Worker Rebate Act."
-        )
+        documentation = "Eligible for tax rebate under the American Worker Rebate Act."
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
@@ -28,8 +26,7 @@ def create_american_worker_rebate_act() -> Reform:
                 "meets_ctc_identification_requirements", period
             )
             ineligible_head_or_spouse = head_or_spouse & ~(
-                is_eligible_immigration_status
-                & meets_ctc_identification_requirements
+                is_eligible_immigration_status & meets_ctc_identification_requirements
             )
             return ~tax_unit.any(ineligible_head_or_spouse)
 
@@ -58,9 +55,7 @@ def create_american_worker_rebate_act() -> Reform:
         entity = TaxUnit
         label = "American Worker Tax Rebate"
         unit = USD
-        documentation = (
-            "Tax rebate amount under the American Worker Rebate Act."
-        )
+        documentation = "Tax rebate amount under the American Worker Rebate Act."
         definition_period = YEAR
         defined_for = "american_worker_tax_rebate_eligible"
 
@@ -85,7 +80,9 @@ def create_american_worker_rebate_act() -> Reform:
         entity = Person
         label = "American Worker Tax Rebate child amount"
         unit = USD
-        documentation = "The tax rebate amount for children, under the American Worker Rebate Act."
+        documentation = (
+            "The tax rebate amount for children, under the American Worker Rebate Act."
+        )
         definition_period = YEAR
         defined_for = "ctc_qualifying_child"
 
@@ -117,9 +114,7 @@ def create_american_worker_rebate_act() -> Reform:
     return reform
 
 
-def create_american_worker_rebate_act_reform(
-    parameters, period, bypass: bool = False
-):
+def create_american_worker_rebate_act_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_american_worker_rebate_act()
 

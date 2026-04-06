@@ -1,0 +1,16 @@
+description: The Centers for Medicare & Medicaid Services (CMS) sets this as the standard monthly premium for Medicare Part B coverage.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicare Part B base premium
+  reference:
+    - title: 2021 Medicare Parts A & B Premiums and Deductibles
+      href: https://www.cms.gov/newsroom/fact-sheets/2021-medicare-parts-b-premiums-and-deductibles
+    - title: 2024 Medicare Parts A & B Premiums and Deductibles
+      href: https://www.cms.gov/newsroom/fact-sheets/2024-medicare-parts-b-premiums-and-deductibles
+    - title: 2025 Medicare Parts A & B Premiums and Deductibles
+      href: https://www.cms.gov/newsroom/fact-sheets/2025-medicare-parts-b-premiums-and-deductibles
+values:
+  2021-01-01: 148.50
+  2024-01-01: 174.70
+  2025-01-01: 185

@@ -1,0 +1,239 @@
+# North Dakota TANF Resource Eligibility Unit Tests
+#
+# Resource Limits:
+# - 1 person: $3,000
+# - 2 persons: $6,000
+# - 3+ persons: $6,000 + $25 per additional person beyond 2
+
+- name: Case 1, one person at resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $3,000 <= $3,000 = true
+    nd_tanf_resources_eligible: true
+
+- name: Case 2, one person over resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 22
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 3_001
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $3,001 > $3,000 = false
+    nd_tanf_resources_eligible: false
+
+- name: Case 3, two persons at resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # $6,000 <= $6,000 = true
+    nd_tanf_resources_eligible: true
+
+- name: Case 4, two persons over resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # $6,001 > $6,000 = false
+    nd_tanf_resources_eligible: false
+
+- name: Case 5, four persons at incremental limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 6_050
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # Limit: $6,000 + $25 * (4-2) = $6,050
+    # $6,050 <= $6,050 = true
+    nd_tanf_resources_eligible: true
+
+- name: Case 6, four persons over incremental limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 7
+      person3:
+        age: 4
+      person4:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 6_051
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # Limit: $6,000 + $25 * (4-2) = $6,050
+    # $6,051 > $6,050 = false
+    nd_tanf_resources_eligible: false
+
+# One-dollar-below boundary tests
+
+- name: Case 7, one person one dollar below resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 24
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_999
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $2,999 <= $3,000 = true
+    nd_tanf_resources_eligible: true
+
+- name: Case 8, two persons one dollar below resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 29
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # $5,999 <= $6,000 = true
+    nd_tanf_resources_eligible: true
+
+- name: Case 9, four persons one dollar below incremental limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 33
+      person2:
+        age: 9
+      person3:
+        age: 6
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 6_049
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ND
+  output:
+    # Limit: $6,000 + $25 * (4-2) = $6,050
+    # $6,049 <= $6,050 = true
+    nd_tanf_resources_eligible: true
+
+# Large household test
+
+- name: Case 10, ten persons tests large household increment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        spm_unit_assets: 6_200
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: ND
+  output:
+    # Limit: $6,000 + $25 * (10-2) = $6,000 + $200 = $6,200
+    # $6,200 <= $6,200 = true
+    nd_tanf_resources_eligible: true

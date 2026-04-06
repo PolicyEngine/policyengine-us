@@ -1,0 +1,162 @@
+# Unit tests for Oklahoma TANF countable income calculation
+# OAC 340:10-3-31.1, OAC 340:10-3-33
+# Work expense: $120 (<30 hrs/week), $240 (30+ hrs/week)
+# Formula: Countable Income = (Gross Earned - Work Expense) * 0.50 + Gross Unearned
+# https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html
+
+- name: No income results in zero countable income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_tanf_countable_income: 0
+
+- name: Part-time earnings - $500 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $500
+    # After work expense: $500 - $120 = $380
+    # 50% disregard: $380 * 0.50 = $190
+    ok_tanf_countable_income: 190
+
+- name: Full-time earnings - $500 monthly
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $500
+    # After work expense: $500 - $240 = $260
+    # 50% disregard: $260 * 0.50 = $130
+    ok_tanf_countable_income: 130
+
+- name: Earnings below work expense deduction
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $100
+    # After work expense: max($100 - $120, 0) = $0
+    # 50% disregard: $0 * 0.50 = $0
+    ok_tanf_countable_income: 0
+
+- name: Unearned income only (counted at full amount)
+  period: 2024-01
+  input:
+    people:
+      person1:
+        pension_income: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # No earned income, unearned at full: $300
+    ok_tanf_countable_income: 300
+
+- name: Combined earned and unearned income - full time
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 7_200  # $600/month
+        pension_income: 2_400  # $200/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $600
+    # After work expense: $600 - $240 = $360
+    # 50% disregard: $360 * 0.50 = $180
+    # Add unearned: $180 + $200 = $380
+    ok_tanf_countable_income: 380
+
+- name: Higher earnings - $1000 monthly full time
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month
+        pension_income: 1_200  # $100/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $1,000
+    # After work expense: $1,000 - $240 = $760
+    # 50% disregard: $760 * 0.50 = $380
+    # Add unearned: $380 + $100 = $480
+    ok_tanf_countable_income: 480
+
+- name: Edge case - earnings exactly equal to work expense
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_440  # $120/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross earned: $120
+    # After work expense: $120 - $120 = $0
+    # 50% disregard: $0 * 0.50 = $0
+    ok_tanf_countable_income: 0

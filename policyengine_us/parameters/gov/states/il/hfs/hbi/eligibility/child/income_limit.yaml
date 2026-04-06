@@ -1,0 +1,13 @@
+description: Illinois limits income to this share of the federal poverty level for children under the All Kids program.
+metadata:
+  unit: /1
+  period: year
+  label: Illinois All Kids income limit
+  reference:
+    - title: Illinois HFS - About All Kids
+      href: https://hfs.illinois.gov/medicalprograms/allkids/about.html
+
+values:
+  # All Kids program covers children regardless of immigration status
+  # Up to 318% FPL (Premium Level 2 ceiling)
+  2006-01-01: 3.18

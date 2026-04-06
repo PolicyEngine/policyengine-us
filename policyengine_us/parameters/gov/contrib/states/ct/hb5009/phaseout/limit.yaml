@@ -1,0 +1,26 @@
+description: Connecticut HB-5009 AGI threshold above which no property tax credit is allowed, by filing status.
+
+metadata:
+  label: Connecticut HB-5009 property tax credit phase-out limit
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: CT House GOP Press Release - Property Tax Relief
+      href: https://www.cthousegop.com/post/property-tax-relief
+
+JOINT:
+  2026-01-01: 200_000
+
+SINGLE:
+  2026-01-01: 130_000
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 130_000
+
+SEPARATE:
+  2026-01-01: 100_000
+
+SURVIVING_SPOUSE:
+  2026-01-01: 200_000

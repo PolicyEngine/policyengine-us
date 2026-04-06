@@ -1,0 +1,136 @@
+# Tests for NJ WFNJ countable unearned income
+# Logic: gross_unearned - child_support_disregard
+# Child support disregard by number of children:
+#   - 0 children: $0 max disregard
+#   - 1 child: $100 max disregard
+#   - 2+ children: $200 max disregard
+
+- name: Case 1, no children with unearned income only.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 1_200  # $100/month
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # Gross unearned: $100/month, 0 children -> $0 disregard
+    nj_wfnj_countable_unearned_income: 100
+
+- name: Case 2, one child with child support below $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Gross: $50, 1 child -> max $100 disregard
+    # Disregard: min(50, 100) = $50, Countable: $50 - $50 = $0
+    nj_wfnj_countable_unearned_income: 0
+
+- name: Case 3, one child with child support above $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+        social_security: 600  # $50/month
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Gross: $200, 1 child -> max $100 disregard
+    # Disregard: min(150, 100) = $100, Countable: $200 - $100 = $100
+    nj_wfnj_countable_unearned_income: 100
+
+- name: Case 4, two children with child support below $200.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # Gross: $100, 2 children -> max $200 disregard
+    # Disregard: min(100, 200) = $100, Countable: $100 - $100 = $0
+    nj_wfnj_countable_unearned_income: 0
+
+- name: Case 5, two children with child support above $200.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month
+        social_security: 600  # $50/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # Gross: $350, 2 children -> max $200 disregard
+    # Disregard: min(300, 200) = $200, Countable: $350 - $200 = $150
+    nj_wfnj_countable_unearned_income: 150
+
+- name: Case 6, no unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_wfnj_countable_unearned_income: 0
+
+- name: Case 7, three children uses same $200 cap as two children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_600  # $300/month
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 8
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # Gross: $300, 3 children -> max $200 disregard (same as 2+)
+    # Disregard: min(300, 200) = $200, Countable: $300 - $200 = $100
+    nj_wfnj_countable_unearned_income: 100

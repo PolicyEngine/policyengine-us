@@ -1,0 +1,105 @@
+# Integration tests for medicaid_enrolled variable
+# Tests compare CA undocumented immigrant eligibility before/after 2026 rule change
+# Existing enrollees retain coverage by setting receives_medicaid: true as input
+
+- name: Case 1, undocumented adult in CA 2026 existing enrollee retains coverage.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        receives_medicaid: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Existing enrollees retain coverage via continuous coverage provision
+    # receives_medicaid: true signals this person was enrolled before the freeze
+    receives_medicaid: [true]
+    is_ca_medicaid_immigration_status_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_enrolled: [true]
+    medicaid: [6_439.11]
+
+- name: Case 2, undocumented adult in CA 2024 enrolled and eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        receives_medicaid: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # In 2024, undocumented adults age 26-49 are eligible in CA
+    is_medicaid_eligible: [true]
+
+- name: Case 3, undocumented adult in CA 2026 not existing enrollee.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        # receives_medicaid defaults to false - new applicant blocked by freeze
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # New applicants are blocked by the 2026 enrollment freeze
+    receives_medicaid: [false]
+    is_ca_medicaid_immigration_status_eligible: [false]
+    is_medicaid_eligible: [false]
+    medicaid_enrolled: [false]
+
+- name: Case 4, undocumented adult in CA 2025 computed enrollment.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        # receives_medicaid not set - using computed enrollment
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # In 2025, undocumented adults are still eligible in CA
+    is_medicaid_eligible: [true]
+    medicaid_enrolled: [true]
+    takes_up_medicaid_if_eligible: [true]

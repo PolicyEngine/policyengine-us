@@ -14,9 +14,7 @@ class tx_tanf_caretaker_type(Variable):
     entity = SPMUnit
     label = "Texas TANF caretaker type"
     definition_period = MONTH
-    reference = (
-        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf"
-    )
+    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf"
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):

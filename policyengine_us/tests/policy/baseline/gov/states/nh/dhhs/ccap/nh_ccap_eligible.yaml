@@ -1,0 +1,258 @@
+# Tests for nh_ccap_eligible (SPMUnit, MONTH)
+# Overall eligibility combines: has eligible child, income eligible,
+# asset eligible, and activity test.
+# He-C 6910.06, He-C 6910.07
+
+- name: Case 1, all criteria met, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: true
+
+- name: Case 2, no eligible child, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: false
+
+- name: Case 3, income too high, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: false
+
+- name: Case 4, activity test not met, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: false
+
+- name: Case 5, assets over $1M, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_assets: 1_100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: false
+
+- name: Case 6, undocumented child, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: false
+
+# --- Edge Cases ---
+
+- name: Case 7, child exactly age 13, ineligible due to age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # child_age_limit = 13, age < 13 → false → no eligible child
+    nh_ccap_eligible: false
+
+- name: Case 8, disabled child age 17, eligible via disability extension.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+      person2:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # disabled_child_age_limit = 18, age 17 < 18 → eligible child
+    nh_ccap_eligible: true
+
+- name: Case 9, disabled child age 18, ineligible due to age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+      person2:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # disabled_child_age_limit = 18, age 18 < 18 → false
+    nh_ccap_eligible: false
+
+- name: Case 10, zero income, all criteria met, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: true
+
+- name: Case 11, assets exactly at $1M limit, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # CCDF asset limit is $1M; at exactly $1M → eligible
+    nh_ccap_eligible: true

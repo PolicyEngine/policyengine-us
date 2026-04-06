@@ -1,12 +1,14 @@
-description: New York limits its TANF program to households with up to this income level for people beyond size.
+description: New York provides this amount for each additional person under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
   period: month
   label: New York TANF monthly income limit per additional person
   reference:
-    - title: New York State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families
-      href: https://otda.ny.gov/policy/tanf/TANF-State-Plan-2021-2023.pdf#page=65
+    - title: New York TANF State Plan 2024-2026 
+      href: https://otda.ny.gov/policy/tanf/TANF-State-Plan-2024-2026.pdf#page=77
+    - title: N.Y. Comp. Codes R. & Regs. Tit. 18 § 352.1 - Standard of need for determining eligibility
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.1
 
 values:
   2012-10-01: 85

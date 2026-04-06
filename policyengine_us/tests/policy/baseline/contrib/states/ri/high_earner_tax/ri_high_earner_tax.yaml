@@ -1,0 +1,90 @@
+# Test RI H7317 Additional Tax on High-Income Filers
+# For 2027+: 3% additional tax on income above $640,000 (inflation-adjusted)
+
+- name: RI high earner tax - income below threshold (no surtax)
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Income below $640k threshold - only baseline tax applies, surtax = 0
+    ri_income_tax_before_non_refundable_credits: 26_898.54
+
+- name: RI high earner tax - income above threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 750_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Baseline tax (41,873.54) + 3% surtax on income above $640k threshold
+    # Surtax: (750,000 - 640,000) * 0.03 = 110,000 * 0.03 = 3,300
+    # Total: 41,873.54 + 3,300 = 45,173.54
+    ri_income_tax_before_non_refundable_credits: 45_173.54
+
+- name: RI high earner tax - income well above threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Baseline tax (56,848.54) + 3% surtax on income above $640k threshold
+    # Surtax: (1,000,000 - 640,000) * 0.03 = 360,000 * 0.03 = 10,800
+    # Total: 56,848.54 + 10,800 = 67,648.54
+    ri_income_tax_before_non_refundable_credits: 67_648.54
+
+- name: RI high earner tax - reform not in effect
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
+  input:
+    gov.contrib.states.ri.high_earner_tax.in_effect: false
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_taxable_income: 750_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Reform not in effect - only baseline tax applies (no surtax)
+    ri_income_tax_before_non_refundable_credits: 41_873.54

@@ -1,0 +1,85 @@
+- name: Low income table cheaper than regular rates
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 22_000
+        ar_low_income_tax_joint: 200
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_low_income_tax_joint: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: true
+
+- name: Regular rates cheaper than low income table
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 22_000
+        ar_low_income_tax_joint: 9_999
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_low_income_tax_joint: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: false
+
+- name: Low income table not applicable (inf)
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 50_000
+        ar_low_income_tax_joint: .inf
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: false
+
+- name: Equal taxes, low income table not preferred
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 10_000
+        # Regular rate on $10k: 0.039 * 10000 = 390, reduction ~0
+        ar_low_income_tax_joint: 390
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # > not >=, so equal means regular rates used
+    ar_uses_low_income_tax_tables: false
+
+- name: Two-person joint, low income table cheaper
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_joint: 25_000
+        ar_low_income_tax_joint: 100
+        is_tax_unit_head: true
+      person2:
+        ar_taxable_income_joint: 0
+        ar_low_income_tax_joint: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: true

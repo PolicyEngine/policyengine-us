@@ -1,0 +1,149 @@
+# Unit tests for ar_tea_income_eligible
+# Arkansas TEA income eligibility: Countable income must be <= $513/month (all family sizes)
+# Income limit increased from $223 to $513 effective 01/01/2023
+
+- name: Case 1, zero income is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 0
+  output:
+    ar_tea_income_eligible: true
+    # 0 <= 513 -> eligible
+
+- name: Case 2, countable income below limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 400
+  output:
+    ar_tea_income_eligible: true
+    # 400 <= 513 -> eligible
+
+- name: Case 3, countable income at threshold is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 513
+  output:
+    ar_tea_income_eligible: true
+    # 513 <= 513 -> eligible (at threshold is still eligible)
+
+- name: Case 4, countable income one dollar over threshold is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 514
+  output:
+    ar_tea_income_eligible: false
+    # 514 > 513 -> ineligible
+
+- name: Case 5, countable income well above threshold is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 700
+  output:
+    ar_tea_income_eligible: false
+    # 700 > 513 -> ineligible
+
+# 2022 tests - using old $223 income limit (before 01/01/2023 increase)
+
+- name: Case 6, 2022 countable income at old threshold is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 223
+  output:
+    ar_tea_income_eligible: true
+    # 223 <= 223 -> eligible (at old threshold)
+
+- name: Case 7, 2022 countable income one dollar over old threshold is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 224
+  output:
+    ar_tea_income_eligible: false
+    # 224 > 223 -> ineligible (old threshold)
+
+- name: Case 8, 2022 countable income of 400 is ineligible under old limit.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_countable_income: 400
+  output:
+    ar_tea_income_eligible: false
+    # 400 > 223 -> ineligible (but would be eligible under 2024 $513 limit)

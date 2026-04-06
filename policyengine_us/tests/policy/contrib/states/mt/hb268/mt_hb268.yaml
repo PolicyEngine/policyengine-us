@@ -1,0 +1,328 @@
+- name: 2 children under 6 without reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 49_999
+    households:
+      household:
+        members: [head, dep1, dep2]
+        state_code: MT
+  output:
+    mt_hb268: [2_400, 0, 0]
+    # 1200 * 2
+
+- name: One child over 6 - ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+      dep3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2, dep3]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 49_999
+    households:
+      household:
+        members: [head, dep1, dep2, dep3]
+        state_code: MT
+  output:
+    mt_hb268: [2_400, 0, 0, 0]
+    # 1200 * 2
+
+- name: Ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+      dep3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2, dep3]
+        mt_hb268_eligible: false
+        adjusted_gross_income: 49_999
+    households:
+      household:
+        members: [head, dep1, dep2, dep3]
+        state_code: MT
+  output:
+    mt_hb268: [0, 0, 0, 0]
+
+- name: Eligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 66_298
+    adjusted_gross_income: 55_999
+    eitc_relevant_investment_income: 10_299
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: true
+
+- name: AGI ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_001
+    eitc_relevant_investment_income: 10_299
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: false
+
+- name: Investment income ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_000
+    eitc_relevant_investment_income: 10_300
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: false
+
+- name: Earned income ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 0
+    adjusted_gross_income: 0
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: false
+
+- name: No federal CTC qualifying children - ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 50_000
+    adjusted_gross_income: 50_000
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 0
+    state_code: MT
+  output:
+    mt_hb268_eligible: false
+
+- name: AGI exactly at threshold - eligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 56_000
+    adjusted_gross_income: 56_000
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: true
+
+- name: Minimal earned income - eligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    tax_unit_earned_income: 1
+    adjusted_gross_income: 1
+    eitc_relevant_investment_income: 0
+    ctc_qualifying_children: 1
+    state_code: MT
+  output:
+    mt_hb268_eligible: true
+
+- name: AGI at reduction threshold - no reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [1_200, 0]
+    # No reduction at exactly $50,000
+
+- name: AGI just above reduction threshold - first reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 51_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [1_110, 0]
+    # 1200 - 1*90 = 1110
+
+- name: AGI $500 above threshold - ceiling triggers reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 50_500
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [1_110, 0]
+    # 1200 - ceil(500/1000)*90 = 1200 - 90 = 1110
+
+# Age boundary tests
+- name: Newborn (age 0) gets $1,200
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 25
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [1_200, 0]
+
+- name: Age 5 (upper boundary) gets $1,200
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [1_200, 0]
+
+- name: Age 6 (just above boundary) gets $0
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        mt_hb268_eligible: true
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268: [0, 0]
+
+- name: End-to-end eligible with credit
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.hb268.mt_hb268.mt_hb268
+  input:
+    gov.contrib.states.mt.hb268.in_effect: true
+    people:
+      head:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_dependent: false
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    mt_hb268_eligible: true
+    mt_hb268: [1_200, 0]

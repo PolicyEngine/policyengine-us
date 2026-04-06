@@ -16,6 +16,4 @@ class mt_income_tax_before_refundable_credits_unit(Variable):
         income_tax_before_credits_joint = tax_unit(
             "mt_income_tax_before_refundable_credits_joint", period
         )
-        return min_(
-            income_tax_before_credits_indiv, income_tax_before_credits_joint
-        )
+        return min_(income_tax_before_credits_indiv, income_tax_before_credits_joint)

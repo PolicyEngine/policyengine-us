@@ -11,8 +11,6 @@ class lifetime_learning_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
     def formula(tax_unit, period, parameters):
-        credit_limit = tax_unit(
-            "lifetime_learning_credit_credit_limit", period
-        )
+        credit_limit = tax_unit("lifetime_learning_credit_credit_limit", period)
         potential = tax_unit("lifetime_learning_credit_potential", period)
         return min_(credit_limit, potential)

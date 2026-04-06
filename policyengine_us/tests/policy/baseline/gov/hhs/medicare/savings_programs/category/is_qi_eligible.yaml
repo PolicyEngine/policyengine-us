@@ -1,0 +1,30 @@
+# QI is only available for people who don't qualify for other Medicaid coverage
+# Reference: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
+
+- name: QI eligible - income in range, no Medicaid
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $19,440 unearned -> ($1,620 - $20) = $1,600/month countable
+    # $1,506 < $1,600 < $1,694.25 (120-135% FPL) -> QI income range
+    ssi_unearned_income: 19_440
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    is_medicaid_eligible: false
+  output:
+    is_qi_eligible: true
+
+- name: QI not eligible - income in range but has Medicaid
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # Income in QI range
+    ssi_unearned_income: 19_440
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+    # But eligible for Medicaid
+    is_medicaid_eligible: true
+  output:
+    is_qi_eligible: false

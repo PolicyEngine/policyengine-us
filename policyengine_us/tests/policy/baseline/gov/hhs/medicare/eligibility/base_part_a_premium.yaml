@@ -1,0 +1,35 @@
+- name: unit test 1 - premium-free Part A (40+ quarters)
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+  output:
+    base_part_a_premium: 0  # Premium-free with 40+ quarters
+
+- name: unit test 2 - reduced premium (30-39 quarters)
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_420  # $285 * 12 months
+
+- name: unit test 3 - full premium (<30 quarters)
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 6_216  # $518 * 12 months
+
+- name: unit test 4 - not Medicare eligible
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: false
+    medicare_quarters_of_coverage: 40
+  output:
+    base_part_a_premium: 0

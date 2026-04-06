@@ -1,0 +1,86 @@
+# Tests for NH FANF resources eligibility
+# Resource limits differ for applicants vs recipients:
+# - Applicants: $1,000 (since 1997)
+# - Recipients: $5,000 (since 07/01/22, was $2,000 before)
+# Source: FAM 403; SR 97-03; BFA SR 22-17
+
+- name: Case 1, zero resources is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    spm_unit_assets: 0
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 2, applicant resources at limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: false
+    spm_unit_assets: 1_000
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 3, applicant resources above limit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: false
+    spm_unit_assets: 1_001
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Case 4, recipient resources at limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_assets: 5_000
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 5, recipient resources above limit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_assets: 5_001
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Case 6, resources between applicant and recipient limits, applicant fails.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: false
+    spm_unit_assets: 3_000
+  output:
+    nh_fanf_resources_eligible: false
+
+- name: Case 7, resources between applicant and recipient limits, recipient passes.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_assets: 3_000
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 8, recipient zero resources is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_assets: 0
+  output:
+    nh_fanf_resources_eligible: true
+
+- name: Case 9, applicant at $999 is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: false
+    spm_unit_assets: 999
+  output:
+    # $999 < $1,000 limit = eligible
+    nh_fanf_resources_eligible: true

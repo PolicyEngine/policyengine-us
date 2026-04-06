@@ -13,3 +13,37 @@
     state_code: VA
   output:
     va_rebate: 400
+
+# 2024 tests - values inherited from 2023 per HB 1600 reauthorization
+- name: 2024 single rebate
+  period: 2024
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 200
+
+- name: 2024 joint rebate
+  period: 2024
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 400
+
+# 2025 tests - no rebate for 2025
+- name: 2025 single rebate discontinued
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 0
+
+- name: 2025 joint rebate discontinued
+  period: 2025
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 0

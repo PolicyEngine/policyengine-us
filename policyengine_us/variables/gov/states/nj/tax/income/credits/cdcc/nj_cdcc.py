@@ -8,7 +8,9 @@ class nj_cdcc(Variable):
     documentation = "New Jersey Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44"
+    reference = (
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
@@ -19,8 +21,8 @@ class nj_cdcc(Variable):
         taxable_income = tax_unit("nj_taxable_income", period)
 
         # Get federal CDCC
-        # New Jersey matches the potential federal credit
-        federal_cdcc = tax_unit("cdcc_potential", period)
+        # New Jersey matches the actual federal credit value
+        federal_cdcc = tax_unit("cdcc", period)
 
         # Calculate NJ CDCC
         rate = p.calc(taxable_income, right=True)

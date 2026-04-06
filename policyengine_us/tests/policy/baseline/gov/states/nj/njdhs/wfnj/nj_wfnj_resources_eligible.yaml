@@ -1,0 +1,23 @@
+- name: Case 1, household with assets at $2,000 limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_assets: 2_000
+  output:
+    nj_wfnj_resources_eligible: true
+
+- name: Case 2, household with assets above $2,000 is ineligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_assets: 2_001
+  output:
+    nj_wfnj_resources_eligible: false
+
+- name: Case 3, household with zero assets is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_assets: 0
+  output:
+    nj_wfnj_resources_eligible: true

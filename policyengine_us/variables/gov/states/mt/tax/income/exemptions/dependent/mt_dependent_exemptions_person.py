@@ -15,7 +15,7 @@ class mt_dependent_exemptions_person(Variable):
 
         if p.applies:
             # Qualifying child under IRC 152(c), which defines for the EITC
-            qualifying_child = person("is_child_dependent", period)
+            qualifying_child = person("is_qualifying_child_dependent", period)
             # Disabled dependents get an additional exemption.
             disabled = person("is_disabled", period)
 

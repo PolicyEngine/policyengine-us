@@ -1,0 +1,41 @@
+- name: Case 1, no earned income.
+  period: 2025-01
+  input:
+    state_code: SC
+    employment_income_before_lsr: 0
+  output:
+    sc_tanf_countable_earned_income_person: 0
+
+- name: Case 2, January uses 50% disregard.
+  period: 2025-01
+  input:
+    state_code: SC
+    employment_income_before_lsr: 12_000
+  output:
+    sc_tanf_countable_earned_income_person: 500
+    # monthly_income = 12,000 / 12 = 1,000
+    # January (month 1) <= 4: uses 50% disregard
+    # countable = 1,000 * 0.5 = 500
+
+- name: Case 3, full year verification of two-phase disregard.
+  period: 2025
+  input:
+    state_code: SC
+    employment_income_before_lsr: 12_000
+  output:
+    sc_tanf_countable_earned_income_person: 9_200
+    # Jan-Apr (4 months): 1,000 * 0.5 = 500/month → 2,000
+    # May-Dec (8 months): max(1,000 - 100, 0) = 900/month → 7,200
+    # Annual total: 2,000 + 7,200 = 9,200
+
+- name: Case 4, low income where $100 disregard zeroes out income.
+  period: 2025
+  input:
+    state_code: SC
+    employment_income_before_lsr: 600
+  output:
+    sc_tanf_countable_earned_income_person: 100
+    # monthly_income = 600 / 12 = 50
+    # Jan-Apr (4 months): 50 * 0.5 = 25/month → 100
+    # May-Dec (8 months): max(50 - 100, 0) = 0/month → 0
+    # Annual total: 100 + 0 = 100

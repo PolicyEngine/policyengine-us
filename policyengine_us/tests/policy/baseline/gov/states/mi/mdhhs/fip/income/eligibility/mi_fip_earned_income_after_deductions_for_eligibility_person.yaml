@@ -1,0 +1,85 @@
+- name: Zero earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 0
+    state_code: MI
+  output:
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 0
+
+- name: Earned income below flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 150
+    state_code: MI
+  output:
+    # $150 gross
+    # Flat deduction = $200, but capped at gross
+    # Remainder = max($150 - $200, 0) = $0
+    # 20% deduction = $0
+    # Total deduction = $200 + $0 = $200
+    # Countable = max($150 - $200, 0) = $0
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 0
+
+- name: Earned income equal to flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 200
+    state_code: MI
+  output:
+    # $200 gross
+    # Flat deduction = $200
+    # Remainder = max($200 - $200, 0) = $0
+    # 20% deduction = $0
+    # Total deduction = $200 + $0 = $200
+    # Countable = max($200 - $200, 0) = $0
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 0
+
+- name: Earned income above flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 500
+    state_code: MI
+  output:
+    # $500 gross
+    # Flat deduction = $200
+    # Remainder = $500 - $200 = $300
+    # 20% deduction = $300 * 0.2 = $60
+    # Total deduction = $200 + $60 = $260
+    # Countable = max($500 - $260, 0) = $240
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 240
+
+- name: Moderate earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_000
+    state_code: MI
+  output:
+    # $1,000 gross
+    # Flat deduction = $200
+    # Remainder = $1,000 - $200 = $800
+    # 20% deduction = $800 * 0.2 = $160
+    # Total deduction = $200 + $160 = $360
+    # Countable = max($1,000 - $360, 0) = $640
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 640
+
+- name: High earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 2_000
+    state_code: MI
+  output:
+    # $2,000 gross
+    # Flat deduction = $200
+    # Remainder = $2,000 - $200 = $1,800
+    # 20% deduction = $1,800 * 0.2 = $360
+    # Total deduction = $200 + $360 = $560
+    # Countable = max($2,000 - $560, 0) = $1,440
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 1_440
+
+- name: Outside Michigan returns zero
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_000
+    state_code: CA
+  output:
+    mi_fip_earned_income_after_deductions_for_eligibility_person: 0

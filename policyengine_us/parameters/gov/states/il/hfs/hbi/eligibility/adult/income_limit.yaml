@@ -1,0 +1,14 @@
+description: Illinois limits income to this share of the federal poverty level under the Health Benefits for Immigrant Adults program.
+metadata:
+  unit: /1
+  period: year
+  label: Illinois HBIA income limit
+  reference:
+    - title: Illinois DHS - HBIA and HBIS Policy
+      href: https://www.dhs.state.il.us/page.aspx?item=161600
+    - title: Illinois HFS - Health Benefits for Immigrant Adults
+      href: https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants/healthbenefitsforimmigrantadults.html
+
+values:
+  # HBIA uses MAGI methodology at 138% FPL
+  2022-01-01: 1.38

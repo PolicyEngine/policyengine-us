@@ -1,0 +1,31 @@
+description: The Working Americans' Tax Cut Act provides a cost of living exemption amount by filing status, indexed for inflation using CPI-U.
+metadata:
+  label: WATCA cost of living exemption amount
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.bls.cpi.cpi_u
+  reference:
+    - title: Working Americans' Tax Cut Act Section 1A(c)
+      href: https://www.vanhollen.senate.gov/imo/media/doc/working_americans_tax_cut_act_bill_text.pdf#page=3
+
+SINGLE:
+  2026-01-01: 46_000
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 64_400
+
+JOINT:
+  2026-01-01: 92_000
+
+# Surviving spouse treated as joint (sec 1(a)(2)). Not explicitly in bill.
+SURVIVING_SPOUSE:
+  2026-01-01: 92_000
+
+# Married filing separately falls under "not described in (B) or (C)",
+# i.e., the 100% default category. Not explicitly in bill.
+SEPARATE:
+  2026-01-01: 46_000

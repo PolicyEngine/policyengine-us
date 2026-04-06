@@ -1,0 +1,15 @@
+- name: Not eligible
+  period: 2024
+  input:
+    pr_net_taxable_income: 500_000
+    state_code: PR
+  output:
+    pr_gradual_adjustment_eligible: False
+
+- name: Eligible
+  period: 2024
+  input:
+    pr_net_taxable_income: 500_001
+    state_code: PR
+  output:
+    pr_gradual_adjustment_eligible: True

@@ -1,0 +1,65 @@
+- name: All requirements met - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: true
+
+- name: Missing demographic eligibility - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: Missing citizenship - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: Income ineligible - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: false
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: Resource ineligible - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: false
+  output:
+    wa_tanf_eligible: false
+
+- name: Only calculate for WA
+  period: 2024-01
+  input:
+    state_code: ID
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false

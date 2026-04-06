@@ -1,0 +1,190 @@
+# Unit tests for Alaska ATAP resource eligibility
+# AS 47.27.010 - Eligibility for Assistance
+# https://www.akleg.gov/basis/statutes.asp#47.27.010
+# Standard resource limit: $2,000
+# Elderly resource limit: $3,000 (if any member is age 60+)
+
+- name: Case 1, zero resources is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $0 <= $2,000 limit = eligible
+    ak_atap_resources_eligible: true
+
+- name: Case 2, resources under standard limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $1,500 <= $2,000 limit = eligible
+    ak_atap_resources_eligible: true
+
+- name: Case 3, resources exactly at standard limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $2,000 = $2,000 limit = eligible
+    ak_atap_resources_eligible: true
+
+- name: Case 4, resources over standard limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # $2,500 > $2,000 limit = ineligible
+    ak_atap_resources_eligible: false
+
+- name: Case 5, elderly member gets higher limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Elderly (65 >= 60), limit is $3,000
+    # $2,500 <= $3,000 = eligible
+    ak_atap_resources_eligible: true
+
+- name: Case 6, elderly member at age threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 60
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Age 60 qualifies as elderly, limit is $3,000
+    # $2,800 <= $3,000 = eligible
+    ak_atap_resources_eligible: true
+
+- name: Case 7, just under elderly age threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 59
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Age 59 < 60, uses standard limit $2,000
+    # $2,500 > $2,000 = ineligible
+    ak_atap_resources_eligible: false
+
+- name: Case 8, elderly member resources over elderly limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Elderly, limit is $3,000
+    # $3,500 > $3,000 = ineligible
+    ak_atap_resources_eligible: false
+
+- name: Case 9, elderly member resources exactly at elderly limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 62
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Elderly, limit is $3,000
+    # $3,000 = $3,000 = eligible
+    ak_atap_resources_eligible: true

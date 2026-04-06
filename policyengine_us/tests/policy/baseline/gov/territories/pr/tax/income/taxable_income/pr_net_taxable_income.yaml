@@ -1,0 +1,26 @@
+- name: Base case
+  period: 2024
+  input:
+    pr_agi: 40_000
+    pr_casualty_loss_deduction: 1_000
+    pr_charitable_deduction: 500
+    pr_retirement_deduction: 20_000
+    pr_medical_expense_deduction: 0
+    pr_mortgage_deduction: 3_000
+    pr_education_deduction: 1_500
+    pr_personal_exemption: 1_000
+    pr_veteran_exemption: 0
+    pr_dependents_exemption: 500
+    state_code: PR
+  output:
+    pr_net_taxable_income: 12_500
+
+- name: AGI smaller than exemption and deduction sum
+  period: 2024
+  input:
+    pr_agi: 10_000
+    pr_casualty_loss_deduction: 10_000
+    pr_charitable_deduction: 5
+    state_code: PR
+  output:
+    pr_net_taxable_income: 0

@@ -1,0 +1,65 @@
+- name: One eligible spouse
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        is_tax_unit_spouse: true
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible_care_worker_count: 1
+
+- name: Two eligible spouses
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        is_tax_unit_spouse: true
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible_care_worker_count: 2
+
+- name: No eligible spouses
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        co_care_worker_credit_eligible_care_worker: false
+      person2:
+        is_tax_unit_spouse: false
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible_care_worker_count: 0

@@ -1,0 +1,33 @@
+description: Final (ending) contribution percentage for each ACA bracket.
+metadata:
+  unit: /1
+  label: ACA contribution percentage - final rate per bracket
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: IRS Revenue Procedure 2025-25 - Applicable percentage table for 2026
+      href: https://www.irs.gov/pub/irs-drop/rp-25-25.pdf
+values:
+  # Original ACA (2015-2020): 6 brackets
+  2015-01-01:
+    - 0.02    # 0-133%: flat 2%
+    - 0.04    # 133-150%
+    - 0.063   # 150-200%
+    - 0.0805  # 200-250%
+    - 0.095   # 250-300%
+    - 0.095   # 300-400%: flat 9.5%
+  # ARPA/IRA (2021-2025): 5 brackets, no 133% threshold
+  2021-01-01:
+    - 0       # 0-150%: flat 0%
+    - 0.02    # 150-200%
+    - 0.04    # 200-250%
+    - 0.06    # 250-300%
+    - 0.085   # 300-400%
+  # Post-ARPA (2026+): return to 6 brackets
+  2026-01-01:
+    - 0.021   # 0-133%: flat 2.1%
+    - 0.0419  # 133-150%
+    - 0.066   # 150-200%
+    - 0.0844  # 200-250%
+    - 0.0996  # 250-300%
+    - 0.0996  # 300-400%: flat 9.96%

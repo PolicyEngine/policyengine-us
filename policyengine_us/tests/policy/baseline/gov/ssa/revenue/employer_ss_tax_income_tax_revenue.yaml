@@ -1,0 +1,85 @@
+# Unit tests for employer_ss_tax_income_tax_revenue
+# Tests OASDI trust fund revenue from taxing employer SS contributions
+
+- name: Reform not active - zero revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    employer_ss_tax_income_tax_revenue: 0
+
+- name: Reform active - basic case
+  period: 2024
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer SS tax = 6.2% * $50,000 = $3,100
+    employer_social_security_tax: 3_100
+    employer_ss_tax_income_tax_revenue: 372
+
+- name: Reform active - high income
+  period: 2024
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer SS tax = 6.2% * $150,000 = $9,300
+    employer_social_security_tax: 9_300
+    employer_ss_tax_income_tax_revenue: 2_232
+
+- name: Reform active - partial percentage
+  period: 2024
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.5
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer SS tax = 6.2% * $50,000 = $3,100
+    # Only 50% taxable = $1,550
+    employer_social_security_tax: 3_100
+    employer_ss_tax_income_tax_revenue: 186

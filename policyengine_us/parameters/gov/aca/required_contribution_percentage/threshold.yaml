@@ -1,0 +1,35 @@
+description: FPL thresholds for ACA required contribution percentage brackets.
+metadata:
+  unit: /1
+  label: ACA contribution percentage bracket thresholds
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: IRS Revenue Procedure 2025-25 - Applicable percentage table for 2026
+      href: https://www.irs.gov/pub/irs-drop/rp-25-25.pdf
+values:
+  2015-01-01:
+    - 0
+    - 1.33
+    - 1.50
+    - 2.00
+    - 2.50
+    - 3.00
+    - 4.00
+  # ARPA/IRA years: no 133% threshold, brackets shift
+  2021-01-01:
+    - 0
+    - 1.50
+    - 2.00
+    - 2.50
+    - 3.00
+    - 4.00
+  # Post-ARPA: return to original structure
+  2026-01-01:
+    - 0
+    - 1.33
+    - 1.50
+    - 2.00
+    - 2.50
+    - 3.00
+    - 4.00

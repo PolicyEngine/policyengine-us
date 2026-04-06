@@ -1,0 +1,207 @@
+# VA TANF Countable Earned Income tests
+# Formula: max_(max_(gross - flat_deduction, 0) * 0.8 - childcare, 0)
+
+- name: Zero earned income returns zero.
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Earned income below flat exclusion returns zero.
+  # Flat exclusion for size 1 = $167 * 12 = $2,004/year
+  # Income $1,500 < $2,004, so max_($1,500 - $2,004, 0) = 0
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Earned income $5,004, size 3, $2,400 after deduction.
+  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
+  # ($5,004 - $2,004) * 0.8 = $3,000 * 0.8 = $2,400
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 5_004
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 2_400
+
+- name: Earned income $8,880, size 6, $4,800 after deduction.
+  # Flat exclusion for size 6+ = $240 * 12 = $2,880/year
+  # ($8,880 - $2,880) * 0.8 = $6,000 * 0.8 = $4,800
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 8_880
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+      person5:
+        tanf_gross_earned_income: 0
+      person6:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 4_800
+
+- name: Case 5, size 4 uses $178 flat exclusion.
+  # Flat exclusion for size 4 = $178 * 12 = $2,136/year
+  # ($5,136 - $2,136) * 0.8 = $3,000 * 0.8 = $2,400
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 5_136
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 2_400
+
+- name: Case 6, size 5 uses $209 flat exclusion.
+  # Flat exclusion for size 5 = $209 * 12 = $2,508/year
+  # ($5,508 - $2,508) * 0.8 = $3,000 * 0.8 = $2,400
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 5_508
+      person2:
+        tanf_gross_earned_income: 0
+      person3:
+        tanf_gross_earned_income: 0
+      person4:
+        tanf_gross_earned_income: 0
+      person5:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 2_400
+
+- name: Case 7, earned income exactly at flat exclusion returns zero.
+  # Flat exclusion for size 1 = $167 * 12 = $2,004/year
+  # ($2,004 - $2,004) * 0.8 = 0
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 2_004
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Case 8, childcare exceeds earnings after 20% disregard.
+  # Flat exclusion for size 2 = $167 * 12 = $2,004/year
+  # Gross: $3,004
+  # After flat: $3,004 - $2,004 = $1,000
+  # After 20%: $1,000 * 0.8 = $800/year
+  # Childcare: $200/month (infant) = $2,400/year
+  # max_($800 - $2,400, 0) = $0
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 3_004
+        is_tax_unit_dependent: false
+        age: 30
+      person2:
+        tanf_gross_earned_income: 0
+        is_tax_unit_dependent: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 0
+
+- name: Case 9, multiple earners in unit.
+  # Flat exclusion for size 3 = $167 * 12 = $2,004/year
+  # Total gross: $6,000 + $4,000 = $10,000
+  # After flat: $10,000 - $2,004 = $7,996
+  # After 20%: $7,996 * 0.8 = $6,396.80
+  period: 2023
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 6_000
+      person2:
+        tanf_gross_earned_income: 4_000
+      person3:
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_tanf_countable_earned_income: 6_396.8

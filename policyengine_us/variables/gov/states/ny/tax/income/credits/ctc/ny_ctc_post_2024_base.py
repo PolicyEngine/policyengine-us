@@ -6,7 +6,8 @@ class ny_ctc_post_2024_base(Variable):
     entity = TaxUnit
     label = "New York CTC post-2024 base amount"
     documentation = (
-        "Base New York CTC amount before phase-out under post-2024 rules"
+        "Base New York CTC amount before phase-out under post-2024 rules. "
+        "Unlike federal CTC, NY allows children with ITINs to qualify."
     )
     unit = USD
     definition_period = YEAR
@@ -18,9 +19,8 @@ class ny_ctc_post_2024_base(Variable):
         person = tax_unit.members
         age = person("age", period)
 
-        # Post-2024 CTC rules (2025-2027)
-        qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
-        qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
+        # Use NY-specific qualifying child definition (allows ITINs)
+        qualifies = person("ny_escc_qualifying_child", period)
 
         # Calculate credit amount by age using scale parameter
         credit_by_age = p.post_2024.amount.calc(age)

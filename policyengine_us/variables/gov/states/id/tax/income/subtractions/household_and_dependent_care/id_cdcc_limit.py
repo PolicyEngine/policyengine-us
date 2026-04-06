@@ -16,7 +16,5 @@ class id_cdcc_limit(Variable):
         else:
             instant_str = period
         p = parameters(instant_str).gov.irs.credits.cdcc
-        capped_count_cdcc_eligible = tax_unit(
-            "capped_count_cdcc_eligible", period
-        )
+        capped_count_cdcc_eligible = tax_unit("capped_count_cdcc_eligible", period)
         return p.max * capped_count_cdcc_eligible

@@ -1,0 +1,242 @@
+# Tests childcare deduction capped at actual expenses per COMAR 07.03.03.13.E(3)(c)
+# Cap is PER CHILD: Full-time (>= 100 hrs/month): $200/child, Part-time: $100/child
+# Deduction = min(actual_expenses, per_child_cap * num_children)
+
+- name: Case 1, no children gets no deduction even with expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 160
+        pre_subsidy_childcare_expenses: 3_000
+      person2:
+        age: 28
+        monthly_hours_worked: 120
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # No children = $0 cap
+    md_tca_childcare_deduction: 0
+
+- name: Case 2, one child with part-time work, expenses at cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 80
+        pre_subsidy_childcare_expenses: 2_400
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $100 (part-time, 80 hrs < 100) = $100 cap
+    # Expenses = $200/month, min($200, $100) = $100
+    md_tca_childcare_deduction: 100
+
+- name: Case 3, one child with full-time work, expenses at cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $200 (full-time, 120 hrs >= 100) = $200 cap
+    # Expenses = $500/month, min($500, $200) = $200
+    md_tca_childcare_deduction: 200
+
+- name: Case 4, one child, expenses below full-time cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 1_200
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $200 = $200 cap
+    # Expenses = $100/month, min($100, $200) = $100
+    md_tca_childcare_deduction: 100
+
+- name: Case 5, one child, expenses below part-time cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 80
+        pre_subsidy_childcare_expenses: 600
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $100 = $100 cap
+    # Expenses = $50/month, min($50, $100) = $50
+    md_tca_childcare_deduction: 50
+
+- name: Case 6, has child but zero expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 1 child * $200 = $200 cap, but expenses = $0
+    md_tca_childcare_deduction: 0
+
+- name: Case 7, two children with full-time work.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 6_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 2 children * $200 = $400 cap
+    # Expenses = $500/month, min($500, $400) = $400
+    md_tca_childcare_deduction: 400
+
+- name: Case 8, two children with part-time work.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 80
+        pre_subsidy_childcare_expenses: 3_600
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 2 children * $100 = $200 cap
+    # Expenses = $300/month, min($300, $200) = $200
+    md_tca_childcare_deduction: 200
+
+- name: Case 9, three children, expenses below cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+        pre_subsidy_childcare_expenses: 4_800
+      person2:
+        age: 10
+      person3:
+        age: 7
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 3 children * $200 = $600 cap
+    # Expenses = $400/month, min($400, $600) = $400
+    md_tca_childcare_deduction: 400
+
+- name: Case 10, exactly at 100 hours/month threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 100
+        pre_subsidy_childcare_expenses: 3_600
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 100 hrs/month = full-time threshold
+    # 1 child * $200 = $200 cap
+    # Expenses = $300/month, min($300, $200) = $200
+    md_tca_childcare_deduction: 200
+
+- name: Case 11, just below 100 hours/month threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 96
+        pre_subsidy_childcare_expenses: 3_600
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
+  output:
+    # 96 hrs/month = part-time (below 100 threshold)
+    # 1 child * $100 = $100 cap
+    # Expenses = $300/month, min($300, $100) = $100
+    md_tca_childcare_deduction: 100

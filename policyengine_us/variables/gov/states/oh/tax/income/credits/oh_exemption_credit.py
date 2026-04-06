@@ -7,7 +7,9 @@ class oh_exemption_credit(Variable):
     label = "Ohio Exemption Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-022/"
+    reference = (
+        "https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-022/"
+    )
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):

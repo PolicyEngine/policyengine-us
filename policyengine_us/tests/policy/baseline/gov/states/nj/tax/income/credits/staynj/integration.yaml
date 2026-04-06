@@ -1,0 +1,199 @@
+# Integration tests for New Jersey Stay NJ Property Tax Credit
+# Tests the full calculation pipeline from income to eligibility to benefit
+# Formula per P.L. 2024 c.88: Stay NJ = max(min(property_taxes * 50%, $6,500) - ANCHOR - Senior_Freeze, 0)
+# Note: Stay NJ begins in 2026
+
+- name: Case 1, senior couple homeowner with moderate income and property tax.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34  # New Jersey
+  output:
+    # Combined income: $100K + $50K = $150K < $500K limit
+    # At least one person age 68 >= 65
+    # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
+    # ANCHOR = $1,750 (senior, income $150K <= $150K)
+    # max($5,000 - $1,750 - $0, 0) = $3,250
+    nj_staynj_eligible: true
+    nj_staynj: 3_250
+
+- name: Case 2, wealthy senior homeowner capped at maximum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 400_000
+        real_estate_taxes: 25_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $400K < $500K limit, but > $250K ANCHOR limit - no ANCHOR
+    # min($25,000 * 50%, $6,500) = min($12,500, $6,500) = $6,500
+    # max($6,500 - $0 - $0, 0) = $6,500
+    nj_staynj_eligible: true
+    nj_staynj: 6_500
+
+- name: Case 3, retiree with Social Security income and property tax.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 75
+        social_security: 36_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income: $36K (Social Security) < $500K
+    # min($8,000 * 50%, $6,500) = min($4,000, $6,500) = $4,000
+    # ANCHOR = $1,750 (senior, income $36K <= $150K)
+    # max($4,000 - $1,750 - $0, 0) = $2,250
+    nj_staynj_eligible: true
+    nj_staynj: 2_250
+
+- name: Case 4, non-senior homeowner is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 150_000
+        real_estate_taxes: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 60 < 65 - fails age requirement
+    nj_staynj_eligible: false
+    nj_staynj: 0
+
+- name: Case 5, senior renter is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 80_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # RENTER - fails homeowner requirement
+    nj_staynj_eligible: false
+    nj_staynj: 0
+
+- name: Case 6, high-income senior homeowner is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 550_000
+        real_estate_taxes: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $550K >= $500K limit - fails income requirement
+    nj_staynj_eligible: false
+    nj_staynj: 0
+
+- name: Case 7, couple where one spouse is 65 plus and one is under 65.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 80_000
+        real_estate_taxes: 11_000
+        is_tax_unit_head: true
+      person2:
+        age: 58
+        employment_income: 70_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # At least one spouse (person1) is 65+
+    # Combined income: $80K + $70K = $150K < $500K
+    # min($11,000 * 50%, $6,500) = min($5,500, $6,500) = $5,500
+    # ANCHOR = $1,750 (senior, income $150K <= $150K)
+    # max($5,500 - $1,750 - $0, 0) = $3,750
+    nj_staynj_eligible: true
+    nj_staynj: 3_750

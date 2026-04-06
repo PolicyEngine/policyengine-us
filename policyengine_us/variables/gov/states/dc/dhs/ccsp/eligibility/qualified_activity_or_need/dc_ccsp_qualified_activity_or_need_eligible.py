@@ -13,7 +13,5 @@ class dc_ccsp_qualified_activity_or_need_eligible(Variable):
         qualified_activity_eligible = spm_unit(
             "dc_ccsp_qualified_activity_eligible", period
         )
-        qualified_need_eligible = spm_unit(
-            "dc_ccsp_qualified_need_eligible", period
-        )
+        qualified_need_eligible = spm_unit("dc_ccsp_qualified_need_eligible", period)
         return qualified_activity_eligible | qualified_need_eligible

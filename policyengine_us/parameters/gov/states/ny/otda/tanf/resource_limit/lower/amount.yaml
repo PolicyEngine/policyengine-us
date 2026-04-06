@@ -1,0 +1,15 @@
+description: New York limits resources to this amount for non-elderly, non-disabled households under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York TANF resource limit
+  reference:
+    - title: 97-ADM-23 Family Assistance/Safety Net Assistance Changes
+      href: https://otda.ny.gov/policy/directives/1997/ADM/97_ADM-23.pdf#page=9
+    - title: 22-ADM-11 Section IV(A) Resource Limit Changes
+      href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=4
+
+values:
+  1997-01-01: 2_000
+  2022-10-01: 2_500

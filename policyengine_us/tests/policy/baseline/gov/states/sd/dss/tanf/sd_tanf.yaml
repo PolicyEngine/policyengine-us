@@ -1,0 +1,61 @@
+# Unit tests for South Dakota TANF benefit calculation
+# Formula: Benefit = max(Payment Standard - Countable Income, 0)
+# Source: ARSD 67:10:05:02
+# https://sdlegislature.gov/Rules/Administrative/67:10:05:02
+
+- name: Case 1, zero income, full benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 0 = 701
+    sd_tanf: 701
+
+- name: Case 2, partial benefit.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 248
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 248 = 453
+    sd_tanf: 453
+
+- name: Case 3, income exceeds payment standard.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 800
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: max(701 - 800, 0) = 0
+    # Tests max_() clipping
+    sd_tanf: 0
+
+- name: Case 4, not eligible.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 0
+    sd_tanf_eligible: false
+    state_code: SD
+  output:
+    # Not eligible, no benefit (defined_for check)
+    sd_tanf: 0
+
+- name: Case 5, income equals payment standard.
+  period: 2024-01
+  input:
+    sd_tanf_payment_standard: 701
+    sd_tanf_countable_income: 701
+    sd_tanf_eligible: true
+    state_code: SD
+  output:
+    # Benefit: 701 - 701 = 0
+    # Edge case: exactly at threshold
+    sd_tanf: 0

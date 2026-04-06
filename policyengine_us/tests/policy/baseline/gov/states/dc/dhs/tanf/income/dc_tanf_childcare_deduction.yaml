@@ -13,7 +13,7 @@
   input:
     state_code: DC
     is_tax_unit_dependent: true
-    monthly_age: 1 
+    monthly_age: 1
     childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 200
@@ -23,7 +23,7 @@
   input:
     state_code: DC
     is_tax_unit_dependent: true
-    monthly_age: 15 
+    monthly_age: 15
     childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 175
@@ -33,8 +33,8 @@
   input:
     state_code: DC
     is_tax_unit_dependent: false
-    monthly_age: 15 
-    childcare_expenses: 250*12 
+    monthly_age: 15
+    childcare_expenses: 250*12
   output:
     dc_tanf_childcare_deduction: 0
 

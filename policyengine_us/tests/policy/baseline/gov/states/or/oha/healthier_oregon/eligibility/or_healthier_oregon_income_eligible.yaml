@@ -1,0 +1,79 @@
+# Tests for Oregon Healthier Oregon income eligibility
+
+# Adult income limit: 138% FPL
+# Child income limit: 305% FPL
+# Child defined as age < 19
+
+- name: Case 1, adult with zero income eligible.
+  period: 2024
+  input:
+    age: 30
+    medicaid_income_level: 0
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: true
+
+- name: Case 2, child with zero income eligible.
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 0
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: true
+
+- name: Case 3, adult at exactly 138% FPL eligible.
+  period: 2024
+  input:
+    age: 30
+    medicaid_income_level: 1.38
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: true
+
+- name: Case 4, adult at 139% FPL not eligible.
+  period: 2024
+  input:
+    age: 30
+    medicaid_income_level: 1.39
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: false
+
+- name: Case 5, child at exactly 305% FPL eligible.
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 3.05
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: true
+
+- name: Case 6, child at 306% FPL not eligible.
+  period: 2024
+  input:
+    age: 10
+    medicaid_income_level: 3.06
+    state_code: OR
+  output:
+    or_healthier_oregon_income_eligible: false
+
+- name: Case 7, age 18 uses child income limit.
+  period: 2024
+  input:
+    age: 18
+    medicaid_income_level: 2.0
+    state_code: OR
+  output:
+    # 200% FPL within 305% child limit
+    or_healthier_oregon_income_eligible: true
+
+- name: Case 8, age 19 uses adult income limit.
+  period: 2024
+  input:
+    age: 19
+    medicaid_income_level: 2.0
+    state_code: OR
+  output:
+    # 200% FPL above 138% adult limit
+    or_healthier_oregon_income_eligible: false

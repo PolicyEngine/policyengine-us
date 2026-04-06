@@ -18,3 +18,71 @@
         state_code: MA
   output:
     ma_senior_circuit_breaker: 350
+
+- name: Case 1, 2025 homeowner with income below threshold.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 8_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 50_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # real_estate_taxes: 8,000
+    # income threshold: 50,000 * 0.10 = 5,000
+    # over threshold: 8,000 - 5,000 = 3,000
+    # credit: min(3,000, 2,820) = 2,820
+    ma_senior_circuit_breaker: 2_820
+
+- name: Case 2, 2025 single filer income above threshold.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 76_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # income 76,000 > max_income(SINGLE) 75,000
+    ma_senior_circuit_breaker: 0
+
+- name: Case 3, 2025 renter.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 68
+        rent: 24_000
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 40_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # equivalent_rent: 24,000 * 0.25 = 6,000
+    # income threshold: 40,000 * 0.10 = 4,000
+    # over threshold: 6,000 - 4,000 = 2,000
+    # credit: min(2,000, 2,820) = 2,000
+    ma_senior_circuit_breaker: 2_000

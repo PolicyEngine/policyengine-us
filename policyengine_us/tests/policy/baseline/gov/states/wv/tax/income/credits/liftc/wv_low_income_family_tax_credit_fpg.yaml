@@ -1,8 +1,12 @@
+# Unit tests for wv_low_income_family_tax_credit_fpg
+# These tests verify that state_group is correctly derived from state_code
+# (not explicitly set, which would mask bugs in the state_group derivation)
+
 - name: The federal poverty guidelines for family size of 4 is $27,750.
   period: 2022
   input:
+    state_code: WV
     tax_unit_size: 4
-    state_group: CONTIGUOUS_US
     wv_low_income_family_tax_credit_eligible: true
   output:
     wv_low_income_family_tax_credit_fpg: 27_750
@@ -10,8 +14,8 @@
 - name: The federal poverty guidelines for family size of 2 is $18,310.
   period: 2022
   input:
+    state_code: WV
     tax_unit_size: 2
-    state_group: CONTIGUOUS_US
     wv_low_income_family_tax_credit_eligible: true
   output:
     wv_low_income_family_tax_credit_fpg: 18_310
@@ -19,18 +23,18 @@
 - name: The federal poverty guidelines for family size of 8 is $46,630.
   period: 2022
   input:
+    state_code: WV
     tax_unit_size: 8
-    state_group: CONTIGUOUS_US
     wv_low_income_family_tax_credit_eligible: true
   output:
-    # 14_580 + 7 * 5_140
+    # 13_590 + 7 * 4_720 = 46_630
     wv_low_income_family_tax_credit_fpg: 46_630
 
-- name: The federal poverty guidelines for family size of 10 is $46,630.
+- name: The federal poverty guidelines for family size of 10 is $46,630 (capped at 8).
   period: 2022
   input:
+    state_code: WV
     tax_unit_size: 10
-    state_group: CONTIGUOUS_US
     wv_low_income_family_tax_credit_eligible: true
   output:
     wv_low_income_family_tax_credit_fpg: 46_630

@@ -12,9 +12,7 @@ class is_ssi_eligible_individual(Variable):
         is_ssi_eligible_spouse = person("is_ssi_eligible_spouse", period)
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
         immigration_status = person("immigration_status", period)
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
 
         return (
             aged_blind_disabled

@@ -1,37 +1,173 @@
-- name: Households with any member over 60 who have $3,000 assets are eligible.
-  period: 2023
+- name: Case 1, elderly household under higher limit.
+  period: 2023-01
   input:
     state_code: NY
     age: 61
-    ny_tanf_countable_resources: 3000
+    spm_unit_assets: 3_000
   output:
+    # $3,750 limit for households with member 60+ or disabled (post-October 2022)
     ny_tanf_resources_eligible: true
 
-
-- name: Households with any member over 60 who have assets exceeding $3,000 are ineligible. 
-  period: 2023
+- name: Case 2, elderly household exceeds higher limit.
+  period: 2023-01
   input:
     state_code: NY
     age: 61
-    ny_tanf_countable_resources: 4000
+    spm_unit_assets: 4_000
   output:
     ny_tanf_resources_eligible: false
 
-
-- name: Households with all members under 60 who have assets exceeding $2,000 are ineligible. 
-  period: 2023
+- name: Case 3, non-elderly household exceeds lower limit.
+  period: 2023-01
   input:
     state_code: NY
     age: 59
-    ny_tanf_countable_resources: 2500
+    spm_unit_assets: 3_000
   output:
+    # $2,500 limit for non-elderly households (post-October 2022)
     ny_tanf_resources_eligible: false
 
-- name: Households with all members under 60 who have assets under $2,000 are eligible.
-  period: 2023
+- name: Case 4, non-elderly household under lower limit.
+  period: 2023-01
   input:
     state_code: NY
     age: 59
-    ny_tanf_countable_resources: 1500
+    spm_unit_assets: 1_500
   output:
     ny_tanf_resources_eligible: true
+
+# Pre-reform tests (2022-01): $2,000 standard, $3,000 elderly
+
+- name: Case 5, pre-reform elderly household at limit.
+  period: 2022-01
+  input:
+    state_code: NY
+    age: 61
+    spm_unit_assets: 3_000
+  output:
+    # $3,000 limit for households with member 60+ (pre-October 2022)
+    ny_tanf_resources_eligible: true
+
+- name: Case 6, pre-reform elderly household exceeds limit.
+  period: 2022-01
+  input:
+    state_code: NY
+    age: 61
+    spm_unit_assets: 3_001
+  output:
+    ny_tanf_resources_eligible: false
+
+- name: Case 7, pre-reform non-elderly household at limit.
+  period: 2022-01
+  input:
+    state_code: NY
+    age: 59
+    spm_unit_assets: 2_000
+  output:
+    # $2,000 limit for non-elderly households (pre-October 2022)
+    ny_tanf_resources_eligible: true
+
+- name: Case 8, pre-reform non-elderly household exceeds limit.
+  period: 2022-01
+  input:
+    state_code: NY
+    age: 59
+    spm_unit_assets: 2_001
+  output:
+    ny_tanf_resources_eligible: false
+
+# Boundary tests (post-reform exact limits and age threshold)
+
+- name: Case 9, post-reform non-elderly at exact limit passes.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 59
+    spm_unit_assets: 2_500
+  output:
+    # resources <= $2,500 limit
+    ny_tanf_resources_eligible: true
+
+- name: Case 10, post-reform non-elderly one dollar over limit fails.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 59
+    spm_unit_assets: 2_501
+  output:
+    ny_tanf_resources_eligible: false
+
+- name: Case 11, post-reform elderly at exact limit passes.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 61
+    spm_unit_assets: 3_750
+  output:
+    # resources <= $3,750 limit
+    ny_tanf_resources_eligible: true
+
+- name: Case 12, post-reform elderly one dollar over limit fails.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 61
+    spm_unit_assets: 3_751
+  output:
+    ny_tanf_resources_eligible: false
+
+- name: Case 13, age exactly at threshold qualifies for higher limit.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 60
+    spm_unit_assets: 3_000
+  output:
+    # age >= 60, so uses $3,750 elderly limit
+    ny_tanf_resources_eligible: true
+
+# Disability tests (post-reform only: higher limit applies if 60+ OR disabled)
+
+- name: Case 14, post-reform disabled non-elderly qualifies for higher limit.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 40
+    is_disabled: true
+    spm_unit_assets: 3_000
+  output:
+    # Disabled member qualifies for $3,750 limit per 22-ADM-11
+    ny_tanf_resources_eligible: true
+
+- name: Case 15, disabled non-elderly exceeds higher limit.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 40
+    is_disabled: true
+    spm_unit_assets: 3_751
+  output:
+    ny_tanf_resources_eligible: false
+
+- name: Case 16, non-disabled non-elderly uses lower limit.
+  period: 2023-01
+  input:
+    state_code: NY
+    age: 40
+    is_disabled: false
+    spm_unit_assets: 3_000
+  output:
+    # No elderly or disabled member, uses $2,500 limit
+    ny_tanf_resources_eligible: false
+
+- name: Case 17, pre-reform disabled does NOT qualify for higher limit.
+  period: 2022-01
+  input:
+    state_code: NY
+    age: 40
+    is_disabled: true
+    spm_unit_assets: 2_500
+  output:
+    # Pre-reform: disability did NOT qualify for higher limit
+    # Uses $2,000 limit, $2,500 > $2,000 → ineligible
+    ny_tanf_resources_eligible: false

@@ -1,0 +1,41 @@
+# Unit tests for ut_fep_income_eligible (combined income eligibility)
+# Utah uses a two-step income test:
+#   1. Gross income must be <= 185% of SNB
+#   2. Net income must be < 100% of SNB
+# Reference: Utah Admin. Code R986-200-239
+
+- name: Both gross and net income eligible - income eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    ut_fep_gross_income_eligible: true
+    ut_fep_net_income_eligible: true
+  output:
+    ut_fep_income_eligible: true
+
+- name: Gross income eligible but net income ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    ut_fep_gross_income_eligible: true
+    ut_fep_net_income_eligible: false
+  output:
+    ut_fep_income_eligible: false
+
+- name: Net income eligible but gross income ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    ut_fep_gross_income_eligible: false
+    ut_fep_net_income_eligible: true
+  output:
+    ut_fep_income_eligible: false
+
+- name: Both gross and net income ineligible - not eligible.
+  period: 2024-01
+  input:
+    state_code: UT
+    ut_fep_gross_income_eligible: false
+    ut_fep_net_income_eligible: false
+  output:
+    ut_fep_income_eligible: false

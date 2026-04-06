@@ -1,0 +1,127 @@
+description: Maryland provides this amount as the monthly grant standard under the Temporary Cash Assistance program.
+
+1:
+  2017-10-01: 306
+  2018-10-01: 320
+  2019-10-01: 328
+  2025-01-01: 339
+2:
+  2017-10-01: 536
+  2018-10-01: 561
+  2019-10-01: 575
+  2025-01-01: 596
+3:
+  2017-10-01: 677
+  2018-10-01: 709
+  2019-10-01: 727
+  2025-01-01: 753
+4:
+  2017-10-01: 811
+  2018-10-01: 849
+  2019-10-01: 870
+  2025-01-01: 902
+5:
+  2017-10-01: 941
+  2018-10-01: 985
+  2019-10-01: 1_010
+  2025-01-01: 1_046
+6:
+  2017-10-01: 1_034
+  2018-10-01: 1_083
+  2019-10-01: 1_110
+  2025-01-01: 1_149
+7:
+  2017-10-01: 1_162
+  2018-10-01: 1_217
+  2019-10-01: 1_247
+  2025-01-01: 1_292
+8:
+  2017-10-01: 1_279
+  2018-10-01: 1_339
+  2019-10-01: 1_372
+  2025-01-01: 1_421
+9:
+  2017-10-01: 1_379
+  2018-10-01: 1_444
+  2019-10-01: 1_480
+  2025-01-01: 1_553
+10:
+  2017-10-01: 1_490
+  2018-10-01: 1_560
+  2019-10-01: 1_599
+  2025-01-01: 1_656
+11:
+  2017-10-01: 1_625
+  2018-10-01: 1_701
+  2019-10-01: 1_744
+  2025-01-01: 1_806
+12:
+  2017-10-01: 1_699
+  2018-10-01: 1_779
+  2019-10-01: 1_823
+  2025-01-01: 1_889
+13:
+  2017-10-01: 1_803
+  2018-10-01: 1_888
+  2019-10-01: 1_935
+  2025-01-01: 2_005
+14:
+  2017-10-01: 1_908
+  2018-10-01: 1_998
+  2019-10-01: 2_048
+  2025-01-01: 2_122
+15:
+  2017-10-01: 2_017
+  2018-10-01: 2_112
+  2019-10-01: 2_165
+  2025-01-01: 2_243
+16:
+  2017-10-01: 2_146
+  2018-10-01: 2_247
+  2019-10-01: 2_303
+  2025-01-01: 2_386
+17:
+  2017-10-01: 2_274
+  2018-10-01: 2_381
+  2019-10-01: 2_440
+  2025-01-01: 2_605
+18:
+  2017-10-01: 2_400
+  2018-10-01: 2_513
+  2019-10-01: 2_576
+  2025-01-01: 2_749
+19:
+  2017-10-01: 2_526
+  2018-10-01: 2_645
+  2019-10-01: 2_711
+  2025-01-01: 2_893
+20:
+  2017-10-01: 2_652
+  2018-10-01: 2_777
+  2019-10-01: 2_846
+  2025-01-01: 3_037
+21:
+  2017-10-01: 2_779
+  2018-10-01: 2_910
+  2019-10-01: 2_983
+  2025-01-01: 3_183
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Maryland TCA grant standard
+  breakdown:
+    - range(1, 22)
+  breakdown_label:
+    - Assistance unit size
+  reference:
+    - title: FIA Action Transmittal 18-09 (Effective October 1, 2017)
+      href: https://dhs.maryland.gov/documents/?dir=FIA%2FAction+Transmittals-AT+-+Information+Memo-IM%2FAT-IM2017
+    - title: FIA Action Transmittal 19-04 (Effective October 1, 2018)
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2019/19-04-AT-TEMPORARY-CASH-ASSISTANCE-BENEFIT-INCREASE-1.pdf#page=2
+    - title: FIA Action Transmittal 20-06 (Effective October 1, 2019)
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2020/20-06%20AT-TCA%20Benefit%20Increase.pdf#page=3
+    - title: FIA Information Memo 25-12 (Effective January 1, 2025)
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2025/25-12%20IM%202025%20TCA%20TDAP%20RCA%20Benefit%20Increase.pdf#page=3
+    - title: COMAR 07.03.03.17 - Benefit Schedules
+      href: https://dsd.maryland.gov/regulations/Pages/07.03.03.17.aspx

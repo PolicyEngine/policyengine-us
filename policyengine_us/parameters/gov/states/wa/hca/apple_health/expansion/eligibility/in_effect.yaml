@@ -1,0 +1,16 @@
+description: Washington provides Apple Health Expansion coverage for eligible adults.
+metadata:
+  unit: bool
+  period: year
+  label: Washington Apple Health Expansion program in effect
+  reference:
+    - title: WAC 182-525-0300 - Apple Health expansion coverage
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-525-0300
+    - title: HCA Apple Health Expansion Overview
+      href: https://www.hca.wa.gov/about-hca/programs-and-initiatives/apple-health-medicaid/apple-health-expansion
+    - title: ESSB 5187 Section 211(83) - 2023-2025 budget proviso
+      href: https://lawfilesext.leg.wa.gov/biennium/2023-24/Pdf/Bills/Session%20Laws/Senate/5187-S.SL.pdf
+
+values:
+  2020-01-01: false
+  2024-06-21: true

@@ -6,6 +6,9 @@ metadata:
   breakdown:
     - range(1, 4)
     - filing_status
+  breakdown_labels:
+    - Bracket
+    - Filing status
   propagate_metadata_to_children: true
   reference:
     - title: Internal Revenue Code §1(j)(5)(B)

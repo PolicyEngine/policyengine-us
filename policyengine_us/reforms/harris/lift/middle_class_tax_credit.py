@@ -8,14 +8,10 @@ def create_middle_class_tax_credit() -> Reform:
         label = "Middle Class Tax Credit"
         unit = USD
         definition_period = YEAR
-        reference = (
-            "https://www.congress.gov/bill/116th-congress/senate-bill/4/text"
-        )
+        reference = "https://www.congress.gov/bill/116th-congress/senate-bill/4/text"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.harris.lift.middle_class_tax_credit
+            p = parameters(period).gov.contrib.harris.lift.middle_class_tax_credit
             earned_income = add(tax_unit, period, ["earned_income"])
             pell_grant = add(tax_unit, period, ["pell_grant"])
             total_earned_income = earned_income + pell_grant
@@ -54,9 +50,7 @@ def create_middle_class_tax_credit() -> Reform:
     return reform
 
 
-def create_middle_class_tax_credit_reform(
-    parameters, period, bypass: bool = False
-):
+def create_middle_class_tax_credit_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_middle_class_tax_credit()
 
@@ -68,6 +62,4 @@ def create_middle_class_tax_credit_reform(
         return None
 
 
-middle_class_tax_credit = create_middle_class_tax_credit_reform(
-    None, None, bypass=True
-)
+middle_class_tax_credit = create_middle_class_tax_credit_reform(None, None, bypass=True)

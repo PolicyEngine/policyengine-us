@@ -6,7 +6,9 @@ class tx_ccs_work_requirement_eligible(Variable):
     entity = SPMUnit
     label = "Texas CCS work requirement eligible"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-56"
+    reference = (
+        "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-56"
+    )
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
@@ -20,16 +22,12 @@ class tx_ccs_work_requirement_eligible(Variable):
         # Count non-exempt parents and calculate their total work hours
         is_non_exempt_parent = is_head_or_spouse & ~is_exempt
         num_non_exempt_parents = spm_unit.sum(is_non_exempt_parent)
-        total_work_hours = spm_unit.sum(
-            where(is_non_exempt_parent, work_hours, 0)
-        )
+        total_work_hours = spm_unit.sum(where(is_non_exempt_parent, work_hours, 0))
 
         # Determine work hours requirement based on non-exempt parents
         # If 0-1 non-exempt parents: 25 hours
         # If 2+ non-exempt parents: 50 hours
-        requirement = where(
-            num_non_exempt_parents > 1, p.two_parent, p.single_parent
-        )
+        requirement = where(num_non_exempt_parents > 1, p.two_parent, p.single_parent)
 
         # Check each parent individually
         # A parent meets requirements if they are:

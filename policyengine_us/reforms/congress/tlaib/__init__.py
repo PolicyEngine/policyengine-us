@@ -1,7 +1,8 @@
 from .end_child_poverty_act import (
     create_end_child_poverty_act_reform,
+    end_child_poverty_act,
 )
-from .income_security_package import (
-    income_security_package,
-    create_income_security_package_reform,
+from .economic_dignity_for_all_agenda import (
+    end_child_poverty_act as edaa_end_child_poverty_act,
+    create_end_child_poverty_act_reform as create_edaa_end_child_poverty_act_reform,
 )

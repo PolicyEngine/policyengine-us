@@ -3,10 +3,12 @@ values:
   2021-01-01:
     - mn_cdcc  # Minnesota child/dependent care credit
     - mn_wfc  # Minnesota working family credit
+    - mn_k12_education_credit  # Minnesota K-12 Education Credit
 
   2023-01-01:
-    - mn_cdcc  
-    - mn_child_and_working_families_credits # Minnesota child and working families tax credit
+    - mn_cdcc
+    - mn_child_and_working_families_credits  # Minnesota child and working families tax credit
+    - mn_k12_education_credit
 
 metadata:
   unit: list
@@ -21,3 +23,5 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1ref-23.pdf
   - title: 2024 Schedule M1REF, Refundable Credits
     href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1ref-24_0.pdf
+  - title: 2025 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-11/m1-inst-25_0.pdf#page=18

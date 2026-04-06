@@ -1,0 +1,365 @@
+# Tests for TAXSIM output variable formulas
+# These tests verify that TAXSIM variables are correctly calculated from underlying inputs
+
+- name: Single filer with wages - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_mstat: 1  # SINGLE maps to 1
+    taxsim_page: 45
+    taxsim_sage: 0  # No spouse
+    taxsim_depx: 0
+    taxsim_pwages: 50000
+    taxsim_swages: 0
+
+- name: Married couple with wages - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60000
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+        employment_income: 40000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_mstat: 2  # JOINT maps to 2
+    taxsim_page: 40
+    taxsim_sage: 38
+    taxsim_pwages: 60000
+    taxsim_swages: 40000
+
+- name: Married filing separately - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 75000
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: SEPARATE
+  output:
+    taxsim_mstat: 6  # SEPARATE maps to 6
+
+- name: Surviving spouse - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 55
+        employment_income: 45000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SURVIVING_SPOUSE
+  output:
+    taxsim_mstat: 8  # SURVIVING_SPOUSE maps to 8
+
+- name: Head of household - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 55000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    taxsim_mstat: 1  # HEAD_OF_HOUSEHOLD maps to 1
+
+- name: Family with dependents - TAXSIM age and dep outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 80000
+        is_tax_unit_head: true
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 15
+        is_tax_unit_dependent: true
+      child3:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    taxsim_depx: 3
+    taxsim_dep13: 1  # child1 is under 13
+    taxsim_dep17: 2  # child1 and child2 are under 17
+    taxsim_age1: 10  # First dependent age (youngest)
+    taxsim_age2: 15  # Second dependent age
+    taxsim_age3: 19  # Third dependent age
+
+- name: Investment income - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 30000
+        taxable_interest_income: 5000
+        qualified_dividend_income: 3000
+        short_term_capital_gains: 2000
+        long_term_capital_gains: 10000
+        pension_income: 15000
+        social_security: 20000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_intrec: 5000
+    taxsim_dividends: 3000
+    taxsim_stcg: 2000
+    taxsim_ltcg: 10000
+    taxsim_pensions: 15000
+    taxsim_gssi: 20000
+
+- name: Self-employment income - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: 75000
+        is_tax_unit_head: true
+      spouse:
+        age: 43
+        self_employment_income: 25000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_psemp: 75000
+    taxsim_ssemp: 25000
+
+- name: Unemployment income - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 35
+        unemployment_compensation: 15000
+        is_tax_unit_head: true
+      spouse:
+        age: 33
+        unemployment_compensation: 8000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_pui: 15000
+    taxsim_ui: 8000  # Spouse UI only
+
+- name: Partnership and S-corp income - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: 100000
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        partnership_s_corp_income: 50000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_pbusinc: 100000
+    taxsim_sbusinc: 50000
+    taxsim_scorp: 150000
+
+- name: State code NY - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: NY
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_state: 33  # NY SOI code
+
+- name: State code MD - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: MD
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_state: 21  # MD SOI code
+
+- name: State code MA - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: MA
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_state: 22  # MA SOI code
+
+- name: State code WA - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: WA
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_state: 48  # WA SOI code
+
+- name: Year and ID - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_year: 2024
+
+- name: AGI output - TAXSIM v10
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 75000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_v10: 75000  # AGI equals employment income with no deductions
+
+- name: Taxable income - TAXSIM v18
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 100000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_v18: 85400  # Taxable income
+
+- name: EITC - TAXSIM v25
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 15000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    taxsim_v25: 4213  # EITC for 1 child at this income level
+
+- name: Tax unit ID - TAXSIM taxsimid
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_id: 12345
+  output:
+    taxsim_taxsimid: 12345

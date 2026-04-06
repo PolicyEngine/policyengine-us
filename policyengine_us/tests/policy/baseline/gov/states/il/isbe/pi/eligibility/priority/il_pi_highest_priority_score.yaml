@@ -1,0 +1,100 @@
+- name: Case 1, no highest priority factors.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # No factors = 0 pts
+    il_pi_highest_priority_score: [0, 0]
+
+- name: Case 2, homeless family.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Homeless (50) = 50 pts for child only
+    il_pi_highest_priority_score: [0, 50]
+
+- name: Case 3, foster child.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 1
+        is_in_foster_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Foster care (50) = 50 pts for child only
+    il_pi_highest_priority_score: [0, 50]
+
+- name: Case 4, multiple highest priority factors.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 5_000
+      person2:
+        age: 1
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+        is_non_english_speaking_home: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Homeless (50) + developmental delay (50) + deep poverty (50) + non-English (50) = 200 pts
+    il_pi_highest_priority_score: [0, 200]

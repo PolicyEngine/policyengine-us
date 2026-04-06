@@ -1,0 +1,35 @@
+- name: Case 1, zero assets is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 0
+  output:
+    nm_works_resources_eligible: true
+
+- name: Case 2, one dollar below limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 3_499
+  output:
+    # Combined limit: $1,500 + $2,000 = $3,500
+    # $3,499 <= $3,500 = eligible
+    nm_works_resources_eligible: true
+
+- name: Case 3, at limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 3_500
+  output:
+    # $3,500 <= $3,500 = eligible (boundary)
+    nm_works_resources_eligible: true
+
+- name: Case 4, one dollar above limit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_assets: 3_501
+  output:
+    # $3,501 > $3,500 = ineligible
+    nm_works_resources_eligible: false

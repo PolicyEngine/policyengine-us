@@ -1,0 +1,119 @@
+# Unit tests for Oklahoma TANF eligibility determination
+# OAC 340:10-3: Eligibility requires eligible child, income under limit, resources under $1,000
+# https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10
+
+- name: Eligible - has eligible child, income below limit, resources below limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+      child:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        ok_tanf_income_eligible: true
+        ok_tanf_resources_eligible: true
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_tanf_eligible: true
+
+- name: Ineligible - no eligible child
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [adult]
+        ok_tanf_income_eligible: true
+        ok_tanf_resources_eligible: true
+    households:
+      household:
+        members: [adult]
+        state_code: OK
+  output:
+    ok_tanf_eligible: false
+
+- name: Ineligible - income exceeds limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+      child:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        ok_tanf_income_eligible: false
+        ok_tanf_resources_eligible: true
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_tanf_eligible: false
+
+- name: Ineligible - resources exceed limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+      child:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        ok_tanf_income_eligible: true
+        ok_tanf_resources_eligible: false
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_tanf_eligible: false
+
+- name: Ineligible - fails all requirements
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [adult]
+        ok_tanf_income_eligible: false
+        ok_tanf_resources_eligible: false
+    households:
+      household:
+        members: [adult]
+        state_code: OK
+  output:
+    ok_tanf_eligible: false
+
+- name: Ineligible - eligible child but both income and resources exceed limits
+  period: 2024-01
+  input:
+    people:
+      adult:
+        is_person_demographic_tanf_eligible: false
+      child:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        ok_tanf_income_eligible: false
+        ok_tanf_resources_eligible: false
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_tanf_eligible: false

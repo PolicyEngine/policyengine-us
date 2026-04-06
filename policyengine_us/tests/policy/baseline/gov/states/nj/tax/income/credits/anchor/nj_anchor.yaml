@@ -1,0 +1,688 @@
+# Unit tests for nj_anchor variable
+# Tests benefit amounts for ANCHOR (Affordable New Jersey Communities for Homeowners and Renters)
+# Benefits:
+#   Homeowners lower income (<=$150K): Non-senior $1,500, Senior $1,750
+#   Homeowners upper income ($150K-$250K): Non-senior $1,000, Senior $1,250
+#   Renters (<=$150K): Non-senior $450, Senior $700
+#   Above income limits: $0
+
+- name: Case 1, senior homeowner with lower income receives $1,750.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34  # New Jersey
+  output:
+    # Senior homeowner, income $100K <= $150K threshold
+    # Benefit: $1,750 (senior homeowner lower income tier)
+    nj_anchor: 1_750
+
+- name: Case 2, non-senior homeowner with lower income receives $1,500.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $100K <= $150K threshold
+    # Benefit: $1,500 (non-senior homeowner lower income tier)
+    nj_anchor: 1_500
+
+- name: Case 3, senior homeowner with upper income receives $1,250.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 200_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income $200K > $150K but <= $250K
+    # Benefit: $1,250 (senior homeowner upper income tier)
+    nj_anchor: 1_250
+
+- name: Case 4, non-senior homeowner with upper income receives $1,000.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $200K > $150K but <= $250K
+    # Benefit: $1,000 (non-senior homeowner upper income tier)
+    nj_anchor: 1_000
+
+- name: Case 5, senior renter with income below threshold receives $700.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior renter, income $100K <= $150K threshold
+    # Benefit: $700 (senior renter)
+    nj_anchor: 700
+
+- name: Case 6, non-senior renter with income below threshold receives $450.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior renter, income $100K <= $150K threshold
+    # Benefit: $450 (non-senior renter)
+    nj_anchor: 450
+
+- name: Case 7, homeowner with income above upper limit receives $0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 260_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Homeowner, income $260K > $250K upper limit
+    # Benefit: $0 (ineligible)
+    nj_anchor: 0
+
+- name: Case 8, renter with income above limit receives $0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 160_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Renter, income $160K > $150K limit
+    # Benefit: $0 (ineligible)
+    nj_anchor: 0
+
+- name: Case 9, homeowner at lower income threshold receives lower income benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $150K at threshold
+    # Benefit: $1,500 (at threshold = lower income tier)
+    nj_anchor: 1_500
+
+- name: Case 10, homeowner at upper income threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 250_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $250K at upper threshold
+    # Benefit: $1,000 (upper income tier at limit)
+    nj_anchor: 1_000
+
+- name: Case 11, senior at age 64 receives non-senior benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 64 < 65 threshold, not senior
+    # Benefit: $1,500 (non-senior homeowner lower income)
+    nj_anchor: 1_500
+
+# ==============================================================================
+# EDGE CASES - Boundary conditions and corner cases
+# ==============================================================================
+
+- name: Edge case 1, homeowner income exactly one dollar above $150,000 gets upper tier.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_001
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $150,001 > $150K threshold (uses <=)
+    # Switches to upper income tier: $1,000
+    nj_anchor: 1_000
+
+- name: Edge case 2, senior homeowner income exactly one dollar above $150,000.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 150_001
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income $150,001 > $150K threshold
+    # Switches to upper income tier: $1,250
+    nj_anchor: 1_250
+
+- name: Edge case 3, homeowner income exactly one dollar above $250,000 is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 250_001
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $250,001 > $250,000 upper limit - ineligible
+    nj_anchor: 0
+
+- name: Edge case 4, renter income exactly one dollar above $150,000 is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_001
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Renter income $150,001 > $150K limit - ineligible
+    nj_anchor: 0
+
+- name: Edge case 5, homeowner with zero income receives lower tier benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income $0 <= $150K
+    # Lower income tier: $1,500
+    nj_anchor: 1_500
+
+- name: Edge case 6, senior homeowner with zero income receives senior lower tier.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income $0 <= $150K
+    # Senior lower income tier: $1,750
+    nj_anchor: 1_750
+
+- name: Edge case 7, renter with zero income receives non-senior benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior renter, income $0 <= $150K
+    # Non-senior renter benefit: $450
+    nj_anchor: 450
+
+- name: Edge case 8, senior renter with zero income receives senior benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 0
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior renter, income $0 <= $150K
+    # Senior renter benefit: $700
+    nj_anchor: 700
+
+- name: Edge case 9, very high income homeowner receives $0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $1M far exceeds all limits
+    nj_anchor: 0
+
+- name: Edge case 10, age exactly 65 receives senior benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 65 >= 65 threshold (uses >=)
+    # Senior homeowner lower income: $1,750
+    nj_anchor: 1_750
+
+- name: Edge case 11, couple where only spouse is 65 plus receives senior benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # Uses greater_age_head_spouse = max(50, 66) = 66 >= 65
+    # Senior homeowner lower income tier: $1,750
+    nj_anchor: 1_750
+
+- name: Edge case 12, mixed household paying both rent and property taxes receives $0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Implementation: is_homeowner = pays_taxes & ~pays_rent
+    # is_renter = pays_rent & ~pays_taxes
+    # Both conditions fail - neither homeowner nor renter
+    nj_anchor: 0
+
+- name: Edge case 13, person who neither owns nor rents receives $0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # No rent - defaults to 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Not homeowner (no property taxes) and not renter (no rent paid)
+    # Formula: is_homeowner = pays_taxes & ~pays_rent = false
+    # Formula: is_renter = pays_rent & ~pays_taxes = false
+    # Neither category qualifies
+    nj_anchor: 0
+
+- name: Edge case 14, renter at income threshold receives full benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior renter, income exactly at $150K limit (uses <=)
+    # Non-senior renter benefit: $450
+    nj_anchor: 450
+
+- name: Edge case 15, senior renter at income threshold receives full benefit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 150_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior renter, income exactly at $150K limit (uses <=)
+    # Senior renter benefit: $700
+    nj_anchor: 700
+
+- name: Edge case 16, senior homeowner at upper income threshold.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 250_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income $250K at upper limit (uses <=)
+    # Senior homeowner upper income tier: $1,250
+    nj_anchor: 1_250

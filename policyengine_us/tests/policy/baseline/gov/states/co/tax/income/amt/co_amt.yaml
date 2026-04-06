@@ -1,0 +1,18 @@
+# Colorado Alternative Minimum Tax tests
+- name: No AMT when normal tax exceeds tentative minimum tax
+  period: 2024
+  input:
+    co_tentative_minimum_tax: 5_000
+    co_income_tax_before_non_refundable_credits: 10_000
+    state_code: CO
+  output:
+    co_amt: 0
+
+- name: AMT when tentative minimum tax exceeds normal tax
+  period: 2024
+  input:
+    co_tentative_minimum_tax: 15_000
+    co_income_tax_before_non_refundable_credits: 10_000
+    state_code: CO
+  output:
+    co_amt: 5_000

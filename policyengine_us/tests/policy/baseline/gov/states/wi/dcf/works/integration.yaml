@@ -1,0 +1,282 @@
+# Wisconsin Works (W-2) Integration Tests
+# These tests validate the complete benefit calculation pipeline with realistic scenarios.
+
+- name: Case 1, single parent with one child, no income - CSJ placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        household_vehicles_value: 5_000
+  output:
+    wi_works_resources_eligible: true
+    wi_works_income_eligible: true
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+    wi_works: 653
+
+- name: Case 2, parent with newborn - CMC placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 1_000
+      person2:
+        age: 0  # Newborn (monthly_age = 0 ≤ 2)
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+    wi_works_placement: CMC
+    wi_works: 673
+
+- name: Case 3, pregnant person in third trimester - ARP placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 22
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 500
+        is_pregnant: true
+        current_pregnancy_month: 8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 200
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+    wi_works_placement: ARP
+    wi_works: 673
+
+- name: Case 4, income exceeds 115% FPL - ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 3_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # $3,000 > 115% FPL ($2,013) → ineligible
+    wi_works_countable_income: 3_000
+    wi_works_income_eligible: false
+    wi_works_eligible: false
+    wi_works: 0
+
+- name: Case 5, resources exceed $2,500 limit - ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person2:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        household_vehicles_value: 8_000
+  output:
+    # $3,000 cash > $2,500 limit → ineligible
+    wi_works_resources_eligible: false
+    wi_works_eligible: false
+    wi_works: 0
+
+- name: Case 6, vehicle value above exclusion contributes to resources.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        household_vehicles_value: 12_000
+  output:
+    # $1,000 + ($12,000 - $10,000) = $3,000 > $2,500 → ineligible
+    wi_works_resources_eligible: false
+    wi_works_eligible: false
+    wi_works: 0
+
+- name: Case 7, child support income is disregarded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 500
+        child_support_received: 6_000  # $500/month
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # $1,000 + $500 - $500 = $1,000 (child support disregarded)
+    wi_works_countable_income: 1_000
+    wi_works_eligible: true
+    wi_works: 653
+
+- name: Case 8, two-parent household with one income earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 1_500
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_countable_income: 1_500
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+    wi_works: 653
+
+- name: Case 9, child 3 years old (above CMC threshold) gets CSJ.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 27
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+      person2:
+        age: 3  # monthly_age = 3 > 2 threshold
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+    wi_works: 653
+
+- name: Case 10, CMC takes priority over ARP when both conditions met.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 29
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 0
+        is_pregnant: true
+        current_pregnancy_month: 8
+      person2:
+        age: 0  # Infant triggers CMC
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_eligible: true
+    # CMC > ARP priority
+    wi_works_placement: CMC
+    wi_works: 673
+
+- name: Case 11, large family with multiple children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head_or_spouse: true
+        tanf_gross_earned_income: 2_000
+      person2:
+        age: 14
+      person3:
+        age: 11
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_cash_assets: 2_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+  output:
+    wi_works_countable_income: 2_000
+    wi_works_eligible: true
+    wi_works_placement: CSJ
+    wi_works: 653

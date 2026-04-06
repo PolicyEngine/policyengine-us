@@ -1,0 +1,140 @@
+# Unit tests for ar_tea (final benefit amount)
+# Benefit calculation (per TEA Manual Section 2362, effective 01/01/2023):
+# 1. If not eligible: $0
+# 2. If gross income < $1026: benefit = max(payment_standard - countable_income, 0)
+# 3. If gross income >= $1026: benefit = payment_standard * 0.5 (no subtraction)
+
+- name: Case 1, ineligible receives zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: false
+        ar_tea_maximum_benefit: 204
+        ar_tea_countable_income: 0
+  output:
+    ar_tea: 0
+    # Not eligible -> no benefit
+
+- name: Case 2, eligible with zero income receives full benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: true
+        ar_tea_maximum_benefit: 204
+        ar_tea_countable_income: 0
+  output:
+    ar_tea: 204
+    # max(204 - 0, 0) = 204
+
+- name: Case 3, eligible with countable income below payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: true
+        ar_tea_maximum_benefit: 204
+        ar_tea_countable_income: 128
+  output:
+    ar_tea: 76
+    # Gross income 400 < 1026 trigger, so full payment standard applies
+    # max(204 - 128, 0) = 76
+
+- name: Case 4, gross income at trigger causes 50 percent reduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_026
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: true
+        ar_tea_maximum_benefit: 204
+        ar_tea_countable_income: 0
+  output:
+    ar_tea: 102
+    # Gross income 1,026 >= 1,026 trigger, so 50% reduction
+    # 204 * 0.5 = 102 (no subtraction when above trigger)
+
+- name: Case 5, gross income above trigger with countable income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_200
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: true
+        ar_tea_maximum_benefit: 162
+        ar_tea_countable_income: 384
+  output:
+    ar_tea: 81
+    # Gross income 1,200 >= 1,026 trigger, so 50% reduction
+    # 162 * 0.5 = 81 (no subtraction when above trigger)
+
+- name: Case 6, benefit would be negative clipped to zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea_eligible: true
+        ar_tea_maximum_benefit: 81
+        ar_tea_countable_income: 100
+  output:
+    ar_tea: 0
+    # max(81 - 100, 0) = max(-19, 0) = 0

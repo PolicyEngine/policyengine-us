@@ -1,0 +1,23 @@
+- name: Not a college student
+  period: 2024
+  input:
+    is_full_time_college_student: false
+    is_part_time_college_student: false
+  output:
+    is_snap_higher_ed_student: false
+
+- name: Full-time college student
+  period: 2024
+  input:
+    is_full_time_college_student: true
+    is_part_time_college_student: false
+  output:
+    is_snap_higher_ed_student: true
+
+- name: Part-time college student
+  period: 2024
+  input:
+    is_full_time_college_student: false
+    is_part_time_college_student: true
+  output:
+    is_snap_higher_ed_student: true

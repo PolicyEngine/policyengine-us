@@ -1,0 +1,325 @@
+# Connecticut Refundable Child Tax Credit
+# HB 5134 (2026) - Proposed legislation
+# $600 per child for up to 3 children under age 18
+# AGI < $100,000 (single) or AGI <= $200,000 (joint)
+
+- name: Case 1, single filer with 2 children under income limit.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_200
+
+- name: Case 2, joint filers with 3 children under income limit.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 9
+        is_tax_unit_dependent: true
+      person5:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_800
+
+- name: Case 3, 4 children capped at 3.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 14
+        is_tax_unit_dependent: true
+      person4:
+        age: 11
+        is_tax_unit_dependent: true
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+      person6:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 1_800
+
+- name: Case 4, single filer at income limit is ineligible.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Bill says "less than $100,000" for single (strict <)
+    ct_refundable_ctc: 0
+
+- name: Case 5, single filer just under income limit is eligible.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 99_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 600
+
+- name: Case 6, joint filers at exactly $200K are eligible.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CT
+  output:
+    # Bill says "$200,000 or less" for joint (<=)
+    ct_refundable_ctc: 1_200
+
+- name: Case 7, joint filers over $200K are ineligible.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        adjusted_gross_income: 200_001
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+- name: Case 8, no children gets no credit.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 0
+
+- name: Case 9, child at age 18 does not qualify.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # Only person3 (age 10) qualifies; person2 (age 18) does not
+    ct_refundable_ctc: 600
+
+- name: Case 10, child at age 17 qualifies.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_refundable_ctc: 600
+
+- name: Case 11, head of household filing status.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 99_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # HOH threshold is $100K (strict <), $99,999 qualifies
+    ct_refundable_ctc: 600
+
+- name: Case 12, non-CT resident gets no credit.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ct.refundable_ctc.ct_refundable_ctc.ct_refundable_ctc
+  input:
+    gov.contrib.states.ct.refundable_ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ct_refundable_ctc: 0

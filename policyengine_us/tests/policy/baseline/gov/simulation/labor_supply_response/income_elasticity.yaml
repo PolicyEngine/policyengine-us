@@ -1,19 +1,13 @@
-- name: Income elasticity for person under 65 uses base
+- name: Default income elasticity is zero
   period: 2023
   input:
-    age: 50
-    gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income: 0
   output:
-    income_elasticity: -0.04
+    income_elasticity: 0
 
-- name: Income elasticity for person 65+ applies multiplier
+- name: Custom income elasticity value
   period: 2023
   input:
-    age: 70
-    gov.simulation.labor_supply_responses.elasticities.income.all: 0
-    gov.simulation.labor_supply_responses.elasticities.income.base: -0.04
-    gov.simulation.labor_supply_responses.elasticities.income.age_multiplier_over_threshold: 2.0
+    gov.simulation.labor_supply_responses.elasticities.income: -0.2
   output:
-    income_elasticity: -0.08
+    income_elasticity: -0.2

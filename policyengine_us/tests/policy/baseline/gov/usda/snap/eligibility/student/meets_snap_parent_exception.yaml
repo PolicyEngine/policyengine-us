@@ -1,0 +1,345 @@
+# Base cases - not a parent or no children
+- name: Not a parent does not meet exception
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: false
+  output:
+    meets_snap_parent_exception: false
+
+- name: Parent with no children does not meet exception
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+  output:
+    meets_snap_parent_exception: false
+
+# Single parent cases - requires child under 12 AND full-time student status
+- name: Single parent with child under 12 and full-time student meets exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 30
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [true, false]
+
+- name: Single parent with child under 12 but NOT full-time student does not meet exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: false
+        age: 30
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [false, false]
+
+- name: Single parent with child under 6 and full-time student meets exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 28
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [true, false]
+
+- name: Single parent with child under 6 but NOT full-time student does not meet exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: false
+        age: 28
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [false, false]
+
+- name: Single parent with child exactly 12 does not meet exception even if full-time student
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 35
+      child:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [false, false]
+
+- name: Single parent with child over 12 does not meet exception even if full-time student
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 38
+      child:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [false, false]
+
+# Two-parent household cases - requires child under 6 only
+- name: Two-parent household with child under 6 meets exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 28
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    meets_snap_parent_exception: [true, true, false]
+
+- name: Two-parent household with child exactly 6 does not meet exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 32
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 34
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+- name: Two-parent household with child between 6 and 12 does not meet exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 35
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 37
+      child:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+- name: Two-parent household with child over 12 does not meet exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 40
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 42
+      child:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+# Multiple children cases
+- name: Single parent with multiple children - youngest under 12 and full-time student meets exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 40
+      child1:
+        age: 15
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    meets_snap_parent_exception: [true, false, false]
+
+- name: Single parent with multiple children - youngest under 12 but NOT full-time student does not meet exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: false
+        age: 40
+      child1:
+        age: 15
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+  output:
+    meets_snap_parent_exception: [false, false, false]
+
+- name: Two-parent household with multiple children - youngest under 6 meets exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 35
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 37
+      child1:
+        age: 10
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+  output:
+    meets_snap_parent_exception: [true, true, false, false]
+
+- name: Two-parent household with multiple children - all over 6 does not meet exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 38
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+  output:
+    meets_snap_parent_exception: [false, false, false, false]
+
+# Edge case - single parent with child at exactly the boundary
+- name: Single parent with child exactly 11 and full-time student meets exception
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head_or_spouse: true
+        is_full_time_college_student: true
+        age: 34
+      child:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    meets_snap_parent_exception: [true, false]
+
+# Edge case - two-parent household with child at exactly the boundary
+- name: Two-parent household with child exactly 5 meets exception
+  period: 2024
+  input:
+    people:
+      parent1:
+        is_tax_unit_head_or_spouse: true
+        age: 30
+      parent2:
+        is_tax_unit_head_or_spouse: true
+        age: 32
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    meets_snap_parent_exception: [true, true, false]

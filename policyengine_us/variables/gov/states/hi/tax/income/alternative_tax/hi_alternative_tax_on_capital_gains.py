@@ -35,8 +35,6 @@ class hi_alternative_tax_on_capital_gains(Variable):
             ],
         )
         taxable_income = tax_unit("hi_taxable_income", period)
-        excess_taxable_income = max_(
-            0, taxable_income - eligible_taxable_income
-        )
+        excess_taxable_income = max_(0, taxable_income - eligible_taxable_income)
         flat_tax_rate = p.alternative_tax.rate * excess_taxable_income
         return flat_tax_rate + normal_tax_rate

@@ -1,0 +1,86 @@
+# Nebraska ADC Resources Eligibility Tests
+# Per Neb. Rev. Stat. 68-1726(1):
+#   - $4,000 limit for single person
+#   - $6,000 limit for 2+ persons
+
+- name: Case 1, single person at resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: true
+    # Resources ($4,000) <= Limit ($4,000) -> true
+
+- name: Case 2, single person above resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 4_001
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    spm_unit_size: 1
+    ne_adc_resources_eligible: false
+    # Resources ($4,001) > Limit ($4,000) -> false
+
+- name: Case 3, family at resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: true
+    # Resources ($6,000) <= Limit ($6,000) -> true
+
+- name: Case 4, family above resource limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    spm_unit_size: 2
+    ne_adc_resources_eligible: false
+    # Resources ($6,001) > Limit ($6,000) -> false

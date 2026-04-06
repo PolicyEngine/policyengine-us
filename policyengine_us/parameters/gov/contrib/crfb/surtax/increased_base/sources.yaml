@@ -1,0 +1,24 @@
+description: Additional income sources for CRFB surtax expanded base beyond IRS gross income.
+values:
+  2010-01-01:
+    # Retirement contributions (IRA, 401k, 403b)
+    - traditional_ira_contributions
+    - traditional_401k_contributions
+    - traditional_403b_contributions
+    # HSA contributions (no Archer MSA variable exists)
+    - health_savings_account_ald
+    # Deductible student loan interest
+    - student_loan_interest_ald
+    # Social Security not counted toward AGI
+    - tax_exempt_social_security
+    # Foreign earnings exclusion (tax unit level, may need special handling)
+    - foreign_earned_income_exclusion
+    # Tax-free bond interest
+    - tax_exempt_interest_income
+    # Employer-provided health insurance (premiums)
+    - health_insurance_premiums
+
+metadata:
+  unit: list
+  period: year
+  label: CRFB surtax expanded base additional sources

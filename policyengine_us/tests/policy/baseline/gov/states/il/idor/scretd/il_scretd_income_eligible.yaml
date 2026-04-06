@@ -1,0 +1,219 @@
+# Tests for il_scretd_income_eligible variable
+# Income limit varies by year:
+# - 2024: $65,000
+# - 2025: $75,000
+# - 2026: $77,000
+# - 2027+: $79,000
+# Source: 320 ILCS 30/2, SB1821
+
+- name: Case 1, income below 2024 limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: true
+
+- name: Case 2, income at 2024 limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 65_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: true
+
+- name: Case 3, income above 2024 limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 66_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: false
+
+- name: Case 4, income below 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 70_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: true
+
+- name: Case 5, income at 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: true
+
+- name: Case 6, income above 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 76_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: false
+
+- name: Case 7, income at 2027 limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 79_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: true
+
+- name: Case 8, income above 2027 limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_income_eligible: false
+
+# Edge case: Zero income
+- name: Case 9, zero income is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income check: 0 <= 65,000 = true
+    il_scretd_income_eligible: true
+
+# Edge case: Income exactly $1 above 2024 limit
+- name: Case 10, income one dollar above 2024 limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 65_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income check: 65,001 <= 65,000 = false
+    il_scretd_income_eligible: false
+
+# Edge case: Income exactly $1 above 2025 limit
+- name: Case 11, income one dollar above 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 75_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income check: 75,001 <= 75,000 = false
+    il_scretd_income_eligible: false
+
+# Edge case: Income exactly $1 above 2027 limit
+- name: Case 12, income one dollar above 2027 limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 79_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income check: 79,001 <= 79,000 = false
+    il_scretd_income_eligible: false

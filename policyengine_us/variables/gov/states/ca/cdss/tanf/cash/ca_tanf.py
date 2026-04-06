@@ -11,9 +11,7 @@ class ca_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         maximum_payment = spm_unit("ca_tanf_maximum_payment", period)
-        countable_income = spm_unit(
-            "ca_tanf_countable_income_recipient", period
-        )
+        countable_income = spm_unit("ca_tanf_countable_income_recipient", period)
         person = spm_unit.members
         eligible_people_based_on_immigration_status = spm_unit.sum(
             person("ca_tanf_immigration_status_eligible_person", period)
@@ -22,7 +20,10 @@ class ca_tanf(Variable):
         prorated_fraction = np.zeros_like(spm_unit_size, dtype=float)
         mask = spm_unit_size != 0
         prorated_fraction[mask] = (
-            eligible_people_based_on_immigration_status[mask]
-            / spm_unit_size[mask]
+            eligible_people_based_on_immigration_status[mask] / spm_unit_size[mask]
         )
-        return prorated_fraction * max_(maximum_payment - countable_income, 0)
+        benefit = max_(maximum_payment - countable_income, 0)
+        # Cap benefit at maximum payment to prevent negative income
+        # from inflating benefits above the maximum.
+        capped_benefit = min_(benefit, maximum_payment)
+        return prorated_fraction * capped_benefit

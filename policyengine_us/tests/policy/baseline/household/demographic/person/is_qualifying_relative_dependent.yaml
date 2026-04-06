@@ -1,0 +1,163 @@
+- name: 19-year-old non-student with low income is a qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    is_qualifying_relative_dependent: [false, true]
+
+- name: 19-year-old non-student with high income is not a qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income over $5,050 threshold for 2024
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    # Fails income test
+    is_qualifying_relative_dependent: [false, false]
+
+- name: Child under 19 is a qualifying child, not qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 10
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Under 19, so qualifies as a child dependent, not as qualifying relative
+    is_qualifying_relative_dependent: [false, false]
+
+- name: Full-time student under 24 is a qualifying child, not qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+      student:
+        age: 21
+        is_full_time_student: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+  output:
+    # Full-time student under 24 qualifies as child dependent
+    is_qualifying_relative_dependent: [false, false]
+
+- name: 24-year-old student with low income is a qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 55
+        is_tax_unit_head: true
+      adult_student:
+        age: 24
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_student]
+    households:
+      household:
+        members: [parent, adult_student]
+  output:
+    # 24-year-old student is too old for qualifying child, but qualifies as
+    # qualifying relative since income is below threshold
+    is_qualifying_relative_dependent: [false, true]
+
+- name: Unrelated person living in household is a qualifying relative under IRC 152(d).
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      unrelated_person:
+        age: 25
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_related_to_head_or_spouse: false
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, unrelated_person]
+    households:
+      household:
+        members: [head, unrelated_person]
+  output:
+    # IRC 152(d)(2) allows household members who are not related.
+    # The HOH-specific relationship restriction is in head_of_household_eligible.
+    is_qualifying_relative_dependent: [false, true]
+
+- name: Disabled adult is not a qualifying relative.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 50_000
+      disabled_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, disabled_child]
+    households:
+      household:
+        members: [parent, disabled_child]
+  output:
+    # Permanently disabled individuals are exempt from the age test per
+    # IRC 152(c)(3)(B), so they qualify as child dependents, not qualifying
+    # relatives. Per IRC 152(d)(1)(D), qualifying children cannot be
+    # qualifying relatives.
+    is_qualifying_relative_dependent: [false, false]

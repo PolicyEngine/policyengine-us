@@ -1,0 +1,89 @@
+- name: UT military retirement credit - basic calculation
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_claims_retirement_credit: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Credit = 30,000 * 0.0455 = 1,365
+    ut_military_retirement_credit: 1_365
+
+- name: UT military retirement credit - married filing jointly with both having military retirement
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 25_000
+      person2:
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_claims_retirement_credit: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Credit = (25,000 + 20,000) * 0.0455 = 45,000 * 0.0455 = 2,047.50
+    ut_military_retirement_credit: 2_047.5
+
+- name: UT military retirement credit - not eligible when claiming retirement credit
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_claims_retirement_credit: true
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit: 0
+
+- name: UT military retirement credit - zero military retirement pay
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_claims_retirement_credit: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit: 0
+
+- name: UT military retirement credit - 2025 rate (4.5%)
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ut_claims_retirement_credit: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Credit = 30,000 * 0.045 = 1,350
+    ut_military_retirement_credit: 1_350

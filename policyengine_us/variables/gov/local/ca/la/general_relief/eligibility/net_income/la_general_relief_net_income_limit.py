@@ -12,9 +12,7 @@ class la_general_relief_net_income_limit(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.local.ca.la.general_relief.eligibility.limit.income
+        p = parameters(period).gov.local.ca.la.general_relief.eligibility.limit.income
         married = add(spm_unit, period, ["is_married"])
         applicant_limit = where(
             married,

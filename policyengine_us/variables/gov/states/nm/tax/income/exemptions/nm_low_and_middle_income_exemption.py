@@ -10,9 +10,7 @@ class nm_low_and_middle_income_exemption(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.exemptions.low_and_middle_income
+        p = parameters(period).gov.states.nm.tax.income.exemptions.low_and_middle_income
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
 

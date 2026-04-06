@@ -7,9 +7,7 @@ class ma_eaedc_assets_limit_eligible(Variable):
     label = "Eligible based on the asset limit for the Massachusetts EAEDC"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-110"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-110"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.assets
@@ -22,6 +20,4 @@ class ma_eaedc_assets_limit_eligible(Variable):
         assets_below_limit = countable_assets <= p.limit
         # Only living arrangement E has an asset limit
 
-        return (
-            living_arrangement_E & assets_below_limit
-        ) | ~living_arrangement_E
+        return (living_arrangement_E & assets_below_limit) | ~living_arrangement_E

@@ -314,9 +314,11 @@ WY:
   2025-10-01: 114_837
 
 metadata:
+  label: HHS SMI 4-person household
+  breakdown:
+    - state_code
   unit: currency-USD
   period: year
-  label: HHS SMI 4-person household
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
   reference:
   - title: State Median Income (SMI) by household size for Mandatory Use in LIHEAP for FFY 2022

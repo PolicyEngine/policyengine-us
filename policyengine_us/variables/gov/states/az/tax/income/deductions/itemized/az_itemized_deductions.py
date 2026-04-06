@@ -30,9 +30,7 @@ class az_itemized_deductions(Variable):
         ]
         federal_deductions = add(tax_unit, period, deductions)
         # Arizona allows a complete deduction for medical and dental expenses
-        medical_expenses = add(
-            tax_unit, period, ["medical_out_of_pocket_expenses"]
-        )
+        medical_expenses = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming
@@ -51,8 +49,4 @@ class az_itemized_deductions(Variable):
         # to claim the Arizona charitable contributions credit
         # Since the Arizona charitable contributions credit is based on contributions
         # to qulalifying foster care organizations, we do not reduce the salt deduction
-        return (
-            federal_deductions
-            + medical_expenses
-            + charitable_deduction_after_credit
-        )
+        return federal_deductions + medical_expenses + charitable_deduction_after_credit

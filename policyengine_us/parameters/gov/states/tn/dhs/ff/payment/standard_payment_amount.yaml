@@ -1,0 +1,52 @@
+description: Tennessee provides up to this Standard Payment Amount (SPA) under the Families First program, based on assistance group size.
+# 2021 values calculated as 25% of CNS per T.C.A. § 71-3-105(f)(2)(B):
+# "The maximum standard grant for the temporary assistance program for all
+# assistance group sizes is no less than twenty-five percent (25%) of the
+# standard of need for the applicable assistance group size."
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Assistance group size
+  label: Tennessee Families First Standard Payment Amount
+  reference:
+    - title: Tennessee Administrative Code § 1240-01-50-.20 (2008)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=26
+    - title: Tennessee Administrative Code § 1240-01-50-.20 (2021)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20210701.pdf#page=26
+    - title: National Center for Children in Poverty - Tennessee Families First Profile
+      href: https://www.nccp.org/wp-content/uploads/2024/11/TANF-profile-Tennessee.pdf
+
+1:
+  2008-11-01: 95
+  2021-07-01: 244
+2:
+  2008-11-01: 142
+  2021-07-01: 343
+3:
+  2008-11-01: 185
+  2021-07-01: 387
+4:
+  2008-11-01: 226
+  2021-07-01: 438
+5:
+  2008-11-01: 264
+  2021-07-01: 471
+6:
+  2008-11-01: 305
+  2021-07-01: 502
+7:
+  2008-11-01: 345
+  2021-07-01: 530
+8:
+  2008-11-01: 386
+  2021-07-01: 556
+9:
+  2008-11-01: 425
+  2021-07-01: 575
+10:
+  2008-11-01: 467
+  2021-07-01: 593

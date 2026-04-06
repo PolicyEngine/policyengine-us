@@ -1,0 +1,65 @@
+- name: Case 1, eligible working disabled person.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 35
+    is_disabled: true
+    employment_income: 30_000  # $2,500/month
+    spm_unit_cash_assets: 10_000
+  output:
+    il_hbwd_eligible: true
+
+- name: Case 2, eligible SSDI recipient with job.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 50
+    social_security_disability: 14_400  # $1,200/month
+    employment_income: 21_600  # $1,800/month
+    spm_unit_cash_assets: 20_000
+  output:
+    il_hbwd_eligible: true
+
+- name: Case 3, ineligible due to age.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 70
+    is_disabled: true
+    employment_income: 24_000  # $2,000/month
+    spm_unit_cash_assets: 5_000
+  output:
+    il_hbwd_eligible: false
+
+- name: Case 4, ineligible due to no employment.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 40
+    is_disabled: true
+    social_security_disability: 18_000  # $1,500/month
+    spm_unit_cash_assets: 5_000
+  output:
+    il_hbwd_eligible: false
+
+- name: Case 5, ineligible due to high income.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 45
+    is_disabled: true
+    employment_income: 72_000  # $6,000/month
+    spm_unit_cash_assets: 5_000
+  output:
+    il_hbwd_eligible: false
+
+- name: Case 6, ineligible due to high assets.
+  period: 2024-01
+  input:
+    state_code: IL
+    age: 30
+    is_disabled: true
+    employment_income: 24_000  # $2,000/month
+    spm_unit_cash_assets: 30_000
+  output:
+    il_hbwd_eligible: false

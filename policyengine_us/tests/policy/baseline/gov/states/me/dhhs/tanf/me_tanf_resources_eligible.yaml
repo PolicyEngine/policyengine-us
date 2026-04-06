@@ -1,0 +1,29 @@
+# Maine TANF Resources Eligibility Tests
+# Tests resource limit of $10,000
+# Source: 22 M.R.S. Section 3762; P.L. 2023 Ch. 366
+
+- name: Case 1, resources exactly at limit.
+  period: 2025-01
+  input:
+    state_code: ME
+    spm_unit_assets: 10_000
+  output:
+    # $10,000 <= $10,000 → eligible
+    me_tanf_resources_eligible: true
+
+- name: Case 2, resources one dollar above limit.
+  period: 2025-01
+  input:
+    state_code: ME
+    spm_unit_assets: 10_001
+  output:
+    # $10,001 > $10,000 → ineligible
+    me_tanf_resources_eligible: false
+
+- name: Case 3, zero resources.
+  period: 2025-01
+  input:
+    state_code: ME
+    spm_unit_assets: 0
+  output:
+    me_tanf_resources_eligible: true

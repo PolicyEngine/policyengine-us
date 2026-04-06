@@ -1,0 +1,133 @@
+# Tests for NH FANF overall eligibility
+# Eligibility requires: income eligible AND resources eligible AND demographic eligible
+# Source: RSA 167:79; FAM 203
+
+- name: Case 1, all criteria met is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    nh_fanf_eligible: true
+
+- name: Case 2, income ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_income_eligible: false
+    nh_fanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+  output:
+    nh_fanf_eligible: false
+
+- name: Case 3, resources ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: false
+    is_demographic_tanf_eligible: true
+  output:
+    nh_fanf_eligible: false
+
+- name: Case 4, demographic ineligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_income_eligible: true
+    nh_fanf_resources_eligible: true
+    is_demographic_tanf_eligible: false
+  output:
+    nh_fanf_eligible: false
+
+- name: Case 5, adults only household, no children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+        nh_fanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # No children - demographic ineligible
+    nh_fanf_eligible: false
+
+- name: Case 6, child exactly age 17 is still a child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+        nh_fanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Age 17 < 18 is still a child
+    nh_fanf_eligible: true
+
+- name: Case 7, child exactly age 18 is no longer a child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+        nh_fanf_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Age 18 is an adult - no dependent children
+    nh_fanf_eligible: false
+
+- name: Case 8, pregnant woman with no children is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500
+        nh_fanf_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # Pregnant woman qualifies for demographic eligibility
+    nh_fanf_eligible: true

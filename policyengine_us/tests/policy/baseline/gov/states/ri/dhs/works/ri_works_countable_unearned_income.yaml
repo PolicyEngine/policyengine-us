@@ -1,0 +1,171 @@
+# Unit tests for Rhode Island TANF countable unearned income
+# 218-RICR-20-00-2.15: Unearned income counted dollar-for-dollar
+# Child support: First $50/month excluded
+# https://www.law.cornell.edu/regulations/rhode-island/218-RICR-20-00-2.15
+
+- name: Case 1, no unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_works_countable_unearned_income: 0
+
+- name: Case 2, child support below $50 exclusion.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # $30 child support - $50 exclusion = $0
+    ri_works_countable_unearned_income: 0
+
+- name: Case 3, child support exactly at $50 threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600  # $50/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # $50 - $50 exclusion = $0
+    ri_works_countable_unearned_income: 0
+
+- name: Case 4, child support above $50 exclusion.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # $150 - $50 exclusion = $100
+    ri_works_countable_unearned_income: 100
+
+- name: Case 5, social security counted dollar-for-dollar.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 3_600  # $300/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # No exclusion for RSDI
+    ri_works_countable_unearned_income: 300
+
+- name: Case 6, combined sources with child support exclusion.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 1_800  # $150/month
+        unemployment_compensation: 2_400  # $200/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child support: $150 - $50 = $100
+    # UI: $200 (no exclusion)
+    # Total: $300
+    ri_works_countable_unearned_income: 300
+
+- name: Case 7, two people receive child support above $50 total.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 480  # $40/month
+      person2:
+        age: 28
+        child_support_received: 480  # $40/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Total: $80 - $50 exclusion = $30
+    ri_works_countable_unearned_income: 30
+
+- name: Case 8, two people receive child support below $50 total.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 360  # $30/month
+      person2:
+        age: 28
+        child_support_received: 180  # $15/month
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # Total: $45 - $50 exclusion = $0
+    ri_works_countable_unearned_income: 0

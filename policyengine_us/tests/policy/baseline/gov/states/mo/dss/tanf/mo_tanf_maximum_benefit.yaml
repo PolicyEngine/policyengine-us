@@ -1,0 +1,47 @@
+- name: Family of 1 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 393
+  output:
+    mo_tanf_maximum_benefit: 135.687
+
+- name: Family of 2 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 678
+  output:
+    mo_tanf_maximum_benefit: 234.086
+
+- name: Family of 3 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_maximum_benefit: 292.09
+
+- name: Family of 4 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 990
+  output:
+    mo_tanf_maximum_benefit: 341.807
+
+- name: Family of 5 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 1_123
+  output:
+    mo_tanf_maximum_benefit: 387.727
+
+- name: Family of 6 maximum benefit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_standard_of_need: 1_247
+  output:
+    mo_tanf_maximum_benefit: 430.539

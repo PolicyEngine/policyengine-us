@@ -27,3 +27,18 @@
     state_code: MN
   output:  # based on filling out Tax Rate Schedule in M1 form instructions
     mn_basic_tax: 15_907.00 + 0.0985 * (300_000 - 227_600)
+
+# 2025 test case
+# Single filer, $200,000 taxable income
+# Tax brackets for single 2025: 0-32,570 @5.35%, 32,570-106,990 @6.8%, 106,990-198,630 @7.85%, 198,630+ @9.85%
+# Tax = 32,570 * 0.0535 + (106,990 - 32,570) * 0.068 + (198,630 - 106,990) * 0.0785 + (200,000 - 198,630) * 0.0985
+# Tax = 1,742.495 + 5,060.56 + 7,193.69 + 135.0 = 14,131.745
+- name: MN basic tax 2025 single filer
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    mn_taxable_income: 200_000
+    state_code: MN
+  output:
+    mn_basic_tax: 14_131.74

@@ -13,16 +13,14 @@ class is_lifeline_eligible(Variable):
         p = parameters(period).gov.fcc.lifeline
         household = spm_unit.household
         is_on_tribal_land = household("is_on_tribal_land", period)
-        non_tribal_lifeline_programs = add(
-            spm_unit, period, p.categorical_eligibility
-        )
+        non_tribal_lifeline_programs = add(spm_unit, period, p.categorical_eligibility)
         tribal_lifeline_programs = add(
             spm_unit, period, p.tribal_categorical_eligibility
         )
         categorically_eligible = np.where(
             is_on_tribal_land,
-            np.any(tribal_lifeline_programs),
-            np.any(non_tribal_lifeline_programs),
+            tribal_lifeline_programs > 0,
+            non_tribal_lifeline_programs > 0,
         )
         # Use the new unified income eligibility variable
         income_eligible = spm_unit("is_lifeline_income_eligible", period)

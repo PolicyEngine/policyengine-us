@@ -17,8 +17,6 @@ class il_ccap_immigration_status_eligible_person(Variable):
             immigration_status_str,
             p.qualified_alien_statuses,
         )
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
 
         return has_qualifying_status | is_citizen

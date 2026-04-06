@@ -1,0 +1,133 @@
+- name: Case 1, single parent working 20 hours meets requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: true
+
+- name: Case 2, single parent working 19 hours does not meet requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 19
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: false
+
+- name: Case 3, full time student parent qualifies.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: true
+
+- name: Case 4, two parents both working 20 plus hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 25
+      person2:
+        age: 28
+        weekly_hours_worked: 20
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: true
+
+- name: Case 5, two parents one below 20 hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 25
+      person2:
+        age: 28
+        weekly_hours_worked: 15
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: false
+
+- name: Case 6, one parent works and one is a full time student.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+      person2:
+        age: 25
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_ccap_activity_eligible: true

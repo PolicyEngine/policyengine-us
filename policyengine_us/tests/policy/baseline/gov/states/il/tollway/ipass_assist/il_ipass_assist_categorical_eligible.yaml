@@ -1,0 +1,38 @@
+# Illinois I-PASS Assist categorical eligibility tests
+# Formula: (snap > 0) | (il_tanf > 0)
+#
+# Source: https://agency.illinoistollway.com/assist
+
+- name: Case 1, has SNAP.
+  period: 2025
+  input:
+    state_code: IL
+    snap: 1
+  output:
+    il_ipass_assist_categorical_eligible: true
+
+- name: Case 2, has TANF.
+  period: 2025
+  input:
+    state_code: IL
+    il_tanf: 1
+  output:
+    il_ipass_assist_categorical_eligible: true
+
+- name: Case 3, has both SNAP and TANF.
+  period: 2025
+  input:
+    state_code: IL
+    snap: 1
+    il_tanf: 1
+  output:
+    il_ipass_assist_categorical_eligible: true
+
+- name: Case 4, no SNAP or TANF.
+  period: 2025
+  input:
+    state_code: IL
+    snap: 0
+    il_tanf: 0
+  output:
+    il_ipass_assist_categorical_eligible: false

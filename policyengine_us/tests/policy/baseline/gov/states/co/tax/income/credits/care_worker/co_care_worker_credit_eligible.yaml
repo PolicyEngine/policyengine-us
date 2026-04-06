@@ -1,0 +1,122 @@
+- name: Joint with one eligible care worker, higher threshold applies 
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: true
+
+- name: Joint with one eligible care worker, higher threshold applies, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+      person2:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_001
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: false
+
+- name: Single with one eligible care worker
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 75_000
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: true
+
+- name: Single with one eligible care worker, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 75_001
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: false
+
+- name: Single without eligible care worker
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 25_000
+        tax_unit_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: false
+
+- name: Joint without eligible care worker
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+      person2:
+        age: 35
+        co_care_worker_credit_eligible_care_worker: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 30_000
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_care_worker_credit_eligible: false

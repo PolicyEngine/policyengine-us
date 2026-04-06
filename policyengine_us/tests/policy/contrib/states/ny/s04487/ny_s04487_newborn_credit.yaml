@@ -1,0 +1,171 @@
+# NY S04487 Supplemental Empire State Child Tax Credit for Newborns Tests
+# Tests the $1,000 supplemental credit for newborns (age 0-1)
+
+# Basic eligibility tests
+- name: Newborn credit - one newborn age 0 gets $1,000
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_s04487_qualifying_newborn: [false, true]
+    ny_s04487_newborn_count: 1
+    ny_s04487_newborn_credit: 1_000
+
+- name: Newborn credit - one child age 1 gets $1,000
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_s04487_qualifying_newborn: [false, true]
+    ny_s04487_newborn_count: 1
+    ny_s04487_newborn_credit: 1_000
+
+- name: Newborn credit - two newborns (twins) get $2,000
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child1:
+        age: 0
+        is_tax_unit_dependent: true
+      child2:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_s04487_qualifying_newborn: [false, true, true]
+    ny_s04487_newborn_count: 2
+    ny_s04487_newborn_credit: 2_000
+
+- name: Newborn credit - child age 2 not eligible
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_s04487_qualifying_newborn: [false, false]
+    ny_s04487_newborn_count: 0
+    ny_s04487_newborn_credit: 0
+
+- name: Newborn credit - mixed ages, only newborn qualifies
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NY
+  output:
+    ny_s04487_qualifying_newborn: [false, false, true]
+    ny_s04487_newborn_count: 1
+    ny_s04487_newborn_credit: 1_000
+
+- name: Newborn credit - reform not in effect
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: false
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_s04487_newborn_credit: 0
+
+- name: Newborn credit - no children
+  period: 2026
+  reforms: policyengine_us.reforms.states.ny.s04487.ny_s04487_newborn_credit.ny_s04487_newborn_credit
+  input:
+    gov.contrib.states.ny.s04487.in_effect: true
+    people:
+      person:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_s04487_newborn_count: 0
+    ny_s04487_newborn_credit: 0

@@ -1,0 +1,151 @@
+- name: NJ same category rule - capital and S-corp losses disregarded
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 54
+        employment_income: 0
+        qualified_dividend_income: 830.69
+        long_term_capital_gains: -1126.16
+        short_term_capital_gains: -118936.69
+        partnership_s_corp_income: -14566.96
+        taxable_interest_income: 171.53
+        is_tax_unit_head: true
+      person2:
+        age: 54
+        employment_income: 136639.06
+        qualified_dividend_income: 830.69
+        long_term_capital_gains: -1126.16
+        short_term_capital_gains: -118936.69
+        partnership_s_corp_income: -14566.96
+        taxable_interest_income: 171.53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # Person 1: $0 wages + $171.53 interest + $830.69 dividends = $1,002.22
+    # Person 2: $136,639.06 wages + $171.53 interest + $830.69 dividends = $137,641.28
+    # Capital gains: net loss -> $0 (disregarded per same category rule)
+    # S-corp: net loss -> $0 (disregarded per same category rule)
+    nj_gross_income: [1002.22, 137641.28]
+
+- name: NJ same category rule - positive income not affected
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50000
+        taxable_interest_income: 1000
+        dividend_income: 2000
+        long_term_capital_gains: 5000
+        short_term_capital_gains: 3000
+        partnership_s_corp_income: 10000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # All income positive, no capping needed
+    # 50000 + 1000 + 2000 + 5000 + 3000 + 10000 = 71000
+    nj_gross_income: 71000
+
+- name: NJ same category rule - mixed gains and losses within capital gains category
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100000
+        long_term_capital_gains: 10000
+        short_term_capital_gains: -3000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Wages: 100000
+    # Capital gains: 10000 + (-3000) = 7000 (positive, not capped)
+    # Total: 107000
+    nj_gross_income: 107000
+
+- name: NJ same category rule - business loss from self-employment
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80000
+        self_employment_income: -15000
+        taxable_interest_income: 500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Wages: 80000
+    # Business (Category b): -15000 -> 0 (net loss disregarded)
+    # Interest: 500
+    # Total: 80500
+    nj_gross_income: 80500
+
+- name: NJ same category rule - rental loss disregarded
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 75000
+        rental_income: -8000
+        dividend_income: 2000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Wages: 75000
+    # Rental (Category d): -8000 -> 0 (net loss disregarded)
+    # Dividends: 2000
+    # Total: 77000
+    nj_gross_income: 77000

@@ -1,0 +1,38 @@
+# Unit tests for nv_tanf_countable_income
+# Tests sum of countable earned and unearned income
+
+- name: Zero income
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_countable_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    nv_tanf_countable_income: 0
+
+- name: Earned income only
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_countable_earned_income: 400
+    tanf_gross_unearned_income: 0
+  output:
+    nv_tanf_countable_income: 400
+
+- name: Unearned income only
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_countable_earned_income: 0
+    tanf_gross_unearned_income: 200
+  output:
+    nv_tanf_countable_income: 200
+
+- name: Mixed income
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_countable_earned_income: 400
+    tanf_gross_unearned_income: 200
+  output:
+    nv_tanf_countable_income: 600

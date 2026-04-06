@@ -27,12 +27,14 @@
     w2_wages_from_qualified_business: 8_000
     unadjusted_basis_qualified_property: 50_000
     taxable_income_less_qbid: 400_100
+    qualified_reit_and_ptp_income: 1_000
     business_is_sstb: False
     filing_status: JOINT
   output:
-    # Calculation: QBI component is $8,800. REIT component is 0.20 * 1k = $200.
-    # Total = $8,800
-    qbid_amount: 8_800
+    # Calculation: QBI component is $8,800 (same as Entity 1).
+    # REIT/PTP component = 0.20 * 1k = $200.
+    # Total = $8,800 + $200 = $9,000.
+    qbid_amount: 9_000
 
 - name: Non-SSTB above phase-in range (Entity 2 from Appendix A)
   period: 2022
@@ -127,3 +129,73 @@
     # The final taxable income cap (at 24k) is applied at the
     # tax-unit level, outside the scope of this business-level function.
     qbid_amount: 40_000
+
+# REIT/PTP Income Tests - Form 8995 Lines 6-9
+# REIT/PTP income gets 20% deduction WITHOUT W-2 wage or UBIA limitations
+
+- name: REIT/PTP only - no QBI (Form 8995 simplified path)
+  period: 2022
+  input:
+    qualified_business_income: 0
+    w2_wages_from_qualified_business: 0
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 100_000
+    qualified_reit_and_ptp_income: 10_000
+    business_is_sstb: False
+    filing_status: SINGLE
+  output:
+    # No QBI, so QBI component = $0.
+    # REIT/PTP component = 0.20 * 10k = $2,000.
+    # Total = $2,000.
+    qbid_amount: 2_000
+
+- name: REIT/PTP with SSTB - REIT/PTP not affected by SSTB phase-out
+  period: 2022
+  input:
+    qualified_business_income: 110_000
+    w2_wages_from_qualified_business: 60_000
+    unadjusted_basis_qualified_property: 6_000
+    taxable_income_less_qbid: 460_100
+    qualified_reit_and_ptp_income: 50_000
+    business_is_sstb: True
+    filing_status: JOINT
+  output:
+    # SSTB above phase-in range, so QBI component = $0 (fully phased out).
+    # REIT/PTP is NOT subject to SSTB rules, so:
+    # REIT/PTP component = 0.20 * 50k = $10,000.
+    # Total = $0 + $10,000 = $10,000.
+    qbid_amount: 10_000
+
+- name: REIT/PTP above wage limitation - no wage cap applies
+  period: 2022
+  input:
+    qualified_business_income: 0
+    w2_wages_from_qualified_business: 0
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 500_000
+    qualified_reit_and_ptp_income: 100_000
+    business_is_sstb: False
+    filing_status: JOINT
+  output:
+    # No QBI, so QBI component = $0.
+    # Even though taxable income is above threshold and W-2 wages are $0,
+    # REIT/PTP is NOT subject to W-2 wage limitations.
+    # REIT/PTP component = 0.20 * 100k = $20,000.
+    qbid_amount: 20_000
+
+- name: Combined QBI and REIT/PTP - below threshold
+  period: 2024
+  input:
+    qualified_business_income: 50_000
+    w2_wages_from_qualified_business: 30_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 150_000
+    qualified_reit_and_ptp_income: 25_000
+    business_is_sstb: False
+    filing_status: SINGLE
+  output:
+    # Below threshold ($191,950 single in 2024), so no W-2/UBIA limit.
+    # QBI component = 0.20 * 50k = $10,000.
+    # REIT/PTP component = 0.20 * 25k = $5,000.
+    # Total = $15,000.
+    qbid_amount: 15_000

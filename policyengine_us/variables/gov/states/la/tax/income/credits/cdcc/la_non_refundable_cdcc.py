@@ -11,9 +11,7 @@ class la_non_refundable_cdcc(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.la.tax.income.credits.cdcc.non_refundable
+        p = parameters(period).gov.states.la.tax.income.credits.cdcc.non_refundable
         # Louisiana matches the potential federal credit
         us_cdcc = tax_unit("cdcc", period)
         us_agi = tax_unit("adjusted_gross_income", period)

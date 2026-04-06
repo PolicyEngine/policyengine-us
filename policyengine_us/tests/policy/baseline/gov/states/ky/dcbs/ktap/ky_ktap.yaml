@@ -1,0 +1,30 @@
+# Kentucky TANF (K-TAP) Benefit Tests
+# Tests use YEAR period; MONTH variables are automatically annualized
+
+# Test: KY TANF benefit calculation for eligible family of 2 with no income
+# Per KRS 205.200(2): families with no countable income receive the payment maximum
+- name: Family of 2, no income, eligible for maximum benefit
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_standard_of_need: 552 * 12
+    ky_ktap_payment_maximum: 450 * 12
+    ky_ktap_countable_income: 0
+    ky_ktap_eligible: true
+    # Per KRS 205.200(2): families with no income get payment_maximum
+    # Monthly benefit = $450 (payment maximum)
+    # Annual: $450 * 12 = $5,400
+    ky_ktap: 450 * 12
+

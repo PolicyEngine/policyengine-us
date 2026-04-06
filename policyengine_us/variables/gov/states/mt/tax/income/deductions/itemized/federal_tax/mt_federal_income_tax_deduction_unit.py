@@ -14,15 +14,16 @@ class mt_federal_income_tax_deduction_unit(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
         ).gov.states.mt.tax.income.deductions.itemized.federal_income_tax
+        # Federal income tax deduction eliminated in 2024 under SB 399
+        if not p.applies:
+            return 0
+        filing_status = tax_unit("filing_status", period)
         federal_income_tax_limit = p.cap[filing_status]
 
-        federal_income_tax = tax_unit(
-            "income_tax_before_refundable_credits", period
-        )
+        federal_income_tax = tax_unit("income_tax_before_refundable_credits", period)
         # The federal income tax deduction is attributed to the head in any case
         # as we currently do not have a way to determine individual federal income tax before credits.
         return min_(federal_income_tax, federal_income_tax_limit)

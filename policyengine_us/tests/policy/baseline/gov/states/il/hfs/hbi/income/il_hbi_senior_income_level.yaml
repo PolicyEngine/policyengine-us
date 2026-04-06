@@ -1,0 +1,37 @@
+# Tests for il_hbi_senior_income_level
+# Uses AABD methodology to calculate income as fraction of FPL
+# 2024 FPL for 1 person = $15,060/year
+# AABD countable = gross unearned - $25/month flat exemption ($300/year)
+
+- name: Senior with $12,000 Social Security income
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 12_000
+  output:
+    # Countable = $12,000 - $300 = $11,700
+    # Income level = $11,700 / $15,060 = 0.777
+    il_hbi_senior_income_level: 0.777
+
+- name: Senior with $15,360 Social Security income at 100% FPL
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 15_360
+  output:
+    # Countable = $15,360 - $300 = $15,060
+    # Income level = $15,060 / $15,060 = 1.00
+    il_hbi_senior_income_level: 1.00
+
+- name: Senior with high income over 100% FPL
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 18_000
+  output:
+    # Countable = $18,000 - $300 = $17,700
+    # Income level = $17,700 / $15,060 = 1.175
+    il_hbi_senior_income_level: 1.175

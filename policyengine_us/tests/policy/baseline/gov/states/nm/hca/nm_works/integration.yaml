@@ -1,0 +1,517 @@
+# New Mexico Works (TANF) Integration Tests
+# Tests the full benefit calculation pipeline with realistic scenarios
+# Source: 8.102 NMAC - Cash Assistance Programs
+
+- name: Case 1, single parent with one child and no income gets maximum benefit.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 30
+        is_parent: true
+      person2:  # Child
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Benefit Group Size: 2
+    # Payment Standard for size 2: $439/month
+    # No income, so full benefit
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 439
+
+- name: Case 2, single parent with two children and moderate earnings.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 28
+        employment_income_before_lsr: 12_000  # $1,000/month
+        is_parent: true
+      person2:  # Child 1
+        age: 7
+        is_tax_unit_dependent: true
+      person3:  # Child 2
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Benefit Group Size: 3
+    # 85% FPL limit for size 3: $1,829/month
+    # Gross earned income: $1,000/month < $1,829 = eligible
+    #
+    # Earned income deduction (single parent):
+    # Step 1: $1,000 - $125 = $875
+    # Step 2: $875 * 0.50 = $437.50
+    # Net earned income: $875 - $437.50 = $437.50
+    #
+    # Payment Standard for size 3: $549
+    # Benefit = $549 - $437.50 = $111.50
+    nm_works_gross_income_eligible: true
+    nm_works_earned_income_deduction_person: [562.5, 0, 0]
+    # $1000 gross - $437.50 countable = $562.50 deduction
+    nm_works_countable_income: 437.5
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 111.5
+
+- name: Case 3, single parent with three children and child care costs.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 32
+        employment_income_before_lsr: 18_000  # $1,500/month
+        is_parent: true
+      person2:  # Child 1 (under 2)
+        age: 1
+        is_tax_unit_dependent: true
+      person3:  # Child 2 (age 2+)
+        age: 4
+        is_tax_unit_dependent: true
+      person4:  # Child 3
+        age: 8
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 4_800  # $400/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    # Benefit Group Size: 4
+    # 85% FPL limit for size 4: $2,210/month
+    # Gross earned income: $1,500/month < $2,210 = eligible
+    #
+    # Earned income deduction (single parent):
+    # Step 1: $1,500 - $125 = $1,375
+    # Step 2: $1,375 * 0.50 = $687.50
+    # Net earned income: $1,375 - $687.50 = $687.50
+    #
+    # Child care deduction (up to $200 under 2, $175 age 2+):
+    # Child 1 (age 1): $200
+    # Child 2 (age 4): $175 (but capped by actual expense allocation)
+    # Total child care deduction: min($400, $200 + $175) = $375
+    #
+    # Child care max: $200 (age 1) + $175 (age 4) + $175 (age 8) = $550
+    # Actual expense: $400, so deduction = min($550, $400) = $400
+    # Countable income: $687.50 - $400 = $287.50
+    # Payment Standard for size 4: $663
+    # Benefit = $663 - $287.50 = $375.50
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works_childcare_deduction: 400
+    nm_works_countable_income: 287.5
+    nm_works: 375.5
+
+- name: Case 4, two-parent household with two children.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent 1
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        is_tax_unit_head: true
+        is_parent: true
+      person2:  # Parent 2
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_spouse: true
+        is_parent: true
+      person3:  # Child 1
+        age: 10
+        is_tax_unit_dependent: true
+      person4:  # Child 2
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NM
+  output:
+    # Benefit Group Size: 4
+    # 85% FPL limit for size 4: $2,210/month
+    # Gross earned income: $800 + $500 = $1,300/month < $2,210 = eligible
+    #
+    # Earned income deduction (two-parent, each parent):
+    # Parent 1: $800 - $225 = $575, then $575 * 0.50 = $287.50, net = $287.50
+    # Parent 2: $500 - $225 = $275, then $275 * 0.50 = $137.50, net = $137.50
+    # Total net earned: $287.50 + $137.50 = $425
+    #
+    # Payment Standard for size 4: $663
+    # Benefit = $663 - $425 = $238
+    nm_works_gross_income_eligible: true
+    nm_works_earned_income_deduction_person: [512.5, 362.5, 0, 0]
+    # Parent 1: $800 - $287.50 = $512.50 deduction
+    # Parent 2: $500 - $137.50 = $362.50 deduction
+    nm_works_countable_income: 425
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 238
+
+- name: Case 5, income at gross income limit threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 29
+        employment_income_before_lsr: 21_948  # $1,829/month (exactly at 85% FPL for size 3)
+        is_parent: true
+      person2:  # Child 1
+        age: 12
+        is_tax_unit_dependent: true
+      person3:  # Child 2
+        age: 9
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Benefit Group Size: 3
+    # 85% FPL for size 3: 0.85 * $2,073.33 = $1,762.33/month
+    # Gross earned income: $1,829/month > $1,762.33 = NOT gross income eligible
+    # (Formula uses strict less-than, so above limit is ineligible)
+    nm_works_gross_income_eligible: false
+    nm_works_eligible: false
+    nm_works: 0
+
+- name: Case 6, income exceeds gross income limit.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 40
+        employment_income_before_lsr: 30_000  # $2,500/month
+        is_parent: true
+      person2:  # Child
+        age: 14
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Benefit Group Size: 2
+    # 85% FPL limit for size 2: $1,448/month
+    # Gross earned income: $2,500/month > $1,448 = NOT eligible
+    nm_works_gross_income_eligible: false
+    nm_works_eligible: false
+    nm_works: 0
+
+- name: Case 7, single parent with child support income and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:  # Parent
+        age: 27
+        employment_income_before_lsr: 6_000  # $500/month
+        child_support_received: 3_600  # $300/month
+        is_parent: true
+      person2:  # Child
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Benefit Group Size: 2
+    # 85% FPL limit for size 2: $1,448/month
+    # Gross income: $500 + $300 = $800/month < $1,448 = eligible
+    #
+    # Earned income deduction (single parent):
+    # Step 1: $500 - $125 = $375
+    # Step 2: $375 * 0.50 = $187.50
+    # Net earned income: $375 - $187.50 = $187.50
+    #
+    # Child support deduction:
+    # Child support passthrough: $100 (for 1 child)
+    # Child support disregard: $50
+    # Net child support: $300 - $100 - $50 = $150
+    #
+    # Total countable income: $187.50 + $150 = $337.50
+    # Payment Standard for size 2: $439
+    # Benefit = $439 - $337.50 = $101.50
+    nm_works_gross_income_eligible: true
+    nm_works_countable_income: 337.5
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 101.5
+
+# Edge Case Integration Tests
+
+- name: Case 8, child exactly at age 2 with child care costs.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 9_600  # $800/month
+        is_parent: true
+      person2:
+        age: 2  # Exactly at age 2 boundary
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child care deduction for age 2+: $175/month max
+    # Actual expense: $250/month, capped at $175
+    #
+    # Earned income deduction: $800 - $125 = $675, * 0.50 = $337.50
+    # Total deduction: $125 + $337.50 = $462.50
+    # Countable earned: $800 - $462.50 = $337.50
+    # After child care: $337.50 - $175 = $162.50
+    #
+    # Payment Standard: $439
+    # Benefit: $439 - $162.50 = $276.50
+    nm_works_childcare_deduction: 175
+    nm_works_countable_income: 162.5
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 276.5
+
+- name: Case 10, single parent with two children and child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 4_800  # $400/month
+        child_support_received: 4_800  # $400/month
+        is_parent: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # 2 children: passthrough $200, disregard $50
+    # Child support countable: $400 - $200 - $50 = $150
+    #
+    # Earned income deduction (single parent):
+    # $400 - $125 = $275, * 0.50 = $137.50
+    # Total deduction: $125 + $137.50 = $262.50
+    # Countable earned: $137.50
+    #
+    # Total countable: $137.50 + $150 = $287.50
+    # Payment Standard for size 3: $549
+    # Benefit: $549 - $287.50 = $261.50
+    nm_works_countable_income: 287.5
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 261.5
+
+- name: Case 11, infant and toddler with child care and child support.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 10_800  # $900/month
+        child_support_received: 2_400  # $200/month
+        is_parent: true
+      person2:
+        age: 0  # Infant (under 2): $200 child care max
+        is_tax_unit_dependent: true
+      person3:
+        age: 2  # Toddler (age 2+): $175 child care max
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Child care: $200 (infant) + $175 (toddler) = $375 max
+    # Actual: $500, capped at $375
+    #
+    # 2 children: passthrough $200, disregard $50
+    # Child support countable: $200 - $200 - $50 = max(0, -$50) = $0
+    #
+    # Earned income deduction (single parent):
+    # $900 - $125 = $775, * 0.50 = $387.50
+    # Total deduction: $125 + $387.50 = $512.50
+    # Countable earned before child care: $387.50
+    # After child care: $387.50 - $375 = $12.50
+    #
+    # Total countable: $12.50 + $0 = $12.50
+    # Payment Standard for size 3: $549
+    # Benefit: $549 - $12.50 = $536.50
+    nm_works_childcare_deduction: 375
+    nm_works_countable_income: 12.5
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 536.5
+
+- name: Case 12, earnings exactly at single-parent flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_500  # $125/month = exactly flat deduction
+        is_parent: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Earnings exactly at flat deduction: $125
+    # Deduction: min($125, $125) = $125 (flat only, no percentage)
+    # Countable earned: $0
+    #
+    # Payment Standard for size 2: $439
+    # Benefit: $439 - $0 = $439
+    nm_works_earned_income_deduction_person: [125, 0]
+    nm_works_countable_income: 0
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 439
+
+- name: Case 13, very large household at maximum size.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 12_000  # $1,000/month
+        is_tax_unit_head: true
+        is_parent: true
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        is_parent: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+      person4:
+        age: 15
+        is_tax_unit_dependent: true
+      person5:
+        age: 13
+        is_tax_unit_dependent: true
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+      person7:
+        age: 9
+        is_tax_unit_dependent: true
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NM
+  output:
+    # Size 8 household
+    # Payment Standard: $1,134
+    #
+    # Two-parent earned income deduction:
+    # $1,000 - $225 = $775, * 0.50 = $387.50
+    # Total deduction: $225 + $387.50 = $612.50
+    # Countable: $387.50
+    #
+    # Benefit: $1,134 - $387.50 = $746.50
+    nm_works_earned_income_deduction_person: [612.5, 0, 0, 0, 0, 0, 0, 0]
+    nm_works_countable_income: 387.5
+    nm_works_gross_income_eligible: true
+    nm_works_net_income_eligible: true
+    nm_works_eligible: true
+    nm_works: 746.5

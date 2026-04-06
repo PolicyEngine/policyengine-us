@@ -1,0 +1,87 @@
+- name: ME dependent exemption credit includes ODC-qualifying dependent age 17
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        qualified_dividend_income: 8_980.64
+        taxable_interest_income: 1_950.19
+        long_term_capital_gains: 8_149.55
+        pension_income: 86_460.30
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ME
+  output:
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
+    me_dependent_exemption_credit: 300  # $300 for 1 qualifying dependent age 17
+
+- name: ME dependent exemption credit includes ODC-qualifying dependent age 18
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 75_000
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ME
+  output:
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
+    me_dependent_exemption_credit: 300  # $300 for 1 qualifying dependent age 18
+
+- name: ME dependent exemption credit with mixed CTC and ODC dependents
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 85_000
+      child_under_6:
+        age: 4
+        is_tax_unit_dependent: true
+      child_over_6:
+        age: 10
+        is_tax_unit_dependent: true
+      dependent_over_17:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_under_6, child_over_6, dependent_over_17]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child_under_6, child_over_6, dependent_over_17]
+    households:
+      household:
+        members: [head, child_under_6, child_over_6, dependent_over_17]
+        state_code: ME
+  output:
+    # In 2024, all dependents get $300 each (the 2x multiplier for under-6 starts in 2025)
+    # $300 (child under 6) + $300 (child 6-16) + $300 (dependent 17+) = $900
+    me_dependent_exemption_credit: 900

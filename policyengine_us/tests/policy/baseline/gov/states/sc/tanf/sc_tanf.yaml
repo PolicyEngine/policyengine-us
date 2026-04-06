@@ -1,0 +1,38 @@
+- name: Case 1, no earned income is eligible for standard amount.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    spm_unit_size: 2
+  output:
+    sc_tanf: 344.58
+    # tanf_fpg for size 2 (2025-01, uses 2024-10 FPG) = 1703.33/month
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # benefit = 851.67 * 0.4046 = 344.59
+
+- name: Case 2, not eligible.
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 1_000
+    sc_tanf_eligible: false
+    spm_unit_size: 2
+  output:
+    sc_tanf: 0
+
+- name: Case 3, some countable income.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    state_code: SC
+    sc_tanf_countable_income: 500
+    sc_tanf_eligible: true
+    spm_unit_size: 2
+  output:
+    sc_tanf: 142.28
+    # tanf_fpg for size 2 (2025-01) = 1703.33/month
+    # need_standard = 1703.33 * 0.5 = 851.67
+    # excess = 851.67 - 500 = 351.67
+    # benefit = 351.67 * 0.4046 = 142.31

@@ -27,17 +27,13 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 ).gov.irs.income.bracket.thresholds["6"][filing_status]
                 exemptions = tax_unit("exemptions", period)
                 taxable_income = max_(0, agi - exemptions)
-                taxable_income_excess = max_(
-                    0, taxable_income - top_rate_threshold
-                )
+                taxable_income_excess = max_(0, taxable_income - top_rate_threshold)
                 total_itemized_deductions = tax_unit(
                     "total_itemized_taxable_income_deductions", period
                 )
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
-                return (
-                    p.amended_structure.rate * lesser_of_deductions_or_excess
-                )
+                return p.amended_structure.rate * lesser_of_deductions_or_excess
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0

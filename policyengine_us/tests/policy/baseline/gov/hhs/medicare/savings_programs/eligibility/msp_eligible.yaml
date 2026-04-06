@@ -1,0 +1,62 @@
+# MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B)
+
+- name: MSP eligible - QMB level (65+, low income, low assets)
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $10,000 unearned -> ($833.33 - $20) = $813.33/month countable
+    ssi_unearned_income: 10_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+  output:
+    msp_eligible: true
+
+- name: MSP eligible - QI level (65+, moderate income, low assets)
+  period: 2024-01
+  input:
+    age: 68
+    is_medicare_eligible: true
+    # $19_200 unearned -> ($1,600 - $20) = $1,580/month countable
+    # $1,580 is between 120% ($1,506) and 135% ($1,694.25) FPL -> QI eligible
+    ssi_unearned_income: 19_200
+    spm_unit_cash_assets: 8_000
+    spm_unit_is_married: false
+  output:
+    msp_eligible: true
+
+- name: MSP not eligible - income too high
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $24_000 unearned -> ($2,000 - $20) = $1,980/month countable
+    # $1,980 > $1,694.25 (135% FPL) -> not eligible
+    ssi_unearned_income: 24_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+  output:
+    msp_eligible: false
+
+- name: MSP not eligible - assets too high
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    ssi_unearned_income: 10_000
+    spm_unit_cash_assets: 15_000  # Over $9,430 limit
+    spm_unit_is_married: false
+    state_code: TX  # Use a state with asset test
+  output:
+    msp_eligible: false
+
+- name: MSP not eligible - not Medicare eligible
+  period: 2024-01
+  input:
+    age: 60  # Under 65
+    is_medicare_eligible: false
+    ssi_unearned_income: 10_000
+    spm_unit_cash_assets: 5_000
+    spm_unit_is_married: false
+  output:
+    msp_eligible: false

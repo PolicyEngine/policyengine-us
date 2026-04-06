@@ -1,0 +1,429 @@
+# Test Kentucky HB 152 Graduated Income Tax Reform
+# For 2027+: 4% up to $100k, 5% $100k-$125k, 6% $125k-$150k,
+# flat 6% on ALL income if >= $150k
+
+- name: KY HB 152 - income below $100k threshold
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 50000 * 0.04 = 2000
+    ky_income_tax_before_non_refundable_credits_indiv: 2000
+
+- name: KY HB 152 - income between $100k and $125k
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 110_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 100000 * 0.04 + 10000 * 0.05 = 4000 + 500 = 4500
+    ky_income_tax_before_non_refundable_credits_indiv: 4500
+
+- name: KY HB 152 - income between $125k and $150k
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 140_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 100000 * 0.04 + 25000 * 0.05 + 15000 * 0.06 = 4000 + 1250 + 900 = 6150
+    ky_income_tax_before_non_refundable_credits_indiv: 6150
+
+- name: KY HB 152 - income at exactly $150k threshold (cliff - flat 6%)
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Bill says "$150,000 or more" triggers flat rate: 150000 * 0.06 = 9000
+    ky_income_tax_before_non_refundable_credits_indiv: 9000
+
+- name: KY HB 152 - income above $150k (cliff - flat 6% on ENTIRE income)
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 150_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CLIFF: 150001 * 0.06 = 9000.06
+    ky_income_tax_before_non_refundable_credits_indiv: 9000.06
+
+- name: KY HB 152 - high income above cliff
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CLIFF: 300000 * 0.06 = 18000
+    ky_income_tax_before_non_refundable_credits_indiv: 18000
+
+- name: KY HB 152 - joint filing above cliff
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_joint: 200_000
+      person2:
+        age: 43
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # CLIFF: 200000 * 0.06 = 12000 (on person1)
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 12000
+      - 0
+
+- name: KY HB 152 - reform not in effect uses baseline
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: false
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Baseline 2027 rate: 3.5% -> 200000 * 0.035 = 7000
+    ky_income_tax_before_non_refundable_credits_indiv: 7000
+
+- name: KY HB 152 - cliff notch effect demonstration
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 149_999
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Just below cliff: 100000*0.04 + 25000*0.05 + 24999*0.06 = 4000+1250+1499.94 = 6749.94
+    ky_income_tax_before_non_refundable_credits_indiv: 6749.94
+
+- name: KY HB 152 - zero income
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: KY HB 152 - income at exactly $100k bracket boundary
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 100000 * 0.04 = 4000
+    ky_income_tax_before_non_refundable_credits_indiv: 4000
+
+- name: KY HB 152 - income at exactly $125k bracket boundary
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 125_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 100000 * 0.04 + 25000 * 0.05 = 4000 + 1250 = 5250
+    ky_income_tax_before_non_refundable_credits_indiv: 5250
+
+- name: KY HB 152 - non-KY resident gets zero
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ky_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: KY HB 152 - joint filing with graduated rates
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_joint: 140_000
+      person2:
+        age: 43
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # 100000*0.04 + 25000*0.05 + 15000*0.06 = 4000 + 1250 + 900 = 6150
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 6150
+      - 0
+
+- name: KY HB 152 - joint filing $1 below cliff (graduated)
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_joint: 149_999
+      person2:
+        age: 43
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Just below cliff: 100000*0.04 + 25000*0.05 + 24999*0.06 = 4000+1250+1499.94 = 6749.94
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 6749.94
+      - 0
+
+- name: KY HB 152 - joint filing at exactly $150k cliff (flat 6%)
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_joint: 150_000
+      person2:
+        age: 43
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Bill says "$150,000 or more" triggers flat rate: 150000 * 0.06 = 9000
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 9000
+      - 0
+
+- name: KY HB 152 - end-to-end high earner through ky_income_tax
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 300_000
+        ky_taxable_income_joint: 300_000
+      person2:
+        age: 43
+        ky_taxable_income_indiv: 0
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 300_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # CLIFF: 300000 * 0.06 = 18000
+    ky_income_tax_before_non_refundable_credits_joint:
+      - 18000
+      - 0
+    # High earner: family size credit rate is 0%, so no credit reduction
+    # Verify reform flows through to final ky_income_tax
+    ky_income_tax: 18000
+
+- name: KY HB 152 - both reforms active (HB 13 takes precedence)
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    gov.contrib.states.ky.hb152.in_effect: true
+    people:
+      person1:
+        age: 45
+        ky_taxable_income_indiv: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # HB 13 takes precedence: 200000 * 0.035 = 7000
+    ky_income_tax_before_non_refundable_credits_indiv: 7000

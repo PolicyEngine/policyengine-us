@@ -1,0 +1,66 @@
+# Unit tests for Rhode Island TANF resource eligibility
+# 218-RICR-20-00-2: Resource limit is $5,000
+# https://rules.sos.ri.gov/Regulations/part/218-20-00-2
+
+- name: Case 1, no resources, eligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 0
+    state_code: RI
+  output:
+    ri_works_resource_eligible: true
+
+- name: Case 2, resources below limit, eligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 3_000
+    state_code: RI
+  output:
+    # Resources: $3,000
+    # Limit: $5,000
+    # $3,000 <= $5,000 = true
+    ri_works_resource_eligible: true
+
+- name: Case 3, resources at limit, eligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 5_000
+    state_code: RI
+  output:
+    # Resources: $5,000
+    # Limit: $5,000
+    # $5,000 <= $5,000 = true
+    ri_works_resource_eligible: true
+
+- name: Case 4, resources above limit, ineligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 6_000
+    state_code: RI
+  output:
+    # Resources: $6,000
+    # Limit: $5,000
+    # $6,000 <= $5,000 = false
+    ri_works_resource_eligible: false
+
+- name: Case 5, resources one dollar above limit, ineligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 5_001
+    state_code: RI
+  output:
+    # Resources: $5,001
+    # Limit: $5,000
+    # $5,001 <= $5,000 = false
+    ri_works_resource_eligible: false
+
+- name: Case 6, resources one dollar below limit, eligible.
+  period: 2025-01
+  input:
+    spm_unit_assets: 4_999
+    state_code: RI
+  output:
+    # Resources: $4,999
+    # Limit: $5,000
+    # $4,999 <= $5,000 = true
+    ri_works_resource_eligible: true

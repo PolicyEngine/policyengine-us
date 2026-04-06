@@ -1,8 +1,10 @@
 description: Maximum income for a couple to qualify for Medicaid under the 'medically needy' pathway.
 metadata:
+  label: Medicaid medically needy pathway for couples income limit
+  breakdown:
+    - state_code
   unit: currency-USD
   period: month
-  label: Medicaid medically needy pathway for couples income limit
 
 AK:
   2015-01-01: -.inf

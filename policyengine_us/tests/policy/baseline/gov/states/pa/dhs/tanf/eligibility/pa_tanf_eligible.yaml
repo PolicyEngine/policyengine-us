@@ -1,0 +1,65 @@
+- name: Case 1, all requirements met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    pa_tanf_income_eligible: true
+    pa_tanf_resources_eligible: true
+    state_code: PA
+  output:
+    pa_tanf_eligible: true
+
+- name: Case 2, demographic not met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: true
+    pa_tanf_income_eligible: true
+    pa_tanf_resources_eligible: true
+    state_code: PA
+  output:
+    pa_tanf_eligible: false
+
+- name: Case 3, citizenship not met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: false
+    pa_tanf_income_eligible: true
+    pa_tanf_resources_eligible: true
+    state_code: PA
+  output:
+    pa_tanf_eligible: false
+
+- name: Case 4, income not met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    pa_tanf_income_eligible: false
+    pa_tanf_resources_eligible: true
+    state_code: PA
+  output:
+    pa_tanf_eligible: false
+
+- name: Case 5, resource not met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: true
+    is_citizen_or_legal_immigrant: true
+    pa_tanf_income_eligible: true
+    pa_tanf_resources_eligible: false
+    state_code: PA
+  output:
+    pa_tanf_eligible: false
+
+- name: Case 6, no requirements met.
+  period: 2024-01
+  input:
+    is_demographic_tanf_eligible: false
+    is_citizen_or_legal_immigrant: false
+    pa_tanf_income_eligible: false
+    pa_tanf_resources_eligible: false
+    state_code: PA
+  output:
+    pa_tanf_eligible: false

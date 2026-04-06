@@ -7,6 +7,7 @@ brackets:
         2021-01-01: 455
         2023-01-01: 492
         2024-01-01: 510
+        2025-01-01: 522
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -19,6 +20,7 @@ brackets:
         2021-01-01: 570
         2023-01-01: 617
         2024-01-01: 639
+        2025-01-01: 655
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -31,18 +33,33 @@ brackets:
         2021-01-01: 575
         2023-01-01: 622
         2024-01-01: 645
+        2025-01-01: 660
       metadata:
         uprating: gov.irs.uprating
         rounding:
           type: nearest
           interval: 1
-  - threshold: 
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      values:
+        2021-01-01: 575
+        2023-01-01: 622
+        2024-01-01: 645
+        2025-01-01: 660
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 1
+  - threshold:
       2021-01-01: 9_000
     amount: 
       values:
         2021-01-01: 510
         2023-01-01: 552
         2024-01-01: 572
+        2025-01-01: 586
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -55,6 +72,7 @@ brackets:
         2021-01-01: 445
         2023-01-01: 481
         2024-01-01: 499
+        2025-01-01: 511
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -67,6 +85,7 @@ brackets:
         2021-01-01: 365
         2023-01-01: 395
         2024-01-01: 409
+        2025-01-01: 419
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -79,6 +98,7 @@ brackets:
         2021-01-01: 315
         2023-01-01: 341
         2024-01-01: 353
+        2025-01-01: 362
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -91,6 +111,7 @@ brackets:
         2021-01-01: 285
         2023-01-01: 305
         2024-01-01: 319
+        2025-01-01: 327
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -103,6 +124,7 @@ brackets:
         2021-01-01: 250
         2023-01-01: 271
         2024-01-01: 280
+        2025-01-01: 287
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -115,6 +137,7 @@ brackets:
         2021-01-01: 220
         2023-01-01: 238
         2024-01-01: 246
+        2025-01-01: 252
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -127,6 +150,7 @@ brackets:
         2021-01-01: 185
         2023-01-01: 200
         2024-01-01: 207
+        2025-01-01: 212
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -139,6 +163,7 @@ brackets:
         2021-01-01: 170
         2023-01-01: 184
         2024-01-01: 190
+        2025-01-01: 195
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -151,6 +176,7 @@ brackets:
         2021-01-01: 155
         2023-01-01: 168
         2024-01-01: 173
+        2025-01-01: 178
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -163,6 +189,7 @@ brackets:
         2021-01-01: 140
         2023-01-01: 151
         2024-01-01: 157
+        2025-01-01: 160
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -175,6 +202,7 @@ brackets:
         2021-01-01: 130
         2023-01-01: 141
         2024-01-01: 145
+        2025-01-01: 149
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -187,6 +215,7 @@ brackets:
         2021-01-01: 115
         2023-01-01: 124
         2024-01-01: 129
+        2025-01-01: 132
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -199,6 +228,7 @@ brackets:
         2021-01-01: 100
         2023-01-01: 108
         2024-01-01: 112
+        2025-01-01: 114
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -211,6 +241,7 @@ brackets:
         2021-01-01: 80
         2023-01-01: 87
         2024-01-01: 89
+        2025-01-01: 91
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -223,6 +254,7 @@ brackets:
         2021-01-01: 65
         2023-01-01: 70
         2024-01-01: 72
+        2025-01-01: 74
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -251,3 +283,5 @@ metadata:
       href: https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-14-low-income-comprehensive-tax-rebate?sort=relevance&type=regulation&tab=keyword&jxs=&resultsNav=false
     - title: New Mexico 2024 PIT-RC, page 82, SECTION II LOW INCOME COMPREHENSIVE TAX REBATE
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/90560f4e-0ef0-4e52-a003-878b84f858bb/PITbook2024.pdf#page=82
+    - title: 2025 Personal Income Tax Form Packet - Table 1. 2025 Low-Income Comprehensive Tax Rebate Table
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/0558a902-6362-47ca-8e3b-7cca3bc69b9d/2025%20PIT%20Packet_Final.pdf#page=83

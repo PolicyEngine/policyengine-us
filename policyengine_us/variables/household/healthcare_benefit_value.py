@@ -11,4 +11,6 @@ class healthcare_benefit_value(Variable):
         "medicaid_cost",
         "per_capita_chip",
         "aca_ptc",
+        "co_omnisalud",
+        "or_healthier_oregon_cost",
     ]

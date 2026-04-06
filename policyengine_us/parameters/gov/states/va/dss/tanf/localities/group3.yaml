@@ -1,0 +1,38 @@
+description: Virginia lists these localities as group III under the Temporary Assistance for Needy Families program.
+values:
+  2016-01-01:
+    # Counties
+    - ALBEMARLE_COUNTY_VA
+    - ARLINGTON_COUNTY_VA
+    - AUGUSTA_COUNTY_VA
+    - CAROLINE_COUNTY_VA
+    - FAIRFAX_COUNTY_VA
+    - FAUQUIER_COUNTY_VA
+    - JAMES_CITY_COUNTY_VA
+    - KING_GEORGE_COUNTY_VA
+    - MONTGOMERY_COUNTY_VA
+    - PRINCE_WILLIAM_COUNTY_VA
+    - SPOTSYLVANIA_COUNTY_VA
+    - STAFFORD_COUNTY_VA
+    - YORK_COUNTY_VA
+    # Cities
+    - ALEXANDRIA_CITY_VA
+    - CHARLOTTESVILLE_CITY_VA
+    - COLONIAL_HEIGHTS_CITY_VA
+    - FAIRFAX_CITY_VA
+    - FALLS_CHURCH_CITY_VA
+    - FREDERICKSBURG_CITY_VA
+    - HAMPTON_CITY_VA
+    - MANASSAS_CITY_VA
+    - MANASSAS_PARK_CITY_VA
+    - NEWPORT_NEWS_CITY_VA
+    - POQUOSON_CITY_VA
+    - STAUNTON_CITY_VA
+    - WAYNESBORO_CITY_VA
+metadata:
+  unit: list
+  period: year
+  label: Virginia TANF group III localities
+  reference:
+    - title: Virginia TANF Manual Section 302 - Locality Groups
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=24

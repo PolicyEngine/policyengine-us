@@ -4,25 +4,28 @@ values:
   2022-01-01: 6_200
   2023-01-01: 6_700
   2024-01-01: 7_050
+  2025-01-01: 7_250
 
 metadata:
-  label: Rhode Island standard deduction phase out increment
-  period: year
   unit: currency-USD
+  period: year
+  label: Rhode Island standard deduction phase out increment
   uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
       interval: 50
   reference:
-  # Legal code specifies $5,000 starting in 2011.
-  - title: R.I. Gen. Laws § 44-30-2.6 (B), (III)
-    href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
-  - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2024
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf
-  - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2022
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf
-  - title: Rhode Island tax rate schedule and worksheets 2021
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf
-  # Rhode Island tax form does not specify this rate
-  # According to tax form 2021/2022, this rate can only be found in corresponding tax rate schedule and worksheets
+    # Legal code specifies $5,000 starting in 2011.
+    - title: R.I. Gen. Laws § 44-30-2.6 (B), (III)
+      href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
+    - title: Rhode Island Tax Rate Schedule and Worksheets 2025 (Standard Deduction Worksheet)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-10/2025%20Tax%20Rate%20and%20Worksheets_d.pdf
+    - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2024
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf
+    - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2022
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf
+    - title: Rhode Island tax rate schedule and worksheets 2021
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf
+    # Rhode Island tax form does not specify this rate
+    # According to tax form 2021/2022, this rate can only be found in corresponding tax rate schedule and worksheets

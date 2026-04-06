@@ -17,7 +17,17 @@ def non_refundable_ss_credit_reform() -> Reform:
             ss_tax = taxable_social_security * highest_tax_rate
             p = parameters(period).gov.contrib.crfb.ss_credit
             filing_status = person.tax_unit("filing_status", period)
-            return min_(ss_tax, p.amount[filing_status])
+            base_amount = min_(ss_tax, p.amount[filing_status])
+            phase_out_applies = p.phase_out.applies
+            joint = filing_status == filing_status.possible_values.JOINT
+            agi = person.tax_unit("adjusted_gross_income", period)
+            phase_out_rate = where(
+                joint,
+                p.phase_out.rate.joint.calc(agi),
+                p.phase_out.rate.other.calc(agi),
+            )
+            phase_out = phase_out_applies * phase_out_rate
+            return max_(0, base_amount - phase_out)
 
     class highest_tax_rate(Variable):
         value_type = float
@@ -69,9 +79,7 @@ def non_refundable_ss_credit_reform() -> Reform:
                 highest_rate = where(in_bracket, rate, highest_rate)
 
                 # Store this threshold as the previous for next iteration
-                prev_threshold = where(
-                    threshold != np.inf, threshold, prev_threshold
-                )
+                prev_threshold = where(threshold != np.inf, threshold, prev_threshold)
 
             return highest_rate
 
@@ -105,9 +113,7 @@ def non_refundable_ss_credit_reform() -> Reform:
     return reform
 
 
-def create_non_refundable_ss_credit_reform(
-    parameters, period, bypass: bool = False
-):
+def create_non_refundable_ss_credit_reform(parameters, period, bypass: bool = False):
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform
@@ -139,6 +145,6 @@ def create_non_refundable_ss_credit_reform(
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-non_refundable_ss_credit_reform_object = (
-    create_non_refundable_ss_credit_reform(None, None, bypass=True)
+non_refundable_ss_credit_reform_object = create_non_refundable_ss_credit_reform(
+    None, None, bypass=True
 )

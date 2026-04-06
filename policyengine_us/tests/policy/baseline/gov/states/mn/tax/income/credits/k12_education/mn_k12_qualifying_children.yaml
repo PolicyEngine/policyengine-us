@@ -1,0 +1,119 @@
+- name: Single K-12 dependent child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_name: MN
+  output:
+    mn_k12_qualifying_children: 1
+
+- name: Multiple K-12 dependent children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child1:
+        age: 8
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+      child3:
+        age: 16
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_name: MN
+  output:
+    mn_k12_qualifying_children: 3
+
+- name: Mixed K-12 and non-K-12 children
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      k12_child:
+        age: 10
+        is_in_k12_school: true
+        is_tax_unit_dependent: true
+      college_child:
+        age: 20
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, k12_child, college_child]
+    households:
+      household:
+        members: [parent, k12_child, college_child]
+        state_name: MN
+  output:
+    # Only the K-12 child counts
+    mn_k12_qualifying_children: 1
+
+- name: K-12 child who is not a dependent does not count
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      adult_in_school:
+        age: 18
+        is_in_k12_school: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [parent, adult_in_school]
+    households:
+      household:
+        members: [parent, adult_in_school]
+        state_name: MN
+  output:
+    # Not a dependent, so does not qualify
+    mn_k12_qualifying_children: 0
+
+- name: No qualifying children - none in K-12
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      toddler:
+        age: 3
+        is_in_k12_school: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, toddler]
+    households:
+      household:
+        members: [parent, toddler]
+        state_name: MN
+  output:
+    # Toddler is not in K-12
+    mn_k12_qualifying_children: 0

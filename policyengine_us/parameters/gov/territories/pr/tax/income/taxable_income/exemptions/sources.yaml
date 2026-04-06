@@ -1,0 +1,15 @@
+description: Puerto Rico exemptions from taxable income.
+values:
+  2023-01-01:
+    - pr_personal_exemption
+    - pr_veteran_exemption
+    - pr_dependents_exemption
+metadata:
+  unit: list
+  period: year
+  label: Puerto Rico income exemptions
+  reference:
+    - title: P.R. Laws tit. 13, § 30138 (a)(1)-(2)
+      href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1005/subchapter-c/30138/
+    - title: Gov. of Puerto Rico Form 482.0 2024
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2

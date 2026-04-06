@@ -1,0 +1,115 @@
+# North Dakota TANF Countable Unearned Income Unit Tests
+#
+# Child support received assigned to Child Support Division is excluded
+# from countable unearned income per NDAC 75-02-01.2-19.
+#
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_55_25.htm
+
+- name: Case 1, unearned income with no child support.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $300/month unearned = $3,600/year
+        social_security_dependents: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $300 monthly unearned, no exclusion
+    nd_tanf_countable_unearned_income: 300
+
+- name: Case 2, child support is fully excluded from unearned income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $500/month unearned = $6,000/year
+        social_security_dependents: 6_000
+        # $200/month child support = $2,400/year
+        child_support_received: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Gross unearned includes child support: $500 + $200 = $700
+    # Less child support exclusion: $700 - $200 = $500
+    nd_tanf_countable_unearned_income: 500
+
+- name: Case 3, child support is only unearned income source.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Only child support: $300/month = $3,600/year
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Child support is excluded, result is $0
+    nd_tanf_countable_unearned_income: 0
+
+- name: Case 4, multiple unearned income sources with child support.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $200/month SS dependents = $2,400/year
+        social_security_dependents: 2_400
+        # $150/month child support = $1,800/year
+        child_support_received: 1_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Gross unearned: $200 + $150 = $350
+    # Less child support: $350 - $150 = $200
+    nd_tanf_countable_unearned_income: 200
+
+- name: Case 5, large child support amount excluded.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $100/month unearned = $1,200/year
+        social_security_dependents: 1_200
+        # $500/month child support = $6,000/year
+        child_support_received: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Gross unearned: $100 + $500 = $600
+    # Less child support: $600 - $500 = $100
+    nd_tanf_countable_unearned_income: 100

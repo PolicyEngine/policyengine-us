@@ -22,7 +22,5 @@ class dc_ccsp_first_child_copay(Variable):
             p.full_time.calc(income_to_fpg_ratio),
             p.part_time.calc(income_to_fpg_ratio),
         )
-        attending_days_per_month = person(
-            "dc_ccsp_attending_days_per_month", period
-        )
+        attending_days_per_month = person("dc_ccsp_attending_days_per_month", period)
         return copay_per_day * attending_days_per_month

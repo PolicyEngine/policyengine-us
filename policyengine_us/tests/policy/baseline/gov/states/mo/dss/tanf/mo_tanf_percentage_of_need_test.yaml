@@ -1,0 +1,53 @@
+- name: Passes when countable income below 34.526% of need
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 200
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_percentage_of_need_test: true  # 200 < 846 * 0.34526 = 292.09
+
+- name: Passes when countable income just below limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 292
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_percentage_of_need_test: true  # 292 < 292.09
+
+- name: Fails when countable income equals limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 293
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_percentage_of_need_test: false  # 293 > 292.09
+
+- name: Fails when countable income exceeds limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 300
+    mo_tanf_standard_of_need: 846
+  output:
+    mo_tanf_percentage_of_need_test: false
+
+- name: Passes for family of 1 below limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 100
+    mo_tanf_standard_of_need: 393
+  output:
+    mo_tanf_percentage_of_need_test: true  # 100 < 393 * 0.34526 = 135.67
+
+- name: Fails for family of 1 above limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 140
+    mo_tanf_standard_of_need: 393
+  output:
+    mo_tanf_percentage_of_need_test: false  # 140 > 135.67

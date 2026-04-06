@@ -1,0 +1,80 @@
+# Illinois I-PASS Assist integration tests
+# End-to-end scenarios testing full calculation chain
+#
+# Eligibility: IL resident AND (income <= 250% FPL OR SNAP/TANF recipient)
+#
+# Source: https://agency.illinoistollway.com/assist
+
+- name: Case 1, moderate income worker eligible via income.
+  period: 2025
+  input:
+    state_code: IL
+    employment_income: 35_000
+  output:
+    # 1-person 250% FPL = $39,125
+    # $35,000 < $39,125 -> income eligible
+    # $35,000 > SNAP/TANF limit -> no assistance
+    il_ipass_assist_income_eligible: true
+    il_ipass_assist_categorical_eligible: false
+    il_ipass_assist_eligible: true
+
+- name: Case 2, low income family eligible via both pathways.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # 4-person 250% FPL = $80,375
+    # $24,000 < $80,375 -> income eligible
+    # $24,000 < SNAP limit -> gets SNAP/TANF -> categorical eligible
+    il_ipass_assist_income_eligible: true
+    il_ipass_assist_categorical_eligible: true
+    il_ipass_assist_eligible: true
+
+- name: Case 3, high income not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 42
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # 2-person 250% FPL = $52,875
+    # $100,000 > $52,875 -> NOT income eligible
+    # $100,000 > SNAP/TANF limit -> no assistance
+    il_ipass_assist_income_eligible: false
+    il_ipass_assist_categorical_eligible: false
+    il_ipass_assist_eligible: false
+
+- name: Case 4, non-IL resident not eligible.
+  period: 2025
+  input:
+    state_code: WI
+    employment_income: 20_000
+  output:
+    il_ipass_assist_eligible: false

@@ -1,0 +1,77 @@
+- name: unit test 1 - surviving spouse, no extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income:
+      2023: 80_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 2_220  # $185 * 12 months
+
+- name: unit test 2 -  married, extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2023: 266_001  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 4_440  # $370 * 12 months
+
+- name: unit test 3 -  single, extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2023: 500_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 7_546.8  # $628.90 * 12 months
+
+- name: unit test 4 - HOH,  extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income:
+      2023: 106_002  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 3_108  # $259 * 12 months
+
+- name: unit test 5 -  married, no extra premium
+  period: 2025
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2023: 200_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 2_220  # $185 * 12 months
+
+- name: unit test 6 -  married, extra premium, rich
+  period: 2025
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2023: 1_000_000  # IRMAA uses income from 2 years prior
+    tax_exempt_interest_income:
+      2023: 0
+    is_medicare_eligible: true
+  output:
+    income_adjusted_part_b_premium: 7_546.8  # $628.90 * 12 months

@@ -1,0 +1,214 @@
+# Unit tests for Rhode Island Works dependent care deduction
+# 218-RICR-20-00-2.15.5(B)(2): $200 for under age 2, $175 for age 2+
+# NOTE: childcare_expenses is annual, so multiply monthly amount by 12
+
+- name: Case 1, no childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_works_dependent_care_deduction: 0
+
+- name: Case 2, child under 2 max $200 deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month * 12
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Max deduction for child under 2 is $200/month
+    # Expenses ($300/mo) > max ($200), so deduction = $200
+    ri_works_dependent_care_deduction: 200
+
+- name: Case 3, child age 2+ max $175 deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month * 12
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Max deduction for child age 2+ is $175/month
+    # Expenses ($300/mo) > max ($175), so deduction = $175
+    ri_works_dependent_care_deduction: 175
+
+- name: Case 4, expenses less than max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 1_800  # $150/month * 12
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Max deduction for child under 2 is $200/month
+    # Expenses ($150/mo) < max ($200), so deduction = $150
+    ri_works_dependent_care_deduction: 150
+
+- name: Case 5, two children combined deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month * 12
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # person2 (under 2): max $200
+    # person3 (age 2+): max $175
+    # Total max: $375
+    # Expenses ($500/mo) > max ($375), so deduction = $375
+    ri_works_dependent_care_deduction: 375
+
+- name: Case 6, non-dependent child not counted.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # person2 is not a dependent, so no deduction allowed
+    ri_works_dependent_care_deduction: 0
+
+# Edge cases: Age boundary at exactly 2 years
+
+- name: Case 7, child exactly age 2 gets $175 max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month * 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Child exactly age 2 - threshold is "age >= 2" so gets $175
+    # Expenses ($300) > max ($175), so deduction = $175
+    ri_works_dependent_care_deduction: 175
+
+# Edge case: 3+ children across age brackets
+
+- name: Case 8, three children mixed ages.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 7_200  # $600/month * 12
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # person2 (age 1): max $200
+    # person3 (age 3): max $175
+    # person4 (age 5): max $175
+    # Total max: $200 + $175 + $175 = $550
+    # Expenses ($600) > max ($550), so deduction = $550
+    ri_works_dependent_care_deduction: 550
+
+- name: Case 9, three children expenses below max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 4_800  # $400/month * 12
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+  output:
+    # Total max: $200 + $175 + $175 = $550
+    # Expenses ($400) < max ($550), so deduction = $400
+    ri_works_dependent_care_deduction: 400

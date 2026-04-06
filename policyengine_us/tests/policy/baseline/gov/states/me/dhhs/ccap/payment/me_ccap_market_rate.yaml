@@ -1,0 +1,1086 @@
+- name: Case 0, Cumberland infant full-time licensed center before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: CUMBERLAND
+  output:
+    # Cumberland Licensed Center Infant FT = $303/week on the 2021 schedule.
+    me_ccap_market_rate: [303]
+
+- name: Case 0b, Franklin toddler part-time licensed family before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: FRANKLIN
+  output:
+    # Franklin Licensed Family Toddler PT = $129.38/week on the 2021 schedule.
+    me_ccap_market_rate: [129.38]
+
+- name: Case 0c, Androscoggin preschool full-time license-exempt before July 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: ANDROSCOGGIN
+  output:
+    # Androscoggin License-Exempt Preschool FT = $105/week on the 2021 schedule.
+    me_ccap_market_rate: [105]
+
+- name: Case 1, Region 1 infant full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Infant FT = $330/week
+    me_ccap_market_rate: [330]
+
+- name: Case 2, Region 2 toddler part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Toddler PT = $150/week
+    me_ccap_market_rate: [150]
+
+- name: Case 3, Region 1 preschool full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Preschool FT = $157.5/week
+    me_ccap_market_rate: [157.5]
+
+- name: Case 4, Region 2 school age part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center School Age PT = $144.47/week
+    me_ccap_market_rate: [144.47]
+
+- name: Case 5, Region 2 infant full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Infant FT = $147/week
+    me_ccap_market_rate: [147]
+
+- name: Case 6, Region 1 school age full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family School Age FT = $175/week
+    me_ccap_market_rate: [175]
+
+# === Edge cases: remaining rate combinations ===
+
+- name: Case 7, Region 1 infant part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Infant PT = $247.50/week
+    me_ccap_market_rate: [247.50]
+
+- name: Case 8, Region 1 toddler full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Toddler FT = $320/week
+    me_ccap_market_rate: [320]
+
+- name: Case 9, Region 1 toddler part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Toddler PT = $240/week
+    me_ccap_market_rate: [240]
+
+- name: Case 10, Region 1 preschool full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Preschool FT = $300/week
+    me_ccap_market_rate: [300]
+
+- name: Case 11, Region 1 preschool part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center Preschool PT = $225/week
+    me_ccap_market_rate: [225]
+
+- name: Case 12, Region 1 school age full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center School Age FT = $214/week
+    me_ccap_market_rate: [214]
+
+- name: Case 13, Region 1 school age part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Center School Age PT = $171.76/week
+    me_ccap_market_rate: [171.76]
+
+- name: Case 14, Region 2 infant full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Infant FT = $275/week
+    me_ccap_market_rate: [275]
+
+- name: Case 15, Region 2 infant part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Infant PT = $206.25/week
+    me_ccap_market_rate: [206.25]
+
+- name: Case 16, Region 2 toddler full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Toddler FT = $250/week
+    me_ccap_market_rate: [250]
+
+- name: Case 17, Region 2 toddler part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Toddler PT = $187.50/week
+    me_ccap_market_rate: [187.50]
+
+- name: Case 18, Region 2 preschool full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Preschool FT = $244/week
+    me_ccap_market_rate: [244]
+
+- name: Case 19, Region 2 preschool part-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center Preschool PT = $183/week
+    me_ccap_market_rate: [183]
+
+- name: Case 20, Region 2 school age full-time licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Center School Age FT = $180/week
+    me_ccap_market_rate: [180]
+
+- name: Case 21, Region 1 infant full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Infant FT = $245/week
+    me_ccap_market_rate: [245]
+
+- name: Case 22, Region 1 infant part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Infant PT = $183.75/week
+    me_ccap_market_rate: [183.75]
+
+- name: Case 23, Region 1 toddler full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Toddler FT = $230.77/week
+    me_ccap_market_rate: [230.77]
+
+- name: Case 24, Region 1 toddler part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Toddler PT = $173.08/week
+    me_ccap_market_rate: [173.08]
+
+- name: Case 25, Region 1 preschool full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Preschool FT = $225/week
+    me_ccap_market_rate: [225]
+
+- name: Case 26, Region 1 preschool part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family Preschool PT = $168.75/week
+    me_ccap_market_rate: [168.75]
+
+- name: Case 27, Region 1 school age part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 Licensed Family School Age PT = $140.46/week
+    me_ccap_market_rate: [140.46]
+
+- name: Case 28, Region 2 infant full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Infant FT = $210/week
+    me_ccap_market_rate: [210]
+
+- name: Case 29, Region 2 infant part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Infant PT = $157.50/week
+    me_ccap_market_rate: [157.50]
+
+- name: Case 30, Region 2 toddler full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Toddler FT = $200/week
+    me_ccap_market_rate: [200]
+
+- name: Case 31, Region 2 preschool full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Preschool FT = $190/week
+    me_ccap_market_rate: [190]
+
+- name: Case 32, Region 2 preschool part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family Preschool PT = $142.50/week
+    me_ccap_market_rate: [142.50]
+
+- name: Case 33, Region 2 school age full-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family School Age FT = $170/week
+    me_ccap_market_rate: [170]
+
+- name: Case 34, Region 2 school age part-time licensed family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSED_FAMILY
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 Licensed Family School Age PT = $136.45/week
+    me_ccap_market_rate: [136.45]
+
+- name: Case 35, Region 1 infant full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Infant FT = $171.50/week
+    me_ccap_market_rate: [171.50]
+
+- name: Case 36, Region 1 infant part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Infant PT = $128.63/week
+    me_ccap_market_rate: [128.63]
+
+- name: Case 37, Region 1 toddler full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Toddler FT = $161.54/week
+    me_ccap_market_rate: [161.54]
+
+- name: Case 38, Region 1 toddler part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Toddler PT = $121.15/week
+    me_ccap_market_rate: [121.15]
+
+- name: Case 39, Region 1 preschool part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt Preschool PT = $118.13/week
+    me_ccap_market_rate: [118.13]
+
+- name: Case 40, Region 1 school age full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt School Age FT = $122.50/week
+    me_ccap_market_rate: [122.50]
+
+- name: Case 41, Region 1 school age part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_1
+  output:
+    # Region 1 License-Exempt School Age PT = $98.33/week
+    me_ccap_market_rate: [98.33]
+
+- name: Case 42, Region 2 infant part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: INFANT
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Infant PT = $110.25/week
+    me_ccap_market_rate: [110.25]
+
+- name: Case 43, Region 2 toddler full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Toddler FT = $140/week
+    me_ccap_market_rate: [140]
+
+- name: Case 44, Region 2 toddler part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: TODDLER
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Toddler PT = $105/week
+    me_ccap_market_rate: [105]
+
+- name: Case 45, Region 2 preschool full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Preschool FT = $133/week
+    me_ccap_market_rate: [133]
+
+- name: Case 46, Region 2 preschool part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt Preschool PT = $99.75/week
+    me_ccap_market_rate: [99.75]
+
+- name: Case 47, Region 2 school age full-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt School Age FT = $119/week
+    me_ccap_market_rate: [119]
+
+- name: Case 48, Region 2 school age part-time license-exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: PART_TIME
+        me_ccap_provider_type: LICENSE_EXEMPT
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: REGION_2
+  output:
+    # Region 2 License-Exempt School Age PT = $95.51/week
+    me_ccap_market_rate: [95.51]
+
+# === County-specific region rate tests ===
+
+- name: Case 49, Kennebec Licensed Center Preschool FT 2024 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: KENNEBEC
+  output:
+    # Kennebec Licensed Center Preschool FT = $267/week (2024 rate)
+    me_ccap_market_rate: [267]
+
+- name: Case 50, Knox Licensed Center School Age FT 2024 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: KNOX_WALDO
+  output:
+    # Knox/Waldo Licensed Center School Age FT = $220/week (2024 rate)
+    me_ccap_market_rate: [220]
+
+- name: Case 51, Knox Licensed Center School Age FT 2025 rate retained.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: KNOX_WALDO
+  output:
+    # Knox/Waldo Licensed Center School Age FT = $220/week (retains unique rate per May 2025 PDF)
+    me_ccap_market_rate: [220]
+
+- name: Case 52, Kennebec Licensed Center Preschool FT 2025 rate retained.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: PRESCHOOL
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: KENNEBEC
+  output:
+    # Kennebec Licensed Center Preschool FT = $267/week (retains unique rate per May 2025 PDF)
+    me_ccap_market_rate: [267]
+
+- name: Case 53, Penobscot Licensed Center School Age FT 2024 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: PENOBSCOT
+  output:
+    # Penobscot Licensed Center School Age FT = $200/week (2024 rate)
+    me_ccap_market_rate: [200]
+
+- name: Case 54, Penobscot Licensed Center School Age FT 2025 rate retained.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        me_ccap_age_group: SCHOOL_AGE
+        me_ccap_time_category: FULL_TIME
+        me_ccap_provider_type: LICENSED_CENTER
+        me_ccap_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+        me_ccap_region: PENOBSCOT
+  output:
+    # Penobscot Licensed Center School Age FT = $200/week (retains unique rate per May 2025 PDF)
+    me_ccap_market_rate: [200]

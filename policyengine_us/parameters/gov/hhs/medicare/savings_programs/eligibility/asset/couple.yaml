@@ -1,0 +1,14 @@
+description: The Department of Health and Human Services limits resources to this amount for couples under the Medicare Savings Programs.
+values:
+  2024-01-01: 14_130
+  2025-01-01: 14_470
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: MSP couple asset limit
+  reference:
+    - title: Medicare Savings Programs | Medicare.gov
+      href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
+    - title: SSA POMS SI 01715.010 - Resource Eligibility
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010

@@ -14,7 +14,9 @@ class race(Variable):
     default_value = Race.WHITE
     entity = Person
     label = "race"
-    documentation = "The broadest racial category (White only, Black only, Hispanic, Other)"
+    documentation = (
+        "The broadest racial category (White only, Black only, Hispanic, Other)"
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -25,12 +27,11 @@ class race(Variable):
                 hispanic,
                 (cps_race == 1) & ~hispanic,
                 (cps_race == 2) & ~hispanic,
-                True,
             ],
             [
                 Race.HISPANIC,
                 Race.WHITE,
                 Race.BLACK,
-                Race.OTHER,
             ],
+            default=Race.OTHER,
         )

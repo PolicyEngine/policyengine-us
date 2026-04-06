@@ -69,9 +69,7 @@ def tax_employer_medicare_tax_reform() -> Reform:
     return reform
 
 
-def create_tax_employer_medicare_tax_reform(
-    parameters, period, bypass: bool = False
-):
+def create_tax_employer_medicare_tax_reform(parameters, period, bypass: bool = False):
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform
@@ -103,6 +101,6 @@ def create_tax_employer_medicare_tax_reform(
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-tax_employer_medicare_tax_reform_object = (
-    create_tax_employer_medicare_tax_reform(None, None, bypass=True)
+tax_employer_medicare_tax_reform_object = create_tax_employer_medicare_tax_reform(
+    None, None, bypass=True
 )

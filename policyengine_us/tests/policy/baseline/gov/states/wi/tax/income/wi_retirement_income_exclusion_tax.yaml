@@ -1,0 +1,94 @@
+- name: Exclusion path tax - low income after exclusion
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 8_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 10_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # exclusion_taxinc = max(0, 10000 - 8000 + 0) = 2000
+    # exclusion_tax = 2000 * 0.035 = 70
+    wi_retirement_income_exclusion_tax: 70
+
+- name: Exclusion path tax - small exclusion, higher remaining income
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 2_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 10_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # exclusion_taxinc = max(0, 10000 - 2000 + 0) = 8000
+    # exclusion_tax = 8000 * 0.035 = 280
+    wi_retirement_income_exclusion_tax: 280
+
+- name: Not eligible - age 64, exclusion amount is zero so full tax
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 64
+    taxable_pension_income: 8_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 10_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # line16 = 0 (ineligible), so exclusion_taxinc = taxinc
+    wi_retirement_income_exclusion_tax: 350
+
+- name: Exclusion path tax with Line 17 already in taxable income
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 8_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 10_000
+    wi_retirement_income_subtraction: 3_000
+  output:
+    # Line 17 ($3k) is already subtracted in wi_taxable_income.
+    # Per the Line 17 worksheet step 4, Line 17 self-adjusts when
+    # Line 16 is claimed. We simply subtract Line 16:
+    # exclusion_taxinc = max(0, 10000 - 8000) = 2000
+    # exclusion_tax = 2000 * 0.035 = 70
+    wi_retirement_income_exclusion_tax: 70
+
+- name: Joint filing - both spouses eligible
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        taxable_pension_income: 5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        wi_taxable_income: 18_000
+        wi_retirement_income_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # exclusion_amount = min(48000, 15000) = 15000
+    # exclusion_taxinc = max(0, 18000 - 15000 + 0) = 3000
+    # exclusion_tax = 3000 * 0.035 = 105
+    wi_retirement_income_exclusion_tax: 105

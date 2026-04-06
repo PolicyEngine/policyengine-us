@@ -44,3 +44,50 @@
     ri_property_tax_credit_eligible: true
   output:
     ri_property_tax_credit: 50
+
+# 2025 tests - Max credit: $700, updated income thresholds
+- name: 2025 - Credit capped at max ($700)
+  # Income $8,000 is in 4% bracket, property tax $2,000
+  # Threshold = 8,000 * 0.04 = $320
+  # Credit = 2,000 - 320 = $1,680, but capped at $700
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 8_000
+    tax_unit_size: 1
+    real_estate_taxes: 2_000
+    rent: 0
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 700
+
+- name: 2025 - Credit for income in 6% bracket (one person)
+  # Income $15,000 is in 6% bracket ($13,971-$40,731)
+  # Threshold = 15,000 * 0.06 = $900
+  # Credit = 1,200 - 900 = $300
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 15_000
+    tax_unit_size: 1
+    real_estate_taxes: 1_200
+    rent: 0
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 300
+
+- name: 2025 - No credit for income above cutoff ($40,731)
+  # Income above $40,731 makes filer ineligible
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 45_000
+    tax_unit_size: 1
+    real_estate_taxes: 2_000
+    rent: 0
+    greater_age_head_spouse: 70
+  output:
+    ri_property_tax_credit: 0

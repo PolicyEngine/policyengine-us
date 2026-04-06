@@ -31,3 +31,74 @@
     oh_tax_before_joint_filing_credit: 4_000
   output:
     oh_joint_filing_credit: 0
+
+- name: Pre-2025 high income still receives credit (no MAGI cap)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 900_000
+    oh_personal_exemptions: 3_800
+    oh_tax_before_joint_filing_credit: 20_000
+  output:
+    # AGI less exemptions = 896,200 (in $75k+ bracket at 5%)
+    # Credit = min(20,000 * 0.05, 650) = min(1000, 650) = 650
+    # Pre-2025: no MAGI cap, so credit is available
+    oh_joint_filing_credit: 650
+
+- name: 2025 high income zeroed out by $750k MAGI cap (HB 96)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 900_000
+    oh_personal_exemptions: 0
+    oh_tax_before_joint_filing_credit: 20_000
+  output:
+    # AGI less exemptions = 900,000 (>= $750k, rate = 0%)
+    # Credit = 20,000 * 0 = 0
+    oh_joint_filing_credit: 0
+
+- name: 2025 just below $750k MAGI cap still receives credit
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 749_000
+    oh_personal_exemptions: 0
+    oh_tax_before_joint_filing_credit: 20_000
+  output:
+    # AGI less exemptions = 749,000 (in $75k-$750k bracket at 5%)
+    # Credit = min(20,000 * 0.05, 650) = min(1000, 650) = 650
+    oh_joint_filing_credit: 650
+
+- name: 2026 MAGI cap drops to $500k (HB 96)
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 600_000
+    oh_personal_exemptions: 0
+    oh_tax_before_joint_filing_credit: 20_000
+  output:
+    # AGI less exemptions = 600,000 (>= $500k for 2026+, rate = 0%)
+    # Credit = 20,000 * 0 = 0
+    oh_joint_filing_credit: 0
+
+- name: 2026 just below $500k MAGI cap still receives credit
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 499_000
+    oh_personal_exemptions: 0
+    oh_tax_before_joint_filing_credit: 20_000
+  output:
+    # AGI less exemptions = 499,000 (in $75k-$500k bracket at 5%)
+    # Credit = min(20,000 * 0.05, 650) = min(1000, 650) = 650
+    oh_joint_filing_credit: 650

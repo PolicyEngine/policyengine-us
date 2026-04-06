@@ -1,0 +1,73 @@
+# Illinois SMIB Buy-In Program integration tests
+# Part B premium for 2024: $174.70/month
+
+- name: SMIB benefit for AABD recipient
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        il_aabd_eligible_person: true
+        medicare_quarters_of_coverage: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_smib_eligible: [true]
+    il_smib_person: [174.70]
+    il_smib: [174.70]
+
+- name: SMIB benefit for married couple - both eligible
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        immigration_status: CITIZEN
+        medicare_quarters_of_coverage: 40
+      person2:
+        age: 66
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        immigration_status: CITIZEN
+        medicare_quarters_of_coverage: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_smib_eligible: [true, true]
+    il_smib_person: [174.70, 174.70]
+    il_smib: [349.40]
+
+- name: No SMIB benefit - not eligible
+  period: 2024-01
+  input:
+    people:
+      person:
+        age: 67
+        medicare_quarters_of_coverage: 40
+        # Explicitly disable categorical eligibility
+        il_aabd_eligible_person: false
+        is_ssi_aged_blind_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IL
+  output:
+    il_smib_eligible: [false]
+    il_smib_person: [0]
+    il_smib: [0]

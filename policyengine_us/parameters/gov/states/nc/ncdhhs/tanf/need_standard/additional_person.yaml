@@ -1,12 +1,16 @@
-description: North Carolina provides an additional need standard amount for each household member exceeding the maximum specified household size for its Temporary Assistance for Needy Families program.
+description: North Carolina provides this amount for each additional household member under the Temporary Assistance for Needy Families program.
 
 values:
-  2024-01-01: 50
+  1997-01-01: 50
 
 metadata:
   unit: currency-USD
   period: month
-  label: North Carolina TANF monthly income limit per additional person
+  label: North Carolina TANF additional person need standard
   reference:
     - title: WORK FIRST | Income and Budgeting (Change No. 04-2023, January 1, 2024)
       href: https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf#page=5
+    - title: North Carolina TANF State Plan 2016-2019
+      href: https://www.ncdhhs.gov/documents/files/dss/dcdl/economicservices/efs-wf-29-2015a/download#page=35
+    - title: North Carolina TANF State Plan 2019-2022
+      href: https://www.ncdhhs.gov/documents/files/dss/2019-2022-tanf-state-plan-draft/download#page=18

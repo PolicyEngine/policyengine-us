@@ -1,0 +1,25 @@
+description: Minnesota caps the subtraction for 529 education savings plan contributions at this amount.
+metadata:
+  label: Minnesota 529 plan contribution subtraction maximum
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0132 Subd. 23
+    href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.23
+  - title: 2025 Schedule M1529 Instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1529-25.pdf
+  - title: Education Savings Account Contribution Subtraction
+    href: https://www.revenue.state.mn.us/education-savings-account-contribution-subtraction
+
+JOINT:
+  2017-01-01: 3_000
+SURVIVING_SPOUSE:
+  2017-01-01: 3_000
+SINGLE:
+  2017-01-01: 1_500
+HEAD_OF_HOUSEHOLD:
+  2017-01-01: 1_500
+SEPARATE:
+  2017-01-01: 1_500

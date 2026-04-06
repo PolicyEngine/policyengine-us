@@ -1,0 +1,31 @@
+- name: Case 1, asset eligible below limit.
+  period: 2024-01
+  input:
+    state_code: IL
+    spm_unit_cash_assets: 20_000
+  output:
+    il_hbwd_asset_eligible: true
+
+- name: Case 2, asset eligible at limit.
+  period: 2024-01
+  input:
+    state_code: IL
+    spm_unit_cash_assets: 25_000
+  output:
+    il_hbwd_asset_eligible: true
+
+- name: Case 3, asset ineligible above limit.
+  period: 2024-01
+  input:
+    state_code: IL
+    spm_unit_cash_assets: 25_001
+  output:
+    il_hbwd_asset_eligible: false
+
+- name: Case 4, asset eligible with zero assets.
+  period: 2024-01
+  input:
+    state_code: IL
+    spm_unit_cash_assets: 0
+  output:
+    il_hbwd_asset_eligible: true

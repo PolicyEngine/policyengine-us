@@ -1,0 +1,44 @@
+- name: Case 1, 2017 period with budgetary adjustment.
+  period: 2017-01
+  input:
+    state_code: NM
+    spm_unit_size: 3
+  output:
+    # 2015-08-01 values (7.5% adjustment): size 3 = $409
+    nm_works_maximum_benefit: 409
+
+- name: Case 2, 2019 period after adjustment removed.
+  period: 2019-01
+  input:
+    state_code: NM
+    spm_unit_size: 3
+  output:
+    # 2018-11-01 values (no adjustment): size 3 = $447
+    nm_works_maximum_benefit: 447
+
+- name: Case 3, 2024 period with 23% increase.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_size: 3
+  output:
+    # 2023-08-01 values: size 3 = $549
+    nm_works_maximum_benefit: 549
+
+- name: Case 4, size 9 uses additional person increment.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_size: 9
+  output:
+    # Size 8: $1,134 + 1 * $111 = $1,245
+    nm_works_maximum_benefit: 1_245
+
+- name: Case 5, size 10 uses additional person increment.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_size: 10
+  output:
+    # Size 8: $1,134 + 2 * $111 = $1,356
+    nm_works_maximum_benefit: 1_356

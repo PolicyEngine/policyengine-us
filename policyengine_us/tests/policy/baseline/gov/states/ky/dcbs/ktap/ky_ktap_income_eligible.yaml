@@ -1,0 +1,96 @@
+# Kentucky TANF (K-TAP) Income Eligibility
+# Per 921 KAR 2:016 Section 9(2)(b)
+# Gross income must be at or below the gross income limit for family size
+# Tests use YEAR period; MONTH variables automatically annualized
+#
+# Gross Income Limits (2023+) - monthly:
+# Size 1: $890, Size 2: $1,021, Size 3: $1,169
+# Size 4: $1,315, Size 5: $1,462, Size 6: $1,608, Size 7+: $1,754
+
+- name: Case 1, no income is income eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $0 gross < $1,169 limit for size 3
+    ky_ktap_income_eligible: true
+
+- name: Case 2, income below limit is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_400  # $700/month annual (below $1,169 limit)
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $700/mo gross < $1,169 limit for size 3
+    ky_ktap_income_eligible: true
+
+- name: Case 3, income at limit is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 14_028  # $1,169/month annual (at limit)
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # $1,169/mo gross = $1,169 limit for size 3
+    ky_ktap_income_eligible: true
+
+- name: Case 4, non-KY state returns false.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 10
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Not in Kentucky
+    ky_ktap_income_eligible: false

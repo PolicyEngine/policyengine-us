@@ -17,5 +17,6 @@ class ri_retirement_income_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.ri.tax.income.agi.subtractions.taxable_retirement_income
-        total_taxable_pension = tax_unit.sum(taxable_pension * head_or_spouse)
-        return min_(total_taxable_pension, p.cap)
+        # Cap applies per person, not per tax unit
+        capped_per_person = min_(taxable_pension, p.cap) * head_or_spouse
+        return tax_unit.sum(capped_per_person)

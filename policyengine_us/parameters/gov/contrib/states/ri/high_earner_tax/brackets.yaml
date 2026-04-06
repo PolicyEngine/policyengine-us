@@ -1,0 +1,26 @@
+description: Rhode Island places this additional tax on high-income filers per H7317.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Rhode Island H7317 high earner surtax brackets
+  reference:
+    - title: Rhode Island H7317 - Additional tax on high-income filers
+      href: https://webserver.rilegislature.gov/BillText26/HouseText26/H7317.pdf
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    rate:
+      2027-01-01: 0
+  - threshold:
+      values:
+        2026-01-01: 640_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2027-01-01: 0.03

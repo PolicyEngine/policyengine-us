@@ -13,9 +13,7 @@ class la_retirement_exemption_person(Variable):
     def formula(person, period, parameters):
         pension_income = person("taxable_pension_income", period)
         age = person("age", period)
-        p = parameters(
-            period
-        ).gov.states.la.tax.income.exempt_income.retirement
+        p = parameters(period).gov.states.la.tax.income.exempt_income.retirement
         cap = p.cap.calc(age)
         deductible_pensions = min_(pension_income, cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)

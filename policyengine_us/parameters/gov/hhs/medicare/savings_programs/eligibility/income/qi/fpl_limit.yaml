@@ -1,0 +1,14 @@
+description: The Department of Health and Human Services limits income to this share of the federal poverty level for Qualifying Individual eligibility under the Medicare Savings Programs.
+values:
+  1998-01-01: 1.35
+
+metadata:
+  unit: /1
+  period: year
+  label: MSP QI income limit as percent of FPL
+  reference:
+    - title: 42 U.S.C. 1396a(a)(10)(E)(iv) - 120-135% FPL income limit
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#a_10_E_iv
+    # Note: States may set higher income limits than the federal floor
+    - title: Medicare Savings Programs | Medicare.gov
+      href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs

@@ -225,8 +225,36 @@
         filing_status: SINGLE
         head_is_dependent_elsewhere: false
     households:
-      household: 
+      household:
         members: [person1, person2]
         state_code: HI
   output:
     hi_food_excise_credit: 200
+
+- name: JOINT filing with negative AGI should receive credit
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -12_679.877
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        short_term_capital_gains: -12_679.877
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    adjusted_gross_income: -3_000
+    exemptions_count: 2
+    hi_food_excise_credit: 440
+    hi_income_tax: -440

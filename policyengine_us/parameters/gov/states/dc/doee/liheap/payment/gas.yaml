@@ -207,10 +207,14 @@ metadata:
   period: year
   unit: currency-USD
   label: DC LIHEAP Gas payment
-  breakdown: 
+  breakdown:
   - dc_liheap_housing_type
   - range(1,11) # income level
   - range(1,5) # household size
+  breakdown_labels:
+  - Housing type
+  - Income level
+  - Household size
   reference:
     - title: DOEE Regular Benefits Table for FY 2024
       href: https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf

@@ -6,9 +6,7 @@ class loss_ald(Variable):
     entity = TaxUnit
     label = "Business loss ALD"
     unit = USD
-    documentation = (
-        "Above-the-line deduction from gross income for business losses."
-    )
+    documentation = "Above-the-line deduction from gross income for business losses."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/165"
 

@@ -1,0 +1,32 @@
+# Maine TANF Earned Income After Disregard (Person-Level) Tests
+# Tests the $108 flat deduction + 50% disregard per person
+# Source: 22 M.R.S. Section 3762(3)(B)(7-D)(c)
+
+- name: Case 1, multiple earners with various income levels.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0  # Zero income
+      person2:
+        tanf_gross_earned_income: 100  # Below flat deduction
+      person3:
+        tanf_gross_earned_income: 108  # Exactly at flat deduction
+      person4:
+        tanf_gross_earned_income: 109  # One dollar above
+      person5:
+        tanf_gross_earned_income: 500  # Moderate income
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ME
+  output:
+    # person1: $0 (no income)
+    # person2: $100 - $108 = -$8, clipped to $0
+    # person3: $108 - $108 = $0
+    # person4: ($109 - $108) * 0.5 = $0.50
+    # person5: ($500 - $108) * 0.5 = $196
+    me_tanf_earned_income_after_disregard_person: [0, 0, 0, 0.5, 196]

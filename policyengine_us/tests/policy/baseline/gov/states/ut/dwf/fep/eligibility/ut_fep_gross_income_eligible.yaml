@@ -1,0 +1,91 @@
+# Unit tests for ut_fep_gross_income_eligible (185% SNB gross income test)
+# Gross income must be <= 185% of Standard Needs Budget
+# Reference: Utah Admin. Code R986-200-239
+#
+# 2022 Gross Income Limits (185% SNB):
+#   Size 1: $608, Size 2: $843, Size 3: $1,050
+#   Size 4: $1,230, Size 5: $1,400, Size 6: $1,542
+
+- name: Gross income zero - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross limit for size 3 = $1,050
+    # Gross income = 0 <= 1,050 - eligible
+    ut_fep_gross_income_eligible: true
+
+- name: Gross income below limit - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross limit for size 3 = $1,050
+    # Gross income = 500 + 200 = 700 <= 1,050 - eligible
+    ut_fep_gross_income_eligible: true
+
+- name: Gross income at limit - eligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    tanf_gross_earned_income: 800
+    tanf_gross_unearned_income: 250
+  output:
+    # Gross limit for size 3 = $1,050
+    # Gross income = 800 + 250 = 1,050 <= 1,050 - eligible
+    ut_fep_gross_income_eligible: true
+
+- name: Gross income above limit - ineligible (family size 3).
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 3
+    tanf_gross_earned_income: 900
+    tanf_gross_unearned_income: 200
+  output:
+    # Gross limit for size 3 = $1,050
+    # Gross income = 900 + 200 = 1,100 > 1,050 - ineligible
+    ut_fep_gross_income_eligible: false
+
+- name: Gross income at limit for family size 1.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 1
+    tanf_gross_earned_income: 608
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross limit for size 1 = $608
+    # Gross income = 608 <= 608 - eligible
+    ut_fep_gross_income_eligible: true
+
+- name: Gross income above limit for family size 1.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 1
+    tanf_gross_earned_income: 609
+    tanf_gross_unearned_income: 0
+  output:
+    # Gross limit for size 1 = $608
+    # Gross income = 609 > 608 - ineligible
+    ut_fep_gross_income_eligible: false
+
+- name: Larger family size 5 with income at limit.
+  period: 2024-01
+  input:
+    state_code: UT
+    spm_unit_size: 5
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 400
+  output:
+    # Gross limit for size 5 = $1,400
+    # Gross income = 1,000 + 400 = 1,400 <= 1,400 - eligible
+    ut_fep_gross_income_eligible: true

@@ -187,3 +187,195 @@
     filing_status: SEPARATE
   output:
     id_income_tax_before_non_refundable_credits: 5_539.58
+
+# 2024 Tests - Rate: 5.695%, Single/Separate threshold: $4,673, Joint/HoH/Surviving threshold: $9,346
+# Note: Thresholds are uprated using IRS inflation factor, so actual computed values may differ slightly
+
+- name: Single filer with high income in 2024
+  # (100,000 - 4,673) * 0.05695 = 5,428.87 (threshold from 2024 parameter value)
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_428.8726
+
+- name: Joint filer with high income in 2024
+  # (100,000 - 9,346) * 0.05695 = 5,162.75 (threshold from 2024 parameter value)
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 5_162.745
+
+- name: Separate filer with high income in 2024
+  # (100,000 - 4,673) * 0.05695 = 5,428.87 (threshold from 2024 parameter value)
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_428.8726
+
+- name: Head of household filer with high income in 2024
+  # (100,000 - 9,346) * 0.05695 = 5,162.75 (threshold from 2024 parameter value)
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 5_162.745
+
+- name: Surviving spouse filer with high income in 2024
+  # (100,000 - 9,346) * 0.05695 = 5,162.75 (threshold from 2024 parameter value)
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_162.745
+
+- name: Single filer with no taxable income in 2024
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filer with income below threshold in 2024
+  # Income of 4,000 is below threshold of 4,673, so no tax
+  period: 2024
+  input:
+    state_code: ID
+    id_taxable_income: 4_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+# 2025 Tests - Rate: 5.3%, explicit threshold values
+# Single/Separate threshold: $4,811, Joint/HoH/Surviving threshold: $9,622
+# Per House Bill 40 (2025), signed by Governor Little - reduced rate to 5.3%
+
+- name: Single filer with high income in 2025
+  # (100,000 - 4,811) * 0.053 = 5,045.02
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_045.02
+
+- name: Joint filer with high income in 2025
+  # (100,000 - 9,622) * 0.053 = 4,790.03
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 4_790.03
+
+- name: Separate filer with high income in 2025
+  # (100,000 - 4,811) * 0.053 = 5,045.02
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_045.02
+
+- name: Head of household filer with high income in 2025
+  # (100,000 - 9,622) * 0.053 = 4,790.03
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 4_790.03
+
+- name: Surviving spouse filer with high income in 2025
+  # (100,000 - 9,622) * 0.053 = 4,790.03
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 4_790.03
+
+- name: Single filer with no taxable income in 2025
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filer with income below threshold in 2025
+  # Income of 2,000 is below threshold of $4,811, so no tax
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 2_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filer with income at 2500 in 2025
+  # Income of 2,500 is below threshold of $4,811, so no tax
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 2_500
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filer with income of 10000 in 2025
+  # (10,000 - 4,811) * 0.053 = 275.02
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 275.02
+
+- name: Joint filer with income below threshold in 2025
+  # Income of 4,000 is below threshold of $9,622, so no tax
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 4_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Joint filer with income of 10000 in 2025
+  # (10,000 - 9,622) * 0.053 = 20.03
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 20.03

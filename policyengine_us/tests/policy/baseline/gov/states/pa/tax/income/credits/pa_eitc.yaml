@@ -1,0 +1,26 @@
+- name: No federal EITC, no PA credit
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code: PA
+    eitc: 0
+  output:
+    pa_eitc: 0
+
+- name: Basic PA EITC - 10% match of federal EITC
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code: PA
+    eitc: 1_000
+  output:
+    pa_eitc: 100
+
+- name: PA EITC with higher federal EITC amount
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code: PA
+    eitc: 7_430
+  output:
+    pa_eitc: 743

@@ -1,0 +1,27 @@
+description: Missouri deducts up to this amount of child care expenses per child from countable income under the Temporary Assistance for Needy Families program, depending on child age.
+
+metadata:
+  period: month
+  label: Missouri TANF child care deduction per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: 13 CSR 40-2.120(6)(A)5
+      href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120
+    - title: Missouri DSS Manual 0210.015.30
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/
+
+brackets:
+  - threshold:
+      1991-01-01: 0
+    amount:
+      1991-01-01: 200
+  - threshold:
+      1991-01-01: 2
+    amount:
+      1991-01-01: 175
+  - threshold:
+      1991-01-01: 18
+    amount:
+      1991-01-01: 0

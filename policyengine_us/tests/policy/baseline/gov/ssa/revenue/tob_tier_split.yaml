@@ -1,0 +1,72 @@
+# Test that TOB revenue split uses double-branching methodology
+# Per 42 U.S.C. 401 note (Section 121(e) of PL 98-21):
+#   - OASDI receives tax on "first 50%" of gross SS benefits
+#   - Medicare HI receives tax on remaining portion (1993 amendments)
+#
+# The split depends on marginal tax rates, so varies by income level
+
+- name: TOB tier split - single retiree in tier 2
+  period: 2024
+  absolute_error_margin: 500
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Total taxable SS = 85% of $30K = $25,500
+    tax_unit_taxable_social_security: 25_500
+    # IRC 86 tier calculations (for taxable income)
+    taxable_social_security_tier_1: 4_500
+    taxable_social_security_tier_2: 21_000
+
+- name: TOB revenue split using branching methodology
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Using double-branching per 42 U.S.C. 401 note
+    # OASDI = tax(with 50% cap) - tax(with 0% SS)
+    # HI = tax(with full SS) - tax(with 50% cap)
+    tob_revenue_total: 4_240
+    tob_revenue_oasdi: 1_930
+    tob_revenue_medicare_hi: 2_310
+
+- name: Verify tier2 is positive (regression test)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Tier 2 must be positive
+    taxable_social_security_tier_2: 12_500

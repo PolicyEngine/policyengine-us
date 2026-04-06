@@ -38,7 +38,5 @@ class nj_property_tax_credit_eligible(Variable):
         )
 
         # return eligiblity for property tax credit
-        deduction_eligibility = tax_unit(
-            "nj_property_tax_deduction_eligible", period
-        )
+        deduction_eligibility = tax_unit("nj_property_tax_deduction_eligible", period)
         return deduction_eligibility | (pays_ptax & senior_blind_disabled)

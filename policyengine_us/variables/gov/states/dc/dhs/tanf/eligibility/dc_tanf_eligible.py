@@ -13,7 +13,5 @@ class dc_tanf_eligible(Variable):
         meets_basic_eligibility_requirements = spm_unit(
             "dc_tanf_basic_eligibility_requirements", period
         )
-        meets_work_requirements = spm_unit(
-            "dc_tanf_meets_work_requirements", period
-        )
+        meets_work_requirements = spm_unit("dc_tanf_meets_work_requirements", period)
         return meets_basic_eligibility_requirements & meets_work_requirements

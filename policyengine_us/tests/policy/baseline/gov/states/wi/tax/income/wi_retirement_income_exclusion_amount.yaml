@@ -1,0 +1,95 @@
+- name: Single age 68, $20k pension - below cap
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 20_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 20_000
+
+- name: Single age 68, $30k pension - capped at $24k
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 30_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 24_000
+
+- name: Joint, both 68, $25k + $25k pension - pooled and capped at $48k
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 68
+        taxable_pension_income: 25_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 48_000
+
+- name: Joint, one 68 one 64, $25k each - only 68-year-old eligible
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 64
+        taxable_pension_income: 25_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 24_000
+
+- name: Single age 68, zero pension - exclusion is zero
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 0
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 0
+
+- name: Single age 68, $24k pension - exactly at cap
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 24_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 24_000

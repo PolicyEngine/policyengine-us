@@ -23,3 +23,25 @@
     self_employment_income: 399
   output:
     taxable_self_employment_income: 0
+
+- name: S-corp and general partnership distributions not subject to SE tax.
+  period: 2024
+  input:
+    self_employment_income: 50_000
+    partnership_s_corp_income: 100_000
+  output:
+    # Only the $50k self-employment income is subject to SE tax.
+    # The $100k partnership/S-corp distributions pass through for income tax
+    # but are not self-employment income (S-corp never, partnership only via K-1 Box 14).
+    # 50_000 * (1 - 0.5 * 0.153) = 50_000 * 0.9235 = 46_175
+    taxable_self_employment_income: 46_175
+
+- name: Partnership SE income from K-1 Box 14 is subject to SE tax.
+  period: 2024
+  input:
+    self_employment_income: 50_000
+    partnership_se_income: 30_000
+  output:
+    # Both Schedule C ($50k) and K-1 Box 14 ($30k) are subject to SE tax.
+    # 80_000 * (1 - 0.5 * 0.153) = 80_000 * 0.9235 = 73_880
+    taxable_self_employment_income: 73_880

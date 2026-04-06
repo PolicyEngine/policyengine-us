@@ -1,0 +1,74 @@
+- name: Case 1, eligible child with homeless status (50 pts >= 50).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Only age-eligible child gets risk eligibility check
+    # Homeless (50) >= 50 minimum
+    il_pi_risk_eligible: [false, true]
+
+- name: Case 2, eligible child with two 25-pt factors (50 pts).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        # Factor 7: Parent didn't complete high school (Household-level)
+        parent_has_less_than_high_school_education: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Low income (25) + no high school (25) + poverty (10) = 60 pts >= 50
+    il_pi_risk_eligible: [false, true]
+
+- name: Case 3, ineligible child with insufficient score.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000  # Only poverty (10 pts)
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Only poverty (10 pts) < 50 minimum
+    il_pi_risk_eligible: [false, false]

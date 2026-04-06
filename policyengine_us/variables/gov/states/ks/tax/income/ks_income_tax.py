@@ -8,8 +8,7 @@ class ks_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ksrevenue.gov/pdf/ip21.pdf"
-        "https://www.ksrevenue.gov/pdf/ip22.pdf"
+        "https://www.ksrevenue.gov/pdf/ip21.pdfhttps://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
     adds = ["ks_income_tax_before_refundable_credits"]

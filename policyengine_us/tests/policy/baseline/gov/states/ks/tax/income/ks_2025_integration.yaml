@@ -1,0 +1,502 @@
+# Kansas 2025 Income Tax Integration Tests
+# Tests the complete Kansas income tax calculation for 2025
+# Reference: 2025 Form K-40 Instructions, K.S.A. 79-32,110
+#
+# Key 2025 Values:
+# - Tax rates: 5.2% up to $23,000 (single)/$46,000 (joint), then 5.58%
+# - Standard deduction: Single $3,605, MFJ $8,240, HOH $6,180, MFS $4,120
+# - Exemptions: MFJ $18,320, others $9,160, dependent $2,320
+# - Disabled veteran exemption: $2,320
+# - EITC: 17% of federal
+# - CDCC: 50% of federal
+# - Food sales tax credit: $0 (sunset)
+
+# =============================================================================
+# SINGLE FILER TESTS
+# =============================================================================
+
+- name: 2025 Single filer - income in lower bracket
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # AGI: $30,000
+    # Standard deduction: $3,605
+    # Exemptions: $9,160 (single base)
+    # Taxable income: $30,000 - $3,605 - $9,160 = $17,235
+    # Tax: $17,235 * 0.052 = $896.22 (all in lower bracket)
+    ks_taxable_income: 17_235
+    ks_income_tax_before_credits: 896.22
+    ks_income_tax: 896.22
+
+- name: 2025 Single filer - income in upper bracket
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # AGI: $60,000
+    # Standard deduction: $3,605
+    # Exemptions: $9,160 (single base)
+    # Taxable income: $60,000 - $3,605 - $9,160 = $47,235
+    # Tax: $23,000 * 0.052 + ($47,235 - $23,000) * 0.0558
+    #    = $1,196 + $24,235 * 0.0558 = $1,196 + $1,352.31 = $2,548.31
+    ks_taxable_income: 47_235
+    ks_income_tax_before_credits: 2_548.31
+
+# =============================================================================
+# MARRIED FILING JOINTLY TESTS
+# =============================================================================
+
+- name: 2025 MFJ - income in lower bracket
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # AGI: $60,000
+    # Standard deduction: $8,240
+    # Exemptions: $18,320 (MFJ base)
+    # Taxable income: $60,000 - $8,240 - $18,320 = $33,440
+    # Tax: $33,440 * 0.052 = $1,738.88 (all in lower bracket, under $46,000)
+    ks_taxable_income: 33_440
+    ks_income_tax_before_credits: 1_738.88
+
+- name: 2025 MFJ - income in upper bracket
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 43
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # AGI: $130,000
+    # Standard deduction: $8,240
+    # Exemptions: $18,320 (MFJ base)
+    # Taxable income: $130,000 - $8,240 - $18,320 = $103,440
+    # Tax: $46,000 * 0.052 + ($103,440 - $46,000) * 0.0558
+    #    = $2,392 + $57,440 * 0.0558 = $2,392 + $3,205.15 = $5,597.15
+    ks_taxable_income: 103_440
+    ks_income_tax_before_credits: 5_597.15
+
+- name: 2025 MFJ with dependents
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 75_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+        employment_income: 25_000
+      child1:
+        age: 12
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: KS
+  output:
+    # AGI: $100,000
+    # Standard deduction: $8,240
+    # Exemptions: $18,320 (MFJ base) + 2 * $2,320 (dependents) = $22,960
+    # Taxable income: $100,000 - $8,240 - $22,960 = $68,800
+    # Tax: $46,000 * 0.052 + ($68,800 - $46,000) * 0.0558
+    #    = $2,392 + $22,800 * 0.0558 = $2,392 + $1,272.24 = $3,664.24
+    ks_exemptions: 22_960
+    ks_taxable_income: 68_800
+    ks_income_tax_before_credits: 3_664.24
+
+# =============================================================================
+# HEAD OF HOUSEHOLD TESTS
+# =============================================================================
+
+- name: 2025 Head of Household
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 55_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: KS
+  output:
+    # AGI: $55,000
+    # Standard deduction: $6,180 (HOH)
+    # Exemptions: $9,160 (HOH base) + $2,320 (dependent) + $2,320 (HOH additional) = $13,800
+    # Per Kansas K-40 instructions, HOH filers get an additional $2,320 exemption
+    # Reference: 2025 Form K-40 instructions, Exemptions and Dependents section
+    # Taxable income: $55,000 - $6,180 - $13,800 = $35,020
+    # Tax: $23,000 * 0.052 + ($35,020 - $23,000) * 0.0558
+    #    = $1,196 + $12,020 * 0.0558 = $1,196 + $670.72 = $1,866.72
+    ks_exemptions: 13_800
+    ks_taxable_income: 35_020
+    ks_income_tax_before_credits: 1_866.72
+
+# =============================================================================
+# MARRIED FILING SEPARATELY TESTS
+# =============================================================================
+
+- name: 2025 Married Filing Separately
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # AGI: $50,000
+    # Standard deduction: $4,120 (MFS)
+    # Exemptions: $9,160 (MFS base)
+    # Taxable income: $50,000 - $4,120 - $9,160 = $36,720
+    # Tax: $23,000 * 0.052 + ($36,720 - $23,000) * 0.0558
+    #    = $1,196 + $13,720 * 0.0558 = $1,196 + $765.58 = $1,961.58
+    ks_taxable_income: 36_720
+    ks_income_tax_before_credits: 1_961.58
+
+# =============================================================================
+# DISABLED VETERAN TESTS
+# =============================================================================
+
+- name: 2025 Single disabled veteran
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        employment_income: 45_000
+        is_permanently_and_totally_disabled: true
+        is_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # AGI: $45,000
+    # Standard deduction: $3,605
+    # Exemptions: $9,160 (single base) + $2,320 (disabled veteran) = $11,480
+    # Taxable income: $45,000 - $3,605 - $11,480 = $29,915
+    # Tax: $23,000 * 0.052 + ($29,915 - $23,000) * 0.0558
+    #    = $1,196 + $6,915 * 0.0558 = $1,196 + $385.86 = $1,581.86
+    ks_exemptions: 11_480
+    ks_taxable_income: 29_915
+    ks_income_tax_before_credits: 1_581.86
+
+# =============================================================================
+# EITC TESTS (17% of federal)
+# =============================================================================
+
+- name: 2025 EITC - single with one child
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 25_000
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: KS
+  output:
+    # Kansas EITC = 17% of federal EITC
+    # Federal EITC for this scenario: ~$4,064
+    # Total Kansas EITC: $4,064 * 0.17 = ~$691
+    # This is split into nonrefundable (offsets tax liability) and refundable portions
+    # ks_nonrefundable_eitc offsets tax first, remainder is refundable
+    # Total EITC = ks_nonrefundable_eitc + ks_refundable_eitc
+    ks_total_eitc: 691
+
+# =============================================================================
+# FOOD SALES TAX CREDIT SUNSET VERIFICATION
+# =============================================================================
+
+- name: 2025 elderly - no FSTC (sunset)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Food sales tax credit is $0 in 2025 due to sunset
+    ks_fstc: 0
+
+# =============================================================================
+# CDCC TESTS (50% of federal)
+# =============================================================================
+
+- name: 2025 CDCC - married couple with childcare
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 33
+        employment_income: 45_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: KS
+  output:
+    # Kansas CDCC = 50% of federal CDCC
+    # Federal CDCC capped at $3,000 for one child * 20% = $600
+    # Kansas CDCC = $600 * 50% = $300
+    ks_cdcc: 300
+
+# =============================================================================
+# ZERO TAX THRESHOLD TESTS
+# =============================================================================
+
+- name: 2025 Single low income - below zero tax threshold
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Very low income - should be below zero tax threshold
+    # Taxable income: $5,000 - $3,605 - $9,160 = negative, clipped to $0
+    # Tax before credits: $0
+    # Refundable EITC still applies, resulting in negative income tax (refund)
+    # Federal EITC for $5,000 income: ~$383 (34% phase-in for single filer no children)
+    # Kansas refundable EITC: $383 * 0.17 = ~$65
+    ks_taxable_income: 0
+    ks_income_tax_before_credits: 0
+    ks_income_tax: -65.025
+
+# =============================================================================
+# SOCIAL SECURITY EXEMPTION TEST (100% exempt from 2024+)
+# =============================================================================
+
+- name: 2025 Retiree with Social Security - fully exempt
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        social_security: 24_000
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # Social Security is fully exempt from Kansas tax
+    # Only pension income is taxed
+    # AGI (for KS): $20,000 (pension only, SS subtracted)
+    # Standard deduction: $3,605 + $850 (elderly extra) = $4,455
+    # Person is 68, so they qualify for the elderly extra standard deduction
+    # Exemptions: $9,160
+    # Taxable income: $20,000 - $4,455 - $9,160 = $6,385
+    # Tax: $6,385 * 0.052 = $332.02
+    ks_taxable_income: 6_385
+    ks_income_tax_before_credits: 332.02

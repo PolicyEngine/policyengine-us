@@ -33,3 +33,23 @@
     state_code: AK
   output:
     snap_self_employment_expense_deduction: 1_500
+
+- name: Iowa allows 40% simplified deduction or actual expenses, whichever is greater
+  period: 2025
+  input:
+    self_employment_income_before_lsr: 3_000
+    snap_self_employment_income_expense: 500
+    state_code: IA
+  output:
+    # 40% of $3,000 = $1,200, which is greater than $500 expenses
+    snap_self_employment_expense_deduction: 1_200
+
+- name: Iowa uses actual expenses when greater than 40% simplified deduction
+  period: 2025
+  input:
+    self_employment_income_before_lsr: 1_000
+    snap_self_employment_income_expense: 600
+    state_code: IA
+  output:
+    # 40% of $1,000 = $400, but actual expenses ($600) are greater
+    snap_self_employment_expense_deduction: 600

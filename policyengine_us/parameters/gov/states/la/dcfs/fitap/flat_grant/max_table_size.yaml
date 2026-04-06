@@ -1,0 +1,16 @@
+description: Louisiana limits the flat grant lookup table to this assistance unit size under the Family Independence Temporary Assistance Program.
+
+values:
+  2000-07-01: 18
+
+metadata:
+  unit: person
+  period: year
+  label: Louisiana FITAP maximum table size for flat grant
+  reference:
+    # 2000-07-01 values:
+    - title: Louisiana DCFS 2014 TANF State Plan Renewal - Appendix B-911-2
+      href: https://www.dcfs.louisiana.gov/assets/docs/searchable/EconomicStability/TANF/2014TANFRenewal.pdf#page=16
+    # 2022-01-01 values:
+    - title: Louisiana Administrative Code Title 67, Part III, Section 1229(D)
+      href: https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229

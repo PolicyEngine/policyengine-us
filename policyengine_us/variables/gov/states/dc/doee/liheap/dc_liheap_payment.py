@@ -19,24 +19,18 @@ class dc_liheap_payment(Variable):
         capped_size = clip(size, 1, 4)
 
         electricity = heating_type == heating_type.possible_values.ELECTRICITY
-        uncapped_electricity_payment = p.electricity[housing_type][
-            income_level
-        ][capped_size]
-        electricity_expense = spm_unit(
-            "pre_subsidy_electricity_expense", period
-        )
-        electricity_payment = min_(
-            uncapped_electricity_payment, electricity_expense
-        )
+        uncapped_electricity_payment = p.electricity[housing_type][income_level][
+            capped_size
+        ]
+        electricity_expense = spm_unit("pre_subsidy_electricity_expense", period)
+        electricity_payment = min_(uncapped_electricity_payment, electricity_expense)
 
         gas = heating_type == heating_type.possible_values.GAS
         uncapped_gas_payment = p.gas[housing_type][income_level][capped_size]
         gas_expense = spm_unit("gas_expense", period)
         gas_payment = min_(uncapped_gas_payment, gas_expense)
 
-        heat_in_rent = (
-            heating_type == heating_type.possible_values.HEAT_IN_RENT
-        )
+        heat_in_rent = heating_type == heating_type.possible_values.HEAT_IN_RENT
 
         oil = heating_type == heating_type.possible_values.OIL
         oil_expense = spm_unit("fuel_oil_expense", period)

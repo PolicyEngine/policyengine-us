@@ -1,0 +1,18 @@
+description: Nevada adds this amount to the need standard for each additional person beyond the maximum explicit size under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Nevada TANF need standard additional person increment
+  reference:
+    - title: TANF Need Standards Chart (2025)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/eligibility/chapter-c_140.pdf
+    - title: TANF Need Standards Chart (2018)
+      href: https://drive.google.com/file/d/1xX0U05I3wfeiGY0wfjIB6rxcauE_kFLX/view?usp=sharing
+    - title: TANF Need Standards Chart (2007)
+      href: https://drive.google.com/file/d/1v1jiPfl1pzrKPcJGg0gRjNOLErIjbHA3/view?usp=sharing
+
+values:
+  2015-04-01: 260
+  2018-04-01: 270
+  2025-04-01: 344

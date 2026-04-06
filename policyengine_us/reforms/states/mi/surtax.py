@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
 
 
 def create_mi_surtax() -> Reform:
@@ -12,14 +11,16 @@ def create_mi_surtax() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.mi.surtax
+            in_effect = p.in_effect
             taxable_income = tax_unit("mi_taxable_income", period)
             joint = tax_unit("tax_unit_is_joint", period)
-            p = parameters(period).gov.contrib.states.mi.surtax.rate
-            return where(
+            surtax = where(
                 joint,
-                p.joint.calc(taxable_income),
-                p.single.calc(taxable_income),
+                p.rate.joint.calc(taxable_income),
+                p.rate.single.calc(taxable_income),
             )
+            return where(in_effect, surtax, 0)
 
     class mi_income_tax(Variable):
         value_type = float
@@ -41,24 +42,8 @@ def create_mi_surtax() -> Reform:
 
 
 def create_mi_surtax_reform(parameters, period, bypass: bool = False):
-    if bypass:
-        return create_mi_surtax()
-
-    p = parameters.gov.contrib.states.mi.surtax
-
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).in_effect:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_mi_surtax()
-    else:
-        return None
+    # Always return the reform - the in_effect check happens in the formula
+    return create_mi_surtax()
 
 
 mi_surtax = create_mi_surtax_reform(None, None, bypass=True)

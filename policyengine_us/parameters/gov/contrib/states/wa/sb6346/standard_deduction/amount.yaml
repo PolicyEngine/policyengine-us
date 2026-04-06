@@ -1,0 +1,21 @@
+description: Washington provides this amount as the standard deduction under the SSB 6346 reform.
+
+values:
+  2028-01-01: 1_000_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington SSB 6346 standard deduction
+  uprating: gov.bls.cpi.cpi_u
+  # Sec. 312 specifies Seattle-area CPI-U for indexing starting Oct 2029
+  # (for tax year 2030). Using national CPI-U as a proxy until we add
+  # Seattle-area CPI data. Fixed at $1M for 2028-2029.
+  rounding:
+    type: nearest
+    interval: 1_000
+  reference:
+    - title: SSB 6346, Sec. 310 - One million dollar standard deduction
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Bills/6346-S.pdf#page=10
+    - title: SSB 6346, Sec. 312(1) - Index for inflation
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Bills/6346-S.pdf#page=11

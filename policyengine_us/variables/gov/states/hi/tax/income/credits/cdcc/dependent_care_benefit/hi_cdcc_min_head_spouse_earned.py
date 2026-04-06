@@ -9,10 +9,10 @@ class hi_cdcc_min_head_spouse_earned(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28"
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29"
-        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41"
-        "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28",
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29",
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41",
+        "https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -28,9 +28,7 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         floor_eligible = person("hi_cdcc_income_floor_eligible", period)
         potential_floored_earnings = max_(floor, earnings)
         # floored_earnings = where(floor_eligible, floored_earnings, earnings)
-        floored_earnings = where(
-            floor_eligible, potential_floored_earnings, earnings
-        )
+        floored_earnings = where(floor_eligible, potential_floored_earnings, earnings)
         # To take the lesser of head or spouse floored earnings,
         # assign infinite earnings to dependents.
         lesser_floored_earnings = tax_unit.min(

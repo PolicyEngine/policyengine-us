@@ -10,9 +10,7 @@ class dividend_income_reduced_by_investment_income(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        qualified_dividend_income = add(
-            tax_unit, period, ["qualified_dividend_income"]
-        )
+        qualified_dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
         investment_income = tax_unit("investment_income_form_4952", period)
         # dwks04 always assumed to be zero
         floored_investment_income = max_(0, investment_income)

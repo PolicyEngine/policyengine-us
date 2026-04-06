@@ -1,0 +1,58 @@
+# Per ITR 12-1, property tax credit AGI is Federal AGI minus Social Security.
+# Unlike regular AZ income tax, it does NOT exclude pensions, capital gains, etc.
+
+- name: Basic wages and interest (no Social Security)
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 3_766.08
+    tax_unit_taxable_social_security: 0
+  output:
+    az_property_tax_credit_agi: 3_766.08
+
+- name: Social Security is excluded from property tax credit AGI
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 20_000
+    tax_unit_taxable_social_security: 8_500
+  output:
+    # $20,000 - $8,500 = $11,500
+    az_property_tax_credit_agi: 11_500
+
+- name: Pension income is NOT excluded (unlike regular AZ income tax)
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 15_000
+    tax_unit_taxable_social_security: 0
+  output:
+    az_property_tax_credit_agi: 15_000
+
+- name: Capital gains are NOT excluded (unlike regular AZ income tax)
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 25_000
+    tax_unit_taxable_social_security: 0
+  output:
+    az_property_tax_credit_agi: 25_000
+
+- name: Capped at zero when Social Security exceeds other income
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 5_000
+    tax_unit_taxable_social_security: 6_000
+  output:
+    az_property_tax_credit_agi: 0
+
+- name: Combined income types with Social Security exclusion
+  period: 2024
+  input:
+    state_code: AZ
+    adjusted_gross_income: 22_250
+    tax_unit_taxable_social_security: 4_250
+  output:
+    # $22,250 - $4,250 = $18,000
+    az_property_tax_credit_agi: 18_000

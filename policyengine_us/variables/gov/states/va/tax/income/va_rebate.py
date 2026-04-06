@@ -7,7 +7,9 @@ class va_rebate(Variable):
     label = "Virginia rebate"
     unit = USD
     definition_period = YEAR
-    reference = "https://budget.lis.virginia.gov/item/2023/2/HB6001/Introduced/3/3-5.28/"
+    reference = (
+        "https://budget.lis.virginia.gov/item/2023/2/HB6001/Introduced/3/3-5.28/"
+    )
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):

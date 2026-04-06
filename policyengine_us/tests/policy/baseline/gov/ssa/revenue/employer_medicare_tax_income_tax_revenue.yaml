@@ -1,0 +1,86 @@
+# Unit tests for employer_medicare_tax_income_tax_revenue
+# Tests Medicare HI trust fund revenue from taxing employer Medicare contributions
+
+- name: Reform not active - zero revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    employer_medicare_tax_income_tax_revenue: 0
+
+- name: Reform active - basic case
+  period: 2024
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer Medicare tax = 1.45% * $50,000 = $725
+    employer_medicare_tax: 725
+    employer_medicare_tax_income_tax_revenue: 87
+
+- name: Reform active - high income
+  period: 2024
+  absolute_error_margin: 50
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 1.0
+    people:
+      person1:
+        age: 40
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer Medicare tax = 1.45% * $150,000 = $2,175
+    # At 22% marginal rate, revenue ~ $479
+    employer_medicare_tax: 2_175
+    employer_medicare_tax_income_tax_revenue: 479
+
+- name: Reform active - partial percentage
+  period: 2024
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.crfb.tax_employer_payroll_tax.tax_employer_payroll_tax_reform_object
+  input:
+    gov.contrib.crfb.tax_employer_payroll_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_payroll_tax.percentage: 0.5
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Employer Medicare tax = 1.45% * $50,000 = $725
+    # Only 50% taxable = $362.50
+    employer_medicare_tax: 725
+    employer_medicare_tax_income_tax_revenue: 44

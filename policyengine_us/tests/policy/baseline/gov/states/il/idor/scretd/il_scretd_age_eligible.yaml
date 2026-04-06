@@ -1,0 +1,69 @@
+# Tests for il_scretd_age_eligible variable
+# Age requirement: Must be 65 years or older by June 1 of the application year
+# Source: 320 ILCS 30/2
+
+- name: Case 1, person under 65.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_age_eligible: false
+
+- name: Case 2, person exactly 65.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_age_eligible: true
+
+- name: Case 3, person over 65.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_scretd_age_eligible: true
+
+# Edge case: Age just above threshold
+- name: Case 4, person age 66 just above threshold.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age check: 66 >= 65 = true
+    il_scretd_age_eligible: true

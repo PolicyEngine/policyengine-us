@@ -1,0 +1,15 @@
+description: Illinois provides this amount as per-child funding under the Preschool For All Expansion program.
+values:
+  # FY2024: $4.28M total / 503 children = $8,500
+  # FY2025: $9.70M total / 1,142 children = $8,500
+  2024-01-01: 8_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois PFAE per-child funding amount
+  reference:
+    - title: Gov. Pritzker Smart Start FY2024 Press Release ($4.28M / 503 children)
+      href: https://www.illinois.gov/news/press-release.29519.html
+    - title: Gov. Pritzker Smart Start FY2025 Press Release ($9.70M / 1,142 children)
+      href: https://gov-pritzker-newsroom.prezly.com/gov-pritzker-announces-5150-new-preschool-seats-through-smart-start-initiative

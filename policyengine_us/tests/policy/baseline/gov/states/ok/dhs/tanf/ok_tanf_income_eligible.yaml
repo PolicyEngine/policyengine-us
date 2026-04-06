@@ -1,0 +1,97 @@
+# Unit tests for Oklahoma TANF income eligibility
+# OAC 340:10-3-27: Gross income limit = 185% of State Standard of Need
+# https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-27
+
+- name: Family of 3 - income below 185% limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: OK
+  output:
+    # Family size: 3
+    # Need standard: $645
+    # Gross income limit: $645 * 1.85 = $1,193
+    # Monthly gross income: $1,000 < $1,193
+    ok_tanf_income_eligible: true
+
+- name: Family of 3 - income above 185% limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 15_600  # $1,300/month
+      child1:
+        age: 5
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: OK
+  output:
+    # Family size: 3
+    # Need standard: $645
+    # Gross income limit: $645 * 1.85 = $1,193
+    # Monthly gross income: $1,300 > $1,193
+    ok_tanf_income_eligible: false
+
+- name: Family of 2 - at exact limit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 11_076  # $923/month (exact limit)
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Family size: 2
+    # Need standard: $499
+    # Gross income limit: $499 * 1.85 = $923
+    # Monthly gross income: $923 = $923
+    ok_tanf_income_eligible: true
+
+- name: Family of 1 - no income
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: OK
+  output:
+    # Family size: 1
+    # Need standard: $398
+    # Gross income limit: $398 * 1.85 = $736
+    # Monthly gross income: $0 < $736
+    ok_tanf_income_eligible: true

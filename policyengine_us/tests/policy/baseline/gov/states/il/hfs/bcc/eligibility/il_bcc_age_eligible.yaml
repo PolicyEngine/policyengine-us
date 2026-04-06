@@ -1,0 +1,39 @@
+- name: Age eligible at 0 (newborn)
+  period: 2024
+  input:
+    state_code: IL
+    age: 0
+  output:
+    il_bcc_age_eligible: true
+
+- name: Age eligible at 30
+  period: 2024
+  input:
+    state_code: IL
+    age: 30
+  output:
+    il_bcc_age_eligible: true
+
+- name: Age eligible at 64
+  period: 2024
+  input:
+    state_code: IL
+    age: 64
+  output:
+    il_bcc_age_eligible: true
+
+- name: Age ineligible at 65
+  period: 2024
+  input:
+    state_code: IL
+    age: 65
+  output:
+    il_bcc_age_eligible: false
+
+- name: Age ineligible at 70
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+  output:
+    il_bcc_age_eligible: false

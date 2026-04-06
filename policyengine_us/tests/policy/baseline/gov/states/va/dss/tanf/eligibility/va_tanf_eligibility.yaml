@@ -1,0 +1,66 @@
+- name: Is demographic eligible and income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: true
+    va_tanf_income_eligibility: true
+  output:
+    va_tanf_eligibility: true
+
+- name: Is demographic eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: true
+    va_tanf_income_eligibility: false
+  output:
+    va_tanf_eligibility: false
+
+- name: Is income eligible but not demographic eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: false
+    va_tanf_income_eligibility: true
+  output:
+    va_tanf_eligibility: false
+
+- name: Case 4, no citizen or qualified noncitizen in household.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: false
+      person2:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        va_tanf_income_eligibility: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_tanf_eligibility: false
+
+- name: Case 5, one citizen and one non-citizen.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+      person2:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        va_tanf_income_eligibility: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_tanf_eligibility: true

@@ -30,9 +30,7 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
             only to head and spouse, not dependents.
             https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=58
         """
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.rebates.low_income.exemptions
+        p = parameters(period).gov.states.nm.tax.income.rebates.low_income.exemptions
         aged_exemptions_head = p.aged.calc(tax_unit("age_head", period))
         aged_exemptions_spouse = p.aged.calc(tax_unit("age_spouse", period))
         """
@@ -40,9 +38,7 @@ class nm_low_income_comprehensive_tax_rebate_exemptions(Variable):
           in New Mexico included in the return who, for federal income tax
           purposes, is blind...
         """
-        blind_head_plus_spouse = add(
-            tax_unit, period, ["blind_head", "blind_spouse"]
-        )
+        blind_head_plus_spouse = add(tax_unit, period, ["blind_head", "blind_spouse"])
         blind_exemptions = p.blind * blind_head_plus_spouse
         """
           ...plus one exemption for each minor child or stepchild of the

@@ -86,3 +86,62 @@
     taxable_social_security: 4_250
     ss_credit: 425
     income_tax_non_refundable_credits: 425
+
+# Phase-out edge case tests
+- name: Phase-out disabled - high income single gets full credit
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.contrib.crfb.ss_credit.phase_out.applies: false
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+  output:
+    # With phase_out.applies = false, no phase-out occurs regardless of AGI
+    ss_credit: 600
+
+- name: Phase-out enabled - single below threshold gets full credit
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.contrib.crfb.ss_credit.phase_out.applies: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    adjusted_gross_income: 70_000
+    filing_status: SINGLE
+  output:
+    # AGI of 70k is below 75k threshold, so no phase-out
+    ss_credit: 600
+
+- name: Phase-out enabled - single partial phase-out
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.contrib.crfb.ss_credit.phase_out.applies: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    adjusted_gross_income: 80_000
+    filing_status: SINGLE
+  output:
+    # Phase out = 6% * (80k - 75k) = $300
+    # Credit = 600 - 300 = 300
+    ss_credit: 300
+
+- name: Phase-out enabled - joint full phase-out
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    gov.contrib.crfb.ss_credit.phase_out.applies: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    adjusted_gross_income: 165_000
+    filing_status: JOINT
+  output:
+    # Phase out = 6% * (165k - 150k) = $900
+    # Credit = max(0, 600 - 900) = 0
+    ss_credit: 0

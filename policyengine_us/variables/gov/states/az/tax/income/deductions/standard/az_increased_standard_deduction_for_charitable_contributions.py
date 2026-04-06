@@ -11,9 +11,7 @@ class az_increased_standard_deduction_for_charitable_contributions(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.tax.income.deductions.standard.increased
+        p = parameters(period).gov.states.az.tax.income.deductions.standard.increased
         charitable_deduction = tax_unit("charitable_deduction", period)
         charitable_contributions_credit = tax_unit(
             "az_charitable_contributions_credit", period

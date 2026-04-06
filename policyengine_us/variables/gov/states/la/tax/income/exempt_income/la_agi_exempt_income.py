@@ -30,13 +30,9 @@ class la_agi_exempt_income(Variable):
             # Line 1, representing federal AGI is divided by Line 4H
             # which is the total exempt income. This rate (exempt_income_rate) is multiplied by
             # Line 9 of the Form IT-540, representing the federal tax deduction
-            federal_tax_deduction = tax_unit(
-                "la_federal_tax_deduction", period
-            )
+            federal_tax_deduction = tax_unit("la_federal_tax_deduction", period)
             # Multiply the federal tax deduction by the exempt income rate
-            reduced_federal_tax_deduction = (
-                federal_tax_deduction * exempt_income_rate
-            )
+            reduced_federal_tax_deduction = federal_tax_deduction * exempt_income_rate
             # The smaller of the two options is applied if taxable income exceeds zero
             # Mentioned from the IT-540 instructions, Page 9, Line 4I
             smaller_adjustment = min_(

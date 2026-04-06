@@ -1,0 +1,50 @@
+# Tests for Colorado OmniSalud income eligibility
+# Income limit is 150% FPL for SilverEnhanced Savings financial assistance
+
+- name: Income below 150% FPL is eligible
+  period: 2024
+  input:
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: CO
+  output:
+    co_omnisalud_income_eligible: true
+
+- name: Income at exactly 150% FPL is NOT eligible
+  period: 2024
+  input:
+    medicaid_income_level: 1.50  # 150% FPL (at limit, not below)
+    state_code: CO
+  output:
+    co_omnisalud_income_eligible: false
+
+- name: Income above 150% FPL is NOT eligible
+  period: 2024
+  input:
+    medicaid_income_level: 1.51  # 151% FPL
+    state_code: CO
+  output:
+    co_omnisalud_income_eligible: false
+
+- name: Income at 200% FPL is NOT eligible
+  period: 2024
+  input:
+    medicaid_income_level: 2.0  # 200% FPL
+    state_code: CO
+  output:
+    co_omnisalud_income_eligible: false
+
+- name: Very low income is eligible
+  period: 2024
+  input:
+    medicaid_income_level: 0.5  # 50% FPL
+    state_code: CO
+  output:
+    co_omnisalud_income_eligible: true
+
+- name: Non-CO resident not eligible
+  period: 2024
+  input:
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: TX
+  output:
+    co_omnisalud_income_eligible: false

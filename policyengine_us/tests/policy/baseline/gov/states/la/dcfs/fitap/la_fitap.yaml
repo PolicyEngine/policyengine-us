@@ -1,0 +1,30 @@
+- name: Case 1, eligible with no income gets full benefit
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 376
+    la_fitap_countable_income: 0
+  output:
+    la_fitap: 376
+
+- name: Case 2, eligible with partial income gets partial benefit
+  # Benefit: $376 - $200 = $176
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 376
+    la_fitap_countable_income: 200
+  output:
+    la_fitap: 176
+
+- name: Case 3, ineligible gets zero
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: false
+    la_fitap_flat_grant: 376
+    la_fitap_countable_income: 0
+  output:
+    la_fitap: 0

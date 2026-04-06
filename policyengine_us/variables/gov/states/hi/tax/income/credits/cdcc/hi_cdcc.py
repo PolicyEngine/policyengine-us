@@ -5,7 +5,7 @@ class hi_cdcc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii child and dependent care credit"
-    defined_for = StateCode.HI
+    defined_for = "hi_cdcc_eligible"
     unit = USD
     definition_period = YEAR
     reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40"
@@ -17,10 +17,11 @@ class hi_cdcc(Variable):
         # min(line 23, line 24) = return of hi_cdcc_min_head_spouse_earned
         # line 25 = min(line 22, line 23, line 24):
         # The smaller of the minimum earnings or dependent care benefits is used for the final calculation
-        min_earned = min_(
+        smaller_of_benefits_and_earnings = min_(
             tax_unit("hi_dependent_care_benefits", period),
             tax_unit("hi_cdcc_min_head_spouse_earned", period),
         )
+        min_earned = max_(0, smaller_of_benefits_and_earnings)
         # line 26:
         agi = tax_unit("hi_agi", period)
         # line 27:

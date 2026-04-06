@@ -24,6 +24,30 @@ def create_ri_ctc() -> Reform:
             eligible = is_dependent & meets_age
             return tax_unit.sum(eligible)
 
+    class ri_ctc_young_child_boost(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Rhode Island CTC young child boost"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.RI
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.states.ri.ctc
+
+            person = tax_unit.members
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
+
+            # Check both general CTC eligibility and young child age limit
+            meets_age = age < p.age_limit
+            meets_young_child_age = age < p.young_child_boost.age_limit
+
+            eligible_young_children = tax_unit.sum(
+                is_dependent & meets_age & meets_young_child_age
+            )
+            return eligible_young_children * p.young_child_boost.amount
+
     class ri_ctc_maximum(Variable):
         value_type = float
         entity = TaxUnit
@@ -35,8 +59,14 @@ def create_ri_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ri.ctc
 
+            # Base credit for all eligible children
             eligible_children = tax_unit("ri_ctc_eligible_children", period)
-            return eligible_children * p.amount
+            base_credit = eligible_children * p.amount
+
+            # Young child boost
+            young_child_boost = tax_unit("ri_ctc_young_child_boost", period)
+
+            return base_credit + young_child_boost
 
     class ri_ctc_phaseout(Variable):
         value_type = float
@@ -51,10 +81,34 @@ def create_ri_ctc() -> Reform:
 
             filing_status = tax_unit("filing_status", period)
             agi = tax_unit("ri_agi", period)
+            maximum = tax_unit("ri_ctc_maximum", period)
 
-            threshold = p.phaseout.threshold[filing_status]
-            excess_income = max_(agi - threshold, 0)
-            return excess_income * p.phaseout.rate
+            # Check if stepped phaseout is active (non-zero increment)
+            stepped_increment = p.stepped_phaseout.increment
+            stepped_active = stepped_increment > 0
+
+            # Stepped phaseout calculation
+            stepped_threshold = p.stepped_phaseout.threshold
+            rate_per_step = p.stepped_phaseout.rate_per_step
+            stepped_excess = max_(agi - stepped_threshold, 0)
+            # Number of steps (ceiling of excess / increment, avoiding div by zero)
+            steps = where(
+                stepped_active,
+                np.ceil(stepped_excess / np.maximum(stepped_increment, 1)),
+                0,
+            )
+            # Applicable percentage (100% minus steps * rate_per_step)
+            applicable_pct = max_(1 - (steps * rate_per_step), 0)
+            stepped_phaseout = maximum * (1 - applicable_pct)
+
+            # Linear phaseout calculation (threshold + rate)
+            linear_threshold = p.phaseout.threshold[filing_status]
+            linear_rate = p.phaseout.rate
+            linear_excess = max_(agi - linear_threshold, 0)
+            linear_phaseout = linear_excess * linear_rate
+
+            # Use stepped if active, otherwise linear
+            return where(stepped_active, stepped_phaseout, linear_phaseout)
 
     class ri_total_ctc(Variable):
         value_type = float
@@ -65,8 +119,6 @@ def create_ri_ctc() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.states.ri.ctc
-
             # Calculate maximum credit
             maximum = tax_unit("ri_ctc_maximum", period)
 
@@ -89,10 +141,6 @@ def create_ri_ctc() -> Reform:
             total_credit = tax_unit("ri_total_ctc", period)
 
             # The refundable portion is the minimum of the cap and total credit
-            # This ensures the refundable amount never exceeds the total credit
-            # - If cap = 0: credit is nonrefundable
-            # - If 0 < cap < total_credit: credit is partially refundable
-            # - If cap >= total_credit: credit is fully refundable
             return min_(total_credit, p.refundability.cap)
 
     class ri_non_refundable_ctc(Variable):
@@ -104,8 +152,6 @@ def create_ri_ctc() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.states.ri.ctc
-
             total_credit = tax_unit("ri_total_ctc", period)
             refundable_portion = tax_unit("ri_refundable_ctc", period)
             return max_(total_credit - refundable_portion, 0)
@@ -123,9 +169,7 @@ def create_ri_ctc() -> Reform:
             )
 
         # Add ri_non_refundable_ctc to non-refundable credits list
-        non_refundable = (
-            parameters.gov.states.ri.tax.income.credits.non_refundable
-        )
+        non_refundable = parameters.gov.states.ri.tax.income.credits.non_refundable
         current_non_refundable = non_refundable(instant("2025-01-01"))
         if "ri_non_refundable_ctc" not in current_non_refundable:
             new_non_refundable = list(current_non_refundable) + [
@@ -142,6 +186,7 @@ def create_ri_ctc() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(ri_ctc_eligible_children)
+            self.update_variable(ri_ctc_young_child_boost)
             self.update_variable(ri_ctc_maximum)
             self.update_variable(ri_ctc_phaseout)
             self.update_variable(ri_total_ctc)
