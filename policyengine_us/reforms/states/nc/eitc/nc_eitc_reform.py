@@ -14,7 +14,7 @@ def create_nc_eitc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.nc.eitc
             federal_eitc = tax_unit("eitc", period)
-            return where(p.in_effect, federal_eitc * p.match, 0)
+            return federal_eitc * p.match
 
     class nc_refundable_credits(Variable):
         value_type = float

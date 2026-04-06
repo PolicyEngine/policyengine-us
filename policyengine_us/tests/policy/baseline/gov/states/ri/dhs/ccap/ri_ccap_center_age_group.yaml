@@ -1,4 +1,9 @@
-# Center age groups:
+# Center age groups before 2025-07:
+#   Infant/Toddler: age < 3
+#   Preschool: age 3+ and not in K-12 school
+#   School Age: in K-12 school
+#
+# Center age groups from 2025-07:
 #   Infant: age < 2
 #   Toddler: age 2 (i.e., age < 3)
 #   Preschool: age 3+ and not in K-12 school
@@ -15,7 +20,7 @@
         members: [person1]
         state_code: RI
   output:
-    ri_ccap_center_age_group: INFANT
+    ri_ccap_center_age_group: INFANT_TODDLER
 
 - name: Case 2, toddler age 2.
   period: 2025-01
@@ -28,7 +33,7 @@
         members: [person1]
         state_code: RI
   output:
-    ri_ccap_center_age_group: TODDLER
+    ri_ccap_center_age_group: INFANT_TODDLER
 
 - name: Case 3, preschool age 4 not in school.
   period: 2025-01
@@ -97,4 +102,30 @@
         members: [person1]
         state_code: RI
   output:
+    ri_ccap_center_age_group: INFANT_TODDLER
+
+- name: Case 8, infant age 1 after the July 2025 split.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
     ri_ccap_center_age_group: INFANT
+
+- name: Case 9, toddler age 2 after the July 2025 split.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_center_age_group: TODDLER

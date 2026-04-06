@@ -1,0 +1,1335 @@
+# Kentucky K-TAP Edge Case Tests
+# Tests boundary conditions, feature interactions, and unusual scenarios.
+# Sources:
+#   - 921 KAR 2:016: apps.legislature.ky.gov/law/kar/titles/921/002/016/
+#   - KRS 205.200(2): families with zero countable income get payment_maximum
+
+###############################################################################
+# Family size capping: sizes > 7 use size 7 values
+###############################################################################
+
+- name: Case 1, family size 8 uses size 7 payment maximum.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: KY
+  output:
+    # Capped at max_unit_size=7, so uses size 7 value
+    ky_ktap_payment_maximum: 964
+    ky_ktap_standard_of_need: 948
+
+- name: Case 2, pre-2023 family size 8 uses size 7 values.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: KY
+  output:
+    # Capped at 7 in ERA 1
+    ky_ktap_payment_maximum: 482
+    ky_ktap_standard_of_need: 790
+
+###############################################################################
+# Resource eligibility across eras: $2,500 assets
+# Pre-2023: $2,500 > $2,000 limit -> ineligible
+# Post-2023: $2,500 <= $10,000 limit -> eligible
+###############################################################################
+
+- name: Case 3, assets $2,500 pre-2023 is resource ineligible.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $2,500 > $2,000 pre-2023 limit
+    ky_ktap_resource_eligible: false
+
+- name: Case 4, assets $2,500 post-2023 is resource eligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $2,500 <= $10,000 post-2023 limit
+    ky_ktap_resource_eligible: true
+
+###############################################################################
+# Post-2023 resource limit boundary at $10,000
+###############################################################################
+
+- name: Case 46, post-2023 assets exactly $10,000 is resource eligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $10,000 <= $10,000 limit
+    ky_ktap_resource_eligible: true
+
+- name: Case 47, post-2023 assets $10,001 is resource ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 10_001
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $10,001 > $10,000 limit
+    ky_ktap_resource_eligible: false
+
+###############################################################################
+# Zero-income special case (KRS 205.200(2)) across eras
+# Family with no income gets payment_maximum, not 0.55 * SoN
+###############################################################################
+
+- name: Case 5, pre-2023 zero income gets payment max size 1.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ktap_countable_income: 0
+    ky_ktap_eligible: true
+    # Zero income -> payment_maximum ($225/mo for size 2)
+    # NOT 0.55 * $460 = $253 (would be higher, but KRS says PM)
+    ky_ktap: 225 * 12
+
+- name: Case 6, Nov 2025 zero income gets reduced payment max.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ktap_countable_income: 0
+    ky_ktap_eligible: true
+    # Zero income -> payment_maximum ($293/mo for size 2 ERA 3)
+    ky_ktap: 293 * 12
+
+###############################################################################
+# Income at gross income limit boundary
+###############################################################################
+
+- name: Case 7, pre-2023 income at gross limit is eligible.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 741
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Limit: 460 * 1.85 = $851/mo
+    # $741 gross < $851 limit -> eligible
+    ky_ktap_income_eligible: true
+
+- name: Case 8, pre-2023 income above gross limit is ineligible.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 900
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Limit: 460 * 1.85 = $851/mo
+    # $900 gross > $851 limit -> ineligible
+    ky_ktap_income_eligible: false
+
+###############################################################################
+# Pre-2023 EID with dependent care interaction
+###############################################################################
+
+- name: Case 9, pre-2023 EID with dependent care reduces countable further.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 600
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $100/month * 12 = $1,200/year
+        childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Dependent care: min($100, $175 cap for age 5) = $100
+    ky_ktap_dependent_care_disregard: 100
+    # $600 - $90 work expense = $510
+    # $510 - $100 dependent care = $410
+    # flat = $30, remainder = max($410 - $30, 0) = $380
+    # disregard = $30 + 0.333 * $380 = $30 + $126.54 = $156.54
+    # countable = max($410 - $156.54, 0) = $253.46
+    ky_ktap_countable_earned_income: 253.46
+
+###############################################################################
+# Earned + unearned income combined pre-2023
+###############################################################################
+
+- name: Case 10, pre-2023 combined earned and unearned income.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 200
+        child_support_received: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Earned: $400 - $90 work = $310
+    # flat=$30, remainder=max($310-$30,0)=$280
+    # disregard = $30 + 0.333*$280 = $30 + $93.24 = $123.24
+    # countable_earned = max($310 - $123.24, 0) = $186.76
+    ky_ktap_countable_earned_income: 186.76
+    # Unearned: $200 gross - min($50/mo, $50) = $200 - $50 = $150
+    ky_ktap_countable_unearned_income: 150
+    # Total: $186.76 + $150 = $336.76
+    ky_ktap_countable_income: 336.76
+
+###############################################################################
+# Large earned income pre-2023 EID
+###############################################################################
+
+- name: Case 11, pre-2023 EID with $1,000 earned income.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $1,000 - $90 work expense = $910
+    # flat=$30, remainder=max($910-$30,0)=$880
+    # disregard = $30 + 0.333*$880 = $30 + $293.04 = $323.04
+    # countable = max($910 - $323.04, 0) = $586.96
+    ky_ktap_countable_earned_income: 586.96
+
+###############################################################################
+# Benefit where countable income > standard of need (deficit = 0)
+###############################################################################
+
+- name: Case 12, high countable income results in zero benefit.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # $800/month = $9,600/year (below gross limit but high countable)
+        employment_income_before_lsr: 9_600
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Family size 2
+    ky_ktap_standard_of_need: 552 * 12
+    ky_ktap_payment_maximum: 450 * 12
+    # Monthly earned after work expense: $800 - $175 = $625
+    # Months 1-6 (50% disregard): countable = $625 * 0.5 = $312.50
+    # Months 7-12 (no disregard): countable = $625
+    # Annual: 6 * 312.50 + 6 * 625 = 5,625
+    ky_ktap_countable_earned_income: 5_625
+    # Gross limit: 552 * 1.85 = $1,021.2
+    # $800/mo < $1,021.2 -> income eligible
+    ky_ktap_income_eligible: true
+    ky_ktap_eligible: true
+    # Months 1-6: deficit = $552 - $312.50 = $239.50
+    #   benefit = min(0.55 * $239.50, $450) = $131.725
+    # Months 7-12: deficit = max($552 - $625, 0) = $0, benefit = $0
+    # Annual: 6 * 131.725 = $790.35
+    ky_ktap: 790.35
+
+###############################################################################
+# Child support exactly at $50 disregard boundary
+###############################################################################
+
+- name: Case 13, child support exactly $50 per month.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 200
+        child_support_received: 600
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # child_support = $600/yr = $50/mo
+    # exclusion = min($50, $50) = $50
+    # countable = $200 - $50 = $150
+    ky_ktap_countable_unearned_income: 150
+
+- name: Case 14, child support exactly $1 below disregard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 200
+        child_support_received: 588
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # child_support = $588/yr = $49/mo
+    # exclusion = min($49, $50) = $49
+    # countable = $200 - $49 = $151
+    ky_ktap_countable_unearned_income: 151
+
+###############################################################################
+# Dependent care with infant (under 2): $200 cap
+###############################################################################
+
+- name: Case 15, pre-2023 dependent care for infant unchanged.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Max for under 2: $200/month, actual: $400/month
+    # Disregard = min($400, $200) = $200
+    ky_ktap_dependent_care_disregard: 200
+
+###############################################################################
+# Ineligible: demographic (no children) + pre-2023
+###############################################################################
+
+- name: Case 16, pre-2023 adults only ineligible.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+      person2:
+        age: 38
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Adults only -> demographically ineligible
+    ky_ktap_eligible: false
+    ky_ktap: 0
+
+###############################################################################
+# Resource ineligible overrides income eligible
+###############################################################################
+
+- name: Case 17, pre-2023 income eligible but resource ineligible.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ktap_income_eligible: true
+    # $5,000 > $2,000 pre-2023 limit
+    ky_ktap_resource_eligible: false
+    ky_ktap_eligible: false
+    ky_ktap: 0
+
+###############################################################################
+# ERA 3: payment max < ERA 2 with same income
+# Compare benefit reduction between ERA 2 and ERA 3
+###############################################################################
+
+- name: Case 18, ERA 2 benefit for family of 1 no income.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ktap_payment_maximum: 450 * 12
+    ky_ktap: 450 * 12
+
+- name: Case 19, ERA 3 same family gets reduced benefit.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # ERA 3: $293 vs ERA 2: $450 — a ~35% reduction
+    ky_ktap_payment_maximum: 293 * 12
+    ky_ktap: 293 * 12
+
+###############################################################################
+# Income eligibility: $1 above/below 185% of standard of need
+###############################################################################
+
+- name: Case 20, gross income $1 below 185% limit for size 2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        # Limit for size 2: 552 * 1.85 = $1,021.20/month
+        tanf_gross_earned_income: 1021
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # $1,021 <= $1,021.20 limit -> eligible
+    ky_ktap_income_eligible: true
+
+- name: Case 21, gross income $1 above 185% limit for size 2.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        # Limit for size 2: 552 * 1.85 = $1,021.20/month
+        tanf_gross_earned_income: 1022
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # $1,022 > $1,021.20 limit -> ineligible
+    ky_ktap_income_eligible: false
+
+- name: Case 22, gross income exactly at 185% limit for size 1 via combined.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # Limit for size 1: 481 * 1.85 = $889.85/month
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 389.85
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $889.85 <= $889.85 limit -> eligible
+    ky_ktap_income_eligible: true
+
+###############################################################################
+# Family size minimum (1) and large overflow (10)
+###############################################################################
+
+- name: Case 23, family size 1 uses size 1 standards.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ktap_standard_of_need: 481
+    ky_ktap_payment_maximum: 372
+
+- name: Case 24, family size 10 capped at size 7.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      p1: {}
+      p2: {}
+      p3: {}
+      p4: {}
+      p5: {}
+      p6: {}
+      p7: {}
+      p8: {}
+      p9: {}
+      p10: {}
+    spm_units:
+      spm_unit:
+        members: [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]
+    households:
+      household:
+        members: [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]
+        state_code: KY
+  output:
+    # Size 10 capped at 7
+    ky_ktap_standard_of_need: 948
+    ky_ktap_payment_maximum: 964
+
+###############################################################################
+# EID edge: earned income $1 above work expense + very small earned
+###############################################################################
+
+- name: Case 25, earned income $1 above work expense.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 176
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $176 - $175 work expense = $1
+    # 50% disregard: $1 * 0.5 = $0.50
+    ky_ktap_countable_earned_income: 0.5
+
+- name: Case 26, very small earned income $1.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $1 - $175 work expense = $0 (floored at 0)
+    ky_ktap_countable_earned_income: 0
+
+###############################################################################
+# Pre-2023 EID: earned exactly at work expense + $30 flat disregard
+###############################################################################
+
+- name: Case 27, pre-2023 earned exactly at work expense plus flat disregard.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 120
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $120 - $90 work expense = $30
+    # $30 = $30 flat disregard exactly
+    # remainder = max($30 - $30, 0) = $0
+    # disregard = $30 + 0.333 * $0 = $30
+    # countable = max($30 - $30, 0) = $0
+    ky_ktap_countable_earned_income: 0
+
+- name: Case 28, pre-2023 earned $1 above work expense plus flat disregard.
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 121
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # $121 - $90 work expense = $31
+    # remainder = max($31 - $30, 0) = $1
+    # disregard = $30 + 0.333 * $1 = $30.333
+    # countable = max($31 - $30.333, 0) = $0.667
+    ky_ktap_countable_earned_income: 0.667
+
+###############################################################################
+# Benefit: countable income = standard of need (deficit = 0, benefit = 0)
+###############################################################################
+
+- name: Case 29, countable income equals standard of need yields zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_unearned_income: 552
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_countable_unearned_income: 552
+    ky_ktap_countable_income: 552
+    # Deficit: $552 - $552 = $0
+    # 0.55 * $0 = $0
+    ky_ktap: 0
+
+- name: Case 30, countable income $1 below standard of need yields tiny benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_unearned_income: 551
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_countable_unearned_income: 551
+    ky_ktap_countable_income: 551
+    # Deficit: $552 - $551 = $1
+    # 0.55 * $1 = $0.55
+    ky_ktap: 0.55
+
+###############################################################################
+# Benefit capped at payment maximum (ERA 3 where cap binds)
+###############################################################################
+
+- name: Case 31, ERA 3 benefit capped at reduced payment max size 2.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        # Small unearned income so benefit calc path (not zero-income path)
+        tanf_gross_unearned_income: 10
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_countable_unearned_income: 10
+    ky_ktap_countable_income: 10
+    # Deficit: $552 - $10 = $542
+    # 0.55 * $542 = $298.10
+    # Payment max (size 2, ERA 3): $293
+    # min($298.10, $293) = $293 (CAPPED)
+    ky_ktap: 293
+
+- name: Case 32, ERA 3 benefit just below reduced payment max size 2.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        # Need: 0.55 * (552 - x) < 293 => x > 19.27
+        tanf_gross_unearned_income: 25
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_countable_unearned_income: 25
+    ky_ktap_countable_income: 25
+    # Deficit: $552 - $25 = $527
+    # 0.55 * $527 = $289.85
+    # Payment max (size 2, ERA 3): $293
+    # min($289.85, $293) = $289.85 (not capped)
+    ky_ktap: 289.85
+
+###############################################################################
+# Dependent care at age 2 boundary (age 1 = $200, age 2 = $175)
+###############################################################################
+
+- name: Case 33, child age 1 gets $200 dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 28
+      infant:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, infant]
+        state_code: KY
+  output:
+    # Age 1: bracket 0 -> $200 cap
+    # min($500/month, $200) = $200
+    ky_ktap_dependent_care_disregard: 200
+
+- name: Case 34, child age 2 gets $175 dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 28
+      toddler:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, toddler]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, toddler]
+        state_code: KY
+  output:
+    # Age 2: bracket 2 -> $175 cap (not $200)
+    # min($500/month, $175) = $175
+    ky_ktap_dependent_care_disregard: 175
+
+###############################################################################
+# Dependent care at age 12/13 boundary
+###############################################################################
+
+- name: Case 35, child age 12 still gets $175 dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Age 12: still in bracket 2 (age 2-12) -> $175 cap
+    ky_ktap_dependent_care_disregard: 175
+
+- name: Case 36, child age 13 gets $0 dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      teen:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, teen]
+        state_code: KY
+  output:
+    # Age 13: bracket 13 -> $0 cap
+    ky_ktap_dependent_care_disregard: 0
+
+###############################################################################
+# Dependent care: mixed ages including one over 13
+###############################################################################
+
+- name: Case 37, mixed ages one infant one teen.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      infant:
+        age: 1
+      teen:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [parent, infant, teen]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, infant, teen]
+        state_code: KY
+  output:
+    # Infant (age 1): $200 cap, Teen (age 14): $0, Parent: $0
+    # Total max: $200
+    # min($500/month, $200) = $200
+    ky_ktap_dependent_care_disregard: 200
+
+###############################################################################
+# Earned income exactly equals work expense + dependent care
+###############################################################################
+
+- name: Case 38, earned equals work expense plus dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 350
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # Work expense $175 + dependent care cap $175 = $350
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_dependent_care_disregard: 175
+    # $350 - $175 work expense = $175
+    # $175 - $175 dependent care = $0
+    # 50% of $0 = $0
+    ky_ktap_countable_earned_income: 0
+
+###############################################################################
+# Post-2023 combined income with all deductions
+###############################################################################
+
+- name: Case 39, post-2023 all deductions combined.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 100
+        child_support_received: 600
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 0
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Earned: ($400 - $175) * 0.5 = $112.50
+    ky_ktap_countable_earned_income: 112.5
+    # Unearned: $100 - min($50, $50) = $50
+    ky_ktap_countable_unearned_income: 50
+    # Total: $112.50 + $50 = $162.50
+    ky_ktap_countable_income: 162.5
+
+###############################################################################
+# Dependent care reduces earned further in post-2023 with child support
+###############################################################################
+
+- name: Case 40, post-2023 dependent care plus child support plus earned.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 28
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 80
+        child_support_received: 600
+      infant:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+        childcare_expenses: 6_000
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, infant]
+        state_code: KY
+  output:
+    # Dependent care: min($500/mo, $200 cap for infant) = $200
+    ky_ktap_dependent_care_disregard: 200
+    # Earned: $500 - $175 work expense = $325
+    # After dependent care: max($325 - $200, 0) = $125
+    # 50% disregard: $125 * 0.5 = $62.50
+    ky_ktap_countable_earned_income: 62.5
+    # Unearned: $80 - min($50, $50) = $30
+    ky_ktap_countable_unearned_income: 30
+    # Total: $62.50 + $30 = $92.50
+    ky_ktap_countable_income: 92.5
+
+###############################################################################
+# Income eligible but resource ineligible (post-2023)
+###############################################################################
+
+- name: Case 41, post-2023 income eligible but resource ineligible.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 15_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    ky_ktap_income_eligible: true
+    # $15,000 > $10,000 limit
+    ky_ktap_resource_eligible: false
+    ky_ktap_eligible: false
+    ky_ktap: 0
+
+###############################################################################
+# Zero income family of 7 (largest standard size) gets full payment max
+###############################################################################
+
+- name: Case 42, zero income family of 7 gets max benefit.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      c1:
+        age: 10
+      c2:
+        age: 8
+      c3:
+        age: 6
+      c4:
+        age: 4
+      c5:
+        age: 2
+      c6:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6]
+        state_code: KY
+  output:
+    ky_ktap_standard_of_need: 948 * 12
+    ky_ktap_payment_maximum: 964 * 12
+    ky_ktap_countable_income: 0
+    ky_ktap_eligible: true
+    # Per KRS 205.200(2): no income -> payment_maximum
+    ky_ktap: 964 * 12
+
+###############################################################################
+# ERA 3: full pipeline with income where benefit just under cap
+###############################################################################
+
+- name: Case 43, ERA 3 full pipeline benefit just under cap.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        # $200/month = $2,400/year
+        employment_income_before_lsr: 2_400
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: KY
+  output:
+    # Family size 3, ERA 3
+    ky_ktap_standard_of_need: 631 * 12
+    ky_ktap_payment_maximum: 341 * 12
+    # Monthly earned after work expense: $200 - $175 = $25
+    # Months 1-6 (50% disregard): countable = $25 * 0.5 = $12.50
+    # Months 7-12 (no disregard): countable = $25
+    # Annual: 6 * 12.50 + 6 * 25 = 225
+    ky_ktap_countable_earned_income: 225
+    ky_ktap_countable_income: 225
+    ky_ktap_income_eligible: true
+    ky_ktap_eligible: true
+    # Months 1-6: deficit = $631 - $12.50 = $618.50
+    #   benefit = min(0.55 * $618.50, $341) = $340.175
+    # Months 7-12: deficit = $631 - $25 = $606
+    #   benefit = min(0.55 * $606, $341) = min($333.30, $341) = $333.30
+    # Annual: 6 * 340.175 + 6 * 333.30 = 4040.85
+    ky_ktap: 4_040.85
+
+###############################################################################
+# All unearned income is child support below $50 (fully excluded)
+###############################################################################
+
+- name: Case 44, all unearned income is child support under $50.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 30
+        child_support_received: 360
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # Child support: $30/month, all excluded
+    # Countable: $30 - $30 = $0
+    ky_ktap_countable_unearned_income: 0
+
+###############################################################################
+# Childcare expenses below dependent care cap (expenses bind, not age cap)
+###############################################################################
+
+- name: Case 45, childcare expenses below dependent care cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # $50/month * 12 = $600/year (below $175 cap)
+        childcare_expenses: 600
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Max for age 5: $175/month, actual: $50/month
+    # Disregard = min($50, $175) = $50 (expenses are binding)
+    ky_ktap_dependent_care_disregard: 50
+
+###############################################################################
+# Non-dependent child under 13 gets $0 dependent care disregard
+###############################################################################
+
+- name: Case 48, child under 13 who is not a tax unit dependent gets zero disregard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child:
+        age: 5
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: KY
+  output:
+    # Child age 5 would normally get $175 cap, but is_tax_unit_dependent = false
+    # max_per_child = $175 * 0 = $0 for the child
+    # Parent is not dependent either, so max_per_child = $0
+    # total_max_disregard = $0
+    # min($500/month, $0) = $0
+    ky_ktap_dependent_care_disregard: 0
+
+###############################################################################
+# Negative earned income floors at zero countable earned income
+###############################################################################
+
+- name: Case 49, negative earned income results in zero countable earned.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: -500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # max_(-500 - 175, 0) = 0 (floored by max_)
+    # No work expense or EID applied when gross is negative
+    ky_ktap_countable_earned_income: 0
+
+###############################################################################
+# Child support exclusion exceeds gross unearned income (floor at 0)
+###############################################################################
+
+- name: Case 50, child support disregard exceeds gross unearned income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 30
+        child_support_received: 600
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # child_support = $600/yr = $50/mo
+    # exclusion = min($50, $50) = $50
+    # countable = max($30 - $50, 0) = $0 (floored at 0)
+    ky_ktap_countable_unearned_income: 0

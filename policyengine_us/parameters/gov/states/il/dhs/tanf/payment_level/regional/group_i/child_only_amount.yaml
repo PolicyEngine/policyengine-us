@@ -1,0 +1,83 @@
+description: Illinois provides this amount as the Group I county child-only payment level under the Temporary Assistance for Needy Families program.
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  label: Illinois TANF Group I child-only payment level
+  reference:
+    - title: SSA POMS SI CHI00830.403 - Illinois TANF County Group Payment Amounts
+      href: https://secure.ssa.gov/poms.nsf/lnx/0500830403chi
+    - title: Ill. Admin. Code tit. 89, § 112.251(b) - Payment Level Apportionment
+      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.251
+
+brackets:
+  - threshold:
+      2008-11-01: 1
+    amount:
+      2008-11-01: 117
+  - threshold:
+      2008-11-01: 2
+    amount:
+      2008-11-01: 230
+  - threshold:
+      2008-11-01: 3
+    amount:
+      2008-11-01: 284
+  - threshold:
+      2008-11-01: 4
+    amount:
+      2008-11-01: 365
+  - threshold:
+      2008-11-01: 5
+    amount:
+      2008-11-01: 434
+  - threshold:
+      2008-11-01: 6
+    amount:
+      2008-11-01: 465
+  - threshold:
+      2008-11-01: 7
+    amount:
+      2008-11-01: 501
+  - threshold:
+      2008-11-01: 8
+    amount:
+      2008-11-01: 536
+  - threshold:
+      2008-11-01: 9
+    amount:
+      2008-11-01: 576
+  - threshold:
+      2008-11-01: 10
+    amount:
+      2008-11-01: 616
+  - threshold:
+      2008-11-01: 11
+    amount:
+      2008-11-01: 659
+  - threshold:
+      2008-11-01: 12
+    amount:
+      2008-11-01: 703
+  - threshold:
+      2008-11-01: 13
+    amount:
+      2008-11-01: 751
+  - threshold:
+      2008-11-01: 14
+    amount:
+      2008-11-01: 800
+  - threshold:
+      2008-11-01: 15
+    amount:
+      2008-11-01: 851
+  - threshold:
+      2008-11-01: 16
+    amount:
+      2008-11-01: 908
+  - threshold:
+      2008-11-01: 17
+    amount:
+      2008-11-01: 965

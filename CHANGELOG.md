@@ -1,3 +1,289 @@
+## [1.627.3] - 2026-04-06
+
+### Fixed
+
+- Add historical Maine CCAP county rates for January 2024 and keep the annual microsim path working with the pre-July-2024 schedule.
+
+
+## [1.627.2] - 2026-04-05
+
+### Fixed
+
+- Make `never_eligible_for_social_security_benefits` an explicit input instead of inferring it heuristically.
+
+
+## [1.627.1] - 2026-04-03
+
+### Changed
+
+- Update 2026 federal tax parameters from CBO forecasts to official IRS Rev. Proc. 2025-32 values for EITC phase-out thresholds, joint filing bonus, investment income limit, and AMT parameters.
+
+### Fixed
+
+- Fix AMT 28% bracket multiplier for MFS and surviving spouse filing statuses.
+
+
+## [1.627.0] - 2026-04-03
+
+### Added
+
+- Added Idaho S1450: Extends state child tax credit indefinitely.
+
+
+## [1.626.1] - 2026-04-01
+
+### Fixed
+
+- Fix Head Start categorical eligibility to correctly separate person-level (foster care) from family-level (TANF, SSI, SNAP) aggregation.
+
+
+## [1.626.0] - 2026-04-01
+
+### Added
+
+- Add ORG-backed `hourly_wage` and `is_union_member_or_covered` input variables.
+
+
+## [1.625.0] - 2026-03-31
+
+### Added
+
+- Added contributed EITC reforms for child poverty impact dashboard: EITC match reforms for AL, AR, AZ, GA, ID, KY, MS, ND, and WV; refundable EITC reforms for MO and OH; and a fully refundable EITC reform for UT (including childless filers).
+
+
+## [1.624.1] - 2026-03-29
+
+### Changed
+
+- Backdate CT TANF parameters.
+
+
+## [1.624.0] - 2026-03-27
+
+### Added
+
+- Add Alaska State Supplementary Payment (Adult Public Assistance).
+
+
+## [1.623.0] - 2026-03-27
+
+### Added
+
+- Implement Alabama State Supplementary Payment (SSP).
+
+
+## [1.622.0] - 2026-03-27
+
+### Added
+
+- Add FY2016-FY2020 SNAP allotments, deductions, shelter cap, asset limits, and homeless deduction.
+- Add Delaware State Supplementary Payment (SSP).
+
+### Changed
+
+- Backdated ACA rating-area SLCSP premiums to 2018 through 2023 using the archived KFF representative-ZIP backfill.
+
+### Fixed
+
+- Fix CA CalWORKs per-person applicant earned income disregard and update broken references.
+- Fix Montana income tax incorrectly applying preferential LTCG rates when net capital gains are negative.
+
+
+## [1.621.0] - 2026-03-26
+
+### Added
+
+- Backdate Illinois TANF parameters.
+
+
+## [1.620.1] - 2026-03-26
+
+### Fixed
+
+- Fix MA gross income to allow self-employment losses to offset other 5% income.
+
+
+## [1.620.0] - 2026-03-26
+
+### Added
+
+- Add structural federal mortgage interest deduction modeling using mortgage balances, interest amounts, and origination years.
+
+
+## [1.619.0] - 2026-03-25
+
+### Added
+
+- Backdate TANF non-cash BBCE parameters to FY2016 and fix CO BBCE bug.
+
+
+## [1.618.0] - 2026-03-25
+
+### Added
+
+- Backdate SNAP constant parameters to FY2016 (2015-10-01) for pre-2018 coverage.
+
+
+## [1.617.0] - 2026-03-25
+
+### Added
+
+- Implement Utah 2026 tax bills: SB60 (income tax rate 4.5% → 4.45%), HB290 (child tax credit phase-out threshold increases)
+
+
+## [1.616.0] - 2026-03-25
+
+### Added
+
+- Add New Hampshire CCAP.
+
+
+## [1.615.0] - 2026-03-25
+
+### Added
+
+- Backdate Indiana TANF parameters to 1997 program inception. Differentiate applicant vs. recipient income deductions with 4-month earned income disregard limit.
+
+### Changed
+
+- Backdate federal TANF earned and unearned income source parameters to 1997-07-01.
+
+
+## [1.614.1] - 2026-03-25
+
+### Changed
+
+- Backdate Washington TANF parameters.
+
+
+## [1.614.0] - 2026-03-25
+
+### Added
+
+- Backdate Colorado SSP parameters.
+
+
+## [1.613.2] - 2026-03-25
+
+### Fixed
+
+- Fix Arkansas military exemptions: exclude active-duty pay from gross income and correct military retirement/pension interaction per ACA 26-51-306 and 26-51-307(e)(f).
+
+
+## [1.613.1] - 2026-03-25
+
+### Fixed
+
+- Fix Mississippi joint-filer deduction and exemption allocation to minimize combined tax.
+
+
+## [1.613.0] - 2026-03-25
+
+### Added
+
+- Backdate Massachusetts SSP parameters to 2002.
+
+
+## [1.612.1] - 2026-03-25
+
+### Changed
+
+- Backdate Nebraska ADC parameters.
+
+
+## [1.612.0] - 2026-03-24
+
+### Added
+
+- Add comprehensive SNAP utility allowance data: FY2019-FY2026 values for all states, split Alaska into 6 sub-regions and New York into 3 sub-regions with county mapping, add household-size-based SUA/BUA for AZ/NC/TN/VA, and add HI/GU individual utility allowances (electricity, gas, water) varying by household size.
+
+
+## [1.611.2] - 2026-03-24
+
+### Changed
+
+- Update DC CDCC match rate to 24.25% for tax year 2026+ per DC Code 47-1806.04(c)(1)(B), as amended by the FY2025 Budget Support Act (D.C. Act 25-506, sec. 7032).
+
+
+## [1.611.1] - 2026-03-24
+
+### Fixed
+
+- Add Missouri $1,400 head of household additional exemption (MO-1040 Line 15).
+
+
+## [1.611.0] - 2026-03-24
+
+### Added
+
+- Backdate California TANF (CalWORKs) parameters.
+
+
+## [1.610.3] - 2026-03-24
+
+### Changed
+
+- Backdate Montana TANF parameters and fix FPL year pinning.
+
+
+## [1.610.2] - 2026-03-24
+
+### Fixed
+
+- Fix Missouri's 2025 capital gains subtraction to use federally reported capital gains, including positive short-term gains.
+- Keep Oklahoma's pension subtraction cap at $10,000 per person for 2024+ and fix related Oklahoma income tax regressions.
+
+
+## [1.610.1] - 2026-03-24
+
+### Changed
+
+- Update Nevada TANF need standard with 2025-04-01 values.
+
+
+## [1.610.0] - 2026-03-24
+
+### Added
+
+- Add NY S9110 personal income tax rate reform.
+
+
+## [1.609.1] - 2026-03-24
+
+### Changed
+
+- Backdate MA TAFDC clothing allowance, WY POWER payment standards, and fix NV TANF broken references.
+- Backdate Mississippi TANF parameters to 2017.
+
+
+## [1.609.0] - 2026-03-23
+
+### Added
+
+- Add Alabama HB527 overtime compensation deduction reform.
+
+
+## [1.608.0] - 2026-03-23
+
+### Added
+
+- Backdate Kentucky K-TAP parameters to 1997, add unified earned income disregard formula with time-limited month proxy, and make all deductions fully per-person per MS 2840.
+
+
+## [1.607.0] - 2026-03-23
+
+### Added
+
+- Add contributed reform for Michigan Child Tax Credit (HB 4055).
+
+
+## [1.606.1] - 2026-03-23
+
+### Changed
+
+- Add employer-side local payroll taxes for Seattle, St. Louis, Oregon transit districts, and Colorado occupational privilege taxes using aggregate employer inputs.
+
+
 ## [1.606.0] - 2026-03-22
 
 ### Added

@@ -45,6 +45,30 @@
   output:
     snap_excess_shelter_expense_deduction: 159.73
 
+- name: Pre-2019 Alaska homeless deduction was already available.
+  period: 2016-10
+  input:
+    state_code:
+      2016: AK
+    is_homeless:
+      2016: true
+    housing_cost:
+      2016: 1
+  output:
+    snap_excess_shelter_expense_deduction: 143
+
+- name: Post-farm-bill homeless deduction is available nationwide.
+  period: 2020-10
+  input:
+    state_code:
+      2020: AL
+    is_homeless:
+      2020: true
+    housing_cost:
+      2020: 1
+  output:
+    snap_excess_shelter_expense_deduction: 156.74
+
 - name: Caps at $701 per month in GU with housing costs and utility allowance added.
   period: 2022-01
   input:

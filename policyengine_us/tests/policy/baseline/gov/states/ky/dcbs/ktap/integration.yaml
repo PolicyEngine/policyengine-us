@@ -103,22 +103,24 @@
     # Family size 2
     ky_ktap_standard_of_need: 552 * 12
     ky_ktap_payment_maximum: 450 * 12
-    # Monthly earned: $600, minus $175 deduction = $425
-    # Then 50% disregard: $425 * 0.5 = $212.50
-    # Annual: $212.50 * 12 = $2,550
-    ky_ktap_countable_earned_income: 212.5 * 12
+    # Monthly earned after work expense: $600 - $175 = $425
+    # Months 1-6 (50% disregard): countable = $425 * 0.5 = $212.50
+    # Months 7-12 (no disregard): countable = $425
+    # Annual: 6*212.50 + 6*425 = 3,825
+    ky_ktap_countable_earned_income: 3_825
     ky_ktap_countable_unearned_income: 0
-    # Total countable: $212.50/month * 12 = $2,550/year
-    ky_ktap_countable_income: 212.5 * 12
+    ky_ktap_countable_income: 3_825
     # Gross income: $600/month vs limit $1,021/month = eligible
     ky_ktap_income_eligible: true
     # Resources: $500 < $10,000 limit
     ky_ktap_resource_eligible: true
     ky_ktap_eligible: true
-    # Deficit: $552 need - $212.50 countable = $339.50
-    # Benefit: min(0.55 * $339.50, $450) = min($186.725, $450) = $186.725/month
-    # Annual: $186.725 * 12 = $2,240.70
-    ky_ktap: 186.725 * 12
+    # Months 1-6: deficit = $552 - $212.50 = $339.50
+    #   benefit = min(0.55*$339.50, $450) = $186.725
+    # Months 7-12: deficit = $552 - $425 = $127
+    #   benefit = min(0.55*$127, $450) = $69.85
+    # Annual: 6*186.725 + 6*69.85 = 1,539.45
+    ky_ktap: 1_539.45
 
 - name: Case 4, family with child support income.
   period: 2024

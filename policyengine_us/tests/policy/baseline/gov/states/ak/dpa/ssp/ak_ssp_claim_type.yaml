@@ -1,0 +1,50 @@
+- name: Case 1, individual not in joint claim and no spousal deeming.
+  period: 2011
+  input:
+    state_code: AK
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    ak_ssp_claim_type: INDIVIDUAL
+
+- name: Case 2, couple both eligible with joint claim.
+  period: 2011
+  input:
+    state_code: AK
+    ssi_claim_is_joint: true
+    is_ssi_spousal_deeming_applies: false
+  output:
+    ak_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+
+- name: Case 3, couple one eligible with ineligible spouse.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+      person2:
+        age: 48
+        is_ssi_aged_blind_disabled: false
+        is_ssi_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ak_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
+
+- name: Case 4, joint claim takes priority over deeming in select.
+  period: 2011
+  input:
+    state_code: AK
+    ssi_claim_is_joint: true
+    is_ssi_spousal_deeming_applies: true
+  output:
+    # select picks first True condition; joint_claim is checked first
+    ak_ssp_claim_type: COUPLE_BOTH_ELIGIBLE

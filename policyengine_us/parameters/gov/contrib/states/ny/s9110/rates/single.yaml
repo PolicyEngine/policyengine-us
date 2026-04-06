@@ -1,0 +1,53 @@
+description: NY S9110 income tax rates for single filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: NY S9110 income tax rates for single filers
+  reference:
+    - title: NY State Senate Bill 2025-S9110, Section 3
+      href: https://www.nysenate.gov/legislation/bills/2025/S9110
+brackets:
+  # 0% bracket - phases in over 10 years ($5,000 increments)
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.00
+  # 4% bracket
+  - threshold:
+      2026-01-01: 5_000
+      2027-01-01: 10_000
+      2028-01-01: 15_000
+      2029-01-01: 20_000
+      2030-01-01: 25_000
+      2031-01-01: 30_000
+      2032-01-01: 35_000
+      2033-01-01: 40_000
+      2034-01-01: 45_000
+      2035-01-01: 50_000
+    rate:
+      2026-01-01: 0.04
+  # 5% bracket
+  - threshold:
+      2026-01-01: 250_000
+    rate:
+      2026-01-01: 0.05
+  # 9.65% bracket (becomes 8.82% in 2033+)
+  - threshold:
+      2026-01-01: 1_077_550
+    rate:
+      2026-01-01: 0.0965
+      2033-01-01: 0.0882
+  # 10.30% bracket (expires 2033)
+  - threshold:
+      2026-01-01: 5_000_000
+      2033-01-01: .inf
+    rate:
+      2026-01-01: 0.103
+  # 10.90% bracket (expires 2033)
+  - threshold:
+      2026-01-01: 25_000_000
+      2033-01-01: .inf
+    rate:
+      2026-01-01: 0.109

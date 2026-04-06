@@ -1,15 +1,52 @@
-- name: Households with assets at or below resource limit are eligible
-  period: 2024
+# Tests for Feb 2024+ resource limits ($12,000)
+- name: Case 1, assets at $12,000 resource limit.
+  period: 2025
   input:
     state_code: WA
     wa_tanf_countable_resources: 12_000
   output:
+    # Resource limit: $12,000 (Feb 2024+)
     wa_tanf_resources_eligible: true
 
-- name: Households with assets above resource limit are ineligible
-  period: 2024
+- name: Case 2, assets above $12,000 resource limit.
+  period: 2025
   input:
     state_code: WA
     wa_tanf_countable_resources: 13_000
+  output:
+    wa_tanf_resources_eligible: false
+
+# Historical tests - verify pre-Feb-2024 resource limits
+- name: Case 3, 2024-01 uses $6,000 limit (before Feb 2024).
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_countable_resources: 6_000
+  output:
+    # Resource limit in Jan 2024: $6,000
+    wa_tanf_resources_eligible: true
+
+- name: Case 4, 2024-01 over $6,000 limit.
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_tanf_countable_resources: 6_001
+  output:
+    wa_tanf_resources_eligible: false
+
+- name: Case 5, 2018-01 uses $1,000 limit (before 2019).
+  period: 2018-01
+  input:
+    state_code: WA
+    wa_tanf_countable_resources: 1_000
+  output:
+    # Resource limit in 2018: $1,000
+    wa_tanf_resources_eligible: true
+
+- name: Case 6, 2018-01 over $1,000 limit.
+  period: 2018-01
+  input:
+    state_code: WA
+    wa_tanf_countable_resources: 1_001
   output:
     wa_tanf_resources_eligible: false

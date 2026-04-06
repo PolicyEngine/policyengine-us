@@ -103,7 +103,7 @@
     ne_adc_countable_earned_income: 960
     # After 20% disregard: $1,200 * 0.80 = $960
     ne_adc_income_eligible: false
-    # Countable ($960) > Need Standard ($741) -> FAILS
+    # Countable ($960) > Need Standard ($843) -> FAILS
     ne_adc_eligible: false
 
 - name: Edge case, ongoing recipient passes with same income as failing initial applicant.
@@ -129,7 +129,7 @@
     ne_adc_countable_earned_income: 600
     # After 50% disregard: $1,200 * 0.50 = $600
     ne_adc_income_eligible: true
-    # Countable ($600) < Need Standard ($741) -> PASSES
+    # Countable ($600) < Need Standard ($843) -> PASSES
     ne_adc_eligible: true
 
 # =============================================================================
