@@ -1,24 +1,52 @@
-description: Income increment for Nebraska LB 157 Child Tax Credit phase-out calculation, by filing status.
+description: Nebraska reduces the LB 157 Child Tax Credit by 5% for each increment of AGI above the threshold.
+# Note: Per Section 3(3), the Department adjusts these increments annually starting 2027
+# using the same CPI percentage applied to NE income tax brackets (§77-2715.03).
+# SURVIVING_SPOUSE uses the "any other filing status" tier per the bill text.
 
 JOINT:
   values:
     2026-01-01: 2_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
 
 HEAD_OF_HOUSEHOLD:
   values:
     2026-01-01: 1_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
 
 SINGLE:
   values:
     2026-01-01: 1_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
 
 SEPARATE:
   values:
     2026-01-01: 1_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
 
 SURVIVING_SPOUSE:
   values:
     2026-01-01: 1_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
 
 metadata:
   unit: currency-USD
@@ -26,4 +54,6 @@ metadata:
   label: Nebraska LB 157 Child Tax Credit phase-out increment
   reference:
     - title: LB 157 Section 3(2)
+      href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940
+    - title: LB 157 Section 3(3) (inflation adjustment)
       href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940

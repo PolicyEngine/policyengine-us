@@ -1,7 +1,15 @@
-description: Nebraska LB 157 Child Tax Credit amount per qualifying child.
+description: Nebraska provides this credit amount per qualifying child under LB 157.
+# Note: Per Section 3(3), the Department adjusts this amount annually starting 2027
+# using the same CPI percentage applied to NE income tax brackets (§77-2715.03).
 
 values:
   2026-01-01: 1_000
+
+uprating:
+  parameter: gov.irs.uprating
+  rounding:
+    type: nearest
+    interval: 10
 
 metadata:
   unit: currency-USD
@@ -9,4 +17,6 @@ metadata:
   label: Nebraska LB 157 Child Tax Credit amount
   reference:
     - title: LB 157 Section 3(2)
+      href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940
+    - title: LB 157 Section 3(3) (inflation adjustment)
       href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940

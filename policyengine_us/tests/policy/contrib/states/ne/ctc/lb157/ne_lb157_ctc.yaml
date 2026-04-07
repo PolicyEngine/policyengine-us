@@ -269,3 +269,58 @@
         state_code: NE
   output:
     ne_lb157_ctc: 1_000
+
+- name: Non-Nebraska resident receives no credit
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
+  input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # defined_for = StateCode.NE ensures non-Nebraska residents get zero credit
+    ne_lb157_ctc: 0
+
+- name: Child without SSN or ITIN is not eligible
+  period: 2026
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ne.ctc.lb157.ne_lb157_ctc.ne_lb157_ctc
+  input:
+    gov.contrib.states.ne.ctc.lb157.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        has_itin: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        has_itin: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # Per Section 2(2)(c), the child must have an SSN or ITIN
+    ne_lb157_ctc: 0

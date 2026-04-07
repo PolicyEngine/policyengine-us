@@ -1,24 +1,52 @@
-description: AGI threshold at which Nebraska LB 157 Child Tax Credit begins to phase out, by filing status.
+description: Nebraska begins phasing out the LB 157 Child Tax Credit when AGI exceeds this threshold.
+# Note: Per Section 3(3), the Department adjusts these thresholds annually starting 2027
+# using the same CPI percentage applied to NE income tax brackets (§77-2715.03).
+# SURVIVING_SPOUSE uses the "any other filing status" tier per the bill text.
 
 JOINT:
   values:
     2026-01-01: 110_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
 
 HEAD_OF_HOUSEHOLD:
   values:
     2026-01-01: 92_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
 
 SINGLE:
   values:
     2026-01-01: 75_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
 
 SEPARATE:
   values:
     2026-01-01: 75_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
 
 SURVIVING_SPOUSE:
   values:
     2026-01-01: 75_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
 
 metadata:
   unit: currency-USD
@@ -26,4 +54,6 @@ metadata:
   label: Nebraska LB 157 Child Tax Credit phase-out threshold
   reference:
     - title: LB 157 Section 3(2)
+      href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940
+    - title: LB 157 Section 3(3) (inflation adjustment)
       href: https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=58940

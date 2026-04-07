@@ -21,7 +21,11 @@ def create_ne_lb157_ctc() -> Reform:
             age_eligible = age <= p.age_limit
             # Must be claimed as dependent
             is_dependent = person("is_tax_unit_dependent", period)
-            # Must have SSN or ITIN
+            # Must have SSN or ITIN per Section 2(2)(c).
+            # Note: The variable `has_itin` is named for historical reasons but actually
+            # means "has ITIN or SSN" per its label. This matches the bill requirement
+            # that the child be "issued either a social security number or an individual
+            # taxpayer identification number."
             has_ssn_or_itin = person("has_itin", period)
             return age_eligible & is_dependent & has_ssn_or_itin
 
