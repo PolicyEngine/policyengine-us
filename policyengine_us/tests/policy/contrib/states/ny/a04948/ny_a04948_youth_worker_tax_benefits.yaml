@@ -230,9 +230,10 @@
     ny_a04948_youth_eitc: 880
 
 # Youth Standard Deduction eligibility tests
+# Note: Standard deduction uses a separate reform due to different effective date (2027+)
 - name: Youth Standard Deduction - age 20 single non-dependent is eligible
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -254,7 +255,7 @@
 
 - name: Youth Standard Deduction - age 17 not eligible, too young
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -275,7 +276,7 @@
 
 - name: Youth Standard Deduction - age 25 not eligible, too old
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -296,7 +297,7 @@
 
 - name: Youth Standard Deduction - married filing jointly not eligible
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -320,7 +321,7 @@
 
 - name: Youth Standard Deduction - head of household not eligible
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -409,7 +410,8 @@
     ny_a04948_student_loan_interest_deduction: 0
 
 # Integration tests
-- name: Integration - age 20 gets youth EITC and enhanced standard deduction
+# Note: Standard deduction is in a separate reform, so these tests only cover EITC and SLI
+- name: Integration - age 20 gets youth EITC and student loan deduction
   period: 2027
   absolute_error_margin: 20
   reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
@@ -431,9 +433,6 @@
         state_code: NY
   output:
     ny_a04948_youth_eitc_eligible: [true]
-    ny_a04948_youth_standard_deduction_eligible: true
-    ny_a04948_youth_standard_deduction: 10_000
-    ny_standard_deduction: 10_000
     ny_a04948_student_loan_interest_deduction: 1_500
     # Youth EITC based on $15,000 income in phaseout
     # Federal childless max $677 (2027), phase-out start $11,070
@@ -444,7 +443,7 @@
     # Youth EITC: $376.355 * 1.3 = $489.26
     ny_a04948_youth_eitc: 489
 
-- name: Integration - age 17 gets youth EITC but NOT standard deduction
+- name: Integration - age 17 gets youth EITC only
   period: 2027
   absolute_error_margin: 15
   reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
@@ -465,8 +464,6 @@
         state_code: NY
   output:
     ny_a04948_youth_eitc_eligible: [true]
-    ny_a04948_youth_standard_deduction_eligible: false
-    ny_a04948_youth_standard_deduction: 0
     # Youth EITC: $8,000 * 7.65% = $612.00 federal * 1.3 = $795.60
     ny_a04948_youth_eitc: 796
 
@@ -492,8 +489,6 @@
   output:
     ny_a04948_youth_eitc_eligible: [false]
     ny_a04948_youth_eitc: 0
-    ny_a04948_youth_standard_deduction_eligible: false
-    ny_a04948_youth_standard_deduction: 0
     ny_a04948_student_loan_interest_deduction: 2_000
 
 - name: Integration - age 20 parent not eligible for youth EITC
@@ -521,11 +516,9 @@
   output:
     ny_a04948_youth_eitc_eligible: [false, false]
     ny_a04948_youth_eitc: 0
-    ny_a04948_youth_standard_deduction_eligible: false
-    ny_a04948_youth_standard_deduction: 0
     ny_a04948_student_loan_interest_deduction: 1_000
 
-- name: Period 2026 - EITC and SLI active but standard deduction not yet
+- name: Period 2026 - EITC and SLI active
   period: 2026
   absolute_error_margin: 10
   reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
@@ -548,8 +541,6 @@
   output:
     # Youth EITC active in 2026: $5,000 * 7.65% = $382.50 * 1.3 = ~$497
     ny_a04948_youth_eitc: 497
-    # Standard deduction NOT available until 2027
-    ny_a04948_youth_standard_deduction: 0
     # Student loan interest deduction active in 2026
     ny_a04948_student_loan_interest_deduction: 1_500
 
@@ -610,7 +601,7 @@
 
 - name: Youth Standard Deduction - age 18 single non-dependent is eligible (min age)
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -632,7 +623,7 @@
 
 - name: Youth Standard Deduction - age 24 single non-dependent is eligible (max age)
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:
@@ -838,7 +829,7 @@
 # MFS test for Youth Standard Deduction
 - name: Youth Standard Deduction - married filing separately not eligible
   period: 2027
-  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_worker_tax_benefits.ny_a04948_youth_worker_tax_benefits
+  reforms: policyengine_us.reforms.states.ny.a04948.ny_a04948_youth_standard_deduction.ny_a04948_youth_standard_deduction
   input:
     people:
       person1:

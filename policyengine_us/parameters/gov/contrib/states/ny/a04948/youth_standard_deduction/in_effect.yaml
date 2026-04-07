@@ -1,0 +1,12 @@
+description: The enhanced standard deduction provision of NY A04948 is in effect.
+# Note: This provision is effective for "taxable years beginning after two thousand
+# twenty-six" (i.e., 2027+), one year later than the EITC and student loan provisions.
+metadata:
+  unit: bool
+  period: year
+  label: NY A04948 youth standard deduction in effect
+  reference:
+    - title: NY Assembly Bill 2025-A4948 Section 2 (Section 614(a))
+      href: https://www.nysenate.gov/legislation/bills/2025/A4948
+values:
+  0000-01-01: false
