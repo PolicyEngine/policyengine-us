@@ -57,7 +57,6 @@ INPUT_VARIABLES = [
     "casualty_loss",
     "partnership_s_corp_income",
     "taxable_interest_income",
-    "spm_unit_spm_threshold",
     "non_sch_d_capital_gains",
     "spm_unit_state_tax_reported",
     "spm_unit_capped_work_childcare_expenses",
