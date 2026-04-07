@@ -187,9 +187,6 @@ from .congress.watca import (
 from .congress.mcdonald_rivet import (
     create_working_parents_tax_relief_act_reform,
 )
-from .states.wa.sb6346.sb6346 import (
-    create_wa_sb6346_reform,
-)
 from .states.nj.stay_nj import (
     create_nj_stay_nj_reform,
 )
