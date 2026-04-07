@@ -1,3 +1,59 @@
+## [1.632.5] - 2026-04-07
+
+### Fixed
+
+- Fix DC standard deduction to use DC-specific amounts for 2025 per D-40 booklet.
+
+
+## [1.632.4] - 2026-04-07
+
+### Fixed
+
+- Fix Iowa standard deduction to include elderly/blind additional per IA 1040 line 1d.
+
+
+## [1.632.3] - 2026-04-07
+
+### Fixed
+
+- Include CA AMT and mental health services tax in state_income_tax.
+
+
+## [1.632.2] - 2026-04-06
+
+### Fixed
+
+- Fixed Working Parents Tax Relief Act reform to be idempotent when applied multiple times.
+
+
+## [1.632.1] - 2026-04-06
+
+### Fixed
+
+- Fix NM modified gross income to disallow business losses, capital losses, and rental losses per NM Admin Code 3.3.1.10.
+
+
+## [1.632.0] - 2026-04-06
+
+### Added
+
+- Add Working Parents Tax Relief Act of 2026 EITC enhancement.
+
+
+## [1.631.1] - 2026-04-06
+
+### Changed
+
+- Fix VT capital gains exclusion for financial instruments.
+
+
+## [1.631.0] - 2026-04-06
+
+### Added
+
+- Update West Virginia income tax rates for 2026 per SB 392, §11-21-4j.
+
+
 ## [1.630.0] - 2026-04-06
 
 ### Added
