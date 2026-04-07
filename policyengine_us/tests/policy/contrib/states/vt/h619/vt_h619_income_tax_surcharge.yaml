@@ -1,7 +1,7 @@
 - name: Case 1, income below threshold.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 500_000
     state_code: VT
   output:
@@ -11,8 +11,8 @@
 
 - name: Case 2, income exactly at threshold.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 1_000_000
     state_code: VT
   output:
@@ -22,8 +22,8 @@
 
 - name: Case 3, income just above threshold.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 1_000_001
     state_code: VT
   output:
@@ -34,8 +34,8 @@
 
 - name: Case 4, income well above threshold.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 2_000_000
     state_code: VT
   output:
@@ -45,8 +45,8 @@
 
 - name: Case 5, income just below threshold.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 999_999
     state_code: VT
   output:
@@ -54,20 +54,10 @@
     # Surcharge = $0
     vt_h619_income_tax_surcharge: 0
 
-- name: Case 6, surcharge not in effect.
+- name: Case 6, non-Vermont resident.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: false
-    adjusted_gross_income: 2_000_000
-    state_code: VT
-  output:
-    # Reform not in effect, so surcharge = $0 regardless of income
-    vt_h619_income_tax_surcharge: 0
-
-- name: Case 7, non-Vermont resident.
-  period: 2026
-  input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 2_000_000
     state_code: NY
   output:
@@ -75,10 +65,10 @@
     # Surcharge = $0
     vt_h619_income_tax_surcharge: 0
 
-- name: Case 8, zero income.
+- name: Case 7, zero income.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: 0
     state_code: VT
   output:
@@ -86,10 +76,10 @@
     # Surcharge = $0
     vt_h619_income_tax_surcharge: 0
 
-- name: Case 9, negative AGI from business losses.
+- name: Case 8, negative AGI from business losses.
   period: 2026
+  reforms: policyengine_us.reforms.states.vt.h619.vt_h619_reform.vt_h619
   input:
-    gov.contrib.states.vt.h619.income_tax_surcharge.in_effect: true
     adjusted_gross_income: -50_000
     state_code: VT
   output:
