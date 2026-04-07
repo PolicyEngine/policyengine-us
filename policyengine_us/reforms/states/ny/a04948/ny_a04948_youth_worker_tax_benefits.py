@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import instant
+from policyengine_core.periods import period as period_
 
 
 def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
@@ -11,6 +13,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
     3. Student Loan Interest Deduction: Federal IRC 221 deduction for NY
 
     Reference: https://www.nysenate.gov/legislation/bills/2025/A4948
+    Effective: 2026-2031 (sunset December 31, 2031)
     """
 
     class ny_a04948_youth_eitc_eligible(Variable):
@@ -23,9 +26,9 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(person, period, parameters):
             p = parameters(period).gov.contrib.states.ny.a04948
-            # Reform must be in effect
-            in_effect = p.in_effect
             # Age requirements: 17-24
+            # Note: max_age=24 is derived from IRC 32(c)(1)(A)(ii)(II) which sets
+            # federal EITC minimum age at 25; thus max age for youth credit is 24.
             age = person("age", period)
             age_eligible = (age >= p.youth_eitc.min_age) & (age <= p.youth_eitc.max_age)
             # Cannot be claimed as dependent
@@ -35,7 +38,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             has_qualifying_children = tax_unit("eitc_child_count", period) > 0
             is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
             not_parent = ~(is_head_or_spouse & has_qualifying_children)
-            return in_effect & age_eligible & not_dependent & not_parent
+            return age_eligible & not_dependent & not_parent
 
     class ny_a04948_youth_eitc_childless_maximum(Variable):
         value_type = float
@@ -44,6 +47,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             # Calculate federal childless EITC maximum (0 children)
@@ -57,6 +61,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = "/1"
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -69,6 +74,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             maximum = tax_unit("ny_a04948_youth_eitc_childless_maximum", period)
@@ -84,6 +90,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -99,6 +106,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = "/1"
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#b"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
@@ -111,6 +119,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             earnings = tax_unit("filer_adjusted_earnings", period)
@@ -128,6 +137,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
+        defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
             # Calculate federal childless EITC (as if 0 qualifying children)
@@ -151,8 +161,6 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ny.a04948
-            # Check if reform is in effect
-            in_effect = p.in_effect
             # Check if any member is eligible for the youth EITC
             person = tax_unit.members
             eligible = person("ny_a04948_youth_eitc_eligible", period)
@@ -162,7 +170,7 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
                 "ny_a04948_youth_eitc_federal_amount", period
             )
             youth_eitc_amount = federal_childless_eitc * p.youth_eitc.match
-            return where(in_effect & any_eligible, youth_eitc_amount, 0)
+            return where(any_eligible, youth_eitc_amount, 0)
 
     class ny_a04948_youth_standard_deduction_eligible(Variable):
         value_type = bool
@@ -177,10 +185,6 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(person, period, parameters):
             p = parameters(period).gov.contrib.states.ny.a04948
-            # Reform must be in effect
-            in_effect = p.in_effect
-            # Check if youth standard deduction parameters are defined
-            # (effective 2027)
             youth_std_ded = p.youth_standard_deduction
             min_age = youth_std_ded.min_age
             max_age = youth_std_ded.max_age
@@ -194,7 +198,11 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             is_single = filing_status == filing_status.possible_values.SINGLE
             # Must be the filer
             is_filer = person("is_tax_unit_head_or_spouse", period)
-            return in_effect & age_eligible & not_dependent & is_single & is_filer
+            # Amount must be > 0 (effective 2027+, amount is 0 in 2026)
+            amount_available = youth_std_ded.amount > 0
+            return (
+                age_eligible & not_dependent & is_single & is_filer & amount_available
+            )
 
     class ny_a04948_youth_standard_deduction(Variable):
         value_type = float
@@ -210,14 +218,12 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ny.a04948
-            # Check if reform is in effect
-            in_effect = p.in_effect
             # Check if filer is eligible
             person = tax_unit.members
             eligible = person("ny_a04948_youth_standard_deduction_eligible", period)
             filer_eligible = tax_unit.any(eligible)
             enhanced_deduction = p.youth_standard_deduction.amount
-            return where(in_effect & filer_eligible, enhanced_deduction, 0)
+            return where(filer_eligible, enhanced_deduction, 0)
 
     class ny_standard_deduction(Variable):
         value_type = float
@@ -257,77 +263,38 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.states.ny.a04948
-            # Check if reform is in effect
-            in_effect = p.in_effect
-            # Get student loan interest from all members
-            person = tax_unit.members
-            interest = person("student_loan_interest", period)
-            total_interest = tax_unit.sum(interest)
-            # Apply federal cap per IRC 221
-            p_fed = parameters(period).gov.irs.ald.student_loan_interest
-            filing_status = tax_unit("filing_status", period)
-            cap = p_fed.cap[filing_status]
-            capped_interest = min_(total_interest, cap)
-            # Cannot be married filing separately
-            separate = filing_status == filing_status.possible_values.SEPARATE
-            # Cannot be claimed as dependent
-            head_is_dependent = tax_unit("head_is_dependent_elsewhere", period)
-            eligible = ~separate & ~head_is_dependent
-            # Apply phaseout based on MAGI (per IRC 221)
-            # MAGI for student loan interest = AGI + student loan interest
-            # deduction (since the deduction is subtracted from AGI)
-            agi = tax_unit("adjusted_gross_income", period)
-            # Add back the federal student loan interest deduction
-            federal_sli_ald = add(person, period, ["student_loan_interest_ald"])
-            total_federal_sli = tax_unit.sum(federal_sli_ald)
-            magi = agi + total_federal_sli
-            reduction_start = p_fed.reduction.start[filing_status]
-            income_excess = max_(0, magi - reduction_start)
-            divisor = p_fed.reduction.divisor[filing_status]
-            reduction_rate = where(divisor > 0, income_excess / divisor, 0)
-            reduction_rate = min_(reduction_rate, 1)  # Cap at 100%
-            reduction_amount = capped_interest * reduction_rate
-            deduction = max_(capped_interest - reduction_amount, 0)
-            return where(in_effect & eligible, deduction, 0)
+            # Per Section 3 of A04948, the deduction is "to the extent and as
+            # provided in section 221" of the IRC. The federal student_loan_interest_ald
+            # already applies the $2,500 cap, income-based phase-out, MFS exclusion,
+            # and dependent exclusion per IRC 221.
+            return add(tax_unit, period, ["student_loan_interest_ald"])
 
-    class ny_agi(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "NY adjusted gross income"
-        unit = USD
-        definition_period = YEAR
-        reference = "https://www.nysenate.gov/legislation/laws/TAX/612"
-        defined_for = StateCode.NY
-
-        def formula(tax_unit, period, parameters):
-            # Start with federal AGI
-            agi = tax_unit("adjusted_gross_income", period)
-            # Add NY additions
-            additions = tax_unit("ny_additions", period)
-            # Subtract NY subtractions
-            subtractions = tax_unit("ny_agi_subtractions", period)
-            # Subtract student loan interest deduction (A04948)
-            student_loan_deduction = tax_unit(
-                "ny_a04948_student_loan_interest_deduction", period
+    def modify_parameters(parameters):
+        # Add youth EITC to NY refundable credits list
+        refundable = parameters.gov.states.ny.tax.income.credits.refundable
+        current_refundable = refundable(instant("2026-01-01"))
+        if "ny_a04948_youth_eitc" not in current_refundable:
+            new_refundable = list(current_refundable) + ["ny_a04948_youth_eitc"]
+            refundable.update(
+                start=instant("2026-01-01"),
+                stop=instant("2031-12-31"),
+                value=new_refundable,
             )
-            return agi + additions - subtractions - student_loan_deduction
 
-    class ny_refundable_credits(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "NY refundable credits"
-        unit = USD
-        definition_period = YEAR
-        reference = "https://www.nysenate.gov/legislation/bills/2025/A4948"
-        defined_for = StateCode.NY
+        # Add student loan interest deduction to NY AGI subtractions
+        subtractions = parameters.gov.states.ny.tax.income.agi.subtractions.sources
+        current_subtractions = subtractions(instant("2026-01-01"))
+        if "ny_a04948_student_loan_interest_deduction" not in current_subtractions:
+            new_subtractions = list(current_subtractions) + [
+                "ny_a04948_student_loan_interest_deduction"
+            ]
+            subtractions.update(
+                start=instant("2026-01-01"),
+                stop=instant("2031-12-31"),
+                value=new_subtractions,
+            )
 
-        def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.states.ny.tax.income.credits
-            standard_credits = add(tax_unit, period, p.refundable)
-            # Add youth EITC from A04948
-            youth_eitc = tax_unit("ny_a04948_youth_eitc", period)
-            return standard_credits + youth_eitc
+        return parameters
 
     class reform(Reform):
         def apply(self):
@@ -347,9 +314,8 @@ def create_ny_a04948_youth_worker_tax_benefits() -> Reform:
             self.update_variable(ny_standard_deduction)
             # Student loan interest deduction
             self.update_variable(ny_a04948_student_loan_interest_deduction)
-            self.update_variable(ny_agi)
-            # Update refundable credits to include youth EITC
-            self.update_variable(ny_refundable_credits)
+            # Modify parameters to add credits/deductions to lists
+            self.modify_parameters(modify_parameters)
 
     return reform
 
@@ -360,12 +326,18 @@ def create_ny_a04948_youth_worker_tax_benefits_reform(
     if bypass:
         return create_ny_a04948_youth_worker_tax_benefits()
 
-    p = parameters(period).gov.contrib.states.ny.a04948
+    p = parameters.gov.contrib.states.ny.a04948
+    reform_active = False
+    current_period = period_(period)
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
 
-    if p.in_effect:
+    if reform_active:
         return create_ny_a04948_youth_worker_tax_benefits()
-    else:
-        return None
+    return None
 
 
 ny_a04948_youth_worker_tax_benefits = create_ny_a04948_youth_worker_tax_benefits_reform(
