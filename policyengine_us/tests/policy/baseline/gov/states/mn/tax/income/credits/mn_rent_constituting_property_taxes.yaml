@@ -1,0 +1,8 @@
+- name: Rent constituting property taxes equals 17 percent of gross rent
+  period: 2025
+  input:
+    state_code: MN
+    rent: 10_000
+  output:
+    mn_rent_constituting_property_taxes: 1_700
+

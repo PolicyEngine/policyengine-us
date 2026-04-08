@@ -121,3 +121,33 @@
         state_fips: 27
   output:
     mn_income_tax: -2_119
+
+- name: Minnesota renters credit integrates into refundable credits
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        rent: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 27
+  output:
+    mn_renters_credit: 455
+    mn_refundable_credits: 455

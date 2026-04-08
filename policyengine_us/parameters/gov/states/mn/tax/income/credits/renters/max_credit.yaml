@@ -1,0 +1,289 @@
+description: Minnesota renter's credit maximum amount by household income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Minnesota renter's credit maximum amount
+  reference:
+    - title: Minnesota Statutes 290.0693, Subd. 3
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf
+    - title: 2025 Schedule M1RENT, Renter's Credit
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      values:
+        2024-01-01: 2_640
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 8_610
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_570
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 10_760
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_510
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 15_090
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_430
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 19_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_370
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 21_540
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_310
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 23_680
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_240
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 28_010
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 2_180
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 60_320
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 1_980
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 62_460
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 1_780
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 64_620
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 1_510
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 66_790
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 1_320
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 68_930
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 1_190
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 71_090
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 660
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 73_240
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      values:
+        2024-01-01: 260
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+  - threshold:
+      values:
+        2024-01-01: 75_390
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0
+
