@@ -1,0 +1,6 @@
+- bump: patch
+  changes:
+    added:
+      - taxable_roth_conversions
+    fixed:
+      - SNAP and SSI no longer treat Roth conversions as retirement-distribution income
