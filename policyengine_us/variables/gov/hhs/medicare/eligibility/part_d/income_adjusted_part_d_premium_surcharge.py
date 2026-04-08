@@ -8,8 +8,8 @@ class income_adjusted_part_d_premium_surcharge(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "medicare_enrolled"
-    reference = "https://www.cms.gov/newsroom/fact-sheets/2025-medicare-parts-b-premiums-and-deductibles"
-    documentation = "Annualized Medicare Part D IRMAA surcharge. This is the federally set income-related premium adjustment amount, paid in addition to the beneficiary's underlying Part D plan premium."
+    reference = "https://www.law.cornell.edu/cfr/text/42/423.286"
+    documentation = "Annualized Medicare Part D IRMAA surcharge under 42 U.S.C. 1395w-113(a)(7). This is the federally set income-related premium adjustment amount, paid in addition to the beneficiary's underlying Part D plan premium. Annual bracket values come from CMS fact sheets."
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
