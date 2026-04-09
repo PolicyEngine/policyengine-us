@@ -1,0 +1,58 @@
+description: Maine LD 229 income tax rates for head-of-household filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Maine LD 229 income tax rates for head-of-household filers
+  reference:
+    - title: Committee Amendment A (H-649)
+      href: https://legislature.maine.gov/backend/App/services/getDocument.aspx?documentId=119704
+    - title: Maine §5403. Annual adjustments for inflation
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.055
+  - threshold:
+      values:
+        2026-01-01: 41_150
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2026-01-01: 0.0675
+  - threshold:
+      values:
+        2026-01-01: 97_450
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2026-01-01: 0.0715
+  - threshold:
+      values:
+        2026-01-01: 216_750
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2026-01-01: 0.0775
+  - threshold:
+      values:
+        2026-01-01: 750_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2026-01-01: 0.0895

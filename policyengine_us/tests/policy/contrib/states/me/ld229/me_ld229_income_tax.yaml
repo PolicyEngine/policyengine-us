@@ -1,0 +1,84 @@
+- name: Maine LD 229 lowers the bottom rate for single filers.
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_income_tax_reform.me_ld229
+  input:
+    gov.contrib.states.me.ld229.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_taxable_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_income_tax_before_credits: 1_100
+
+- name: Maine LD 229 adds the new single-filer top brackets.
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_income_tax_reform.me_ld229
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.me.ld229.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_taxable_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_income_tax_before_credits: 46_230.08
+
+- name: Maine LD 229 adds the new joint-filer top brackets.
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_income_tax_reform.me_ld229
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.me.ld229.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        me_taxable_income: 1_200_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_income_tax_before_credits: 92_460.15
+
+- name: Maine LD 229 uses baseline law when not in effect.
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_income_tax_reform.me_ld229
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.me.ld229.in_effect: false
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_taxable_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_income_tax_before_credits: 42_391.60
