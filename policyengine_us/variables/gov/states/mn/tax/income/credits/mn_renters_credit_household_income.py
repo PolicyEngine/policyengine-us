@@ -15,6 +15,7 @@ class mn_renters_credit_household_income(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income
+        minimum_age = p.credits.renters.age_threshold
         mn_agi = (
             tax_unit("adjusted_gross_income", period)
             + tax_unit("mn_additions", period)
@@ -24,7 +25,7 @@ class mn_renters_credit_household_income(Variable):
 
         people = tax_unit.members
         claimant = people("is_tax_unit_head_or_spouse", period)
-        is_age_eligible = people("age", period) >= 65
+        is_age_eligible = people("age", period) >= minimum_age
         is_disabled = people("is_permanently_and_totally_disabled", period)
         age_or_disability_subtraction = tax_unit.any(
             claimant & (is_age_eligible | is_disabled)
