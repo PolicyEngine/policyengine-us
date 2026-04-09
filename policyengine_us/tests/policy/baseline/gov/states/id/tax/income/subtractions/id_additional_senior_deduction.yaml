@@ -1,0 +1,28 @@
+- name: Idaho conforms to the federal additional senior deduction in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    additional_senior_deduction: 9_000
+    id_additional_senior_deduction: 9_000
