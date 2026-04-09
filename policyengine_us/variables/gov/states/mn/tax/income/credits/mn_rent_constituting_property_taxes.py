@@ -15,6 +15,5 @@ class mn_rent_constituting_property_taxes(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income.credits.renters
-        rent = add(tax_unit, period, ["rent"])
-        return rent * p.rent_fraction
-
+        gross_rent = tax_unit("mn_renters_credit_total_rent_from_crps", period)
+        return round_(gross_rent * p.rent_fraction)

@@ -16,10 +16,13 @@ class mn_renters_credit_household_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income
         minimum_age = p.credits.renters.age_threshold
-        mn_agi = (
-            tax_unit("adjusted_gross_income", period)
-            + tax_unit("mn_additions", period)
-            - tax_unit("mn_subtractions", period)
+        household_agi = add(
+            tax_unit,
+            period,
+            [
+                "adjusted_gross_income",
+                "spouse_separate_adjusted_gross_income",
+            ],
         )
         exemption_amount = p.exemptions.amount
 
@@ -27,17 +30,20 @@ class mn_renters_credit_household_income(Variable):
         claimant = people("is_tax_unit_head_or_spouse", period)
         is_age_eligible = people("age", period) >= minimum_age
         is_disabled = people("is_permanently_and_totally_disabled", period)
-        age_or_disability_subtraction = tax_unit.any(
-            claimant & (is_age_eligible | is_disabled)
-        ) * exemption_amount
+        age_or_disability_subtraction = (
+            tax_unit.any(claimant & (is_age_eligible | is_disabled)) * exemption_amount
+        )
 
         dependent_count = tax_unit("tax_unit_dependents", period)
-        dependent_subtraction_multiplier = p.credits.renters.dependent_subtraction_multiplier.calc(
-            dependent_count
+        dependent_subtraction_multiplier = (
+            p.credits.renters.dependent_subtraction_multiplier.calc(dependent_count)
         )
-        dependent_subtraction = (
-            exemption_amount * dependent_subtraction_multiplier
+        dependent_subtraction = exemption_amount * dependent_subtraction_multiplier
+        seiu_subtraction = tax_unit(
+            "mn_renters_credit_seiu_stipend_subtraction", period
         )
 
-        subtractions = age_or_disability_subtraction + dependent_subtraction
-        return max_(0, mn_agi - subtractions)
+        subtractions = (
+            age_or_disability_subtraction + dependent_subtraction + seiu_subtraction
+        )
+        return max_(0, household_agi - subtractions)

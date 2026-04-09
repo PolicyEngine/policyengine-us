@@ -20,6 +20,9 @@ class mn_renters_credit(Variable):
         rent_constituting_property_taxes = tax_unit(
             "mn_rent_constituting_property_taxes", period
         )
+        assistance_rent_paid = tax_unit(
+            "mn_renters_credit_assistance_rent_paid", period
+        )
         percent_of_income = p.percent_of_income.calc(household_income)
         claimant_share = p.claimant_share.calc(household_income)
         max_credit = p.max_credit.calc(household_income)
@@ -27,4 +30,17 @@ class mn_renters_credit(Variable):
         excess_rent = max_(
             0, rent_constituting_property_taxes - percent_of_income * household_income
         )
-        return min_(max_credit, excess_rent * (1 - claimant_share))
+        line_13_amount = round_(min_(max_credit, excess_rent * (1 - claimant_share)))
+        proration_denominator = household_income + assistance_rent_paid
+        proration_ratio = where(
+            proration_denominator > 0,
+            round_(household_income / proration_denominator, 5),
+            0,
+        )
+        return round_(
+            where(
+                assistance_rent_paid > 0,
+                line_13_amount * proration_ratio,
+                line_13_amount,
+            )
+        )

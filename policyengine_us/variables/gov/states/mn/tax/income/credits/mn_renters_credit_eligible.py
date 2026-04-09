@@ -18,16 +18,29 @@ class mn_renters_credit_eligible(Variable):
         rent_constituting_property_taxes = tax_unit(
             "mn_rent_constituting_property_taxes", period
         )
+        total_rent_from_crps = tax_unit(
+            "mn_renters_credit_total_rent_from_crps", period
+        )
+        qualifying_crp = tax_unit("mn_renters_credit_qualifying_crp", period)
+        property_tax_exempt = tax_unit("mn_renters_credit_property_tax_exempt", period)
+        assistance_rent_paid = tax_unit(
+            "mn_renters_credit_assistance_rent_paid", period
+        )
         p = parameters(period).gov.states.mn.tax.income.credits.renters
 
         claimants = tax_unit.members("is_tax_unit_head_or_spouse", period)
         claimant_is_dependent = tax_unit.any(
             claimants & tax_unit.members("is_tax_unit_dependent", period)
         )
-
-        return (
-            (rent_constituting_property_taxes > 0)
-            & ~claimant_is_dependent
-            & (p.max_credit.calc(household_income) > 0)
+        all_rent_paid_by_assistance = (assistance_rent_paid > 0) & (
+            assistance_rent_paid >= total_rent_from_crps
         )
 
+        return (
+            qualifying_crp
+            & (rent_constituting_property_taxes > 0)
+            & ~claimant_is_dependent
+            & ~property_tax_exempt
+            & ~all_rent_paid_by_assistance
+            & (p.max_credit.calc(household_income) > 0)
+        )
