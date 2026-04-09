@@ -14,5 +14,7 @@ class spm_unit_capped_work_childcare_expenses(Variable):
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
         earned_cap = spm_unit("spm_unit_head_spouse_earned_cap", period)
-        combined_expenses = np.maximum(work_expenses + childcare_expenses, 0)
-        return min_(combined_expenses, earned_cap)
+        remaining_childcare_cap = np.maximum(earned_cap - work_expenses, 0)
+        return work_expenses + min_(
+            np.maximum(childcare_expenses, 0), remaining_childcare_cap
+        )
