@@ -113,6 +113,7 @@
       dep:
         age: 60
         is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [head, dep]
@@ -129,6 +130,7 @@
       dep:
         age: 60
         is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [head, dep]
@@ -144,6 +146,7 @@
       dep:
         age: 60
         is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [head, dep]
@@ -160,6 +163,7 @@
       dep:
         age: 60
         is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [head, dep]
@@ -317,6 +321,56 @@
         income_tax_before_credits: 1_000
   output:
     ctc_qualifying_child: [false, false]
+    ctc_child_individual_maximum: [0, 0]
+    ctc_adult_individual_maximum: [0, 500]
+    refundable_ctc: 0
+    non_refundable_ctc: 500
+    ctc: 500
+
+- name: ITIN-only filer can still claim ODC for an adult dependent in 2026
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: false
+    ctc_adult_individual_maximum: [0, 500]
+    refundable_ctc: 0
+    non_refundable_ctc: 500
+    ctc: 500
+
+- name: Child with a valid SSN gets ODC instead of child CTC when the filer lacks the required SSN in 2026
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: false
     ctc_child_individual_maximum: [0, 0]
     ctc_adult_individual_maximum: [0, 500]
     refundable_ctc: 0

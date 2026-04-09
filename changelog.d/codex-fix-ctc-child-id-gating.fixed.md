@@ -1,1 +1,1 @@
-Gate the federal child CTC amount on `ctc_qualifying_child` so dependents who fail the child-specific identification requirement no longer receive the $2,000 child amount.
+Fix federal CTC and ODC identification gating so dependents who fail child-specific CTC rules or TIN requirements no longer receive the wrong credit amount, while ITIN-only filers can still receive the ODC when allowed.
