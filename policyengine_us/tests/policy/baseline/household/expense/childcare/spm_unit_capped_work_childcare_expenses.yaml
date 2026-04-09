@@ -22,7 +22,7 @@
   output:
     spm_unit_capped_work_childcare_expenses: 2_000
 
-- name: Single-head units are capped at the head's earnings
+- name: Work expenses are preserved when they already exceed the earnings cap
   period: 2024
   absolute_error_margin: 0.001
   input:
@@ -39,4 +39,26 @@
         members: [head, child]
         spm_unit_pre_subsidy_childcare_expenses: 3_000
   output:
-    spm_unit_capped_work_childcare_expenses: 1_500
+    spm_unit_capped_work_childcare_expenses: 1_819.714
+
+- name: Childcare is capped by the remaining lower-earner earnings after work expenses
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 46
+        weeks_worked: 52
+        employment_income: 9_098.57
+        is_tax_unit_head: true
+      spouse:
+        age: 46
+        weeks_worked: 52
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        spm_unit_pre_subsidy_childcare_expenses: 21_580
+  output:
+    spm_unit_capped_work_childcare_expenses: 9_098.57
