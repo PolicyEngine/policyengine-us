@@ -112,3 +112,25 @@
   output:
     ctc_child_individual_maximum: [0, 0, 0, 3_000]
     ctc_refundable_maximum: 2_500
+
+- name: Child amount is blocked when the filer fails the post-2025 child CTC ID gate
+  period: 2026
+  reforms: policyengine_us.reforms.ctc.ctc_additional_bracket.ctc_additional_bracket
+  input:
+    gov.contrib.ctc.additional_bracket.amount.base[0].amount: 3_000
+    gov.contrib.ctc.additional_bracket.in_effect: true
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+      person2:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ctc_child_individual_maximum: [0, 0]
+    ctc_refundable_maximum: 0
