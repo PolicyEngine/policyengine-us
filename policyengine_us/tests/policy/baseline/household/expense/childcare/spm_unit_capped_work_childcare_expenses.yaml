@@ -7,6 +7,7 @@
         age: 35
         weeks_worked: 10
         employment_income: 40_000
+        is_household_head: true
         is_tax_unit_head: true
       spouse:
         age: 33
@@ -15,6 +16,9 @@
         is_tax_unit_spouse: true
       child:
         age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
     spm_units:
       spm_unit:
         members: [head, spouse, child]
@@ -31,9 +35,13 @@
         age: 41
         weeks_worked: 52
         employment_income: 1_500
+        is_household_head: true
         is_tax_unit_head: true
       child:
         age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
     spm_units:
       spm_unit:
         members: [head, child]
@@ -50,15 +58,50 @@
         age: 46
         weeks_worked: 52
         employment_income: 9_098.57
+        is_household_head: true
         is_tax_unit_head: true
       spouse:
         age: 46
         weeks_worked: 52
         employment_income: 30_000
         is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
     spm_units:
       spm_unit:
         members: [head, spouse]
         spm_unit_pre_subsidy_childcare_expenses: 21_580
   output:
     spm_unit_capped_work_childcare_expenses: 9_098.57
+
+- name: Unmarried partner counts toward the reference person's remaining childcare cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 35
+        weeks_worked: 10
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      partner:
+        age: 33
+        weeks_worked: 20
+        employment_income: 2_000
+        is_unmarried_partner_of_household_head: true
+        is_tax_unit_head: true
+      child:
+        age: 8
+    tax_units:
+      reference_unit:
+        members: [head, child]
+      partner_unit:
+        members: [partner]
+    spm_units:
+      spm_unit:
+        members: [head, partner, child]
+        spm_unit_pre_subsidy_childcare_expenses: 2_000
+  output:
+    spm_unit_capped_work_childcare_expenses: 2_000
