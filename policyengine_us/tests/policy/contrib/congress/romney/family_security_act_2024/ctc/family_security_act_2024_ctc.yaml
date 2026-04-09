@@ -243,3 +243,31 @@
   output:
     pregnant_mothers_credit: 2_800
     income_tax_refundable_credits: 2_800
+
+- name: Child amount is blocked when the filer fails the post-2025 child CTC ID gate
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+      person2:
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 20_000
+        ctc_phase_out: 0
+  output:
+    ctc_child_individual_maximum: [0, 0]
+    ctc_adult_individual_maximum: [0, 500]
+    ctc: 500
