@@ -1,0 +1,163 @@
+- name: Household head and spouse determine the SPM childcare earnings cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_spouse: true
+      spouse:
+        age: 45
+        employment_income: 8_000
+        is_tax_unit_head: true
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [reference_person, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [reference_person, spouse, child]
+  output:
+    spm_unit_head_spouse_earned_cap: 8_000
+
+- name: Household head and unmarried partner determine the SPM childcare earnings cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      partner:
+        age: 33
+        employment_income: 2_500
+        is_unmarried_partner_of_household_head: true
+        is_tax_unit_head: true
+      child:
+        age: 8
+    tax_units:
+      reference_unit:
+        members: [reference_person, child]
+      partner_unit:
+        members: [partner]
+    spm_units:
+      spm_unit:
+        members: [reference_person, partner, child]
+  output:
+    spm_unit_head_spouse_earned_cap: 2_500
+
+- name: Farm income counts toward the Census SPM childcare earnings cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      spouse:
+        age: 33
+        farm_income: 3_000
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [reference_person, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [reference_person, spouse, child]
+  output:
+    spm_unit_head_spouse_earned_cap: 3_000
+
+- name: Extra adults in the SPM unit do not expand the reference person's childcare cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      partner:
+        age: 33
+        employment_income: 5_000
+        is_unmarried_partner_of_household_head: true
+        is_tax_unit_head: true
+      unrelated_adult:
+        age: 55
+        employment_income: 1_000
+        is_tax_unit_head: true
+      child:
+        age: 8
+    tax_units:
+      reference_unit:
+        members: [reference_person, child]
+      partner_unit:
+        members: [partner]
+      unrelated_unit:
+        members: [unrelated_adult]
+    spm_units:
+      spm_unit:
+        members: [reference_person, partner, unrelated_adult, child]
+  output:
+    spm_unit_head_spouse_earned_cap: 5_000
+
+- name: Spouse takes precedence over unmarried partner in the reference person's childcare cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      spouse:
+        age: 33
+        employment_income: 6_000
+        is_tax_unit_spouse: true
+      partner:
+        age: 31
+        employment_income: 2_500
+        is_unmarried_partner_of_household_head: true
+        is_tax_unit_head: true
+    tax_units:
+      reference_unit:
+        members: [reference_person, spouse]
+      partner_unit:
+        members: [partner]
+    spm_units:
+      spm_unit:
+        members: [reference_person, spouse, partner]
+  output:
+    spm_unit_head_spouse_earned_cap: 6_000
+
+- name: The childcare cap falls back to tax-unit head/spouse when no reference person is provided
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+        is_tax_unit_head: true
+      spouse:
+        age: 33
+        employment_income: 4_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+  output:
+    spm_unit_head_spouse_earned_cap: 4_000
