@@ -60,7 +60,6 @@ INPUT_VARIABLES = [
     "spm_unit_spm_threshold",
     "non_sch_d_capital_gains",
     "spm_unit_state_tax_reported",
-    "spm_unit_capped_work_childcare_expenses",
     "farm_income",
     "taxable_403b_distributions",
     "qualified_tuition_expenses",

@@ -1,0 +1,41 @@
+- name: Work expenses apply only to adult earners in the SPM unit
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      adult_worker:
+        age: 40
+        weeks_worked: 10
+        employment_income: 20_000
+      adult_nonworker:
+        age: 38
+        weeks_worked: 30
+        employment_income: 0
+      child:
+        age: 12
+        weeks_worked: 52
+        employment_income: 500
+    spm_units:
+      spm_unit:
+        members: [adult_worker, adult_nonworker, child]
+  output:
+    spm_unit_work_expenses: 349.945
+
+- name: Farm-income-only adults still incur Census SPM work expenses
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      adult_farmer:
+        age: 40
+        weeks_worked: 10
+        farm_income: 20_000
+      adult_nonworker:
+        age: 38
+        weeks_worked: 30
+        farm_income: 0
+    spm_units:
+      spm_unit:
+        members: [adult_farmer, adult_nonworker]
+  output:
+    spm_unit_work_expenses: 349.945
