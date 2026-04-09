@@ -29,20 +29,5 @@ class mn_renters_credit(Variable):
         excess_rent = max_(
             0, rent_constituting_property_taxes - percent_of_income * household_income
         )
-        credit_before_line_a = min_(max_credit, excess_rent * (1 - claimant_share))
-
-        crp_line_a_amount = tax_unit("mn_renters_credit_crp_line_a_amount", period)
-        total_household_basis = household_income + crp_line_a_amount
-        mask = total_household_basis != 0
-        ratio = np.divide(
-            household_income,
-            total_household_basis,
-            out=np.zeros_like(total_household_basis),
-            where=mask,
-        )
-        adjusted_credit = where(
-            crp_line_a_amount > 0,
-            credit_before_line_a * ratio,
-            credit_before_line_a,
-        )
-        return eligible * adjusted_credit
+        credit = min_(max_credit, excess_rent * (1 - claimant_share))
+        return eligible * credit

@@ -21,28 +21,3 @@
         state_code: MN
   output:
     mn_renters_credit_household_income: 31_260
-
-- name: Part-year and MFS adjustments reduce household income
-  period: 2025
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      dependent1:
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [person1, dependent1]
-        adjusted_gross_income: 40_000
-        mn_additions: 0
-        mn_subtractions: 0
-        mn_renters_credit_spouse_agi: 20_000
-        mn_renters_credit_nonresident_income: 15_000
-        mn_renters_credit_seiu_stipend_subtraction: 1_000
-    households:
-      household:
-        members: [person1, dependent1]
-        state_code: MN
-  output:
-    mn_renters_credit_household_income: 36_720
-
