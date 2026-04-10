@@ -1,0 +1,34 @@
+- name: taxpayer_id_type follows canonical input
+  period: 2024
+  input:
+    taxpayer_id_type: OTHER_TIN
+  output:
+    taxpayer_id_type: OTHER_TIN
+
+- name: taxpayer_id_type derives valid SSN from citizen SSN card type
+  period: 2024
+  input:
+    ssn_card_type: CITIZEN
+  output:
+    taxpayer_id_type: VALID_SSN
+
+- name: taxpayer_id_type derives valid SSN from non-citizen valid EAD SSN card type
+  period: 2024
+  input:
+    ssn_card_type: NON_CITIZEN_VALID_EAD
+  output:
+    taxpayer_id_type: VALID_SSN
+
+- name: taxpayer_id_type derives other TIN from other non-citizen SSN card type
+  period: 2024
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    taxpayer_id_type: OTHER_TIN
+
+- name: taxpayer_id_type derives none when no SSN card type is available
+  period: 2024
+  input:
+    ssn_card_type: NONE
+  output:
+    taxpayer_id_type: NONE

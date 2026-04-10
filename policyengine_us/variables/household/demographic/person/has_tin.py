@@ -4,14 +4,14 @@ from policyengine_us.model_api import *
 class has_tin(Variable):
     value_type = bool
     entity = Person
-    label = "Has TIN (ITIN or SSN)"
+    label = "Has taxpayer identification number (TIN)"
     definition_period = YEAR
     default_value = True
 
     def formula(person, period, parameters):
         simulation = person.simulation
 
-        # Canonical path: allow direct `has_tin` inputs to override the formula.
+        # Allow direct `has_tin` inputs to override the derived value.
         holder = simulation.get_holder("has_tin")
         if period in holder.get_known_periods():
             array = holder.get_array(period)
@@ -25,4 +25,5 @@ class has_tin(Variable):
             if array is not None:
                 return array
 
-        return np.full(person.count, True)
+        taxpayer_id_type = person("taxpayer_id_type", period)
+        return taxpayer_id_type != taxpayer_id_type.possible_values.NONE

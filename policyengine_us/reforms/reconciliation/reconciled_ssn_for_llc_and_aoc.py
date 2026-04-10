@@ -67,13 +67,15 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         label = "Filer meets LLC and AOC identification requirements"
 
         def formula(tax_unit, period, parameters):
-            # Both head and spouse in the tax unit must have valid SSN card type to be eligible for the CTC
+            # Both head and spouse in the tax unit must have valid SSNs.
             person = tax_unit.members
             is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            eligible_ssn_card_type = person(
+            meets_identification_requirements = person(
                 "meets_llc_and_aoc_identification_requirements", period
             )
-            ineligible_head_or_spouse = is_head_or_spouse & ~eligible_ssn_card_type
+            ineligible_head_or_spouse = (
+                is_head_or_spouse & ~meets_identification_requirements
+            )
             return tax_unit.sum(ineligible_head_or_spouse) == 0
 
     class meets_llc_and_aoc_identification_requirements(Variable):
@@ -84,13 +86,7 @@ def create_reconciled_ssn_for_llc_and_aoc() -> Reform:
         reference = "https://docs.house.gov/meetings/WM/WM00/20250513/118260/BILLS-119CommitteePrintih.pdf#page=4"
 
         def formula(person, period, parameters):
-            ssn_card_type = person("ssn_card_type", period)
-            ssn_card_types = ssn_card_type.possible_values
-            citizen = ssn_card_type == ssn_card_types.CITIZEN
-            non_citizen_valid_ead = (
-                ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD
-            )
-            return citizen | non_citizen_valid_ead
+            return person("has_valid_ssn", period)
 
     class reform(Reform):
         def apply(self):
