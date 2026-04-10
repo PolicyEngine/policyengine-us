@@ -1,1 +1,1 @@
-Added Idaho conformity to the federal enhanced senior deduction by subtracting the federal additional senior deduction from Idaho income starting in 2025.
+Added Idaho conformity to the federal enhanced senior deduction on the Idaho Form 40 line 18 deduction path starting in 2025.

@@ -1,0 +1,8 @@
+- name: Idaho line 18 includes QBID and federal Schedule 1-A deductions
+  period: 2025
+  input:
+    qualified_business_income_deduction: 2_000
+    id_additional_senior_deduction: 9_000
+    state_code: ID
+  output:
+    id_line_18_deductions: 11_000

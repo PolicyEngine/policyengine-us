@@ -12,17 +12,27 @@
   input:
     id_agi: 500
     id_deductions: 1_000
-    qualified_business_income_deduction: 200
+    id_line_18_deductions: 200
     state_code: ID
   output:
     id_taxable_income: 0
 
-- name: AGI after deductions is reduced by QBID
+- name: AGI after deductions is reduced by Idaho line 18 deductions
   period: 2021
   input:
     id_agi: 1_000
     id_deductions: 500
-    qualified_business_income_deduction: 300
+    id_line_18_deductions: 300
     state_code: ID
   output:
     id_taxable_income: 200
+
+- name: Idaho line 18 deductions include the federal senior deduction in 2025
+  period: 2025
+  input:
+    id_agi: 200_000
+    id_deductions: 60_000
+    id_line_18_deductions: 9_000
+    state_code: ID
+  output:
+    id_taxable_income: 131_000
