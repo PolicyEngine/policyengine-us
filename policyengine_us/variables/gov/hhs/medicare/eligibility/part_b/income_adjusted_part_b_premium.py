@@ -13,7 +13,8 @@ class income_adjusted_part_b_premium(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        filing_status = tax_unit("filing_status", period)
+        is_joint = tax_unit("tax_unit_married", period)
+        is_separated = tax_unit.any(person("is_separated", period))
         # Medicare Part B IRMAA is based on MAGI from 2 years prior
         # MAGI = AGI + tax-exempt interest
         prior_period = period.offset(-2, "year")
@@ -22,28 +23,18 @@ class income_adjusted_part_b_premium(Variable):
         magi = agi + tax_exempt_interest
         base = person("base_part_b_premium", period)
 
-        # Build boolean masks for each status
-        status = filing_status.possible_values
-        statuses = [
-            status.SINGLE,
-            status.JOINT,
-            status.HEAD_OF_HOUSEHOLD,
-            status.SURVIVING_SPOUSE,
-            status.SEPARATE,
-        ]
-        in_status = [filing_status == s for s in statuses]
-
         p = parameters(period).gov.hhs.medicare.part_b.irmaa
 
         irmaa_amount = select(
-            in_status,
             [
-                p.single.calc(magi),
+                is_joint,
+                is_separated,
+            ],
+            [
                 p.joint.calc(magi),
-                p.head_of_household.calc(magi),
-                p.surviving_spouse.calc(magi),
                 p.separate.calc(magi),
             ],
+            default=p.single.calc(magi),
         )
 
         # IRMAA amounts are monthly, multiply by MONTHS_IN_YEAR to get annual
