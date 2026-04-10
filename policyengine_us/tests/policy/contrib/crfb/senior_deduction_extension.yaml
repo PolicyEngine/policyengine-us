@@ -112,3 +112,30 @@
     # qualified_business_income_deduction: 2_000
     # additional_senior_deduction: 6_000 (from extension)
     taxable_income_deductions_if_not_itemizing: 29_800
+
+- name: Integration test - extension continues working at the 2100 modeling endpoint
+  period: 2100
+  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
+  input:
+    gov.contrib.crfb.senior_deduction_extension.applies: true
+    people:
+      senior1:
+        age: 67
+      senior2:
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [senior1, senior2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+        tax_unit_itemizes: true
+        itemized_taxable_income_deductions: 30_000
+        qualified_business_income_deduction: 5_000
+        wagering_losses_deduction: 0
+    households:
+      household:
+        members: [senior1, senior2]
+        state_code: CA
+  output:
+    additional_senior_deduction: 12_000
+    taxable_income_deductions_if_itemizing: 47_000
