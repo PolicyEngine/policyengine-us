@@ -13,6 +13,7 @@
       person2:
         is_tax_unit_head_or_spouse: true
         ssn_card_type: NON_CITIZEN_VALID_EAD
+        has_valid_ssn: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -26,9 +27,11 @@
       person1:
         is_tax_unit_head_or_spouse: true
         ssn_card_type: OTHER_NON_CITIZEN
+        has_valid_ssn: false
       person2:
         is_tax_unit_head_or_spouse: true
         ssn_card_type: NON_CITIZEN_VALID_EAD
+        has_valid_ssn: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -42,9 +45,11 @@
       person1:
         is_tax_unit_head_or_spouse: false
         ssn_card_type: OTHER_NON_CITIZEN
+        has_valid_ssn: false
       person2:
         is_tax_unit_head_or_spouse: true
         ssn_card_type: NON_CITIZEN_VALID_EAD
+        has_valid_ssn: true
     tax_units:
       tax_unit:
         members: [person1, person2]

@@ -5,17 +5,31 @@
   output:
     has_valid_ssn: false
 
-- name: has_valid_ssn derives true from taxpayer_id_type valid SSN
+- name: has_valid_ssn derives true from citizen SSN card type
   period: 2024
   input:
-    taxpayer_id_type: VALID_SSN
+    ssn_card_type: CITIZEN
   output:
     has_valid_ssn: true
 
-- name: has_valid_ssn derives false from taxpayer_id_type other TIN
+- name: has_valid_ssn does not infer true from non-citizen EAD proxy alone
+  period: 2024
+  input:
+    ssn_card_type: NON_CITIZEN_VALID_EAD
+  output:
+    has_valid_ssn: false
+
+- name: has_valid_ssn derives false from explicit other TIN taxpayer ID type
   period: 2024
   input:
     taxpayer_id_type: OTHER_TIN
+  output:
+    has_valid_ssn: false
+
+- name: has_valid_ssn derives false when no SSN card type is available
+  period: 2024
+  input:
+    ssn_card_type: NONE
   output:
     has_valid_ssn: false
 

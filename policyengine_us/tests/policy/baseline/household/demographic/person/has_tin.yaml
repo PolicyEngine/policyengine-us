@@ -19,6 +19,13 @@
   output:
     has_tin: false
 
+- name: has_tin does not infer TIN from other non-citizen SSN card type
+  period: 2024
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    has_tin: false
+
 - name: has_tin stays true when canonical has_tin input is true
   period: 2024
   input:

@@ -12,17 +12,33 @@
   output:
     taxpayer_id_type: VALID_SSN
 
-- name: taxpayer_id_type derives valid SSN from non-citizen valid EAD SSN card type
+- name: taxpayer_id_type does not infer valid SSN from non-citizen EAD proxy alone
   period: 2024
   input:
     ssn_card_type: NON_CITIZEN_VALID_EAD
   output:
+    taxpayer_id_type: NONE
+
+- name: taxpayer_id_type derives valid SSN from explicit valid SSN input
+  period: 2024
+  input:
+    ssn_card_type: NON_CITIZEN_VALID_EAD
+    has_valid_ssn: true
+  output:
     taxpayer_id_type: VALID_SSN
 
-- name: taxpayer_id_type derives other TIN from other non-citizen SSN card type
+- name: taxpayer_id_type does not infer other TIN from other non-citizen SSN card type
   period: 2024
   input:
     ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    taxpayer_id_type: NONE
+
+- name: taxpayer_id_type derives other TIN from explicit TIN input
+  period: 2024
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
   output:
     taxpayer_id_type: OTHER_TIN
 

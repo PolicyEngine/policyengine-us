@@ -9,5 +9,11 @@ class has_valid_ssn(Variable):
     default_value = True
 
     def formula(person, period, parameters):
-        taxpayer_id_type = person("taxpayer_id_type", period)
-        return taxpayer_id_type == taxpayer_id_type.possible_values.VALID_SSN
+        id_holder = person.simulation.get_holder("taxpayer_id_type")
+        if period in id_holder.get_known_periods():
+            taxpayer_id_type = person("taxpayer_id_type", period)
+            return taxpayer_id_type == taxpayer_id_type.possible_values.VALID_SSN
+
+        ssn_card_type = person("ssn_card_type", period)
+        ssn_card_types = ssn_card_type.possible_values
+        return ssn_card_type == ssn_card_types.CITIZEN

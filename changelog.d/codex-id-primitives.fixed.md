@@ -1,1 +1,1 @@
-Added statute-facing taxpayer ID primitives, including `taxpayer_id_type` and `has_valid_ssn`, and updated federal SSN- and TIN-gated logic to consume them while keeping `has_itin` as a migration alias for `has_tin`.
+Added statute-facing taxpayer ID primitives, including `taxpayer_id_type` and `has_valid_ssn`, updated federal SSN- and TIN-gated logic to consume them, and kept `has_itin` as a migration alias for `has_tin`.

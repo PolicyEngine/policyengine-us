@@ -14,6 +14,7 @@
   period: 2023
   input:
     ssn_card_type: NON_CITIZEN_VALID_EAD
+    has_valid_ssn: true
   output:
     meets_ctc_child_identification_requirements: true
 

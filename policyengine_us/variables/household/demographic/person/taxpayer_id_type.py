@@ -16,13 +16,20 @@ class taxpayer_id_type(Variable):
     label = "Taxpayer ID type for federal tax identification rules"
 
     def formula(person, period, parameters):
-        ssn_card_type = person("ssn_card_type", period)
-        ssn_card_types = ssn_card_type.possible_values
+        has_valid_ssn = person("has_valid_ssn", period)
 
-        derived = np.full(person.count, TaxpayerIDType.OTHER_TIN.name, dtype=object)
-        derived[
-            (ssn_card_type == ssn_card_types.CITIZEN)
-            | (ssn_card_type == ssn_card_types.NON_CITIZEN_VALID_EAD)
-        ] = TaxpayerIDType.VALID_SSN.name
-        derived[ssn_card_type == ssn_card_types.NONE] = TaxpayerIDType.NONE.name
+        simulation = person.simulation
+        tin_holder = simulation.get_holder("has_tin")
+        if period in tin_holder.get_known_periods():
+            has_tin = tin_holder.get_array(period)
+        else:
+            legacy_holder = simulation.get_holder("has_itin")
+            if period in legacy_holder.get_known_periods():
+                has_tin = legacy_holder.get_array(period)
+            else:
+                has_tin = has_valid_ssn
+
+        derived = np.full(person.count, TaxpayerIDType.NONE.name, dtype=object)
+        derived[has_tin] = TaxpayerIDType.OTHER_TIN.name
+        derived[has_valid_ssn] = TaxpayerIDType.VALID_SSN.name
         return TaxpayerIDType.encode(derived)

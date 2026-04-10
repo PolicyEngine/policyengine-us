@@ -305,7 +305,7 @@
     ctc: 500
     ctc_adult_individual_maximum: [0, 500]  # ODC for 17-year-old
 
-- name: Child without the required SSN gets ODC instead of child CTC in 2024
+- name: Child with ITIN but without the required SSN gets ODC instead of child CTC in 2024
   period: 2024
   input:
     people:
@@ -315,6 +315,7 @@
         age: 10
         is_tax_unit_dependent: true
         ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -326,6 +327,28 @@
     refundable_ctc: 0
     non_refundable_ctc: 500
     ctc: 500
+
+- name: Child with explicit valid SSN gets child CTC instead of ODC in 2024
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        ssn_card_type: CITIZEN
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+        has_valid_ssn: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        income_tax_before_credits: 2_000
+  output:
+    ctc_qualifying_child: [false, true]
+    ctc_child_individual_maximum: [0, 2_000]
+    ctc_adult_individual_maximum: [0, 0]
+    ctc: 2_000
 
 - name: ITIN-only filer can still claim ODC for an adult dependent in 2026
   period: 2026
