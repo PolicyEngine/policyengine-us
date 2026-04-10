@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class id_line_18_deductions(Variable):
+class id_qualified_business_income_and_federal_schedule_1a_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Idaho Form 40 line 18 deductions"
+    label = "Idaho qualified business income and federal Schedule 1-A deductions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID

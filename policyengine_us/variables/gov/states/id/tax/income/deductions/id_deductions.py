@@ -16,5 +16,6 @@ class id_deductions(Variable):
     def formula(tax_unit, period, parameters):
         itm_ded = tax_unit("id_itemized_deductions", period)
         std_ded = tax_unit("standard_deduction", period)
-        # Idaho Form 40 line 18 deductions are modeled separately.
+        # Idaho qualified business income and federal Schedule 1-A deductions
+        # are modeled separately.
         return max_(itm_ded, std_ded)
