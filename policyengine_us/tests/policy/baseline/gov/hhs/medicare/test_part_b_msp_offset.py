@@ -86,3 +86,58 @@ def test_medicare_part_b_premiums_are_zero_when_not_enrolled():
 
     assert sim.calculate("msp_part_b_premium_coverage", PERIOD)[0] == pytest.approx(0)
     assert sim.calculate("medicare_part_b_premiums", PERIOD)[0] == pytest.approx(0)
+
+
+def test_legacy_medicare_part_b_input_uprates_forward():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {"2024": 65},
+                    "medicare_part_b_premiums": {"2024": 1_000},
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("medicare_part_b_premiums", "2025")[0] == pytest.approx(
+        1_030.8833,
+        abs=1e-3,
+    )
+
+
+def test_msp_part_b_premium_coverage_scales_with_eligible_months():
+    monthly_eligibility = {
+        f"{PERIOD}-{month:02d}": month <= 3
+        for month in range(1, 13)
+    }
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "medicare_enrolled": {PERIOD: True},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "msp_income_eligible": monthly_eligibility,
+                    "msp_asset_eligible": monthly_eligibility,
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("msp_part_b_premium_coverage", PERIOD)[0] == pytest.approx(
+        555,
+        abs=1e-6,
+    )

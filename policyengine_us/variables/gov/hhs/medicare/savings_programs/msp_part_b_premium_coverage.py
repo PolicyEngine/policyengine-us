@@ -24,10 +24,16 @@ class msp_part_b_premium_coverage(Variable):
     """
 
     def formula(person, period, parameters):
-        first_month = period.first_month
         enrolled = person("medicare_enrolled", period)
-        income_eligible = person("msp_income_eligible", first_month)
-        asset_eligible = person("msp_asset_eligible", first_month)
-        covered_standard_premium = person("base_part_b_premium", period)
-        eligible_for_coverage = enrolled & income_eligible & asset_eligible
-        return where(eligible_for_coverage, covered_standard_premium, 0)
+        monthly_standard_premium = person("base_part_b_premium", period) / MONTHS_IN_YEAR
+        monthly_coverage = 0
+        for month in period.get_subperiods(MONTH):
+            income_eligible = person("msp_income_eligible", month)
+            asset_eligible = person("msp_asset_eligible", month)
+            eligible_for_coverage = enrolled & income_eligible & asset_eligible
+            monthly_coverage += where(
+                eligible_for_coverage,
+                monthly_standard_premium,
+                0,
+            )
+        return monthly_coverage

@@ -15,7 +15,7 @@
   period: 2025
   input:
     age: 65
-    tax_unit_married: true
+    filing_status: JOINT
     adjusted_gross_income:
       2023: 266_001  # IRMAA uses income from 2 years prior
     tax_exempt_interest_income:
@@ -54,7 +54,7 @@
   period: 2025
   input:
     age: 65
-    tax_unit_married: true
+    filing_status: JOINT
     adjusted_gross_income:
       2023: 200_000  # IRMAA uses income from 2 years prior
     tax_exempt_interest_income:
@@ -67,7 +67,7 @@
   period: 2025
   input:
     age: 65
-    tax_unit_married: true
+    filing_status: JOINT
     adjusted_gross_income:
       2023: 1_000_000  # IRMAA uses income from 2 years prior
     tax_exempt_interest_income:

@@ -4,8 +4,9 @@ values:
     # Assumes all are pre-tax.
     - traditional_401k_contributions
     - traditional_403b_contributions
-    # Assumes employer for now.
-    - health_insurance_premiums
+    # Assumes employer-sponsored premiums only; Medicare Part B is not a
+    # pre-tax payroll deduction.
+    - health_insurance_premiums_without_medicare_part_b
     # HSA contributions can be either through pre-tax.
     - health_savings_account_payroll_contributions
 metadata:
