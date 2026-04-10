@@ -7,6 +7,34 @@ from policyengine_us.variables.gov.simulation.labor_supply_response.labor_supply
 )
 
 
+def _mock_parameters(
+    *,
+    income_all=0,
+    income_base=0,
+    substitution_all=0,
+    primary_decile_1=0,
+    secondary=0,
+):
+    parameters = Mock()
+    p = Mock()
+    income = Mock()
+    income.all = income_all
+    income.base = income_base
+    substitution = Mock()
+    substitution.all = substitution_all
+    primary = Mock()
+    for decile in range(1, 11):
+        setattr(primary, str(decile), primary_decile_1 if decile == 1 else 0)
+    by_position = Mock()
+    by_position.primary = primary
+    by_position.secondary = secondary
+    substitution.by_position_and_decile = by_position
+    p.elasticities.income = income
+    p.elasticities.substitution = substitution
+    parameters.return_value.gov.simulation.labor_supply_responses = p
+    return parameters
+
+
 class TestLaborSupplyBehavioralResponse:
     """Test all code paths in labor_supply_behavioral_response."""
 
@@ -16,7 +44,7 @@ class TestLaborSupplyBehavioralResponse:
         person = Mock()
         person.simulation.baseline = None
         period = Mock()
-        parameters = Mock()
+        parameters = _mock_parameters()
 
         result = labor_supply_behavioral_response.formula(
             person, period, parameters
@@ -29,13 +57,7 @@ class TestLaborSupplyBehavioralResponse:
         person = Mock()
         person.simulation.baseline = Mock()  # Has baseline
         period = Mock()
-        parameters = Mock()
-
-        # Set elasticities to 0
-        p = Mock()
-        p.elasticities.income = 0
-        p.elasticities.substitution.all = 0
-        parameters.return_value.gov.simulation.labor_supply_responses = p
+        parameters = _mock_parameters()
 
         result = labor_supply_behavioral_response.formula(
             person, period, parameters
@@ -51,13 +73,7 @@ class TestLaborSupplyBehavioralResponse:
         simulation._lsr_calculating = True  # Already calculating
         person.simulation = simulation
         period = Mock()
-        parameters = Mock()
-
-        # Set non-zero elasticities
-        p = Mock()
-        p.elasticities.income = 0.1
-        p.elasticities.substitution.all = 0.2
-        parameters.return_value.gov.simulation.labor_supply_responses = p
+        parameters = _mock_parameters(income_base=0.1, substitution_all=0.2)
 
         result = labor_supply_behavioral_response.formula(
             person, period, parameters
@@ -87,11 +103,7 @@ class TestLaborSupplyBehavioralResponse:
         simulation._lsr_calculating = False
         person.simulation = simulation
         period = Mock()
-        parameters = Mock()
-        p = Mock()
-        p.elasticities.income = 0.1
-        p.elasticities.substitution.all = 0.2
-        parameters.return_value.gov.simulation.labor_supply_responses = p
+        parameters = _mock_parameters(income_base=0.1, substitution_all=0.2)
         measurements = {"reform_net_income": 1}
         mock_measurements.return_value = measurements
         mock_income_effect.return_value = 1_000
@@ -123,11 +135,7 @@ class TestLaborSupplyBehavioralResponse:
         simulation._lsr_calculating = False
         person.simulation = simulation
         period = Mock()
-        parameters = Mock()
-        p = Mock()
-        p.elasticities.income = 0.1
-        p.elasticities.substitution.all = 0.2
-        parameters.return_value.gov.simulation.labor_supply_responses = p
+        parameters = _mock_parameters(income_base=0.1, substitution_all=0.2)
         mock_measurements.side_effect = ValueError("Test exception")
 
         with pytest.raises(ValueError):
@@ -160,11 +168,7 @@ class TestLaborSupplyBehavioralResponse:
         simulation._lsr_calculating = False
         person.simulation = simulation
         period = Mock()
-        parameters = Mock()
-        p = Mock()
-        p.elasticities.income = 0.1
-        p.elasticities.substitution.all = 0.2
-        parameters.return_value.gov.simulation.labor_supply_responses = p
+        parameters = _mock_parameters(income_base=0.1, substitution_all=0.2)
         measurements = {"baseline_net_income": 1}
         mock_measurements.return_value = measurements
         mock_income_effect.return_value = 700
