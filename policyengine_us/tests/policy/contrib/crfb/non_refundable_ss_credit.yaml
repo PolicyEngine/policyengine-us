@@ -145,3 +145,16 @@
     # Phase out = 6% * (165k - 150k) = $900
     # Credit = max(0, 600 - 900) = 0
     ss_credit: 0
+
+- name: Late-year SS credit still reduces non-refundable income tax
+  period: 2073
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    highest_tax_rate: 0.35
+    ss_credit: 600
+    income_tax_non_refundable_credits: 600

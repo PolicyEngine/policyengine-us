@@ -86,7 +86,6 @@ def non_refundable_ss_credit_reform() -> Reform:
     def modify_parameters(parameters):
         parameters.gov.irs.credits.non_refundable.update(
             start=instant("2026-01-01"),
-            stop=instant("2035-12-31"),
             value=[
                 "foreign_tax_credit",
                 "cdcc",

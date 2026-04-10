@@ -18,7 +18,24 @@ class labor_supply_behavioral_response(Variable):
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
-        if p.elasticities.income == 0 and p.elasticities.substitution.all == 0:
+
+        income_elasticities = p.elasticities.income
+        substitution_elasticities = p.elasticities.substitution
+        primary_elasticities = (
+            substitution_elasticities.by_position_and_decile.primary
+        )
+        no_income_response = (
+            income_elasticities.all == 0 and income_elasticities.base == 0
+        )
+        no_substitution_response = (
+            substitution_elasticities.all == 0
+            and substitution_elasticities.by_position_and_decile.secondary == 0
+            and all(
+                getattr(primary_elasticities, str(decile)) == 0
+                for decile in range(1, 11)
+            )
+        )
+        if no_income_response and no_substitution_response:
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
