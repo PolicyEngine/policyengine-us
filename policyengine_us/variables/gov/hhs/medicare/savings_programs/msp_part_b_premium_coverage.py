@@ -25,7 +25,9 @@ class msp_part_b_premium_coverage(Variable):
 
     def formula(person, period, parameters):
         enrolled = person("medicare_enrolled", period)
-        monthly_standard_premium = person("base_part_b_premium", period) / MONTHS_IN_YEAR
+        monthly_standard_premium = (
+            person("base_part_b_premium", period) / MONTHS_IN_YEAR
+        )
         monthly_coverage = 0
         for month in period.get_subperiods(MONTH):
             income_eligible = person("msp_income_eligible", month)

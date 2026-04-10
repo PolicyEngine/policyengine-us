@@ -114,8 +114,7 @@ def test_legacy_medicare_part_b_input_uprates_forward():
 
 def test_msp_part_b_premium_coverage_scales_with_eligible_months():
     monthly_eligibility = {
-        f"{PERIOD}-{month:02d}": month <= 3
-        for month in range(1, 13)
+        f"{PERIOD}-{month:02d}": month <= 3 for month in range(1, 13)
     }
     sim = Simulation(
         tax_benefit_system=SYSTEM,

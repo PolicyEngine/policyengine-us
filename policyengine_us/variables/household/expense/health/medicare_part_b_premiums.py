@@ -28,14 +28,14 @@ class medicare_part_b_premiums(Variable):
                 last_known_period = eligible_periods[-1]
                 last_known_value = holder.get_array(last_known_period)
                 if last_known_value is not None:
-                    moop_per_capita = parameters(period).calibration.gov.hhs.cms.moop_per_capita
+                    moop_per_capita = parameters(
+                        period
+                    ).calibration.gov.hhs.cms.moop_per_capita
                     last_known_moop_per_capita = parameters(
                         last_known_period
                     ).calibration.gov.hhs.cms.moop_per_capita
                     return (
-                        last_known_value
-                        * moop_per_capita
-                        / last_known_moop_per_capita
+                        last_known_value * moop_per_capita / last_known_moop_per_capita
                     )
 
         enrolled = person("medicare_enrolled", period)
