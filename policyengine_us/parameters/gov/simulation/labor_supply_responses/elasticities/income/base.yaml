@@ -1,0 +1,11 @@
+description: Base income elasticity of labor supply for working-age individuals (under 65). This value is multiplied by the age multiplier for individuals 65 and over. Typically negative, indicating that higher income reduces labor supply.
+values:
+  2020-01-01: 0
+metadata:
+  unit: /1
+  label: base income elasticity below threshold
+  reference:
+    - title: "CBO Working Paper 2012-12: A Review of Recent Research on Labor Supply Elasticities"
+      href: https://www.cbo.gov/publication/43675
+    - title: "CBO Working Paper 2012-13: Review of Estimates of the Frisch Elasticity of Labor Supply"
+      href: https://www.cbo.gov/publication/43676
