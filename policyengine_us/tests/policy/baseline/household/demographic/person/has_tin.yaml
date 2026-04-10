@@ -1,4 +1,18 @@
-- name: has_tin follows legacy has_itin input
+- name: has_tin follows canonical has_tin input
+  period: 2024
+  input:
+    has_tin: false
+  output:
+    has_tin: false
+
+- name: has_tin stays true when canonical has_tin input is true
+  period: 2024
+  input:
+    has_tin: true
+  output:
+    has_tin: true
+
+- name: has_tin still follows legacy has_itin input during migration
   period: 2024
   input:
     has_itin: false
