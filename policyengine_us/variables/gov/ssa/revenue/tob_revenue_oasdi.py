@@ -34,14 +34,9 @@ class tob_revenue_oasdi(Variable):
         gross_ss = tax_unit("tax_unit_social_security", period)
         taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
 
-        # Allocate total TOB based on tier 1 proportion
-        # Use np.divide with out/where to handle division by zero safely
-        oasdi_share = np.divide(
-            tier1,
-            total_taxable,
-            out=np.zeros_like(tier1, dtype=np.float32),
-            where=total_taxable != 0,
-        )
+        # Calculate the OASDI share cap - the original 1983 tier
+        oasdi_share = p.oasdi_share_of_gross_ss * gross_ss
+        capped_taxable_ss = min_(taxable_ss, oasdi_share)
 
         # === Branch 1: Tax with NO taxable SS ===
         branch_no_ss = sim.get_branch("oasdi_no_ss", clone_system=True)

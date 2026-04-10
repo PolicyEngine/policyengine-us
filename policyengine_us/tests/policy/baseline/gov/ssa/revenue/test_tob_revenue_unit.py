@@ -14,6 +14,20 @@ from policyengine_us.variables.gov.ssa.revenue.tob_revenue_medicare_hi import (
 )
 
 
+def _mock_revenue_branch(income_tax):
+    branch = Mock()
+    branch.tax_benefit_system = Mock()
+    branch.tax_benefit_system.variables = Mock()
+    branch.tax_benefit_system.variables.keys.return_value = []
+    branch.input_variables = []
+    branch.tax_unit.return_value = np.array([income_tax])
+    branch.delete_arrays = Mock()
+    tax_unit_population = Mock()
+    tax_unit_population.get_holder.return_value = Mock()
+    branch.populations = {"tax_unit": tax_unit_population}
+    return branch
+
+
 class TestTobRevenueTotal:
     """Unit tests for tob_revenue_total."""
 
@@ -177,151 +191,75 @@ class TestTobRevenueTotal:
 
 
 class TestTobRevenueOasdi:
-    """Unit tests for tob_revenue_oasdi."""
+    """Unit tests for tob_revenue_oasdi's double-branch allocation."""
 
-    def test_zero_income(self):
-        """Test with zero income returns zero."""
+    def test_uses_capped_social_security_branch(self):
+        """OASDI is the tax difference between capped SS and no SS."""
         tax_unit = Mock()
+        sim = Mock()
+        tax_unit.simulation = sim
+        period = Mock()
+        parameters = Mock()
+        parameters.return_value.gov.ssa.revenue.oasdi_share_of_gross_ss = 0.5
+
         tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([0]),
-            "taxable_social_security_tier_1": np.array([0]),
-            "taxable_social_security_tier_2": np.array([0]),
+            "tax_unit_social_security": np.array([10_000]),
+            "tax_unit_taxable_social_security": np.array([8_500]),
         }[var]
 
-        result = tob_revenue_oasdi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0
+        branch_no_ss = _mock_revenue_branch(1_000)
+        branch_capped = _mock_revenue_branch(1_200)
+        branches = {
+            "oasdi_no_ss": branch_no_ss,
+            "oasdi_capped": branch_capped,
+        }
+        sim.get_branch.side_effect = lambda name, **kwargs: branches[name]
+        sim.branches = {
+            "oasdi_no_ss": branch_no_ss,
+            "oasdi_capped": branch_capped,
+        }
 
-    def test_only_tier_1(self):
-        """Test when only tier 1 exists (100% to OASDI)."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000]),
-            "taxable_social_security_tier_1": np.array([4_500]),
-            "taxable_social_security_tier_2": np.array([0]),
-        }[var]
+        result = tob_revenue_oasdi.formula(tax_unit, period, parameters)
+        capped_input = branch_capped.populations["tax_unit"].get_holder.return_value
 
-        result = tob_revenue_oasdi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 1_000  # 100% of revenue goes to OASDI
-
-    def test_tier_1_and_tier_2(self):
-        """Test allocation between OASDI and Medicare HI."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([5_000]),
-            "taxable_social_security_tier_1": np.array([4_500]),
-            "taxable_social_security_tier_2": np.array([21_000]),
-        }[var]
-
-        result = tob_revenue_oasdi.formula(tax_unit, Mock(), Mock())
-        # OASDI share = 4_500 / (4_500 + 21_000) = 4_500 / 25_500 ≈ 0.1765
-        # OASDI revenue = 5_000 * 0.1765 ≈ 882.35
-        assert abs(result[0] - 882.35) < 1
-
-    def test_division_by_zero(self):
-        """Test safe division when total taxable is zero."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000]),
-            "taxable_social_security_tier_1": np.array([0]),
-            "taxable_social_security_tier_2": np.array([0]),
-        }[var]
-
-        result = tob_revenue_oasdi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0  # Safe division returns 0
-
-    def test_multiple_tax_units(self):
-        """Test with multiple tax units."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000, 2_000, 0]),
-            "taxable_social_security_tier_1": np.array([4_500, 4_500, 0]),
-            "taxable_social_security_tier_2": np.array([0, 4_500, 0]),
-        }[var]
-
-        result = tob_revenue_oasdi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 1_000  # 100% to OASDI
-        assert result[1] == 1_000  # 50% to OASDI
-        assert result[2] == 0  # No revenue
+        assert result[0] == 200
+        capped_input.set_input.assert_called_once()
+        assert capped_input.set_input.call_args.args[0] is period
+        assert capped_input.set_input.call_args.args[1][0] == 5_000
+        assert "oasdi_no_ss" not in sim.branches
+        assert "oasdi_capped" not in sim.branches
 
 
 class TestTobRevenueMedicareHi:
-    """Unit tests for tob_revenue_medicare_hi."""
+    """Unit tests for tob_revenue_medicare_hi's double-branch allocation."""
 
-    def test_zero_income(self):
-        """Test with zero income returns zero."""
+    def test_uses_full_minus_capped_social_security_branch(self):
+        """HI is the tax difference between full SS and capped SS."""
         tax_unit = Mock()
+        sim = Mock()
+        tax_unit.simulation = sim
+        period = Mock()
+        parameters = Mock()
+        parameters.return_value.gov.ssa.revenue.oasdi_share_of_gross_ss = 0.5
+
         tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([0]),
-            "taxable_social_security_tier_1": np.array([0]),
-            "taxable_social_security_tier_2": np.array([0]),
+            "tax_unit_social_security": np.array([10_000]),
+            "tax_unit_taxable_social_security": np.array([8_500]),
+            "income_tax": np.array([1_500]),
         }[var]
 
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0
+        branch_capped = _mock_revenue_branch(1_200)
+        sim.get_branch.return_value = branch_capped
+        sim.branches = {"hi_capped": branch_capped}
 
-    def test_only_tier_2(self):
-        """Test when only tier 2 exists (100% to Medicare HI)."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000]),
-            "taxable_social_security_tier_1": np.array([0]),
-            "taxable_social_security_tier_2": np.array([21_000]),
-        }[var]
+        result = tob_revenue_medicare_hi.formula(tax_unit, period, parameters)
+        capped_input = branch_capped.populations["tax_unit"].get_holder.return_value
 
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 1_000  # 100% of revenue goes to Medicare HI
-
-    def test_tier_1_and_tier_2(self):
-        """Test allocation between OASDI and Medicare HI."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([5_000]),
-            "taxable_social_security_tier_1": np.array([4_500]),
-            "taxable_social_security_tier_2": np.array([21_000]),
-        }[var]
-
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        # Medicare share = 21_000 / (4_500 + 21_000) = 21_000 / 25_500 ≈ 0.8235
-        # Medicare revenue = 5_000 * 0.8235 ≈ 4117.65
-        assert abs(result[0] - 4117.65) < 1
-
-    def test_tier_1_only(self):
-        """Test when only tier 1 exists (0% to Medicare HI)."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000]),
-            "taxable_social_security_tier_1": np.array([4_500]),
-            "taxable_social_security_tier_2": np.array([0]),
-        }[var]
-
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0  # 0% to Medicare HI when only tier 1
-
-    def test_division_by_zero(self):
-        """Test safe division when total taxable is zero."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000]),
-            "taxable_social_security_tier_1": np.array([0]),
-            "taxable_social_security_tier_2": np.array([0]),
-        }[var]
-
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0  # Safe division returns 0
-
-    def test_multiple_tax_units(self):
-        """Test with multiple tax units."""
-        tax_unit = Mock()
-        tax_unit.side_effect = lambda var, period: {
-            "tob_revenue_total": np.array([1_000, 2_000, 3_000]),
-            "taxable_social_security_tier_1": np.array([4_500, 4_500, 0]),
-            "taxable_social_security_tier_2": np.array([0, 4_500, 9_000]),
-        }[var]
-
-        result = tob_revenue_medicare_hi.formula(tax_unit, Mock(), Mock())
-        assert result[0] == 0  # 0% to Medicare HI
-        assert result[1] == 1_000  # 50% to Medicare HI
-        assert result[2] == 3_000  # 100% to Medicare HI
+        assert result[0] == 300
+        capped_input.set_input.assert_called_once()
+        assert capped_input.set_input.call_args.args[0] is period
+        assert capped_input.set_input.call_args.args[1][0] == 5_000
+        assert "hi_capped" not in sim.branches
 
 
 class TestTobRevenueIntegration:

@@ -34,14 +34,9 @@ class tob_revenue_medicare_hi(Variable):
         gross_ss = tax_unit("tax_unit_social_security", period)
         taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
 
-        # Allocate total TOB based on tier 2 proportion
-        # Use np.divide with out/where to handle division by zero safely
-        medicare_share = np.divide(
-            tier2,
-            total_taxable,
-            out=np.zeros_like(tier2, dtype=np.float32),
-            where=total_taxable != 0,
-        )
+        # Calculate the OASDI share cap
+        oasdi_share = p.oasdi_share_of_gross_ss * gross_ss
+        capped_taxable_ss = min_(taxable_ss, oasdi_share)
 
         # === Current tax (with full taxable SS) ===
         tax_full_ss = tax_unit("income_tax", period)
