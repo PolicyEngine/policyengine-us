@@ -14,14 +14,10 @@ class income_adjusted_part_b_premium(Variable):
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         filing_status_holder = tax_unit.simulation.get_holder("filing_status")
-        if period in filing_status_holder.get_known_periods():
-            filing_status = filing_status_holder.get_array(period)
-            status = filing_status_holder.variable.possible_values
-            is_joint = filing_status == status.JOINT
-            is_separated = filing_status == status.SEPARATE
-        else:
-            is_joint = tax_unit("tax_unit_married", period)
-            is_separated = tax_unit.any(person("is_separated", period))
+        filing_status = tax_unit("filing_status", period)
+        status = filing_status_holder.variable.possible_values
+        is_joint = filing_status == status.JOINT
+        is_separated = filing_status == status.SEPARATE
         # Medicare Part B IRMAA is based on MAGI from 2 years prior
         # MAGI = AGI + tax-exempt interest
         prior_period = period.offset(-2, "year")

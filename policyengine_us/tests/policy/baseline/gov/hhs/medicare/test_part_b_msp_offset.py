@@ -140,3 +140,94 @@ def test_msp_part_b_premium_coverage_scales_with_eligible_months():
         555,
         abs=1e-6,
     )
+
+
+def test_medicare_part_b_premiums_do_not_depend_on_calculation_order():
+    no_msp_eligibility = {
+        f"{year}-{month:02d}": False
+        for year in ("2025", "2026")
+        for month in range(1, 13)
+    }
+    situation = {
+        "people": {
+            "person": {
+                "age": {"2025": 65, "2026": 66},
+                "medicare_enrolled": {"2025": True, "2026": True},
+                "income_adjusted_part_b_premium": {"2025": 2_220, "2026": 2_220},
+                "base_part_b_premium": {"2025": 2_220, "2026": 2_220},
+                "msp_income_eligible": no_msp_eligibility,
+                "msp_asset_eligible": no_msp_eligibility,
+            }
+        },
+        "households": {"household": {"members": ["person"]}},
+        "tax_units": {"tax_unit": {"members": ["person"]}},
+        "spm_units": {"spm_unit": {"members": ["person"]}},
+        "families": {"family": {"members": ["person"]}},
+        "marital_units": {"marital_unit": {"members": ["person"]}},
+    }
+
+    ordered_sim = Simulation(tax_benefit_system=SYSTEM, situation=situation)
+    ordered_sim.calculate("medicare_part_b_premiums", "2025")
+    ordered_result = ordered_sim.calculate("medicare_part_b_premiums", "2026")[0]
+
+    fresh_sim = Simulation(tax_benefit_system=SYSTEM, situation=situation)
+    fresh_result = fresh_sim.calculate("medicare_part_b_premiums", "2026")[0]
+
+    assert ordered_result == pytest.approx(fresh_result)
+    assert ordered_result == pytest.approx(2_220)
+
+
+def test_income_adjusted_part_b_premium_handles_direct_filing_status_inputs():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person_1": {
+                    "age": {PERIOD: 65},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "tax_exempt_interest_income": {"2023": 0},
+                },
+                "person_2": {
+                    "age": {PERIOD: 65},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "tax_exempt_interest_income": {"2023": 0},
+                },
+                "person_3": {
+                    "age": {PERIOD: 65},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "tax_exempt_interest_income": {"2023": 0},
+                },
+            },
+            "households": {
+                "household": {"members": ["person_1", "person_2", "person_3"]}
+            },
+            "tax_units": {
+                "joint_tax_unit": {
+                    "members": ["person_1", "person_2"],
+                    "filing_status": {PERIOD: "JOINT"},
+                    "adjusted_gross_income": {"2023": 1_000_000},
+                },
+                "single_tax_unit": {
+                    "members": ["person_3"],
+                    "filing_status": {PERIOD: "SINGLE"},
+                    "adjusted_gross_income": {"2023": 50_000},
+                },
+            },
+            "spm_units": {
+                "spm_unit": {"members": ["person_1", "person_2", "person_3"]}
+            },
+            "families": {"family": {"members": ["person_1", "person_2", "person_3"]}},
+            "marital_units": {
+                "marital_unit_1": {"members": ["person_1", "person_2"]},
+                "marital_unit_2": {"members": ["person_3"]},
+            },
+        },
+    )
+
+    result = sim.calculate("income_adjusted_part_b_premium", PERIOD)
+    assert result[0] == pytest.approx(7_546.8)
+    assert result[1] == pytest.approx(7_546.8)
+    assert result[2] == pytest.approx(2_220)
