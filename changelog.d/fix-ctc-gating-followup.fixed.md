@@ -1,1 +1,1 @@
-Fixed federal and reform CTC gating so child CTC, ODC, and reform overrides all follow the intended child-qualification and filer-identification rules.
+Fixed federal and reform CTC gating so child CTC, ODC, and reform overrides all follow the intended child-qualification and filer-identification rules, and introduced `has_tin` / `taxpayer_has_tin` compatibility variables for the TIN-side checks.

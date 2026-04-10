@@ -1,0 +1,13 @@
+- name: has_tin follows legacy has_itin input
+  period: 2024
+  input:
+    has_itin: false
+  output:
+    has_tin: false
+
+- name: has_tin stays true when legacy has_itin input is true
+  period: 2024
+  input:
+    has_itin: true
+  output:
+    has_tin: true

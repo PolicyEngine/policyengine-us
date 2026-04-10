@@ -11,6 +11,6 @@ class filer_meets_ctc_identification_requirements(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        has_tin = person("has_itin", period)
+        has_tin = person("has_tin", period)
         # The combined CTC/ODC is unavailable if any filer lacks an SSN or ITIN.
         return tax_unit.all(~head_or_spouse | has_tin)
