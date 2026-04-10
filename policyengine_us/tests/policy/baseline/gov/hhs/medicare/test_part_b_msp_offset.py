@@ -75,6 +75,33 @@ def test_medicare_part_b_premiums_are_zero_when_msp_covers_standard_premium():
     assert sim.calculate("medicare_part_b_premiums", PERIOD)[0] == pytest.approx(0)
 
 
+def test_medicare_cost_uses_gross_part_b_before_msp_offset():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "medicare_enrolled": {PERIOD: True},
+                    "base_part_a_premium": {PERIOD: 0},
+                    "income_adjusted_part_b_premium": {PERIOD: 2_220},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "msp_income_eligible": {f"{PERIOD}-01": True},
+                    "msp_asset_eligible": {f"{PERIOD}-01": True},
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("medicare_part_b_premiums", PERIOD)[0] == pytest.approx(0)
+    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(12_280)
+
+
 def test_medicare_part_b_premiums_are_zero_when_not_enrolled():
     sim = make_simulation(
         medicare_enrolled=False,

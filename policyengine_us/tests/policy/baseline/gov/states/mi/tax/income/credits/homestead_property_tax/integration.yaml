@@ -198,6 +198,7 @@
     employment_income: 56_000
     real_estate_taxes: 2_500
     age: 66
+    medicare_part_b_premiums: 0
     state_code: MI
   output: # (2500 - 56000 * 0.032) * 0.6 * 0.5
     mi_homestead_property_tax_credit_countable_property_tax: 2_500
