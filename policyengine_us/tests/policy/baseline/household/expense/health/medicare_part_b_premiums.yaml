@@ -1,0 +1,35 @@
+- name: Medicare Part B premiums equal modeled premium when enrolled
+  period: 2025
+  input:
+    medicare_enrolled: true
+    income_adjusted_part_b_premium: 4_440
+    msp_part_b_premium_coverage: 0
+  output:
+    medicare_part_b_premiums: 4_440
+
+- name: Medicare Part B premiums are fully offset when MSP covers the standard premium
+  period: 2025
+  input:
+    medicare_enrolled: true
+    income_adjusted_part_b_premium: 2_220
+    msp_part_b_premium_coverage: 2_220
+  output:
+    medicare_part_b_premiums: 0
+
+- name: Medicare Part B premiums preserve IRMAA above the MSP-covered standard premium
+  period: 2025
+  input:
+    medicare_enrolled: true
+    income_adjusted_part_b_premium: 4_440
+    msp_part_b_premium_coverage: 2_220
+  output:
+    medicare_part_b_premiums: 2_220
+
+- name: Medicare Part B premiums are zero when not enrolled
+  period: 2025
+  input:
+    medicare_enrolled: false
+    income_adjusted_part_b_premium: 2_220
+    msp_part_b_premium_coverage: 0
+  output:
+    medicare_part_b_premiums: 0

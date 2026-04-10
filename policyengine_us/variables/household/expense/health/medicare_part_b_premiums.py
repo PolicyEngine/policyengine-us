@@ -7,4 +7,9 @@ class medicare_part_b_premiums(Variable):
     label = "Medicare Part B premiums"
     definition_period = YEAR
     unit = USD
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+
+    def formula(person, period, parameters):
+        enrolled = person("medicare_enrolled", period)
+        gross_premium = person("income_adjusted_part_b_premium", period)
+        msp_coverage = person("msp_part_b_premium_coverage", period)
+        return max_(where(enrolled, gross_premium, 0) - msp_coverage, 0)
