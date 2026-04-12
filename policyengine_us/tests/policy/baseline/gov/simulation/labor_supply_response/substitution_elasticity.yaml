@@ -27,6 +27,19 @@
   output:
     substitution_elasticity: 0  # TODO: Debug why single person isn't getting primary earner elasticity
 
+- name: Primary earner at or above threshold gets substitution multiplier
+  period: 2023
+  input:
+    age: 70
+    employment_income_before_lsr: 50_000
+    self_employment_income_before_lsr: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_threshold: 65
+    gov.simulation.labor_supply_responses.elasticities.substitution.age_multiplier_over_threshold: 2.0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15
+  output:
+    substitution_elasticity: 0.30
+
 - name: Negative total earnings should have zero elasticity
   period: 2023
   input:
