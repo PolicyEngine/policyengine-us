@@ -13,9 +13,7 @@ class tx_tanf_categorically_eligible_person(Variable):
     defined_for = StateCode.TX
 
     def formula(person, period, parameters):
-        immigration_eligible = person(
-            "is_citizen_or_legal_immigrant", period.this_year
-        )
+        immigration_eligible = person("is_citizen_or_legal_immigrant", period.this_year)
         ssi = person("ssi", period)
 
         return immigration_eligible & (ssi == 0)

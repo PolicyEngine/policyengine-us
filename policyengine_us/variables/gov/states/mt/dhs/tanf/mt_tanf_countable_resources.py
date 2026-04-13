@@ -16,12 +16,8 @@ class mt_tanf_countable_resources(Variable):
 
     def formula(spm_unit, period, parameters):
         cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
-        vehicle_count = spm_unit.household(
-            "household_vehicles_owned", period.this_year
-        )
-        vehicle_value = spm_unit.household(
-            "household_vehicles_value", period.this_year
-        )
+        vehicle_count = spm_unit.household("household_vehicles_owned", period.this_year)
+        vehicle_value = spm_unit.household("household_vehicles_value", period.this_year)
 
         # Montana counts some non-home real property, but current CPS inputs
         # do not distinguish the excluded home from other property. Keep the

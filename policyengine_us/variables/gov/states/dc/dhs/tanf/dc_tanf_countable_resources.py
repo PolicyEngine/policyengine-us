@@ -14,4 +14,5 @@ class dc_tanf_countable_resources(Variable):
 
     def formula(spm_unit, period, parameters):
         return spm_unit("spm_unit_cash_assets", period.this_year)
+
     defined_for = StateCode.DC

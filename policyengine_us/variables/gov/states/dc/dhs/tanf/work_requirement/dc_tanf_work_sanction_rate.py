@@ -15,9 +15,7 @@ class dc_tanf_work_sanction_rate(Variable):
 
     def formula(spm_unit, period, parameters):
         enrolled = spm_unit("is_tanf_enrolled", period)
-        meets_work_requirements = spm_unit(
-            "dc_tanf_meets_work_requirements", period
-        )
+        meets_work_requirements = spm_unit("dc_tanf_meets_work_requirements", period)
         rate = parameters(period).gov.states.dc.dhs.tanf.work_requirement.sanction.rate
         # CPS does not observe applicant-side orientation / IRP compliance. Restrict
         # the sanction proxy to enrolled recipients, where we at least observe TANF

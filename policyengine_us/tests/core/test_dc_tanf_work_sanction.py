@@ -46,7 +46,13 @@ def make_simulation(
 
 
 @pytest.mark.parametrize(
-    ("period", "enrolled", "meets_work_requirements", "expected_rate", "expected_benefit"),
+    (
+        "period",
+        "enrolled",
+        "meets_work_requirements",
+        "expected_rate",
+        "expected_benefit",
+    ),
     [
         ("2023-01", True, False, 0.06, 94),
         ("2023-01", False, False, 0, 100),
@@ -73,6 +79,7 @@ def test_dc_tanf_work_sanction_rate_and_benefit(
 
 def test_dc_tanf_work_sanction_rate_parameter_schedule():
     assert (
-        SYSTEM.parameters("2026-10")
-        .gov.states.dc.dhs.tanf.work_requirement.sanction.rate
+        SYSTEM.parameters(
+            "2026-10"
+        ).gov.states.dc.dhs.tanf.work_requirement.sanction.rate
     ) == pytest.approx(0.25)
