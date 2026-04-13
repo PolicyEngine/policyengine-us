@@ -3,6 +3,7 @@ from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap i
     applied_state_non_refundable_credit,
 )
 
+
 class mo_wftc_potential(Variable):
     value_type = float
     entity = TaxUnit
