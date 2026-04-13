@@ -30,11 +30,16 @@ def test_microsim_runs(dataset: str, year: int):
             f"{decile_var} out of bounds."
         )
 
-    # Check that the microsim calculates important variables as nonzero in current year.
-    # Self-employment is net business income, so weighted totals can be negative
-    # when losses outweigh profits in the sampled records.
-    for var in ["employment_income", "self_employment_income"]:
-        assert sim.calc(var, period=2024).abs().sum() > 0, f"{var} is zero in 2024."
+    # Employment income should aggregate positive in the sample.
+    assert sim.calc("employment_income", period=2024).sum() > 0, (
+        "employment_income is zero in 2024."
+    )
+
+    # Self-employment is net business income, so weighted totals can be
+    # negative when losses outweigh profits in the sampled records.
+    assert sim.calc("self_employment_income", period=2024).abs().sum() > 0, (
+        "self_employment_income is zero in 2024."
+    )
 
 
 def test_county_persists_across_periods():
