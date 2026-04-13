@@ -4,17 +4,6 @@ from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap i
 )
 
 
-class ar_additional_tax_credit_for_qualified_individuals_potential(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Arkansas additional tax credit for qualified individuals"
-    unit = USD
-    definition_period = YEAR
-    defined_for = StateCode.AR
-
-    adds = ["ar_additional_tax_credit_for_qualified_individuals_person"]
-
-
 class ar_additional_tax_credit_for_qualified_individuals(Variable):
     value_type = float
     entity = TaxUnit
