@@ -4,23 +4,24 @@
     ut_claims_retirement_credit: false
     ut_ss_benefits_credit_max: 500
     state_code: UT
+    ut_income_tax_before_non_refundable_credits: 1000000
   output:
     ut_ss_benefits_credit: 500
-
 - name: UT Social Security Benefits Credit unit test 2
   period: 2022
   input:
     ut_claims_retirement_credit: true
     ut_ss_benefits_credit_max: 500
     state_code: UT
+    ut_income_tax_before_non_refundable_credits: 1000000
   output:
-    ut_ss_benefits_credit: 0  # tax unit claims retirement credit
-
+    ut_ss_benefits_credit: 0
 - name: UT Social Security Benefits Credit unit test 4
   period: 2022
   input:
     ut_claims_retirement_credit: false
     ut_ss_benefits_credit_max: 0
     state_code: UT
+    ut_income_tax_before_non_refundable_credits: 1000000
   output:
-    ut_ss_benefits_credit: 0  # max credit is 0
+    ut_ss_benefits_credit: 0

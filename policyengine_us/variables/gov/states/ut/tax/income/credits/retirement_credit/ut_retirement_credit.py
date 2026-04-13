@@ -1,4 +1,17 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
+
+class ut_retirement_credit_potential(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Utah retirement credit"
+    unit = USD
+    definition_period = YEAR
+    defined_for = "ut_claims_retirement_credit"
+
+    adds = ["ut_retirement_credit_max"]
 
 
 class ut_retirement_credit(Variable):
@@ -10,3 +23,16 @@ class ut_retirement_credit(Variable):
     defined_for = "ut_claims_retirement_credit"
 
     adds = ["ut_retirement_credit_max"]
+
+    def formula(tax_unit, period, parameters):
+        ordered_credits = parameters(
+            period
+        ).gov.states.ut.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ut_income_tax_before_non_refundable_credits",
+            "ut_retirement_credit",
+            "ut_retirement_credit_potential",
+        )
