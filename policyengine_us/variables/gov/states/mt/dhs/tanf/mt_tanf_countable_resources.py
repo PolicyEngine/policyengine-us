@@ -25,6 +25,9 @@ class mt_tanf_countable_resources(Variable):
         # Montana excludes one vehicle with the highest equity value. We only
         # observe total vehicle value and count, so approximate the countable
         # portion as the average value of vehicles beyond the first.
+        # NOTE: This overstates countable resources when vehicles differ in
+        # value (e.g., $11k + $1k → $6k countable vs $1k correct). A
+        # highest_vehicle_value input would allow the exact rule.
         average_vehicle_value = where(
             vehicle_count > 0,
             vehicle_value / vehicle_count,

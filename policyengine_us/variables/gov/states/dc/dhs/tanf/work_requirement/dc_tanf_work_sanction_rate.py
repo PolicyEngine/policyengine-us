@@ -9,7 +9,8 @@ class dc_tanf_work_sanction_rate(Variable):
     definition_period = MONTH
     defined_for = StateCode.DC
     reference = (
-        "https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DHS%20Work%20Requirement%20Sanctions.pdf",
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19f",
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18",
         "https://dhs.dc.gov/service/temporary-cash-assistance-needy-families-tanf",
     )
 

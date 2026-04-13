@@ -1,4 +1,4 @@
-description: DC TANF work sanction rate applied to cash benefits for enrolled cases that do not meet ongoing work requirements.
+description: The District of Columbia sets this share as the work sanction reduction under the Temporary Assistance for Needy Families program.
 
 values:
   2017-10-01: 0.06
@@ -9,7 +9,9 @@ metadata:
   period: month
   label: DC TANF work sanction rate
   reference:
-    - title: DC Department of Human Services, Work Requirement Sanctions
-      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DHS%20Work%20Requirement%20Sanctions.pdf
+    - title: DC Code § 4-205.19f(g) - TANF work requirement sanctions
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19f
+    - title: DC Code § 4-205.18(e) - TANF sanction cap
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18
     - title: DC Department of Human Services, Temporary Cash Assistance for Needy Families
       href: https://dhs.dc.gov/service/temporary-cash-assistance-needy-families-tanf

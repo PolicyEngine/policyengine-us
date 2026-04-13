@@ -26,6 +26,9 @@ class wa_tanf_countable_resources(Variable):
         # Washington excludes one transportation vehicle. We only observe
         # total household vehicle value and count, so treat the countable
         # portion as the average value of any vehicles beyond the first.
+        # NOTE: This overstates countable resources when vehicles differ in
+        # value (e.g., $11k + $1k → $6k countable vs $1k correct). A
+        # highest_vehicle_value input would allow the exact rule.
         average_vehicle_value = where(
             vehicle_count > 0,
             vehicle_value / vehicle_count,

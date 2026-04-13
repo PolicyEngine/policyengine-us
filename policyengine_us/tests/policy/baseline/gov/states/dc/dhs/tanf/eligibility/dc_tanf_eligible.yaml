@@ -42,7 +42,7 @@
   output:
     dc_tanf_eligible: false
 
-- name: Does not meet work requirement. 
+- name: Does not meet work requirement.
   period: 2023-01
   input:
     state_code: DC
@@ -50,5 +50,17 @@
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
     dc_tanf_meets_work_requirements: false
+  output:
+    dc_tanf_eligible: false
+
+- name: Enrolled recipient does not meet work requirement.
+  period: 2023-01
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible_person: true
+    dc_tanf_income_eligible: true
+    dc_tanf_resources_eligible: true
+    dc_tanf_meets_work_requirements: false
+    is_tanf_enrolled: true
   output:
     dc_tanf_eligible: true
