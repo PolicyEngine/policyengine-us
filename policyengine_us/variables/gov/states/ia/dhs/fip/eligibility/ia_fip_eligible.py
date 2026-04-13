@@ -15,7 +15,7 @@ class ia_fip_eligible(Variable):
         # Must meet immigration status eligibility (citizen or qualified alien)
         # Per Iowa legal code 441—41.23(239B), 41.23(5)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         resources_eligible = spm_unit("ia_fip_resources_eligible", period)
         income_eligible = spm_unit("ia_fip_income_eligible", period)

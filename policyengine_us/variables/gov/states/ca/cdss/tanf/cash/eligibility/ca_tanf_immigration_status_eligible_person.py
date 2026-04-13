@@ -10,7 +10,7 @@ class ca_tanf_immigration_status_eligible_person(Variable):
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"
 
     def formula(person, period, parameters):
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         p = parameters(period).gov.states.ca.cdss.tanf.cash.immigration_status
 
         immigration_status_str = immigration_status.decode_to_str()
