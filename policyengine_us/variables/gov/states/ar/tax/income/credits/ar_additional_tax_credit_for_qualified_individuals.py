@@ -12,8 +12,6 @@ class ar_additional_tax_credit_for_qualified_individuals(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    adds = ["ar_additional_tax_credit_for_qualified_individuals_person"]
-
     def formula(tax_unit, period, parameters):
         ordered_credits = parameters(
             period

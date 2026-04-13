@@ -17,12 +17,6 @@ class ar_personal_credits(Variable):
     )
     defined_for = StateCode.AR
 
-    adds = [
-        "ar_personal_credit_dependent",
-        "ar_personal_credits_base",
-        "ar_personal_credit_disabled_dependent",
-    ]
-
     def formula(tax_unit, period, parameters):
         ordered_credits = parameters(
             period
