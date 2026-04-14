@@ -15,6 +15,4 @@ class nm_works_resources_eligible(Variable):
         non_liquid_resources = spm_unit(
             "nm_works_countable_non_liquid_resources", period
         )
-        return (liquid_resources <= p.liquid) & (
-            non_liquid_resources <= p.non_liquid
-        )
+        return (liquid_resources <= p.liquid) & (non_liquid_resources <= p.non_liquid)
