@@ -217,3 +217,42 @@
   output:
     # Non-MA resident: defined_for = StateCode.MA returns 0
     ma_tafdc_noncountable_income: 0
+
+- name: SSI and dependent child earned income overlap is not double-counted
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 0
+        ssi_reported: 0
+        ma_tafdc_lump_sum_income: 0
+        wic: 0
+        is_tax_unit_dependent: false
+      child1:
+        age: 14
+        employment_income_before_lsr: 6_000  # YEAR -> 500/mo
+        ssi_reported: 10_000
+        social_security: 6_000  # YEAR -> 500/mo
+        ma_tafdc_lump_sum_income: 0
+        wic: 0
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: MA
+  output:
+    # Earned exclusion is 500 once, not 500 twice, plus 500 unearned SSI.
+    ma_tafdc_noncountable_income: 1_000

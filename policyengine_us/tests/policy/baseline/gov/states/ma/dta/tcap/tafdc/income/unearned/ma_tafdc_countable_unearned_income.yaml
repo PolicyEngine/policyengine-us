@@ -17,3 +17,42 @@
     state_code: MA
   output:
     ma_tafdc_countable_unearned_income: 0
+
+- name: Lump sum over cap counts above the excluded amount
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ma_tafdc_lump_sum_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ma_tafdc_countable_unearned_income: 400
+
+- name: SSI recipient excludes lump sum from countable unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi_reported: 10_000
+        ma_tafdc_lump_sum_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ma_tafdc_countable_unearned_income: 0

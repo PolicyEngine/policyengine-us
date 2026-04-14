@@ -18,15 +18,23 @@ class ma_tafdc_noncountable_income(Variable):
             period,
             parameters(period).gov.states.ma.dta.tcap.tafdc.income.noncountable.sources,
         )
-        # Conditional exclusions per 106 CMR 704.250
-        conditional = add(
+        # Use overlap-resolved differences from gross to avoid double-counting
+        # exclusions that can apply to the same income, such as SSI and
+        # dependent-child earned-income exclusions.
+        earned_excluded = add(spm_unit, period, ["ma_tcap_gross_earned_income"]) - add(
+            spm_unit, period, ["ma_tafdc_gross_earned_income"]
+        )
+        unearned_excluded = add(
             spm_unit,
             period,
-            [
-                "ma_tafdc_ssi_recipient_income_exclusion",
-                "ma_tafdc_dependent_child_earned_income_exclusion",
-                "ma_tafdc_lump_sum_income_exclusion",
-                "ma_tafdc_child_support_deduction",
-            ],
+            ["ma_tcap_gross_unearned_income", "ma_tafdc_lump_sum_income"],
+        ) - add(spm_unit, period, ["ma_tafdc_gross_unearned_income"])
+        child_support_deduction = add(
+            spm_unit, period, ["ma_tafdc_child_support_deduction"]
         )
-        return unconditional + conditional
+        return (
+            unconditional
+            + max_(earned_excluded, 0)
+            + max_(unearned_excluded, 0)
+            + child_support_deduction
+        )
