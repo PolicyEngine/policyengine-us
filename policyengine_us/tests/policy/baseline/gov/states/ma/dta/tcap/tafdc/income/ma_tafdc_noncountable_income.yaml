@@ -4,7 +4,7 @@
   input:
     people:
       person1:
-        wic: 50  # MONTH, (F)
+        ma_state_supplement: 3_600  # YEAR -> 300/mo, (A)(2)
         ssi_reported: 0
         employment_income_before_lsr: 0
         ma_tafdc_lump_sum_income: 0
@@ -25,15 +25,15 @@
         members: [person1]
         state_code: MA
   output:
-    # 50 + 200 + 500 + 100 + 100 + 500 = 1450
-    ma_tafdc_noncountable_income: 1_450
+    # 300 + 200 + 500 + 100 + 100 + 500 = 1700
+    ma_tafdc_noncountable_income: 1_700
 
 - name: Only SNAP
   period: 2024-01
   input:
     people:
       person1:
-        wic: 0
+        ma_state_supplement: 0
         ssi_reported: 0
         employment_income_before_lsr: 0
         ma_tafdc_lump_sum_income: 0
@@ -61,7 +61,7 @@
   input:
     people:
       person1:
-        wic: 0
+        ma_state_supplement: 0
         ssi_reported: 0
         employment_income_before_lsr: 0
         ma_tafdc_lump_sum_income: 0
@@ -94,7 +94,7 @@
         ssi_reported: 10_000  # YEAR
         employment_income_before_lsr: 12_000  # YEAR -> 1000/mo
         social_security: 6_000  # YEAR -> 500/mo
-        wic: 0
+        ma_state_supplement: 0
         ma_tafdc_lump_sum_income: 0
         is_tax_unit_dependent: false
     spm_units:
@@ -128,14 +128,14 @@
         employment_income_before_lsr: 0
         ssi_reported: 0
         ma_tafdc_lump_sum_income: 0
-        wic: 0
+        ma_state_supplement: 0
         is_tax_unit_dependent: false
       child1:
         age: 14
         employment_income_before_lsr: 6_000  # YEAR -> 500/mo
         ssi_reported: 0
         ma_tafdc_lump_sum_income: 0
-        wic: 0
+        ma_state_supplement: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -162,7 +162,7 @@
   input:
     people:
       person1:
-        wic: 50
+        ma_state_supplement: 1_200  # YEAR -> 100/mo
         ssi_reported: 0
         employment_income_before_lsr: 0
         ma_tafdc_lump_sum_income: 1_000
@@ -183,10 +183,10 @@
         members: [person1]
         state_code: MA
   output:
-    # Unconditional: WIC 50
+    # Unconditional: state supplement 100
     # Conditional (B): lump sum capped at 600
-    # Total: 50 + 600 = 650
-    ma_tafdc_noncountable_income: 650
+    # Total: 100 + 600 = 700
+    ma_tafdc_noncountable_income: 700
 
 - name: Non-MA resident gets zero noncountable income.
   period: 2024-01
@@ -194,7 +194,7 @@
   input:
     people:
       person1:
-        wic: 50
+        ma_state_supplement: 1_200  # YEAR -> 100/mo
         ssi_reported: 10_000  # YEAR
         employment_income_before_lsr: 12_000  # YEAR -> 1000/mo
         ma_tafdc_lump_sum_income: 0
@@ -228,7 +228,7 @@
         employment_income_before_lsr: 0
         ssi_reported: 0
         ma_tafdc_lump_sum_income: 0
-        wic: 0
+        ma_state_supplement: 0
         is_tax_unit_dependent: false
       child1:
         age: 14
@@ -236,7 +236,7 @@
         ssi_reported: 10_000
         social_security: 6_000  # YEAR -> 500/mo
         ma_tafdc_lump_sum_income: 0
-        wic: 0
+        ma_state_supplement: 0
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -256,3 +256,33 @@
   output:
     # Earned exclusion is 500 once, not 500 twice, plus 500 unearned SSI.
     ma_tafdc_noncountable_income: 1_000
+
+- name: WIC is not counted as noncountable income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wic: 50
+        ma_state_supplement: 0
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_noncountable_income: 0
