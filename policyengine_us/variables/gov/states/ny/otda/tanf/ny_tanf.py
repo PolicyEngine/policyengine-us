@@ -6,17 +6,11 @@ class ny_tanf(Variable):
     entity = SPMUnit
     label = "New York TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "ny_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        grant_standard = spm_unit("ny_tanf_grant_standard", period)
-        income = add(
-            spm_unit,
-            period,
-            [
-                "ny_tanf_countable_earned_income",
-                "ny_tanf_countable_gross_unearned_income",
-            ],
-        )
-        return max_(grant_standard - income, 0)
+        need_standard = spm_unit("ny_tanf_need_standard", period)
+        income = spm_unit("ny_tanf_countable_income", period)
+        benefit = max_(need_standard - income, 0)
+        return min_(benefit, need_standard)

@@ -1,0 +1,113 @@
+# Arizona Families Tax Rebate subtraction is based on the amount actually
+# received and included in federal AGI, not on current-year dependents.
+
+- name: Arizona rebate subtraction defaults to zero
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 35
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: AZ
+  output:
+    az_families_tax_rebate_subtraction: 0
+
+- name: Arizona rebate subtraction uses the reported received amount
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 35
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        filing_status: SINGLE
+        az_families_tax_rebate_subtraction_reported: 500
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: AZ
+  output:
+    az_families_tax_rebate_subtraction: 500
+
+- name: Arizona joint filers can report a larger received rebate amount
+  period: 2025
+  input:
+    people:
+      filer1:
+        age: 40
+      filer2:
+        age: 38
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+      child3:
+        age: 17
+        is_tax_unit_dependent: true
+      child4:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer1, filer2, child1, child2, child3, child4]
+        filing_status: JOINT
+        az_families_tax_rebate_subtraction_reported: 700
+    households:
+      household:
+        members: [filer1, filer2, child1, child2, child3, child4]
+        state_code: AZ
+  output:
+    az_families_tax_rebate_subtraction: 700
+
+- name: Arizona reported rebate does not carry into later tax years
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [filer]
+        az_families_tax_rebate_subtraction_reported:
+          2024: 500
+    households:
+      household:
+        members: [filer]
+        state_code: AZ
+  output:
+    az_families_tax_rebate_subtraction: 0
+
+- name: Non-Arizona filers do not get the Arizona subtraction
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [filer]
+        az_families_tax_rebate_subtraction_reported: 500
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    az_families_tax_rebate_subtraction: 0

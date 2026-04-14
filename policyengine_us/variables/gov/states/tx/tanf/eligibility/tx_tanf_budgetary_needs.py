@@ -20,9 +20,7 @@ class tx_tanf_budgetary_needs(Variable):
         p = parameters(period).gov.states.tx.tanf.needs_standard
 
         # Determine caretaker type
-        non_caretaker = (
-            caretaker_type == caretaker_type.possible_values.NON_CARETAKER
-        )
+        non_caretaker = caretaker_type == caretaker_type.possible_values.NON_CARETAKER
         caretaker_without_second = (
             caretaker_type
             == caretaker_type.possible_values.CARETAKER_WITHOUT_SECOND_PARENT
@@ -35,21 +33,15 @@ class tx_tanf_budgetary_needs(Variable):
         # For sizes <= 15, use table; for sizes > 15, use size 15 + increment
         size_capped = min_(size, 15)
         additional_people = max_(size - 15, 0)
-        additional_amount = (
-            additional_people * p.budgetary_needs.additional_person
-        )
+        additional_amount = additional_people * p.budgetary_needs.additional_person
 
         # Get base amount for size (capped at 15)
         base_amount = select(
             [non_caretaker, caretaker_without_second, caretaker_with_second],
             [
                 p.budgetary_needs.non_caretaker.calc(size_capped),
-                p.budgetary_needs.caretaker_without_second_parent.calc(
-                    size_capped
-                ),
-                p.budgetary_needs.caretaker_with_second_parent.calc(
-                    size_capped
-                ),
+                p.budgetary_needs.caretaker_without_second_parent.calc(size_capped),
+                p.budgetary_needs.caretaker_with_second_parent.calc(size_capped),
             ],
             default=0,
         )

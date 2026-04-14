@@ -4,11 +4,11 @@ from policyengine_us.model_api import *
 class co_non_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Non-refundable Child Tax Credit replicated to include the Colorado limitations"
-    unit = USD
-    documentation = (
-        "Total value of the non-refundable portion of the Child Tax Credit."
+    label = (
+        "Non-refundable Child Tax Credit replicated to include the Colorado limitations"
     )
+    unit = USD
+    documentation = "Total value of the non-refundable portion of the Child Tax Credit."
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.

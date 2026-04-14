@@ -9,7 +9,20 @@
     # $19,440 unearned -> ($1,620 - $20) = $1,600/month countable
     # $1,506 < $1,600 < $1,694.25 (120-135% FPL) -> QI income range
     ssi_unearned_income: 19_440
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
+    is_medicaid_eligible: false
+  output:
+    is_qi_eligible: true
+
+- name: QI eligible - income exactly at 120% FPL, no Medicaid
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $18,312 unearned -> ($1,526 - $20) = $1,506/month countable
+    ssi_unearned_income: 18_312
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     is_medicaid_eligible: false
   output:
@@ -22,9 +35,22 @@
     is_medicare_eligible: true
     # Income in QI range
     ssi_unearned_income: 19_440
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     # But eligible for Medicaid
     is_medicaid_eligible: true
+  output:
+    is_qi_eligible: false
+
+- name: QI not eligible - income exactly at 135% FPL
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $20,571 unearned -> ($1,714.25 - $20) = $1,694.25/month countable
+    ssi_unearned_income: 20_571
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
+    is_medicaid_eligible: false
   output:
     is_qi_eligible: false

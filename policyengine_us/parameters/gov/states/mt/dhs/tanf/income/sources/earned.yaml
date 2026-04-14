@@ -1,0 +1,14 @@
+description: Montana uses these income sources as earned income under the Temporary Assistance for Needy Families program.
+values:
+  1997-02-01:
+    - employment_income_before_lsr
+    - self_employment_income_before_lsr
+metadata:
+  unit: list
+  period: year
+  label: Montana TANF earned income sources
+  reference:
+    - title: TANF 502-1 Earned Income
+      href: https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF502.12.23.pdf#page=1
+    - title: Mont. Admin. r. 37.78.406 - TANF CASH ASSISTANCE; INCOME DISREGARDS AND INCOME DEEMING, Sections (1)-(2)
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.78.406

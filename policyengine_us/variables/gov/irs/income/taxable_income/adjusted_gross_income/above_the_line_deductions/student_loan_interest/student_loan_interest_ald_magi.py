@@ -24,9 +24,7 @@ class student_loan_interest_ald_magi(Variable):
         ]
         total_gross_income = 0
         for source in gross_income:
-            total_gross_income += not_dependent * max_(
-                0, add(person, period, [source])
-            )
+            total_gross_income += not_dependent * max_(0, add(person, period, [source]))
         # Modified gross income is calculated with certain deductions excluded
         person_alds = p_irs.ald.student_loan_interest.magi.person_alds
         person_ald_vars = [f"{ald}_person" for ald in person_alds]

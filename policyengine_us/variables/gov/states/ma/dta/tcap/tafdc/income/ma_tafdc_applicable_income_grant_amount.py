@@ -7,9 +7,7 @@ class ma_tafdc_applicable_income_grant_amount(Variable):
     entity = SPMUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) countable income"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-210"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-210"
     defined_for = StateCode.MA
 
     adds = [

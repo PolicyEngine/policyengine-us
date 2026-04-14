@@ -1,0 +1,635 @@
+# Vermont TANF (Reach Up) Integration Tests
+# Tests complete benefit calculation pipeline
+# Source: 33 V.S.A. Chapter 11, Code Vt. R. 13-170-220-X
+
+- name: Case 1, family of 3 non-Chittenden with earnings.
+  # Example from documentation
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: WASHINGTON_COUNTY_VT
+  output:
+    # Basic needs for size 3: $1,236
+    vt_reach_up_basic_needs_allowance: 1_236
+
+    # Housing: min($500, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    vt_reach_up_payment_standard: 811
+
+    # Earned income disregard: $350 + ($1,000 - $350) x 0.25 = $512.50
+    # Countable earned: $1,000 - $512.50 = $487.50
+    vt_reach_up_countable_earned_income: 487.5
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $487.50
+    vt_reach_up_countable_income: 487.5
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $811 - $487.50 = $323.50
+    vt_reach_up: 323
+
+- name: Case 2, family of 3 Chittenden with no income.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income_before_lsr: 0
+        pre_subsidy_rent: 14_400  # $1,200/month (capped at $450)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 6
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 3
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Basic needs for size 3: $1,236
+    vt_reach_up_basic_needs_allowance: 1_236
+
+    # Housing: min($1,200, $450) = $450 (Chittenden max)
+    vt_reach_up_housing_allowance: 450
+
+    # Payment standard: ($1,236 + $450) x 0.496 = $836.256
+    vt_reach_up_payment_standard: 836
+
+    # No earned income
+    vt_reach_up_countable_earned_income: 0
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $0
+    vt_reach_up_countable_income: 0
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $836 - $0 = $836 (full benefit)
+    vt_reach_up: 836
+
+- name: Case 3, single parent with child support and earnings.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 6_000  # $500/month
+        child_support_received: 1_800  # $150/month
+        pre_subsidy_rent: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+        county: RUTLAND_COUNTY_VT
+  output:
+    # Basic needs for size 2: $942
+    vt_reach_up_basic_needs_allowance: 942
+
+    # Housing: min($400, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($942 + $400) x 0.496 = $665.632
+    vt_reach_up_payment_standard: 665
+
+    # Earned income disregard: $350 + ($500 - $350) x 0.25 = $387.50
+    # Countable earned: $500 - $387.50 = $112.50
+    vt_reach_up_countable_earned_income: 112.5
+
+    # Child support: $150 - $100 disregard = $50
+    vt_reach_up_countable_unearned_income: 50
+
+    # Total countable: $112.50 + $50 = $162.50
+    vt_reach_up_countable_income: 162.5
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $665.632 - $162.50 = $503.13
+    vt_reach_up: 503
+
+- name: Case 4, two-parent family with higher earnings.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 18_000  # $1,500/month
+        pre_subsidy_rent: 9_600  # $800/month (capped at $400)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 12
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 9
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_size: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+        county: WINDSOR_COUNTY_VT
+  output:
+    # Basic needs for size 4: $1,478
+    vt_reach_up_basic_needs_allowance: 1_478
+
+    # Housing: min($800, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($1,478 + $400) x 0.496 = $931.488
+    vt_reach_up_payment_standard: 931
+
+    # Earned income disregard: $350 + ($1,500 - $350) x 0.25 = $637.50
+    # Countable earned: $1,500 - $637.50 = $862.50
+    vt_reach_up_countable_earned_income: 862.5
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $862.50
+    vt_reach_up_countable_income: 862.5
+
+    # Income below payment standard - now eligible!
+    vt_reach_up_eligible: true
+
+    # Benefit: $931 - $862.50 = $68.50
+    vt_reach_up: 68
+
+- name: Case 5, family of 5 Chittenden with mixed income.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 9_600  # $800/month
+        social_security: 0
+        pre_subsidy_rent: 15_600  # $1,300/month (capped at $450)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        employment_income_before_lsr: 0
+        social_security: 2_400  # $200/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 15
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 11
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 7
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_size: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Basic needs for size 5: $1,733
+    vt_reach_up_basic_needs_allowance: 1_733
+
+    # Housing: min($1,300, $450) = $450 (Chittenden max)
+    vt_reach_up_housing_allowance: 450
+
+    # Payment standard: ($1,733 + $450) x 0.496 = $1,082.768
+    vt_reach_up_payment_standard: 1_082
+
+    # Earned income disregard: $350 + ($800 - $350) x 0.25 = $462.50
+    # Countable earned: $800 - $462.50 = $337.50
+    vt_reach_up_countable_earned_income: 337.5
+
+    # Social security: $200 (no disregard)
+    vt_reach_up_countable_unearned_income: 200
+
+    # Total countable: $337.50 + $200 = $537.50
+    vt_reach_up_countable_income: 537.5
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $1,082.768 - $537.50 = $545.27
+    vt_reach_up: 545
+
+- name: Case 6, pregnant woman with no children.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_pregnant: true
+        pre_subsidy_rent: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+        county: LAMOILLE_COUNTY_VT
+  output:
+    # Basic needs for size 1: $644
+    vt_reach_up_basic_needs_allowance: 644
+
+    # Housing: min($400, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($644 + $400) x 0.496 = $517.82 -> $517
+    vt_reach_up_payment_standard: 517
+
+    # No income
+    vt_reach_up_countable_earned_income: 0
+    vt_reach_up_countable_unearned_income: 0
+    vt_reach_up_countable_income: 0
+
+    # Eligible: true (pregnant women may qualify)
+    vt_reach_up_eligible: true
+
+    # Benefit: $517 - $0 = $517
+    vt_reach_up: 517
+
+- name: Case 7, benefit just above minimum threshold.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 10_800  # $900/month
+        pre_subsidy_rent: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+        county: ORLEANS_COUNTY_VT
+  output:
+    # Basic needs for size 2: $942
+    vt_reach_up_basic_needs_allowance: 942
+
+    # Housing: min($400, $400) = $400
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($942 + $400) x 0.496 = $665.632
+    vt_reach_up_payment_standard: 665
+
+    # Earned income disregard: $350 + ($900 - $350) x 0.25 = $487.50
+    # Countable earned: $900 - $487.50 = $412.50
+    vt_reach_up_countable_earned_income: 412.5
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $412.50
+    vt_reach_up_countable_income: 412.5
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $665.632 - $412.50 = $253.13
+    vt_reach_up: 253
+
+- name: Case 8, two-parent family both working.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 8
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: WASHINGTON_COUNTY_VT
+  output:
+    # Basic needs for size 3: $1,236
+    vt_reach_up_basic_needs_allowance: 1_236
+
+    # Housing: min($500, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    vt_reach_up_payment_standard: 811
+
+    # Person 1: max_($800 - $350, 0) * 0.75 = $337.50
+    # Person 2: max_($500 - $350, 0) * 0.75 = $112.50
+    # Total: $450
+    vt_reach_up_countable_earned_income_person: [337.5, 112.5, 0]
+    vt_reach_up_countable_earned_income: 450
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $450
+    vt_reach_up_countable_income: 450
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $811.456 - $450 = $361.46
+    vt_reach_up: 361
+
+- name: Case 9, large household size 10 Chittenden.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 0
+        pre_subsidy_rent: 12_000  # $1,000/month (capped at $450)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        employment_income_before_lsr: 0
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 17
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 15
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 13
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 11
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 9
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person8:
+        age: 7
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person10:
+        age: 3
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        spm_unit_size: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Basic needs: $2,458 + 2 x $236 = $2,930
+    vt_reach_up_basic_needs_allowance: 2_930
+
+    # Housing: min($1,000, $450) = $450 (Chittenden max)
+    vt_reach_up_housing_allowance: 450
+
+    # Payment standard: ($2,930 + $450) x 0.496 = $1,676.48
+    vt_reach_up_payment_standard: 1_676
+
+    # No earned income
+    vt_reach_up_countable_earned_income: 0
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $0
+    vt_reach_up_countable_income: 0
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $1,676.48 - $0 = $1,676 (full benefit)
+    vt_reach_up: 1_676
+
+- name: Case 10, two-parent family with childcare expenses.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+        pre_subsidy_rent: 6_000  # $500/month (capped at $400)
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income_before_lsr: 6_000  # $500/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        employment_income_before_lsr: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        childcare_expenses: 3_600  # $300/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # Basic needs for size 3: $1,236
+    vt_reach_up_basic_needs_allowance: 1_236
+
+    # Housing: min($500, $400) = $400 (non-Chittenden max)
+    vt_reach_up_housing_allowance: 400
+
+    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    vt_reach_up_payment_standard: 811
+
+    # Per-person earned income disregard:
+    # Person 1: max_($800 - $350, 0) * 0.75 = $337.50
+    # Person 2: max_($500 - $350, 0) * 0.75 = $112.50
+    # Sum before dependent care: $450
+    vt_reach_up_countable_earned_income_person: [337.5, 112.5, 0]
+
+    # Dependent care deduction:
+    # 2 participants (head/spouse) x $175 = $350 max
+    # Actual expenses: $300
+    # Deduction: min($300, $350) = $300
+    vt_reach_up_dependent_care_deduction: 300
+
+    # Countable earned: max_($450 - $300, 0) = $150
+    vt_reach_up_countable_earned_income: 150
+
+    # No unearned income
+    vt_reach_up_countable_unearned_income: 0
+
+    # Total countable: $150
+    vt_reach_up_countable_income: 150
+
+    # Eligible: true
+    vt_reach_up_eligible: true
+
+    # Benefit: $811.456 - $150 = $661.46
+    vt_reach_up: 661

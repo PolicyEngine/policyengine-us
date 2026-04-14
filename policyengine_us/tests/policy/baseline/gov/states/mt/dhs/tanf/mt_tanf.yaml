@@ -1,0 +1,50 @@
+- name: Case 1, If ineligible, they get zero.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: false
+    mt_tanf_payment_standard: 100
+    mt_tanf_countable_income: 0
+  output:
+    mt_tanf: 0
+
+- name: Case 2, If eligible, they get difference between grant standard and countable income, countable income is 0.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 100
+    mt_tanf_countable_income: 0
+  output:
+    mt_tanf: 100
+
+- name: Case 3, If eligible, they get difference between grant standard and countable income.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 100
+    mt_tanf_countable_income: 20
+  output:
+    mt_tanf: 80
+
+- name: Case 4, If eligible but countable income exceeds grant standard, they get 0.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 100
+    mt_tanf_countable_income: 110
+  output:
+    mt_tanf: 0
+
+- name: Case 5, negative countable income caps benefit at payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 725
+    mt_tanf_countable_income: -500
+  output:
+    # Benefit capped at payment standard, not $725 - (-$500) = $1,225
+    mt_tanf: 725

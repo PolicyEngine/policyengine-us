@@ -17,9 +17,7 @@ class id_tafi_grant_standard(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.id.tafi
         countable_earned = spm_unit("id_tafi_countable_earned_income", period)
-        countable_unearned = spm_unit(
-            "id_tafi_countable_unearned_income", period
-        )
+        countable_unearned = spm_unit("id_tafi_countable_unearned_income", period)
         work_incentive = spm_unit("id_tafi_work_incentive_amount", period)
 
         # With earned: work_incentive - earned; Without: maximum_grant

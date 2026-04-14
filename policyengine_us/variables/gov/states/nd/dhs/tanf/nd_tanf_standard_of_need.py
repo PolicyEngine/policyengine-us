@@ -16,9 +16,7 @@ class nd_tanf_standard_of_need(Variable):
 
         # Children: dependents who meet TANF demographic eligibility
         is_dependent = person("is_tax_unit_dependent", period)
-        is_tanf_eligible = person(
-            "is_person_demographic_tanf_eligible", period
-        )
+        is_tanf_eligible = person("is_person_demographic_tanf_eligible", period)
         is_child = is_dependent & is_tanf_eligible
         child_count = spm_unit.sum(is_child)
 

@@ -1,4 +1,4 @@
-- name: The dependent income is allocated to the head
+- name: Joint deductions and exemptions are allocated to minimize tax
   period: 2021
   input:
     people:
@@ -20,17 +20,17 @@
         state_code: MS
   output:
     ms_deductions_indiv: [2_300, 2_300, 0]
-    ms_deductions_joint: [4_600, 0, 0]
+    ms_deductions_joint: [3_051.0203, 1_548.9795, 0]
     ms_total_exemptions_indiv: [7_500, 7_500, 0]
-    ms_total_exemptions_joint: [15_000, 0, 0]
+    ms_total_exemptions_joint: [9_948.9795, 5_051.02, 0]
     ms_total_exemptions: 15_000
     ms_taxable_income_indiv: [13_200, 8_200, 0]
-    ms_taxable_income_joint: [3_400, 18_000, 0]
+    ms_taxable_income_joint: [10_000, 11_400, 0]
     ms_income_tax_before_credits_indiv: [390, 158, 0]
-    ms_income_tax_before_credits_joint: [0, 630, 0]
-    ms_files_separately: true
+    ms_income_tax_before_credits_joint: [230, 300, 0]
+    ms_files_separately: false
     ms_agi: [23_000, 18_000, 0]
-    ms_income_tax: 548
+    ms_income_tax: 530
 
 - name: Tax unit with taxsimid 99991 in g21.its.csv and g21.ots.csv
   absolute_error_margin: 0.01
@@ -227,3 +227,73 @@
     ms_total_exemptions_joint: [12_000, 0]
     ms_taxable_income_joint: [12_892, 11_307]
     ms_income_tax: 197
+
+- name: MS joint with capital losses uses federal $3,000 limit (issue 6964)
+  absolute_error_margin: 100
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_481
+        taxable_interest_income: 202_089
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        short_term_capital_gains: -4_835_234
+        long_term_capital_gains: 2_450_481
+        taxable_interest_income: 202_089
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 28
+  output:
+    # Each person has:
+    # - Interest: $202,089
+    # - Capital gains: -$4,835,234 + $2,450,481 = -$2,384,753 (raw)
+    # - Loss-limited: -$1,500 each (half of $3K limit)
+    # MS AGI per person = $202,089 - $1,500 = $200,589
+    ms_agi: [200_589, 200_589]
+    ms_income_tax: 17_136
+
+- name: MS joint deduction allocation regression from taxsim issue 769
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_522.498
+        taxable_interest_income: 15_148.7625
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        taxable_interest_income: 15_148.7625
+        is_tax_unit_spouse: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 28
+  output:
+    ms_taxable_income_joint: [10_000, 11_220.024, 0, 0]
+    ms_income_tax: 53.681076

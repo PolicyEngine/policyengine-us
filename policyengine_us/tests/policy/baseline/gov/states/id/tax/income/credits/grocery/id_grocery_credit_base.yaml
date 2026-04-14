@@ -16,9 +16,63 @@
   input:
     people:
       person1: {}
-    households: 
+    households:
       household:
         members: [person1]
         state_code: ID
   output:
     id_grocery_credit_base: [100]
+
+# 2023-2024 Tests - Base amount increased to $120
+
+- name: One person in 2023
+  period: 2023
+  input:
+    people:
+      person1: {}
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [120]
+
+- name: Two people in 2024
+  period: 2024
+  input:
+    people:
+      person1: {}
+      person2: {}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [120, 120]
+
+# 2025 Tests - Base amount increased to $155 per House Bill 231 (2025)
+
+- name: One person in 2025
+  period: 2025
+  input:
+    people:
+      person1: {}
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [155]
+
+- name: Two people in 2025
+  period: 2025
+  input:
+    people:
+      person1: {}
+      person2: {}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [155, 155]

@@ -1,0 +1,26 @@
+- name: Case 1, income below GMI standard.
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gross_income_standard: 859
+    mt_tanf_gross_income: 500
+  output:
+    mt_tanf_gmi_eligible: true
+
+- name: Case 2, income equal to GMI standard.
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gross_income_standard: 859
+    mt_tanf_gross_income: 859
+  output:
+    mt_tanf_gmi_eligible: true
+
+- name: Case 3, income above GMI standard.
+  period: 2023-01
+  input:
+    state_code: MT
+    mt_tanf_gross_income_standard: 859
+    mt_tanf_gross_income: 900
+  output:
+    mt_tanf_gmi_eligible: false

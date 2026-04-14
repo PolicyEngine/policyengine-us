@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class dc_taxable_income_joint(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "DC taxable income (can be negative) when married couple files jointly"
-    )
+    label = "DC taxable income (can be negative) when married couple files jointly"
     unit = USD
     definition_period = YEAR
     reference = (

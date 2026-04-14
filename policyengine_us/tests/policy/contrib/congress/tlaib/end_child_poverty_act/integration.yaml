@@ -86,10 +86,11 @@
         free_school_meals: 0
         snap: 0
         ca_capi: 0
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [head, child_1, child_2]
-        state_code_str: FL  # Florida has no TANF implementation
+        state_code_str: FL
   output:
     non_refundable_ctc: 800
     household_benefits: 0

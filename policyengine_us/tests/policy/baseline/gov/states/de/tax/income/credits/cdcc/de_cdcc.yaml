@@ -3,13 +3,14 @@
   input:
     cdcc: 100
     state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_cdcc: 50
-
 - name: cdcc 0
   period: 2023
   input:
     cdcc: 0
     state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_cdcc: 0

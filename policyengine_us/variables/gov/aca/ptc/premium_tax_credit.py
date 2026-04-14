@@ -8,4 +8,4 @@ class premium_tax_credit(Variable):
     unit = USD
     definition_period = MONTH
 
-    adds = ["aca_ptc"]
+    adds = ["assigned_aca_ptc"]

@@ -140,3 +140,91 @@
         state_fips: 16  # ID
   output:  # expected results from patched TAXSIM35 2024-03-17 version
     id_income_tax: 21404.06
+
+# 2025 Integration Tests - Tax rate: 5.3%, Joint threshold: $5,000, Single threshold: $2,500
+# Grocery credit: $155/person, CTC: $205/child (expires after 2025)
+
+- name: Joint filer family with two children in 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+      person2:
+        age: 38
+        employment_income: 40_000
+      person3:
+        age: 10
+      person4:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 16  # ID
+  output:
+    # Gross income: 80,000 + 40,000 = 120,000
+    # Assumed taxable income: ~120,000 (simplified, actual depends on deductions)
+    # CTC: 2 children * $205 = $410
+    # Grocery credit: 4 people * $155 = $620
+    id_ctc: 410
+    id_grocery_credit: 620
+
+- name: Single filer with moderate income in 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 16  # ID
+  output:
+    # Grocery credit: 1 person * $155 = $155
+    id_grocery_credit: 155
+
+- name: Elderly couple joint filers in 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 30_000
+        taxable_social_security: 15_000
+      person2:
+        age: 66
+        employment_income: 20_000
+        taxable_social_security: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 16  # ID
+  output:
+    # Grocery credit: 2 people * $155 = $310 (aged credit not in effect for 2025)
+    id_grocery_credit: 310

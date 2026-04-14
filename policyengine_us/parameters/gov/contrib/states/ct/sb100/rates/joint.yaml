@@ -1,0 +1,41 @@
+description: Connecticut SB-100 taxes income of joint filers at these reduced rates.
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Connecticut SB-100 income tax rate joint filers
+  reference:
+    - title: Connecticut SB 100 (2026), Sec. 12-700 - Reduced marginal rates for joint filers
+      href: https://www.cga.ct.gov/2026/TOB/S/PDF/2026SB-00100-R00-SB.PDF#page=1
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0
+  - threshold:
+      2026-01-01: 20_000
+    rate:
+      2026-01-01: 0.03
+  - threshold:
+      2026-01-01: 100_000
+    rate:
+      2026-01-01: 0.055
+  - threshold:
+      2026-01-01: 200_000
+    rate:
+      2026-01-01: 0.06
+  - threshold:
+      2026-01-01: 400_000
+    rate:
+      2026-01-01: 0.065
+  - threshold:
+      2026-01-01: 500_000
+    rate:
+      2026-01-01: 0.069
+  - threshold:
+      2026-01-01: 1_000_000
+    rate:
+      2026-01-01: 0.0699

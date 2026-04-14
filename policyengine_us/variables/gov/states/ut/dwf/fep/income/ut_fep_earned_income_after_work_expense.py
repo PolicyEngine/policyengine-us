@@ -7,7 +7,9 @@ class ut_fep_earned_income_after_work_expense(Variable):
     label = "Utah TANF earned income after work expense deduction"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    reference = (
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    )
     defined_for = StateCode.UT
 
     def formula(person, period, parameters):

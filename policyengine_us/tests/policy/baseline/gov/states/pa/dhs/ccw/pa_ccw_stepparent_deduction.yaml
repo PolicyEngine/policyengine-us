@@ -1,0 +1,160 @@
+# Unit tests for pa_ccw_stepparent_deduction
+# Tests stepparent deduction from Appendix C
+# 4 county groups x family sizes 2-6 + each additional ($121)
+# Requires pa_ccw_has_stepparent = true to apply
+# 55 Pa. Code Appendix C
+
+- name: Case 1, group 1 county family size 3 with stepparent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    # Group 1, family size 3: $587/month
+    pa_ccw_stepparent_deduction: 587
+
+- name: Case 2, group 4 county family size 4 with stepparent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+        county_str: CHESTER_COUNTY_PA
+  output:
+    # Group 4, family size 4: $749/month
+    pa_ccw_stepparent_deduction: 749
+
+- name: Case 3, family size exceeds max table size.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    # Group 1, family size 7 = size 6 ($976) + 1 additional ($121) = $1,097
+    pa_ccw_stepparent_deduction: 1_097
+
+- name: Case 4, no stepparent gets zero deduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    # pa_ccw_has_stepparent defaults to false -> deduction = 0
+    pa_ccw_stepparent_deduction: 0
+
+- name: Case 5, group 2 county family size 2 with stepparent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        county_str: CAMBRIA_COUNTY_PA
+  output:
+    # Group 2, family size 2: $406/month
+    pa_ccw_stepparent_deduction: 406
+
+- name: Case 6, group 3 county family size 6 with stepparent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: PA
+        county_str: BEAVER_COUNTY_PA
+  output:
+    # Group 3, family size 6: $943/month
+    pa_ccw_stepparent_deduction: 943

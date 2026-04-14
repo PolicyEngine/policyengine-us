@@ -9,9 +9,7 @@ class mi_standard_home_heating_credit_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.credits.home_heating.standard
+        p = parameters(period).gov.states.mi.tax.income.credits.home_heating.standard
 
         mi_household_resources = tax_unit("mi_household_resources", period)
         # the poverty guidelines are determined by the number of exemptions

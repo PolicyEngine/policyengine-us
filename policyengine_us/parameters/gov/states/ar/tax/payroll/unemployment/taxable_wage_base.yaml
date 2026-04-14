@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Arkansas.
+values:
+  0000-01-01: 7_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arkansas unemployment taxable wage base
+  reference:
+    - title: Arkansas Act 196 of 2023 amending Arkansas Code Section 11-10-215
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT196.pdf#page=1
+    - title: Arkansas employer unemployment insurance contributions
+      href: https://dws.arkansas.gov/workforce-services/employers/employer-ui-contributions/
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=13

@@ -8,9 +8,7 @@ class ca_amt_exemption(Variable):
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
-    )
+    reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.amt.exemption
@@ -32,7 +30,7 @@ class ca_amt_exemption(Variable):
         # Eligible children receive an increased exemption amount.
         # This applies when the HEAD of the tax unit is a child dependent.
         person = tax_unit.members
-        eligible_child = person("is_child_dependent", period)
+        eligible_child = person("is_qualifying_child_dependent", period)
         is_head = person("is_tax_unit_head", period)
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
         # Line 7

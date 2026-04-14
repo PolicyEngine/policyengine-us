@@ -1,0 +1,21 @@
+description: Arizona provides this rebate amount per dependent based on the dependent's age.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Arizona Families Tax Rebate amount per dependent
+  reference:
+    - title: Arizona Families Tax Rebate
+      href: https://azdor.gov/individuals/arizona-families-tax-rebate
+    - title: SB1734 - Arizona Families Tax Rebate
+      href: https://www.azleg.gov/legtext/56leg/1r/laws/0147.htm
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 250
+  - threshold:
+      2021-01-01: 17
+    amount:
+      2021-01-01: 100

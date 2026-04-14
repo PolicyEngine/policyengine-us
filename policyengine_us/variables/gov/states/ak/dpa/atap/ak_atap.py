@@ -36,8 +36,11 @@ class ak_atap(Variable):
         # multiplied by (size 2 max payment / size 2 need standard)
         # The ratio uses fixed size-2 values, not the family's actual size
         income_deficit = max_(need_standard - countable_income, 0)
+        # Cap deficit at need standard to prevent negative income
+        # from inflating benefits above the maximum.
+        capped_deficit = min_(income_deficit, need_standard)
         size_2_max = p.payment.base
         # Per 7 AAC 45.525: ratable reduction formula always uses size-2 as base
         size_2_need = p.need_standard.amount["2"]
         ratable_reduction = size_2_max / size_2_need
-        return income_deficit * ratable_reduction
+        return capped_deficit * ratable_reduction

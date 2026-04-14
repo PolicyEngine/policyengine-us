@@ -28,8 +28,8 @@ class wa_capital_gains_tax(Variable):
                 p.deductions.charitable.cap,
             )
             # Get base after standard and charitable deductions.
-            taxable_ltcg = max_(
-                0, ltcg - charitable_deduction - p.deductions.standard
-            )
-            return taxable_ltcg * p.rate
+            taxable_ltcg = max_(0, ltcg - charitable_deduction - p.deductions.standard)
+            if p.rate.flat_applies:
+                return taxable_ltcg * p.rate.flat
+            return p.rate.incremental.calc(taxable_ltcg)
         return 0

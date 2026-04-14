@@ -1,0 +1,26 @@
+- name: Case 1, assigned ACA PTC matches ACA PTC when an eligible tax unit takes up ACA.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    aca_ptc: 200
+    takes_up_aca_if_eligible: true
+  output:
+    assigned_aca_ptc: 200
+
+- name: Case 2, assigned ACA PTC is zero when an eligible tax unit does not take up ACA.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    aca_ptc: 200
+    takes_up_aca_if_eligible: false
+  output:
+    assigned_aca_ptc: 0
+
+- name: Case 3, assigned ACA PTC is zero when ACA PTC is zero.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    aca_ptc: 0
+    takes_up_aca_if_eligible: true
+  output:
+    assigned_aca_ptc: 0

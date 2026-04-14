@@ -18,9 +18,7 @@ class is_chip_eligible_pregnant(Variable):
         # the standard pregnant pathway or the FCEP pathway
 
         # Check standard pregnant pathway eligibility
-        standard_eligible = person(
-            "is_chip_eligible_standard_pregnant_person", period
-        )
+        standard_eligible = person("is_chip_eligible_standard_pregnant_person", period)
 
         # Check FCEP pathway eligibility
         fcep_eligible = person("is_chip_fcep_eligible_person", period)

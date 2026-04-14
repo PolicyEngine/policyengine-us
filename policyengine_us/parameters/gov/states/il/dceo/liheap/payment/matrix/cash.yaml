@@ -1,0 +1,69 @@
+description: Illinois provides this amount as a cash payment to households with heat included in rent under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
+1:
+  1:
+    2023-10-01: 630
+  2:
+    2023-10-01: 680
+  3:
+    2023-10-01: 730
+  4:
+    2023-10-01: 780
+  5:
+    2023-10-01: 830
+  6:
+    2023-10-01: 880
+
+# Income bracket 2 = 51-100% FPL
+2:
+  1:
+    2023-10-01: 305
+  2:
+    2023-10-01: 320
+  3:
+    2023-10-01: 345
+  4:
+    2023-10-01: 375
+  5:
+    2023-10-01: 395
+  6:
+    2023-10-01: 415
+
+# Income bracket 3 = 101-150% FPL
+3:
+  1:
+    2023-10-01: 210
+  2:
+    2023-10-01: 225
+  3:
+    2023-10-01: 240
+  4:
+    2023-10-01: 260
+  5:
+    2023-10-01: 275
+  6:
+    2023-10-01: 285
+
+# Income bracket 4 = 151-200% FPL
+4:
+  1:
+    2023-10-01: 170
+  2:
+    2023-10-01: 190
+  3:
+    2023-10-01: 210
+  4:
+    2023-10-01: 235
+  5:
+    2023-10-01: 255
+  6:
+    2023-10-01: 275
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois LIHEAP cash payment (heat in rent)
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1

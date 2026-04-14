@@ -9,9 +9,7 @@ class il_ihwap_hhs_smi(Variable):
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.IL
-    reference = (
-        "https://dceo.illinois.gov/communityservices/homeweatherization.html"
-    )
+    reference = "https://dceo.illinois.gov/communityservices/homeweatherization.html"
 
     def formula(spm_unit, period, parameters):
         # IL IHWAP Program Year N uses SMI from October 1 of year N-1

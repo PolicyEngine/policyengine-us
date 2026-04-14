@@ -31,7 +31,6 @@ def create_fisc_act() -> Reform:
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
 
         def formula(tax_unit, period, parameters):
-
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
@@ -52,9 +51,7 @@ def create_fisc_act() -> Reform:
             phase_out = where(
                 joint, p.phase_out.joint.calc(agi), p.phase_out.other.calc(agi)
             )
-            phased_out_amount = max_(
-                base_amount_with_marriage_bonus - phase_out, 0
-            )
+            phased_out_amount = max_(base_amount_with_marriage_bonus - phase_out, 0)
             agi_threshold = max_(0, p.agi_fraction * agi)
             capped_credit = min_(phased_out_amount, agi_threshold)
             # The credit is limited to eligible caregivers
@@ -62,9 +59,7 @@ def create_fisc_act() -> Reform:
             age = person("age", period)
             age_eligible = age >= p.caregiver_age_threshold
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            eligible_caregiver_present = tax_unit.any(
-                age_eligible & head_or_spouse
-            )
+            eligible_caregiver_present = tax_unit.any(age_eligible & head_or_spouse)
             return capped_credit * eligible_caregiver_present
 
     def modify_parameters(parameters):

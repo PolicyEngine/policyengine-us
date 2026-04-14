@@ -1,7 +1,7 @@
 - name: Total income greater than alimony
   period: 2024
   input:
-    pr_gross_income: 20_000
+    pr_gross_income_person: 20_000
     alimony_expense: 5_000
     state_code: PR
   output:
@@ -10,7 +10,7 @@
 - name: Alimony greater than total income
   period: 2024
   input:
-    pr_gross_income: 5_000
+    pr_gross_income_person: 5_000
     alimony_expense: 10_000
     state_code: PR
   output:

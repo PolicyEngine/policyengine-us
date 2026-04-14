@@ -103,3 +103,28 @@
     is_medicaid_eligible: [true]
     medicaid_enrolled: [true]
     takes_up_medicaid_if_eligible: [true]
+
+- name: Case 5, current Medicaid coverage preserves CA continuous coverage.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+        immigration_status: UNDOCUMENTED
+        has_medicaid_health_coverage_at_interview: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    receives_medicaid: [false]
+    is_ca_medicaid_immigration_status_eligible: [true]
+    is_medicaid_eligible: [true]
+    medicaid_enrolled: [true]

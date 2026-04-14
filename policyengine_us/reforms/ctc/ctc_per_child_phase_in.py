@@ -13,7 +13,6 @@ def create_ctc_per_child_phase_in() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
         def formula(tax_unit, period, parameters):
-
             ctc = parameters(period).gov.irs.credits.ctc
 
             earnings = tax_unit("tax_unit_earned_income", period)
@@ -31,9 +30,7 @@ def create_ctc_per_child_phase_in() -> Reform:
     return reform
 
 
-def create_ctc_per_child_phase_in_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ctc_per_child_phase_in_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_per_child_phase_in()
 
@@ -53,6 +50,4 @@ def create_ctc_per_child_phase_in_reform(
         return None
 
 
-ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(
-    None, None, bypass=True
-)
+ctc_per_child_phase_in = create_ctc_per_child_phase_in_reform(None, None, bypass=True)

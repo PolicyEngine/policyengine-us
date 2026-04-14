@@ -67,6 +67,6 @@ def create_ny_a04038_enhanced_escc_infants_reform(
         return None
 
 
-ny_a04038_enhanced_escc_infants = (
-    create_ny_a04038_enhanced_escc_infants_reform(None, None, bypass=True)
+ny_a04038_enhanced_escc_infants = create_ny_a04038_enhanced_escc_infants_reform(
+    None, None, bypass=True
 )

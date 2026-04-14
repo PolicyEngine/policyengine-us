@@ -48,12 +48,14 @@ def map_county_string_to_enum(
 ) -> "pd.Series[int]":
     """Helper function to map county name and state code to County enum value."""
     county_key = county_name.apply(
-        lambda name: name.replace(" ", "_")
-        .replace("-", "_")
-        .replace(".", "")
-        .replace("'", "_")
-        .strip()
-        .upper()
+        lambda name: (
+            name.replace(" ", "_")
+            .replace("-", "_")
+            .replace(".", "")
+            .replace("'", "_")
+            .strip()
+            .upper()
+        )
     )
     county_state = county_key.str.cat(state_code, sep="_")
     county_names = pd.Series(

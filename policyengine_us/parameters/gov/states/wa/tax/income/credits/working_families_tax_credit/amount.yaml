@@ -8,25 +8,29 @@ metadata:
   reference:
     - title: RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)(a)
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
-    - title: Tax year 2023 applications now being accepted for the Working Families Tax Credit
-      href: https://dor.wa.gov/about/news-releases/2024/tax-year-2023-applications-now-being-accepted-working-families-tax-credit
     # The instruction didn't mention the specific amount.
-    - title: 2023 Working Families Tax Credit Application Instructions 
+    - title: 2023 Working Families Tax Credit Application Instructions
       href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf
-    - title: 2023 Working Families Tax Credit Application
-      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf
-    - title: 2024 Working Families Tax Credit Eligibility
+    - title: Working Families Tax Credit Eligibility
       href: https://workingfamiliescredit.wa.gov/eligibility
-    # 2024 instruction does not include the specific amounts.
+    - title: WA DOR News Release — WFTC 2022 Amounts
+      href: https://dor.wa.gov/about/news-releases/2023/applications-now-being-accepted-working-families-tax-credit
+    - title: WA DOR News Release — WFTC 2023 Amounts
+      href: https://dor.wa.gov/about/news-releases/2024/tax-year-2023-applications-now-being-accepted-working-families-tax-credit
+    - title: WA DOR News Release — WFTC 2024 Amounts
+      href: https://dor.wa.gov/about/news-releases/2025/working-families-tax-credit-application-window-opens-feb-1
+    - title: WA DOR News Release — WFTC 2025 Amounts
+      href: https://dor.wa.gov/about/news-releases/2026/working-families-tax-credit-application-window-opens-feb-1
 
 brackets:
   - threshold:
       2022-01-01: 0
     amount:
-      values: 
+      values:
         2022-01-01: 300
         2023-01-01: 315
         2024-01-01: 325
+        2025-01-01: 335
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -39,6 +43,7 @@ brackets:
         2022-01-01: 600
         2023-01-01: 625
         2024-01-01: 640
+        2025-01-01: 660
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -51,6 +56,7 @@ brackets:
         2022-01-01: 900
         2023-01-01: 940
         2024-01-01: 965
+        2025-01-01: 995
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -63,6 +69,7 @@ brackets:
         2022-01-01: 1_200
         2023-01-01: 1_255
         2024-01-01: 1_290
+        2025-01-01: 1_330
       metadata:
         uprating: gov.irs.uprating
         rounding:

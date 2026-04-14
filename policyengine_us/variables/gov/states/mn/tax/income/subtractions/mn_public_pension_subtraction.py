@@ -17,9 +17,7 @@ class mn_public_pension_subtraction(Variable):
         taxable_public_pension_income = add(
             tax_unit, period, ["taxable_public_pension_income"]
         )
-        p = parameters(
-            period
-        ).gov.states.mn.tax.income.subtractions.pension_income
+        p = parameters(period).gov.states.mn.tax.income.subtractions.pension_income
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]
         capped_pension_income = min_(taxable_public_pension_income, cap)

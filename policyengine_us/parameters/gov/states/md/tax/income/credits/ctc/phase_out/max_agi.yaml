@@ -1,0 +1,11 @@
+description: Maryland limits its Child Tax Credit to filers with federal adjusted gross income below this amount under the phase-out structure.
+values:
+  2024-01-01: .inf
+  2025-01-01: 24_001
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maryland Child Tax Credit maximum AGI
+  reference:
+    - title: Maryland 2025 Resident Tax Booklet - Refundable Child Tax Credit Worksheet 21C
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=27

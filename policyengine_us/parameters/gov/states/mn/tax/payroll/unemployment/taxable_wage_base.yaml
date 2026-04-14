@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Minnesota.
+values:
+  0000-01-01: 42_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota unemployment taxable wage base
+  reference:
+    - title: Minnesota Statutes Section 268.035
+      href: https://www.revisor.mn.gov/statutes/cite/268.035
+    - title: Minnesota unemployment tax rates
+      href: https://www.uimn.org/employers/wages-taxes/tax-rates/index.jsp
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=33

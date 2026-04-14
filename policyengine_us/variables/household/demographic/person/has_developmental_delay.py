@@ -6,4 +6,6 @@ class has_developmental_delay(Variable):
     entity = Person
     label = "Has a developmental delay"
     definition_period = YEAR
-    documentation = "Whether the child has a screening-indicated developmental delay or disability"
+    documentation = (
+        "Whether the child has a screening-indicated developmental delay or disability"
+    )

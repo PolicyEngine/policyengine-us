@@ -16,9 +16,7 @@ class amt_tax_including_cg(Variable):
         # Line 13 - schedule D line 13
         cg_distributions = tax_unit("dwks13", period)
         # Line 14 - schedule D line 19
-        section_1250_gain_worksheet = tax_unit(
-            "unrecaptured_section_1250_gain", period
-        )
+        section_1250_gain_worksheet = tax_unit("unrecaptured_section_1250_gain", period)
         # Line 15 - smaller of the sum of Line 13 and Line 14 or Schedule D line 10
         total_transactions_reported = tax_unit("dwks10", period)
         capped_capital_gains = min_(
@@ -70,9 +68,7 @@ class amt_tax_including_cg(Variable):
             taxable_income_including_cg, reduced_second_cg_bracket
         )
         # Line 31 - multiply Line 30by second CG tax rate
-        cg_second_bracket_tax = (
-            capped_income_including_cg * p.capital_gains.rates["2"]
-        )
+        cg_second_bracket_tax = capped_income_including_cg * p.capital_gains.rates["2"]
         # Line 32 - Line 23 plus Line 30
         taxed_gains = disregarded_gains + capped_income_including_cg
         # Line 33 - Line 22 minus Line 32
@@ -91,8 +87,7 @@ class amt_tax_including_cg(Variable):
         excess_tax = where(
             unrecaptured_section_1250_gain == 0,
             0,
-            final_excess
-            * p.income.amt.capital_gains.capital_gain_excess_tax_rate,
+            final_excess * p.income.amt.capital_gains.capital_gain_excess_tax_rate,
         )
         # Line 38 - sum of Line 18, Line 31, Line 34, and Line 37
         return (

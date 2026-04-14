@@ -1,0 +1,238 @@
+# Unit tests for Alabama TANF income eligibility
+# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Income eligible if countable income <= payment standard
+# Payment standards: $264 (1 person), $304 (2), $344 (3), $392 (4), $440 (5)
+
+- name: Case 1, no income - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Family of 2: payment standard = $304
+    # Countable income: $0
+    # $0 <= $304, eligible
+    al_tanf_income_eligible: true
+
+- name: Case 2, income below payment standard - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_000  # $250/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $250
+    # Work expense deduction (20%): $250 * 0.20 = $50
+    # Countable earned: $250 - $50 = $200
+    # Payment standard (2 persons): $304
+    # $200 <= $304, eligible
+    al_tanf_income_eligible: true
+
+- name: Case 3, income at payment standard - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_560  # $380/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $380
+    # Work expense deduction (20%): $380 * 0.20 = $76
+    # Countable earned: $380 - $76 = $304
+    # Payment standard (2 persons): $304
+    # $304 <= $304, eligible
+    al_tanf_income_eligible: true
+
+- name: Case 4, income exceeds payment standard - ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction (20%): $500 * 0.20 = $100
+    # Countable earned: $500 - $100 = $400
+    # Payment standard (2 persons): $304
+    # $400 > $304, ineligible
+    al_tanf_income_eligible: false
+
+- name: Case 5, family of 3 below threshold - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_200  # $350/month
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # Monthly employment: $350
+    # Work expense deduction (20%): $350 * 0.20 = $70
+    # Countable earned: $350 - $70 = $280
+    # Payment standard (3 persons): $344
+    # $280 <= $344, eligible
+    al_tanf_income_eligible: true
+
+- name: Case 6, family of 4 with childcare expenses - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 32
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction (20%): $500 * 0.20 = $100
+    # After work expense: $400
+    # Childcare deduction: $300
+    # Countable earned: max($400 - $300, 0) = $100
+    # Payment standard (4 persons): $392
+    # $100 <= $392, eligible
+    al_tanf_income_eligible: true
+
+- name: Case 7, family of 5 with unearned income - ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+        child_support_received: 1_200  # $100/month
+      person2:
+        age: 32
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AL
+  output:
+    # Monthly employment: $500
+    # Work expense deduction (20%): $500 * 0.20 = $100
+    # Countable earned: $500 - $100 = $400
+    # Unearned: $100/month
+    # Countable income: $400 + $100 = $500
+    # Payment standard (5 persons): $440
+    # $500 > $440, ineligible
+    al_tanf_income_eligible: false
+
+- name: Case 8, single person household - eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 2_400  # $200/month
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    # Monthly employment: $200
+    # Work expense deduction (20%): $200 * 0.20 = $40
+    # Countable earned: $200 - $40 = $160
+    # Payment standard (1 person): $264
+    # $160 <= $264, eligible
+    al_tanf_income_eligible: true
+
+# ============================================================================
+# Edge Case Tests
+# ============================================================================
+
+- name: Edge Case 1, income one dollar over payment standard - ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 3_660  # $305/month unearned (no work expense deduction)
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Family of 2: payment standard = $304
+    # Monthly unearned income: $305 (no deductions on unearned)
+    # Countable income: $305
+    # $305 > $304, ineligible (tests > boundary, one dollar over)
+    al_tanf_income_eligible: false

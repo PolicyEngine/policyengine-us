@@ -11,46 +11,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
       - name: Check formatting
-        uses: "lgeiger/black-action@master"
-        with:
-          args: ". -l 79 --check"
-  check-version:
-    name: Check version
+        run: uv run ruff format --check .
+  check-changelog:
+    name: Check changelog fragment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 100
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install dependencies
+      - name: Check for changelog fragment
         run: |
-          uv pip install -e . --system
-          uv pip install "yaml-changelog>=0.1.7" --system
-      - name: Build changelog
-        run: make changelog
+          FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
+          if [ "$FRAGMENTS" -eq 0 ]; then
+            echo "::error::No changelog fragment found in changelog.d/"
+            echo "Add one with: echo 'Description.' > changelog.d/\$(git branch --show-current).<type>.md"
+            echo "Types: added, changed, fixed, removed, breaking"
+            exit 1
+          fi
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
+    env:
+      SELECTIVE_TEST_MAX_TARGETS: 25
+      SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 10  # Need full history for git diff
+          fetch-depth: 10
       - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+        run: git fetch origin ${{ github.base_ref }} --depth=1
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -108,7 +105,7 @@ jobs:
       - name: Build package
         run: uv build
   NonStructural-States:
-    name: Full Suite - States (excl NY) & Python
+    name: Full Suite - Baseline States
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -116,7 +113,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -124,20 +121,14 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests (states)
+      - name: Run non-structural YAML tests (states in 3 batches)
         env:
           PYTHONUNBUFFERED: 1
         run: |
-          echo "Running non-structural YAML tests (states)..."
+          echo "Running non-structural YAML tests (states, 3 batches)..."
           uv run make test-yaml-no-structural-states
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
   NonStructural-Other:
-    name: Full Suite - Baseline (incl NY) & Reform
+    name: Full Suite - Baseline (excl States) & Reform & Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -145,7 +136,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -159,6 +150,12 @@ jobs:
         run: |
           echo "Running non-structural YAML tests (other)..."
           uv run make test-yaml-no-structural-other
+      - name: Run Python-based tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: |
+          echo "Running Python-based tests..."
+          uv run make test-other
   Structural-Heavy:
     name: Full Suite - Structural (States)
     runs-on: ubuntu-latest
@@ -168,7 +165,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies
@@ -191,7 +188,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Install dependencies

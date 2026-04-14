@@ -309,19 +309,20 @@ values:
   2025-06-01: 178.909
   2025-07-01: 179.154
   2025-08-01: 179.656
-  # CBO projections from CBO Jan 2025 forecast for future periods.
+  # CBO projections from CBO Feb 2026 forecast for future periods.
   # CBO projects the average C-CPI-U over the 12mo ending August,
   # which determines tax parameters for the following year.
-  2026-02-01: 180.5 # 2027 value.
-  2027-02-01: 184.1 # 2028 value.
-  2028-02-01: 187.8 # 2029 value.
-  2029-02-01: 191.5 # 2030 value.
-  2030-02-01: 195.3 # 2031 value.
-  2031-02-01: 199.1 # 2032 value.
-  2032-02-01: 203.1 # 2033 value.
-  2033-02-01: 207.1 # 2034 value.
-  2034-02-01: 211.2 # 2035 value. 
-  # Values for 2035-2100 are set programmatically in uprating_extensions.py
+  2026-02-01: 183.1 # 2027 value.
+  2027-02-01: 187.2 # 2028 value.
+  2028-02-01: 191.1 # 2029 value.
+  2029-02-01: 194.9 # 2030 value.
+  2030-02-01: 198.8 # 2031 value.
+  2031-02-01: 202.7 # 2032 value.
+  2032-02-01: 206.7 # 2033 value.
+  2033-02-01: 210.8 # 2034 value.
+  2034-02-01: 214.9 # 2035 value.
+  2035-02-01: 219.2 # 2036 value.
+  # Values for 2036-2100 are set programmatically in uprating_extensions.py
 metadata:
   economy: false
   unit: currency-USD
@@ -335,3 +336,7 @@ metadata:
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 159
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
+    - title: CBO | Economic Projections | February 2026
+      # Source: https://www.cbo.gov/data/budget-economic-data
+      # Sheet: 2. Calendar Year, Row 57: Chained CPI-U
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx

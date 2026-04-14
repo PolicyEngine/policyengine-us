@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class co_social_security_subtraction_indv_eligible(Variable):
     value_type = float
     entity = Person
-    label = "Eligible for the Colorado social security subtraction for eligible individuals"
+    label = (
+        "Eligible for the Colorado social security subtraction for eligible individuals"
+    )
     defined_for = StateCode.CO
     unit = USD
     reference = (

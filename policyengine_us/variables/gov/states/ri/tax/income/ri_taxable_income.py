@@ -5,7 +5,9 @@ class ri_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Rhode Island taxable income"
-    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf"
+    reference = (
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf"
+    )
     defined_for = StateCode.RI
     unit = USD
     definition_period = YEAR

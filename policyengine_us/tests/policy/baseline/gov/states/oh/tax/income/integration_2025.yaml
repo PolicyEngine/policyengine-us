@@ -1,0 +1,244 @@
+# Ohio 2025 Income Tax Integration Tests
+# Based on 2025 IT 1040 Booklet and Ohio Revised Code Chapter 5747
+# Tests 2025 parameter values:
+#   - Exemptions: $2,400 (≤$40k), $2,150 ($40k-$80k), $1,900 ($80k-$750k), $0 (≥$750k)
+#   - Rates: 0%, 2.75%, 3.125%
+
+- name: 2025 - Single filer medium income (2.75% bracket)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 68_050
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $68,050 (middle exemption tier: $40k-$80k)
+    # Exemption: 1 * $2,150 = $2,150
+    # Taxable income: $68,050 - $2,150 = $65,900
+    # Tax: $342 base + 2.75% of ($65,900 - $26,050) = $342 + $1,095.875 = $1,438
+    oh_personal_exemptions: 2_150
+    oh_taxable_income: 65_900
+    oh_income_tax_before_non_refundable_credits: 1_438
+
+- name: 2025 - High income married couple (3.125% bracket)
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 48
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Income: $150,000 (high exemption tier: >$80k)
+    # Exemptions: 2 * $1,900 = $3,800
+    # Taxable income: $150,000 - $3,800 = $146,200
+    oh_personal_exemptions: 3_800
+    oh_taxable_income: 146_200
+
+- name: 2025 - Low income family (lowest exemption tier)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 33
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_code: OH
+  output:
+    # Income: $35,000 (lowest exemption tier: <=$40k)
+    # Exemptions: 3 * $2,400 = $7,200
+    # Taxable income: $35,000 - $7,200 = $27,800
+    oh_personal_exemptions: 7_200
+    oh_taxable_income: 27_800
+
+- name: 2025 - Very high income (exemption phases out to $0 at $750k+)
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 800_000
+        is_tax_unit_head: true
+      person2:
+        age: 53
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Income: $800,000 (>= $750k, exemption tier: $0)
+    # Per Ohio Revised Code 5747.025 and 2025 IT 1040 Booklet page 17:
+    # When MAGI >= $750,000, personal exemption amount is $0
+    # Exemptions: 2 * $0 = $0
+    # Taxable income: $800,000 - $0 = $800,000
+    oh_personal_exemptions: 0
+    oh_taxable_income: 800_000
+
+- name: 2025 - Below $26,050 cliff (tax-exempt)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 28_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $28,000 (lowest exemption tier: <=$40k)
+    # Exemption: 1 * $2,400 = $2,400
+    # Taxable income: $28,000 - $2,400 = $25,600
+    # Since $25,600 < $26,050 threshold -> tax-exempt
+    oh_personal_exemptions: 2_400
+    oh_taxable_income: 25_600
+    oh_income_tax_exempt: true
+    oh_income_tax_before_non_refundable_credits: 0
+
+- name: 2025 - Just above $26,050 cliff (triggers $342 base tax)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $30,000 (lowest exemption tier: <=$40k)
+    # Exemption: 1 * $2,400 = $2,400
+    # Taxable income: $30,000 - $2,400 = $27,600
+    # Since $27,600 >= $26,050 -> NOT tax-exempt
+    # Tax: $342 base + 2.75% * ($27,600 - $26,050) = $342 + $42.63 = $385
+    oh_personal_exemptions: 2_400
+    oh_taxable_income: 27_600
+    oh_income_tax_exempt: false
+    oh_income_tax_before_non_refundable_credits: 385
+
+- name: 2025 - Entering the 3.125% bracket at $100k
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 103_800
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $103,800 (high exemption tier: >$80k)
+    # Exemption: 1 * $1,900 = $1,900
+    # Taxable income: $103,800 - $1,900 = $101,900
+    # Tax: $342 base + 2.75% * ($100,000 - $26,050) + 3.125% * ($101,900 - $100,000)
+    #     = $342 + $2,033.63 + $59.38 = $2,435
+    oh_personal_exemptions: 1_900
+    oh_taxable_income: 101_900
+    oh_income_tax_before_non_refundable_credits: 2_435
+
+- name: 2026 - High income threshold drops to $500k (exemption phases out)
+  absolute_error_margin: 10
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 550_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Income: $550,000 (>= $500k for 2026+, exemption tier: $0)
+    # Per Ohio Revised Code 5747.025: threshold drops to $500k for 2026+
+    # Exemptions: 1 * $0 = $0
+    # Taxable income: $550,000 - $0 = $550,000
+    oh_personal_exemptions: 0
+    oh_taxable_income: 550_000

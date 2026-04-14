@@ -1,0 +1,61 @@
+# Vermont TANF Payment Standard
+# Formula: (Basic Needs + Housing Allowance) x 0.496 (ratable reduction)
+# Source: Vermont TANF State Plan, Code Vt. R. 13-170-220-X Rule 2239
+
+- name: Case 1, with housing and zero housing.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        vt_reach_up_basic_needs_allowance: 1_236
+        vt_reach_up_housing_allowance: 400
+      spm_unit2:
+        members: [person2]
+        vt_reach_up_basic_needs_allowance: 942
+        vt_reach_up_housing_allowance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+      household2:
+        members: [person2]
+        state_code: VT
+  output:
+    # spm_unit1: ($1,236 + $400) x 0.496 = $811.456
+    # spm_unit2: ($942 + $0) x 0.496 = $467.232
+    vt_reach_up_payment_standard: [811.456, 467.232]
+
+- name: Case 2, minimum and high payment standards.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        vt_reach_up_basic_needs_allowance: 644
+        vt_reach_up_housing_allowance: 0
+      spm_unit2:
+        members: [person2]
+        vt_reach_up_basic_needs_allowance: 2_458
+        vt_reach_up_housing_allowance: 450
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+      household2:
+        members: [person2]
+        state_code: VT
+  output:
+    # spm_unit1 (min): ($644 + $0) x 0.496 = $319.424
+    # spm_unit2 (high): ($2,458 + $450) x 0.496 = $1,442.368
+    vt_reach_up_payment_standard: [319.424, 1_442.368]

@@ -13,13 +13,8 @@ class or_tanf_eligible(Variable):
         person = spm_unit.members
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         has_citizen = spm_unit.any(
-            person("is_citizen_or_legal_immigrant", period)
+            person("is_citizen_or_legal_immigrant", period.this_year)
         )
         income_eligible = spm_unit("or_tanf_income_eligible", period)
         resources_eligible = spm_unit("or_tanf_resources_eligible", period)
-        return (
-            demographic_eligible
-            & has_citizen
-            & income_eligible
-            & resources_eligible
-        )
+        return demographic_eligible & has_citizen & income_eligible & resources_eligible

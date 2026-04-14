@@ -8,9 +8,7 @@ def create_ctc_expansion() -> Reform:
         entity = TaxUnit
         label = "refundable CTC"
         unit = USD
-        documentation = (
-            "The portion of the Child Tax Credit that is refundable."
-        )
+        documentation = "The portion of the Child Tax Credit that is refundable."
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
@@ -53,9 +51,7 @@ def create_ctc_expansion() -> Reform:
             qualifying_children = tax_unit("ctc_qualifying_children", period)
 
             if p_wyden_smith.per_child_actc_phase_in:
-                phase_in_rate = (
-                    p_ctc.refundable.phase_in.rate * qualifying_children
-                )
+                phase_in_rate = p_ctc.refundable.phase_in.rate * qualifying_children
             else:
                 phase_in_rate = p_ctc.refundable.phase_in.rate
 
@@ -74,9 +70,9 @@ def create_ctc_expansion() -> Reform:
                 "additional_medicare_tax",
             ]
             SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-            social_security_tax = add(
-                tax_unit, period, SS_ADD_VARIABLES
-            ) - add(tax_unit, period, SS_SUBTRACT_VARIABLES)
+            social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
+                tax_unit, period, SS_SUBTRACT_VARIABLES
+            )
             eitc = tax_unit("eitc", period)
             social_security_excess = max_(0, social_security_tax - eitc)
             qualifying_children = tax_unit("ctc_qualifying_children", period)
@@ -88,12 +84,8 @@ def create_ctc_expansion() -> Reform:
             )
             limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-            ctc_capped_by_increased_tax = min_(
-                total_ctc, limiting_tax + tax_increase
-            )
-            amount_ctc_would_increase = (
-                ctc_capped_by_increased_tax - ctc_capped_by_tax
-            )
+            ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + tax_increase)
+            amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
 
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
@@ -116,10 +108,7 @@ def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
     current_period = period_(period)
 
     for i in range(5):
-        if (
-            p(current_period).actc_lookback
-            or p(current_period).per_child_actc_phase_in
-        ):
+        if p(current_period).actc_lookback or p(current_period).per_child_actc_phase_in:
             reform_active = True
             break
         current_period = current_period.offset(1, "year")

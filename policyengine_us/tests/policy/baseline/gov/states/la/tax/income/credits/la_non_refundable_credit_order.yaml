@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: LA
+    la_income_tax_before_non_refundable_credits: 100
+    la_non_refundable_cdcc_potential: 80
+  output:
+    la_non_refundable_cdcc: 80

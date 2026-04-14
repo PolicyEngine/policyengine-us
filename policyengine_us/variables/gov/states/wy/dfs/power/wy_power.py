@@ -17,4 +17,5 @@ class wy_power(Variable):
         # Per Section 1101: Benefit = Payment Standard - Countable Income
         payment_standard = spm_unit("wy_power_payment_standard", period)
         countable_income = spm_unit("wy_power_countable_income", period)
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

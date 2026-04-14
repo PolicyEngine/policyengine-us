@@ -7,7 +7,9 @@ class nj_eitc(Variable):
     label = "New Jersey EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+    reference = (
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
@@ -26,18 +28,16 @@ class nj_eitc(Variable):
         federal_eitc_eligible_assuming_meets_income_test = tax_unit(
             "eitc_eligible", period
         )
-        federal_eitc_meets_income_test = tax_unit(
-            "eitc_phased_in", period
-        ) > tax_unit("eitc_reduction", period)
+        federal_eitc_meets_income_test = tax_unit("eitc_phased_in", period) > tax_unit(
+            "eitc_reduction", period
+        )
         federal_eitc_takes_up = tax_unit("takes_up_eitc", period)
         federal_eitc_eligible = (
             federal_eitc_eligible_assuming_meets_income_test
             & federal_eitc_meets_income_test
             & federal_eitc_takes_up
         )
-        childless_eitc_age_eligible = tax_unit(
-            "nj_childless_eitc_age_eligible", period
-        )
+        childless_eitc_age_eligible = tax_unit("nj_childless_eitc_age_eligible", period)
         childless_eitc_eligible = (
             childless_eitc_age_eligible & federal_eitc_meets_income_test
         )

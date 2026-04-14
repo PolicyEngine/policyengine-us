@@ -1,0 +1,25 @@
+- name: Case 1, Medicaid enrollment counts as qualifying non-Marketplace coverage.
+  period: 2025
+  input:
+    medicaid_enrolled: true
+  output:
+    has_qualifying_non_marketplace_health_coverage_at_interview: true
+
+- name: Case 2, IHS-only coverage does not count as qualifying non-Marketplace coverage.
+  period: 2025
+  input:
+    age: 40
+    medicaid_enrolled: false
+    is_chip_eligible: false
+    medicare_enrolled: false
+    has_esi: false
+    has_indian_health_service_coverage_at_interview: true
+  output:
+    has_qualifying_non_marketplace_health_coverage_at_interview: false
+
+- name: Case 3, off-exchange coverage counts as qualifying non-Marketplace coverage.
+  period: 2025
+  input:
+    has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+  output:
+    has_qualifying_non_marketplace_health_coverage_at_interview: true

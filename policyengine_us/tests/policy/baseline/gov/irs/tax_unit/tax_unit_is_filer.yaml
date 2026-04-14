@@ -1,0 +1,59 @@
+# Tax Unit Is Filer Tests
+# Tests the filing requirement logic based on IRS rules
+
+- name: High income - required to file
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 75_000
+  output:
+    tax_unit_is_filer: true
+
+- name: Low income - gets refund so files
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 5_000
+  output:
+    # Low earners with EITC get refunds and file
+    tax_unit_is_filer: true
+
+- name: Married filing separately - lower threshold
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    age_head: 40
+    employment_income: 6_000
+  output:
+    tax_unit_is_filer: true
+
+- name: Low income but high unearned income
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 1_000
+    dividend_income: 5_000
+  output:
+    tax_unit_is_filer: true
+
+- name: Senior with low income - files due to refund
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 70
+    employment_income: 10_000
+  output:
+    # Seniors may get refunds and file
+    tax_unit_is_filer: true
+
+- name: Zero income - not required
+  period: 2024
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 0
+  output:
+    tax_unit_is_filer: false

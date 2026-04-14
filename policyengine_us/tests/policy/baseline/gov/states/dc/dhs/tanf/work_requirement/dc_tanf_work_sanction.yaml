@@ -1,0 +1,25 @@
+- name: Enrolled DC TANF cases that fail work requirements receive a 6 percent sanction.
+  period: 2023-01
+  input:
+    state_code: DC
+    is_tanf_enrolled: true
+    dc_tanf_eligible: true
+    dc_tanf_standard_payment: 100
+    dc_tanf_countable_income: 0
+    dc_tanf_meets_work_requirements: false
+  output:
+    dc_tanf_work_sanction_rate: 0.06
+    dc_tanf: 94
+
+- name: Applicant DC TANF cases are not sanctioned off the work proxy alone.
+  period: 2023-01
+  input:
+    state_code: DC
+    is_tanf_enrolled: false
+    dc_tanf_eligible: true
+    dc_tanf_standard_payment: 100
+    dc_tanf_countable_income: 0
+    dc_tanf_meets_work_requirements: false
+  output:
+    dc_tanf_work_sanction_rate: 0
+    dc_tanf: 100

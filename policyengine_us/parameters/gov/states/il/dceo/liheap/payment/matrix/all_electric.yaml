@@ -1,0 +1,69 @@
+description: Illinois provides this amount to all-electric households under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
+1:
+  1:
+    2023-10-01: 840
+  2:
+    2023-10-01: 890
+  3:
+    2023-10-01: 940
+  4:
+    2023-10-01: 990
+  5:
+    2023-10-01: 1_040
+  6:
+    2023-10-01: 1_090
+
+# Income bracket 2 = 51-100% FPL
+2:
+  1:
+    2023-10-01: 530
+  2:
+    2023-10-01: 560
+  3:
+    2023-10-01: 620
+  4:
+    2023-10-01: 680
+  5:
+    2023-10-01: 720
+  6:
+    2023-10-01: 770
+
+# Income bracket 3 = 101-150% FPL
+3:
+  1:
+    2023-10-01: 370
+  2:
+    2023-10-01: 390
+  3:
+    2023-10-01: 430
+  4:
+    2023-10-01: 470
+  5:
+    2023-10-01: 500
+  6:
+    2023-10-01: 540
+
+# Income bracket 4 = 151-200% FPL
+4:
+  1:
+    2023-10-01: 300
+  2:
+    2023-10-01: 320
+  3:
+    2023-10-01: 350
+  4:
+    2023-10-01: 380
+  5:
+    2023-10-01: 400
+  6:
+    2023-10-01: 440
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois LIHEAP all-electric payment
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1

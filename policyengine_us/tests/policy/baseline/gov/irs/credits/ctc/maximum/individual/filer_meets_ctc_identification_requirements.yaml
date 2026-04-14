@@ -1,32 +1,93 @@
-- name: One person has a valid SSN card type, the other does not, senate finance rules
+- name: One filer with a valid SSN and the other filer with an ITIN qualifies for child CTC under senate finance rules
   period: 2026
   absolute_error_margin: 0.9
   input:
     people:
-      person1:
+      head:
+        is_tax_unit_head: true
         ssn_card_type: CITIZEN
-      person2:
+      spouse:
+        is_tax_unit_spouse: true
         ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
   output:
     meets_ctc_identification_requirements: [true, false]
     filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: true
 
-- name: One person has a valid SSN card type, the other does not, senate finance rules, child status irrelevant
+- name: A filer with an ITIN but no valid SSN can still claim ODC under senate finance rules
   period: 2026
   absolute_error_margin: 0.9
   input:
     people:
-      person1:
-        ssn_card_type: CITIZEN
-      person2:
+      head:
+        is_tax_unit_head: true
         ssn_card_type: NONE
-      person3:
-        age: 5
-        is_tax_unit_dependent: true
-        ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head]
   output:
-    meets_ctc_identification_requirements: [true, false, false]
+    meets_ctc_identification_requirements: [false]
     filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: false
+
+- name: A filer without any taxpayer identification number cannot claim CTC or ODC
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: false
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    meets_ctc_identification_requirements: [false]
+    filer_meets_ctc_identification_requirements: false
+    filer_meets_child_ctc_identification_requirements: false
+
+- name: A joint return fails the filer identification requirement if one spouse lacks both SSN and ITIN
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+      spouse:
+        is_tax_unit_spouse: true
+        ssn_card_type: NONE
+        has_itin: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    meets_ctc_identification_requirements: [true, false]
+    filer_meets_ctc_identification_requirements: false
+    filer_meets_child_ctc_identification_requirements: false
+
+- name: An ITIN-only filer can still claim child CTC before the stricter filer SSN rule takes effect
+  period: 2024
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    meets_ctc_identification_requirements: [false]
+    filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: true
 
 - name: Single person eligible
   period: 2026
@@ -34,10 +95,15 @@
   input:
     people:
       person1:
+        is_tax_unit_head: true
         ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
   output:
     meets_ctc_identification_requirements: [true]
     filer_meets_ctc_identification_requirements: true
+    filer_meets_child_ctc_identification_requirements: true
 
 - name: Single person ineligible
   period: 2026
@@ -45,7 +111,13 @@
   input:
     people:
       person1:
+        is_tax_unit_head: true
         ssn_card_type: NONE
+        has_itin: false
+    tax_units:
+      tax_unit:
+        members: [person1]
   output:
     meets_ctc_identification_requirements: [false]
     filer_meets_ctc_identification_requirements: false
+    filer_meets_child_ctc_identification_requirements: false

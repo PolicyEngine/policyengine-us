@@ -22,9 +22,7 @@ class va_tanf_income_eligibility(Variable):
         up_eligible = spm_unit("va_up_tanf_eligibility", period)
         grant_standard = spm_unit("va_tanf_grant_standard", period)
         up_grant_standard = spm_unit("va_tanf_up_grant_standard", period)
-        applicable_grant = where(
-            up_eligible, up_grant_standard, grant_standard
-        )
+        applicable_grant = where(up_eligible, up_grant_standard, grant_standard)
         step2_pass = countable_income <= applicable_grant
 
         return step1_pass & step2_pass

@@ -38,6 +38,7 @@ taxcalc_output
 .vscode/settings.json
 settings.local.json
 .vscode/configurationCache.log
+settings.local.json
 .vscode/dryrun.log
 .vscode/targets.log
 
@@ -51,8 +52,9 @@ docs/book/_build
 # Personal utility scripts
 .*.py
 
-# Claude settings
+# Claude Code
 .claude/settings.local.json
+.claude/worktrees/
 
 # GitHub Codespaces.
 venv/**
@@ -61,5 +63,8 @@ oryx-build-commands.txt
 **/*.csv.gz
 **/*.pkl
 
-# Claude Code settings
-.claude/settings.local.json
+# Claude Code temporary files
+tmpclaude-*-cwd
+
+# Claude Code worktrees
+.claude/worktrees/

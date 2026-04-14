@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2024
+  input:
+    state_code: ME
+    me_income_tax_before_credits: 100
+    me_non_refundable_child_care_credit_potential: 80
+  output:
+    me_non_refundable_child_care_credit: 80

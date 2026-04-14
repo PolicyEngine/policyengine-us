@@ -6,9 +6,7 @@ class tanf_fpg(Variable):
     entity = SPMUnit
     label = "TANF federal poverty guideline"
     unit = USD
-    documentation = (
-        "The federal poverty guideline used to determine TANF eligibility."
-    )
+    documentation = "The federal poverty guideline used to determine TANF eligibility."
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/9902"
 

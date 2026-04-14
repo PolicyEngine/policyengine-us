@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class dc_ccsp_qualified_activity_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for DC Child Care Subsidy Program (CCSP) due to qualified activity"
+    label = (
+        "Eligible for DC Child Care Subsidy Program (CCSP) due to qualified activity"
+    )
     definition_period = MONTH
     defined_for = StateCode.DC
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8"
@@ -21,7 +23,5 @@ class dc_ccsp_qualified_activity_eligible(Variable):
             > 0
         )
         is_full_time_student = person("is_full_time_student", period)
-        ineligible_parent = head_or_spouse & ~(
-            is_working | is_full_time_student
-        )
+        ineligible_parent = head_or_spouse & ~(is_working | is_full_time_student)
         return spm_unit.sum(ineligible_parent) == 0

@@ -1,0 +1,82 @@
+# Unit tests for pa_ccw_age_group
+# Derived from age via bracket parameter
+# Infant: 0-11 months, Young Toddler: 12-23 months,
+# Old Toddler: 24-35 months, Pre-School: 36-59 months, School Age: 60+ months
+
+- name: Case 1, infant under 12 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0.5
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [INFANT]
+
+- name: Case 2, young toddler at 12 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [YOUNG_TODDLER]
+
+- name: Case 3, old toddler at 24 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [OLD_TODDLER]
+
+- name: Case 4, pre school at 3 years.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [PRE_SCHOOL]
+
+- name: Case 5, school age at 5 years.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [SCHOOL_AGE]
+
+- name: Case 6, school age at 10 years.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_age_group: [SCHOOL_AGE]

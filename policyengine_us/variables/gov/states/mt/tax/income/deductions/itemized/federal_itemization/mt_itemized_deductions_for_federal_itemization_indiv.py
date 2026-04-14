@@ -12,15 +12,13 @@ class mt_itemized_deductions_for_federal_itemization_indiv(Variable):
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/"
         # MT Code § 15-30-2131 (2022) (1)
     )
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.deductions
         # Since we only compute the federal charitable deduction at the tax unit level,
         # we will split the value between each spouse
-        charitable_deduction = (
-            person.tax_unit("charitable_deduction", period) * 0.5
-        )
+        charitable_deduction = person.tax_unit("charitable_deduction", period) * 0.5
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The interest deduction is the sum of mortagage and investment interest expenses
         investment_interest = person("investment_interest_expense", period)
@@ -36,6 +34,4 @@ class mt_itemized_deductions_for_federal_itemization_indiv(Variable):
                 "mt_federal_income_tax_deduction_for_federal_itemization_indiv",
             ],
         )
-        return head_or_spouse * (
-            interest_ded + charitable_deduction + other_deductions
-        )
+        return head_or_spouse * (interest_ded + charitable_deduction + other_deductions)

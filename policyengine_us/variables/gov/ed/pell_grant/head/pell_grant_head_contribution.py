@@ -36,9 +36,7 @@ class pell_grant_head_contribution(Variable):
             return total
         else:
             # EFC divides by number of dependents in college
-            dependents = person.tax_unit(
-                "pell_grant_dependents_in_college", period
-            )
+            dependents = person.tax_unit("pell_grant_dependents_in_college", period)
             amount_per_dependent = np.zeros_like(total)
             mask = dependents > 0
             amount_per_dependent[mask] = total[mask] / dependents[mask]

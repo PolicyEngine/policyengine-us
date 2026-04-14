@@ -14,9 +14,7 @@ class is_emergency_medicaid_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.emergency_medicaid
 
-        has_emergency_condition = person(
-            "has_emergency_medical_condition", period
-        )
+        has_emergency_condition = person("has_emergency_medical_condition", period)
         medicaid_category = person("medicaid_category", period)
         meets_medicaid_requirements = (
             medicaid_category != medicaid_category.possible_values.NONE

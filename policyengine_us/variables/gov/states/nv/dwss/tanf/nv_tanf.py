@@ -14,4 +14,7 @@ class nv_tanf(Variable):
         payment_standard = spm_unit("nv_tanf_payment_standard", period)
         countable_income = spm_unit("nv_tanf_countable_income", period)
         # Benefit is payment standard minus countable income
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        # Cap benefit at payment standard to prevent negative income
+        # from inflating benefits above the maximum.
+        return min_(benefit, payment_standard)

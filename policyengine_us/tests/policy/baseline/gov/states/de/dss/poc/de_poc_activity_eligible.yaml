@@ -1,0 +1,153 @@
+# de_poc_activity_eligible: SPMUnit, bool, MONTH
+# ALL parents must have a qualifying activity (DSSM 11003.6):
+#   employment, self-employment, student, or disability
+# Falls back to meets_ccdf_activity_test for non-derivable activities
+# DE does not specify minimum work hours - any employment qualifies
+
+- name: Case 1, employed parent is activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_activity_eligible: true
+
+- name: Case 2, full-time student parent is activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_full_time_student: true
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_activity_eligible: true
+
+- name: Case 3, unemployed non-student parent is not activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_activity_eligible: false
+
+- name: Case 4, two-parent family where only one parent works is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_full_time_student: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_full_time_student: false
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Both parents must qualify — person2 has no activity
+    de_poc_activity_eligible: false
+
+- name: Case 6, two-parent family where both parents work is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+        employment_income: 15_000
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # Both parents have employment — all qualify
+    de_poc_activity_eligible: true
+
+- name: Case 7, two-parent family where one works and one is a student.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+        is_full_time_student: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # person1: employed, person2: student — both qualify
+    de_poc_activity_eligible: true
+
+- name: Case 5, self-employed parent counts as activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 18_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_activity_eligible: true

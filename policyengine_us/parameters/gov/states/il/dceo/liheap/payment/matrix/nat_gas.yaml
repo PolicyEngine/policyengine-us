@@ -1,0 +1,69 @@
+description: Illinois provides this amount to natural gas households under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
+1:
+  1:
+    2023-10-01: 1_260
+  2:
+    2023-10-01: 1_360
+  3:
+    2023-10-01: 1_460
+  4:
+    2023-10-01: 1_560
+  5:
+    2023-10-01: 1_660
+  6:
+    2023-10-01: 1_760
+
+# Income bracket 2 = 51-100% FPL
+2:
+  1:
+    2023-10-01: 610
+  2:
+    2023-10-01: 640
+  3:
+    2023-10-01: 690
+  4:
+    2023-10-01: 750
+  5:
+    2023-10-01: 790
+  6:
+    2023-10-01: 830
+
+# Income bracket 3 = 101-150% FPL
+3:
+  1:
+    2023-10-01: 420
+  2:
+    2023-10-01: 450
+  3:
+    2023-10-01: 480
+  4:
+    2023-10-01: 520
+  5:
+    2023-10-01: 550
+  6:
+    2023-10-01: 570
+
+# Income bracket 4 = 151-200% FPL
+4:
+  1:
+    2023-10-01: 340
+  2:
+    2023-10-01: 380
+  3:
+    2023-10-01: 420
+  4:
+    2023-10-01: 470
+  5:
+    2023-10-01: 510
+  6:
+    2023-10-01: 550
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois LIHEAP natural gas payment
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1

@@ -16,6 +16,4 @@ def test_variable_names():
         if variable.__name__ in STATES:
             # State codes are allowed
             continue
-        assert (
-            variable.__name__.islower()
-        ), f"{variable.__name__} is not all lowercase"
+        assert variable.__name__.islower(), f"{variable.__name__} is not all lowercase"

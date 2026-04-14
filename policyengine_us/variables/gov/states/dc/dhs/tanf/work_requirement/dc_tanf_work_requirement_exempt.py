@@ -6,15 +6,11 @@ class dc_tanf_work_requirement_exempt(Variable):
     entity = Person
     definition_period = MONTH
     label = "Exempted from working requirement for DC Temporary Assistance for Needy Families (TANF)"
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19g"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.19g"
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.dc.dhs.tanf.work_requirement.work_exempted
+        p = parameters(period).gov.states.dc.dhs.tanf.work_requirement.work_exempted
         age = person("monthly_age", period)
         # (1) Eligible child who are not the head of an assistance unit can exempt
         eligible_child = person("dc_pap_eligible_child", period)
@@ -31,9 +27,4 @@ class dc_tanf_work_requirement_exempt(Variable):
         # (6) Individuals who are enrolled in post-secondary educational institutions
         is_college_student = person("is_full_time_college_student", period)
 
-        return (
-            eligible_child
-            | single_parent_exempt
-            | elderly
-            | is_college_student
-        )
+        return eligible_child | single_parent_exempt | elderly | is_college_student

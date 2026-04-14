@@ -20,8 +20,6 @@ class ga_standard_deduction(Variable):
         base = p.amount[filing_status]
         # total extra deduction
         if p.applies:
-            additional_standard = tax_unit(
-                "ga_additional_standard_deduction", period
-            )
+            additional_standard = tax_unit("ga_additional_standard_deduction", period)
             return base + additional_standard
         return base

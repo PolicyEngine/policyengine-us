@@ -21,9 +21,7 @@ class nm_works_child_support_deduction(Variable):
             period
         ).gov.states.nm.hca.nm_works.income.deductions.child_support
 
-        child_support_received = add(
-            spm_unit, period, ["child_support_received"]
-        )
+        child_support_received = add(spm_unit, period, ["child_support_received"])
         num_children = spm_unit("spm_unit_count_children", period.this_year)
 
         total_deduction = p.disregard + p.passthrough.calc(num_children)

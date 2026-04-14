@@ -1,0 +1,45 @@
+# Vermont TANF Benefit Calculation
+# Formula: Benefit = max(Payment Standard - Countable Income, 0)
+# Source: 33 V.S.A. Section 1103, Rule 2242
+
+- name: Eligible with no income
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_eligible: true
+    vt_reach_up_payment_standard: 709
+    vt_reach_up_countable_income: 0
+  output:
+    vt_reach_up: 709
+
+- name: Eligible with some income
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_eligible: true
+    vt_reach_up_payment_standard: 709
+    vt_reach_up_countable_income: 487.5
+  output:
+    # $709 - $487.50 = $221.50
+    vt_reach_up: 221.5
+
+- name: Ineligible
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_eligible: false
+    vt_reach_up_payment_standard: 709
+    vt_reach_up_countable_income: 0
+  output:
+    vt_reach_up: 0
+
+- name: Income exceeds payment standard
+  period: 2024-01
+  input:
+    state_code: VT
+    vt_reach_up_eligible: true
+    vt_reach_up_payment_standard: 709
+    vt_reach_up_countable_income: 800
+  output:
+    # max($709 - $800, 0) = $0
+    vt_reach_up: 0

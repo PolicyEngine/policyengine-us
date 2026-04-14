@@ -1,0 +1,69 @@
+description: Illinois provides this amount to propane and fuel oil households under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
+1:
+  1:
+    2023-10-01: 1_520
+  2:
+    2023-10-01: 1_620
+  3:
+    2023-10-01: 1_720
+  4:
+    2023-10-01: 1_820
+  5:
+    2023-10-01: 1_920
+  6:
+    2023-10-01: 2_020
+
+# Income bracket 2 = 51-100% FPL
+2:
+  1:
+    2023-10-01: 710
+  2:
+    2023-10-01: 750
+  3:
+    2023-10-01: 820
+  4:
+    2023-10-01: 910
+  5:
+    2023-10-01: 950
+  6:
+    2023-10-01: 1_010
+
+# Income bracket 3 = 101-150% FPL
+3:
+  1:
+    2023-10-01: 490
+  2:
+    2023-10-01: 520
+  3:
+    2023-10-01: 570
+  4:
+    2023-10-01: 630
+  5:
+    2023-10-01: 660
+  6:
+    2023-10-01: 700
+
+# Income bracket 4 = 151-200% FPL
+4:
+  1:
+    2023-10-01: 340
+  2:
+    2023-10-01: 380
+  3:
+    2023-10-01: 420
+  4:
+    2023-10-01: 470
+  5:
+    2023-10-01: 510
+  6:
+    2023-10-01: 550
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois LIHEAP propane/fuel oil payment
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1

@@ -1,0 +1,23 @@
+description: Oregon limits the dependent exemption credit to filers with AGI below this threshold.
+
+metadata:
+  label: Oregon dependent exemption credit income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+
+JOINT:
+  2025-01-01: 200_000
+
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 200_000
+
+SURVIVING_SPOUSE:
+  2025-01-01: 200_000
+
+SINGLE:
+  2025-01-01: 100_000
+
+SEPARATE:
+  2025-01-01: 100_000

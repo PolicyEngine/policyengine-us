@@ -7,9 +7,7 @@ class ma_eaedc_eligible_elderly_present(Variable):
     label = "Eligible elderly present for the Massachusetts EAEDC"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-600"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-600"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.age_threshold

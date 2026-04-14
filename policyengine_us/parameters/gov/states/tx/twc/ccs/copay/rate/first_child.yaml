@@ -1,55 +1,31 @@
-description: Texas applies this monthly copayment amount for the first child in care based on household income as a percentage of State Median Income under the Child Care Services program.
+description: Texas sets this share as the first child copayment rate by SMI bracket under the Child Care Services program.
 
 metadata:
   type: single_amount
   threshold_unit: /1
   amount_unit: /1
   period: month
-  label: Texas CCS monthly copayment for first child
+  label: Texas CCS first child copayment rate by SMI bracket
   reference:
     - title: 40 TAC §809.19 - Parent Share of Cost
       href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
     - title: TWC BCY2025 Parent Share of Cost Sliding Fee Scale
-      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy25-psoc-chart-twc.pdf
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf
+    - title: TWC BCY2026 Parent Share of Cost Sliding Fee Scale
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy-26-psoc-chart-twc.pdf
 
+# The BCY2025 chart shows 9 brackets starting at 5% SMI (2.27%, 3.27%, ..., 7.00%).
+# The BCY2026 chart shows 9 brackets starting at 1% SMI (2.00%, 2.93%, ..., 7.00%).
+# Both represent the same linear formula: rate = base + slope * (SMI% - min_SMI%).
+# Only the first (1%) and last uncapped (75%) brackets are stored here;
+# the formula derives slope = (0.0693 - 0.02) / (0.75 - 0.01) at runtime.
+# The 85% bracket (7.00%) is the cap, handled separately by maximum.yaml.
 brackets:
   - threshold:
-      2024-10-01: 0
+      2024-10-01: 0.01
     amount:
-      2024-10-01: 0
-  - threshold:
-      2024-10-01: 0.05
-    amount:
-      2024-10-01: 0.0227
-  - threshold:
-      2024-10-01: 0.2
-    amount:
-      2024-10-01: 0.0327
-  - threshold:
-      2024-10-01: 0.3
-    amount:
-      2024-10-01: 0.046
-  - threshold:
-      2024-10-01: 0.4
-    amount:
-      2024-10-01: 0.0526
-  - threshold:
-      2024-10-01: 0.5
-    amount:
-      2024-10-01: 0.0593
-  - threshold:
-      2024-10-01: 0.6
-    amount:
-      2024-10-01: 0.066
-  - threshold:
-      2024-10-01: 0.7
-    amount:
-      2024-10-01: 0.0693
+      2024-10-01: 0.02
   - threshold:
       2024-10-01: 0.75
     amount:
-      2024-10-01: 0.07
-  - threshold:
-      2024-10-01: 0.8
-    amount:
-      2024-10-01: 0.07
+      2024-10-01: 0.0693

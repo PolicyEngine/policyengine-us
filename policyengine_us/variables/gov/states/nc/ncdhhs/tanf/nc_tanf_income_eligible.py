@@ -11,9 +11,7 @@ class nc_tanf_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.tanf.eligibility
         household_size = spm_unit("nc_tanf_household_size", period)
-        reduced_need_standard = spm_unit(
-            "nc_tanf_reduced_need_standard", period
-        )
+        reduced_need_standard = spm_unit("nc_tanf_reduced_need_standard", period)
 
         need_standard_fraction = reduced_need_standard / household_size
         difference_threshold = (

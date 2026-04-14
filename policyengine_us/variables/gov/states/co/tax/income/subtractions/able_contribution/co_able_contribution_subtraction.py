@@ -16,8 +16,6 @@ class co_able_contribution_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         contribution_amount = tax_unit("able_contributions", period)
-        p = parameters(
-            period
-        ).gov.states.co.tax.income.subtractions.able_contribution
+        p = parameters(period).gov.states.co.tax.income.subtractions.able_contribution
         cap_amount = p.cap[tax_unit("filing_status", period)]
         return min_(contribution_amount, cap_amount)

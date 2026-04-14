@@ -1,0 +1,1 @@
+from .hb2306_cdcc import create_hi_hb2306_cdcc_reform

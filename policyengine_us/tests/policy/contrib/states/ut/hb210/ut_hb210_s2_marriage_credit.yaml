@@ -1,0 +1,165 @@
+# Utah HB 210 Substitute 2 - Marriage Tax Credit (Section 59-10-1049)
+# Standalone nonrefundable credit for married filers:
+# - $158 for joint and surviving spouse
+# - $79 for married filing separately
+# - MAGI limits: $90,000 (joint/surviving), $45,000 (separate)
+
+- name: HB 210 S2 - Joint filer under income limit receives $158 credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 38
+        employment_income: 39_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # AGI = $89,000 < $90,000 limit
+    ut_hb210_s2_marriage_credit: 158
+
+- name: HB 210 S2 - Joint filer over income limit receives $0
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 38
+        employment_income: 41_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # AGI = $91,000 > $90,000 limit
+    ut_hb210_s2_marriage_credit: 0
+
+- name: HB 210 S2 - MFS filer under income limit receives $79 credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 44_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # AGI = $44,000 < $45,000 limit
+    ut_hb210_s2_marriage_credit: 79
+
+- name: HB 210 S2 - MFS filer over income limit receives $0
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 46_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # AGI = $46,000 > $45,000 limit
+    ut_hb210_s2_marriage_credit: 0
+
+- name: HB 210 S2 - Single filer receives $0 (not eligible)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Single filers not eligible
+    ut_hb210_s2_marriage_credit: 0
+
+- name: HB 210 S2 - Surviving spouse under income limit receives $158 credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 50
+        employment_income: 60_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # AGI = $60,000 < $90,000 limit
+    ut_hb210_s2_marriage_credit: 158
+
+- name: HB 210 S2 - Credit capped at tax liability (low income)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.ut_hb210_s2.ut_hb210_s2
+  input:
+    gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect: true
+    people:
+      person1:
+        age: 25
+        employment_income: 5_000
+      person2:
+        age: 24
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Very low income - tax liability is minimal or zero
+    # Credit is capped at tax liability (nonrefundable)
+    ut_hb210_s2_marriage_credit: 0

@@ -25,20 +25,21 @@ class va_tanf(Variable):
         p_payment = parameters.gov.states.va.dss.tanf.payment(f"2020-10-01")
         county = spm_unit.household("county_str", period)
         if_group3 = np.isin(county, p.localities.group3)
-        up_tanf_maximum_payment = where(
+        up_tanf_base_max = where(
             if_group3,
             p_payment.up_grant_standard.group3.max,
             p_payment.up_grant_standard.group2.max,
         )
-        tanf_maximum_payment = where(
+        tanf_base_max = where(
             if_group3,
             p_payment.grant_standard.group3.max,
             p_payment.grant_standard.group2.max,
         )
-        maximum = where(
+        base_max = where(
             up_tanf_eligibility,
-            up_tanf_maximum_payment,
-            tanf_maximum_payment,
+            up_tanf_base_max,
+            tanf_base_max,
         )
+        maximum = np.ceil(base_max * p.standard_multiplier)
 
         return min_(payment, maximum)

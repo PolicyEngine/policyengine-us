@@ -10,7 +10,5 @@ class il_aabd_flat_exemption_excess_over_unearned_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.income.exemption
-        countable_unearned_income = person(
-            "il_aabd_countable_unearned_income", period
-        )
+        countable_unearned_income = person("il_aabd_countable_unearned_income", period)
         return max_(p.flat - countable_unearned_income, 0)

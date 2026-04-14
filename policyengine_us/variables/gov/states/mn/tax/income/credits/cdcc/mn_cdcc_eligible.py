@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mn_cdcc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the Minnesota child and dependent care expense credit"
-    )
+    label = "Eligible for the Minnesota child and dependent care expense credit"
     definition_period = YEAR
     reference = (
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf"

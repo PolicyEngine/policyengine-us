@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mi_homestead_property_tax_credit_household_resource_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Michigan homestead property tax credit household resource exemption"
-    )
+    label = "Michigan homestead property tax credit household resource exemption"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,17 +14,13 @@ class mi_homestead_property_tax_credit_household_resource_exemption(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.credits.homestead_property_tax
+        p = parameters(period).gov.states.mi.tax.income.credits.homestead_property_tax
 
         # Line 33
         total_household_resources = tax_unit("mi_household_resources", period)
         # Line 5
         # disabled
-        disabled_head_or_spouse = tax_unit(
-            "disabled_tax_unit_head_or_spouse", period
-        )
+        disabled_head_or_spouse = tax_unit("disabled_tax_unit_head_or_spouse", period)
         # seniors
         senior_eligible = tax_unit("mi_is_senior_for_tax", period)
         # Line 34

@@ -30,8 +30,11 @@ class ssi(Variable):
         individual_max = p.individual * MONTHS_IN_YEAR
         capped_benefit = min_(benefit, individual_max)
 
-        return where(
+        final_benefit = where(
             deeming_applies,
             capped_benefit,
             benefit,
         )
+
+        takes_up = person("takes_up_ssi_if_eligible", period)
+        return final_benefit * takes_up

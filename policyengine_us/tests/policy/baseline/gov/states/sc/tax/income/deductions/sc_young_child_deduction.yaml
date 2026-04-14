@@ -35,3 +35,40 @@
         state_code: SC
   output:
     sc_young_child_deduction: 8_860
+
+- name: 2025 child under 6 gets $4,930 young child deduction.
+  period: 2025
+  input:
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # 2025 young child deduction amount is $4,930
+    sc_young_child_deduction: 4_930
+
+- name: 2025 boundary, child age 6 does not qualify for young child deduction.
+  period: 2025
+  input:
+    people:
+      parent: {}
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # Young child deduction requires child to be under age 6 (ineligible_age = 6)
+    # Child age 6 does NOT qualify - must be younger than 6
+    sc_young_child_deduction: 0

@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class de_agi_joint(Variable):
     value_type = float
     entity = Person
-    label = "Delaware adjusted gross income for each individual whe married filing jointly"
+    label = (
+        "Delaware adjusted gross income for each individual whe married filing jointly"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE

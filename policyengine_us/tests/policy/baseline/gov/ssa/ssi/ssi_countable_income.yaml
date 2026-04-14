@@ -129,3 +129,21 @@
         members: [head, spouse]
   output:
     ssi_countable_income: [9_490, 0]
+
+- name: ISM shelter support adds to unearned income before exclusions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        ssi_receives_outside_shelter_support: true
+  output:
+    # PMV monthly = (1/3 x 967) + 20 = 342.33
+    # PMV annual = 342.33 x 12 = 4_108
+    # ISM enters unearned pool: total unearned = 4_108
+    # After $20 general exclusion: 4_108 - 240 = 3_868
+    # No earned income, so earned exclusions don't apply
+    # Countable = 3_868
+    ssi_countable_income: 3_868

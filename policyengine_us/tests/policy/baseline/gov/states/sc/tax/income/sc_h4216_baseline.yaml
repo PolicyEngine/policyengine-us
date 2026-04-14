@@ -1,0 +1,326 @@
+# SC H.4216 Baseline Tests (2026+)
+# Tests the comprehensive tax reform in baseline:
+# 1. EITC cap at $200
+# 2. SC Income Adjusted Deduction (SCIAD)
+# 3. New tax rates (1.99% / 5.21%)
+# Reference: https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm
+
+# EITC Cap Tests
+
+- name: SC EITC capped at $200 for high federal EITC (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 500
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Federal EITC = $500
+    # SC EITC = min($500 * 1.25, $200) = min($625, $200) = $200
+    sc_eitc_potential: 200
+
+- name: SC EITC below cap (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 100
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Federal EITC = $100
+    # SC EITC = min($100 * 1.25, $200) = min($125, $200) = $125
+    sc_eitc_potential: 125
+
+- name: SC EITC has no cap before 2026
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 500
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Federal EITC = $500
+    # SC EITC = $500 * 1.25 = $625 (no cap in 2025)
+    sc_eitc_potential: 625
+
+# SCIAD Tests
+
+- name: SCIAD for single filer below phase-out (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $35k < phase-out start $40k, full SCIAD
+    sc_sciad: 15_000
+
+- name: SCIAD for single filer in phase-out range (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 67_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $67,500, phase-out start $40k, width $55k
+    # Excess = $67,500 - $40,000 = $27,500
+    # Phase-out fraction = $27,500 / $55,000 = 0.5
+    # Reduction = $15,000 * 0.5 = $7,500
+    # SCIAD = $15,000 - $7,500 = $7,500
+    sc_sciad: 7_500
+
+- name: SCIAD fully phased out for high income single (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $100k > phase-out end $95k ($40k + $55k)
+    # SCIAD fully phased out
+    sc_sciad: 0
+
+- name: SCIAD for joint filer below phase-out (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      person2:
+        age: 33
+        is_tax_unit_spouse: true
+        employment_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # AGI $75k < phase-out start $80k, full SCIAD
+    sc_sciad: 30_000
+
+- name: SCIAD for head of household (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 55_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # AGI $55k < phase-out start $60k, full SCIAD
+    sc_sciad: 22_500
+
+- name: SCIAD is zero before 2026
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # SCIAD doesn't exist before 2026
+    sc_sciad: 0
+
+# Tax Rate Tests
+
+- name: Tax at 1.99% rate for income under $30k (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $20k < SCIAD $15k phase-out, so SCIAD = $15k (below $40k AGI)
+    # Actually AGI $20k means full SCIAD of $15k
+    # SC taxable income = $20k - $15k = $5k
+    # Tax = $5k * 1.99% = $99.50
+    sc_income_tax_before_non_refundable_credits: 99.5
+
+- name: Tax calculation with new rates above $30k threshold (2026)
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $100k, SCIAD $0 (fully phased out)
+    # Taxable income = $100k
+    # Tax = $30k * 1.99% + $70k * 5.21% = $597 + $3,647 = $4,244
+    sc_income_tax_before_non_refundable_credits: 4_244
+
+# Taxable Income Tests
+
+- name: SC taxable income starts from AGI in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # AGI $50k, SCIAD phased out partially
+    # Excess = $50k - $40k = $10k
+    # Phase-out fraction = $10k / $55k = 0.18182
+    # Reduction = $15,000 * 0.18182 = $2,727.27, rounded to $2,720
+    # SCIAD = $15,000 - $2,720 = $12,280
+    # But wait - formula is: reduction = base * fraction, then round DOWN to $10
+    # reduction = $15,000 * 0.18182 = $2,727.27 -> floor($2,727.27/10)*10 = $2,720
+    # SCIAD = max(0, $15,000 - $2,720) = $12,280
+    sc_sciad: 12_280
+
+- name: Zero income results in zero tax (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_sciad: 15_000
+    sc_taxable_income: 0
+    sc_income_tax_before_non_refundable_credits: 0
+
+- name: Non-SC resident gets zero for SC variables
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    sc_sciad: 0
+    sc_eitc: 0
+    sc_taxable_income: 0
+    sc_income_tax_before_non_refundable_credits: 0

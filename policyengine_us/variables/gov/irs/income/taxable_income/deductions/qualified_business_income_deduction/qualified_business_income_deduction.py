@@ -26,9 +26,7 @@ class qualified_business_income_deduction(Variable):
         taxinc_cap = p.max.rate * max_(0, taxinc_less_qbid - netcg_qdiv)
         pre_floor_qbid = min_(uncapped_qbid, taxinc_cap)
         if p.deduction_floor.in_effect:
-            qualified_business_income = tax_unit(
-                "qualified_business_income", period
-            )
+            qualified_business_income = tax_unit("qualified_business_income", period)
             floor = p.deduction_floor.amount.calc(qualified_business_income)
             return max_(pre_floor_qbid, floor)
         return pre_floor_qbid

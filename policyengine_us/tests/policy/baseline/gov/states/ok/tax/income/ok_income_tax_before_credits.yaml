@@ -1,35 +1,220 @@
-- name: OK income tax before credits unit test 1
+# Oklahoma Income Tax Before Credits
+# Tax brackets for 2022+ (rates reduced from 2021):
+# Single/MFS:    0.25% up to $1,000, 0.75% $1k-$2.5k, 1.75% $2.5k-$3.75k,
+#                2.75% $3.75k-$4.9k, 3.75% $4.9k-$7.2k, 4.75% over $7.2k
+# Joint/HOH/SS:  0.25% up to $2,000, 0.75% $2k-$5k, 1.75% $5k-$7.5k,
+#                2.75% $7.5k-$9.8k, 3.75% $9.8k-$14.4k, 4.75% over $14.4k
+
+- name: OK income tax before credits - 2021 - single $10,000
   period: 2021
   input:
     filing_status: SINGLE
     ok_taxable_income: 10_000
     state_code: OK
-  output:  # from hand calculation to avoid whole-dollar rounding
+  output:
+    # 2021 rates (higher than 2022+):
+    # 0.5% on first $1,000 = $5
+    # 1.0% on $1,000 to $2,500 = $15
+    # 2.0% on $2,500 to $3,750 = $25
+    # 3.0% on $3,750 to $4,900 = $34.50
+    # 4.0% on $4,900 to $7,200 = $92
+    # 5.0% on $7,200 to $10,000 = $140
+    # Total: $5 + $15 + $25 + $34.50 + $92 + $140 = $311.50
     ok_income_tax_before_credits: 311.5
 
-- name: OK income tax before credits unit test 2
+- name: OK income tax before credits - 2021 - joint $110,000
   period: 2021
   input:
     filing_status: JOINT
     ok_taxable_income: 110_000
     state_code: OK
-  output:  # from filling out 2021 tax computation worksheet
+  output:
+    # 2021 joint rates:
+    # 0.5% on first $2,000 = $10
+    # 1.0% on $2,000 to $5,000 = $30
+    # 2.0% on $5,000 to $7,500 = $50
+    # 3.0% on $7,500 to $9,800 = $69
+    # 4.0% on $9,800 to $12,200 = $96
+    # 5.0% on $12,200 to $110,000 = $4,890
+    # Total: $10 + $30 + $50 + $69 + $96 + $4,890 = $5,145
     ok_income_tax_before_credits: 0.05 * 10_000 + 4_645
 
-- name: OK income tax before credits unit test 3
+- name: OK income tax before credits - 2022 - single $20,000
   period: 2022
   input:
     filing_status: SINGLE
     ok_taxable_income: 20_000
     state_code: OK
-  output:  # from hand calculation to avoid whole-dollar rounding
+  output:
+    # 2022+ single rates:
+    # 0.25% on first $1,000 = $2.50
+    # 0.75% on $1,000 to $2,500 = $11.25
+    # 1.75% on $2,500 to $3,750 = $21.875
+    # 2.75% on $3,750 to $4,900 = $31.625
+    # 3.75% on $4,900 to $7,200 = $86.25
+    # 4.75% on $7,200 to $20,000 = $608
+    # Total: $2.50 + $11.25 + $21.875 + $31.625 + $86.25 + $608 = $761.50
     ok_income_tax_before_credits: 761.5
 
-- name: OK income tax before credits unit test 4
+- name: OK income tax before credits - 2022 - HOH $120,000
   period: 2022
   input:
     filing_status: HEAD_OF_HOUSEHOLD
     ok_taxable_income: 120_000
     state_code: OK
-  output:  # from filling out 2022 tax computation worksheet
-    ok_income_tax_before_credits: 0.0475 * 20_000 +  4_395
+  output:
+    # 2022+ HOH rates (same as joint):
+    # 0.25% on first $2,000 = $5
+    # 0.75% on $2,000 to $5,000 = $22.50
+    # 1.75% on $5,000 to $7,500 = $43.75
+    # 2.75% on $7,500 to $9,800 = $63.25
+    # 3.75% on $9,800 to $14,400 = $172.50
+    # 4.75% on $14,400 to $120,000 = $5,016
+    # Precalculated base at $14,400: $307 (approx)
+    # Total: 4.75% * ($120,000 - $100,000) + base at $100,000
+    ok_income_tax_before_credits: 0.0475 * 20_000 + 4_395
+
+# 2025 Tax Rate Tests - All Filing Statuses
+
+- name: OK income tax before credits - 2025 - single at first bracket
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 500
+    state_code: OK
+  output:
+    # 0.25% on $500 = $1.25
+    ok_income_tax_before_credits: 1.25
+
+- name: OK income tax before credits - 2025 - single at bracket boundary $1,000
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 1_000
+    state_code: OK
+  output:
+    # 0.25% on $1,000 = $2.50
+    ok_income_tax_before_credits: 2.5
+
+- name: OK income tax before credits - 2025 - single $7,200 (top of 3.75% bracket)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 7_200
+    state_code: OK
+  output:
+    # 0.25% on first $1,000 = $2.50
+    # 0.75% on $1,000 to $2,500 = $11.25
+    # 1.75% on $2,500 to $3,750 = $21.875
+    # 2.75% on $3,750 to $4,900 = $31.625
+    # 3.75% on $4,900 to $7,200 = $86.25
+    # Total: $2.50 + $11.25 + $21.875 + $31.625 + $86.25 = $153.50
+    ok_income_tax_before_credits: 153.5
+
+- name: OK income tax before credits - 2025 - single $50,000 (top bracket)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 50_000
+    state_code: OK
+  output:
+    # 0.25% on first $1,000 = $2.50
+    # 0.75% on $1,000 to $2,500 = $11.25
+    # 1.75% on $2,500 to $3,750 = $21.875
+    # 2.75% on $3,750 to $4,900 = $31.625
+    # 3.75% on $4,900 to $7,200 = $86.25
+    # 4.75% on $7,200 to $50,000 = $2,033
+    # Total: $153.50 + $2,033 = $2,186.50
+    ok_income_tax_before_credits: 2_186.5
+
+- name: OK income tax before credits - 2025 - joint at bracket boundary $2,000
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 2_000
+    state_code: OK
+  output:
+    # 0.25% on $2,000 = $5.00
+    ok_income_tax_before_credits: 5
+
+- name: OK income tax before credits - 2025 - joint $14,400 (top of 3.75% bracket)
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 14_400
+    state_code: OK
+  output:
+    # 0.25% on first $2,000 = $5.00
+    # 0.75% on $2,000 to $5,000 = $22.50
+    # 1.75% on $5,000 to $7,500 = $43.75
+    # 2.75% on $7,500 to $9,800 = $63.25
+    # 3.75% on $9,800 to $14,400 = $172.50
+    # Total: $5.00 + $22.50 + $43.75 + $63.25 + $172.50 = $307.00
+    ok_income_tax_before_credits: 307
+
+- name: OK income tax before credits - 2025 - joint $75,000 (top bracket)
+  period: 2025
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 75_000
+    state_code: OK
+  output:
+    # 0.25% on first $2,000 = $5.00
+    # 0.75% on $2,000 to $5,000 = $22.50
+    # 1.75% on $5,000 to $7,500 = $43.75
+    # 2.75% on $7,500 to $9,800 = $63.25
+    # 3.75% on $9,800 to $14,400 = $172.50
+    # 4.75% on $14,400 to $75,000 = $2,878.50
+    # Total: $307.00 + $2,878.50 = $3,185.50
+    ok_income_tax_before_credits: 3_185.5
+
+- name: OK income tax before credits - 2025 - MFS $30,000
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    ok_taxable_income: 30_000
+    state_code: OK
+  output:
+    # MFS uses same brackets as single:
+    # 0.25% on first $1,000 = $2.50
+    # 0.75% on $1,000 to $2,500 = $11.25
+    # 1.75% on $2,500 to $3,750 = $21.875
+    # 2.75% on $3,750 to $4,900 = $31.625
+    # 3.75% on $4,900 to $7,200 = $86.25
+    # 4.75% on $7,200 to $30,000 = $1,083
+    # Total: $153.50 + $1,083 = $1,236.50
+    ok_income_tax_before_credits: 1_236.5
+
+- name: OK income tax before credits - 2025 - HOH $40,000
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ok_taxable_income: 40_000
+    state_code: OK
+  output:
+    # HOH uses same brackets as joint:
+    # 0.25% on first $2,000 = $5.00
+    # 0.75% on $2,000 to $5,000 = $22.50
+    # 1.75% on $5,000 to $7,500 = $43.75
+    # 2.75% on $7,500 to $9,800 = $63.25
+    # 3.75% on $9,800 to $14,400 = $172.50
+    # 4.75% on $14,400 to $40,000 = $1,216
+    # Total: $307.00 + $1,216 = $1,523.00
+    ok_income_tax_before_credits: 1_523
+
+- name: OK income tax before credits - 2025 - surviving spouse $60,000
+  period: 2025
+  input:
+    filing_status: SURVIVING_SPOUSE
+    ok_taxable_income: 60_000
+    state_code: OK
+  output:
+    # Surviving spouse uses same brackets as joint:
+    # 0.25% on first $2,000 = $5.00
+    # 0.75% on $2,000 to $5,000 = $22.50
+    # 1.75% on $5,000 to $7,500 = $43.75
+    # 2.75% on $7,500 to $9,800 = $63.25
+    # 3.75% on $9,800 to $14,400 = $172.50
+    # 4.75% on $14,400 to $60,000 = $2,166
+    # Total: $307.00 + $2,166 = $2,473.00
+    ok_income_tax_before_credits: 2_473

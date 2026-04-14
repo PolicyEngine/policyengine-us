@@ -54,3 +54,24 @@
         state_code: MT
   output:
     mt_federal_income_tax_deduction_unit: 7_000
+
+- name: MT 2024 joint filers should not get federal income tax deduction
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        income_tax_before_refundable_credits: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_federal_income_tax_deduction_unit: 0

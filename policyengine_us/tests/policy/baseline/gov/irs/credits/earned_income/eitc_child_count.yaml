@@ -6,7 +6,7 @@
         is_tax_unit_head_or_spouse: true
         meets_eitc_identification_requirements: true
       person2:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
         meets_eitc_identification_requirements: true
     tax_units:
       tax_unit:
@@ -22,10 +22,10 @@
         is_tax_unit_head_or_spouse: true
         meets_eitc_identification_requirements: true
       person2:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
         meets_eitc_identification_requirements: true
       person3:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
         meets_eitc_identification_requirements: true
     tax_units:
       tax_unit:
@@ -41,10 +41,10 @@
         is_tax_unit_head_or_spouse: true
         meets_eitc_identification_requirements: true
       person2:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
         meets_eitc_identification_requirements: true
       person3:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
         meets_eitc_identification_requirements: false
     tax_units:
       tax_unit:

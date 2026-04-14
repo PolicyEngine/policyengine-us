@@ -10,6 +10,8 @@ metadata:
       href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=5
     - title: 2024 Colorado Child Tax Credit Instructions, Section B
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2024.pdf#page=2
+    - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Section B
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=26
 brackets:
   - threshold:
       2024-01-01: -.inf
@@ -17,13 +19,16 @@ brackets:
       2024-01-01: 1_200
   - threshold:
       2024-01-01: 25_000
+      2025-01-01: 26_000
     amount:
       2024-01-01: 600
   - threshold:
       2024-01-01: 50_000
+      2025-01-01: 51_000
     amount:
       2024-01-01: 200
   - threshold:
       2024-01-01: 75_000
+      2025-01-01: 77_000
     amount:
       2024-01-01: 0

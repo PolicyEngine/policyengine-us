@@ -169,9 +169,7 @@ def create_ri_ctc() -> Reform:
             )
 
         # Add ri_non_refundable_ctc to non-refundable credits list
-        non_refundable = (
-            parameters.gov.states.ri.tax.income.credits.non_refundable
-        )
+        non_refundable = parameters.gov.states.ri.tax.income.credits.non_refundable
         current_non_refundable = non_refundable(instant("2025-01-01"))
         if "ri_non_refundable_ctc" not in current_non_refundable:
             new_non_refundable = list(current_non_refundable) + [
