@@ -160,7 +160,7 @@
     people:
       person1:
         age: 40
-        farm_income: -500_000
+        farm_operations_income: -500_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -205,6 +205,35 @@
     # Limited to threshold
     loss_ald: 305_000
     adjusted_gross_income: -305_000
+
+- name: Other net gain offsets business losses before Section 461(l) cap
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -500_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        other_net_gain: 300_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Business loss: $500,000
+    # Other net gain: $300,000
+    # 461(l) threshold for single 2024: $305,000
+    # Max deductible business loss: 300,000 + 305,000 = 605,000
+    # Full loss is deductible, and the gain is included in gross income.
+    loss_ald: 500_000
+    adjusted_gross_income: -200_000
 
 - name: MFJ gets higher Section 461(l) threshold
   period: 2024

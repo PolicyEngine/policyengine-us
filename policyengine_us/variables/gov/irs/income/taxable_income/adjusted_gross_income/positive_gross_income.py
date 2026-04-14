@@ -10,5 +10,7 @@ class positive_gross_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        gross_income = add(tax_unit, period, ["irs_gross_income"])
+        gross_income = add(tax_unit, period, ["irs_gross_income"]) + max_(
+            0, tax_unit("other_net_gain", period)
+        )
         return max_(gross_income, 0)

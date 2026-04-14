@@ -27,6 +27,9 @@ class adjusted_gross_income_person(Variable):
         is_spouse = person("is_tax_unit_spouse", period)
         fstatus = person.tax_unit("filing_status", period)
         frac = where(fstatus == fstatus.possible_values.JOINT, 0.5, 1.0)
+        other_net_gain = max_(0, person.tax_unit("other_net_gain", period))
+        other_net_gain_shared = (is_head | is_spouse) * other_net_gain * frac
+        gross_income += other_net_gain_shared
         ald_sum_taxunit_shared = (is_head | is_spouse) * ald_sum_taxunit * frac
         # calculate AGI by person
         agi = gross_income - ald_sum_person - ald_sum_taxunit_shared

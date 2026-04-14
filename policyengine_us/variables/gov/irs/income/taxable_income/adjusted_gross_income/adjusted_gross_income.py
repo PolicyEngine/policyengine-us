@@ -10,7 +10,9 @@ class adjusted_gross_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
     def formula(tax_unit, period, parameters):
-        gross_income = add(tax_unit, period, ["irs_gross_income"])
+        gross_income = add(tax_unit, period, ["irs_gross_income"]) + max_(
+            0, tax_unit("other_net_gain", period)
+        )
         above_the_line_deductions = tax_unit(
             "above_the_line_deductions", period
         )
