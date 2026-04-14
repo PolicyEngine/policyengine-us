@@ -31,6 +31,12 @@ class loss_ald(Variable):
         self_employment_income = tax_unit.sum(indiv_se_income)
         self_employment_loss = tax_unit.sum(indiv_se_loss)
 
+        # Schedule F farm business income/losses
+        indiv_farm_income = max_(0, person("farm_income", period))
+        indiv_farm_loss = max_(0, -person("farm_income", period))
+        farm_income = tax_unit.sum(indiv_farm_income)
+        farm_loss = tax_unit.sum(indiv_farm_loss)
+
         # Partnership/S-corp losses (Schedule E)
         indiv_scorp_income = max_(
             0, person("partnership_s_corp_income", period)
@@ -43,9 +49,11 @@ class loss_ald(Variable):
 
         # Total business losses subject to Section 461(l) limitation
         total_business_income = (
-            self_employment_income + partnership_s_corp_income
+            self_employment_income + farm_income + partnership_s_corp_income
         )
-        total_business_loss = self_employment_loss + partnership_s_corp_loss
+        total_business_loss = (
+            self_employment_loss + farm_loss + partnership_s_corp_loss
+        )
         max_deductible_business_loss = (
             total_business_income + threshold_amount
         )

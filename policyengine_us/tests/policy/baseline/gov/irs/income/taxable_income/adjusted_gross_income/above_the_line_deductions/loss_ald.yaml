@@ -153,6 +153,32 @@
     loss_ald: 308_000
     limited_capital_loss: 3_000
 
+- name: Farm loss is subject to Section 461(l) limitation
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        farm_income: -500_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Farm loss: $500,000
+    # 461(l) threshold for single 2024: $305,000
+    # Limited to threshold
+    loss_ald: 305_000
+    adjusted_gross_income: -305_000
+
 - name: MFJ gets higher Section 461(l) threshold
   period: 2024
   absolute_error_margin: 1
