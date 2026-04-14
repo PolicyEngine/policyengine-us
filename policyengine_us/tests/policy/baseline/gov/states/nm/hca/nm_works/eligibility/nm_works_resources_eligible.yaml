@@ -12,7 +12,9 @@
     state_code: NM
     spm_unit_cash_assets: 1_499
   output:
-    # PolicyEngine currently enforces the directly modeled $1,500 liquid-resource test.
+    # Liquid resources are below the $1,500 limit, and the current state-specific
+    # non-liquid concept remains zero until countable non-exempt property signals
+    # are modeled explicitly.
     nm_works_resources_eligible: true
 
 - name: Case 3, at limit is eligible.
@@ -21,7 +23,8 @@
     state_code: NM
     spm_unit_cash_assets: 1_500
   output:
-    # $1,500 liquid resources is the modeled boundary.
+    # The liquid side is exactly at the statutory boundary, with no modeled
+    # countable non-liquid resources yet.
     nm_works_resources_eligible: true
 
 - name: Case 4, one dollar above limit is ineligible.
@@ -30,5 +33,6 @@
     state_code: NM
     spm_unit_cash_assets: 1_501
   output:
-    # $1,501 liquid resources exceeds the modeled limit.
+    # Liquid resources alone can fail the NM Works test even before adding any
+    # future modeled non-liquid countable resources.
     nm_works_resources_eligible: false
