@@ -16,7 +16,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_size: 2
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_demographic_tanf_eligible: true
     households:
       household:
@@ -41,7 +41,7 @@
       spm_unit:
         members: [person1]
         spm_unit_size: 1
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_demographic_tanf_eligible: true
         is_tanf_enrolled: true  # Enrolled for ongoing test
     households:
@@ -70,7 +70,7 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_size: 2
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_demographic_tanf_eligible: true
     households:
       household:
@@ -94,7 +94,7 @@
       spm_unit:
         members: [person1]
         spm_unit_size: 1
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_demographic_tanf_eligible: true
         is_tanf_enrolled: true  # Enrolled - uses countable income test
     households:
@@ -122,7 +122,7 @@
       spm_unit:
         members: [person1]
         spm_unit_size: 1
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_demographic_tanf_eligible: true
         is_tanf_enrolled: true
     households:
@@ -166,7 +166,7 @@
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
         spm_unit_size: 8
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_demographic_tanf_eligible: true
     households:
       household:

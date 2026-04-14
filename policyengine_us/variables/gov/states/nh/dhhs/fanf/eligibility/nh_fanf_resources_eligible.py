@@ -17,7 +17,7 @@ class nh_fanf_resources_eligible(Variable):
         # NOTE: One vehicle per adult is excluded regardless of value.
         # Resource limits differ for applicants ($1,000) vs recipients ($5,000 as of 07/01/22)
         p = parameters(period).gov.states.nh.dhhs.fanf.resources
-        resources = spm_unit("spm_unit_assets", period)
+        resources = spm_unit("spm_unit_cash_assets", period)
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         limit = where(is_enrolled, p.recipient_limit, p.applicant_limit)
         return resources <= limit

@@ -6,7 +6,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     # $0 <= $2,000 = true
     ms_tanf_resources_eligible: true
@@ -15,7 +15,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 500
+    spm_unit_cash_assets: 500
   output:
     # $500 <= $2,000 = true
     ms_tanf_resources_eligible: true
@@ -24,7 +24,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 1_500
+    spm_unit_cash_assets: 1_500
   output:
     # $1,500 <= $2,000 = true
     ms_tanf_resources_eligible: true
@@ -33,7 +33,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 2_000
+    spm_unit_cash_assets: 2_000
   output:
     # $2,000 <= $2,000 = true
     ms_tanf_resources_eligible: true
@@ -42,7 +42,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 2_001
+    spm_unit_cash_assets: 2_001
   output:
     # $2,001 > $2,000 = false
     ms_tanf_resources_eligible: false
@@ -51,7 +51,7 @@
   period: 2026-01
   input:
     state_code: MS
-    spm_unit_assets: 5_000
+    spm_unit_cash_assets: 5_000
   output:
     # $5,000 > $2,000 = false
     ms_tanf_resources_eligible: false
@@ -60,7 +60,7 @@
   period: 2026-01
   input:
     state_code: NY
-    spm_unit_assets: 500
+    spm_unit_cash_assets: 500
   output:
     # Not in MS, returns false (defined_for = MS)
     ms_tanf_resources_eligible: false

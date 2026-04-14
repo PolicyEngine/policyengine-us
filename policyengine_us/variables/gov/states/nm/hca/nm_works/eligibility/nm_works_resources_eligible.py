@@ -13,8 +13,12 @@ class nm_works_resources_eligible(Variable):
         # Per 8.102.510.8 NMAC, resources/property limits:
         # - Liquid resources must not exceed $1,500
         # - Non-liquid resources must not exceed $2,000
-        # NOTE: Simplified check using total assets since liquid/non-liquid
-        # distinction is not currently modeled. Combined limit used.
+        # PolicyEngine currently models liquid financial assets explicitly but does
+        # not yet distinguish countable non-liquid property from exempt home equity
+        # or exempt transportation vehicles under 8.102.510.10 NMAC. Applying
+        # assessed_property_value or household_vehicles_value directly here would
+        # overstate countable non-liquid resources for many households, so this
+        # check enforces the directly modeled liquid-resource test only.
         p = parameters(period).gov.states.nm.hca.nm_works.resources.limit
-        assets = spm_unit("spm_unit_assets", period.this_year)
-        return assets <= p.liquid + p.non_liquid
+        liquid_resources = spm_unit("spm_unit_cash_assets", period.this_year)
+        return liquid_resources <= p.liquid

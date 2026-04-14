@@ -11,7 +11,8 @@ class nv_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nv.dwss.tanf.resource_limit
-        # Nevada excludes two vehicles and home, but we use total assets
-        # as a simplified approach
-        assets = spm_unit("spm_unit_assets", period.this_year)
+        # Nevada excludes the home and up to two vehicles, so use liquid
+        # financial assets explicitly until those vehicle exclusions are
+        # modeled separately.
+        assets = spm_unit("spm_unit_cash_assets", period.this_year)
         return assets <= p.amount

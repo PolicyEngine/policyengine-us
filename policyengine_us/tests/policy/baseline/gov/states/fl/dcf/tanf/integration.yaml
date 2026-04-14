@@ -544,7 +544,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 2_000  # Exactly at limit
+        spm_unit_cash_assets: 2_000  # Exactly at limit
     households:
       household:
         members: [person1, person2]
@@ -574,7 +574,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 2_001  # One dollar over limit
+        spm_unit_cash_assets: 2_001  # One dollar over limit
     households:
       household:
         members: [person1, person2]

@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     nm_works_resources_eligible: true
 
@@ -10,26 +10,25 @@
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_assets: 3_499
+    spm_unit_cash_assets: 1_499
   output:
-    # Combined limit: $1,500 + $2,000 = $3,500
-    # $3,499 <= $3,500 = eligible
+    # PolicyEngine currently enforces the directly modeled $1,500 liquid-resource test.
     nm_works_resources_eligible: true
 
 - name: Case 3, at limit is eligible.
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_assets: 3_500
+    spm_unit_cash_assets: 1_500
   output:
-    # $3,500 <= $3,500 = eligible (boundary)
+    # $1,500 liquid resources is the modeled boundary.
     nm_works_resources_eligible: true
 
 - name: Case 4, one dollar above limit is ineligible.
   period: 2024-01
   input:
     state_code: NM
-    spm_unit_assets: 3_501
+    spm_unit_cash_assets: 1_501
   output:
-    # $3,501 > $3,500 = ineligible
+    # $1,501 liquid resources exceeds the modeled limit.
     nm_works_resources_eligible: false
