@@ -37,6 +37,23 @@ class loss_ald(Variable):
         farm_income = tax_unit.sum(indiv_farm_income)
         farm_loss = tax_unit.sum(indiv_farm_loss)
 
+        # Qualified rental and farm-rent items from Schedule E.
+        qualified_rental_income = person("rental_income", period) * person(
+            "rental_income_would_be_qualified", period
+        )
+        indiv_rental_income = max_(0, qualified_rental_income)
+        indiv_rental_loss = max_(0, -qualified_rental_income)
+        rental_income = tax_unit.sum(indiv_rental_income)
+        rental_loss = tax_unit.sum(indiv_rental_loss)
+
+        qualified_farm_rent_income = person("farm_rent_income", period) * person(
+            "farm_rent_income_would_be_qualified", period
+        )
+        indiv_farm_rent_income = max_(0, qualified_farm_rent_income)
+        indiv_farm_rent_loss = max_(0, -qualified_farm_rent_income)
+        farm_rent_income = tax_unit.sum(indiv_farm_rent_income)
+        farm_rent_loss = tax_unit.sum(indiv_farm_rent_loss)
+
         # Partnership/S-corp losses (Schedule E)
         indiv_scorp_income = max_(
             0, person("partnership_s_corp_income", period)
@@ -49,10 +66,18 @@ class loss_ald(Variable):
 
         # Total business losses subject to Section 461(l) limitation
         total_business_income = (
-            self_employment_income + farm_income + partnership_s_corp_income
+            self_employment_income
+            + farm_income
+            + rental_income
+            + farm_rent_income
+            + partnership_s_corp_income
         )
         total_business_loss = (
-            self_employment_loss + farm_loss + partnership_s_corp_loss
+            self_employment_loss
+            + farm_loss
+            + rental_loss
+            + farm_rent_loss
+            + partnership_s_corp_loss
         )
         max_deductible_business_loss = (
             total_business_income + threshold_amount
