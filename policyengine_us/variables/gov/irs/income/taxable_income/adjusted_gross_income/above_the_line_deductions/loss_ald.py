@@ -6,7 +6,9 @@ class loss_ald(Variable):
     entity = TaxUnit
     label = "Business loss ALD"
     unit = USD
-    documentation = "Above-the-line deduction from gross income for business and capital losses."
+    documentation = (
+        "Above-the-line deduction from gross income for business and capital losses."
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/165",
@@ -16,9 +18,7 @@ class loss_ald(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         # Section 461(l) excess business loss limitation
-        threshold_amount = parameters(period).gov.irs.ald.loss.max[
-            filing_status
-        ]
+        threshold_amount = parameters(period).gov.irs.ald.loss.max[filing_status]
         person = tax_unit.members
 
         # Section 461(l) compares business deductions to business gross
@@ -54,12 +54,8 @@ class loss_ald(Variable):
         estate_loss = tax_unit.sum(indiv_estate_loss)
 
         # Partnership/S-corp losses (Schedule E)
-        indiv_scorp_income = max_(
-            0, person("partnership_s_corp_income", period)
-        )
-        indiv_scorp_loss = max_(
-            0, -person("partnership_s_corp_income", period)
-        )
+        indiv_scorp_income = max_(0, person("partnership_s_corp_income", period))
+        indiv_scorp_loss = max_(0, -person("partnership_s_corp_income", period))
         partnership_s_corp_income = tax_unit.sum(indiv_scorp_income)
         partnership_s_corp_loss = tax_unit.sum(indiv_scorp_loss)
 
@@ -86,12 +82,8 @@ class loss_ald(Variable):
             + partnership_s_corp_loss
             + other_business_loss
         )
-        max_deductible_business_loss = (
-            total_business_income + threshold_amount
-        )
-        limited_business_loss = min_(
-            total_business_loss, max_deductible_business_loss
-        )
+        max_deductible_business_loss = total_business_income + threshold_amount
+        limited_business_loss = min_(total_business_loss, max_deductible_business_loss)
 
         # Capital losses have separate limit under Section 1211 ($3,000)
         limited_capital_loss = tax_unit("limited_capital_loss", period)
