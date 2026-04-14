@@ -180,6 +180,7 @@
     adjusted_gross_income: -305_000
 
 - name: Qualified rental loss is subject to Section 461(l) limitation
+  # Schedule E rental losses are included in the Section 461(l) bucket.
   period: 2024
   absolute_error_margin: 1
   input:
@@ -187,7 +188,6 @@
       person1:
         age: 40
         rental_income: -500_000
-        rental_income_would_be_qualified: true
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -201,6 +201,32 @@
         state_code: TX
   output:
     # Qualified rental loss: $500,000
+    # 461(l) threshold for single 2024: $305,000
+    # Limited to threshold
+    loss_ald: 305_000
+    adjusted_gross_income: -305_000
+
+- name: Estate loss is subject to Section 461(l) limitation
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        estate_income: -500_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Estate/trust loss: $500,000
     # 461(l) threshold for single 2024: $305,000
     # Limited to threshold
     loss_ald: 305_000

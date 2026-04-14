@@ -32,30 +32,26 @@ class loss_ald(Variable):
         self_employment_loss = tax_unit.sum(indiv_se_loss)
 
         # Schedule F farm business income/losses.
-        qualified_farm_income = person("farm_operations_income", period) * person(
-            "farm_operations_income_would_be_qualified", period
-        )
-        indiv_farm_income = max_(0, qualified_farm_income)
-        indiv_farm_loss = max_(0, -qualified_farm_income)
+        indiv_farm_income = max_(0, person("farm_operations_income", period))
+        indiv_farm_loss = max_(0, -person("farm_operations_income", period))
         farm_income = tax_unit.sum(indiv_farm_income)
         farm_loss = tax_unit.sum(indiv_farm_loss)
 
-        # Qualified rental and farm-rent items from Schedule E.
-        qualified_rental_income = person("rental_income", period) * person(
-            "rental_income_would_be_qualified", period
-        )
-        indiv_rental_income = max_(0, qualified_rental_income)
-        indiv_rental_loss = max_(0, -qualified_rental_income)
+        # Schedule E rental, farm-rent, and estate/trust items.
+        indiv_rental_income = max_(0, person("rental_income", period))
+        indiv_rental_loss = max_(0, -person("rental_income", period))
         rental_income = tax_unit.sum(indiv_rental_income)
         rental_loss = tax_unit.sum(indiv_rental_loss)
 
-        qualified_farm_rent_income = person("farm_rent_income", period) * person(
-            "farm_rent_income_would_be_qualified", period
-        )
-        indiv_farm_rent_income = max_(0, qualified_farm_rent_income)
-        indiv_farm_rent_loss = max_(0, -qualified_farm_rent_income)
+        indiv_farm_rent_income = max_(0, person("farm_rent_income", period))
+        indiv_farm_rent_loss = max_(0, -person("farm_rent_income", period))
         farm_rent_income = tax_unit.sum(indiv_farm_rent_income)
         farm_rent_loss = tax_unit.sum(indiv_farm_rent_loss)
+
+        indiv_estate_income = max_(0, person("estate_income", period))
+        indiv_estate_loss = max_(0, -person("estate_income", period))
+        estate_income = tax_unit.sum(indiv_estate_income)
+        estate_loss = tax_unit.sum(indiv_estate_loss)
 
         # Partnership/S-corp losses (Schedule E)
         indiv_scorp_income = max_(
@@ -77,6 +73,7 @@ class loss_ald(Variable):
             + farm_income
             + rental_income
             + farm_rent_income
+            + estate_income
             + partnership_s_corp_income
             + other_business_gain
         )
@@ -85,6 +82,7 @@ class loss_ald(Variable):
             + farm_loss
             + rental_loss
             + farm_rent_loss
+            + estate_loss
             + partnership_s_corp_loss
             + other_business_loss
         )
