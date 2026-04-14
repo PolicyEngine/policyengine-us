@@ -29,12 +29,8 @@ class ma_tafdc_noncountable_income(Variable):
             period,
             ["ma_tcap_gross_unearned_income", "ma_tafdc_lump_sum_income"],
         ) - add(spm_unit, period, ["ma_tafdc_gross_unearned_income"])
-        child_support_deduction = add(
-            spm_unit, period, ["ma_tafdc_child_support_deduction"]
-        )
         return (
             unconditional
             + max_(earned_excluded, 0)
             + max_(unearned_excluded, 0)
-            + child_support_deduction
         )

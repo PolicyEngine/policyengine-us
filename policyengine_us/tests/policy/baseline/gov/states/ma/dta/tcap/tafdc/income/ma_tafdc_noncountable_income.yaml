@@ -286,3 +286,33 @@
         state_code: MA
   output:
     ma_tafdc_noncountable_income: 0
+
+- name: Child support deduction is not counted as noncountable income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        alimony_income: 400
+        ma_state_supplement: 0
+        ssi_reported: 0
+        employment_income_before_lsr: 0
+        ma_tafdc_lump_sum_income: 0
+        is_tax_unit_dependent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        spm_unit_capped_housing_subsidy: 0
+        ma_liheap: 0
+        spm_unit_school_lunch_subsidy: 0
+        spm_unit_pell_grant: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_tafdc_noncountable_income: 0
