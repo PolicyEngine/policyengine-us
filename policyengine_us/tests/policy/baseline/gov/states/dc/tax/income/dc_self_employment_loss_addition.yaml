@@ -53,10 +53,12 @@
     state_code: DC
   output:
     # limited_capital_loss = min(3_000, 5_000) = 3_000
-    # loss_ald = min(305_000, 25_000_000 + 3_000) = 305_000
-    # SE portion of loss_ald: 305_000 - 3_000 = 302_000
-    # DC addition: max(0, 302_000 - 12_000) = 290_000
-    dc_self_employment_loss_addition: 290_000
+    # Section 461(l) caps the business-loss portion at 305,000.
+    # Capital losses are capped separately under Section 1211 and added on top.
+    # loss_ald = 305_000 + 3_000 = 308_000
+    # SE portion of loss_ald: 308_000 - 3_000 = 305_000
+    # DC addition: max(0, 305_000 - 12_000) = 293_000
+    dc_self_employment_loss_addition: 293_000
 
 - name: Case 7, SE loss exactly at DC threshold.
   absolute_error_margin: 0.01
