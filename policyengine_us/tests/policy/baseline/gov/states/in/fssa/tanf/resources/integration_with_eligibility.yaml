@@ -17,7 +17,7 @@
       household:
         members: [parent, child]
         state_code: IN
-        household_vehicles_value: 0  # No vehicle
+        household_vehicles_equity: 0  # No vehicle equity
   output:
     in_tanf_countable_resources: 500  # 500 - 0 vehicle exclusion = 500
     in_tanf_resources_eligible: true
@@ -43,7 +43,7 @@
       household:
         members: [parent, child]
         state_code: IN
-        household_vehicles_value: 20_000  # Vehicle at exclusion limit
+        household_vehicles_equity: 20_000  # Vehicle equity at exclusion limit
   output:
     in_tanf_countable_resources: 5_000  # $5,000 liquid assets + $0 countable vehicle value
     in_tanf_resources_eligible: false  # 5_000 > 1_000 application limit
@@ -70,7 +70,7 @@
       household:
         members: [parent, child]
         state_code: IN
-        household_vehicles_value: 20_000  # Vehicle at exclusion limit
+        household_vehicles_equity: 20_000  # Vehicle equity at exclusion limit
   output:
     in_tanf_countable_resources: 5_000  # $5,000 liquid assets + $0 countable vehicle value
     in_tanf_resources_eligible: true  # 5_000 < 10_000 ongoing limit

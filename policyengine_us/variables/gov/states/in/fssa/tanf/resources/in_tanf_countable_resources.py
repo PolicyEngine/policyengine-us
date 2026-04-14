@@ -16,6 +16,8 @@ class in_tanf_countable_resources(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states["in"].fssa.tanf.resources.vehicle_exemption
         cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
-        vehicle_value = spm_unit.household("household_vehicles_value", period.this_year)
-        countable_vehicle_value = max_(vehicle_value - p.amount, 0)
+        vehicle_equity = spm_unit.household(
+            "household_vehicles_equity", period.this_year
+        )
+        countable_vehicle_value = max_(vehicle_equity - p.amount, 0)
         return cash_assets + countable_vehicle_value
