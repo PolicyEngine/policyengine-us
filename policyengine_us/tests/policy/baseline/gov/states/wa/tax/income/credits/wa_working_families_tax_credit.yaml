@@ -150,3 +150,15 @@
     # Standard EITC pathway still works
     # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
     wa_working_families_tax_credit: 367
+
+- name: Case 12, age expansion preserves EITC investment income eligibility.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    tax_exempt_interest_income: 100_000
+    eitc_child_count: 0
+  output:
+    wa_working_families_tax_credit: 0

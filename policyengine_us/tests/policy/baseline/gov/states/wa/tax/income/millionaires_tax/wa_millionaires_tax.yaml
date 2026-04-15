@@ -161,3 +161,27 @@
   output:
     # Taxable = $1.05M - $1M standard - $100K charitable = -$50K = $0
     wa_millionaires_tax: 0
+
+- name: Case 16, long-term capital gains below the WA capital gains threshold are removed from base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_200_000
+    long_term_capital_gains: 200_000
+  output:
+    # Base income = $1.2M - $200K LT capital gains = $1M
+    # Taxable = $1M - $1M standard = $0
+    wa_millionaires_tax: 0
+
+- name: Case 17, tax-exempt interest is added to Washington base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_100_000
+    tax_exempt_interest_income: 100_000
+  output:
+    # Base income = $1.1M AGI + $100K tax-exempt interest = $1.2M
+    # Taxable = $1.2M - $1M standard = $200K
+    wa_millionaires_tax: 19_800
