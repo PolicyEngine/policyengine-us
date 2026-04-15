@@ -1,0 +1,13 @@
+description: Additional components included in CBO household market income.
+values:
+  0000-01-01:
+    - employer_sponsored_insurance_premiums
+    - employer_social_security_tax
+    - employer_medicare_tax
+    - cbo_federal_unemployment_payroll_tax
+    - cbo_corporate_income_tax
+
+metadata:
+  unit: list
+  period: year
+  label: CBO market income additions
