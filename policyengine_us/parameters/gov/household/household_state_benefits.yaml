@@ -1,10 +1,13 @@
 description: The government counts these sources as benefits paid by state agencies.
 values:
   2023-01-01:
+    # Delaware benefits
+    - de_ssp
+    - de_child_care_subsidies
+    # Georgia benefits
+    - ga_ssp
     # Massachusetts benefits
     - ma_state_supplement
-    # Idaho benefits
-    - id_aabd
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -19,16 +22,25 @@ values:
     - ca_la_expectant_parent_payment
     - ca_capi
     - ca_state_supplement
+    # Alabama benefits
+    - al_ssp
+    # Alaska benefits
+    - ak_ssp
+    # Idaho benefits
+    - id_aabd
     # Nebraska benefits
     - ne_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     - ma_tafdc
   2024-01-01:
+    # Delaware benefits
+    - de_ssp
+    - de_child_care_subsidies
+    # Georgia benefits
+    - ga_ssp
     # Massachusetts benefits
     - ma_state_supplement
-    # Idaho benefits
-    - id_aabd
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -43,6 +55,12 @@ values:
     - ca_la_expectant_parent_payment
     - ca_capi
     - ca_state_supplement
+    # Alabama benefits
+    - al_ssp
+    # Alaska benefits
+    - ak_ssp
+    # Idaho benefits
+    - id_aabd
     # Nebraska benefits
     - ne_child_care_subsidies
     # North Carolina benefits
