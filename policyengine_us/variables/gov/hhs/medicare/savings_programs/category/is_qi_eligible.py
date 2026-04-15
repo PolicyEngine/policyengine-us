@@ -7,12 +7,12 @@ class is_qi_eligible(Variable):
     label = "Qualifying Individual (QI) eligible"
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/cfr/text/42/435.123",
+        "https://www.law.cornell.edu/cfr/text/42/435.125",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
 
     def formula(person, period, parameters):
-        # QI requires income above 120% FPL but at or below 135% FPL
+        # QI requires income at least 120% FPL but below 135% FPL
         # QI is only available for people who don't qualify for other Medicaid
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
 
@@ -25,9 +25,9 @@ class is_qi_eligible(Variable):
         slmb_income_limit = fpg * p.slmb.fpl_limit
         qi_income_limit = fpg * p.qi.fpl_limit
 
-        income_above_slmb = countable_income > slmb_income_limit
-        income_at_or_below_qi = countable_income <= qi_income_limit
-        income_eligible = income_above_slmb & income_at_or_below_qi
+        income_at_or_above_slmb = countable_income >= slmb_income_limit
+        income_below_qi = countable_income < qi_income_limit
+        income_eligible = income_at_or_above_slmb & income_below_qi
 
         # QI excludes those eligible for other Medicaid coverage
         medicaid_eligible = person("is_medicaid_eligible", period.this_year)

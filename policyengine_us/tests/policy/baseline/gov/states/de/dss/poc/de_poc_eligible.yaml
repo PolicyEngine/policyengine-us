@@ -1,0 +1,135 @@
+# de_poc_eligible: SPMUnit, bool, MONTH
+# Eligible if: has at least one eligible child AND income eligible
+#   AND asset eligible AND activity eligible
+
+- name: Case 1, basic eligible family.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible: true
+
+- name: Case 2, income too high for new applicant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 48_000 / 12 = 4_000 > 200% FPL of 3_525
+    de_poc_eligible: false
+
+- name: Case 3, no eligible children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Child age 14, not disabled -> ineligible child
+    de_poc_eligible: false
+
+- name: Case 4, no activity eligible parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible: false
+
+- name: Case 5, enrolled family within 300% FPL but above 200% FPL.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_poc_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 50_000 / 12 = 4_166.67 > 200% FPL 3_525 but <= 300% FPL 5_287.50
+    # Enrolled -> uses 300% threshold -> eligible
+    de_poc_eligible: true

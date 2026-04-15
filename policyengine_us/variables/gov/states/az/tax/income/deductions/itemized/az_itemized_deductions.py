@@ -37,7 +37,7 @@ class az_itemized_deductions(Variable):
         # a credit under Arizona law.
         charitable_deduction = tax_unit("charitable_deduction", period)
         charitable_contributions_credit = tax_unit(
-            "az_charitable_contributions_credit", period
+            "az_charitable_contributions_credit_potential", period
         )
         # The charitable deduction is reduced by the amount which is used for the
         # Arizona charitable contributions credit,

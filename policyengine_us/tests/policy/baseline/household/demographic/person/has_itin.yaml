@@ -1,0 +1,13 @@
+- name: has_itin aliases canonical has_tin input
+  period: 2024
+  input:
+    has_tin: false
+  output:
+    has_itin: false
+
+- name: has_itin stays true when canonical has_tin input is true
+  period: 2024
+  input:
+    has_tin: true
+  output:
+    has_itin: true

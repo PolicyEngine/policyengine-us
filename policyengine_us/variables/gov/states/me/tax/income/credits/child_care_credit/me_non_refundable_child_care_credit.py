@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class me_non_refundable_child_care_credit(Variable):
@@ -15,9 +18,14 @@ class me_non_refundable_child_care_credit(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        child_care_credit = tax_unit("me_child_care_credit", period)
-        refundable_child_care_credit = tax_unit(
-            "me_refundable_child_care_credit", period
+        ordered_credits = parameters(
+            period
+        ).gov.states.me.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "me_income_tax_before_credits",
+            "me_non_refundable_child_care_credit",
+            "me_non_refundable_child_care_credit_potential",
         )
-
-        return max_(child_care_credit - refundable_child_care_credit, 0)

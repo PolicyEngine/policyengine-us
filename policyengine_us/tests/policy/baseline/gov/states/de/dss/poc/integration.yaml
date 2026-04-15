@@ -1,0 +1,488 @@
+# DE POC Integration Tests
+#
+# 2025 FPG (Contiguous US):
+#   first_person = 15_650, additional = 5_500
+#   Family of 2: 21_150
+#   Family of 3: 26_650
+#   Family of 4: 32_150
+#
+# DE SMI (4-person, 2024-10-01): 120_963
+#   Size adjustments: first=0.52, 2nd-6th=0.16
+#   Family of 2: 120_963 * 0.68 = 82_254.84
+#   85% SMI family of 2: 82_254.84 * 0.85 = 69_916.61
+#
+# Income thresholds:
+#   Initial eligibility: 200% FPL
+#   Redetermination (enrolled): 300% FPL
+#
+# Weekly rates:
+#   Center:      INFANT=$325, TODDLER=$290, PRESCHOOL=$255,
+#                SA_FT=$190, SA_PT=$135
+#   Family Home: INFANT=$222.50, TODDLER=$200, PRESCHOOL=$200,
+#                SA_FT=$160, SA_PT=$100
+#   Special needs (center):      INFANT=$341.25, TODDLER=$304.50,
+#                                PRESCHOOL=$278.45, SA_FT=$199.50, SA_PT=$141.75
+#   Special needs (family home): INFANT=$233.63, TODDLER=$216.25,
+#                                PRESCHOOL=$216.25, SA_FT=$168, SA_PT=$105
+
+- name: Case 1, basic eligible new applicant with center care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    # person2: age 4 < 13, dependent, citizen -> eligible
+    de_poc_eligible_child: [false, true]
+
+    # === Age Group ===
+    # person1: age 30, adult (not dependent) -> NONE
+    # person2: age 4, hours/day 8 -> PRESCHOOL
+    de_poc_age_group: [NONE, PRESCHOOL]
+
+    # === Income Eligibility ===
+    # FPG family of 2: 21_150
+    # Monthly income: 36_000 / 12 = 3_000
+    # 200% FPL: 21_150 * 2.0 / 12 = 3_525
+    # 85% SMI: 69_916.61 / 12 = 5_826.38
+    # Limit = min(3_525, 5_826.38) = 3_525
+    # 3_000 <= 3_525 -> eligible
+    de_poc_income_eligible: true
+
+    # === Asset Eligibility ===
+    # Default assets = 0 <= CCDF limit -> eligible
+    is_ccdf_asset_eligible: true
+
+    # === Activity Eligibility ===
+    # employment_income 36_000 > 0 -> active
+    de_poc_activity_eligible: true
+
+    # === Overall Eligibility ===
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 36_000 / 21_150 = 1.7021 > 1.5 -> copay applies
+    # Annual copay = 36_000 * 0.07 = 2_520
+    # Monthly copay = 2_520 / 12 = 210
+    de_poc_copay: 210
+
+    # === Weekly Rate ===
+    # Center PRESCHOOL = $255/week
+    de_poc_maximum_weekly_benefit: [0, 255]
+
+    # === Benefit ===
+    # Max annual reimbursement = 255 * 52 = 13_260
+    # Uncapped = max(12_000 - 2_520, 0) = 9_480
+    # Annual benefit = min(9_480, 13_260) = 9_480
+    # Monthly = 9_480 / 12 = 790
+    de_poc: 790
+
+- name: Case 2, low income family with waived copay and family home care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: FAMILY_HOME
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    de_poc_eligible_child: [false, true, true]
+
+    # === Age Groups ===
+    # person1: age 28, adult (not dependent) -> NONE
+    # person2: age 1 -> TODDLER; person3: age 4 -> PRESCHOOL
+    de_poc_age_group: [NONE, TODDLER, PRESCHOOL]
+
+    # === Income Eligibility ===
+    # FPG family of 3: 26_650
+    # Monthly income: 18_000 / 12 = 1_500
+    # 200% FPL: 26_650 * 2.0 / 12 = 4_441.67
+    # 1_500 <= 4_441.67 -> eligible
+    de_poc_income_eligible: true
+
+    is_ccdf_asset_eligible: true
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 18_000 / 26_650 = 0.6754 <= 1.5 -> waived
+    de_poc_copay: 0
+
+    # === Weekly Rates ===
+    # person2: Family Home TODDLER = $200
+    # person3: Family Home PRESCHOOL = $200
+    de_poc_maximum_weekly_benefit: [0, 200, 200]
+
+    # === Benefit ===
+    # Max annual = (200 + 200) * 52 = 20_800
+    # Uncapped = max(18_000 - 0, 0) = 18_000
+    # Annual benefit = min(18_000, 20_800) = 18_000
+    # Monthly = 18_000 / 12 = 1_500
+    de_poc: 1_500
+
+- name: Case 3, enrolled family between 200% and 300% FPL.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_poc_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    # person2: age 0 < 13, dependent, LPR -> immigration eligible
+    de_poc_eligible_child: [false, true]
+
+    # === Age Group ===
+    # person1: age 35, adult (not dependent) -> NONE
+    # person2: age 0 -> INFANT
+    de_poc_age_group: [NONE, INFANT]
+
+    # === Income Eligibility ===
+    # FPG family of 2: 21_150
+    # Monthly income: 50_000 / 12 = 4_166.67
+    # NOT enrolled: 200% FPL = 21_150 * 2.0 / 12 = 3_525 -> would fail
+    # IS enrolled: 300% FPL = 21_150 * 3.0 / 12 = 5_287.50
+    # 85% SMI: 5_826.38
+    # Limit = min(5_287.50, 5_826.38) = 5_287.50
+    # 4_166.67 <= 5_287.50 -> eligible
+    de_poc_income_eligible: true
+
+    is_ccdf_asset_eligible: true
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 50_000 / 21_150 = 2.3641 > 1.5 -> 7% copay
+    # Annual copay = 50_000 * 0.07 = 3_500
+    # Monthly copay = 3_500 / 12 = 291.67
+    de_poc_copay: 291.67
+
+    # === Weekly Rate ===
+    # Center INFANT = $325
+    de_poc_maximum_weekly_benefit: [0, 325]
+
+    # === Benefit ===
+    # Max annual = 325 * 52 = 16_900
+    # Uncapped = max(15_000 - 3_500, 0) = 11_500
+    # Annual benefit = min(11_500, 16_900) = 11_500
+    # Monthly = 11_500 / 12 = 958.33
+    de_poc: 958.33
+
+- name: Case 4, disabled teenager in family home care with special needs rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 6
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    # person2: age 15 < 19 (disabled threshold), dependent, citizen -> eligible
+    de_poc_eligible_child: [false, true]
+
+    # === Age Group ===
+    # person1: age 45, adult (not dependent) -> NONE
+    # person2: age 15 >= 6, hours/day 6 >= 4 -> SCHOOL_AGE_FULL_TIME
+    de_poc_age_group: [NONE, SCHOOL_AGE_FULL_TIME]
+
+    # === Income Eligibility ===
+    # FPG family of 2: 21_150
+    # Monthly income: 30_000 / 12 = 2_500
+    # 200% FPL: 21_150 * 2.0 / 12 = 3_525
+    # 2_500 <= 3_525 -> eligible
+    de_poc_income_eligible: true
+
+    is_ccdf_asset_eligible: true
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 30_000 / 21_150 = 1.4184 <= 1.5 -> waived
+    de_poc_copay: 0
+
+    # === Weekly Rate ===
+    # Family Home SCHOOL_AGE_FT special needs = $168
+    de_poc_maximum_weekly_benefit: [0, 168]
+
+    # === Benefit ===
+    # Max annual = 168 * 52 = 8_736
+    # Uncapped = max(8_000 - 0, 0) = 8_000
+    # Annual benefit = min(8_000, 8_736) = 8_000
+    # Monthly = 8_000 / 12 = 666.67
+    de_poc: 666.67
+
+- name: Case 5, two children with different provider types and age groups.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 3
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 16_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    de_poc_eligible_child: [false, true, true]
+
+    # === Age Groups ===
+    # person1: age 32, adult (not dependent) -> NONE
+    # person2: age 0 -> INFANT
+    # person3: age 8 >= 6, hours/day 3 < 4 -> SCHOOL_AGE_PART_TIME
+    de_poc_age_group: [NONE, INFANT, SCHOOL_AGE_PART_TIME]
+
+    # === Income Eligibility ===
+    # FPG family of 3: 26_650
+    # Monthly income: 30_000 / 12 = 2_500
+    # 200% FPL: 26_650 * 2.0 / 12 = 4_441.67
+    # 2_500 <= 4_441.67 -> eligible
+    de_poc_income_eligible: true
+
+    is_ccdf_asset_eligible: true
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 30_000 / 26_650 = 1.1257 <= 1.5 -> waived
+    de_poc_copay: 0
+
+    # === Weekly Rates ===
+    # person2: Center INFANT = $325
+    # person3: Family Home SCHOOL_AGE_PT = $100
+    de_poc_maximum_weekly_benefit: [0, 325, 100]
+
+    # === Benefit ===
+    # Max annual = (325 + 100) * 52 = 22_100
+    # Uncapped = max(16_000 - 0, 0) = 16_000
+    # Annual benefit = min(16_000, 22_100) = 16_000
+    # Monthly = 16_000 / 12 = 1_333.33
+    de_poc: 1_333.33
+
+- name: Case 6, enrolled family just above 200% FPL but within 300% FPL.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        employment_income: 0
+        is_full_time_student: true
+        immigration_status: CITIZEN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+      person4:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        de_poc_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DE
+  output:
+    # === Child Eligibility ===
+    de_poc_eligible_child: [false, false, true, true]
+
+    # === Age Groups ===
+    # person1: age 30, adult (not dependent) -> NONE
+    # person2: age 30, adult (not dependent) -> NONE
+    # person3: age 3 -> PRESCHOOL
+    # person4: age 1 -> TODDLER
+    de_poc_age_group: [NONE, NONE, PRESCHOOL, TODDLER]
+
+    # === Income Eligibility ===
+    # FPG family of 4: 32_150
+    # Monthly income: 66_000 / 12 = 5_500
+    # NOT enrolled: 200% FPL = 32_150 * 2.0 / 12 = 5_358.33 -> would fail
+    # Enrolled: 300% FPL = 32_150 * 3.0 / 12 = 8_037.50
+    # 85% SMI family of 4: 120_963 * 0.85 / 12 = 8_568.21
+    # Limit = min(8_037.50, 8_568.21) = 8_037.50
+    # 5_500 <= 8_037.50 -> eligible
+    de_poc_income_eligible: true
+
+    is_ccdf_asset_eligible: true
+    # person1 has employment_income > 0 OR person2 is student
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 66_000 / 32_150 = 2.0529 > 1.5 -> 7% copay
+    # Annual copay = 66_000 * 0.07 = 4_620
+    # Monthly copay = 4_620 / 12 = 385
+    de_poc_copay: 385
+
+    # === Weekly Rates ===
+    # person3: Center PRESCHOOL = $255
+    # person4: Center TODDLER = $290
+    de_poc_maximum_weekly_benefit: [0, 0, 255, 290]
+
+    # === Benefit ===
+    # Max annual = (255 + 290) * 52 = 28_340
+    # Uncapped = max(30_000 - 4_620, 0) = 25_380
+    # Annual benefit = min(25_380, 28_340) = 25_380
+    # Monthly = 25_380 / 12 = 2_115
+    de_poc: 2_115
+
+- name: Case 7, new applicant above 200% FPL is ineligible while enrolled would be eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 44_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # === Income Eligibility ===
+    # FPG family of 2: 21_150
+    # Monthly income: 44_000 / 12 = 3_666.67
+    # New applicant: 200% FPL = 21_150 * 2.0 / 12 = 3_525
+    # 3_666.67 > 3_525 -> INELIGIBLE as new applicant
+    de_poc_income_eligible: false
+
+    de_poc_eligible: false
+
+    # Benefit = 0 due to ineligibility
+    de_poc: 0

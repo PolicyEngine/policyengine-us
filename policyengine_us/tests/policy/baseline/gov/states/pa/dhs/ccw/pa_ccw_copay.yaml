@@ -1,0 +1,159 @@
+# Unit tests for pa_ccw_copay
+# Tests formula-based copay calculation per 55 Pa. Code § 3042.98
+# Formula:
+#   rate = 5% if adjusted_income <= 100% FPIG, else 7%
+#   weekly_copay = max(round(adjusted_income * rate / 52), $5)
+#   homeless -> $0
+#   monthly = weekly * 52 / 12
+#
+# 2025 FPG (Contiguous US):
+#   Family of 2: 21_150
+#   Family of 3: 26_650
+
+- name: Case 1, zero income gets minimum 5 per week.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income $0, FPG fam 2 = 21,150
+    # 0 <= 21,150 -> rate = 5%
+    # round(0 * 0.05 / 52) = 0
+    # max(0, 5) = $5/week
+    # Monthly: 5 * 52 / 12 = 21.67
+    pa_ccw_copay: 21.67
+
+- name: Case 2, low income family of 3 uses 5 percent rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Adjusted income $24,000, FPG fam 3 = 26,650
+    # 24,000 <= 26,650 -> rate = 5%
+    # round(24,000 * 0.05 / 52) = round(23.08) = 23
+    # max(23, 5) = $23/week
+    # Monthly: 23 * 52 / 12 = 99.67
+    pa_ccw_copay: 99.67
+
+- name: Case 3, moderate income family of 2 uses 7 percent rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income $36,000, FPG fam 2 = 21,150
+    # 36,000 > 21,150 -> rate = 7%
+    # round(36,000 * 0.07 / 52) = round(48.46) = 48
+    # max(48, 5) = $48/week
+    # Monthly: 48 * 52 / 12 = 208
+    pa_ccw_copay: 208
+
+- name: Case 4, homeless family gets waived copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        is_homeless: true
+  output:
+    # Homeless -> copay waived per 55 Pa. Code § 3042.146
+    pa_ccw_copay: 0
+
+- name: Case 5, income just above 100 percent FPIG uses 7 percent rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income $22,000, FPG fam 2 = 21,150
+    # 22,000 > 21,150 -> rate = 7%
+    # round(22,000 * 0.07 / 52) = round(29.62) = 30
+    # max(30, 5) = $30/week
+    # Monthly: 30 * 52 / 12 = 130
+    pa_ccw_copay: 130
+
+- name: Case 6, income at exactly 100 percent FPIG uses 5 percent rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_150
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income $21,150, FPG fam 2 = 21,150
+    # 21,150 <= 21,150 -> rate = 5%
+    # round(21,150 * 0.05 / 52) = round(20.34) = 20
+    # max(20, 5) = $20/week
+    # Monthly: 20 * 52 / 12 = 86.67
+    pa_ccw_copay: 86.67

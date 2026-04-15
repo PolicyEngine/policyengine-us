@@ -1,0 +1,13 @@
+description: Whether the SC Income Adjusted Deduction (SCIAD) is in effect.
+
+metadata:
+  unit: bool
+  period: year
+  label: SC SCIAD in effect
+  reference:
+    - title: SC H.4216 Section 3 - Section 12-6-1140(15)
+      href: https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm
+
+values:
+  0000-01-01: false
+  2026-01-01: true

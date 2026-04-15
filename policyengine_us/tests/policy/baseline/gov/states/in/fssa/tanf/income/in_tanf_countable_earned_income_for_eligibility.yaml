@@ -1,58 +1,62 @@
 # Tests for in_tanf_countable_earned_income_for_eligibility
-# Applies: $90/earner (per person), then $30 + 1/3 per unit
+# Enrolled (months 1-4): $90/earner + $30 flat + 1/3 disregard
+# Enrolled (months 5-12): $90/earner + $30 flat only
+# Applicant (not enrolled): $90/earner only
 
-- name: Family of 3 with 1 earner - gets $90 work expense disregard
+# --- Continuing recipients (enrolled, January = month 1, phase 1) ---
+
+- name: Case 1, enrolled family of 3 with 1 earner.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
-      parent1:
+      person1:
         tanf_gross_earned_income: 400
-      parent2:
+      person2:
         tanf_gross_earned_income: 0
-      child:
+      person3:
         age: 10
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: IN
   output:
-    in_tanf_countable_earned_income_for_eligibility: [187.6, 187.6, 187.6]
-    # 1 earner: $400 - $90 = $310
-    # Unit total: $310
+    in_tanf_countable_earned_income_for_eligibility: 186.7
+    # $400 - $90 = $310
     # $310 - $30 = $280
-    # $280 * 0.67 = $187.60
+    # $280 * 0.6667 = $186.68
 
-- name: Family of 3 with 2 earners - each gets $90 (total $180 disregard)
+- name: Case 2, enrolled family of 3 with 2 earners.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
-      parent1:
+      person1:
         tanf_gross_earned_income: 200
-      parent2:
+      person2:
         tanf_gross_earned_income: 200
-      child:
+      person3:
         age: 10
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
     households:
       household:
-        members: [parent1, parent2, child]
+        members: [person1, person2, person3]
         state_code: IN
   output:
-    in_tanf_countable_earned_income_for_eligibility: [127.3, 127.3, 127.3]
-    # Parent1: $200 - $90 = $110
-    # Parent2: $200 - $90 = $110
-    # Unit total: $220 (vs $310 if only 1 earner had $400)
-    # $220 - $30 = $190
-    # $190 * 0.67 = $127.30
-    # Key: 2 earners = $180 disregard, 1 earner = $90 disregard
+    in_tanf_countable_earned_income_for_eligibility: 106.7
+    # Per earner: ($200-$90-$30)*0.6667 = $80*0.6667 = $53.34
+    # Unit total: $53.34 + $53.34 = $106.67
 
-- name: Single earner with low income
+- name: Case 3, enrolled single earner with low income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -62,18 +66,20 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_countable_earned_income_for_eligibility: [120.6, 120.6]
+    in_tanf_countable_earned_income_for_eligibility: 120.0
     # $300 - $90 = $210
     # $210 - $30 = $180
-    # $180 * 0.67 = $120.60
+    # $180 * 0.6667 = $120.01
 
-- name: Earner below work expense disregard
+- name: Case 4, enrolled earner below work expense disregard.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -83,18 +89,18 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_countable_earned_income_for_eligibility: [0, 0]
+    in_tanf_countable_earned_income_for_eligibility: 0
     # $50 - $90 = max(0, -40) = $0
-    # $0 - $30 = max(0, -30) = $0
-    # $0 * 0.67 = $0
 
-- name: Zero income
+- name: Case 5, enrolled with zero income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -104,9 +110,153 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
     households:
       household:
         members: [person1, person2]
         state_code: IN
   output:
-    in_tanf_countable_earned_income_for_eligibility: [0, 0]
+    in_tanf_countable_earned_income_for_eligibility: 0
+
+# --- Per-earner deductions (all three disregards apply per individual) ---
+
+- name: Case 5b, enrolled 2 earners vs 1 earner with same total.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 200
+      person2:
+        tanf_gross_earned_income: 200
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 106.7
+    # Per earner: ($200-$90-$30)*0.6667 = $80*0.6667 = $53.34
+    # Unit total: $53.34 + $53.34 = $106.67
+    # Compare Case 1 (1 earner at $400): ($400-$90-$30)*0.6667 = $186.68
+    # 2 earners get more deductions ($90+$30 each = $240 total vs $120 for 1 earner)
+
+# --- Applicants (not enrolled, $90 work expense only) ---
+
+- name: Case 6, applicant with 1 earner.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 400
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 310
+    # $400 - $90 = $310 (no $30 or 1/3 for applicants)
+
+- name: Case 7, applicant with low income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 300
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 210
+    # $300 - $90 = $210
+
+- name: Case 8, applicant below work expense.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 50
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 0
+    # $50 - $90 = max(0, -40) = $0
+
+# --- YEAR period (exercises both calendar month paths) ---
+
+- name: Case 9, enrolled over full year.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 4_800
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 2_986.7
+    # Monthly gross: $4,800 / 12 = $400
+    # $400 - $90 = $310, then $310 - $30 = $280
+    # Months 1-4 (phase 1): $280 * 0.6667 = $186.68 x 4 = $746.71
+    # Months 5-12 (phase 2): $280 x 8 = $2,240.00
+    # Annual total: $746.71 + $2,240.00 = $2,986.71
+
+- name: Case 10, applicant over full year.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 4_800
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf_countable_earned_income_for_eligibility: 3_720
+    # Monthly gross: $4,800 / 12 = $400
+    # All 12 months: $400 - $90 = $310
+    # Annual total: $310 x 12 = $3,720

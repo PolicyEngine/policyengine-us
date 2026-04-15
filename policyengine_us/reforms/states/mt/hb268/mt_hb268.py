@@ -6,24 +6,30 @@ from policyengine_core.periods import instant
 def create_mt_hb268() -> Reform:
     class mt_hb268(Variable):
         value_type = float
-        entity = TaxUnit
+        entity = Person
         label = "Montana HB268 Child Tax Credit"
         definition_period = YEAR
         unit = USD
         reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
-        defined_for = "mt_hb268_eligible"
+        defined_for = StateCode.MT
 
-        def formula(tax_unit, period, parameters):
+        def formula(person, period, parameters):
+            eligible = person.tax_unit("mt_hb268_eligible", period)
             p = parameters(period).gov.contrib.states.mt.hb268
-            person = tax_unit.members
+            # Only count qualifying children
+            is_qualifying = person("ctc_qualifying_child", period)
             age = person("age", period)
-            credit_amount = tax_unit.sum(p.amount.calc(age))
+            child_credit = p.amount.calc(age) * is_qualifying
+            credit_amount = person.tax_unit.sum(child_credit)
             # Credit gets reduced by an amount for each increment that AGI exceeds a certain threshold
-            agi = tax_unit("adjusted_gross_income", period)
+            agi = person.tax_unit("adjusted_gross_income", period)
             excess = max_(agi - p.reduction.threshold, 0)
-            increments = excess // p.reduction.increment
+            # Ceiling: any fraction of an increment triggers reduction
+            increments = np.ceil(excess / p.reduction.increment)
             reduction = p.reduction.amount * increments
-            return max_(credit_amount - reduction, 0)
+            credit = max_(credit_amount - reduction, 0)
+            is_head = person("is_tax_unit_head", period)
+            return is_head * eligible * credit
 
     class mt_hb268_eligible(Variable):
         value_type = bool

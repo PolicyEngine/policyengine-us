@@ -1,0 +1,23 @@
+- name: Default FUTA is zero.
+  period: 2025
+  output:
+    employer_federal_unemployment_tax: 0
+
+- name: Standard FUTA rate applies outside credit-reduction jurisdictions.
+  period: 2025
+  input:
+    state_code: TX
+    payroll_tax_gross_wages: 10_000
+  output:
+    taxable_earnings_for_federal_unemployment_tax: 7_000
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: FUTA credit-reduction jurisdictions pay the add-on rate.
+  period: 2025
+  input:
+    state_code: CA
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.018
+    employer_federal_unemployment_tax: 126

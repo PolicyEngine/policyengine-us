@@ -17,7 +17,4 @@ class aca_ptc(Variable):
         plan_cost = tax_unit("slcsp", period)
         income = tax_unit("aca_magi", period)
         applicable_figure = tax_unit("aca_required_contribution_percentage", period)
-        takes_up_aca_if_eligible = tax_unit("takes_up_aca_if_eligible", period)
-        return (
-            max_(0, plan_cost - income * applicable_figure) * takes_up_aca_if_eligible
-        )
+        return max_(0, plan_cost - income * applicable_figure)

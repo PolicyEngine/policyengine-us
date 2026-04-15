@@ -14,5 +14,5 @@ class vt_reach_up_resources_eligible(Variable):
         p = parameters(period).gov.states.vt.dcf.reach_up.resources
         # NOTE: Many exclusions exist (vehicles, retirement accounts, etc.)
         # that are not separately tracked in PolicyEngine
-        assets = spm_unit("spm_unit_assets", period.this_year)
+        assets = spm_unit("spm_unit_cash_assets", period.this_year)
         return assets <= p.limit

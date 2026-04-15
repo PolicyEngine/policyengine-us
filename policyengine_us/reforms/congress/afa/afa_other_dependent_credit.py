@@ -28,11 +28,12 @@ def create_afa_other_dependent_credit() -> Reform:
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(person, period, parameters):
-            p = parameters(period).gov.contrib.congress.afa.other_dependent_credit
+            p = parameters(period).gov.contrib.congress.afa
             is_dependent = person("is_tax_unit_dependent", period)
-            is_child = person("ctc_child_individual_maximum", period) > 0
+            age = person("age", period)
+            is_child = p.ctc.amount.multiplier.calc(age) > 0
             is_adult_dependent = ~is_child & is_dependent
-            return is_adult_dependent * p.amount
+            return is_adult_dependent * p.other_dependent_credit.amount
 
     class other_dependent_credit_phase_out(Variable):
         value_type = float

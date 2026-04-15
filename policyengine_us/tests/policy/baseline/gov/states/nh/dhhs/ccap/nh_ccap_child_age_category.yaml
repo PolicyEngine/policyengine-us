@@ -1,0 +1,153 @@
+# Tests for nh_ccap_child_age_category (Person, MONTH)
+# Age categories based on age in months.
+# He-C 6910.17(i), He-C 6912.16(j)
+# INFANT: 0-17 months
+# TODDLER: 18-35 months
+# PRESCHOOL: 36-78 months
+# SCHOOL_AGE: 79-155 months
+#
+# Note: monthly_age returns age in years; formula multiplies by 12.
+# age=0 → 0 months → INFANT
+# age=1 → 12 months → INFANT (< 18)
+# age=2 → 24 months → TODDLER (>= 18 and < 36)
+# age=3 → 36 months → PRESCHOOL (>= 36 and < 79)
+# age=5 → 60 months → PRESCHOOL
+# age=7 → 84 months → SCHOOL_AGE (>= 79)
+# age=12 → 144 months → SCHOOL_AGE (< 156)
+
+- name: Case 1, age 0, infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_child_age_category: INFANT
+
+- name: Case 2, age 1, infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_child_age_category: INFANT
+
+- name: Case 3, age 2, toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_child_age_category: TODDLER
+
+- name: Case 4, age 3, preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_child_age_category: PRESCHOOL
+
+- name: Case 5, age 5, preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    nh_ccap_child_age_category: PRESCHOOL
+
+- name: Case 6, age 6, preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # age=6 → 72 months → PRESCHOOL (< 79)
+    nh_ccap_child_age_category: PRESCHOOL
+
+- name: Case 7, age 7, school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 7
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # age=7 → 84 months → SCHOOL_AGE (>= 79)
+    nh_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 8, age 12, school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # age=12 → 144 months → SCHOOL_AGE (< 156)
+    nh_ccap_child_age_category: SCHOOL_AGE
+
+# --- Edge Cases: Maximum and minimum ages ---
+
+- name: Case 9, age 13, school age (beyond normal eligibility but tests category).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # age=13 → 156 months → SCHOOL_AGE (>= 79)
+    nh_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 10, age 17, school age (disabled child upper bound).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # age=17 → 204 months → SCHOOL_AGE
+    nh_ccap_child_age_category: SCHOOL_AGE

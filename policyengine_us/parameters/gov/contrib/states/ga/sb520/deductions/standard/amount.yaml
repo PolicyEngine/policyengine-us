@@ -1,0 +1,22 @@
+description: Georgia SB 520 provides filers a standard deduction of this amount, depending on filing status.
+
+metadata:
+  label: Georgia SB 520 standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Georgia SB 520 Section 4 - 48-7-27(a)(1)
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/242809#page=5
+
+JOINT:
+  2026-01-01: 34_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 17_000
+SINGLE:
+  2026-01-01: 17_000
+SEPARATE:
+  2026-01-01: 17_000
+SURVIVING_SPOUSE:
+  2026-01-01: 34_000

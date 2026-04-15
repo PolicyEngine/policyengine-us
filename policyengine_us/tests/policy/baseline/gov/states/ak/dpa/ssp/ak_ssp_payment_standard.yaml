@@ -1,0 +1,183 @@
+- name: Case 1, individual living independently.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: INDEPENDENT
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    # $362/month * 12 = $4,344
+    ak_ssp_payment_standard: 4_344
+
+- name: Case 2, couple both eligible living independently.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: INDEPENDENT
+    ssi_claim_is_joint: true
+  output:
+    # $528/month is the couple total, so each person receives half.
+    ak_ssp_payment_standard: 3_168
+
+- name: Case 3, couple one eligible living independently.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: false
+      person2:
+        age: 48
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+        ak_ssp_living_arrangement: INDEPENDENT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # $521/month * 12 = $6,252
+    ak_ssp_payment_standard: [6_252, 4_344]
+
+- name: Case 4, individual in household of another.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    # $368/month * 12 = $4,416
+    ak_ssp_payment_standard: 4_416
+
+- name: Case 5, couple both eligible in household of another.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    ssi_claim_is_joint: true
+  output:
+    # $543/month is the couple total, so each person receives half.
+    ak_ssp_payment_standard: 3_258
+
+- name: Case 6, couple one eligible in household of another.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: false
+      person2:
+        age: 48
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+        ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # $464/month * 12 = $5,568
+    ak_ssp_payment_standard: [5_568, 4_416]
+
+- name: Case 7, individual in assisted living.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: ASSISTED_LIVING
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    # $100/month * 12 = $1,200
+    ak_ssp_payment_standard: 1_200
+
+- name: Case 8, couple both eligible in assisted living.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: ASSISTED_LIVING
+    ssi_claim_is_joint: true
+  output:
+    # $200/month is the couple total, so each person receives half.
+    ak_ssp_payment_standard: 1_200
+
+- name: Case 9, couple one eligible in assisted living.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: ASSISTED_LIVING
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: true
+  output:
+    # $100/month * 12 = $1,200
+    ak_ssp_payment_standard: 1_200
+
+- name: Case 10, individual in Medicaid facility.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    # $45/month * 12 = $540
+    ak_ssp_payment_standard: 540
+
+- name: Case 11, couple both eligible in Medicaid facility.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: true
+  output:
+    # $90/month is the couple total, so each person receives half.
+    ak_ssp_payment_standard: 540
+
+- name: Case 12, couple one eligible in Medicaid facility.
+  period: 2011
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: true
+  output:
+    # $45/month * 12 = $540
+    ak_ssp_payment_standard: 540
+
+- name: Case 13, individual in Medicaid facility post-2017 NHP rate.
+  period: 2017
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: false
+  output:
+    # NHP changed from $45 to $170/month in 2017
+    # $170/month * 12 = $2,040
+    ak_ssp_payment_standard: 2_040
+
+- name: Case 14, couple both eligible in Medicaid facility post-2017 NHP rate.
+  period: 2017
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: true
+  output:
+    # NHP couple total changed from $90 to $340/month in 2017.
+    ak_ssp_payment_standard: 2_040
+
+- name: Case 15, couple one eligible in Medicaid facility post-2017 NHP rate.
+  period: 2017
+  input:
+    state_code: AK
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+    ssi_claim_is_joint: false
+    is_ssi_spousal_deeming_applies: true
+  output:
+    # NHP couple-one changed from $45 to $170/month in 2017
+    # $170/month * 12 = $2,040
+    ak_ssp_payment_standard: 2_040

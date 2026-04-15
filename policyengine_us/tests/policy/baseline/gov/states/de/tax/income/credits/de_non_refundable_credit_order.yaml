@@ -1,0 +1,14 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2019
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 100
+    de_cdcc_potential: 80
+    de_non_refundable_eitc_potential: 40
+    de_personal_credit_potential: 30
+    de_aged_personal_credit_potential: 20
+  output:
+    de_cdcc: 80
+    de_non_refundable_eitc: 20
+    de_personal_credit: 0
+    de_aged_personal_credit: 0

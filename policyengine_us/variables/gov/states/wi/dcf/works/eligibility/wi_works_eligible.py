@@ -15,7 +15,7 @@ class wi_works_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic = spm_unit("is_demographic_tanf_eligible", period)
         person = spm_unit.members
-        is_qualified = person("is_citizen_or_legal_immigrant", period)
+        is_qualified = person("is_citizen_or_legal_immigrant", period.this_year)
         citizenship = spm_unit.any(is_qualified)
         income = spm_unit("wi_works_income_eligible", period)
         resources = spm_unit("wi_works_resources_eligible", period)

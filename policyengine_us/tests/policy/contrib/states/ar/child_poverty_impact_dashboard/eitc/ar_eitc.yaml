@@ -1,0 +1,53 @@
+- name: Case 1 - AR EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ar.eitc.ar_eitc
+  input:
+    gov.contrib.states.ar.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AR
+    eitc: 1_000
+  output:
+    ar_eitc: 100
+    ar_refundable_credits: 100
+
+- name: Case 2 - AR EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ar.eitc.ar_eitc
+  input:
+    gov.contrib.states.ar.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: AR
+    eitc: 2_500
+  output:
+    ar_eitc: 500
+    ar_refundable_credits: 500
+
+- name: Case 3 - AR EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ar.eitc.ar_eitc
+  input:
+    gov.contrib.states.ar.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: AR
+    eitc: 1_000
+  output:
+    ar_eitc: 0
+    ar_refundable_credits: 0
+
+- name: Case 4 - AR EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ar.eitc.ar_eitc
+  input:
+    gov.contrib.states.ar.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AR
+    eitc: 0
+  output:
+    ar_eitc: 0
+    ar_refundable_credits: 0
+
+- name: Case 5 - AR EITC is 0 for non-AR residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.ar.eitc.ar_eitc
+  input:
+    gov.contrib.states.ar.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    ar_eitc: 0

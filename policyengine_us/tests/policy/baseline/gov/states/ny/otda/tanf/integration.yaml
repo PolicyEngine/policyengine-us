@@ -17,7 +17,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
   output:
     # Employment income: $6,000/year = $500/month
     tanf_gross_earned_income: [500, 0]
@@ -62,7 +62,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_500
+        spm_unit_cash_assets: 1_500
   output:
     # Employment income: $4,800/year = $400/month
     tanf_gross_earned_income: [400, 0, 0]
@@ -107,7 +107,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # No earned income
     ny_tanf_countable_earned_income: [0, 0]
@@ -146,7 +146,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
   output:
     # Employment income: $12,000/year = $1,000/month
     tanf_gross_earned_income: [1000, 0]
@@ -185,7 +185,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # Resources: $3,000 > $2,500 limit → NOT eligible
     ny_tanf_resources_eligible: false
@@ -212,7 +212,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
   output:
     # Gross income: $7,200/year = $600/month
     tanf_gross_earned_income: [600, 0]
@@ -254,7 +254,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # No earned income
     ny_tanf_countable_earned_income: [0, 0]

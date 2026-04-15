@@ -25,6 +25,36 @@ def all_of_variables(variables: List[str]) -> Formula:
     return formula
 
 
+def allocate_joint_amount_to_minimize_combined_tax(
+    rate, head_income, spouse_income, total_allocable_amount
+):
+    best_head_allocation = total_allocable_amount
+    best_tax = rate.calc(max_(head_income - best_head_allocation, 0)) + rate.calc(
+        max_(spouse_income - (total_allocable_amount - best_head_allocation), 0)
+    )
+
+    for threshold in rate.thresholds:
+        if not np.isfinite(threshold):
+            continue
+
+        for candidate in (
+            np.clip(head_income - threshold, 0, total_allocable_amount),
+            np.clip(
+                total_allocable_amount - (spouse_income - threshold),
+                0,
+                total_allocable_amount,
+            ),
+        ):
+            candidate_tax = rate.calc(max_(head_income - candidate, 0)) + rate.calc(
+                max_(spouse_income - (total_allocable_amount - candidate), 0)
+            )
+            improves_tax = candidate_tax < (best_tax - 1e-9)
+            best_tax = where(improves_tax, candidate_tax, best_tax)
+            best_head_allocation = where(improves_tax, candidate, best_head_allocation)
+
+    return best_head_allocation
+
+
 STATES = [
     "AL",
     "AK",
@@ -78,4 +108,5 @@ STATES = [
     "WI",
     "WY",
     "PR",
+    "VI",
 ]

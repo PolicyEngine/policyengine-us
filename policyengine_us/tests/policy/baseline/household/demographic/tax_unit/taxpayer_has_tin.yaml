@@ -1,0 +1,39 @@
+- name: taxpayer_has_tin unit test 1
+  period: 2021
+  input:
+    has_tin: true
+    is_tax_unit_head: true
+  output:
+    taxpayer_has_tin: true
+
+- name: taxpayer_has_tin unit test 2
+  period: 2022
+  input:
+    has_tin: true
+    is_tax_unit_spouse: true
+  output:
+    taxpayer_has_tin: true
+
+- name: taxpayer_has_tin unit test 3
+  period: 2023
+  input:
+    has_tin: false
+    is_tax_unit_head: true
+  output:
+    taxpayer_has_tin: false
+
+- name: taxpayer_has_tin unit test 4
+  period: 2024
+  input:
+    has_tin: false
+    is_tax_unit_spouse: true
+  output:
+    taxpayer_has_tin: false
+
+- name: taxpayer_has_tin still follows legacy has_itin input during migration
+  period: 2024
+  input:
+    has_itin: false
+    is_tax_unit_head: true
+  output:
+    taxpayer_has_tin: false

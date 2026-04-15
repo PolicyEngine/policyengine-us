@@ -20,7 +20,7 @@
         members: [person1, person2]
         state_code: WI
   output:
-    wi_married_couple_credit: 300  # = 0.03 * 10_000
+    wi_married_couple_credit_potential: 300  # = 0.03 * 10_000
 
 - name: WI married couple credit unit test 2
   absolute_error_margin: 0.01
@@ -44,4 +44,4 @@
         members: [person1, person2]
         state_code: WI
   output:
-    wi_married_couple_credit: 480
+    wi_married_couple_credit_potential: 480

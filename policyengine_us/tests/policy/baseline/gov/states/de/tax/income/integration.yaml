@@ -273,3 +273,38 @@
     de_deduction_indv: [5_750, 5_750, 0]
     de_deduction_joint: [11_500, 0, 0]
     de_income_tax: 6882.22
+
+- name: Tax unit with taxsimid 745 in 2024 preserves cross-spouse SE loss in joint AGI
+  absolute_error_margin: 50
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 43
+        employment_income: 2_133.02
+        self_employment_income: -104_506.57
+        taxable_interest_income: 537.23
+        taxable_private_pension_income: 953.04
+        is_tax_unit_head: true
+      person2:
+        age: 42
+        employment_income: 125_352.16
+        taxable_interest_income: 537.23
+        taxable_private_pension_income: 953.04
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 10
+  output:
+    de_agi_joint: [24_043.88, 0]

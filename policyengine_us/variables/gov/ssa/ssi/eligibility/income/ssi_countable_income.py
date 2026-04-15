@@ -17,7 +17,12 @@ class ssi_countable_income(Variable):
       - Unearned
       - Parental deemed if child
       - Spousal deemed if married to an ineligible spouse
-      - Applies standard SSI exclusions.
+      - In-kind support and maintenance (ISM) via the PMV rule for Status A
+      - Applies standard SSI exclusions ($20 general, $65 earned, 50% earned).
+
+    ISM is added to unearned income BEFORE exclusions per 20 CFR § 416.1140.
+    The PMV formula includes $20 so that after the general exclusion applies,
+    the net countable ISM equals 1/3 FBR (matching POMS SI 00835.901 values).
     """
 
     def formula(person, period, parameters):
@@ -40,7 +45,15 @@ class ssi_countable_income(Variable):
         parent_deemed = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )
-        total_unearned = unearned_income + parent_deemed
+
+        # ISM (PMV for own-household recipients receiving shelter support) is
+        # counted as unearned income per 20 CFR § 416.1140. It enters
+        # the unearned pool BEFORE exclusions so the $20 general exclusion
+        # naturally applies. POMS SI 00835.901 confirms that the net
+        # countable ISM is 1/3 FBR (PMV minus $20 general exclusion).
+        ism = person("ssi_in_kind_support_and_maintenance", period)
+
+        total_unearned = unearned_income + parent_deemed + ism
 
         # Apply standard SSI exclusions to the individual's own income
         personal_countable = _apply_ssi_exclusions(
@@ -67,7 +80,7 @@ class ssi_countable_income(Variable):
             0,
             where(
                 both_eligible,
-                personal_countable / 2,  # Each eligible spouse gets half
-                personal_countable + spousal_deemed,  # Single or with ineligible spouse
+                personal_countable / 2,
+                personal_countable + spousal_deemed,
             ),
         )

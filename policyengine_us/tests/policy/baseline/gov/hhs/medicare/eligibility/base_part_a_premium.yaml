@@ -33,3 +33,39 @@
     medicare_quarters_of_coverage: 40
   output:
     base_part_a_premium: 0
+
+- name: unit test 5 - reduced premium in 2022
+  period: 2022
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_288  # $274 * 12 months
+
+- name: unit test 6 - full premium in 2023
+  period: 2023
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 6_072  # $506 * 12 months
+
+- name: unit test 7 - reduced premium in 2026
+  period: 2026
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_732  # $311 * 12 months
+
+- name: 2026 Part A full premium for fewer than 30 quarters.
+  period: 2026
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 6_780  # $565 * 12 months

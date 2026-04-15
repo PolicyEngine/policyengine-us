@@ -1,83 +1,150 @@
-- name: Heat not included in rent - benefit based on heating expenses
+- name: Case 1, nat gas fuel type.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      person:
+      person1:
         age: 30
+        irs_gross_income: 0
+        heating_expense_person: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_liheap_heating_type: NAT_GAS_OTHER
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Bracket 1 (0-50% FPL), size 1, nat gas -> $1,260
+    # min(1,260, 2,000) = 1,260
+    il_liheap_base_payment: 1_260
+
+- name: Case 2, all electric fuel type.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        irs_gross_income: 10_000
         heating_expense_person: 1_000
-    tax_units:
-      tax_unit:
-        members: [person]
     spm_units:
       spm_unit:
-        members: [person]
-        heat_expense_included_in_rent: false
+        members: [person1]
+        il_liheap_heating_type: ALL_ELECTRIC
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: IL
   output:
-    il_liheap_base_payment: 1_000  # Heating expenses within range
+    # Bracket 2, size 1, all electric -> $530
+    # min(530, 1,000) = 530
+    il_liheap_base_payment: 530
 
-- name: Heat not included in rent - expenses exceed maximum
+- name: Case 3, propane fuel oil capped at expenses.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      person:
-        age: 30
-        heating_expense_person: 3_000
-    tax_units:
-      tax_unit:
-        members: [person]
+      person1:
+        age: 35
+        irs_gross_income: 40_000
+        heating_expense_person: 500
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person]
-        heat_expense_included_in_rent: false
+        members: [person1, person2, person3, person4]
+        il_liheap_heating_type: PROPANE_FUEL_OIL
     households:
       household:
-        members: [person]
+        members: [person1, person2, person3, person4]
         state_code: IL
   output:
-    il_liheap_base_payment: 2_075  # Capped at maximum
+    # Bracket 3, size 4, propane -> $630
+    # heating_expense_person: 500
+    # min(630, 500) = 500 (capped)
+    il_liheap_base_payment: 500
 
-- name: Heat included in rent - minimum cash benefit
+- name: Case 4, heat in rent infers cash.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      person:
-        age: 30
-        heating_expense_person: 500  # Irrelevant when heat included
-    tax_units:
-      tax_unit:
-        members: [person]
+      person1:
+        age: 40
+        irs_gross_income: 25_000
+        rent: 8_000
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
         heat_expense_included_in_rent: true
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: IL
   output:
-    il_liheap_base_payment: 315  # Fixed minimum for heat included in rent
+    # heat_in_rent -> inferred CASH
+    # Bracket 4, size 1, cash -> $170 (no expense cap for cash)
+    il_liheap_heating_type: CASH
+    il_liheap_base_payment: 170
 
-- name: Heat not included in rent - low heating expenses get actual amount
+- name: Case 5, low heating expenses cap benefit.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      person:
+      person1:
         age: 30
-        heating_expense_person: 200
-    tax_units:
-      tax_unit:
-        members: [person]
+        irs_gross_income: 0
+        heating_expense_person: 150
     spm_units:
       spm_unit:
-        members: [person]
-        heat_expense_included_in_rent: false
+        members: [person1]
+        il_liheap_heating_type: ALL_ELECTRIC
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: IL
   output:
-    il_liheap_base_payment: 200  # Gets actual heating expenses
+    # Bracket 1, size 1, all electric -> $840
+    # heating_expense_person: 150
+    # min(840, 150) = 150 (capped)
+    il_liheap_base_payment: 150
+
+- name: Case 6, family of 6 nat gas bracket 1.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        irs_gross_income: 5_000
+        heating_expense_person: 2_000
+      person2:
+        age: 28
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+      person6:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        il_liheap_heating_type: NAT_GAS_OTHER
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: IL
+  output:
+    # Bracket 1, size 6, nat gas -> $1,760
+    # min(1,760, 2,000) = 1,760
+    il_liheap_base_payment: 1_760
