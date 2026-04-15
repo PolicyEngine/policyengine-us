@@ -20,9 +20,7 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         filer_meets_min_age = (age_head >= p.min_age) | (age_spouse >= p.min_age)
-        investment_income_eligible = tax_unit(
-            "eitc_investment_income_eligible", period
-        )
+        investment_income_eligible = tax_unit("eitc_investment_income_eligible", period)
         filers_have_ssn = tax_unit(
             "filer_meets_eitc_identification_requirements", period
         )
@@ -30,8 +28,7 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
             tax_unit("eitc_phased_in", period),
             max_(
                 0,
-                tax_unit("eitc_maximum", period)
-                - tax_unit("eitc_reduction", period),
+                tax_unit("eitc_maximum", period) - tax_unit("eitc_reduction", period),
             ),
         )
 

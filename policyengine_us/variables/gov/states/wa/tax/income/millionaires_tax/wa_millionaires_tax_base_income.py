@@ -34,9 +34,7 @@ class wa_millionaires_tax_base_income(Variable):
         washington_capital_gains = max_(
             0, long_term_capital_gains - charitable_deduction
         )
-        owes_washington_capital_gains_tax = (
-            tax_unit("wa_capital_gains_tax", period) > 0
-        )
+        owes_washington_capital_gains_tax = tax_unit("wa_capital_gains_tax", period) > 0
 
         return (
             agi
