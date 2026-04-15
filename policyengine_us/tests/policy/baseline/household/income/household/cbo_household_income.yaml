@@ -1,5 +1,5 @@
 - name: CBO market income removes government cash and adds employer-side components
-  period: 2026
+  period: 2025
   input:
     employment_income: 50_000
     gi_cash_assistance: 2_000
@@ -7,28 +7,36 @@
     employer_sponsored_insurance_premiums: 8_000
     employer_social_security_tax: 3_100
     employer_medicare_tax: 725
-    cbo_federal_unemployment_payroll_tax: 420
-    cbo_corporate_income_tax: 900
+    employer_federal_unemployment_tax: 42
   output:
     household_market_income: 53_000
-    cbo_household_market_income: 63_145
+    cbo_household_market_income: 61_867
 
 - name: CBO before-tax income adds social insurance and alias matches
-  period: 2026
+  period: 2025
   input:
     employment_income: 40_000
     employer_sponsored_insurance_premiums: 6_000
     employer_social_security_tax: 2_480
     employer_medicare_tax: 580
+    employer_federal_unemployment_tax: 42
     social_security: 12_000
-    medicare_cost: 9_000
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 40
+    adjusted_gross_income:
+      2023: 50_000
+    tax_exempt_interest_income:
+      2023: 0
     unemployment_compensation: 2_000
     workers_compensation: 1_000
   output:
-    cbo_household_market_income: 49_060
-    cbo_household_social_insurance_benefits: 24_000
-    cbo_household_income_before_transfers_and_taxes: 73_060
-    cbo_household_income: 73_060
+    cbo_household_market_income: 49_102
+    medicare_gross_cost: 14_500
+    cbo_household_social_insurance_benefits: 29_500
+    cbo_household_income_before_transfers_and_taxes: 78_602
+    cbo_household_income: 78_602
 
 - name: CBO means-tested transfers include only the listed programs
   period: 2026
@@ -53,24 +61,24 @@
     cbo_household_means_tested_transfers: 55
 
 - name: CBO after-tax income uses federal taxes only and keeps negative income tax
-  period: 2026
+  period: 2025
   input:
+    age: 40
+    is_medicare_eligible: false
+    medicare_enrolled: false
     employment_income: 30_000
     employer_social_security_tax: 1_860
     employer_medicare_tax: 435
+    employer_federal_unemployment_tax: 42
     social_security: 5_000
-    medicare_cost: 0
     medicaid: 9_000
     snap: 2_000
     income_tax: -1_500
     employee_payroll_tax: 2_295
     self_employment_tax: 0
-    cbo_federal_unemployment_payroll_tax: 180
-    cbo_corporate_income_tax: 400
-    cbo_excise_tax: 300
     household_state_tax_before_refundable_credits: 9_999
   output:
-    cbo_household_income_before_transfers_and_taxes: 37_875
+    cbo_household_income_before_transfers_and_taxes: 37_337
     cbo_household_means_tested_transfers: 11_000
-    cbo_household_federal_taxes: 3_970
-    cbo_household_income_after_transfers_and_taxes: 44_905
+    cbo_household_federal_taxes: 3_132
+    cbo_household_income_after_transfers_and_taxes: 45_205

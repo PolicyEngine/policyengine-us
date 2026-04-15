@@ -4,10 +4,9 @@ values:
     - employer_sponsored_insurance_premiums
     - employer_social_security_tax
     - employer_medicare_tax
-    - cbo_federal_unemployment_payroll_tax
-    - cbo_corporate_income_tax
+    - employer_federal_unemployment_tax
 
 metadata:
   unit: list
   period: year
-  label: CBO market income additions
+  label: Modeled CBO market income additions

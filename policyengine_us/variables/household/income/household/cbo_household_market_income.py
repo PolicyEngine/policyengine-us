@@ -9,8 +9,9 @@ class cbo_household_market_income(Variable):
         "Household market income under the Congressional Budget Office "
         "distributional framework: PolicyEngine household market income, less "
         "government cash assistance and the Alaska Permanent Fund Dividend, "
-        "plus employer-sponsored insurance premiums, employer payroll taxes, "
-        "and allocated corporate income taxes."
+        "plus employer-sponsored insurance premiums and the modeled federal "
+        "employer payroll tax components. Corporate income tax incidence is "
+        "not yet allocated in the default PE-US benchmark."
     )
     definition_period = YEAR
     unit = USD

@@ -11,4 +11,4 @@ class employer_sponsored_insurance_premiums(Variable):
     )
     definition_period = YEAR
     unit = USD
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    uprating = "calibration.gov.cbo.income_by_source.employment_income"

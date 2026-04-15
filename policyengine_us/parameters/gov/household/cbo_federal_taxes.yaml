@@ -6,11 +6,9 @@ values:
     - self_employment_tax
     - employer_social_security_tax
     - employer_medicare_tax
-    - cbo_federal_unemployment_payroll_tax
-    - cbo_corporate_income_tax
-    - cbo_excise_tax
+    - employer_federal_unemployment_tax
 
 metadata:
   unit: list
   period: year
-  label: CBO federal taxes
+  label: Modeled CBO federal taxes
