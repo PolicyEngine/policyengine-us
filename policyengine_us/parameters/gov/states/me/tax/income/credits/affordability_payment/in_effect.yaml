@@ -1,0 +1,12 @@
+description: Maine provides affordability payments if this is true.
+values:
+  0000-01-01: false
+  2025-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Maine affordability payment in effect
+  reference:
+    - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=158

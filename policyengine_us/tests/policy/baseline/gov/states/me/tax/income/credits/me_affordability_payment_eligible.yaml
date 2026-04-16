@@ -1,0 +1,72 @@
+- name: Single filer below the income threshold is eligible.
+  period: 2025
+  input:
+    adjusted_gross_income: 49_999
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Single filer at the income threshold is ineligible.
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Head of household filer below the income threshold is eligible.
+  period: 2025
+  input:
+    adjusted_gross_income: 74_999
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Joint filer below the income threshold is eligible.
+  period: 2025
+  input:
+    adjusted_gross_income: 99_999
+    filing_status: JOINT
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Married separate filer below the income threshold is eligible.
+  period: 2025
+  input:
+    adjusted_gross_income: 49_999
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Head or spouse claimed as a dependent is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Affordability payment eligibility is only in effect for tax year 2025.
+  period: 2026
+  input:
+    adjusted_gross_income: 49_999
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
