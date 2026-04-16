@@ -15,10 +15,10 @@ class id_aabd_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "Idaho AABD living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.ID
     possible_values = IDAAbdLivingArrangement
-    default_value = IDAAbdLivingArrangement.SINGLE
+    default_value = IDAAbdLivingArrangement.NONE
     reference = (
         "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39",
         "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.05.514",

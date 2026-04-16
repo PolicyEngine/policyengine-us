@@ -8,7 +8,7 @@ class id_aabd_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Idaho AABD eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.ID
     reference = (
         "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=41",
@@ -17,7 +17,11 @@ class id_aabd_eligible(Variable):
 
     def formula(person, period, parameters):
         receives_ssi = person("ssi", period) > 0
-        living_arrangement = person("id_aabd_living_arrangement", period)
-        not_in_ralf_cfh = living_arrangement != IDAAbdLivingArrangement.RALF_CFH
-        not_none = living_arrangement != IDAAbdLivingArrangement.NONE
-        return receives_ssi & not_in_ralf_cfh & not_none
+        la = person("id_aabd_living_arrangement", period)
+        LA = IDAAbdLivingArrangement
+        # Nursing facility residents excluded (Section 501)
+        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        not_in_medical = (
+            federal_la != federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
+        )
+        return receives_ssi & not_in_medical & (la != LA.RALF_CFH) & (la != LA.NONE)
