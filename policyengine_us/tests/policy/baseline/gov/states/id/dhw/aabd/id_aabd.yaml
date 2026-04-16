@@ -78,3 +78,31 @@
     # Federal LA = MEDICAL_TREATMENT_FACILITY, excluded by eligibility
     id_aabd_eligible: [false]
     id_aabd: [0]
+
+- name: Case 6, eligible person with ineligible spouse uses SINGLE not COUPLE.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        id_aabd_living_arrangement: SINGLE
+      person2:
+        age: 30
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # Per 501.01: "living with their ineligible spouse" = SINGLE
+    # Per 501.02: COUPLE requires both to be AABD participants
+    # Person1 gets individual rate ($53), not couple rate ($10)
+    id_aabd: [53, 0]
