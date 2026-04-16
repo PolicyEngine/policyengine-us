@@ -10,6 +10,7 @@ metadata:
       href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=220
 SINGLE:
   values:
+    0000-01-01: .inf
     2026-01-01: 1_000_000
   uprating:
     parameter: gov.irs.uprating
@@ -18,6 +19,7 @@ SINGLE:
       interval: 50
 SEPARATE:
   values:
+    0000-01-01: .inf
     2026-01-01: 750_000
   uprating:
     parameter: gov.irs.uprating
@@ -26,6 +28,7 @@ SEPARATE:
       interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
+    0000-01-01: .inf
     2026-01-01: 1_500_000
   uprating:
     parameter: gov.irs.uprating
@@ -34,6 +37,7 @@ HEAD_OF_HOUSEHOLD:
       interval: 50
 JOINT:
   values:
+    0000-01-01: .inf
     2026-01-01: 1_500_000
   uprating:
     parameter: gov.irs.uprating
@@ -42,6 +46,7 @@ JOINT:
       interval: 50
 SURVIVING_SPOUSE:
   values:
+    0000-01-01: .inf
     2026-01-01: 1_500_000
   uprating:
     parameter: gov.irs.uprating

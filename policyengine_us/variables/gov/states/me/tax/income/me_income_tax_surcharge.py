@@ -12,11 +12,7 @@ class me_income_tax_surcharge(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.surcharge
-
         taxable_income = tax_unit("me_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
-
         threshold = p.threshold[filing_status]
-        income_above_threshold = max_(taxable_income - threshold, 0)
-
-        return p.in_effect * income_above_threshold * p.rate
+        return max_(taxable_income - threshold, 0) * p.rate
