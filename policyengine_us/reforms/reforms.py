@@ -45,6 +45,9 @@ from .congress.tlaib.boost import (
 from .states.mn.walz import (
     create_mn_walz_hf1938_repeal_reform,
 )
+from .states.mn.hf4890 import (
+    create_mn_hf4890_reform,
+)
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
@@ -306,6 +309,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
+    mn_hf4890 = create_mn_hf4890_reform(parameters, period)
 
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
@@ -469,6 +473,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         edaa_end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
+        mn_hf4890,
         or_rebate_state_tax_exempt,
         family_security_act_2024_ctc,
         family_security_act_2024_eitc,
