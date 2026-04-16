@@ -61,12 +61,3 @@
         state_code: ME
   output:
     me_affordability_payment_eligible: false
-
-- name: Affordability payment eligibility is only in effect for tax year 2025.
-  period: 2026
-  input:
-    adjusted_gross_income: 49_999
-    filing_status: SINGLE
-    state_code: ME
-  output:
-    me_affordability_payment_eligible: false

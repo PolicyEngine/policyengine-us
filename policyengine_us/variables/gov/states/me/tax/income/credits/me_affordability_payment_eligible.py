@@ -11,8 +11,6 @@ class me_affordability_payment_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.affordability_payment
-        if not p.in_effect:
-            return False
 
         filing_status = tax_unit("filing_status", period)
         federal_agi = tax_unit("adjusted_gross_income", period)
