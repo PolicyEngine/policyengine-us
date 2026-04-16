@@ -1,0 +1,53 @@
+- name: Maine income tax surcharge does not apply before 2026.
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_200_000
+  output:
+    me_income_tax_surcharge: 0
+
+- name: Maine income tax surcharge applies to single taxable income above $1 million in 2026.
+  period: 2026
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_200_000
+  output:
+    me_income_tax_surcharge: 4_000
+
+- name: Maine income tax surcharge applies to married separate taxable income above $750,000 in 2026.
+  period: 2026
+  input:
+    state_code: ME
+    filing_status: SEPARATE
+    me_taxable_income: 800_000
+  output:
+    me_income_tax_surcharge: 1_000
+
+- name: Maine income tax surcharge applies to head of household taxable income above $1.5 million in 2026.
+  period: 2026
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_taxable_income: 1_600_000
+  output:
+    me_income_tax_surcharge: 2_000
+
+- name: Maine income tax surcharge applies to joint taxable income above $1.5 million in 2026.
+  period: 2026
+  input:
+    state_code: ME
+    filing_status: JOINT
+    me_taxable_income: 1_750_000
+  output:
+    me_income_tax_surcharge: 5_000
+
+- name: Maine income tax surcharge applies to surviving spouse taxable income above $1.5 million in 2026.
+  period: 2026
+  input:
+    state_code: ME
+    filing_status: SURVIVING_SPOUSE
+    me_taxable_income: 1_650_000
+  output:
+    me_income_tax_surcharge: 3_000

@@ -1,0 +1,50 @@
+description: Maine applies its income tax surcharge to taxable income above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine income tax surcharge threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: H.P. 1491, L.D. 2212, Part DDDD, Sec. DDDD-1 and Sec. DDDD-5
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=220
+SINGLE:
+  values:
+    2026-01-01: 1_000_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2026-01-01: 750_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+JOINT:
+  values:
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

@@ -168,3 +168,12 @@
   output:
    # .0715*(100,000-53,150)+3374 = 6723.775
     me_income_tax_before_credits: 6_723.775
+
+- name: Single filer with 2026 taxable income above $1 million includes Maine income tax surcharge.
+  period: 2026
+  input:
+    me_taxable_income: 1_200_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 89_291.6
