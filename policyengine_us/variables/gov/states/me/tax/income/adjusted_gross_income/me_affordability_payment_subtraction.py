@@ -15,6 +15,8 @@ class me_affordability_payment_subtraction(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        in_effect = (period.start.year >= 2026) & (period.start.year <= 2027)
+        p = parameters(
+            period
+        ).gov.states.me.tax.income.agi.subtractions.affordability_payment_subtraction
         reported = tax_unit("me_affordability_payment_subtraction_reported", period)
-        return in_effect * reported
+        return p.in_effect * reported

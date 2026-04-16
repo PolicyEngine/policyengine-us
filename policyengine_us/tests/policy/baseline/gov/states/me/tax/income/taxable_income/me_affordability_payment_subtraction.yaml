@@ -1,3 +1,11 @@
+- name: Maine affordability payment subtraction is not available before 2026.
+  period: 2025
+  input:
+    state_code: ME
+    me_affordability_payment_subtraction_reported: 300
+  output:
+    me_affordability_payment_subtraction: 0
+
 - name: Maine subtracts reported affordability payments included in federal AGI in 2026.
   period: 2026
   input:
