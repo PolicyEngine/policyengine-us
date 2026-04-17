@@ -18,6 +18,9 @@ values:
     - me_sales_tax_fairness_credit
     - me_property_tax_fairness_credit
     - me_dependent_exemption_credit
+  # The 2025 affordability payment is a direct payment program under Sec.
+  # T-1(3), not a tax credit; we model it as a refundable credit so that it
+  # flows through Maine's refundable-credit aggregation.
   2025-01-01:
     - me_refundable_child_care_credit
     - me_eitc
@@ -39,7 +42,7 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form1040me_Sch%20A_ff.pdf#page=1
     - title: 2025 Instructions for Form 1040ME - Schedule A
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=10
-    - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1
+    - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1, subsection 3
       href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=157
     - title: 2023 Form 1040ME Schedule A 
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_a_ff.pdf#page=1

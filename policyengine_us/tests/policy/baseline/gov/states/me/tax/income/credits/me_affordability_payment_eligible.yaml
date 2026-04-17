@@ -1,5 +1,6 @@
 - name: Single filer below the income threshold is eligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 49_999
     filing_status: SINGLE
@@ -9,6 +10,7 @@
 
 - name: Single filer at the income threshold is ineligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 50_000
     filing_status: SINGLE
@@ -18,6 +20,7 @@
 
 - name: Head of household filer below the income threshold is eligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 74_999
     filing_status: HEAD_OF_HOUSEHOLD
@@ -25,8 +28,19 @@
   output:
     me_affordability_payment_eligible: true
 
+- name: Head of household filer at the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 75_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
 - name: Joint filer below the income threshold is eligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 99_999
     filing_status: JOINT
@@ -34,8 +48,19 @@
   output:
     me_affordability_payment_eligible: true
 
+- name: Joint filer at the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
 - name: Married separate filer below the income threshold is eligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 49_999
     filing_status: SEPARATE
@@ -43,8 +68,39 @@
   output:
     me_affordability_payment_eligible: true
 
+- name: Married separate filer at the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Surviving spouse filer below the income threshold is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 99_999
+    filing_status: SURVIVING_SPOUSE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Surviving spouse filer at the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
 - name: Filer claimed as a dependent on another return is ineligible.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

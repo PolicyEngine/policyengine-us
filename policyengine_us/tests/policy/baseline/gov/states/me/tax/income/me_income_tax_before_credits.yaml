@@ -171,6 +171,7 @@
 
 - name: Single filer with 2026 taxable income above $1 million includes Maine income tax surcharge.
   period: 2026
+  absolute_error_margin: 0.1
   input:
     me_taxable_income: 1_200_000
     filing_status: SINGLE

@@ -1,0 +1,16 @@
+- name: Maine 2026 integration - surcharge, AGI subtraction, and property tax cap are all active.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_200_000
+    me_affordability_payment_subtraction_reported: 300
+    tax_unit_taxable_social_security: 0
+    us_govt_interest: 0
+    me_pension_income_deduction: 0
+  output:
+    # Surcharge: 2% * (1,200,000 - 1,000,000) = 4,000
+    me_income_tax_surcharge: 4_000
+    # AGI subtraction includes the reported affordability payment in 2026
+    me_agi_subtractions: 300

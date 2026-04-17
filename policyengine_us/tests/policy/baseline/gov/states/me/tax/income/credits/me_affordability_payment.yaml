@@ -1,5 +1,6 @@
 - name: Ineligible tax unit receives no affordability payment.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     me_affordability_payment_eligible: false
     head_spouse_count: 2
@@ -9,6 +10,7 @@
 
 - name: Single eligible filer receives one Maine affordability payment.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     me_affordability_payment_eligible: true
     head_spouse_count: 1
@@ -18,6 +20,7 @@
 
 - name: Joint eligible filers receive one Maine affordability payment per spouse.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     me_affordability_payment_eligible: true
     head_spouse_count: 2

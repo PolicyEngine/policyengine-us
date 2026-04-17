@@ -44,6 +44,7 @@
 
 - name: Maine subtracts reported affordability payment from AGI in 2026
   period: 2026
+  absolute_error_margin: 0.1
   input:
     tax_unit_taxable_social_security: 1_000
     us_govt_interest: 1_000

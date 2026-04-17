@@ -1,5 +1,6 @@
 - name: Maine affordability payment is a refundable credit in 2025.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     me_refundable_child_care_credit: 0
@@ -13,6 +14,7 @@
 
 - name: Maine affordability payment is not a refundable credit after 2025.
   period: 2026
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     me_refundable_child_care_credit: 0
