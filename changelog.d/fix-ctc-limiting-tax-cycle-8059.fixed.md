@@ -1,0 +1,1 @@
+Propagate tax_unit_itemizes from the parent sim to the no_salt branch in ctc_limiting_tax_liability to avoid a refundable_ctc -> tax_unit_itemizes -> tax_liability_if_itemizing -> income_tax -> refundable_ctc cycle. Fixes #8059.
