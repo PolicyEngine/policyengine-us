@@ -17,7 +17,5 @@ class tx_ssi_state_supplement(Variable):
         # Per 42 USC 1382(e)(1)(B) and Texas HR Code 32.024(w)
         p = parameters(period).gov.states.tx.hhsc.ssi_state_supplement
         pna = p.personal_needs_allowance
-        federal_reduced = parameters(
-            period
-        ).gov.ssa.ssi.amount.institutional.individual
+        federal_reduced = parameters(period).gov.ssa.ssi.amount.institutional.individual
         return max_(pna - federal_reduced, 0) * MONTHS_IN_YEAR
