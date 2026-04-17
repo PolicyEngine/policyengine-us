@@ -14,9 +14,7 @@ class ok_529_plan_deduction(Variable):
     defined_for = StateCode.OK
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ok.tax.income.agi.subtractions.plan_529
+        p = parameters(period).gov.states.ok.tax.income.agi.subtractions.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]

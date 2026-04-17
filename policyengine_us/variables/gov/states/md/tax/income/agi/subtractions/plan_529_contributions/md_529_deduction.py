@@ -18,9 +18,7 @@ class md_529_deduction(Variable):
             period
         ).gov.states.md.tax.income.agi.subtractions.plan_529_contributions
         contributions = tax_unit("investment_in_529_plan", period)
-        beneficiaries = add(
-            tax_unit, period, ["count_529_contribution_beneficiaries"]
-        )
+        beneficiaries = add(tax_unit, period, ["count_529_contribution_beneficiaries"])
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status] * max_(beneficiaries, 1)
         return min_(contributions, cap)

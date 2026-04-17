@@ -14,9 +14,7 @@ class ks_529_plan_subtraction(Variable):
     defined_for = StateCode.KS
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ks.tax.income.agi.subtractions.plan_529
+        p = parameters(period).gov.states.ks.tax.income.agi.subtractions.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
         filing_status = tax_unit("filing_status", period)
         beneficiaries = add(

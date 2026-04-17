@@ -14,9 +14,7 @@ class me_529_plan_subtraction(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.me.tax.income.agi.subtractions.plan_529
+        p = parameters(period).gov.states.me.tax.income.agi.subtractions.plan_529
         contributions = tax_unit("investment_in_529_plan", period)
         beneficiaries = add(
             tax_unit,
