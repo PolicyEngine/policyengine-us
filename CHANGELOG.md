@@ -1,3 +1,23 @@
+## [1.644.0] - 2026-04-17
+
+### Added
+
+- Add Social Security retirement benefit calculation chain with AIME, PIA, early/delayed retirement adjustment, and earnings test formulas.
+
+
+## [1.643.0] - 2026-04-17
+
+### Added
+
+- Split the charitable deduction AGI cap by organization type per 26 USC 170(b)(1)(A)-(B). Non-cash donations to 50-percent limit organizations remain capped at 50% of AGI, while donations to other organizations (e.g., private foundations) are now capped at 30% of AGI via the new `charitable_non_cash_donations_non_50_pct_orgs` input and `ceiling/non_cash_to_non_50_pct_org` parameter.
+- Add US government bond interest exemption for IA, ID, IL, IN, KS, KY, LA, MA, MD, MI.
+
+### Changed
+
+- Consolidate itemized deduction limitation parameters under `deductions/itemized/limitation/` (replacing the duplicate `reduction/` folder) and rename OBBB parameters from `amended_structure/` to `obbb/`. Also adds 2009 values and the TCJA-era suspension to `applicable_amount.yaml`, and fixes YAML formatting issues.
+- Refactor SNAP countable assets to use a parameter-driven list (`gov.usda.snap.asset_test.sources`) covering `bank_account_assets`, `stock_assets`, and `bond_assets` per 7 CFR 273.8(c)(1). These are now wired to the SIPP-imputed liquid asset variables and regulatory citations are added for what is countable vs excluded under 7 USC 2014(g).
+
+
 ## [1.642.0] - 2026-04-17
 
 ### Added
