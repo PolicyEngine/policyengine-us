@@ -1,0 +1,1 @@
+Refactor SNAP countable assets to use a parameter-driven list (`gov.usda.snap.asset_test.sources`) covering `bank_account_assets`, `stock_assets`, and `bond_assets` per 7 CFR 273.8(c)(1). These are now wired to the SIPP-imputed liquid asset variables and regulatory citations are added for what is countable vs excluded under 7 USC 2014(g).
