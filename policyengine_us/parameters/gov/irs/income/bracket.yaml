@@ -34,7 +34,7 @@ thresholds:
     unit: currency-USD
     label: Individual income tax rate thresholds
     breakdown:
-      - range(1, 7)
+      - range(1, 8)
       - filing_status
     breakdown_labels:
       - Bracket
