@@ -62,8 +62,10 @@
     state_code: MI
   output:
     # Per MI-1040CR-7 Line 22: "If negative, enter 0"
-    # Rental income floored at 0, so only employment income counts
-    mi_household_resources: 50_000
+    # Rental income floored at 0 for the MI source line,
+    # but federal above_the_line_deductions includes loss_ald of 30,000.
+    # Total: 50,000 - 30,000 = 20,000
+    mi_household_resources: 20_000
 
 - name: Large capital gains loss limited to 3000
   period: 2024

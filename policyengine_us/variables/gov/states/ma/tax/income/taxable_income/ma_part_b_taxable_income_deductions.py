@@ -51,4 +51,12 @@ class ma_part_b_taxable_income_deductions(Variable):
         )
         # (B)(a)(13): Charitable contributions deduction.
         charitable_deduction = tax_unit("charitable_deduction", period)
-        return fica + bank_interest_deduction + rent_deduction + charitable_deduction
+        # (B)(a)(14): 529 plan contribution deduction.
+        plan_529_deduction = tax_unit("ma_529_deduction", period)
+        return (
+            fica
+            + bank_interest_deduction
+            + rent_deduction
+            + charitable_deduction
+            + plan_529_deduction
+        )

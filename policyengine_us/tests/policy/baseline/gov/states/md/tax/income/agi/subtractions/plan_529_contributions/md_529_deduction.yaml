@@ -1,0 +1,45 @@
+- name: Case 1, single filer with contribution below cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    investment_in_529_plan: 2_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    md_529_deduction: 2_000
+
+- name: Case 2, single filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MD
+    filing_status: SINGLE
+    investment_in_529_plan: 5_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # Capped at $2,500 per beneficiary * 1 beneficiary = $2,500
+    md_529_deduction: 2_500
+
+- name: Case 3, joint filer with two beneficiaries.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MD
+    filing_status: JOINT
+    investment_in_529_plan: 15_000
+    count_529_contribution_beneficiaries: 2
+  output:
+    # Capped at $5,000 per beneficiary * 2 beneficiaries = $10,000
+    md_529_deduction: 10_000
+
+- name: Case 4, joint filer with no contributions.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MD
+    filing_status: JOINT
+    investment_in_529_plan: 0
+    count_529_contribution_beneficiaries: 1
+  output:
+    md_529_deduction: 0

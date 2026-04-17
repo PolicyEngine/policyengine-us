@@ -1,3 +1,24 @@
+## [1.646.0] - 2026-04-17
+
+### Added
+
+- Add 529 plan contribution state tax benefits across 24 states: deductions in AL, DE, IA, ID, IL, KS, LA, MA, MD, ME, MI, MO, MS, ND, NE, NJ, OK, PA, VA, WI; credits in IN, OR, UT, VT.
+
+
+## [1.645.0] - 2026-04-17
+
+### Added
+
+- Implement the IRC § 461(l) excess business loss limitation, applying it to self-employment, farm, rental, estate/trust, partnership/S-corp, and Form 4797 other net gain losses. Treat capital losses separately under the Section 1211 limit. Extend the limitation permanently for 2027 onwards per OBBBA § 70601.
+
+
+## [1.644.1] - 2026-04-17
+
+### Fixed
+
+- Fix eight parameter breakdown ranges that declared fewer (or different) children than the parameter actually had. These were silently mismatched until core 3.24.0 upgraded the mismatch from a warning to an error.
+
+
 ## [1.644.0] - 2026-04-17
 
 ### Added

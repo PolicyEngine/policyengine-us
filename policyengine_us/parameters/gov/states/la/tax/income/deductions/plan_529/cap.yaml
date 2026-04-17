@@ -1,0 +1,23 @@
+description: Louisiana caps the 529 plan contributions deduction at this amount per beneficiary by filing status.
+metadata:
+  label: Louisiana 529 plan contribution deduction cap per beneficiary
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: START Saving Program FAQ
+    href: https://www.startsaving.la.gov/startfaqs.aspx
+  - title: Louisiana Revised Statutes 47:293(9)(a)(xix)
+    href: https://law.justia.com/codes/louisiana/revised-statutes/title-47/rs-47-293/
+
+JOINT:
+  2021-01-01: 4_800
+SURVIVING_SPOUSE:
+  2021-01-01: 4_800
+SINGLE:
+  2021-01-01: 2_400
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 2_400
+SEPARATE:
+  2021-01-01: 2_400
