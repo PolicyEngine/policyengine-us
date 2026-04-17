@@ -11,11 +11,15 @@ metadata:
       href: https://www.ecfr.gov/current/title-29/subtitle-B/chapter-V/subchapter-A/part-541
     - title: 2019 DOL final rule (84 FR 51230) setting the HCE threshold to $107,432 effective 2020-01-01
       href: https://www.federalregister.gov/documents/2019/09/27/2019-20353/defining-and-delimiting-the-exemptions-for-executive-administrative-professional-outside-sales-and
-    - title: 2024 DOL final rule raising HCE to $132,964 on 2024-07-01 and $151,164 on 2025-01-01
-      href: https://www.dol.gov/agencies/whd/overtime/salary-levels
+    - title: Texas v. U.S. Dept. of Labor (E.D. Tex. Nov 15, 2024), vacating the 2024 DOL overtime rule nationwide
+      href: https://www.sidley.com/en/insights/newsupdates/2024/12/us-district-court-vacates-dol-final-rule-on-flsa-overtime-exemptions
 values:
   2004-01-01: 100_000
+  # The 2024 DOL final rule raised this threshold to $132,964 on
+  # 2024-07-01 with a further scheduled increase to $151,164 on
+  # 2025-01-01, but the U.S. District Court for the Eastern District
+  # of Texas vacated the entire rule nationwide on 2024-11-15 in
+  # Texas v. U.S. Dept. of Labor. The threshold therefore remains at
+  # the 2019 rule's $107,432 indefinitely (subject to future DOL
+  # rulemaking).
   2020-01-01: 107_432
-  2024-07-01: 132_964
-  2025-01-01: 151_164
-  2026-01-01: 151_164 # To start uprating in 2027.
