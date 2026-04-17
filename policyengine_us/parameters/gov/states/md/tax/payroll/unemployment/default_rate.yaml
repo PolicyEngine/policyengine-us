@@ -1,0 +1,15 @@
+description: Default employer-side unemployment insurance tax rate for Maryland.
+values:
+  0000-01-01: 0.026
+
+metadata:
+  period: year
+  unit: /1
+  label: Maryland default unemployment tax rate
+  reference:
+    - title: Maryland Labor and Employment Section 8-609
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-609&enactments=false
+    - title: Maryland Unemployment Insurance
+      href: https://labor.maryland.gov/unemployment-insurance/
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=30

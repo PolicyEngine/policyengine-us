@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Check formatting
-        run: uv run black . -l 79 --check
+        run: uv run ruff format --check .
   check-changelog:
     name: Check changelog fragment
     runs-on: ubuntu-latest
@@ -34,6 +34,9 @@ jobs:
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
+    env:
+      SELECTIVE_TEST_MAX_TARGETS: 25
+      SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

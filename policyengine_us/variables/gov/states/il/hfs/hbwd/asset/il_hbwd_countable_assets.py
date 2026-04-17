@@ -27,8 +27,6 @@ class il_hbwd_countable_assets(Variable):
         # § 120.381 and § 113.141 have identical vehicle exemption rules,
         # so using AABD vehicle calculation
         cash_assets = person.spm_unit("spm_unit_cash_assets", period.this_year)
-        vehicle_value = person.spm_unit(
-            "il_aabd_countable_vehicle_value", period
-        )
+        vehicle_value = person.spm_unit("il_aabd_countable_vehicle_value", period)
         # TODO: Implement homestead, retirement account, burial, and other exemptions
         return cash_assets + vehicle_value

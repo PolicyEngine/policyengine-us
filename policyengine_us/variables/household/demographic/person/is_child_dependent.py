@@ -27,9 +27,7 @@ class is_child_dependent(Variable):
         # 1. Qualifying child (meets age test)
         is_qualifying_child = person("is_qualifying_child_dependent", period)
         # 2. Qualifying relative (fails age test but meets income test)
-        is_qualifying_relative = person(
-            "is_qualifying_relative_dependent", period
-        )
+        is_qualifying_relative = person("is_qualifying_relative_dependent", period)
         # 3. Permanently disabled (exempt from age test)
         is_disabled = person("is_permanently_and_totally_disabled", period)
         return is_qualifying_child | is_qualifying_relative | is_disabled

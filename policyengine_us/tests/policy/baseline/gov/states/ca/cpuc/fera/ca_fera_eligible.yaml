@@ -2,7 +2,7 @@
   period: 2023
   input:
     household_size: 3
-    household_market_income: 2.5
+    ca_cpuc_countable_income: 2.5
     ca_care_poverty_line: 1
     ca_care_eligible: false
     state_code: CA
@@ -13,7 +13,7 @@
   period: 2023
   input:
     household_size: 2
-    household_market_income: 2.5
+    ca_cpuc_countable_income: 2.5
     ca_care_poverty_line: 1
     state_code: CA
   output:
@@ -23,7 +23,7 @@
   period: 2023
   input:
     household_size: 3
-    household_market_income: 2
+    ca_cpuc_countable_income: 2
     ca_care_poverty_line: 1
     state_code: CA
   output:
@@ -33,7 +33,7 @@
   period: 2023
   input:
     household_size: 3
-    household_market_income: 2.51
+    ca_cpuc_countable_income: 2.51
     ca_care_poverty_line: 1
     state_code: CA
   output:

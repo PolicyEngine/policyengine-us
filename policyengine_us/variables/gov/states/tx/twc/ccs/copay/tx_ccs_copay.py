@@ -26,9 +26,7 @@ class tx_ccs_copay(Variable):
         fc = p.first_child
         min_smi = fc.thresholds[0]
         base_rate = fc.amounts[0]
-        slope = (fc.amounts[1] - fc.amounts[0]) / (
-            fc.thresholds[1] - fc.thresholds[0]
-        )
+        slope = (fc.amounts[1] - fc.amounts[0]) / (fc.thresholds[1] - fc.thresholds[0])
 
         raw_first_child_rate = where(
             smi_ratio < min_smi,

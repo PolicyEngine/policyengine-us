@@ -168,6 +168,26 @@
     taxsim_psemp: 75000
     taxsim_ssemp: 25000
 
+- name: SSTB self-employment income - TAXSIM outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        sstb_self_employment_income: 75000
+        is_tax_unit_head: true
+      spouse:
+        age: 43
+        sstb_self_employment_income: 25000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_psemp: 75000
+    taxsim_ssemp: 25000
+
 - name: Unemployment income - TAXSIM outputs
   period: 2024
   input:
@@ -208,6 +228,32 @@
     taxsim_pbusinc: 100000
     taxsim_sbusinc: 50000
     taxsim_scorp: 150000
+
+- name: SSTB self-employment income contributes to TAXSIM QBI outputs
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        sstb_self_employment_income: 100000
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        sstb_self_employment_income: 50000
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    taxsim_pbusinc: 100000
+    taxsim_sbusinc: 50000
 
 - name: State code NY - TAXSIM outputs
   period: 2024

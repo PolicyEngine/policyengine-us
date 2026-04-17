@@ -7,9 +7,7 @@ class ri_property_tax_credit(Variable):
     label = "Rhode Island property tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm"
-    )
+    reference = "http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm"
     defined_for = "ri_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):

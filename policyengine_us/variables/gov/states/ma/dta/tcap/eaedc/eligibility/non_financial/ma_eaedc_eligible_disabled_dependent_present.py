@@ -7,9 +7,7 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
     label = "Disabled dependent present for Massachusetts EAEDC"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-340"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-340"
 
     def formula(spm_unit, period, parameters):
         # Check if household has disabled dependents

@@ -109,3 +109,35 @@
         state_fips: 6
   output:
     ca_income_tax: 371
+
+- name: High income joint filer, state_income_tax includes behavioral health tax.
+  absolute_error_margin: 500
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 1_000_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        taxable_interest_income: 1_000_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 6
+  output:
+    state_income_tax: 216_156

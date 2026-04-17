@@ -7,7 +7,9 @@ class ma_tafdc_child_support_deduction(Variable):
     unit = USD
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) child support deduction"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"  # GG
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-250"  # GG
+    )
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

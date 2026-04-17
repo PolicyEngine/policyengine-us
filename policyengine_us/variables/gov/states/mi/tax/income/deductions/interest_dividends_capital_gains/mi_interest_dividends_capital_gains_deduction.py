@@ -7,7 +7,9 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
     label = "Michigan interest, dividends, and capital gains deduction"
     unit = USD
     definition_period = YEAR
-    documentation = "Michigan interest, dividends, and capital gains deduction of qualifying age."
+    documentation = (
+        "Michigan interest, dividends, and capital gains deduction of qualifying age."
+    )
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(p)
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
@@ -39,8 +41,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         reductions = (
-            tax_unit.sum(reductions_pay * is_head_or_spouse)
-            + elderly_disabled_credit
+            tax_unit.sum(reductions_pay * is_head_or_spouse) + elderly_disabled_credit
         )
         reduced_amount = max_(0, p.amount[filing_status] - reductions)
 

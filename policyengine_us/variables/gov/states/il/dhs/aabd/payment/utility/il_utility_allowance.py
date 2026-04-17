@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class il_aabd_utility_allowance(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "Illinois Aid to the Aged, Blind or Disabled (AABD) utility allowance"
-    )
+    label = "Illinois Aid to the Aged, Blind or Disabled (AABD) utility allowance"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
@@ -26,9 +24,7 @@ class il_aabd_utility_allowance(Variable):
                     spm_unit(expense, period) > 0,
                     min(
                         spm_unit(expense, period),
-                        p.utility[expense.replace("_expense", "")][area][
-                            capped_size
-                        ],
+                        p.utility[expense.replace("_expense", "")][area][capped_size],
                     ),
                     0,
                 )

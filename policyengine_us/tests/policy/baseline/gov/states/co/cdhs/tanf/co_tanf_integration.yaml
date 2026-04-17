@@ -83,4 +83,311 @@
         state_code: CO
   output:
     co_tanf: 19_868
-    
+
+# --- 2013 era integration tests (period 2014) ---
+
+- name: Case 3, one adult two children no income in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 30
+      person2:
+        is_child: true
+        age: 8
+      person3:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    # Need standard: 1-caretaker/2-children = $421/mo = $5,052/yr
+    co_tanf_need_standard: 5_052
+    # Income: $0 < $5,052 -> eligible
+    co_tanf_income_eligible: true
+    # Grant standard: 1-caretaker/2-children = $462/mo = $5,544/yr
+    co_tanf_grant_standard: 5_544
+    # Benefit: $5,544 - $0 = $5,544
+    co_tanf: 5_544
+
+- name: Case 4, one adult two children with earned income not enrolled in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 35
+        employment_income: 6_000
+      person2:
+        is_child: true
+        age: 10
+      person3:
+        is_child: true
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    # Gross earned: $6,000/yr
+    co_tanf_countable_gross_earned_income: 6_000
+    # Need disregard (not enrolled): $6,000 - ($90 * 12) = $4,920
+    co_tanf_countable_earned_income_need: 4_920
+    # Unearned: $0
+    co_tanf_countable_gross_unearned_income: 0
+    # Need standard: 1-caretaker/2-children = $421/mo = $5,052/yr
+    co_tanf_need_standard: 5_052
+    # Income eligible: $4,920 < $5,052 -> true
+    co_tanf_income_eligible: true
+    # Grant standard: $462/mo = $5,544/yr
+    co_tanf_grant_standard: 5_544
+    # Grant disregard: $6,000 * 0.33 = $1,980
+    co_tanf_countable_earned_income_grant_standard: 1_980
+    # Benefit: $5,544 - $1,980 = $3,564
+    co_tanf: 3_564
+
+- name: Case 5, one adult one child income exceeds need standard in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 28
+        employment_income: 24_000
+      person2:
+        is_child: true
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Need standard: 1-caretaker/1-child = $331/mo = $3,972/yr
+    co_tanf_need_standard: 3_972
+    # Earned for need (not enrolled): $24,000 - $1,080 = $22,920
+    co_tanf_countable_earned_income_need: 22_920
+    # $22,920 >= $3,972 -> not income eligible
+    co_tanf_income_eligible: false
+    co_tanf: 0
+
+# --- 2024 era integration tests (period 2025) ---
+
+- name: Case 6, one adult two children no income in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 30
+      person2:
+        is_child: true
+        age: 8
+      person3:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    # Need standard: 1-caretaker/2-children = $421/mo = $5,052/yr
+    co_tanf_need_standard: 5_052
+    co_tanf_income_eligible: true
+    # Grant standard: 1-caretaker/2-children = $592/mo = $7,104/yr
+    co_tanf_grant_standard: 7_104
+    # Benefit: $7,104 - $0 = $7,104
+    co_tanf: 7_104
+
+- name: Case 7, two adults three children with mixed income enrolled in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 35
+        employment_income: 3_600
+      person2:
+        is_adult: true
+        age: 33
+        pension_income: 1_200
+      person3:
+        is_child: true
+        age: 12
+      person4:
+        is_child: true
+        age: 9
+      person5:
+        is_child: true
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CO
+  output:
+    # Gross earned: $3,600
+    co_tanf_countable_gross_earned_income: 3_600
+    # Need disregard (enrolled): $3,600 * 0.33 = $1,188
+    co_tanf_countable_earned_income_need: 1_188
+    # Unearned: $1,200 pension (child support excluded for enrolled)
+    co_tanf_countable_gross_unearned_income: 1_200
+    # Need standard: 2-caretakers/3-children = $628/mo = $7,536/yr
+    co_tanf_need_standard: 7_536
+    # Income eligible: $1,188 + $1,200 = $2,388 < $7,536 -> true
+    co_tanf_income_eligible: true
+    # Grant standard: 2-caretakers/3-children = $885/mo = $10,620/yr
+    co_tanf_grant_standard: 10_620
+    # Grant disregard: $3,600 * 0.33 = $1,188
+    co_tanf_countable_earned_income_grant_standard: 1_188
+    # Benefit: $10,620 - ($1,188 + $1,200) = $10,620 - $2,388 = $8,232
+    co_tanf: 8_232
+
+- name: Case 8, zero adults two children child-only case in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_child: true
+        age: 14
+      person2:
+        is_child: true
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Need standard: 0-caretakers/2-children = $245/mo = $2,940/yr
+    co_tanf_need_standard: 2_940
+    co_tanf_income_eligible: true
+    # Grant standard: 0-caretakers/2-children = $345/mo = $4,140/yr
+    co_tanf_grant_standard: 4_140
+    # Benefit: $4,140
+    co_tanf: 4_140
+
+# --- Edge case integration tests ---
+
+- name: Case 9, unearned income only with child support not enrolled in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 32
+        social_security: 2_400
+      person2:
+        is_child: true
+        age: 4
+        child_support_received: 1_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Gross earned: $0
+    co_tanf_countable_gross_earned_income: 0
+    # Need disregard: $0 (no earnings)
+    co_tanf_countable_earned_income_need: 0
+    # Unearned: $2,400 social_security + $1,800 child_support (not enrolled) = $4,200
+    co_tanf_countable_gross_unearned_income: 4_200
+    # Need standard: 1-caretaker/1-child = $331/mo = $3,972/yr
+    co_tanf_need_standard: 3_972
+    # Income eligible: $4,200 >= $3,972 -> false
+    co_tanf_income_eligible: false
+    co_tanf: 0
+
+- name: Case 10, small earnings below flat disregard not enrolled in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_adult: true
+        age: 25
+        employment_income: 600
+      person2:
+        is_child: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Gross earned: $600
+    co_tanf_countable_gross_earned_income: 600
+    # Need disregard (not enrolled): max($600 - $1,080, 0) = $0
+    co_tanf_countable_earned_income_need: 0
+    # Unearned: $0
+    co_tanf_countable_gross_unearned_income: 0
+    # Need standard: 1-caretaker/1-child = $331/mo = $3,972/yr
+    co_tanf_need_standard: 3_972
+    # Income eligible: $0 < $3,972 -> true
+    co_tanf_income_eligible: true
+    # Grant standard: 1-caretaker/1-child = $466/mo = $5,592/yr
+    co_tanf_grant_standard: 5_592
+    # Grant disregard: $600 * 0.33 = $198
+    co_tanf_countable_earned_income_grant_standard: 198
+    # Benefit: $5,592 - $198 = $5,394
+    co_tanf: 5_394

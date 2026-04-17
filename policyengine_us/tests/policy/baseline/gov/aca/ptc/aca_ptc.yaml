@@ -41,3 +41,15 @@
     aca_required_contribution_percentage: 0.04
   output:
     aca_ptc: 0
+
+- name: ACA PTC remains available even when an eligible tax unit does not take it up
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    takes_up_aca_if_eligible: false
+  output:
+    aca_ptc: 200

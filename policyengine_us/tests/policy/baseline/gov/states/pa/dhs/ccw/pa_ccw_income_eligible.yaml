@@ -1,0 +1,128 @@
+# Unit tests for pa_ccw_income_eligible
+# Tests income eligibility: 200% FPIG (initial), min(235% FPIG, 85% SMI) (redetermination)
+# Uses pa_ccw_adjusted_income (YEAR) via period.this_year
+# 55 Pa. Code § 3042.31(a),(c)
+#
+# 2025 FPG (Contiguous US):
+#   first_person = 15_650, additional = 5_500
+#   Family of 2: 21_150
+#   Family of 3: 26_650
+#
+# 200% FPIG:
+#   Family of 2: 42_300
+#   Family of 3: 53_300
+# 235% FPIG:
+#   Family of 2: 49_702.50
+#   Family of 3: 62_627.50
+
+- name: Case 1, new applicant income below 200 percent FPIG.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income = 36,000 (no deductions)
+    # 200% FPIG for family of 2: 42,300
+    # 36,000 <= 42,300 -> eligible
+    pa_ccw_income_eligible: true
+
+- name: Case 2, new applicant income above 200 percent FPIG.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Adjusted income = 54,000
+    # 200% FPIG = 42,300
+    # 54,000 > 42,300 -> NOT eligible
+    pa_ccw_income_eligible: false
+
+- name: Case 3, enrolled family within 235 percent FPIG.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        pa_ccw_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Enrolled: min(235% FPIG, 85% SMI)
+    # 235% FPIG = 49,702.50
+    # 48,000 <= 49,702.50 -> eligible
+    pa_ccw_income_eligible: true
+
+- name: Case 4, enrolled family of 3 within redetermination limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+      person2:
+        age: 33
+        employment_income: 12_000
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pa_ccw_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Adjusted income = 60,000
+    # Enrolled family of 3: min(235% FPIG = 62,627.50, 85% SMI)
+    # 60,000 <= 62,627.50 -> eligible (assuming SMI limit is higher)
+    pa_ccw_income_eligible: true
+
+- name: Case 5, zero income family.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 0 <= 42,300 -> eligible
+    pa_ccw_income_eligible: true

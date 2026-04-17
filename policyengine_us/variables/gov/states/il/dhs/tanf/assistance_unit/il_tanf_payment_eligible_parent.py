@@ -11,8 +11,6 @@ class il_tanf_payment_eligible_parent(Variable):
 
     def formula(person, period, parameters):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        eligible_requirements = person(
-            "il_tanf_payment_eligible_requirements", period
-        )
+        eligible_requirements = person("il_tanf_payment_eligible_requirements", period)
 
         return is_head_or_spouse & eligible_requirements

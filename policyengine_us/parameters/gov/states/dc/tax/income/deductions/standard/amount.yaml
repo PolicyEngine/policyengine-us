@@ -1,0 +1,41 @@
+description: The District of Columbia sets the basic standard deduction to this amount by filing status.
+
+SINGLE:
+  values:
+    2025-01-01: 15_000
+
+JOINT:
+  values:
+    2025-01-01: 30_000
+
+SEPARATE:
+  values:
+    2025-01-01: 15_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 22_500
+
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 30_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: DC basic standard deduction
+  breakdown:
+    - filing_status
+  propagate_metadata_to_children: true
+  reference:
+    - title: DC Code § 47-1801.04(3A) - Basic standard deduction
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04
+    - title: DC Act 26-214 - Income and Franchise Tax Conformity
+      href: https://code.dccouncil.gov/us/dc/council/acts/26-214
+    - title: 2025 DC D-40 Booklet, Standard Deduction (p.13)
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_Final_wLinks_030526_v1.0.pdf#page=13
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

@@ -16,8 +16,6 @@ class tn_ff_child_care_deduction(Variable):
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        childcare_deduction_person = (
-            p.child_care_deduction.calc(age) * dependent
-        )
+        childcare_deduction_person = p.child_care_deduction.calc(age) * dependent
         total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
         return min_(childcare_expenses, total_childcare_deduction)

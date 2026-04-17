@@ -20,3 +20,30 @@
     medicaid_income_level: 1.15
   output:
     is_parent_for_medicaid: false
+
+- name: Two-parent household under the income limit is eligible in TX
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        medicaid_income_level: 0.1
+      spouse:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        medicaid_income_level: 0.1
+      child:
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_count_dependents: 1
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    is_parent_for_medicaid: [true, true, false]

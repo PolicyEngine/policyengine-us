@@ -16,7 +16,5 @@ class rent(Variable):
         total_rent = max_(total_pre_subsidy_rent - housing_subsidy, 0)
         rent_fraction = np.zeros_like(total_pre_subsidy_rent)
         mask = total_pre_subsidy_rent != 0
-        rent_fraction[mask] = (
-            pre_subsidy_rent[mask] / total_pre_subsidy_rent[mask]
-        )
+        rent_fraction[mask] = pre_subsidy_rent[mask] / total_pre_subsidy_rent[mask]
         return rent_fraction * total_rent

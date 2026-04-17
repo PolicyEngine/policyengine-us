@@ -75,9 +75,7 @@ class ok_stc(Variable):
         elderly_head_or_spouse = (
             tax_unit("greater_age_head_spouse", period) >= p.age_minimum
         )
-        disabled_head_or_spouse = tax_unit(
-            "disabled_tax_unit_head_or_spouse", period
-        )
+        disabled_head_or_spouse = tax_unit("disabled_tax_unit_head_or_spouse", period)
         unit_eligible = (
             has_dependents | elderly_head_or_spouse | disabled_head_or_spouse
         )

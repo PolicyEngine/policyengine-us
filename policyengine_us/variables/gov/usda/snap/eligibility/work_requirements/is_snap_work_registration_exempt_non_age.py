@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class is_snap_work_registration_exempt_non_age(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Person is exempt from SNAP work registration under non-age criteria"
-    )
+    label = "Person is exempt from SNAP work registration under non-age criteria"
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.7#b_1",
@@ -38,9 +36,7 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # (v) Receiving unemployment compensation — 7 CFR 273.7(b)(1)(v)
         # also exempts applicants who have applied but not yet received
         # UI; we are not tracking that yet.
-        receiving_ui = (
-            person("unemployment_compensation", period.this_year) > 0
-        )
+        receiving_ui = person("unemployment_compensation", period.this_year) > 0
         return (
             is_disabled
             | has_child_under_6

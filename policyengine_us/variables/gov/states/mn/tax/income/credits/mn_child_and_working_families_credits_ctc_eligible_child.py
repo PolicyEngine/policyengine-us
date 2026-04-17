@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class mn_child_and_working_families_credits_ctc_eligible_child(Variable):
     value_type = float
     entity = Person
-    label = "Minnesota child and working families credits child tax credit eligible child"
+    label = (
+        "Minnesota child and working families credits child tax credit eligible child"
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -22,8 +24,4 @@ class mn_child_and_working_families_credits_ctc_eligible_child(Variable):
         p = parameters(period).gov.states.mn.tax.income.credits.cwfc.ctc
         age_eligible = age < p.age_limit
         is_dependent = person("is_tax_unit_dependent", period)
-        return (
-            age_eligible
-            & meets_eitc_identification_requirements
-            & is_dependent
-        )
+        return age_eligible & meets_eitc_identification_requirements & is_dependent

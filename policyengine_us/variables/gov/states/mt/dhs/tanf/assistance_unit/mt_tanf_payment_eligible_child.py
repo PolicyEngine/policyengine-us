@@ -11,7 +11,5 @@ class mt_tanf_payment_eligible_child(Variable):
 
     def formula(person, period, parameters):
         eligible_child = person("mt_tanf_eligible_child", period)
-        eligible_requirements = person(
-            "mt_tanf_payment_eligible_requirements", period
-        )
+        eligible_requirements = person("mt_tanf_payment_eligible_requirements", period)
         return eligible_child & eligible_requirements

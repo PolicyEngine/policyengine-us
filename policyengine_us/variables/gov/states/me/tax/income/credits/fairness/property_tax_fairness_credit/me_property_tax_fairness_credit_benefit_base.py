@@ -10,9 +10,7 @@ class me_property_tax_fairness_credit_benefit_base(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.me.tax.income.credits.fairness.property_tax
+        p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
         dependents = tax_unit("ctc_qualifying_children", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
@@ -35,9 +33,7 @@ class me_property_tax_fairness_credit_benefit_base(Variable):
             [
                 single,
                 joint_no_child | head_of_household_one_child,
-                joint_with_child
-                | head_of_household_multiple_child
-                | surviving_spouse,
+                joint_with_child | head_of_household_multiple_child | surviving_spouse,
             ],
             [
                 p.benefit_base.single,

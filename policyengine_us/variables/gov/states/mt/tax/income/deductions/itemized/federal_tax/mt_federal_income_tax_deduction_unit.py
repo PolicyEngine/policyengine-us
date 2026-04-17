@@ -23,9 +23,7 @@ class mt_federal_income_tax_deduction_unit(Variable):
         filing_status = tax_unit("filing_status", period)
         federal_income_tax_limit = p.cap[filing_status]
 
-        federal_income_tax = tax_unit(
-            "income_tax_before_refundable_credits", period
-        )
+        federal_income_tax = tax_unit("income_tax_before_refundable_credits", period)
         # The federal income tax deduction is attributed to the head in any case
         # as we currently do not have a way to determine individual federal income tax before credits.
         return min_(federal_income_tax, federal_income_tax_limit)

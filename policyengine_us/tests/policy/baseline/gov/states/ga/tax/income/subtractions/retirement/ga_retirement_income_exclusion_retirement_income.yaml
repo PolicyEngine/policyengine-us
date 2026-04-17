@@ -1,0 +1,19 @@
+- name: Earned income is preserved when other retirement income is negative
+  period: 2024
+  input:
+    state_code: GA
+    ga_retirement_exclusion_countable_earned_income: 5_000
+    ga_retirement_exclusion_countable_capital_gains: -3_000
+  output:
+    ga_retirement_income_exclusion_retirement_income: 5_000
+
+- name: Retirement income adds earned income and floored other income separately
+  period: 2024
+  input:
+    state_code: GA
+    ga_retirement_exclusion_countable_earned_income: 5_000
+    ga_retirement_exclusion_countable_capital_gains: -1_500
+    taxable_interest_income: 8_156
+    taxable_private_pension_income: 13_440
+  output:
+    ga_retirement_income_exclusion_retirement_income: 25_096

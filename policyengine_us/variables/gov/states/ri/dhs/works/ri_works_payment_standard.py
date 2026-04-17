@@ -22,18 +22,12 @@ class ri_works_payment_standard(Variable):
 
         # Add additional amount per person beyond max table size
         additional_persons = max_(unit_size - max_table_size, 0)
-        additional_amount = (
-            additional_persons * p.payment_standard.additional_person
-        )
+        additional_amount = additional_persons * p.payment_standard.additional_person
 
         standard = base_amount + additional_amount
 
         # Apply subsidized housing reduction
-        receives_housing = spm_unit(
-            "receives_housing_assistance", period.this_year
-        )
-        housing_reduction = where(
-            receives_housing, p.subsidized_housing_reduction, 0
-        )
+        receives_housing = spm_unit("receives_housing_assistance", period.this_year)
+        housing_reduction = where(receives_housing, p.subsidized_housing_reduction, 0)
 
         return max_(standard - housing_reduction, 0)

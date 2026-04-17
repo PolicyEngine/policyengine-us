@@ -25,10 +25,21 @@
   output:
     mt_tanf_net_income_standard: 3_574.52
 
-- name: Case 4, zero benefit standard
+- name: Case 4, zero benefit standard.
   period: 2024-01
   input:
     state_code: MT
     mt_tanf_benefit_standard: 0
   output:
     mt_tanf_net_income_standard: 0
+
+- name: Case 5, AU size 3 in 2025 - FPL pinned to 2023 so same as 2024.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_assistance_unit_size: 3
+  output:
+    # Benefit std = 30% * (14_580 + 2 * 5_140) / 12 = 621.50
+    # Net income std = 621.50 / 0.785 = 791.72
+    mt_tanf_net_income_standard: 791.72

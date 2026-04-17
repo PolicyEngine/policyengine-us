@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class wa_apple_health_expansion_immigration_status_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Has eligible immigration status for Washington Apple Health Expansion"
-    )
+    label = "Has eligible immigration status for Washington Apple Health Expansion"
     definition_period = YEAR
     defined_for = StateCode.WA
     reference = [
@@ -37,8 +35,7 @@ class wa_apple_health_expansion_immigration_status_eligible(Variable):
         # Only undocumented immigrants are eligible
         # They are ineligible for federal Medicaid and federal ACA subsidies
         undocumented = (
-            immigration_status
-            == immigration_status.possible_values.UNDOCUMENTED
+            immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )
 
         # NOTE: Qualified immigrants in the federal 5-year bar (e.g., LPRs

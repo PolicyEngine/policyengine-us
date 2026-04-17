@@ -1,0 +1,7 @@
+- name: OK includes US government bond interest in AGI subtractions
+  period: 2024
+  input:
+    state_code: OK
+    us_govt_interest: 5_000
+  output:
+    ok_agi_subtractions: 5_000

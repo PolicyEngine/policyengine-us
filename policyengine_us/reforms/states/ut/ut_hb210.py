@@ -33,9 +33,7 @@ def create_ut_hb210() -> Reform:
             # Add the married filer add-on per HB 210 Section 59-10-1018(3)
             # The add-on is added before phaseout is applied
             filing_status = tax_unit("filing_status", period)
-            p = parameters(
-                period
-            ).gov.contrib.states.ut.hb210.taxpayer_credit_add_on
+            p = parameters(period).gov.contrib.states.ut.hb210.taxpayer_credit_add_on
             add_on = p.amount[filing_status]
 
             # Total maximum credit including add-on

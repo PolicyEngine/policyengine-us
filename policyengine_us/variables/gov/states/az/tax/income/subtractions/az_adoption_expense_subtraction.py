@@ -16,9 +16,7 @@ class az_adoption_expense_subtraction(Variable):
 
         filing_status = tax_unit("az_filing_status", period)
         person = tax_unit.members
-        expenses = tax_unit.sum(
-            person("qualified_adoption_assistance_expense", period)
-        )
+        expenses = tax_unit.sum(person("qualified_adoption_assistance_expense", period))
 
         max_amount = p.max_amount[filing_status]
 

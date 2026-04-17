@@ -21,3 +21,35 @@
     snap_gross_income_fpg_ratio: 1.95
     # Gross income limit is 200% of FPL, so this should be true.
     meets_tanf_non_cash_gross_income_test: true
+
+- name: CO has BBCE at 200% FPL (bug fix verification)
+  period: 2024-01
+  input:
+    snap_gross_income_fpg_ratio: 1.95
+    state_code: CO
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: CO rejects income above 200% FPL
+  period: 2024-01
+  input:
+    snap_gross_income_fpg_ratio: 2.05
+    state_code: CO
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: MS has no BBCE (non-BBCE state, bug fix verification)
+  period: 2024-01
+  input:
+    snap_gross_income_fpg_ratio: 0.5
+    state_code: MS
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: IN has BBCE at 130% FPL
+  period: 2024-01
+  input:
+    snap_gross_income_fpg_ratio: 1.25
+    state_code: IN
+  output:
+    meets_tanf_non_cash_gross_income_test: true

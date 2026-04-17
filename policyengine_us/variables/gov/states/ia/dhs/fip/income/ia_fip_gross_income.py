@@ -8,9 +8,7 @@ class ia_fip_gross_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IA
-    reference = (
-        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
-    )
+    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf"
 
     adds = [
         "tanf_gross_earned_income",

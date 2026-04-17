@@ -13,6 +13,4 @@ class wv_gross_household_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.WV
 
-    adds = (
-        "gov.states.wv.tax.income.credits.heptc.gross_household_income.sources"
-    )
+    adds = "gov.states.wv.tax.income.credits.heptc.gross_household_income.sources"

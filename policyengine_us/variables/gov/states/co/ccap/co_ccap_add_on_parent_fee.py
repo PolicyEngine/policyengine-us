@@ -27,8 +27,6 @@ class co_ccap_add_on_parent_fee(Variable):
         # children in a household and income:
         # When income <= fpg: 0
         # When income > fpg: 15 for each additional child
-        add_on_parent_fee_amount = (
-            eligible_children - 1
-        ) * p.parent_fee.add_on
+        add_on_parent_fee_amount = (eligible_children - 1) * p.parent_fee.add_on
         add_on_parent_fee_applies = gross_income > fpg
         return add_on_parent_fee_amount * add_on_parent_fee_applies

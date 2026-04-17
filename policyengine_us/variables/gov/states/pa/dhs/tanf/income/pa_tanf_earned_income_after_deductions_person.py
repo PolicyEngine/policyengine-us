@@ -17,14 +17,10 @@ class pa_tanf_earned_income_after_deductions_person(Variable):
         p = parameters(period).gov.states.pa.dhs.tanf.income
 
         gross_earned = person("tanf_gross_earned_income", period)
-        disregard_eligible = person.spm_unit(
-            "pa_tanf_disregard_eligible", period
-        )
+        disregard_eligible = person.spm_unit("pa_tanf_disregard_eligible", period)
 
         # Apply 50% earned income disregard
-        after_eid = gross_earned * (
-            1 - p.deductions.earned_income_disregard.percentage
-        )
+        after_eid = gross_earned * (1 - p.deductions.earned_income_disregard.percentage)
 
         # Apply Work Expense Deduction (WED) only when in effect (post-2020)
         # Before 2020, Work Expense Reimbursement (WER) was used instead (added to benefit)

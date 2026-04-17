@@ -1,0 +1,25 @@
+description: The USDA uses this list of states that vary their limited utility allowance by household size under the Supplemental Nutrition Assistance Program.
+values:
+  2017-10-01:
+    - NC
+    - TN
+  2022-10-01:
+    - AZ
+    - NC
+    - TN
+
+metadata:
+  unit: list
+  label: States with SNAP LUAs varying with household size
+  period: year
+  reference:
+    - title: SNAP Screener Compiled State SNAP Data
+      href: https://www.snapscreener.com/data
+    - title: FY 2018 SNAP QC Technical Documentation, Table F.7
+      href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177
+    - title: FY 2019 SNAP QC Technical Documentation, Table F.7
+      href: https://snapqcdata.net/sites/default/files/2020-12/FY%202019%20SNAP%20QC%20Technical%20Documentation.pdf#page=171
+    - title: FY 2020 SNAP QC Technical Documentation, Table F.7
+      href: https://snapqcdata.net/sites/default/files/2022-12/FY%202020%20SNAP%20QC%20Technical%20Documentation.pdf#page=175
+    - title: FY 2021 SNAP QC Technical Documentation, Table F.7
+      href: https://snapqcdata.net/sites/default/files/2024-05/FY%202021%20Tech%20Doc.pdf#page=138

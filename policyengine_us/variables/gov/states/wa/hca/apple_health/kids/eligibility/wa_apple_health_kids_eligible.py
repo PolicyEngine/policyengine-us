@@ -28,9 +28,7 @@ class wa_apple_health_kids_eligible(Variable):
         age_eligible = age < p.eligibility.age_limit
 
         # Must meet income requirements
-        income_eligible = person(
-            "wa_apple_health_kids_income_eligible", period
-        )
+        income_eligible = person("wa_apple_health_kids_income_eligible", period)
 
         # Washington covers children regardless of immigration status
         # No immigration status check needed

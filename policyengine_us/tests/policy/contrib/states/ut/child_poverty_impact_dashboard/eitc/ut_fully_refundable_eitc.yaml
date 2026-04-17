@@ -1,0 +1,48 @@
+- name: Case 1 - UT EITC is fully refundable when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    ut_eitc: 500
+  output:
+    ut_fully_refundable_eitc: 500
+    ut_non_refundable_eitc: 0
+
+- name: Case 2 - UT refundable credits include EITC when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    ut_eitc: 1_000
+  output:
+    ut_fully_refundable_eitc: 1_000
+    ut_refundable_credits: 1_000
+
+- name: Case 3 - UT EITC works for childless filers
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    ut_eitc: 300
+  output:
+    ut_fully_refundable_eitc: 300
+    ut_refundable_credits: 300
+
+- name: Case 4 - UT EITC is 0 when EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    ut_eitc: 0
+  output:
+    ut_fully_refundable_eitc: 0
+    ut_refundable_credits: 0
+
+- name: Case 5 - UT fully refundable EITC is 0 for non-UT residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
+  input:
+    state_code: CA
+    ut_eitc: 500
+  output:
+    ut_fully_refundable_eitc: 0

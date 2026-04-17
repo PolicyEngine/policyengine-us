@@ -19,16 +19,12 @@ class is_snap_eligible(Variable):
         asset = spm_unit("meets_snap_asset_test", period)
         normal_eligibility = net & gross & asset
         # Categorical eligibility (SSI, TANF, and BBCE TANF) overrides tests.
-        categorical_eligibility = spm_unit(
-            "meets_snap_categorical_eligibility", period
-        )
+        categorical_eligibility = spm_unit("meets_snap_categorical_eligibility", period)
         person = spm_unit.members
         eligible_person_present = spm_unit.any(
             ~person("is_snap_ineligible_student", period)
         )
-        work_requirements_eligibility = spm_unit(
-            "meets_snap_work_requirements", period
-        )
+        work_requirements_eligibility = spm_unit("meets_snap_work_requirements", period)
         immigration_eligible_member_present = spm_unit.any(
             person("is_snap_immigration_status_eligible", period)
         )

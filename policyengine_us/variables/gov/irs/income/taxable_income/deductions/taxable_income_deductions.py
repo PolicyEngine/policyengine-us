@@ -16,6 +16,4 @@ class taxable_income_deductions(Variable):
         deductions_if_not_itemizing = tax_unit(
             "taxable_income_deductions_if_not_itemizing", period
         )
-        return where(
-            itemizes, deductions_if_itemizing, deductions_if_not_itemizing
-        )
+        return where(itemizes, deductions_if_itemizing, deductions_if_not_itemizing)

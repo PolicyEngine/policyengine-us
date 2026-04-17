@@ -22,9 +22,7 @@ def create_repeal_dependent_exemptions() -> Reform:
     return reform
 
 
-def create_repeal_dependent_exemptions_reform(
-    parameters, period, bypass: bool = False
-):
+def create_repeal_dependent_exemptions_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_repeal_dependent_exemptions()
 

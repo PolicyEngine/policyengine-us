@@ -15,8 +15,6 @@ class in_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         payment_standard = spm_unit("in_tanf_payment_standard", period)
-        countable_income = spm_unit(
-            "in_tanf_countable_income_for_payment", period
-        )
+        countable_income = spm_unit("in_tanf_countable_income_for_payment", period)
         benefit = max_(payment_standard - countable_income, 0)
         return min_(benefit, payment_standard)

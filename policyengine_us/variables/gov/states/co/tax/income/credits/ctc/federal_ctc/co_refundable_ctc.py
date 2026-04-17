@@ -6,9 +6,7 @@ class co_refundable_ctc(Variable):
     entity = TaxUnit
     label = "Refundable Child Tax Credit replicated to include the Colorado limitations"
     unit = USD
-    documentation = (
-        "Total value of the refundable portions of the Child Tax Credit."
-    )
+    documentation = "Total value of the refundable portions of the Child Tax Credit."
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
@@ -24,9 +22,7 @@ class co_refundable_ctc(Variable):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         adjusted_fed_ctc = tax_unit("co_non_refundable_ctc", period)  # Line 7
         max_child_amount = tax_unit("co_federal_ctc_maximum", period)  # Line 3
-        credit_excess_over_tax = max_(
-            0, max_child_amount - adjusted_fed_ctc
-        )  # Line 8
+        credit_excess_over_tax = max_(0, max_child_amount - adjusted_fed_ctc)  # Line 8
         p = parameters(period).gov.irs.credits.ctc
         statutory_cap = p.refundable.individual_max  # Line 9
         children = tax_unit("co_ctc_eligible_children_count", period)
@@ -44,12 +40,9 @@ class co_refundable_ctc(Variable):
             "ctc_social_security_tax", period
         )  # Line 14 - 16
         federal_eitc = tax_unit("eitc", period)  # Line 17a
-        social_security_excess = max_(
-            0, social_security_tax - federal_eitc
-        )  # Line 18
+        social_security_excess = max_(0, social_security_tax - federal_eitc)  # Line 18
         tax_increase = where(
-            children
-            < p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
+            children < p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
             relevant_earnings,
             max_(relevant_earnings, social_security_excess),
         )  # Line 19

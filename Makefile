@@ -1,7 +1,7 @@
 all: build
 format:
-	uv run black . -l 79
-	linecheck . --fix
+	uv run ruff format .
+	uv run ruff check .
 install:
 	pip install -e .[dev]
 test:

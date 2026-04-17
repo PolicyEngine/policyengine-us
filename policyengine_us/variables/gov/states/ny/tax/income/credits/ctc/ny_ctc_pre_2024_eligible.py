@@ -6,9 +6,7 @@ class ny_ctc_pre_2024_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "NY CTC pre-2024 eligibility"
-    documentation = (
-        "Whether the tax unit is eligible for NY CTC under pre-2024 rules"
-    )
+    documentation = "Whether the tax unit is eligible for NY CTC under pre-2024 rules"
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
     defined_for = StateCode.NY
@@ -30,9 +28,7 @@ class ny_ctc_pre_2024_eligible(Variable):
             # Initialize pre-TCJA CTC branch for eligibility check
             simulation = tax_unit.simulation
             pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
-            pre_tcja_ctc.tax_benefit_system = (
-                simulation.tax_benefit_system.clone()
-            )
+            pre_tcja_ctc.tax_benefit_system = simulation.tax_benefit_system.clone()
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
             # Update parameters to pre-TCJA values.
             for (

@@ -16,6 +16,6 @@ class mn_mfip_eligible(Variable):
         income = spm_unit("mn_mfip_income_eligible", period)
         resources = spm_unit("mn_mfip_resources_eligible", period)
         immigration = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         return demographic & income & resources & immigration

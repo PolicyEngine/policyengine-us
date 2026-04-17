@@ -11,9 +11,7 @@ class ut_taxpayer_credit_reduction(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        phase_out_income = tax_unit(
-            "ut_taxpayer_credit_phase_out_income", period
-        )
+        phase_out_income = tax_unit("ut_taxpayer_credit_phase_out_income", period)
         phase_out_rate = parameters(
             period
         ).gov.states.ut.tax.income.credits.taxpayer.phase_out.rate

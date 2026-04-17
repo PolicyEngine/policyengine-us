@@ -7,7 +7,9 @@ class mt_tanf_earned_income_after_disregard_person(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) earned income after disregard per person"
     unit = USD
     definition_period = MONTH
-    reference = "https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf#page=1"
+    reference = (
+        "https://dphhs.mt.gov/assets/hcsd/tanfmanual/tanf602-1jan012018.pdf#page=1"
+    )
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
@@ -18,8 +20,7 @@ class mt_tanf_earned_income_after_disregard_person(Variable):
             gross_earnings - p.work_related_expense.amount, 0
         )
         percentage_disregard = (
-            earnings_after_flat_exclusion
-            * p.earned_income_disregard.percentage
+            earnings_after_flat_exclusion * p.earned_income_disregard.percentage
         )
 
         return max_(earnings_after_flat_exclusion - percentage_disregard, 0)

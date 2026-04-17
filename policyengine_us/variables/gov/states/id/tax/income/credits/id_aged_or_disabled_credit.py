@@ -13,12 +13,8 @@ class id_aged_or_disabled_credit(Variable):
         # The program includes individuals in the household, including those not in the filing unit.
         # We simplify by limiting to those in the filing unit.
         person = tax_unit.members
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.credits.aged_or_disabled
-        eligible_person = person(
-            "id_aged_or_disabled_credit_eligible_person", period
-        )
+        p = parameters(period).gov.states.id.tax.income.credits.aged_or_disabled
+        eligible_person = person("id_aged_or_disabled_credit_eligible_person", period)
         total_eligible_people = tax_unit.sum(eligible_person)
         capped_eligible_people = min_(total_eligible_people, p.person_cap)
         credit_amount = capped_eligible_people * p.amount

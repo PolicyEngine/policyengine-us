@@ -1,0 +1,90 @@
+- name: Case 1, infant under 24 months.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [INFANT]
+
+- name: Case 2, toddler at 2 years old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [TODDLER]
+
+- name: Case 3, preschooler at 3 years old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [PRESCHOOL]
+
+- name: Case 4, preschooler at 4 years old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [PRESCHOOL]
+
+- name: Case 5, school age at 5 years old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [SCHOOL_AGE]
+
+- name: Case 6, school age at 10 years old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [SCHOOL_AGE]
+
+- name: Case 7, newborn is infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_age_group: [INFANT]

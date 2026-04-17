@@ -14,9 +14,7 @@ class nc_military_retirement_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nc.tax.income.deductions.military_retirement
+        p = parameters(period).gov.states.nc.tax.income.deductions.military_retirement
         military_retirement_benefits = add(
             tax_unit, period, ["military_retirement_pay"]
         )

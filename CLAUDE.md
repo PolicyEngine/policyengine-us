@@ -27,7 +27,7 @@ make install
 pip install -e .[dev]
 
 # Format code
-make format  # Runs black with line length 79 and fixes import ordering
+make format  # Runs ruff format
 
 # Run all tests
 make test
@@ -86,6 +86,15 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
   - These parameters should include `economy: false` in their metadata
 - **Labor Supply Response & Negative Earnings**: Use `max_(earnings, 0)` to prevent sign flips. Negative total earnings should result in zero labor supply responses.
 
+## Program registry (programs.yaml)
+- `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata
+- Served via the `/us/metadata` API and consumed by the model coverage page
+- **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
+- **When extending year coverage**: update `verified_years` (e.g., `"2022-2026"`) after verifying parameters and tests cover the new year
+- **When adding state implementations**: add to `state_implementations` list under the parent federal program
+- **Status values**: `complete`, `partial`, `in_progress`
+- Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local
+
 ## State Program Patterns
 - When refactoring federal programs to state-specific implementations:
   - Keep shared federal components if they're from federal regulations (CFR/USC)
@@ -102,6 +111,11 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
 - Consider real-world examples to validate implementation, including official calculators
 
 ## Code Integrity
+- **BEFORE DELETING ANY CODE, VERIFY IT IS ACTUALLY UNUSED**
+  - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`
+  - Code that lives near dead code is not necessarily dead — verify each piece independently
+  - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
+
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases

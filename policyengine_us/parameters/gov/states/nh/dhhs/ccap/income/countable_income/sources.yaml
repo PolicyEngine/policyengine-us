@@ -1,0 +1,31 @@
+description: New Hampshire uses these income sources as countable income under the Child Care Scholarship Program.
+values:
+  2024-01-01:
+    # Earned income
+    - employment_income
+    - self_employment_income
+    - farm_income
+    # Unearned income
+    - social_security
+    - pension_income
+    - retirement_distributions
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - dividend_income
+    - rental_income
+    - veterans_benefits
+    - disability_benefits
+    - capital_gains
+
+metadata:
+  unit: list
+  period: year
+  label: New Hampshire CCAP countable income sources
+  reference:
+    - title: He-C 6910.06(b)-(c),(e)
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-C-6910.06
+    - title: New Hampshire CCDF State Plan 2025-2027, Section 2.2.4
+      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/ccdf-state-plan-2025-2027.pdf#page=25

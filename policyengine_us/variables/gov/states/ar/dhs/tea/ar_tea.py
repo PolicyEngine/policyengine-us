@@ -7,7 +7,9 @@ class ar_tea(Variable):
     label = "Arkansas Transitional Employment Assistance"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    reference = (
+        "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    )
     defined_for = "ar_tea_eligible"
 
     def formula(spm_unit, period, parameters):

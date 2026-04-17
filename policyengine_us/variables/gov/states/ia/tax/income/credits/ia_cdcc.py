@@ -20,6 +20,4 @@ class ia_cdcc(Variable):
         federal_cdcc = tax_unit("cdcc_potential", period)
         taxable_income = tax_unit("ia_taxable_income", period)
         p = parameters(period).gov.states.ia.tax.income
-        return federal_cdcc * p.credits.child_care.fraction.calc(
-            taxable_income
-        )
+        return federal_cdcc * p.credits.child_care.fraction.calc(taxable_income)

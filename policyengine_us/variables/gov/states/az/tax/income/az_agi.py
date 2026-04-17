@@ -16,6 +16,4 @@ class az_agi(Variable):
         subtractions = tax_unit("az_subtractions", period)
         exemptions = tax_unit("az_exemptions", period)
 
-        return max_(
-            0, adjusted_gross_income + additions - subtractions - exemptions
-        )
+        return max_(0, adjusted_gross_income + additions - subtractions - exemptions)

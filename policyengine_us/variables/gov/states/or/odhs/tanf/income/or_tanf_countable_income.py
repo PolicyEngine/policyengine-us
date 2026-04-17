@@ -13,8 +13,6 @@ class or_tanf_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
-        child_support_disregard = spm_unit(
-            "or_tanf_child_support_disregard", period
-        )
+        child_support_disregard = spm_unit("or_tanf_child_support_disregard", period)
         countable_unearned = max_(gross_unearned - child_support_disregard, 0)
         return gross_earned + countable_unearned

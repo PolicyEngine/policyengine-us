@@ -10,6 +10,4 @@ class greater_age_head_spouse(Variable):
     unit = "year"
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            tax_unit("age_head", period), tax_unit("age_spouse", period)
-        )
+        return max_(tax_unit("age_head", period), tax_unit("age_spouse", period))

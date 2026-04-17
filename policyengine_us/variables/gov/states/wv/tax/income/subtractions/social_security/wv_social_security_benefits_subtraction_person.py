@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class wv_social_security_benefits_subtraction_person(Variable):
     value_type = float
     entity = Person
-    label = (
-        "West Virginia social security benefits subtraction for each person"
-    )
+    label = "West Virginia social security benefits subtraction for each person"
     unit = USD
     definition_period = YEAR
     reference = (

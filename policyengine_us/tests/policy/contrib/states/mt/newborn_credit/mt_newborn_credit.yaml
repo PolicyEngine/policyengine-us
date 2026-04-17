@@ -27,9 +27,9 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
-    # Refundable credit exceeds tax liability, producing a negative mt_income_tax
-    mt_income_tax: -1_304
+    mt_newborn_credit: [1_000, 0]
+    # Refundable credit reduces tax liability (baseline ~$696, minus $1,000 credit)
+    mt_income_tax: -304
 
 - name: Case 2, MFJ with newborn under income threshold.
   period: 2027
@@ -62,9 +62,9 @@
         state_code: MT
   output:
     # AGI $100k < $120k threshold for MFJ
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0, 0]
     # Baseline mt_income_tax ~$3,147 minus $1,000 refundable credit
-    mt_income_tax: 147
+    mt_income_tax: 2_147
 
 - name: Case 3, two newborns double credit.
   period: 2027
@@ -95,7 +95,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_newborn_credit: 2_000
+    mt_newborn_credit: [2_000, 0, 0]
 
 # Age Eligibility Tests
 
@@ -124,7 +124,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 5, one newborn eligible one older child not.
   period: 2027
@@ -155,7 +155,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0, 0]
 
 - name: Case 6, child not claimed as dependent not eligible.
   period: 2027
@@ -182,7 +182,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 # SSN Requirement Tests - Child
 
@@ -211,7 +211,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 - name: Case 8, child with ITIN only OTHER_NON_CITIZEN not eligible.
   period: 2027
@@ -238,7 +238,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 # SSN Requirement Tests - Filer
 
@@ -267,7 +267,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 - name: Case 10, filer with ITIN only OTHER_NON_CITIZEN not eligible.
   period: 2027
@@ -294,7 +294,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 11, MFJ one spouse has SSN qualifies.
   period: 2027
@@ -325,7 +325,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0, 0]
 
 - name: Case 12, MFJ neither spouse has SSN not eligible.
   period: 2027
@@ -356,7 +356,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0, 0]
 
 # Earned Income Requirement Tests
 
@@ -385,7 +385,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 14, exactly $1 earned income qualifies.
   period: 2027
@@ -412,7 +412,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 # Phase-out Tests
 
@@ -442,7 +442,7 @@
         state_code: MT
   output:
     # AGI $60k = threshold, no reduction
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 - name: Case 16, single $1 above threshold one increment reduction.
   period: 2027
@@ -470,7 +470,7 @@
         state_code: MT
   output:
     # ceil($1 / $1,000) = 1 increment, reduction = $50
-    mt_newborn_credit: 950
+    mt_newborn_credit: [950, 0]
 
 - name: Case 17, single $1001 above threshold two increments.
   period: 2027
@@ -498,7 +498,7 @@
         state_code: MT
   output:
     # ceil($1,001 / $1,000) = 2 increments, reduction = $100
-    mt_newborn_credit: 900
+    mt_newborn_credit: [900, 0]
 
 - name: Case 18, single last $50 of credit before full phase-out.
   period: 2027
@@ -526,7 +526,7 @@
         state_code: MT
   output:
     # excess = $19,000, ceil($19,000/$1,000) = 19, reduction = $950
-    mt_newborn_credit: 50
+    mt_newborn_credit: [50, 0]
 
 - name: Case 19, single exactly at full phase-out boundary.
   period: 2027
@@ -554,7 +554,7 @@
         state_code: MT
   output:
     # excess = $20,000, ceil($20,000/$1,000) = 20, reduction = $1,000
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 20, MFJ at exactly threshold full credit.
   period: 2027
@@ -587,7 +587,7 @@
         state_code: MT
   output:
     # AGI $120k = threshold for MFJ, no reduction
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0, 0]
 
 - name: Case 21, MFJ $1 above threshold partial phase-out.
   period: 2027
@@ -620,7 +620,7 @@
         state_code: MT
   output:
     # AGI $120,001, excess = $1, ceil($1/$1,000) = 1, reduction = $50
-    mt_newborn_credit: 950
+    mt_newborn_credit: [950, 0, 0]
 
 - name: Case 22, MFJ above threshold partial phase-out.
   period: 2027
@@ -653,7 +653,7 @@
         state_code: MT
   output:
     # AGI $125,000, excess = $5,000, 5 increments, reduction = $250
-    mt_newborn_credit: 750
+    mt_newborn_credit: [750, 0, 0]
 
 # Filing Status Threshold Tests
 
@@ -683,7 +683,7 @@
         state_code: MT
   output:
     # excess = $5,000, 5 increments, reduction = $250
-    mt_newborn_credit: 750
+    mt_newborn_credit: [750, 0]
 
 - name: Case 24, MFS phase-out uses $60k threshold.
   period: 2027
@@ -711,7 +711,7 @@
         state_code: MT
   output:
     # excess = $3,000, 3 increments, reduction = $150
-    mt_newborn_credit: 850
+    mt_newborn_credit: [850, 0]
 
 - name: Case 25, surviving spouse phase-out uses $120k threshold.
   period: 2027
@@ -739,7 +739,7 @@
         state_code: MT
   output:
     # excess = $5,000, 5 increments, reduction = $250
-    mt_newborn_credit: 750
+    mt_newborn_credit: [750, 0]
 
 # Phase-out with Multiple Children
 
@@ -774,7 +774,7 @@
   output:
     # base = $2,000, excess = $5,000, 5 increments, reduction = $250
     # credit = max($2,000 - $250, 0) = $1,750
-    mt_newborn_credit: 1_750
+    mt_newborn_credit: [1_750, 0, 0]
 
 # Non-MT Resident Test
 
@@ -803,7 +803,7 @@
         members: [person1, person2]
         state_code: NY
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 # Additional Edge Case Tests
 
@@ -832,7 +832,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 - name: Case 29, unearned income only does not satisfy earned income requirement.
   period: 2027
@@ -859,7 +859,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 30, adult-only tax unit gets zero credit.
   period: 2027
@@ -882,7 +882,7 @@
         members: [person1]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0]
 
 - name: Case 31, MFJ full phase-out boundary at $140k.
   period: 2027
@@ -915,7 +915,7 @@
         state_code: MT
   output:
     # AGI $140k, excess = $20k, ceil($20k/$1k) = 20, reduction = $1,000
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0, 0]
 
 - name: Case 32, two newborns full phase-out requires $40k above threshold.
   period: 2027
@@ -947,7 +947,7 @@
         state_code: MT
   output:
     # base = $2,000, excess = $40k, ceil($40k/$1k) = 40, reduction = $2,000
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0, 0]
 
 - name: Case 33, negative SE income with zero employment income not eligible.
   period: 2027
@@ -974,7 +974,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 34, child with SSN card type NONE not eligible.
   period: 2027
@@ -1001,7 +1001,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_newborn_credit: 0
+    mt_newborn_credit: [0, 0]
 
 - name: Case 35, negative AGI with earned income still eligible.
   period: 2027
@@ -1030,7 +1030,7 @@
         state_code: MT
   output:
     # AGI is negative due to capital losses, no phase-out applies
-    mt_newborn_credit: 1_000
+    mt_newborn_credit: [1_000, 0]
 
 - name: Case 36, single exactly $1000 above threshold one increment.
   period: 2027
@@ -1058,4 +1058,4 @@
         state_code: MT
   output:
     # ceil($1,000 / $1,000) = 1 increment, reduction = $50
-    mt_newborn_credit: 950
+    mt_newborn_credit: [950, 0]

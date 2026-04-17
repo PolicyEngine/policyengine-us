@@ -4,14 +4,10 @@ from policyengine_us.model_api import *
 class tx_dart_reduced_fare_eligible(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program"
-    )
+    label = "Eligible for Dallas Area Rapid Transit (DART) Reduced Fare program"
     definition_period = YEAR
     defined_for = StateCode.TX
-    reference = (
-        "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
-    )
+    reference = "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
 
     def formula(person, period, parameters):
         # Eligible due to age
@@ -27,9 +23,7 @@ class tx_dart_reduced_fare_eligible(Variable):
         # 1. Reduced Fare program (for age/disability/veteran/student)
         # 2. Discount GoPass program (for assistance program recipients)
         # We combine them here since they provide identical benefits
-        enrolled_eligible = person(
-            "tx_dart_reduced_fare_program_eligible", period
-        )
+        enrolled_eligible = person("tx_dart_reduced_fare_program_eligible", period)
 
         return (
             age_eligible

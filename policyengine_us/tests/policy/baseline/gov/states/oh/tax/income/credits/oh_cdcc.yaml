@@ -1,35 +1,70 @@
-- name: child and dependent care credit low AGI (full eligibility)
+- name: Low-income filer uses cdcc_potential (100%, AGI below threshold)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 19_999
-    cdcc_potential: 2_000
+    oh_modified_agi: 19999
+    cdcc_potential: 2000
+    cdcc: 1500
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    oh_cdcc: 2_000
-
-- name: child and dependent care credit test, just above lower threshold AGI (.25 * federal CDCC)
+    oh_cdcc: 2000
+- name: Low-income filer at zero AGI
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 20_000
-    cdcc_potential: 2_000
-  output:
-    oh_cdcc: 500
-
-- name: child and dependent care credit test, solidly above lower threshold AGI (.25 * federal CDCC)
-  period: 2021
-  input:
-    state_code: OH
-    oh_modified_agi: 39_999
-    cdcc_potential: 2_000
+    oh_modified_agi: 0
+    cdcc_potential: 500
+    cdcc: 200
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_cdcc: 500
-
-- name: child and dependent care credit test above upper threshold (ineligible)
+- name: Middle-income filer uses cdcc (25%, AGI at lower threshold)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 40_000
-    cdcc_potential: 2_000
+    oh_modified_agi: 20000
+    cdcc_potential: 2000
+    cdcc: 1200
+    oh_income_tax_before_non_refundable_credits: 1000000
+  output:
+    oh_cdcc: 300
+- name: Middle-income filer uses cdcc (25%, AGI solidly in middle bracket)
+  period: 2021
+  input:
+    state_code: OH
+    oh_modified_agi: 39999
+    cdcc_potential: 2000
+    cdcc: 1600
+    oh_income_tax_before_non_refundable_credits: 1000000
+  output:
+    oh_cdcc: 400
+- name: Middle-income filer where cdcc equals cdcc_potential (no section 26 reduction)
+  period: 2021
+  input:
+    state_code: OH
+    oh_modified_agi: 30000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
+  output:
+    oh_cdcc: 500
+- name: High-income filer is ineligible (AGI at upper threshold)
+  period: 2021
+  input:
+    state_code: OH
+    oh_modified_agi: 40000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
+  output:
+    oh_cdcc: 0
+- name: Out-of-state filer is ineligible
+  period: 2021
+  input:
+    state_code: CA
+    oh_modified_agi: 10000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_cdcc: 0

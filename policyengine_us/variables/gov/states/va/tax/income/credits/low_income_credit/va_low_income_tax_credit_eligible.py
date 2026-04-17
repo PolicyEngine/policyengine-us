@@ -10,9 +10,7 @@ class va_low_income_tax_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # Criteria 1: Not qualified to claim EITC if anyone in the tax unit claimed any of the following:
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.credits.eitc.low_income_tax
+        p = parameters(period).gov.states.va.tax.income.credits.eitc.low_income_tax
         program_eligible = add(tax_unit, period, p.ineligible_programs) == 0
 
         # Criteria 2: Not qualified to claim EITC if the filier is claimed as a dependent on another taxpayer's return

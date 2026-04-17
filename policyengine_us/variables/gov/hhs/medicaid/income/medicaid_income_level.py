@@ -6,9 +6,7 @@ class medicaid_income_level(Variable):
     entity = Person
     label = "Medicaid/CHIP-related income level"
     unit = "/1"
-    documentation = (
-        "Modified AGI as a fraction of current-year federal poverty line."
-    )
+    documentation = "Modified AGI as a fraction of current-year federal poverty line."
     definition_period = YEAR
 
     def formula(person, period, parameters):

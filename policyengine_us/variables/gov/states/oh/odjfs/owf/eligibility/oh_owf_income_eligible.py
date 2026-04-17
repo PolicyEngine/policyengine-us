@@ -7,9 +7,7 @@ class oh_owf_income_eligible(Variable):
     label = "Ohio OWF income eligibility"
     definition_period = MONTH
     defined_for = StateCode.OH
-    reference = (
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20"
-    )
+    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20"
 
     def formula(spm_unit, period, parameters):
         # Check enrollment status

@@ -45,6 +45,15 @@
     # Total: 100,000 - 50,000 = 50,000
     mi_household_resources: 50_000
 
+- name: Negative SSTB business income floored at 0
+  period: 2024
+  input:
+    sstb_self_employment_income: -50_000
+    irs_employment_income: 100_000
+    state_code: MI
+  output:
+    mi_household_resources: 50_000
+
 - name: Negative rental income floored at 0
   period: 2024
   input:

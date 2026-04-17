@@ -1,0 +1,37 @@
+description: The Working Americans' Tax Cut Act millionaire surtax rate for single filers, based on modified AGI.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: WATCA millionaire surtax single rate
+  reference:
+    - title: Working Americans' Tax Cut Act Section 59B(a)
+      href: https://www.vanhollen.senate.gov/imo/media/doc/working_americans_tax_cut_act_bill_text.pdf#page=5
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0
+  - threshold:
+      values:
+        2026-01-01: 1_000_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
+    rate:
+      2026-01-01: 0.05
+  - threshold:
+      values:
+        2026-01-01: 2_000_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
+    rate:
+      2026-01-01: 0.10
+  - threshold:
+      values:
+        2026-01-01: 5_000_000
+      metadata:
+        uprating: gov.bls.cpi.cpi_u
+    rate:
+      2026-01-01: 0.12

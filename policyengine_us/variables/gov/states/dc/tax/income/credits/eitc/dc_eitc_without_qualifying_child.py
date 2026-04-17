@@ -7,7 +7,9 @@ class dc_eitc_without_qualifying_child(Variable):
     label = "DC EITC without qualifying children"
     unit = USD
     definition_period = YEAR
-    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
+    reference = (
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
+    )
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):

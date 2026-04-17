@@ -11,10 +11,12 @@ jobs:
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
       - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: uv sync --extra dev
       - name: Check formatting
-        uses: "lgeiger/black-action@master"
-        with:
-          args: ". -l 79 --check"
+        run: uv run ruff format --check .
   versioning:
     name: Update versioning
     if: |
@@ -22,10 +24,16 @@ jobs:
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.POLICYENGINE_GITHUB }}
+          token: ${{ steps.app-token.outputs.token }}
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Set up Python
@@ -46,7 +54,7 @@ jobs:
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
           message: Update PolicyEngine US
-          github_token: ${{ secrets.POLICYENGINE_GITHUB }}
+          github_token: ${{ steps.app-token.outputs.token }}
           fetch: false
   NonStructural-States:
     name: Baseline States
@@ -183,29 +191,3 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI }}
           skip-existing: true
-  Deploy:
-    if: |
-      (github.repository == 'PolicyEngine/policyengine-us')
-      && (github.event.head_commit.message == 'Update PolicyEngine US')
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.POLICYENGINE_GITHUB }}
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.12
-      - name: Install Wheel and Pytest
-        run: pip3 install wheel setuptools pytest==5.4.3
-      - name: Install package
-        run: make install
-      - name: Update API
-        run: python .github/update_api.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}

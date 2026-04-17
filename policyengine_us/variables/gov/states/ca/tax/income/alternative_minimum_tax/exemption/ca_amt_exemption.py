@@ -8,9 +8,7 @@ class ca_amt_exemption(Variable):
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
-    )
+    reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.amt.exemption

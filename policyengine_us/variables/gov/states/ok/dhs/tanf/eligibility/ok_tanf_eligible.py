@@ -6,9 +6,7 @@ class ok_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Oklahoma TANF"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10"
-    )
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10"
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):
@@ -16,7 +14,7 @@ class ok_tanf_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Per OAC 340:10-15: Must be US citizen or qualified alien
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("ok_tanf_income_eligible", period)
         resources_eligible = spm_unit("ok_tanf_resources_eligible", period)

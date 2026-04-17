@@ -21,9 +21,7 @@ class md_ctc_eligible(Variable):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)
-        age_limit = where(
-            disabled, p.age_threshold.disabled, p.age_threshold.main
-        )
+        age_limit = where(disabled, p.age_threshold.disabled, p.age_threshold.main)
         meets_age_limit = person("age", period) < age_limit
         qualifying_child = dependent & meets_age_limit
         has_qualifying_child = tax_unit.sum(qualifying_child) > 0
@@ -37,6 +35,4 @@ class md_ctc_eligible(Variable):
         # When phase-out does not apply (pre-2025): use old logic (hard AGI cutoff)
         pre_phase_out_eligible = agi <= p.agi_cap
 
-        return where(
-            p.phase_out.applies, phase_out_eligible, pre_phase_out_eligible
-        )
+        return where(p.phase_out.applies, phase_out_eligible, pre_phase_out_eligible)

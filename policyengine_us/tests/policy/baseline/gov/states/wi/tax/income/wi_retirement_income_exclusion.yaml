@@ -1,4 +1,7 @@
 - name: Exclusion beneficial - no credits, Line 16 reduces tax
+  # standard_before_refundable = max(0, 350 - 0) = 350
+  # exclusion_tax = 70 (from wi_retirement_income_exclusion_tax)
+  # wi_income_tax = min(350 - 0, 70) = 70
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -8,15 +11,18 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
+    wi_income_tax_before_credits: 350
+    wi_non_refundable_credits: 0
+    wi_retirement_income_exclusion_tax: 70
     wi_refundable_credits: 0
     wi_retirement_income_subtraction: 0
   output:
-    # after_exclusion = max(0, 350 - 280) = 70
-    # wi_income_tax = 70 - 0 = 70
     wi_income_tax: 70
 
 - name: Exclusion NOT beneficial - refundable credits make standard path better
+  # standard_before_refundable = max(0, 350 - 0) = 350
+  # exclusion_tax = 280
+  # wi_income_tax = min(350 - 300, 280) = 50 (standard path wins)
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -26,12 +32,12 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
+    wi_income_tax_before_credits: 350
+    wi_non_refundable_credits: 0
+    wi_retirement_income_exclusion_tax: 280
     wi_refundable_credits: 300
     wi_retirement_income_subtraction: 0
   output:
-    # reduction = 0, after_exclusion = 350
-    # wi_income_tax = 350 - 300 = 50
     wi_income_tax: 50
 
 - name: Not eligible for exclusion - age 64, standard path used
@@ -44,7 +50,8 @@
     filing_status: SINGLE
     state_code: WI
     wi_taxable_income: 10_000
-    wi_income_tax_before_refundable_credits: 350
+    wi_income_tax_before_credits: 350
+    wi_non_refundable_credits: 0
     wi_refundable_credits: 0
     wi_retirement_income_subtraction: 0
   output:

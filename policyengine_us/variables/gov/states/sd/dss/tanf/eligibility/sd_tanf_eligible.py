@@ -14,7 +14,7 @@ class sd_tanf_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Per ARSD 67:10:01:05: Must be US citizen or qualified alien
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("sd_tanf_income_eligible", period)
         resources_eligible = spm_unit("sd_tanf_resources_eligible", period)

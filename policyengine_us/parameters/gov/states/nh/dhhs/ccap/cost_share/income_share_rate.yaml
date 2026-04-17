@@ -1,0 +1,25 @@
+description: New Hampshire sets this share of family income as the weekly cost share by federal poverty guideline ratio under the Child Care Scholarship Program.
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0  # Steps 1-2: no income-based share
+  - threshold:
+      2024-01-01: 1.3801  # > 138% FPG
+    amount:
+      2024-01-01: 0.07  # Step 3: 7% of family income
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: week
+  label: New Hampshire CCAP income share rate by FPG ratio
+  reference:
+    - title: He-C 6910.18, Table 6910.19
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-C-6910.18
+    - title: SR 24-08, Cost Share and Steps (January 2024)
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_24-08_dated_01_24.htm
+    - title: New Hampshire CCDF State Plan 2025-2027, Section 3.2.1
+      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/ccdf-state-plan-2025-2027.pdf#page=42

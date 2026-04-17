@@ -11,8 +11,6 @@ class tn_ff_countable_earned_income(Variable):
     reference = "https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-50.20081124.pdf#page=19"
 
     def formula(spm_unit, period, parameters):
-        earned_after_disregard = spm_unit(
-            "tn_ff_earned_income_after_disregard", period
-        )
+        earned_after_disregard = spm_unit("tn_ff_earned_income_after_disregard", period)
         child_care_deduction = spm_unit("tn_ff_child_care_deduction", period)
         return max_(earned_after_disregard - child_care_deduction, 0)

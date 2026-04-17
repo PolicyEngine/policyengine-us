@@ -25,9 +25,7 @@ class wa_apple_health_group(Variable):
 
     def formula(person, period, parameters):
         kids_eligible = person("wa_apple_health_kids_eligible", period)
-        expansion_eligible = person(
-            "wa_apple_health_expansion_eligible", period
-        )
+        expansion_eligible = person("wa_apple_health_expansion_eligible", period)
 
         return select(
             [

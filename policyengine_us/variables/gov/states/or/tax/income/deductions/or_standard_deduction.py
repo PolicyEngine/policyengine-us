@@ -43,9 +43,7 @@ class or_standard_deduction(Variable):
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
         age_threshold = p.aged_or_blind.age
         aged_head = (tax_unit("age_head", period) >= age_threshold).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(
-            int
-        )
+        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(int)
         aged_blind_count = blind_head + blind_spouse + aged_head + aged_spouse
         amount_per_aged_blind = p.aged_or_blind.amount[filing_status]
         aged_blind_deduction = aged_blind_count * amount_per_aged_blind

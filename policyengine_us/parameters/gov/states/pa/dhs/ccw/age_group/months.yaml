@@ -1,0 +1,33 @@
+description: Pennsylvania assigns children to age groups based on their age in months under the Child Care Works program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Pennsylvania CCW age group by months
+  reference:
+    - title: PA FFY 2025-2027 CCDF State Plan, Section 4.2.2.iii
+      href: https://www.acf.hhs.gov/occ/form/approved-ccdf-plans-fy-2025-2027
+
+brackets:
+  - threshold:
+      2023-12-16: 0
+    amount:
+      2023-12-16: 0
+  - threshold:
+      2023-12-16: 12
+    amount:
+      2023-12-16: 1
+  - threshold:
+      2023-12-16: 24
+    amount:
+      2023-12-16: 2
+  - threshold:
+      2023-12-16: 36
+    amount:
+      2023-12-16: 3
+  - threshold:
+      2023-12-16: 60
+    amount:
+      2023-12-16: 4

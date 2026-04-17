@@ -62,7 +62,9 @@
   period: 2025-01
   input:
     mn_mfip_eligible: true
-    mn_mfip_transitional_standard: 600
+    mn_mfip_cash_portion: 600
+    mn_mfip_full_transitional_standard: 600
+    mn_mfip_food_portion: 0
     mn_mfip_family_wage_level: 800
     mn_mfip_countable_earned_income: 0
     mn_mfip_countable_unearned_income: -100_000

@@ -1,0 +1,27 @@
+description: Vermont counts these income sources as gross income under the Child Care Financial Assistance Program.
+values:
+  2009-02-09:
+    - employment_income
+    - self_employment_income
+    - pension_income
+    - social_security
+    - alimony_income
+    - child_support_received
+    - dividend_income
+    - interest_income
+    - rental_income
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - military_retirement_pay
+    # Excluded: SSI, SNAP, Medicaid, Reach Up, EITC, tax refunds,
+    # education grants/scholarships, foster care payments,
+    # adoption assistance, child support paid out
+
+metadata:
+  unit: list
+  period: year
+  label: Vermont CCFAP countable income sources
+  reference:
+    - title: CCFAP Regulations Section II B 2
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=9

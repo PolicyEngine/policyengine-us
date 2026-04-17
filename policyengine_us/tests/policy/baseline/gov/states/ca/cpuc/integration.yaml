@@ -3,7 +3,7 @@
   input:
     state_code: CA
     household_size: 4
-    household_market_income: 69_000
+    ca_cpuc_countable_income: 69_000
     pre_subsidy_electricity_expense: 100
     ca_care_categorically_eligible: false
   output:
@@ -20,7 +20,7 @@
   input:
     state_code: CA
     household_size: 4
-    household_market_income: 40_000
+    ca_cpuc_countable_income: 40_000
     pre_subsidy_electricity_expense: 100
     ca_care_categorically_eligible: false
   output:

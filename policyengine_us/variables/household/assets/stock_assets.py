@@ -5,9 +5,7 @@ class stock_assets(Variable):
     value_type = float
     entity = Person
     label = "Stock assets"
-    documentation = (
-        "Value of stocks and mutual funds. " "Imputed from SIPP TVAL_STMF."
-    )
+    documentation = "Value of stocks and mutual funds. Imputed from SIPP TVAL_STMF."
     unit = USD
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

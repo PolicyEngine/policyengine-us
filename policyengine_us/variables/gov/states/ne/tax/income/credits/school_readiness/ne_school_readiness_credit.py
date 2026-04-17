@@ -12,12 +12,8 @@ class ne_school_readiness_credit(Variable):
     defined_for = "ne_school_readiness_credit_eligible_worker"
 
     def formula(person, period, parameters):
-        level = person(
-            "ne_school_readiness_credit_child_care_worker_rating", period
-        )
-        p = parameters(
-            period
-        ).gov.states.ne.tax.income.credits.school_readiness
+        level = person("ne_school_readiness_credit_child_care_worker_rating", period)
+        p = parameters(period).gov.states.ne.tax.income.credits.school_readiness
         capped_level = min_(level, p.max_unit_size)
         # determine school readiness credit amount
         return p.amount.refundable[capped_level]

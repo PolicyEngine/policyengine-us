@@ -53,3 +53,13 @@
   output:
     # 40% of $1,000 = $400, but actual expenses ($600) are greater
     snap_self_employment_expense_deduction: 600
+
+- name: Alaska simplified deduction uses SSTB income before labor supply response
+  period: 2025
+  input:
+    sstb_self_employment_income_before_lsr: 300
+    sstb_self_employment_income_behavioral_response: 200
+    snap_self_employment_income_expense: 100
+    state_code: AK
+  output:
+    snap_self_employment_expense_deduction: 150

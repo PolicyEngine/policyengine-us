@@ -34,9 +34,7 @@ class wa_apple_health_cost_if_enrolled(Variable):
 
         # Use Washington state Medicaid cost data
         child_spend = p.spending.by_eligibility_group.child["WA"]
-        expansion_adult_spend = (
-            p.spending.by_eligibility_group.expansion_adults["WA"]
-        )
+        expansion_adult_spend = p.spending.by_eligibility_group.expansion_adults["WA"]
 
         child_enroll = p.enrollment.child["WA"]
         expansion_adult_enroll = p.enrollment.expansion_adults["WA"]

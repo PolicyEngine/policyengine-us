@@ -7,9 +7,7 @@ class dc_power(Variable):
     label = "DC Program on Work, Employment, and Responsibility (POWER)"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52"
     defined_for = "dc_power_eligible"
 
     def formula(spm_unit, period, parameters):

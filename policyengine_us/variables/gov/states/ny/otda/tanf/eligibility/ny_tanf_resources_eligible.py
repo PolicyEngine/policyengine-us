@@ -7,9 +7,7 @@ class ny_tanf_resources_eligible(Variable):
     label = "New York TANF resources eligible"
     definition_period = MONTH
     defined_for = StateCode.NY
-    reference = (
-        "https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=4",
-    )
+    reference = ("https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=4",)
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
@@ -17,8 +15,7 @@ class ny_tanf_resources_eligible(Variable):
 
         # Age 60+ always qualifies for higher limit
         person_meets_age_threshold = (
-            person("age", period.this_year)
-            >= p.resource_limit.higher.age_threshold
+            person("age", period.this_year) >= p.resource_limit.higher.age_threshold
         )
         has_elderly_member = spm_unit.any(person_meets_age_threshold)
 
@@ -37,5 +34,5 @@ class ny_tanf_resources_eligible(Variable):
             p.resource_limit.higher.amount,
             p.resource_limit.lower.amount,
         )
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= resource_limit

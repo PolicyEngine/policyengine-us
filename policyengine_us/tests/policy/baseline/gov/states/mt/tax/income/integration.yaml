@@ -291,7 +291,7 @@
         members: [person1, person2]
         state_fips: 30
   output:
-    mt_capital_gains_tax_joint: [59, 0]
+    mt_capital_gains_tax_joint: 59
     mt_income_tax: 59
 
 - name: 2251-MT.yaml
@@ -371,3 +371,143 @@
   output:
     adjusted_gross_income: -3_000
     mt_income_tax: 0
+
+- name: MT joint 2024 - net capital loss should use ordinary rates (issue 7859)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      primary:
+        age: 56
+        self_employment_income: -188_899.73
+        taxable_interest_income: 23_241.32
+        short_term_capital_gains: -1_575_884.50
+        long_term_capital_gains: 532_687.31
+        taxable_private_pension_income: 21_262.69
+      spouse:
+        age: 58
+        employment_income: 538_104.25
+    tax_units:
+      tax_unit:
+        members: [primary, spouse]
+    families:
+      family:
+        members: [primary, spouse]
+    spm_units:
+      spm_unit:
+        members: [primary, spouse]
+    households:
+      household:
+        members: [primary, spouse]
+        state_fips: 30
+    marital_units:
+      marital_unit:
+        members: [primary, spouse]
+  output:
+    mt_taxable_income: 361_508
+    mt_income_tax: 20_837
+
+- name: MT joint 2024 - positive net CG with STCG losses applies preferential rates
+  # LTCG=50K, STCG=-30K, net=+20K → Form 2 line 2 uses only the net LTCG amount
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: -30_000
+      spouse:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_fips: 30
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+  output:
+    mt_taxable_income: 90_800
+    mt_regular_income_tax_joint: 3_685
+    mt_capital_gains_tax_joint: 820
+    mt_income_tax: 4_505
+
+- name: MT joint 2024 - LTCG on head, wages on spouse (cross-person aggregation)
+  # Tests TaxUnit-level CG tax aggregation across spouses
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 30_000
+      spouse:
+        age: 40
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_fips: 30
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+  output:
+    mt_taxable_income: 80_800
+    mt_regular_income_tax_joint: 2_505
+    mt_capital_gains_tax_joint: 1_230
+    mt_income_tax: 3_735
+
+- name: MT joint 2024 - both spouses have LTCG
+  # Tests combined LTCG aggregation at TaxUnit level
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 15_000
+        employment_income: 40_000
+      spouse:
+        age: 40
+        long_term_capital_gains: 10_000
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_fips: 30
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+  output:
+    mt_taxable_income: 65_800
+    mt_regular_income_tax_joint: 1_918
+    mt_capital_gains_tax_joint: 1_025
+    mt_income_tax: 2_943

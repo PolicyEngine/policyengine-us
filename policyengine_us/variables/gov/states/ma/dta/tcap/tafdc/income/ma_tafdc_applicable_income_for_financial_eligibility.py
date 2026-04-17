@@ -7,9 +7,7 @@ class ma_tafdc_applicable_income_for_financial_eligibility(Variable):
     entity = SPMUnit
     label = "Applicable income for the Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) financial eligibility check"
     definition_period = YEAR
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-280"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-280"
     defined_for = StateCode.MA
 
     adds = [

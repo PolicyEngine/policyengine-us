@@ -15,9 +15,7 @@ class ct_social_security_benefit_adjustment(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(
-            period
-        ).gov.states.ct.tax.income.subtractions.social_security
+        p = parameters(period).gov.states.ct.tax.income.subtractions.social_security
 
         # Part A: Gross Social Security
         gross_social_security = tax_unit("tax_unit_social_security", period)
@@ -28,9 +26,7 @@ class ct_social_security_benefit_adjustment(Variable):
         )
 
         # Part C: Lesser of gross SS and combined income excess
-        capped_social_security = min_(
-            gross_social_security, ss_combined_income_excess
-        )
+        capped_social_security = min_(gross_social_security, ss_combined_income_excess)
 
         # Part D: Apply CT rate to capped amount
         capped_social_security_portion = capped_social_security * p.rate

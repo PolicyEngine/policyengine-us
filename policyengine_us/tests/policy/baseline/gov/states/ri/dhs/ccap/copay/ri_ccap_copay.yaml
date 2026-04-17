@@ -1,0 +1,148 @@
+# 2025 FPG family of 3: 15_650 + 5_500 * 2 = 26_650
+
+- name: Case 1, income at 200 percent FPL with 7 percent copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 53_300
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPL ratio = 53,300 / 26,650 = 2.0 -> 7% rate
+    # annual copay = 53,300 * 0.07 = 3,731
+    # monthly copay = 3,731 / 12 = 310.92
+    ri_ccap_copay: 310.92
+
+- name: Case 2, family under 100 percent FPL pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPG family of 3: 26_650
+    # 20_000 / 26_650 = 75% FPL -> copay rate = 0%
+    ri_ccap_copay: 0
+
+- name: Case 3, housing insecure family pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+        is_homeless: true
+  output:
+    # housing insecure -> exempt from copay -> $0
+    ri_ccap_copay: 0
+
+- name: Case 4, income at 110 percent FPL with 2 percent copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 29_315
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPL ratio = 29,315 / 26,650 = 1.1 -> 2% rate
+    # annual copay = 29,315 * 0.02 = 586.30
+    # monthly copay = 586.30 / 12 = 48.86
+    ri_ccap_copay: 48.86
+
+- name: Case 5, income at or below 100 percent FPL pays zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPL ratio = 20,000 / 26,650 = 0.75 -> 0% rate
+    # copay = 20,000 * 0 = 0
+    ri_ccap_copay: 0
+
+- name: Case 6, income at 130 percent FPL with 5 percent copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 34_645
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # FPL ratio = 34,645 / 26,650 = 1.3 -> 5% rate
+    # annual copay = 34,645 * 0.05 = 1,732.25
+    # monthly copay = 1,732.25 / 12 = 144.35
+    ri_ccap_copay: 144.35

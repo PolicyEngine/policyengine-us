@@ -29,9 +29,7 @@ class mi_exemptions(Variable):
         disabled_veterans = add(
             tax_unit, period, ["is_fully_disabled_service_connected_veteran"]
         )
-        disabled_veteran_exemption = (
-            disabled_veterans * p.disabled.amount.veteran
-        )
+        disabled_veteran_exemption = disabled_veterans * p.disabled.amount.veteran
 
         # Dependent-on-other-return exemptions
         filing_status = tax_unit("filing_status", period)

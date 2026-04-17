@@ -26,7 +26,5 @@ class co_alternative_minimum_taxable_income(Variable):
         # Line 5: Colorado AMTI
         return max_(
             0,
-            federal_amt_income_less_exemptions
-            + co_additions
-            - co_subtractions,
+            federal_amt_income_less_exemptions + co_additions - co_subtractions,
         )

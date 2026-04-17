@@ -11,9 +11,7 @@ class mt_tuition_subtraction_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
-        individual_contributions = person(
-            "investment_in_529_plan_indv", period
-        )
+        individual_contributions = person("investment_in_529_plan_indv", period)
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
         capped_contributions = min_(individual_contributions, p.cap)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

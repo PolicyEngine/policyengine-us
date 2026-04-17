@@ -23,9 +23,7 @@ class az_property_tax_credit(Variable):
         )
 
         # Rent counts equally to property taxes.
-        property_tax_plus_rent = add(
-            tax_unit, period, ["real_estate_taxes", "rent"]
-        )
+        property_tax_plus_rent = add(tax_unit, period, ["real_estate_taxes", "rent"])
         # property_tax and rent are equally weighted
 
         return min_(cap, property_tax_plus_rent)

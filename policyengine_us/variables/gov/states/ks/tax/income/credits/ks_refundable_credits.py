@@ -8,8 +8,7 @@ class ks_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ksrevenue.gov/pdf/ip21.pdf"
-        "https://www.ksrevenue.gov/pdf/ip22.pdf"
+        "https://www.ksrevenue.gov/pdf/ip21.pdfhttps://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
     adds = "gov.states.ks.tax.income.credits.refundable"

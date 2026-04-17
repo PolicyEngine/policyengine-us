@@ -11,9 +11,7 @@ class nh_fanf_child_care_deduction(Variable):
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nh.dhhs.fanf.income.child_care_deduction
+        p = parameters(period).gov.states.nh.dhhs.fanf.income.child_care_deduction
         person = spm_unit.members
 
         # Determine if any earner is full-time (≥$377/month)
@@ -29,9 +27,7 @@ class nh_fanf_child_care_deduction(Variable):
         full_time_max = p.full_time.calc(age)
         part_time_max = p.part_time.calc(age)
         any_full_time_person = spm_unit.project(any_full_time)
-        max_per_child = where(
-            any_full_time_person, full_time_max, part_time_max
-        )
+        max_per_child = where(any_full_time_person, full_time_max, part_time_max)
 
         # Only count children
         max_deduction_per_child = max_per_child * is_child

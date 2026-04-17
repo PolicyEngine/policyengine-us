@@ -23,9 +23,7 @@ class ca_calworks_stage_2_eligible(Variable):
         within_time_limit = months_since <= p.time_limit_months
 
         # Must be off cash aid but within time limit
-        former_recipient = (
-            ever_received & ~currently_receiving & within_time_limit
-        )
+        former_recipient = ever_received & ~currently_receiving & within_time_limit
 
         # Income must be at or below 85% SMI
         income_eligible = spm_unit("ca_child_care_income_eligible", period)
@@ -38,6 +36,4 @@ class ca_calworks_stage_2_eligible(Variable):
         # Must have age-eligible children
         age_eligible = spm_unit("ca_calworks_child_care_age_eligible", period)
 
-        return (
-            former_recipient & income_eligible & need_eligible & age_eligible
-        )
+        return former_recipient & income_eligible & need_eligible & age_eligible

@@ -6,9 +6,7 @@ class snap_net_income_fpg_ratio(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "SNAP net income to FPL ratio"
-    documentation = (
-        "SNAP net income as a percentage of the federal poverty line"
-    )
+    documentation = "SNAP net income as a percentage of the federal poverty line"
     unit = "/1"
 
     def formula(spm_unit, period):
