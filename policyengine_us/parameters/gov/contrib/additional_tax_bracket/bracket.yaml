@@ -5,7 +5,7 @@ rates:
     unit: /1
     propagate_metadata_to_children: true
     breakdown:
-      - range(1, 8)
+      - range(1, 9)
     breakdown_labels:
       - Bracket
     label: Individual income tax rates
@@ -42,7 +42,7 @@ thresholds:
     unit: currency-USD
     label: Individual income tax rate thresholds
     breakdown:
-      - range(1, 8)
+      - range(1, 9)
       - filing_status
     breakdown_labels:
       - Bracket

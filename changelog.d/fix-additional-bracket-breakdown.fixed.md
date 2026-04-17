@@ -1,0 +1,1 @@
+Fix breakdown range in `gov.contrib.additional_tax_bracket.bracket` — parameter has children `1-8` (the contrib adds an 8th bracket) but breakdown was `range(1, 8)` = `[1..7]`, omitting the 8th child. Update to `range(1, 9)`. This was previously a warning in policyengine-core but became an error in core 3.24.0, breaking parameter load at import time.
