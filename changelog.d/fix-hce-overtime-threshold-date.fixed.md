@@ -1,0 +1,1 @@
+Correct the HCE overtime salary threshold effective dates: $107,432 took effect 2020-01-01 (per 2019 DOL final rule, 84 FR 51230), not 2010-01-01; $132,964 took effect 2024-07-01, not 2024-01-01. Remove the $134,004 entry for 2016 — the 2016 rule was enjoined before it took effect.
