@@ -8,7 +8,7 @@ class me_income_tax_surcharge(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=220"
+    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=220"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.surcharge

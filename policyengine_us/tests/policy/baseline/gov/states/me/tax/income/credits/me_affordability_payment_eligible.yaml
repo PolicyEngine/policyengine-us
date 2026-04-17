@@ -43,13 +43,13 @@
   output:
     me_affordability_payment_eligible: true
 
-- name: Head or spouse claimed as a dependent is ineligible.
+- name: Filer claimed as a dependent on another return is ineligible.
   period: 2025
   input:
     people:
       person1:
         is_tax_unit_head: true
-        is_tax_unit_dependent: true
+        claimed_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         members: [person1]

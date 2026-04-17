@@ -8,7 +8,7 @@ class me_affordability_payment(Variable):
     defined_for = "me_affordability_payment_eligible"
     unit = USD
     definition_period = YEAR
-    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=158"
+    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=157"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.affordability_payment

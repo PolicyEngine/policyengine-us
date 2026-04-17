@@ -1,10 +1,12 @@
 description: Maine provides this affordability payment amount to each eligible individual.
 values:
+  0000-01-01: 0
   2025-01-01: 300
+  2026-01-01: 0
 metadata:
   unit: currency-USD
   period: year
   label: Maine affordability payment amount
   reference:
     - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1
-      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=158
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=157

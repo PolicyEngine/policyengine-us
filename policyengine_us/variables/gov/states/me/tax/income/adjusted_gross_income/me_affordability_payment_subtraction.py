@@ -10,7 +10,7 @@ class me_affordability_payment_subtraction(Variable):
         "Amount of the Maine affordability payment received in the tax year and "
         "included in federal AGI."
     )
-    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=2&snum=132#page=159"
+    reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=158"
     definition_period = YEAR
     defined_for = StateCode.ME
 
