@@ -1,0 +1,99 @@
+# Regression tests for issue #1318.
+# Before 2021, the above-the-line deduction for qualified tuition expenses
+# (IRS Form 8917) was capped at $4,000 (or $2,000 for higher-MAGI filers).
+# The raw `qualified_tuition_expenses` variable previously flowed straight
+# into `above_the_line_deductions`, bypassing the cap. After the fix, the
+# contribution goes through `capped_qualified_tuition_expenses_ald`, which
+# applies the Form 8917 cap using a locally computed MAGI.
+
+- name: Capped tuition ALD at low income hits the $4,000 Form 8917 cap (issue #1318)
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 44_000
+        qualified_tuition_expenses: 14_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI for Form 8917 is $44,000 (gross income with no other ALDs);
+    # that is below the $65,000 single threshold, so the cap is $4,000.
+    # Before the fix, ALD pulled in the full $14,000 raw amount.
+    capped_qualified_tuition_expenses_ald: 4_000
+    above_the_line_deductions: 4_000
+    adjusted_gross_income: 40_000
+
+- name: Capped tuition ALD is zero above the $80k MAGI phase-out for a 2020 single filer (issue #1318)
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 100_000
+        qualified_tuition_expenses: 5_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 0
+    above_the_line_deductions: 0
+
+- name: Capped tuition ALD is zero starting 2021 after the statute was repealed (issue #1318)
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 44_000
+        qualified_tuition_expenses: 14_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 0
+    above_the_line_deductions: 0
+
+- name: Capped tuition ALD is zero for married filing separately (issue #1318)
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 25
+        employment_income: 44_000
+        qualified_tuition_expenses: 14_000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 0
