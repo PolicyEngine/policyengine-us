@@ -1,0 +1,1 @@
+Corrected the Lifetime Learning Credit phase-out thresholds to use pre-2021 IRS Form 8863 values, which differed from the American Opportunity Credit before the Consolidated Appropriations Act, 2021 harmonized them.
