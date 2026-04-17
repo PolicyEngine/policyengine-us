@@ -13,11 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'PolicyEngine/policyengine-us'
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           ref: main
-          token: ${{ secrets.POLICYENGINE_GITHUB }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -58,7 +65,7 @@ jobs:
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           # Check if PR already exists
           EXISTING_PR=$(gh pr list --head bot/weekly-uv-lock-update --json number --jq '.[0].number' || echo "")
