@@ -1,16 +1,17 @@
-description: The itemized deductions reduction applies if this is true.
+description: The itemized deductions reduction applies if this is true. OBBBA § 70111 permanently terminated the Pease limitation; a new 2/37 cap for top-bracket filers (IRC § 68(f)) applies beginning in 2026 and is modeled separately.
 
 values:
   2009-01-01: true
   2010-01-01: false
   2013-01-01: true
   2018-01-01: false
-  2026-01-01: true
 
 metadata:
   unit: bool
   period: year
   label: Itemized deductions reduction applies
   reference:
-    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions, (a)(2) 
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (as amended by OBBBA § 70111)
       href: https://www.law.cornell.edu/uscode/text/26/68
+    - title: H.R.1 - One Big Beautiful Bill Act, § 70111
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
