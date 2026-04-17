@@ -38,8 +38,7 @@ class wa_millionaires_tax_base_income(Variable):
 
         return (
             agi
-            - max_(0, long_term_capital_gains)
-            + max_(0, -long_term_capital_gains)
+            - long_term_capital_gains
             + tax_exempt_interest
             + washington_capital_gains * owes_washington_capital_gains_tax
         )

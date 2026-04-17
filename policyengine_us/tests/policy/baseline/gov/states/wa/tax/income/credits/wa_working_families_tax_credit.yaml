@@ -102,6 +102,19 @@
     # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
     wa_working_families_tax_credit: 367
 
+- name: Case 7b, age 18 boundary is eligible under 2029 age expansion.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    age_head: 18
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Exact age-18 boundary: eligible via age expansion
+    wa_working_families_tax_credit: 367
+
 - name: Case 8, age 17 without EITC gets no WFTC in 2029.
   period: 2029
   input:

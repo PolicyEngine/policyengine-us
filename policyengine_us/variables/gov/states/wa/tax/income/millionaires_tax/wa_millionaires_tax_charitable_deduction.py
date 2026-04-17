@@ -7,7 +7,7 @@ class wa_millionaires_tax_charitable_deduction(Variable):
     label = "Washington millionaires tax charitable deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=14"
+    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=13"
     defined_for = "wa_millionaires_tax_applies"
 
     def formula(tax_unit, period, parameters):
@@ -17,4 +17,12 @@ class wa_millionaires_tax_charitable_deduction(Variable):
             period,
             ["charitable_cash_donations", "charitable_non_cash_donations"],
         )
-        return min_(charitable, p.deductions.charitable.cap)
+        # Sec. 309: spouses filing separately split the combined cap.
+        filing_status = tax_unit("filing_status", period)
+        is_separate = filing_status == filing_status.possible_values.SEPARATE
+        cap = where(
+            is_separate,
+            p.deductions.charitable.cap / 2,
+            p.deductions.charitable.cap,
+        )
+        return min_(charitable, cap)
