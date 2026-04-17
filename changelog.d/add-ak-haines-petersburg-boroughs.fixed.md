@@ -1,0 +1,1 @@
+Add `HAINES_BOROUGH_AK` and `PETERSBURG_BOROUGH_AK` to the `County` enum so that households in Haines Borough (FIPS 02100) and Petersburg Borough (FIPS 02195) are correctly assigned to the `AK_SE` SNAP utility region per Alaska's FSP-77 instead of falling back to `AK_C`.
