@@ -13,6 +13,8 @@ metadata:
       href: https://www.ecfr.gov/current/title-29/subtitle-B/chapter-V/subchapter-A/part-541
     - title: 2019 DOL final rule (84 FR 51230) setting the salary basis threshold to $684/week effective 2020-01-01
       href: https://www.federalregister.gov/documents/2019/09/27/2019-20353/defining-and-delimiting-the-exemptions-for-executive-administrative-professional-outside-sales-and
+    - title: 2024 DOL final rule that raised the threshold to $844/week (2024-07-01) and $1,128/week (2025-01-01) before being vacated
+      href: https://www.dol.gov/agencies/whd/overtime/salary-levels
     - title: Texas v. U.S. Dept. of Labor (E.D. Tex. Nov 15, 2024), vacating the 2024 DOL overtime rule nationwide
       href: https://www.sidley.com/en/insights/newsupdates/2024/12/us-district-court-vacates-dol-final-rule-on-flsa-overtime-exemptions
 values:
@@ -20,11 +22,12 @@ values:
   # The 2016 DOL final rule that would have raised this threshold to
   # $913/week was enjoined nationwide before it took effect
   # (Nevada v. U.S. Dept. of Labor, E.D. Tex. Nov 2016).
-  # The 2024 DOL final rule raised this threshold to $844/week on
-  # 2024-07-01 with a further scheduled increase to $1,128/week on
-  # 2025-01-01, but the U.S. District Court for the Eastern District
-  # of Texas vacated the entire rule nationwide on 2024-11-15 in
-  # Texas v. U.S. Dept. of Labor. The threshold therefore remains at
-  # the 2019 rule's $684/week indefinitely (subject to future DOL
-  # rulemaking).
   2020-01-01: 684
+  # The 2024 DOL final rule raised the threshold to $844/week on
+  # 2024-07-01 and was scheduled to increase it to $1,128/week on
+  # 2025-01-01. In practice the $844 threshold applied only from
+  # 2024-07-01 until 2024-11-15, when Texas v. U.S. Dept. of Labor
+  # (E.D. Tex.) vacated the entire 2024 rule nationwide. Vacatur
+  # reverts to the 2019 rule's $684/week.
+  2024-07-01: 844
+  2024-11-15: 684
