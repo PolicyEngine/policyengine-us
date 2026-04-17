@@ -104,7 +104,7 @@ metadata:
   unit: currency-USD
   label: Massachusetts LIHEAP subsidized housing payment amount 
   breakdown:
-    - range(1,6) # benefit level
+    - range(0,7) # benefit level
     - ma_liheap_utility_category
   breakdown_labels:
     - Benefit level

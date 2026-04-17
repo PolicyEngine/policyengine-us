@@ -275,7 +275,7 @@
     de_income_tax: 6882.22
 
 - name: Tax unit with taxsimid 745 in 2024 preserves cross-spouse SE loss in joint AGI
-  absolute_error_margin: 50
+  absolute_error_margin: 0.01
   period: 2024
   input:
     people:
@@ -307,4 +307,5 @@
         members: [person1, person2]
         state_fips: 10
   output:
-    de_agi_joint: [24_043.88, 0]
+    de_agi_joint: [24_053.07, 0]
+    de_income_tax: 403.55

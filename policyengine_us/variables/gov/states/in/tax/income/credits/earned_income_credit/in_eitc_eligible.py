@@ -28,7 +28,7 @@ class in_eitc_eligible(Variable):
         age_spouse = tax_unit("age_spouse", period)
         head_age_eligible = (age_head >= min_age) & (age_head <= max_age)
         spouse_age_eligible = (age_spouse >= min_age) & (age_spouse <= max_age)
-        married = filing_status.possible_values.JOINT
+        married = filing_status == filing_status.possible_values.JOINT
         age_eligible = where(
             married, head_age_eligible | spouse_age_eligible, head_age_eligible
         )

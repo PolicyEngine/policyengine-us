@@ -1,3 +1,85 @@
+## [1.642.0] - 2026-04-17
+
+### Added
+
+- Add SSI state supplements for New Mexico, South Carolina, and Texas.
+- Update Medicaid medically needy income and asset limits to 2018 values from KFF reference data.
+
+### Fixed
+
+- Fix breakdown range in `gov.contrib.additional_tax_bracket.bracket` — parameter has children `1-8` (the contrib adds an 8th bracket) but breakdown was `range(1, 8)` = `[1..7]`, omitting the 8th child. Update to `range(1, 9)`. This was previously a warning in policyengine-core but became an error in core 3.24.0, breaking parameter load at import time.
+- Extend the AMT kiddie tax to include full-time students under age 24, per IRC 1(g)(2)(A) which incorporates the Section 152(c)(3) age requirement. Previously only filers under age 19 were checked.
+
+
+## [1.641.0] - 2026-04-17
+
+### Added
+
+- Add the IRS annual additions retirement contribution limit parameter and update the 401(k) elective deferral limit to the published 2026 value.
+- Add US government bond interest exemption for AL, AR, CA, DC, DE. Add tests for all 10 states (AL, AR, AZ, CA, CO, CT, DC, DE, GA, HI).
+- Add US government bond interest exemption for MO, MS, NE, NJ, OH and tests for all 10 states (MO, MS, MT, NC, ND, NE, NJ, NM, NY, OH).
+
+
+## [1.640.0] - 2026-04-17
+
+### Added
+
+- Add Texas Comprehensive Energy Assistance Program (CEAP) with FY 2024 and FY 2025 benefit amounts.
+- Added a Medicare Part D IRMAA surcharge variable with filing-status-specific parameter ladders and baseline policy tests.
+
+### Changed
+
+- Add employee-side local income and occupational taxes for Philadelphia, Kansas City, St. Louis, and Colorado occupational privilege jurisdictions, wiring them into household net income.
+- Migrate `spm_unit_spm_threshold` to use the `spm-calculator` package. The variable is no longer a plain CPI-U-uprated input: for years beyond the dataset's base year it now recomputes as `current_base × current_equivalence_scale × (prior_threshold / (prior_base × prior_equivalence_scale))`, so composition and tenure changes flow through while each unit's implied geographic adjustment is preserved. Base reference thresholds (2015–2024) and the Betson three-parameter equivalence scale come from `spm-calculator`; post-2024 uprating continues to use PolicyEngine's `gov.bls.cpi.cpi_u` parameter for consistency with other indexed values. Baseline 2025/2026 national child SPM poverty is unchanged (21.0%). Adds `spm-calculator>=0.2.0` as a runtime dependency.
+
+### Fixed
+
+- Use `hourly_wage` when calculating `fsla_overtime_premium` for hourly workers, while keeping the prior earnings-based fallback when no hourly wage is available.
+- Validate extracted census archive paths before unpacking downloaded state block archives.
+- Add a Delaware TAXSIM 745 regression that checks the final income tax after cross-spouse loss offsets.
+- Set `household_weight` to default to `1` when not provided.
+- Avoid formula warnings in North Carolina TANF, Pennsylvania TANF, and Vermont military retirement exemption calculations.
+
+
+## [1.639.2] - 2026-04-17
+
+### Fixed
+
+- Model the 2024-07-01 to 2024-11-15 window when the vacated 2024 DOL overtime rule was briefly in force, and restore the DOL salary-levels URL as a secondary reference.
+
+
+## [1.639.1] - 2026-04-17
+
+### Fixed
+
+- Revert HCE and salary basis overtime thresholds to 2019 rule values after Texas v. U.S. Dept. of Labor (E.D. Tex. Nov 15, 2024) vacated the 2024 DOL overtime rule nationwide.
+
+
+## [1.639.0] - 2026-04-17
+
+### Added
+
+- Added Hawaii Optional State Supplementation (OSS) for SSI recipients in qualifying care facilities.
+
+
+## [1.638.1] - 2026-04-17
+
+### Fixed
+
+- Fix Arkansas inflation relief credit to only apply to the head and spouse, not dependents.
+- Correct the HCE overtime salary threshold effective dates: $107,432 took effect 2020-01-01 (per 2019 DOL final rule, 84 FR 51230), not 2010-01-01; $132,964 took effect 2024-07-01, not 2024-01-01. Remove the $134,004 entry for 2016 — the 2016 rule was enjoined before it took effect.
+- Fix Indiana EITC eligibility to only use the spouse's age when filing jointly.
+- Correct the benefit-level breakdown for the Massachusetts LIHEAP subsidized housing payment parameter to range(0,7), matching sibling files and the file's 0-6 value entries.
+- Fix Puerto Rico EITC phase-out to cover all filing statuses, not only SINGLE and JOINT.
+- Correct salary basis threshold effective dates: $684 took effect 2020-01-01 (per 2019 DOL rule), $844 took effect 2024-07-01; remove the enjoined 2016 $913 entry.
+- Apply the IRC § 221(b)(1) student loan interest deduction cap at the tax-unit level rather than per spouse.
+- Fill in the 2020 AMT exemption separate_limit value ($745,200 = phase-out start $518,400 + 4 x exemption $56,700), resolving the inherited-from-2019 TODO.
+- Correct 2020 non-itemizer charitable contribution caps: CARES Act $300 for all filing statuses except MFS ($150).
+- Record explicit refundable CTC individual_max values for 2025 and 2026 ($1,700 per IRS Rev. Proc. 24-40 and 25-32).
+- Correct the 2021 MFS 37% tax bracket threshold from $329,850 (a copy-paste from the 2021 JOINT bracket 4 threshold) to $314,150 per IRS Rev. Proc. 20-45.
+- Add explicit 2025 student loan interest phase-out start thresholds per IRS Rev. Proc. 24-40 (JOINT: $170,000; SINGLE/HoH/Surviving: $85,000).
+
+
 ## [1.638.0] - 2026-04-17
 
 ### Added
