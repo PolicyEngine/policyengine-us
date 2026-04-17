@@ -17,9 +17,7 @@ class head_of_household_eligible(Variable):
             "is_permanently_and_totally_disabled", period
         ) & person("is_tax_unit_dependent", period)
         # Qualifying relatives only count if related per IRC 2(b)(3)
-        is_qualifying_relative = person(
-            "is_qualifying_relative_dependent", period
-        )
+        is_qualifying_relative = person("is_qualifying_relative_dependent", period)
         is_related = person("is_related_to_head_or_spouse", period)
         is_hoh_qualifying = (
             is_qualifying_child

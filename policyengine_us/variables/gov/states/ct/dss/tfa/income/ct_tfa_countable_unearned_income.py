@@ -12,9 +12,7 @@ class ct_tfa_countable_unearned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ct.dss.tfa.income.deduction
-        total_unearned_income = add(
-            spm_unit, period, ["tanf_gross_unearned_income"]
-        )
+        total_unearned_income = add(spm_unit, period, ["tanf_gross_unearned_income"])
         # Get child support - PolicyEngine handles period conversion automatically
         child_support = add(spm_unit, period, ["child_support_received"])
         child_support_deduction = min_(child_support, p.child_support)

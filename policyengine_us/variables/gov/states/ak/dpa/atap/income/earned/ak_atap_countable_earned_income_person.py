@@ -38,6 +38,4 @@ class ak_atap_countable_earned_income_person(Variable):
             gross_earned - p.work_incentive.flat - percent_disregard, 0
         )
 
-        return where(
-            is_enrolled, continuing_countable, new_applicant_countable
-        )
+        return where(is_enrolled, continuing_countable, new_applicant_countable)

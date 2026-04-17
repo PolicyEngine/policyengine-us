@@ -1,11 +1,24 @@
 description: Delaware non-refundable tax credits.
 values:
   2019-01-01:
-    - de_cdcc
-    - de_non_refundable_eitc
     - de_personal_credit
     - de_aged_personal_credit
+    - de_cdcc
+    - de_non_refundable_eitc
 metadata:
   unit: list
   period: year
   label: Delaware non-refundable tax credits
+  reference:
+    - title: 2021 Delaware Form PIT-RES, Lines 26a-34 non-refundable credit order
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_PaperBase.pdf#page=2
+    - title: 2021 Delaware Individual Income Tax Return Instructions, Lines 26a-33 credit order
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=8
+    - title: 2022 Delaware Individual Income Tax Return Instructions, Lines 26a-33 credit order
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=8
+    - title: 2023 Delaware Individual Income Tax Return Instructions, Lines 26a-33 credit order
+      href: https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=8
+    - title: 2024 Delaware Individual Income Tax Return Instructions, Lines 27a-34 credit order
+      href: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=8
+    - title: 2025 Delaware Individual Income Tax Return Instructions, non-refundable credit order
+      href: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=8

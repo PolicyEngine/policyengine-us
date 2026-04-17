@@ -14,9 +14,7 @@ class or_healthier_oregon_cost_if_enrolled(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "or_healthier_oregon_eligible"
-    reference = (
-        "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx"
-    )
+    reference = "https://www.oregon.gov/oha/hsd/ohp/pages/healthier-oregon.aspx"
 
     def formula(person, period, parameters):
         oregon_group = person("or_healthier_oregon_group", period)

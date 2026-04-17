@@ -7,9 +7,7 @@ class ga_additional_standard_deduction(Variable):
     label = "Georgia additional standard deduction"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://apps.dor.ga.gov/FillableForms/PDFViewer/Index?form=2022GA500"
-    )
+    reference = "https://apps.dor.ga.gov/FillableForms/PDFViewer/Index?form=2022GA500"
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
@@ -21,9 +19,7 @@ class ga_additional_standard_deduction(Variable):
         age_head = tax_unit("age_head", period)
         eligible_aged_head = age_head >= p.aged.age_threshold
         blind_head = tax_unit("blind_head", period)
-        extra_head = (
-            blind_head * p.blind.head + eligible_aged_head * p.aged.amount.head
-        )
+        extra_head = blind_head * p.blind.head + eligible_aged_head * p.aged.amount.head
 
         # Spouse gets extra standard deduction if aged and/or blind and filing jointly.
         age_spouse = tax_unit("age_spouse", period)

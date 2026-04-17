@@ -37,8 +37,12 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
+  # Joint return cap is $2,500 total (IRC § 221(b)(1)). With $4,000 of
+  # combined interest, each spouse's share of the cap is proportional
+  # to their interest: 75% / 25%. After the MAGI phase-out the residual
+  # is ~36.67% on each spouse's capped share.
   output:
-    student_loan_interest_ald: [916.66, 366.66]
+    student_loan_interest_ald: [687.5, 229.16]
 
 - name: Two people with student loan interest, fully reduced
   period: 2021
@@ -114,10 +118,33 @@
         student_loan_interest: 1_000
         is_tax_unit_head_or_spouse: false
         self_employment_income: 0
-        student_loan_interest_ald_eligible: true
+        student_loan_interest_ald_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: HEAD_OF_HOUSEHOLD
   output:
     student_loan_interest_ald: [1_166.66, 0]
+
+- name: Joint return cap is per return, not per spouse (IRC § 221(b)(1))
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        student_loan_interest_ald_eligible: true
+        is_tax_unit_dependent: false
+      person2:
+        student_loan_interest: 3_000
+        student_loan_interest_ald_eligible: true
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  # Combined interest $6,000 caps at $2,500 (not $5,000). Evenly split
+  # since both spouses have identical interest. No phase-out applies
+  # (default MAGI below the phase-out start for joint filers).
+  output:
+    student_loan_interest_ald: [1_250, 1_250]

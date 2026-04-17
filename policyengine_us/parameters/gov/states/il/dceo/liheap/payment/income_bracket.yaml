@@ -1,0 +1,29 @@
+description: Illinois sets this income bracket under the Low Income Home Energy Assistance Program.
+
+brackets:
+  - threshold:
+      2023-10-01: 0
+    amount:
+      2023-10-01: 1
+  - threshold:
+      2023-10-01: 0.51
+    amount:
+      2023-10-01: 2
+  - threshold:
+      2023-10-01: 1.01
+    amount:
+      2023-10-01: 3
+  - threshold:
+      2023-10-01: 1.51
+    amount:
+      2023-10-01: 4
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Illinois LIHEAP income bracket
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1

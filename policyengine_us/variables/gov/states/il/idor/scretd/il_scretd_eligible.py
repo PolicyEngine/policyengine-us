@@ -7,7 +7,9 @@ class il_scretd_eligible(Variable):
     label = "Illinois Senior Citizens Real Estate Tax Deferral eligibility"
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
+    reference = (
+        "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
+    )
 
     def formula(tax_unit, period, parameters):
         age_eligible = add(tax_unit, period, ["il_scretd_age_eligible"]) > 0

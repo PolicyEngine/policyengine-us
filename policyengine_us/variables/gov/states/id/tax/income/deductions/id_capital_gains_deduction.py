@@ -11,9 +11,7 @@ class id_capital_gains_deduction(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.deductions.capital_gains
+        p = parameters(period).gov.states.id.tax.income.deductions.capital_gains
         # taxpayer must report capital gain net income
         net_capital_gain = tax_unit("property_sales_net_capital_gain", period)
 

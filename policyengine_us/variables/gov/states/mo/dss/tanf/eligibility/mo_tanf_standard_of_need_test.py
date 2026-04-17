@@ -6,9 +6,7 @@ class mo_tanf_standard_of_need_test(Variable):
     entity = SPMUnit
     label = "Missouri TANF Standard of Need test eligibility"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
-    )
+    reference = ("https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",)
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):

@@ -8,7 +8,9 @@ class ia_fip(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "ia_fip_eligible"
-    reference = "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=20"
+    reference = (
+        "https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf#page=20"
+    )
 
     def formula(spm_unit, period, parameters):
         payment_standard = spm_unit("ia_fip_payment_standard", period)

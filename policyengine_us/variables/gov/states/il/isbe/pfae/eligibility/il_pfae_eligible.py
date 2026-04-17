@@ -19,10 +19,6 @@ class il_pfae_eligible(Variable):
         #   - Any highest priority factor (direct enrollment), OR
         #   - 2+ secondary priority factors
         basic_eligible = person("il_pfae_basic_eligible", period)
-        has_highest_priority = person(
-            "il_pfae_has_highest_priority_factor", period
-        )
-        secondary_count = person(
-            "il_pfae_secondary_priority_factor_count", period
-        )
+        has_highest_priority = person("il_pfae_has_highest_priority_factor", period)
+        secondary_count = person("il_pfae_secondary_priority_factor_count", period)
         return basic_eligible & (has_highest_priority | (secondary_count >= 2))

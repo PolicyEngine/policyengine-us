@@ -52,30 +52,35 @@ def create_mt_newborn_credit() -> Reform:
 
     class mt_newborn_credit(Variable):
         value_type = float
-        entity = TaxUnit
+        entity = Person
         label = "Montana newborn credit"
         definition_period = YEAR
         unit = USD
-        defined_for = "mt_newborn_credit_eligible"
+        defined_for = StateCode.MT
 
-        def formula(tax_unit, period, parameters):
+        def formula(person, period, parameters):
+            # Check tax unit eligibility
+            eligible = person.tax_unit("mt_newborn_credit_eligible", period)
             p = parameters(period).gov.contrib.states.mt.newborn_credit
             qualifying_children = add(
-                tax_unit, period, ["mt_newborn_credit_eligible_child"]
+                person.tax_unit, period, ["mt_newborn_credit_eligible_child"]
             )
             base_credit = p.amount * qualifying_children
-            filing_status = tax_unit("filing_status", period)
-            agi = tax_unit("adjusted_gross_income", period)
+            filing_status = person.tax_unit("filing_status", period)
+            agi = person.tax_unit("adjusted_gross_income", period)
             threshold = p.reduction.threshold[filing_status]
             excess = max_(agi - threshold, 0)
             # Ceiling: any fraction of an increment triggers reduction
             increments = np.ceil(excess / p.reduction.increment)
             reduction = p.reduction.amount * increments
-            return max_(base_credit - reduction, 0)
+            credit = max_(base_credit - reduction, 0)
+            # Assign credit only to head to avoid duplication
+            is_head = person("is_tax_unit_head", period)
+            return is_head * eligible * credit
 
     def modify_parameters(parameters):
-        # NOTE: MT CTC reform hard-codes the refundable credits list,
-        # so this reform must run after MT CTC in reforms.py to
+        # NOTE: MT HB268 reform hard-codes the refundable credits list,
+        # so this reform must run after MT HB268 in reforms.py to
         # correctly append mt_newborn_credit via read-then-append.
         refundable = parameters.gov.states.mt.tax.income.credits.refundable
         current_refundable = refundable(instant("2027-01-01"))

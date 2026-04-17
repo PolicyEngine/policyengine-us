@@ -10,9 +10,7 @@ class cliff_evaluated(Variable):
 
     def formula(person, period, parameters):
         adult_index_values = person("adult_index", period)
-        mtr_adult_count = parameters(
-            period
-        ).simulation.marginal_tax_rate_adults
+        mtr_adult_count = parameters(period).simulation.marginal_tax_rate_adults
         is_adult = person("is_adult", period)
         return is_adult & (adult_index_values <= mtr_adult_count)
 
@@ -35,7 +33,9 @@ class is_on_cliff(Variable):
     value_type = bool
     entity = Person
     label = "is on a tax-benefit cliff"
-    documentation = "Whether this person would be worse off if their employment income were higher."
+    documentation = (
+        "Whether this person would be worse off if their employment income were higher."
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):

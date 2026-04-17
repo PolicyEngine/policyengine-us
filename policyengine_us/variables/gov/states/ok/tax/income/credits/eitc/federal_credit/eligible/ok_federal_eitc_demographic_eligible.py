@@ -32,20 +32,16 @@ class ok_federal_eitc_demographic_eligible(Variable):
         has_child = tax_unit("eitc_child_count", period) > 0
         age = person("age", period)
         # Use FROZEN 2020 age parameters per Oklahoma statute
-        min_age_non_student = (
-            parameters.gov.irs.credits.eitc.eligibility.age.min("2020-01-01")
+        min_age_non_student = parameters.gov.irs.credits.eitc.eligibility.age.min(
+            "2020-01-01"
         )
-        min_age_student = (
-            parameters.gov.irs.credits.eitc.eligibility.age.min_student(
-                "2020-01-01"
-            )
+        min_age_student = parameters.gov.irs.credits.eitc.eligibility.age.min_student(
+            "2020-01-01"
         )
         student = person("is_full_time_student", period)
         # Students have a lower minimum age requirement
         min_age = where(student, min_age_student, min_age_non_student)
-        max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(
-            "2020-01-01"
-        )
+        max_age = parameters.gov.irs.credits.eitc.eligibility.age.max("2020-01-01")
         # Check if at least one filer meets age requirements
         meets_age_requirements = (age >= min_age) & (age <= max_age)
         return has_child | tax_unit.any(meets_age_requirements)

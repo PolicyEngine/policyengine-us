@@ -19,7 +19,5 @@ class oh_529_plan_deduction_person(Variable):
         total_deduction = person.tax_unit("oh_529_plan_deduction", period)
         contributions_rate = np.zeros_like(total_contribtions)
         mask = total_contribtions != 0
-        contributions_rate[mask] = (
-            contribution_amount[mask] / total_contribtions[mask]
-        )
+        contributions_rate[mask] = contribution_amount[mask] / total_contribtions[mask]
         return contributions_rate * total_deduction

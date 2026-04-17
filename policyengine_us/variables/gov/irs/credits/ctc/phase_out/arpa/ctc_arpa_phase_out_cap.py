@@ -22,9 +22,6 @@ class ctc_arpa_phase_out_cap(Variable):
         arpa_threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
         original_threshold = tax_unit("ctc_phase_out_threshold", period)
         threshold_diff = original_threshold - arpa_threshold
-        cap = (
-            threshold_diff
-            * p.amount.arpa_expansion_cap_percent_of_threshold_diff
-        )
+        cap = threshold_diff * p.amount.arpa_expansion_cap_percent_of_threshold_diff
         # Form limits the cap to the amount of the increase in the maximum CTC.
         return min_(cap, tax_unit("ctc_arpa_max_addition", period))

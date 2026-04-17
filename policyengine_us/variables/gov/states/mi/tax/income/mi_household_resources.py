@@ -27,7 +27,7 @@ class mi_household_resources(Variable):
         # "Net royalty or rent income. If negative, enter 0"
         floored_sources = {
             "farm_income",
-            "self_employment_income",
+            "total_self_employment_income",
             "partnership_s_corp_income",
             "rental_income",
             "farm_rent_income",
@@ -44,12 +44,8 @@ class mi_household_resources(Variable):
                 # Other sources are added as-is without flooring
                 total += add(tax_unit, period, [source])
 
-        health_insurance_premiums = add(
-            tax_unit, period, ["health_insurance_premiums"]
-        )
-        above_the_line_deductions = tax_unit(
-            "above_the_line_deductions", period
-        )
+        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        above_the_line_deductions = tax_unit("above_the_line_deductions", period)
         return max_(
             0,
             total - health_insurance_premiums - above_the_line_deductions,

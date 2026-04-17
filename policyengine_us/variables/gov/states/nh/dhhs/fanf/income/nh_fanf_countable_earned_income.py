@@ -20,9 +20,7 @@ class nh_fanf_countable_earned_income(Variable):
         # Note: A 100% disregard exists for high-demand jobs (per NH Workforce
         # Innovation Opportunities Act board) with medical benefits offered,
         # but this is not implemented due to lack of job classification data.
-        p = parameters(
-            period
-        ).gov.states.nh.dhhs.fanf.income.earned_income_disregard
+        p = parameters(period).gov.states.nh.dhhs.fanf.income.earned_income_disregard
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         disregard_rate = where(is_enrolled, p.recipient_rate, p.applicant_rate)

@@ -14,11 +14,7 @@ class or_healthier_oregon_immigration_status_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .oha.healthier_oregon.eligibility
-        )
+        p = parameters(period).gov.states["or"].oha.healthier_oregon.eligibility
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()
         return np.isin(

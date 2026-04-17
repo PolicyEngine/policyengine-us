@@ -18,9 +18,7 @@ class mn_mfip_countable_earned_income_for_eligibility(Variable):
         # For initial eligibility, dependent care costs must be deducted
         # from gross earned income before the $65 and 50% disregard.
         # Since dependent care is subtracted before 50%, its effect is halved.
-        p = parameters(
-            period
-        ).gov.states.mn.dcyf.mfip.income.earned_income_disregard
+        p = parameters(period).gov.states.mn.dcyf.mfip.income.earned_income_disregard
         benefit_earned = spm_unit("mn_mfip_countable_earned_income", period)
         dependent_care = spm_unit("mn_mfip_dependent_care_deduction", period)
         # 50% disregard rate means dependent care effect is multiplied by 0.5

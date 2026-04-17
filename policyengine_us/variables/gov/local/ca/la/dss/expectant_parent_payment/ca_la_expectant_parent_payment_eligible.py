@@ -14,7 +14,5 @@ class ca_la_expectant_parent_payment_eligible(Variable):
         eligible_based_on_pregnancy_month = (
             pregnancy_month >= p.pregnancy_month.min
         ) & (pregnancy_month <= p.pregnancy_month.max)
-        foster_care_minor_dependent = person(
-            "ca_foster_care_minor_dependent", period
-        )
+        foster_care_minor_dependent = person("ca_foster_care_minor_dependent", period)
         return foster_care_minor_dependent & eligible_based_on_pregnancy_month

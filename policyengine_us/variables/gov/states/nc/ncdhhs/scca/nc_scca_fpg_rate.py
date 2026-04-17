@@ -29,8 +29,7 @@ class nc_scca_fpg_rate(Variable):
         # Check if all children are school age (if there are any children)
         has_any_children = spm_unit.any(person("is_child", period))
         all_children_school_age = ~has_any_children | (
-            has_any_children
-            & spm_unit.all(~person("is_child", period) | is_school_age)
+            has_any_children & spm_unit.all(~person("is_child", period) | is_school_age)
         )
 
         # If there are any non-school age children or disabled children,

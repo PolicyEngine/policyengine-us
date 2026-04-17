@@ -8,9 +8,7 @@ class oh_owf_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.OH
-    reference = (
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",
-    )
+    reference = ("https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",)
 
     def formula(spm_unit, period, parameters):
         # Get gross earned income from federal TANF variable

@@ -6,6 +6,4 @@ class claimed_as_dependent_on_another_return(Variable):
     entity = Person
     definition_period = YEAR
     label = "Is claimed as a dependent elsewhere"
-    documentation = (
-        "Whether the person is claimed as a dependent in another tax unit."
-    )
+    documentation = "Whether the person is claimed as a dependent in another tax unit."

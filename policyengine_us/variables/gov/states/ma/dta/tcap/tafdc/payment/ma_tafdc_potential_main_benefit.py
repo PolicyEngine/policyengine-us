@@ -12,8 +12,6 @@ class ma_tafdc_potential_main_benefit(Variable):
 
     def formula(spm_unit, period, parameters):
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
-        countable_income = spm_unit(
-            "ma_tafdc_applicable_income_grant_amount", period
-        )
+        countable_income = spm_unit("ma_tafdc_applicable_income_grant_amount", period)
         benefit = max_(0, payment_standard - countable_income)
         return min_(benefit, payment_standard)

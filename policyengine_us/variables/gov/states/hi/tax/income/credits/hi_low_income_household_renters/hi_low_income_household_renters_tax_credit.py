@@ -13,12 +13,10 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
 
         # Aged extra exemptions
-        aged_head = (
-            tax_unit("age_head", period) >= p.aged_age_threshold
-        ).astype(int)
-        aged_spouse = (
-            tax_unit("age_spouse", period) >= p.aged_age_threshold
-        ).astype(int)
+        aged_head = (tax_unit("age_head", period) >= p.aged_age_threshold).astype(int)
+        aged_spouse = (tax_unit("age_spouse", period) >= p.aged_age_threshold).astype(
+            int
+        )
 
         aged_exemptions = aged_head + aged_spouse
         exemptions = tax_unit("exemptions_count", period)

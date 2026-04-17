@@ -11,9 +11,7 @@ def create_pa_ctc_flat_amount() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.PA
-        reference = (
-            "https://github.com/PolicyEngine/policyengine-us/issues/7436"
-        )
+        reference = "https://github.com/PolicyEngine/policyengine-us/issues/7436"
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.pa.ctc.flat_amount

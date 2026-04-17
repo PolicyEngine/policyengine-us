@@ -20,9 +20,7 @@ class mn_cdcc(Variable):
         expenses = tax_unit("tax_unit_childcare_expenses", period)
         # ... cap expense by number of qualifying dependents
         eligible_count = min_(dep_count, p.maximum_dependents)
-        maximum_eligible_expenses = min_(
-            expenses, p.maximum_expense * eligible_count
-        )
+        maximum_eligible_expenses = min_(expenses, p.maximum_expense * eligible_count)
         # ... cap expense by lower earnings of head and spouse if present
         # Line 2
         capped_expenses = min_(

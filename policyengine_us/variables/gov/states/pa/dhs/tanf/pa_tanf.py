@@ -25,12 +25,10 @@ class pa_tanf(Variable):
 
         # Work Expense Reimbursement (WER): $50/month bonus for families with earned income
         # Active 2009-2020, before Work Expense Deduction (WED) replaced it
-        gross_earned_income = add(
-            spm_unit, period, ["tanf_gross_earned_income"]
-        )
+        gross_earned_income = add(spm_unit, period, ["tanf_gross_earned_income"])
         has_earned_income = gross_earned_income > 0
         wer_amount = where(
-            ~p.deduction_applies & has_earned_income,
+            (not p.deduction_applies) & has_earned_income,
             p.reimbursement,
             0,
         )

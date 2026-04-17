@@ -13,7 +13,5 @@ class k401_catch_up_eligible(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(
-            period
-        ).gov.irs.gross_income.retirement_contributions.catch_up
+        p = parameters(period).gov.irs.gross_income.retirement_contributions.catch_up
         return age >= p.age_threshold

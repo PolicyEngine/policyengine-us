@@ -1,21 +1,29 @@
-- name: Single person at the AGI limit.
+# 2021 Form 502CR Part B chart: individual FAGI $0-$30,001 uses a 0.3200 multiplier.
+# With federal CDCC = 100, Part B credit = 32.
+# 2021 Resident Booklet Worksheet 21B refunds the amount by which that credit
+# exceeds Maryland tax for individual filers with FAGI <= $52,100.
+- name: Part B credit and Worksheet 21B refund for a low-income single filer.
   period: 2021
   input:
     filing_status: SINGLE
-    adjusted_gross_income: 52_100
-    md_cdcc: 100
-    md_income_tax_before_credits: 50
+    adjusted_gross_income: 0
+    cdcc: 100
+    md_income_tax_before_credits: 10
     state_code: MD
   output:
-    md_refundable_cdcc: 50
+    md_cdcc_potential: 32
+    md_cdcc: 10
+    md_refundable_cdcc: 22
 
-- name: Single person just over the AGI limit.
+# 2021 Resident Booklet Worksheet 21B: individual filers above $52,100 FAGI
+# are not eligible for the refundable excess.
+- name: Worksheet 21B blocks the refund above the individual FAGI limit.
   period: 2021
   input:
     filing_status: SINGLE
     adjusted_gross_income: 52_101
-    md_cdcc: 100
-    md_income_tax_before_credits: 50
+    cdcc: 100
+    md_income_tax_before_credits: 10
     state_code: MD
   output:
     md_refundable_cdcc: 0

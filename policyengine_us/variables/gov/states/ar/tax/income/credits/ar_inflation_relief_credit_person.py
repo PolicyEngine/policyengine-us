@@ -20,9 +20,7 @@ class ar_inflation_relief_credit_person(Variable):
         joint_income = person.tax_unit.sum(net_income_joint)
         indiv_income = person("ar_taxable_income_indiv", period)
         income = where(filing_separately, indiv_income, joint_income)
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.inflationary_relief
+        p = parameters(period).gov.states.ar.tax.income.credits.inflationary_relief
         filing_status = person.tax_unit("filing_status", period)
         max_amount = p.max_amount[filing_status]
         reduction_start = p.reduction.start[filing_status]
@@ -34,4 +32,7 @@ class ar_inflation_relief_credit_person(Variable):
         # Attribute the maximum amount to each spouse equally when married filing jointly
         joint = filing_status == filing_status.possible_values.JOINT
         divisor = where(joint, 2, 1)
-        return max_(max_amount - total_reduction_amount, 0) / divisor
+        credit = max_(max_amount - total_reduction_amount, 0) / divisor
+        # The credit is only allocated to the head and spouse, not dependents.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return credit * head_or_spouse

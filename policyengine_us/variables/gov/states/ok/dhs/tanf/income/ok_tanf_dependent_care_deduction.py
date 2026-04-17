@@ -7,9 +7,7 @@ class ok_tanf_dependent_care_deduction(Variable):
     label = "Oklahoma TANF dependent care deduction"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-33"
-    )
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-10-3-33"
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):
@@ -25,9 +23,7 @@ class ok_tanf_dependent_care_deduction(Variable):
 
         # Calculate maximum deduction per dependent based on age
         max_deduction_per_dependent = p.deductions.dependent_care.calc(age)
-        total_max_deduction = spm_unit.sum(
-            max_deduction_per_dependent * dependent
-        )
+        total_max_deduction = spm_unit.sum(max_deduction_per_dependent * dependent)
 
         # Cap at actual childcare expenses.
         childcare_expenses = spm_unit("childcare_expenses", period)

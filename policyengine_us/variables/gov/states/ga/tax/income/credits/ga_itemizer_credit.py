@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ga_itemizer_credit(Variable):
@@ -11,9 +14,14 @@ class ga_itemizer_credit(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
-        # Full-year and part-year residents who itemize their deductions
-        # are entitled to a credit up to $300 per taxpayer
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        taxpayer_count = tax_unit("head_spouse_count", period)
-        p = parameters(period).gov.states.ga.tax.income.credits.itemizer
-        return where(itemizes, p.amount * taxpayer_count, 0)
+        ordered_credits = parameters(
+            period
+        ).gov.states.ga.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ga_income_tax_before_non_refundable_credits",
+            "ga_itemizer_credit",
+            "ga_itemizer_credit_potential",
+        )

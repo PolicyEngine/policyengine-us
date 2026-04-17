@@ -34,11 +34,7 @@ class tax_unit_is_required_to_file(Variable):
         unearned_income_threshold = 500 + tax_unit(
             "additional_standard_deduction", period
         )
-        unearned_income = gross_income - add(
-            tax_unit, period, ["earned_income"]
-        )
-        unearned_income_over_threshold = (
-            unearned_income > unearned_income_threshold
-        )
+        unearned_income = gross_income - add(tax_unit, period, ["earned_income"])
+        unearned_income_over_threshold = unearned_income > unearned_income_threshold
 
         return income_over_exemption_amount | unearned_income_over_threshold

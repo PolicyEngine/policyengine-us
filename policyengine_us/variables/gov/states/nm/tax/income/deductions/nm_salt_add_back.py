@@ -20,13 +20,9 @@ class nm_salt_add_back(Variable):
         p = parameters(period).gov.irs.deductions
 
         # tax/income, federal Schedule A, line 5a. 1
-        salt_sales_or_income = tax_unit(
-            "state_and_local_sales_or_income_tax", period
-        )
+        salt_sales_or_income = tax_unit("state_and_local_sales_or_income_tax", period)
         # state_and_local_tax, line 5d. 2
-        total_salt = (
-            add(tax_unit, period, ["real_estate_taxes"]) + salt_sales_or_income
-        )
+        total_salt = add(tax_unit, period, ["real_estate_taxes"]) + salt_sales_or_income
         # ratio = round(salt_sales_or_income[0] / total_salt[0], 4)
         # ratio. 3
         salt_ratio = np.zeros_like(total_salt)

@@ -1,0 +1,36 @@
+# Unit tests for pa_ccw_enrolled
+# Bare input variable for enrollment status (bool, SPMUnit, MONTH)
+# Used to distinguish initial application (200% FPIG) from redetermination (235% FPIG)
+
+- name: Case 1, default not enrolled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_enrolled: false
+
+- name: Case 2, explicitly enrolled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_ccw_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_enrolled: true

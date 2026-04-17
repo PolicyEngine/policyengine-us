@@ -16,6 +16,4 @@ class hi_cdcc_income_floor_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        return person("is_disabled", period) | person(
-            "is_full_time_student", period
-        )
+        return person("is_disabled", period) | person("is_full_time_student", period)

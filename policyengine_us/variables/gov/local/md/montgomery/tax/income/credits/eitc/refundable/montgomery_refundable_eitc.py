@@ -7,7 +7,9 @@ class md_montgomery_eitc(Variable):
     label = "Montgomery County, Maryland EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I"
+    reference = (
+        "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I"
+    )
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):

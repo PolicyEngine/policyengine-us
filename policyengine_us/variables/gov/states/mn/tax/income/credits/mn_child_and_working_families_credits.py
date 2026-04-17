@@ -42,15 +42,15 @@ class mn_child_and_working_families_credits(Variable):
             & full_time_student
         )
         qualifying_older_children = tax_unit.sum(qualifying_older_child)
-        additional_wfc_credit = p.wfc.additional.amount.calc(
-            qualifying_older_children
-        )
-        base_wfc_amount = (
-            base_wfc_credit + additional_wfc_credit
-        ) * wfc_eligible
+        additional_wfc_credit = p.wfc.additional.amount.calc(qualifying_older_children)
+        base_wfc_amount = base_wfc_credit + additional_wfc_credit
         # The credit amounts are combined and phase out together based on the number of
         # qualifying older children
-        combined_credit = base_ctc_amount + base_wfc_amount
+        # M1CWFC form: "Do not complete if you have a 2-year or 10-year
+        # IRS ban or are otherwise restricted from claiming the federal EIC."
+        # Gate the entire combined credit on WFC eligibility (which includes
+        # the federal EITC investment income check).
+        combined_credit = (base_ctc_amount + base_wfc_amount) * wfc_eligible
         # The phase out threshold is based on the larger of AGI and earnings and filing status
         agi = tax_unit("adjusted_gross_income", period)
         income = max_(earnings, agi)

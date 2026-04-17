@@ -53,6 +53,4 @@ class nj_anchor(Variable):
         )
 
         # Return benefit based on tenure type
-        return where(
-            is_homeowner, homeowner_amount, where(is_renter, renter_amount, 0)
-        )
+        return where(is_homeowner, homeowner_amount, where(is_renter, renter_amount, 0))

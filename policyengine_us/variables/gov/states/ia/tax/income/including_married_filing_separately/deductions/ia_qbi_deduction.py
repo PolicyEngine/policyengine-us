@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ia_qbi_deduction(Variable):
     value_type = float
     entity = Person
-    label = "Iowa deduction that is fraction of federal qualified business income deduction"
+    label = (
+        "Iowa deduction that is fraction of federal qualified business income deduction"
+    )
     unit = USD
     definition_period = YEAR
     reference = (

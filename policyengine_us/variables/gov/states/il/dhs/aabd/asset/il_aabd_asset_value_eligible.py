@@ -5,7 +5,9 @@ class il_aabd_asset_value_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = MONTH
-    label = "Eligible for Illinois Aid to the Aged, Blind or Disabled (AABD) due to asset"
+    label = (
+        "Eligible for Illinois Aid to the Aged, Blind or Disabled (AABD) due to asset"
+    )
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.142",
     )

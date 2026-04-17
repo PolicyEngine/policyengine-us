@@ -7,7 +7,9 @@ class ut_fep_countable_earned_income(Variable):
     label = "Utah TANF countable earned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    reference = (
+        "https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239"
+    )
     defined_for = StateCode.UT
 
     def formula(spm_unit, period, parameters):

@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mo_tanf_earned_income_deductions(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "Missouri TANF earned income deductions for Percentage of Need test"
-    )
+    label = "Missouri TANF earned income deductions for Percentage of Need test"
     unit = USD
     definition_period = MONTH
     reference = (

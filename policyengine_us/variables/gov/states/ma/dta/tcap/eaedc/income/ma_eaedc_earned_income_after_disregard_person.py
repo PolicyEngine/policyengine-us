@@ -11,9 +11,7 @@ class ma_eaedc_earned_income_after_disregard_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B) step 2
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
+        p = parameters(period).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
         gross_income = person("ma_tcap_gross_earned_income", period)
         work_related_expenses_deduction = person(
             "ma_tafdc_work_related_expense_deduction", period

@@ -20,7 +20,5 @@ class ak_atap_countable_unearned_income(Variable):
         gross_unearned = add(spm_unit, period, ["tanf_gross_unearned_income"])
         child_support = add(spm_unit, period, ["child_support_received"])
         # Exclude up to $50 of child support (deduction)
-        child_support_exclusion = min_(
-            child_support, p.deductions.child_support
-        )
+        child_support_exclusion = min_(child_support, p.deductions.child_support)
         return gross_unearned - child_support_exclusion

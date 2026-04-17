@@ -15,8 +15,6 @@ class ia_taxable_income_consolidated(Variable):
 
     def formula(tax_unit, period, parameters):
         fed_taxable_income = tax_unit("taxable_income", period)
-        modifications = tax_unit(
-            "ia_taxable_income_modifications_consolidated", period
-        )
+        modifications = tax_unit("ia_taxable_income_modifications_consolidated", period)
         # Modifications include additions and subtractions
         return max_(0, fed_taxable_income + modifications)

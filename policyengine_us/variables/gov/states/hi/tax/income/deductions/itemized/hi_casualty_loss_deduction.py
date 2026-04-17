@@ -23,7 +23,5 @@ class hi_casualty_loss_deduction(Variable):
         #       to be deductible, and that such losses must exceed $500.
         casualty_loss = add(tax_unit, period, ["casualty_loss"])
         hi_agi = tax_unit("hi_agi", period)
-        casualty_agi_amount = max_(
-            0, p_deductions.itemized.casualty.floor * hi_agi
-        )
+        casualty_agi_amount = max_(0, p_deductions.itemized.casualty.floor * hi_agi)
         return max_(0, casualty_loss - casualty_agi_amount)

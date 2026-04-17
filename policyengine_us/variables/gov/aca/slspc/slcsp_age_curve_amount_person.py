@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class slcsp_age_curve_amount_person(Variable):
     value_type = float
     entity = Person
-    label = (
-        "Second-lowest ACA silver-plan cost, for people in age curve states"
-    )
+    label = "Second-lowest ACA silver-plan cost, for people in age curve states"
     unit = USD
     definition_period = MONTH
     defined_for = "is_aca_ptc_eligible"

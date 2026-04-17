@@ -1,12 +1,15 @@
 description: California disregards this amount of monthly earned income when determining CalWORKS eligibility for new applicants.
 
 values:
+  1998-01-01: 90
   2022-07-01: 450
 
 metadata:
   unit: currency-USD
   period: month
-  label: California CalWORKs recipient flat earnings exclusion for applicants
+  label: California CalWORKs applicant flat earnings exclusion per employed person
   reference:
     - title: Los Angeles Department of Public Social Services E-Policy | CalWORKs Earned Income Disregards
-      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-111_23_Earned_Income_Disregards%2F44-111_23_Earned_Income_Disregards.htm%23Policybc-2&rhtocid=_3_1_6_2_1
+      href: https://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-111_23_Earned_Income_Disregards%2F44-111_23_Earned_Income_Disregards.htm%23Policybc-2&rhtocid=_3_1_6_2_1
+    - title: AB 135 (Ch. 85, Statutes of 2021) - Applicant EID increase
+      href: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202120220AB135

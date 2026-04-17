@@ -5,6 +5,8 @@ values:
     - self_employment_income
 metadata:
   unit: list
+  period: month
+  label: Colorado TANF earned income sources
   reference:
-    title: CODE OF COLORADO REGULATIONS 9 CCR 2503-6 | Income Maintenance (Volume 3) | 3.605.2
-    href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=42
+    - title: 9 CCR 2503-6, Section 3.605.2 — Earned Income Definition
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=42

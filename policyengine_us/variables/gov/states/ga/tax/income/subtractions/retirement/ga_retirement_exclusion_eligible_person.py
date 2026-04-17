@@ -14,9 +14,7 @@ class ga_retirement_exclusion_eligible_person(Variable):
     defined_for = StateCode.GA
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ga.tax.income.agi.exclusions.retirement
+        p = parameters(period).gov.states.ga.tax.income.agi.exclusions.retirement
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         age_eligible = age >= p.age_threshold.younger

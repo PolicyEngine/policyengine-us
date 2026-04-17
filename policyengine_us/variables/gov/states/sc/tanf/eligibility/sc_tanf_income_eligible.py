@@ -7,12 +7,12 @@ class sc_tanf_income_eligible(Variable):
     label = "South Carolina TANF income eligible"
     definition_period = MONTH
     defined_for = StateCode.SC
-    reference = "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
+    reference = (
+        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
+    )
 
     def formula(spm_unit, period, parameters):
-        gross_income_eligible = spm_unit(
-            "sc_tanf_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("sc_tanf_gross_income_eligible", period)
         countable_income_eligible = spm_unit(
             "sc_tanf_countable_income_eligible", period
         )

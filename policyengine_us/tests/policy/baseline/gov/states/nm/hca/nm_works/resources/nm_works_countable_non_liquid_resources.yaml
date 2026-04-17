@@ -1,0 +1,29 @@
+- name: Exempt home and transportation-vehicle proxies are not counted yet.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        assessed_property_value: 250_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+        household_vehicles_owned: 2
+        household_vehicles_value: 18_000
+  output:
+    # Current inputs do not separate exempt home / transportation vehicles from
+    # countable other real property or recreational vehicles.
+    nm_works_countable_non_liquid_resources: 0
+
+- name: No observed non-liquid proxies means zero countable non-liquid resources.
+  period: 2024-01
+  input:
+    state_code: NM
+  output:
+    nm_works_countable_non_liquid_resources: 0

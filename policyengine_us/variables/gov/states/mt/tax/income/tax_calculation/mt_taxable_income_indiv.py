@@ -23,12 +23,8 @@ class mt_taxable_income_indiv(Variable):
         # The dependent exemptions are allocated optimally between the head and spouse
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        head_income = person.tax_unit.sum(
-            pre_dependent_exemption_income * head
-        )
-        spouse_income = person.tax_unit.sum(
-            pre_dependent_exemption_income * spouse
-        )
+        head_income = person.tax_unit.sum(pre_dependent_exemption_income * head)
+        spouse_income = person.tax_unit.sum(pre_dependent_exemption_income * spouse)
         # Calculate the difference between the head and spouse income
         income_difference = np.abs(head_income - spouse_income)
         # Cap the exemption amount initially at the difference between the head and spouse income

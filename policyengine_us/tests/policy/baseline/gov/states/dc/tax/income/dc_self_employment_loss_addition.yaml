@@ -69,6 +69,17 @@
     # DC addition: max(0, 12_000 - 12_000) = 0
     dc_self_employment_loss_addition: 0
 
+- name: SSTB self-employment loss contributes to DC add-back
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    sstb_self_employment_income: -50_000
+    state_code: DC
+  output:
+    # SSTB loss also flows through loss_ald and DC's self-employment loss add-back.
+    # DC addition: max(0, 50_000 - 12_000) = 38_000
+    dc_self_employment_loss_addition: 38_000
+
 - name: dc_self_employment_loss_addition unit test 2
   absolute_error_margin: 0.01
   period: 2021

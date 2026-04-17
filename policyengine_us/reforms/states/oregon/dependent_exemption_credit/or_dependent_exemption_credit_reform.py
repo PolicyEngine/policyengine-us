@@ -6,18 +6,12 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
     class or_eligible_dependents_count(Variable):
         value_type = int
         entity = TaxUnit
-        label = (
-            "Oregon eligible dependents count for dependent exemption credit"
-        )
+        label = "Oregon eligible dependents count for dependent exemption credit"
         definition_period = YEAR
         defined_for = StateCode.OR
 
         def formula(tax_unit, period, parameters):
-            p = (
-                parameters(period)
-                .gov.contrib.states["or"]
-                .dependent_exemption_credit
-            )
+            p = parameters(period).gov.contrib.states["or"].dependent_exemption_credit
 
             person = tax_unit.members
             age = person("age", period)
@@ -37,7 +31,9 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
     class or_older_dependents_count(Variable):
         value_type = int
         entity = TaxUnit
-        label = "Oregon older dependents count (excluded from dependent exemption credit)"
+        label = (
+            "Oregon older dependents count (excluded from dependent exemption credit)"
+        )
         definition_period = YEAR
         defined_for = StateCode.OR
 
@@ -45,9 +41,7 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
             person = tax_unit.members
             is_dependent = person("is_tax_unit_dependent", period)
             total_dependents = tax_unit.sum(is_dependent)
-            eligible_dependents = tax_unit(
-                "or_eligible_dependents_count", period
-            )
+            eligible_dependents = tax_unit("or_eligible_dependents_count", period)
             return max_(0, total_dependents - eligible_dependents)
 
     class or_dependent_exemption_credit(Variable):
@@ -59,11 +53,7 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
         defined_for = StateCode.OR
 
         def formula(tax_unit, period, parameters):
-            p = (
-                parameters(period)
-                .gov.contrib.states["or"]
-                .dependent_exemption_credit
-            )
+            p = parameters(period).gov.contrib.states["or"].dependent_exemption_credit
 
             eligible_count = tax_unit("or_eligible_dependents_count", period)
             maximum_credit = eligible_count * p.amount
@@ -93,11 +83,7 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
         def formula(tax_unit, period, parameters):
             filing_status = tax_unit("filing_status", period)
             federal_agi = tax_unit("adjusted_gross_income", period)
-            p = (
-                parameters(period)
-                .gov.states["or"]
-                .tax.income.credits.exemption
-            )
+            p = parameters(period).gov.states["or"].tax.income.credits.exemption
 
             qualifies = federal_agi <= p.income_limit.regular[filing_status]
 
@@ -135,16 +121,12 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
                 ["or_" + i + "_exemptions" for i in EXEMPTION_TYPES],
             )
             amount = (
-                parameters(period)
-                .gov.states["or"]
-                .tax.income.credits.exemption.amount
+                parameters(period).gov.states["or"].tax.income.credits.exemption.amount
             )
             base_credit = exemptions * amount
 
             # Add the dependent exemption credit (uses contrib amount)
-            dependent_credit = tax_unit(
-                "or_dependent_exemption_credit", period
-            )
+            dependent_credit = tax_unit("or_dependent_exemption_credit", period)
 
             return base_credit + dependent_credit
 
@@ -182,6 +164,6 @@ def create_or_dependent_exemption_credit_reform_fn(
         return None
 
 
-or_dependent_exemption_credit_reform = (
-    create_or_dependent_exemption_credit_reform_fn(None, None, bypass=True)
+or_dependent_exemption_credit_reform = create_or_dependent_exemption_credit_reform_fn(
+    None, None, bypass=True
 )

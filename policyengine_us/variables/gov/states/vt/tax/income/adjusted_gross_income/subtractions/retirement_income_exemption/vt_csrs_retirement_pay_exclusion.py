@@ -20,8 +20,6 @@ class vt_csrs_retirement_pay_exclusion(Variable):
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.csrs
         # Get retirement amount from military retirement system
-        tax_unit_csrs_retirement_pay = add(
-            tax_unit, period, ["csrs_retirement_pay"]
-        )
+        tax_unit_csrs_retirement_pay = add(tax_unit, period, ["csrs_retirement_pay"])
         # Retirement income from systems other than social security have maximum amount.
         return min_(tax_unit_csrs_retirement_pay, p.amount)

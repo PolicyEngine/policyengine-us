@@ -6,9 +6,7 @@ class hi_regular_exemptions(Variable):
     entity = TaxUnit
     label = "Hawaii regular exemptions"
     unit = USD
-    documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
-    )
+    documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
     definition_period = YEAR
     defined_for = StateCode.HI
 
@@ -20,7 +18,5 @@ class hi_regular_exemptions(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         aged = person("age", period) >= p.aged_threshold
         aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse)
-        total_exemption_count_including_aged = (
-            exemptions_count + aged_head_spouse_count
-        )
+        total_exemption_count_including_aged = exemptions_count + aged_head_spouse_count
         return total_exemption_count_including_aged * p.base

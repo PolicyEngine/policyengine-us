@@ -2,7 +2,7 @@
   period: 2025-01
   input:
     state_code: MI
-    spm_unit_assets: 10_000
+    spm_unit_cash_assets: 10_000
   output:
     mi_fip_resources_eligible: true
 
@@ -10,7 +10,7 @@
   period: 2025-01
   input:
     state_code: MI
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     mi_fip_resources_eligible: true
 
@@ -18,7 +18,7 @@
   period: 2025-01
   input:
     state_code: MI
-    spm_unit_assets: 15_000
+    spm_unit_cash_assets: 15_000
   output:
     mi_fip_resources_eligible: true
 
@@ -26,7 +26,7 @@
   period: 2025-01
   input:
     state_code: MI
-    spm_unit_assets: 20_000
+    spm_unit_cash_assets: 20_000
   output:
     mi_fip_resources_eligible: false
 
@@ -34,7 +34,7 @@
   period: 2025-01
   input:
     state_code: MI
-    spm_unit_assets: 15_001
+    spm_unit_cash_assets: 15_001
   output:
     mi_fip_resources_eligible: false
 
@@ -42,6 +42,6 @@
   period: 2025-01
   input:
     state_code: CA
-    spm_unit_assets: 10_000
+    spm_unit_cash_assets: 10_000
   output:
     mi_fip_resources_eligible: 0

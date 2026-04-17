@@ -6,7 +6,9 @@ class tx_ccs_eligible(Variable):
     entity = SPMUnit
     label = "Texas CCS eligible"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
+    reference = (
+        "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-41"
+    )
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
@@ -20,9 +22,4 @@ class tx_ccs_eligible(Variable):
         age_eligible = person("tx_ccs_eligible_child", period)
         has_eligible_child = spm_unit.any(age_eligible)
 
-        return (
-            income_eligible
-            & asset_eligible
-            & work_eligible
-            & has_eligible_child
-        )
+        return income_eligible & asset_eligible & work_eligible & has_eligible_child

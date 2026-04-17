@@ -1,0 +1,292 @@
+# Hawaii Optional State Supplementation (OSS) integration tests.
+# Tests verify the full federal-state chain: real income -> SSI -> Hawaii OSS.
+# Per POMS SI 02005.001, when countable income exceeds the FBR, the excess
+# reduces the state supplement dollar-for-dollar ("state supplement only" case).
+# SSI exclusion rules: $20 general (unearned first), $65 earned, 50% remaining earned.
+# 2025 FBR: $967/month individual, $1,450/month couple.
+
+- name: Case 1, aged individual with Social Security income in community care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Unearned: $800/month, general exclusion $20, countable $780/month
+    ssi_countable_income: 780
+    # Individual FBR: $967/month
+    # SSI: $967 - $780 = $187/month (federal SSI payable → full supplement)
+    ssi: 187
+    hi_oss_eligible: true
+    hi_oss: 784
+
+- name: Case 2, aged couple both in community care with Social Security.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      person2:
+        age: 68
+        social_security: 4_800
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    is_ssi_eligible: [true, true]
+    ssi_claim_is_joint: [true, true]
+    # Combined unearned: $800/month, exclusion $20, countable $780/month
+    # Split: $390 each
+    ssi_countable_income: [390, 390]
+    # Couple FBR / 2: $725/month each
+    ssi_amount_if_eligible: [725, 725]
+    # SSI per person: $725 - $390 = $335/month (payable → full supplement)
+    ssi: [335, 335]
+    hi_oss_couple_rate_applies: [true, true]
+    hi_oss: [952.50, 952.50]
+
+- name: Case 3, asymmetric couple, one aged in care facility, spouse not ABD.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    is_ssi_eligible: [true, false]
+    ssi_claim_is_joint: [false, false]
+    ssi_countable_income: [780, 0]
+    ssi: [187, 0]
+    hi_oss_couple_rate_applies: [false, false]
+    hi_oss: [784, 0]
+
+- name: Case 4, disabled individual with earned income in domiciliary care I.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_disabled: true
+        employment_income: 6_000
+        hi_oss_care_facility_type: DOMICILIARY_CARE_I
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # No unearned: $20 general exclusion rolls to earned
+    # Earned $500/month, total exclusion $65 + $20 = $85
+    # After flat: $415, after 50%: $207.50/month
+    ssi_countable_income: 207.5
+    # Individual FBR $967, SSI: $967 - $207.50 = $759.50 (payable → full supplement)
+    ssi: 759.5
+    hi_oss_eligible: true
+    hi_oss: 784
+
+- name: Case 5, state supplement only, income just above FBR.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Unearned $1,000/month, exclusion $20, countable $980/month
+    ssi_countable_income: 980
+    # FBR $967, SSI: $967 - $980 = -$13, capped at $0
+    ssi: 0
+    # Per POMS SI 02005.001: excess income = $980 - $967 = $13
+    # State supplement = $784 - $13 = $771 ("state supplement only" case)
+    hi_oss_eligible: true
+    hi_oss: 771
+
+- name: Case 6, state supplement only, higher income reduces more.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 14_400
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Unearned $1,200/month, exclusion $20, countable $1,180/month
+    ssi_countable_income: 1_180
+    ssi: 0
+    # Excess: $1,180 - $967 = $213
+    # State supplement: $784 - $213 = $571
+    hi_oss_eligible: true
+    hi_oss: 571
+
+- name: Case 7, income exceeds combined payment level, no supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 21_600
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Unearned $1,800/month, exclusion $20, countable $1,780/month
+    ssi_countable_income: 1_780
+    ssi: 0
+    # Excess: $1,780 - $967 = $813
+    # $813 > $784 supplement → $0
+    hi_oss_eligible: true
+    hi_oss: 0
+
+- name: Case 8, Medicaid institution individual with low Social Security.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 120
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Medical facility FBR: $30/month
+    # Unearned $10/month, exclusion $20, countable $0
+    ssi_countable_income: 0
+    # SSI: $30 - $0 = $30/month (payable → full supplement)
+    ssi: 30
+    hi_oss_eligible: true
+    hi_oss: 45
+
+- name: Case 9, Medicaid institution with income exceeding $30 cap, supplement only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 720
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # Medical facility FBR: $30/month
+    # Unearned $60/month, exclusion $20, countable $40/month
+    ssi_countable_income: 40
+    # SSI: $30 - $40 = -$10, capped at $0
+    ssi: 0
+    # Excess: $40 - $30 = $10
+    # State supplement: $45 - $10 = $35
+    hi_oss_eligible: true
+    hi_oss: 35
+
+- name: Case 10, no facility, SSI recipient gets zero OSS.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    ssi: 187
+    hi_oss_eligible: false
+    hi_oss: 0
+
+- name: Case 11, 2023 rates with aged individual in domiciliary care II.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 7_200
+        hi_oss_care_facility_type: DOMICILIARY_CARE_II
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    is_ssi_eligible: true
+    # 2023 FBR: $914/month
+    # Unearned $600/month, exclusion $20, countable $580/month
+    ssi_countable_income: 580
+    ssi_amount_if_eligible: 914
+    # SSI: $914 - $580 = $334/month (payable → full supplement)
+    ssi: 334
+    hi_oss_eligible: true
+    hi_oss: 759.9

@@ -7,7 +7,9 @@ class ma_eaedc_eligible_disabled_head_or_spouse(Variable):
     label = "Disabled head or spouse present for Massachusetts EAEDC"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"  # (B)
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"  # (B)
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

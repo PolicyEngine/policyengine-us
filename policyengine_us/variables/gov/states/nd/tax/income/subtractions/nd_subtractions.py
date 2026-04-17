@@ -16,9 +16,7 @@ class nd_subtractions(Variable):
     defined_for = StateCode.ND
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nd.tax.income.taxable_income.subtractions
+        p = parameters(period).gov.states.nd.tax.income.taxable_income.subtractions
         total_subtractions = add(tax_unit, period, p.sources)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

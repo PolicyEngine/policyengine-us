@@ -8,9 +8,7 @@ def create_ecpa_only() -> Reform:
         definition_period = YEAR
         label = "End Child Poverty Act child benefit"
         unit = USD
-        documentation = (
-            "Universal child benefit under the End Child Poverty Act"
-        )
+        documentation = "Universal child benefit under the End Child Poverty Act"
         reference = "placeholder - bill not yet introduced"
 
         def formula(person, period, parameters):
@@ -34,9 +32,7 @@ def create_ecpa_only() -> Reform:
         definition_period = YEAR
         label = "End Child Poverty Act adult dependent credit"
         unit = USD
-        documentation = (
-            "Credit for adult dependents under the End Child Poverty Act"
-        )
+        documentation = "Credit for adult dependents under the End Child Poverty Act"
         reference = "placeholder - bill not yet introduced"
 
         def formula(person, period, parameters):
@@ -47,9 +43,7 @@ def create_ecpa_only() -> Reform:
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
 
-            is_eligible = (
-                age >= p.adult_dependent_credit.min_age
-            ) & is_dependent
+            is_eligible = (age >= p.adult_dependent_credit.min_age) & is_dependent
 
             return is_eligible * p.adult_dependent_credit.amount
 
@@ -59,7 +53,9 @@ def create_ecpa_only() -> Reform:
         definition_period = YEAR
         label = "End Child Poverty Act filer credit"
         unit = USD
-        documentation = "Filer credit under the End Child Poverty Act for eligible tax filers"
+        documentation = (
+            "Filer credit under the End Child Poverty Act for eligible tax filers"
+        )
         reference = "placeholder - bill not yet introduced"
 
         def formula(tax_unit, period, parameters):
@@ -83,9 +79,7 @@ def create_ecpa_only() -> Reform:
             amount = p.filer_credit.amount[filing_status]
 
             agi = tax_unit("adjusted_gross_income", period)
-            excess_agi = max_(
-                agi - p.filer_credit.phase_out.start[filing_status], 0
-            )
+            excess_agi = max_(agi - p.filer_credit.phase_out.start[filing_status], 0)
             phase_out = excess_agi * p.filer_credit.phase_out.rate
 
             phased_out_amount = max_(amount - phase_out, 0)
@@ -101,9 +95,7 @@ def create_ecpa_only() -> Reform:
 
         def formula(household, period, parameters):
             # Start with baseline benefits from parameters
-            BENEFITS = list(
-                parameters(period).gov.household.household_benefits
-            )
+            BENEFITS = list(parameters(period).gov.household.household_benefits)
 
             # Add ECPA child benefit
             BENEFITS.append("ecpa_child_benefit")
@@ -163,18 +155,14 @@ def create_ecpa_only() -> Reform:
             standard_credits = parameters(period).gov.irs.credits.refundable
 
             CREDITS = [
-                c
-                for c in standard_credits
-                if c not in ["eitc", "refundable_ctc"]
+                c for c in standard_credits if c not in ["eitc", "refundable_ctc"]
             ]
 
             base_credits = add(tax_unit, period, CREDITS) if CREDITS else 0
 
             # Add ECPA credits
             ecpa_filer = tax_unit("ecpa_filer_credit", period)
-            ecpa_adult_dep = add(
-                tax_unit, period, ["ecpa_adult_dependent_credit"]
-            )
+            ecpa_adult_dep = add(tax_unit, period, ["ecpa_adult_dependent_credit"])
             return base_credits + ecpa_filer + ecpa_adult_dep
 
     class income_tax_non_refundable_credits(Variable):
@@ -211,9 +199,7 @@ def create_ecpa_only() -> Reform:
 end_child_poverty_act = create_ecpa_only()
 
 
-def create_end_child_poverty_act_reform(
-    parameters, period, bypass: bool = False
-):
+def create_end_child_poverty_act_reform(parameters, period, bypass: bool = False):
     """Auto-application function for structural reforms."""
     if bypass:
         return create_ecpa_only()

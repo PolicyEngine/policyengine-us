@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class hi_taxable_income_for_alternative_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Hawaii eligible capital gains for the alternative tax capital gains"
-    )
+    label = "Hawaii eligible capital gains for the alternative tax capital gains"
     unit = USD
     definition_period = YEAR
     defined_for = "hi_alternative_tax_on_capital_gains_eligible"
@@ -18,9 +16,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
         # on Hawaii Resident Income Tax Instructions N-11 Rev.2022, page=33
         taxable_income = tax_unit("hi_taxable_income", period)
         # line 4
-        net_lt_capital_gain = add(
-            tax_unit, period, ["long_term_capital_gains"]
-        )
+        net_lt_capital_gain = add(tax_unit, period, ["long_term_capital_gains"])
         # line 7
         net_capital_gain = tax_unit("net_capital_gain", period)
         # line 8

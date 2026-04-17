@@ -9,7 +9,9 @@ def create_va_hb979() -> Reform:
         label = "Virginia income tax before non-refundable credits"
         unit = USD
         definition_period = YEAR
-        reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        reference = (
+            "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        )
         defined_for = StateCode.VA
 
         def formula(tax_unit, period, parameters):

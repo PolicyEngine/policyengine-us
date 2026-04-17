@@ -14,9 +14,7 @@ class nj_wfnj_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         is_enrolled = spm_unit("is_tanf_enrolled", period)
-        gross_income_eligible = spm_unit(
-            "nj_wfnj_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("nj_wfnj_gross_income_eligible", period)
         countable_income = spm_unit("nj_wfnj_countable_income", period)
         payment_levels = spm_unit("nj_wfnj_payment_levels", period)
         countable_income_eligible = countable_income < payment_levels

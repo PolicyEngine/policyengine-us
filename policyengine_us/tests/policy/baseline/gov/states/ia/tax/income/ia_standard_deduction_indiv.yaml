@@ -123,3 +123,166 @@
         state_code: IA
   output:
     ia_standard_deduction_indiv: 13_850
+
+- name: 2025 joint elderly couple, each gets half basic + own additional.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+      person2:
+        age: 71
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Each: $15,750 (half of JOINT basic) + $1,600 (elderly) = $17,350
+    ia_standard_deduction_indiv: [17_350, 17_350]
+
+- name: 2025 asymmetric, only one spouse elderly.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # person1: $15,750 + $1,600 (elderly) = $17,350
+    # person2: $15,750 + $0 = $15,750
+    ia_standard_deduction_indiv: [17_350, 15_750]
+
+- name: 2025 non-elderly joint couple, base only.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Each: $15,750 (half of JOINT basic)
+    ia_standard_deduction_indiv: [15_750, 15_750]
+
+- name: 2025 blind-only non-elderly, joint filing.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_tax_unit_head: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # person1: $15,750 (half SEPARATE basic) + $1,600 (blind) = $17,350
+    # person2: $15,750 + $0 = $15,750
+    ia_standard_deduction_indiv: [17_350, 15_750]
+
+- name: 2025 aged AND blind, joint filing.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # person1: $15,750 + $1,600 * 2 (aged + blind) = $18,950
+    # person2: $15,750 + $0 = $15,750
+    ia_standard_deduction_indiv: [18_950, 15_750]
+
+- name: 2025 single elderly filer, additional is $2,000.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # $15,750 (SINGLE basic) + $2,000 (SINGLE elderly additional) = $17,750
+    ia_standard_deduction_indiv: 17_750
+
+- name: 2024 joint elderly couple, confirms fix for prior year.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 72
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Each: $14,600 (half of SEPARATE basic) + $1,550 (elderly) = $16,150
+    ia_standard_deduction_indiv: [16_150, 16_150]

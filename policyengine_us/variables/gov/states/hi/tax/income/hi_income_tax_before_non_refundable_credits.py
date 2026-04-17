@@ -34,9 +34,7 @@ class hi_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(taxable_income),
             ],
         )
-        alternative_tax = tax_unit(
-            "hi_alternative_tax_on_capital_gains", period
-        )
+        alternative_tax = tax_unit("hi_alternative_tax_on_capital_gains", period)
 
         alternative_tax_eligible = tax_unit(
             "hi_alternative_tax_on_capital_gains_eligible", period

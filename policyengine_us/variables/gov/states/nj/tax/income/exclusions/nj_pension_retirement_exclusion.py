@@ -6,7 +6,9 @@ class nj_pension_retirement_exclusion(Variable):
     entity = TaxUnit
     label = "New Jersey Pension/Retirement Exclusion"
     unit = USD
-    documentation = "New Jersey pension and retirement excludable amount if eligible (Line 28a)"
+    documentation = (
+        "New Jersey pension and retirement excludable amount if eligible (Line 28a)"
+    )
     definition_period = YEAR
     reference = (
         "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",

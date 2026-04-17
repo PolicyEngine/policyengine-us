@@ -12,9 +12,7 @@ class az_529a_able_account_subtraction(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.tax.income.subtractions.able_account
+        p = parameters(period).gov.states.az.tax.income.subtractions.able_account
 
         filing_status = tax_unit("az_filing_status", period)
         contributions = tax_unit("able_contributions", period)

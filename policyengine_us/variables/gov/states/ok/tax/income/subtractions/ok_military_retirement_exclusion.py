@@ -20,12 +20,6 @@ class ok_military_retirement_exclusion(Variable):
         military_retirement_benefits = tax_unit.members(
             "military_retirement_pay", period
         )
-        adjust_military_retirement_amount = (
-            military_retirement_benefits * p.rate
-        )
-        capped_exclusion_amount = max_(
-            p.floor, adjust_military_retirement_amount
-        )
-        return tax_unit.sum(
-            min_(military_retirement_benefits, capped_exclusion_amount)
-        )
+        adjust_military_retirement_amount = military_retirement_benefits * p.rate
+        capped_exclusion_amount = max_(p.floor, adjust_military_retirement_amount)
+        return tax_unit.sum(min_(military_retirement_benefits, capped_exclusion_amount))

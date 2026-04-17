@@ -8,9 +8,7 @@ class oh_owf(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "oh_owf_eligible"
-    reference = (
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40"
-    )
+    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40"
 
     def formula(spm_unit, period, parameters):
         # Get payment standard for assistance group size

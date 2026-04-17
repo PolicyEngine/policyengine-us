@@ -15,7 +15,5 @@ class k401_catch_up_limit(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(
-            period
-        ).gov.irs.gross_income.retirement_contributions.catch_up
+        p = parameters(period).gov.irs.gross_income.retirement_contributions.catch_up
         return p.limit.k401.calc(age)

@@ -19,9 +19,7 @@ class ca_calworks_child_care_full_time(Variable):
         # Daily is always full-time.
         # Weekly and monthly depend on meeting the weekly hours threshold.
         time_categories = time_category.possible_values
-        meets_hours_threshold = (
-            weekly_hours >= p.weekly_child_care_hours_threshold
-        )
+        meets_hours_threshold = weekly_hours >= p.weekly_child_care_hours_threshold
         weekly_or_monthly = (time_category == time_categories.WEEKLY) | (
             time_category == time_categories.MONTHLY
         )

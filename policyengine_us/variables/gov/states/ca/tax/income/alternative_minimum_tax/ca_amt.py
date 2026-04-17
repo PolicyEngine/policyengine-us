@@ -20,8 +20,6 @@ class ca_amt(Variable):
         p = parameters(period).gov.states.ca.tax.income.amt
         tentative_minimum_tax = reduced_amti * p.tentative_min_tax_rate
         # Line 25
-        regular_tax_before_credits = tax_unit(
-            "ca_income_tax_before_credits", period
-        )
+        regular_tax_before_credits = tax_unit("ca_income_tax_before_credits", period)
         # Line 26
         return max_(tentative_minimum_tax - regular_tax_before_credits, 0)

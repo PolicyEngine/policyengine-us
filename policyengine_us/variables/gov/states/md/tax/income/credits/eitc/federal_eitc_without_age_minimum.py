@@ -32,9 +32,7 @@ class federal_eitc_without_age_minimum(Variable):
 
         # modify EITC minimum age condition in simulation clone
         tbs = simulation.tax_benefit_system
-        original_age = tbs.parameters.gov.irs.credits.eitc.eligibility.age.min(
-            period
-        )
+        original_age = tbs.parameters.gov.irs.credits.eitc.eligibility.age.min(period)
         tbs.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
             value=0,
             period=period,

@@ -7,9 +7,7 @@ class mt_tanf_net_income_standard(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) net income standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://dphhs.mt.gov/assets/hcsd/TANF/TANFStatePlan.pdf#page=10"
-    )
+    reference = "https://dphhs.mt.gov/assets/hcsd/TANF/TANFStatePlan.pdf#page=10"
     defined_for = StateCode.MT
 
     def formula(spm_unit, period, parameters):

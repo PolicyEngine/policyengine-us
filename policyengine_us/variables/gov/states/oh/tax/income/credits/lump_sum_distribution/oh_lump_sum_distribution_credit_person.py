@@ -13,9 +13,7 @@ class oh_lump_sum_distribution_credit_person(Variable):
     defined_for = "oh_lump_sum_distribution_credit_eligible_person"
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.lump_sum_distribution
+        p = parameters(period).gov.states.oh.tax.income.credits.lump_sum_distribution
 
         age = person("age", period)
         return p.base_amount * p.expected_remaining_years.calc(age)

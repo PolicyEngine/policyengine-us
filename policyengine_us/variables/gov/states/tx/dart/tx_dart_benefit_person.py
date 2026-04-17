@@ -8,9 +8,7 @@ class tx_dart_benefit_person(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.TX
-    reference = (
-        "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
-    )
+    reference = "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
 
     def formula(person, period, parameters):
         free_ride_benefit = person("tx_dart_free_ride_benefit", period)

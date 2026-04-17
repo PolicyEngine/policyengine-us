@@ -16,9 +16,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # Modeled after 2023 MICHIGAN Pension Schedule (Form 4884) Section D
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits
+        p = parameters(period).gov.states.mi.tax.income.deductions.retirement_benefits
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
@@ -44,9 +42,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         received_military_retirement_pay = total_military_retirement_pay > 0
         # the cap is reduced by the amount of military retirement pay
         # Line 3
-        reduced_tier_one_cap = max_(
-            tier_one_cap - total_military_retirement_pay, 0
-        )
+        reduced_tier_one_cap = max_(tier_one_cap - total_military_retirement_pay, 0)
         # Line 4
         applicable_tier_one_cap = reduced_tier_one_cap * p.expanded.rate
         # Line 6

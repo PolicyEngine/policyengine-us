@@ -31,17 +31,11 @@ class ca_riv_general_relief_eligible(Variable):
             )
             > 0
         )
-        property_eligible = spm_unit(
-            "ca_riv_general_relief_property_eligible", period
-        )
-        income_eligible = spm_unit(
-            "ca_riv_general_relief_income_eligible", period
-        )
+        property_eligible = spm_unit("ca_riv_general_relief_property_eligible", period)
+        income_eligible = spm_unit("ca_riv_general_relief_income_eligible", period)
         # Ensure at least one person in the unit is not an ineligible person
         # (e.g., due to SSI/TANF receipt, immigration status, or work requirements)
-        budget_unit_size = spm_unit(
-            "ca_riv_general_relief_budget_unit_size", period
-        )
+        budget_unit_size = spm_unit("ca_riv_general_relief_budget_unit_size", period)
         has_eligible_person = budget_unit_size > 0
 
         return (

@@ -11,9 +11,7 @@ class az_tanf_dependent_care_deduction(Variable):
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.hhs.tanf.income.deductions.care_expenses
+        p = parameters(period).gov.states.az.hhs.tanf.income.deductions.care_expenses
 
         person = spm_unit.members
         age = person("age", period.this_year)

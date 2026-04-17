@@ -7,7 +7,9 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
         entity = TaxUnit
         label = "EITC phase-out rate"
         unit = USD
-        documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        documentation = (
+            "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        )
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
@@ -39,6 +41,6 @@ def create_halve_joint_eitc_phase_out_rate_reform(
         return None
 
 
-halve_joint_eitc_phase_out_rate = (
-    create_halve_joint_eitc_phase_out_rate_reform(None, None, bypass=True)
+halve_joint_eitc_phase_out_rate = create_halve_joint_eitc_phase_out_rate_reform(
+    None, None, bypass=True
 )

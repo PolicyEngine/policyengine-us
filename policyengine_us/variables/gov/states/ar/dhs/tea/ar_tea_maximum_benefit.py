@@ -7,7 +7,9 @@ class ar_tea_maximum_benefit(Variable):
     label = "Arkansas TEA maximum benefit"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    reference = (
+        "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    )
     defined_for = StateCode.AR
 
     def formula(spm_unit, period, parameters):

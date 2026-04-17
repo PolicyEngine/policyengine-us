@@ -10,11 +10,9 @@ class nm_works_resources_eligible(Variable):
     defined_for = StateCode.NM
 
     def formula(spm_unit, period, parameters):
-        # Per 8.102.510.8 NMAC, resources/property limits:
-        # - Liquid resources must not exceed $1,500
-        # - Non-liquid resources must not exceed $2,000
-        # NOTE: Simplified check using total assets since liquid/non-liquid
-        # distinction is not currently modeled. Combined limit used.
         p = parameters(period).gov.states.nm.hca.nm_works.resources.limit
-        assets = spm_unit("spm_unit_assets", period.this_year)
-        return assets <= p.liquid + p.non_liquid
+        liquid_resources = spm_unit("nm_works_countable_liquid_resources", period)
+        non_liquid_resources = spm_unit(
+            "nm_works_countable_non_liquid_resources", period
+        )
+        return (liquid_resources <= p.liquid) & (non_liquid_resources <= p.non_liquid)

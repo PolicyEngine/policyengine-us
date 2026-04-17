@@ -1,0 +1,9 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2023
+  input:
+    state_code: CT
+    ct_income_tax_after_amt: 100
+    ct_property_tax_credit_eligible: true
+    ct_property_tax_credit_potential: 80
+  output:
+    ct_property_tax_credit: 80

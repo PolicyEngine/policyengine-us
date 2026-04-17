@@ -14,9 +14,7 @@ class mn_529_contribution_subtraction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mn.tax.income.subtractions.education_savings
+        p = parameters(period).gov.states.mn.tax.income.subtractions.education_savings
         # Get 529 contributions
         contributions = tax_unit("investment_in_529_plan", period)
         # Get filing status for maximum limit

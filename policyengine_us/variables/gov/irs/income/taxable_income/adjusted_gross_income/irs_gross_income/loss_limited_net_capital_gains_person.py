@@ -16,9 +16,7 @@ class loss_limited_net_capital_gains_person(Variable):
         # Get tax unit totals
         tax_unit = person.tax_unit
         tax_unit_capital_gains = tax_unit.sum(person_capital_gains)
-        tax_unit_loss_limited = tax_unit(
-            "loss_limited_net_capital_gains", period
-        )
+        tax_unit_loss_limited = tax_unit("loss_limited_net_capital_gains", period)
 
         # If net gains (positive), return person's share unchanged
         # If net losses, allocate the loss-limited amount proportionally

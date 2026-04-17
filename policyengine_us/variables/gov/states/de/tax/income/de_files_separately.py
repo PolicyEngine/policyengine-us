@@ -7,7 +7,9 @@ class de_files_separately(Variable):
     label = "married couple files separately on the Delaware tax return"
     unit = USD
     definition_period = YEAR
-    reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
+    reference = (
+        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
+    )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):

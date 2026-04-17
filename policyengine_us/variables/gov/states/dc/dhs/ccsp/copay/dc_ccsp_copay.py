@@ -12,9 +12,7 @@ class dc_ccsp_copay(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.dhs.ccsp.copay
-        qualified_need_eligible = spm_unit(
-            "dc_ccsp_qualified_need_eligible", period
-        )
+        qualified_need_eligible = spm_unit("dc_ccsp_qualified_need_eligible", period)
         countable_income = spm_unit("dc_ccsp_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         income_eligible = countable_income < fpg * p.exempted_rate

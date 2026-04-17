@@ -13,6 +13,4 @@ class ca_tanf_financial_eligible(Variable):
         applicant_test = spm_unit("ca_tanf_applicant_financial_test", period)
         recipient_test = spm_unit("ca_tanf_recipient_financial_test", period)
 
-        return where(
-            tanf_enrolled, recipient_test, applicant_test & recipient_test
-        )
+        return where(tanf_enrolled, recipient_test, applicant_test & recipient_test)

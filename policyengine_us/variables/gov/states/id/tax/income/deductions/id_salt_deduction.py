@@ -11,14 +11,12 @@ class id_salt_deduction(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        state_and_local_tax = tax_unit(
-            "state_and_local_sales_or_income_tax", period
-        )
+        state_and_local_tax = tax_unit("state_and_local_sales_or_income_tax", period)
         # If the salt amount is above the federal cap, Idaho applies separate limitations
         filing_status = tax_unit("filing_status", period)
-        cap = parameters(
-            period
-        ).gov.irs.deductions.itemized.salt_and_real_estate.cap[filing_status]
+        cap = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate.cap[
+            filing_status
+        ]
         # Federal Schedule A line 5b - State and local real estate taxes
         # Federal Schedule A line 5c - State and local personal property taxes
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])

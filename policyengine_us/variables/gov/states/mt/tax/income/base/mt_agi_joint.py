@@ -31,9 +31,7 @@ class mt_agi_joint(Variable):
         if p.applies:
             # 2023 and before: apply lines 21-24 adjustment for social security
             taxable_ss = add(tax_unit, period, ["taxable_social_security"])
-            mt_taxable_ss = add(
-                tax_unit, period, ["mt_taxable_social_security"]
-            )
+            mt_taxable_ss = add(tax_unit, period, ["mt_taxable_social_security"])
             adjusted_mt_ss_difference = mt_taxable_ss - taxable_ss
             tax_unit_mt_agi = max_(reduced_agi + adjusted_mt_ss_difference, 0)
         else:

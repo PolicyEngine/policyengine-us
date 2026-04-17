@@ -4,18 +4,14 @@ from policyengine_us.model_api import *
 class meets_snap_general_work_requirements(Variable):
     value_type = bool
     entity = Person
-    label = (
-        "Person is eligible for SNAP benefits via general work requirements"
-    )
+    label = "Person is eligible for SNAP benefits via general work requirements"
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/7/273.7"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
         age = person("monthly_age", period)
-        weekly_hours_worked = person(
-            "weekly_hours_worked_before_lsr", period.this_year
-        )
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         # Under 16 or 60 years of age or older are exempted
         worked_exempted_age = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation

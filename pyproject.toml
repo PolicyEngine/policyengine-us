@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.590.0"
+version = "1.639.2"
 description = "Add your description here."
 readme = "README.md"
 authors = [
@@ -22,6 +22,8 @@ dependencies = [
     "microdf-python>=1.0.0",
     "pandas>=2.0",
     "policyengine-core>=3.23.5",
+    "spm-calculator>=0.2.0",
+    "tables>=3.9",
     "tqdm>=4.67.1",
 ]
 
@@ -34,7 +36,7 @@ build-backend = "hatchling.build"
 
 [project.optional-dependencies]
 dev = [
-    "black==26.1.0",
+    "ruff>=0.9.0",
     "coverage>=7.9.2",
     "furo>=2024.8.6",
     "jupyter-book>=1.0.4.post1",
@@ -78,4 +80,8 @@ showcontent = true
 directory = "removed"
 name = "Removed"
 showcontent = true
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E402", "E501", "E712", "E713", "E721", "E722", "E741", "F401", "F402", "F403", "F405", "F541", "F811", "F821", "F841"]
 

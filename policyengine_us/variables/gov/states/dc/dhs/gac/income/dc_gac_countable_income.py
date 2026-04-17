@@ -7,9 +7,7 @@ class dc_gac_countable_income(Variable):
     label = "DC General Assistance for Children (GAC) countable income"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a#(e)"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a#(e)"
     defined_for = StateCode.DC
 
     adds = [

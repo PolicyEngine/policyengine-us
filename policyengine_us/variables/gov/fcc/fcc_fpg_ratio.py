@@ -5,7 +5,9 @@ class fcc_fpg_ratio(Variable):
     value_type = float
     entity = SPMUnit
     label = "Federal poverty ratio per FCC"
-    documentation = "SPM unit's ratio of IRS gross income to their federal poverty guideline"
+    documentation = (
+        "SPM unit's ratio of IRS gross income to their federal poverty guideline"
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/47/54.400#f"
     unit = "/1"

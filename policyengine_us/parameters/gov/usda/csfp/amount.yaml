@@ -1,11 +1,29 @@
-description: The following food value amount is provided under the Commodity Supplemental Food Program to each eligible person.
+description: The United States provides this amount per slot under the Commodity Supplemental Food Program.
 
 values:
-  2024-01-01: 330 # cost / participation => 222,891,000 / 676,000
+  2019-01-01: 330 # cost / participation => 222,891,000 / 676,000
+  2020-01-01: 333 # cost / participation => 245,000,000 / 736,110
+  2021-01-01: 476 # cost / participation => 362,000,000 / 760,634
+  2022-01-01: 437 # cost / participation => 332,000,000 / 760,547
+  2023-01-01: 445 # cost / participation => 338,640,000 / 760,547
+  2024-01-01: 531 # cost / participation => 389,000,000 / 731,933
+  2025-01-01: 601 # cost / participation => 425,000,000 / 707,000
 metadata:
   unit: currency-USD
   period: year
   label: Commodity Supplemental Food Program amount
   reference:
-    - title: Commodity Supplemental Food Program
+    - title: Commodity Supplemental Food Program Fact Sheet (2019)
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/csfp-program-fact-sheet-2019.pdf
+    - title: CSFP Final Caseload Assignments for the 2020 Caseload Cycle
+      href: https://www.fns.usda.gov/csfp/final-caseload-assignments-2020-caseload-cycle
+    - title: CSFP Additional Caseload Assignments for the 2021 Caseload Cycle
+      href: https://www.fns.usda.gov/csfp/additional-caseload-assignments-2021-caseload-cycle
+    - title: CSFP Caseload Assignments for the 2022 Caseload Cycle and Administrative Grants
+      href: https://www.fns.usda.gov/csfp/caseload-assignments-2022-caseload-cycle-and-administrative-grants
+    - title: CSFP Caseload Assignments for the 2023 Caseload Cycle and Administrative Grants
+      href: https://www.fns.usda.gov/csfp/caseload-assignments-2023-caseload-cycle-and-administrative-grants
+    - title: CSFP Caseload Assignments for the 2024 Caseload Cycle
+      href: https://www.fns.usda.gov/csfp/caseload-assignments-2024
+    - title: CSFP Caseload Assignments for the 2025 Caseload Cycle
+      href: https://www.fns.usda.gov/csfp/caseload-assignments-2025

@@ -12,15 +12,9 @@ class ca_capp_payment(Variable):
 
     def formula(person, period, parameters):
         # CAPP uses same RMR payment structure as CalWORKs child care
-        payment_standard = person(
-            "ca_calworks_child_care_payment_standard", period
-        )
-        time_coefficient = person(
-            "ca_calworks_child_care_time_coefficient", period
-        )
-        payment_factor = person(
-            "ca_calworks_child_care_payment_factor", period
-        )
+        payment_standard = person("ca_calworks_child_care_payment_standard", period)
+        time_coefficient = person("ca_calworks_child_care_time_coefficient", period)
+        payment_factor = person("ca_calworks_child_care_payment_factor", period)
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
 
         return min_(

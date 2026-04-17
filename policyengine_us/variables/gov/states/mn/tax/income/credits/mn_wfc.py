@@ -23,9 +23,7 @@ class mn_wfc(Variable):
             earnings,
             p.wfc.pre_cwfc_legislation.phase_in.earnings_maximum.calc(count),
         )
-        amount = capped_earn * p.wfc.pre_cwfc_legislation.phase_in.rate.calc(
-            count
-        )
+        amount = capped_earn * p.wfc.pre_cwfc_legislation.phase_in.rate.calc(count)
         # determine phaseout reduction
         agi = tax_unit("adjusted_gross_income", period)
         income = max_(earnings, agi)
@@ -36,9 +34,8 @@ class mn_wfc(Variable):
             p.wfc.pre_cwfc_legislation.phase_out.threshold.other.calc(count),
         )
         excess_income = max_(0, income - income_threshold)
-        reduction = (
-            excess_income
-            * p.wfc.pre_cwfc_legislation.phase_out.rate.calc(count)
+        reduction = excess_income * p.wfc.pre_cwfc_legislation.phase_out.rate.calc(
+            count
         )
         # determine credit amount after phaseout if eligible
         eligible = tax_unit("mn_wfc_eligible", period)

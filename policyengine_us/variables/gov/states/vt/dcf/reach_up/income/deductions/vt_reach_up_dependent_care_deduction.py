@@ -7,7 +7,9 @@ class vt_reach_up_dependent_care_deduction(Variable):
     label = "Vermont Reach Up dependent care deduction"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/vermont/13-220-Code-Vt-R-13-170-220-X"
+    reference = (
+        "https://www.law.cornell.edu/regulations/vermont/13-220-Code-Vt-R-13-170-220-X"
+    )
     defined_for = StateCode.VT
 
     def formula(spm_unit, period, parameters):

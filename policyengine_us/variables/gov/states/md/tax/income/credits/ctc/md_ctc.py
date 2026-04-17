@@ -20,9 +20,7 @@ class md_ctc(Variable):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)
-        age_limit = where(
-            disabled, p.age_threshold.disabled, p.age_threshold.main
-        )
+        age_limit = where(disabled, p.age_threshold.disabled, p.age_threshold.main)
         meets_age_limit = person("age", period) < age_limit
         eligible = dependent & meets_age_limit
         eligible_children = tax_unit.sum(eligible)
@@ -42,9 +40,7 @@ class md_ctc(Variable):
             # Calculate phase-out reduction: reduction for every increment (or fraction thereof) above threshold
             excess_income = max_(agi - p.phase_out.threshold, 0)
             # Use ceiling division: any fraction of increment counts as a full increment for phase-out
-            increments_above_threshold = ceil(
-                excess_income / p.phase_out.increment
-            )
+            increments_above_threshold = ceil(excess_income / p.phase_out.increment)
             phase_out_amount = increments_above_threshold * p.phase_out.rate
 
             # Apply phase-out (credit cannot go below zero)

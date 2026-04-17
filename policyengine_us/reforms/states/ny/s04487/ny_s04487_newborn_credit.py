@@ -83,9 +83,7 @@ def create_ny_s04487_newborn_credit() -> Reform:
     return reform
 
 
-def create_ny_s04487_newborn_credit_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ny_s04487_newborn_credit_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ny_s04487_newborn_credit()
 

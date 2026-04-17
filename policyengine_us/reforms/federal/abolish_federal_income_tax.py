@@ -12,9 +12,7 @@ def create_abolish_federal_income_tax() -> Reform:
 
         def formula(household, period, parameters):
             p = parameters(period)
-            added_components = (
-                p.gov.household.household_tax_before_refundable_credits
-            )
+            added_components = p.gov.household.household_tax_before_refundable_credits
             added_components = [
                 c
                 for c in added_components
@@ -33,9 +31,7 @@ def create_abolish_federal_income_tax() -> Reform:
             p = parameters(period)
             added_components = p.gov.household.household_refundable_credits
             added_components = [
-                c
-                for c in added_components
-                if c != "income_tax_refundable_credits"
+                c for c in added_components if c != "income_tax_refundable_credits"
             ]
             return add(household, period, added_components)
 
@@ -47,9 +43,7 @@ def create_abolish_federal_income_tax() -> Reform:
     return reform
 
 
-def create_abolish_federal_income_tax_reform(
-    parameters, period, bypass: bool = False
-):
+def create_abolish_federal_income_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_abolish_federal_income_tax()
 

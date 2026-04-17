@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas additional tax credit for qualified individuals for each individual"
+    label = (
+        "Arkansas additional tax credit for qualified individuals for each individual"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AR
@@ -25,9 +27,7 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
         filing_jointly = joint & ~filing_separately
         multiplier = where(filing_jointly, p.joint_multiplier, 1)
-        max_amount = where(
-            filing_jointly, p.max_amount * multiplier, p.max_amount
-        )
+        max_amount = where(filing_jointly, p.max_amount * multiplier, p.max_amount)
         excess = max_(income - p.reduction.start, 0)
         increments = np.ceil(excess / p.reduction.increment)
         reduction_amount = where(

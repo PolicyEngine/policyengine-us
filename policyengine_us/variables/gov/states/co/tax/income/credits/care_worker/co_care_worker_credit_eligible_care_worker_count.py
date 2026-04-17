@@ -11,8 +11,6 @@ class co_care_worker_credit_eligible_care_worker_count(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        care_worker = person(
-            "co_care_worker_credit_eligible_care_worker", period
-        )
+        care_worker = person("co_care_worker_credit_eligible_care_worker", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(care_worker & head_or_spouse)

@@ -28,8 +28,6 @@ class nj_anchor_eligible(Variable):
         homeowner_income_eligible = is_homeowner & (
             gross_income <= p.homeowner.income_limit.upper
         )
-        renter_income_eligible = is_renter & (
-            gross_income <= p.renter.income_limit
-        )
+        renter_income_eligible = is_renter & (gross_income <= p.renter.income_limit)
 
         return homeowner_income_eligible | renter_income_eligible

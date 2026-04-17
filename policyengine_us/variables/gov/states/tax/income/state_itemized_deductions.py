@@ -56,9 +56,7 @@ class state_itemized_deductions(Variable):
             indiv_deductions = add(tax_unit, period, [variables["indiv"]])
             joint_deductions = add(tax_unit, period, [variables["joint"]])
             max_deductions = max_(indiv_deductions, joint_deductions)
-            state_specific_base = where(
-                is_state, max_deductions, state_specific_base
-            )
+            state_specific_base = where(is_state, max_deductions, state_specific_base)
 
         # Check if the state adopts federal itemized deductions
         uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES)

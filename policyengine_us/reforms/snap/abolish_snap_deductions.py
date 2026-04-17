@@ -21,9 +21,7 @@ def create_abolish_snap_deductions() -> Reform:
     return reform
 
 
-def create_abolish_snap_deductions_reform(
-    parameters, period, bypass: bool = False
-):
+def create_abolish_snap_deductions_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_abolish_snap_deductions()
 
@@ -35,6 +33,4 @@ def create_abolish_snap_deductions_reform(
         return None
 
 
-abolish_snap_deductions = create_abolish_snap_deductions_reform(
-    None, None, bypass=True
-)
+abolish_snap_deductions = create_abolish_snap_deductions_reform(None, None, bypass=True)

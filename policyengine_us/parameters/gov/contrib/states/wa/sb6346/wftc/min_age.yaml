@@ -1,0 +1,16 @@
+description: Washington sets this age threshold for expanded Working Families Tax Credit eligibility under the SSB 6346 reform.
+
+values:
+  2029-01-01: 18
+
+# PolicyEngine does not model the WFTC's claim-year timing separately from the
+# simulated tax year, so the later effective date in Sec. 1005(1) is enforced
+# through the companion wftc/in_effect parameter rather than by backdating this
+# threshold before 2029.
+metadata:
+  unit: year
+  period: year
+  label: Washington SSB 6346 WFTC minimum age threshold
+  reference:
+    - title: SSB 6346, Sec. 901(2)(a)(ii)(C)
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Bills/6346-S.pdf#page=53

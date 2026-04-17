@@ -13,8 +13,6 @@ class ma_tafdc_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        non_financial_eligible = spm_unit(
-            "ma_tafdc_non_financial_eligible", period
-        )
+        non_financial_eligible = spm_unit("ma_tafdc_non_financial_eligible", period)
         financial_eligible = spm_unit("ma_tafdc_financial_eligible", period)
         return non_financial_eligible & financial_eligible

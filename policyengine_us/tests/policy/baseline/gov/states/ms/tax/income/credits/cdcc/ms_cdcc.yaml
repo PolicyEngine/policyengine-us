@@ -2,22 +2,23 @@
   period: 2023
   input:
     ms_cdcc_eligible: true
-    cdcc: 1_000
+    cdcc: 1000
+    ms_income_tax_before_credits_unit: 1000000
   output:
     ms_cdcc: 250
-
 - name: Ineligible household
   period: 2023
   input:
     ms_cdcc_eligible: false
-    cdcc: 1_000
+    cdcc: 1000
+    ms_income_tax_before_credits_unit: 1000000
   output:
     ms_cdcc: 0
-
 - name: No federal credit
   period: 2023
   input:
     ms_cdcc_eligible: true
     cdcc: 0
+    ms_income_tax_before_credits_unit: 1000000
   output:
     ms_cdcc: 0

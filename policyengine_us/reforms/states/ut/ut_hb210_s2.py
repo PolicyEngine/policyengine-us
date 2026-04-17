@@ -46,9 +46,7 @@ def create_ut_hb210_s2() -> Reform:
         """
 
         def formula(tax_unit, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.states.ut.hb210.s2_marriage_credit
+            p = parameters(period).gov.contrib.states.ut.hb210.s2_marriage_credit
 
             filing_status = tax_unit("filing_status", period)
 
@@ -77,14 +75,10 @@ def create_ut_hb210_s2() -> Reform:
 
     def modify_parameters(parameters):
         # Add ut_hb210_s2_marriage_credit to non-refundable credits list
-        non_refundable = (
-            parameters.gov.states.ut.tax.income.credits.non_refundable
-        )
+        non_refundable = parameters.gov.states.ut.tax.income.credits.non_refundable
         current_credits = non_refundable(instant("2026-01-01"))
         if "ut_hb210_s2_marriage_credit" not in current_credits:
-            new_credits = list(current_credits) + [
-                "ut_hb210_s2_marriage_credit"
-            ]
+            new_credits = list(current_credits) + ["ut_hb210_s2_marriage_credit"]
             non_refundable.update(
                 start=instant("2026-01-01"),
                 stop=instant("2100-12-31"),
