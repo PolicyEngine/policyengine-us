@@ -1,0 +1,1 @@
+Implement the IRC § 461(l) excess business loss limitation, applying it to self-employment, farm, rental, estate/trust, partnership/S-corp, and Form 4797 other net gain losses. Treat capital losses separately under the Section 1211 limit. Extend the limitation permanently for 2027 onwards per OBBBA § 70601.
