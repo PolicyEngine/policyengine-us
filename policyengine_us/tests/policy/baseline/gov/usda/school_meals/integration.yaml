@@ -45,7 +45,7 @@
     school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46 (2025 rates)
 
 # High-income California household qualifies under the state universal meals policy.
-- name: California universal meals makes a high-income household FREE.
+- name: California universal meals makes a high-income household FREE with no reduced-price subsidy.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -66,6 +66,7 @@
   output:
     state_has_universal_free_school_meals: true
     school_meal_tier: FREE
+    reduced_price_school_meals: 0
 
 # Same high-income household in a non-universal-meals state pays full price.
 - name: High-income Florida household stays in the paid tier without a state universal program.

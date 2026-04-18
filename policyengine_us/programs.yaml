@@ -79,6 +79,43 @@ programs:
     parameter_prefix: gov.usda.school_meals
     verified_start_year: 2021
     notes: Nationwide rules
+    state_implementations:
+      - state: CA
+        name: California universal meals
+        effective: 2022-07-01
+        reference: AB 130 (2021)
+      - state: CO
+        name: Colorado Healthy School Meals for All
+        effective: 2023-07-01
+        reference: Proposition FF / HB 23-1008
+      - state: MA
+        name: Massachusetts universal meals
+        effective: 2023-07-01
+        reference: FY24 budget
+      - state: ME
+        name: Maine School Meals for All
+        effective: 2021-07-01
+        reference: LD 1679 (2021)
+      - state: MI
+        name: Michigan School Meals
+        effective: 2023-07-01
+        reference: FY24 School Aid budget
+      - state: MN
+        name: Minnesota Free School Meals for Kids
+        effective: 2023-07-01
+        reference: HF 5 (2023)
+      - state: NM
+        name: New Mexico Healthy Universal School Meals
+        effective: 2023-07-01
+        reference: SB 4 (2023)
+      - state: NY
+        name: New York universal meals
+        effective: 2025-07-01
+        reference: FY26 enacted budget
+      - state: VT
+        name: Vermont Universal School Meals
+        effective: 2023-07-01
+        reference: Act 64 / H.165 (2023)
 
   - id: summer_ebt
     name: Summer EBT
