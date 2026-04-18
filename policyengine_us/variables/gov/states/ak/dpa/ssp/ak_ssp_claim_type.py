@@ -54,8 +54,19 @@ class ak_ssp_claim_type(Variable):
             )
         )
         is_eligible_individual = person("is_ssi_aged_blind_disabled", period)
+        # COUPLE_ONE_ELIGIBLE requires exactly one spouse to be
+        # individually ABD-eligible. If both spouses qualify but they
+        # are not jointly claiming, they should not be misclassified
+        # as a one-eligible couple.
+        spouse_is_eligible = (
+            person.marital_unit.sum(is_eligible_individual.astype(int))
+            - is_eligible_individual.astype(int)
+        ) > 0
         one_eligible_couple = (
-            ~joint_claim & is_eligible_individual & (marital_unit_size == 2)
+            ~joint_claim
+            & is_eligible_individual
+            & ~spouse_is_eligible
+            & (marital_unit_size == 2)
         )
         couple_both_eligible = joint_claim & shared_living_arrangement
         return select(
