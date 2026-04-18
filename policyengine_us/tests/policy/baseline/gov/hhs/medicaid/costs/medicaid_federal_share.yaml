@@ -1,0 +1,77 @@
+- name: Mississippi Medicaid child uses regular FY2026 FMAP (76.90%)
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+  output:
+    medicaid_federal_share: 0.7690
+
+- name: California aged-disabled enrollee uses 50% FMAP floor
+  period: 2026
+  input:
+    state_code: CA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: SSI_RECIPIENT
+  output:
+    medicaid_federal_share: 0.5000
+
+- name: DC young child uses statutory 70% FMAP
+  period: 2026
+  input:
+    state_code: DC
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: YOUNG_CHILD
+  output:
+    medicaid_federal_share: 0.7000
+
+- name: Expansion adult in Texas receives 90% expansion FMAP (not state FMAP)
+  period: 2026
+  input:
+    state_code: TX
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.9000
+
+- name: Expansion adult in Mississippi receives 90%, not MS regular FMAP
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.9000
+
+- name: 2018 expansion FMAP is 94% per 42 USC 1396d(y) schedule
+  period: 2018
+  input:
+    state_code: CA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.94
+
+- name: Non-enrolled person has zero federal share
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: false
+  output:
+    medicaid_federal_share: 0
+
+- name: West Virginia pregnant enrollee (non-expansion) uses state FY2026 FMAP (74.22%)
+  period: 2026
+  input:
+    state_code: WV
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: PREGNANT
+  output:
+    medicaid_federal_share: 0.7422
