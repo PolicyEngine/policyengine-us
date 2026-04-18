@@ -396,3 +396,82 @@
         state_code: NJ
   output:
     nj_ccap_copay: 0
+
+- name: Case 11, two eligible children but only one attending uses first-child rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 31_000
+        immigration_status: CITIZEN
+      kid_in_care:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+      kid_not_in_care:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [parent, kid_in_care, kid_not_in_care]
+    spm_units:
+      spm_unit:
+        members: [parent, kid_in_care, kid_not_in_care]
+    households:
+      household:
+        members: [parent, kid_in_care, kid_not_in_care]
+        state_code: NJ
+  output:
+    # Copay scales with children actually attending care, not just those
+    # eligible. FPG family of 3 = 27_320; FPL ratio = 31_000/27_320 = 1.134.
+    # 1 child FT in care at 101-200% FPL -> first child FT rate 2%.
+    # monthly copay = 31_000 * 0.02 / 12 = 51.67
+    nj_ccap_copay: 51.67
+
+- name: Case 12, two eligible children with only one PT attending uses first-child PT rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        immigration_status: CITIZEN
+      kid_in_care:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+      kid_not_in_care:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [parent, kid_in_care, kid_not_in_care]
+    spm_units:
+      spm_unit:
+        members: [parent, kid_in_care, kid_not_in_care]
+    households:
+      household:
+        members: [parent, kid_in_care, kid_not_in_care]
+        state_code: NJ
+  output:
+    # FPG family of 3 = 27_320; FPL ratio = 40_000/27_320 = 1.464.
+    # Only one attending child (PT) -> first child PT rate 1%.
+    # monthly copay = 40_000 * 0.01 / 12 = 33.33
+    nj_ccap_copay: 33.33

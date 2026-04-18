@@ -26,10 +26,16 @@ class nj_ccap_copay(Variable):
         is_eligible_child = person("nj_ccap_eligible_child", period)
         time_category = person("nj_ccap_time_category", period)
         is_ft = time_category == NJCCAPTimeCategory.FULL_TIME
+        # Copay scales with children actually receiving care, not merely
+        # those who would be eligible. Follows the VA CCSP (va_ccsp_copay)
+        # and SC CCAP (sc_ccap_copay) pattern of gating the child count on
+        # an "in care" flag.
+        in_care = person("childcare_hours_per_week", period.this_year) > 0
+        is_paying_child = is_eligible_child & in_care
 
-        n_eligible = spm_unit.sum(is_eligible_child)
-        n_ft = spm_unit.sum(is_eligible_child & is_ft)
-        has_second_child = n_eligible >= 2
+        n_paying = spm_unit.sum(is_paying_child)
+        n_ft = spm_unit.sum(is_paying_child & is_ft)
+        has_second_child = n_paying >= 2
 
         # First child rate: use FT rate if any child is FT, else PT
         first_child_rate = where(
