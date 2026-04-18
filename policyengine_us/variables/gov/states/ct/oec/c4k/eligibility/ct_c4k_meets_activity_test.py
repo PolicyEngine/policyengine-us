@@ -12,8 +12,17 @@ class ct_c4k_meets_activity_test(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ct.oec.c4k.age_threshold
         person = spm_unit.members
-        employed = spm_unit.any(person("employment_income", period) > 0)
-        self_employed = spm_unit.any(person("self_employment_income", period) > 0)
+        # C4K activity test applies to the applicant/caretaker
+        # (tax-unit head or spouse) only. A working dependent (e.g., a
+        # teen with a summer job) does not satisfy the test for the
+        # family.
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        employed = spm_unit.any(
+            is_head_or_spouse & (person("employment_income", period) > 0)
+        )
+        self_employed = spm_unit.any(
+            is_head_or_spouse & (person("self_employment_income", period) > 0)
+        )
         in_tfa = spm_unit("ct_tfa_eligible", period)
         teen_parent_in_school = spm_unit.any(
             person("is_parent", period.this_year)
