@@ -22,9 +22,11 @@ class nj_ccap_activity_eligible(Variable):
         is_student = person("is_full_time_student", period.this_year)
         individually_eligible = meets_work_requirement | is_student
         # Each parent must independently qualify (N.J.A.C. 10:15-5.2).
+        # Require at least one head/spouse in the unit so an SPM unit
+        # containing only dependents does not vacuously pass.
         n_parents = spm_unit.sum(is_head_or_spouse)
         n_qualifying = spm_unit.sum(is_head_or_spouse & individually_eligible)
-        all_parents_qualify = n_qualifying >= n_parents
+        all_parents_qualify = (n_parents >= 1) & (n_qualifying >= n_parents)
         # Fallback for non-derivable activities (TANF recipients,
         # CP&P cases, job training combos).
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
