@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
     "microdf-python>=1.0.0",
     "pandas>=2.0",
-    "policyengine-core>=3.23.5",
+    "policyengine-core>=3.24.4",
     "spm-calculator>=0.2.0",
     "tables>=3.9",
     "tqdm>=4.67.1",
@@ -50,15 +50,6 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
 
-[tool.uv]
-# Until policyengine-core ships 3.9/3.10 support (3.24.0+), restrict
-# uv.lock resolution to >=3.11. `requires-python` above still declares
-# 3.9 is supported — pip users on 3.9/3.10 will resolve against PyPI
-# once core 3.24+ is published. Remove this block once the lockfile
-# can cleanly resolve across 3.9-3.14.
-environments = [
-    "python_version >= '3.11'",
-]
 
 [tool.towncrier]
 package = "policyengine_us"

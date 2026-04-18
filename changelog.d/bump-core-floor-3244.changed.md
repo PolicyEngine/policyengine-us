@@ -1,0 +1,1 @@
+Bump policyengine-core floor to 3.24.4 so the breakdown/children validator runs in CI and PyPI installs, closing the remaining gap from issue #8055. Remove the [tool.uv] Python-version restriction since core 3.24+ supports 3.9/3.10.
