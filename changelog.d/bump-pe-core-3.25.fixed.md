@@ -1,0 +1,1 @@
+Bump `policyengine-core` minimum to `>=3.25.0` to pick up the `set_input` preservation fix from PolicyEngine/policyengine-core#475. Addresses the `state_fips` / `tax_unit_itemizes` / household-dataset regression (PolicyEngine/policyengine-us#8058) where `apply_reform` wiped user-provided dataset inputs during structural reforms.

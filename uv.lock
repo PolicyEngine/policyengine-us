@@ -2941,7 +2941,11 @@ wheels = [
 
 [[package]]
 name = "policyengine-core"
+<<<<<<< HEAD
 version = "3.25.1"
+=======
+version = "3.25.0"
+>>>>>>> 80277c2821 (Bump policyengine-core to >=3.25.0 to fix state_fips wipe regression)
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dpath" },
@@ -2967,14 +2971,24 @@ dependencies = [
     { name = "standard-imghdr" },
     { name = "wheel" },
 ]
+<<<<<<< HEAD
 sdist = { url = "https://files.pythonhosted.org/packages/37/66/a858dcefd08d0146c12c5c1e28a7614ed1ed673c3a7bf8c342027d694368/policyengine_core-3.25.1.tar.gz", hash = "sha256:6ccb89469f30e6c02d57977aef1f5a2e2802c4c8f10b831529052fc8f1cb90a5", size = 464737, upload-time = "2026-04-18T12:30:27.982Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4f/cf/4acec9277399ca9452bb66df796a07af90271355f7f8122fbc490603fed1/policyengine_core-3.25.1-py3-none-any.whl", hash = "sha256:196f26e067c1893aba6bde44ae4d1ede799fb6c0823866200500adcf4459d254", size = 230909, upload-time = "2026-04-18T12:30:25.525Z" },
+=======
+sdist = { url = "https://files.pythonhosted.org/packages/08/e3/40f11fe87ae718f88359dba6bf5971a1bb9b322dd48069c7881db9006791/policyengine_core-3.25.0.tar.gz", hash = "sha256:3b59a59046465d2f5c959cfe278c598e7deaa94d04a4134f4742d9f24cdbd6de", size = 464281, upload-time = "2026-04-18T00:28:02.949Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2c/f8/fd60f3c7f02d27c5c83a713cd7779707b4ddff6cd76143a9b4def1c7ec4d/policyengine_core-3.25.0-py3-none-any.whl", hash = "sha256:397127f8842dea12638880c231e6bdec346fb9c9259b7775bb060c06a3b0190b", size = 230805, upload-time = "2026-04-18T00:28:01.311Z" },
+>>>>>>> 80277c2821 (Bump policyengine-core to >=3.25.0 to fix state_fips wipe regression)
 ]
 
 [[package]]
 name = "policyengine-us"
+<<<<<<< HEAD
 version = "1.653.3"
+=======
+version = "1.653.2"
+>>>>>>> 80277c2821 (Bump policyengine-core to >=3.25.0 to fix state_fips wipe regression)
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -3009,7 +3023,11 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=2.0" },
+<<<<<<< HEAD
     { name = "policyengine-core", specifier = ">=3.24.4" },
+=======
+    { name = "policyengine-core", specifier = ">=3.25.0" },
+>>>>>>> 80277c2821 (Bump policyengine-core to >=3.25.0 to fix state_fips wipe regression)
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "spm-calculator", specifier = ">=0.2.0" },
