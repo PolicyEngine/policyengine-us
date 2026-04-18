@@ -27,8 +27,10 @@ class medicaid_federal_share(Variable):
         return select(
             [
                 group == MedicaidGroup.EXPANSION_ADULT,
-                group == MedicaidGroup.NONE,
+                group == MedicaidGroup.AGED_DISABLED,
+                group == MedicaidGroup.CHILD,
+                group == MedicaidGroup.NON_EXPANSION_ADULT,
             ],
-            [p.expansion_fmap, 0],
-            default=regular_fmap,
+            [p.expansion_fmap, regular_fmap, regular_fmap, regular_fmap],
+            default=0,
         )

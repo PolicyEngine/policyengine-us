@@ -20,5 +20,5 @@ class chip_federal_share(Variable):
         fmap = parameters(period).gov.hhs.medicaid.cost_share.fmap
         state = person.household("state_code", period)
         regular_fmap = fmap[state]
-        efmap = regular_fmap + 0.30 * (1 - regular_fmap)
-        return min_(efmap, 0.85)
+        efmap = min_(regular_fmap + 0.30 * (1 - regular_fmap), 0.85)
+        return where(regular_fmap > 0, efmap, 0)

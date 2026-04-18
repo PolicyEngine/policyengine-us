@@ -1,4 +1,4 @@
-- name: Mississippi eFMAP capped at 85% (FY2026 FMAP 76.90% implies 83.83% uncapped)
+- name: Mississippi FY2026 eFMAP is 83.83% (FMAP 76.90% + 30% of 23.10%, below 85% cap)
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -39,5 +39,13 @@
   input:
     state_code: CA
     is_chip_eligible: false
+  output:
+    chip_federal_share: 0
+
+- name: Pre-FY2018 period returns zero eFMAP (sentinel prevents backward extrapolation)
+  period: 2016
+  input:
+    state_code: MS
+    is_chip_eligible: true
   output:
     chip_federal_share: 0
