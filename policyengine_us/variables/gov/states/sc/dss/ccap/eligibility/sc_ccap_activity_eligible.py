@@ -23,4 +23,10 @@ class sc_ccap_activity_eligible(Variable):
         # or both parents disabled).
         is_disabled = person("is_disabled", period.this_year)
         individually_eligible = meets_work_requirement | is_student | is_disabled
-        return spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
+        # Require at least one head/spouse in the unit so an SPM unit
+        # containing only dependents does not vacuously pass the test,
+        # and require every head/spouse present to be individually
+        # eligible. Mirrors the VA CCSP activity-test pattern.
+        has_head_or_spouse = spm_unit.sum(is_head_or_spouse) >= 1
+        all_covered = spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
+        return has_head_or_spouse & all_covered
