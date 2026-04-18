@@ -209,3 +209,80 @@
   output:
     # (5,000 - 8,000) / 12 = -250, floored at 0 by max_(income - deductions, 0)
     ct_c4k_countable_income: 0
+
+# Cases 10-12 exercise RCSA 17b-749-05(b)(2)(E): "the earnings of a
+# family member who is under the age of eighteen who is not the parent
+# of a child for whom assistance is requested" are excluded from
+# countable income. The exclusion covers earned income only; unearned
+# income of child family members remains countable per 17b-749-05(b)(1)(A).
+- name: Case 10, working teen's employment income is excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 36_000
+      teen:
+        age: 17
+        employment_income: 8_000
+      young_child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, teen, young_child]
+    households:
+      household:
+        members: [parent, teen, young_child]
+        state_code: CT
+  output:
+    # Parent earnings: 36,000 / 12 = 3,000/month
+    # Teen's $8,000 is excluded (age 17 < 18, not a parent of applicant child)
+    ct_c4k_countable_income: 3_000
+
+- name: Case 11, minor child's self-employment income is excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child_entrepreneur:
+        age: 15
+        self_employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, child_entrepreneur]
+    households:
+      household:
+        members: [parent, child_entrepreneur]
+        state_code: CT
+  output:
+    # Only parent's earnings count: 24,000 / 12 = 2,000/month
+    ct_c4k_countable_income: 2_000
+
+- name: Case 12, minor child's unearned income is still countable.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child:
+        age: 10
+        social_security: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # Parent earnings 24,000 + child SSA survivor 6,000 = 30,000
+    # Monthly: 30,000 / 12 = 2,500
+    # Earnings-only exclusion per 17b-749-05(b)(2)(E); unearned income
+    # of minors is counted under 17b-749-05(b)(1)(A).
+    ct_c4k_countable_income: 2_500
