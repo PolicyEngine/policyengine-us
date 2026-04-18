@@ -1,1 +1,1 @@
-Federal and state Medicaid cost attribution via FMAP (`medicaid_federal_cost`, `medicaid_state_cost`, `medicaid_federal_share`).
+Federal and state Medicaid cost attribution via FMAP (`medicaid_federal_cost`, `medicaid_state_cost`, `medicaid_federal_share`) and CHIP via enhanced FMAP (`chip_federal_cost`, `chip_state_cost`, `chip_federal_share`).

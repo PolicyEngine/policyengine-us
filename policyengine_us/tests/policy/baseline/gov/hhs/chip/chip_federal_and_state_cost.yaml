@@ -1,0 +1,30 @@
+- name: Federal and state CHIP cost sum to total cost (CA, FY2026, 65% eFMAP)
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_chip_eligible: true
+    chip: 5_000
+  output:
+    chip_federal_cost: 3_250
+    chip_state_cost: 1_750
+
+- name: Mississippi CHIP hits 85% eFMAP cap
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: MS
+    is_chip_eligible: true
+    chip: 5_000
+  output:
+    chip_federal_cost: 4_191.5
+    chip_state_cost: 808.5
+
+- name: Non-CHIP-eligible has zero federal and state cost
+  period: 2026
+  input:
+    state_code: CA
+    is_chip_eligible: false
+  output:
+    chip_federal_cost: 0
+    chip_state_cost: 0

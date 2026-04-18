@@ -23,7 +23,12 @@ class medicaid_federal_share(Variable):
         p = parameters(period).gov.hhs.medicaid.cost_share
         state = person.household("state_code", period)
         regular_fmap = p.fmap[state]
-        expansion_fmap = p.expansion_fmap
         group = person("medicaid_group", period)
-        is_expansion = group == MedicaidGroup.EXPANSION_ADULT
-        return where(is_expansion, expansion_fmap, regular_fmap)
+        return select(
+            [
+                group == MedicaidGroup.EXPANSION_ADULT,
+                group == MedicaidGroup.NONE,
+            ],
+            [p.expansion_fmap, 0],
+            default=regular_fmap,
+        )

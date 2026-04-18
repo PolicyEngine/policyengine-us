@@ -24,12 +24,11 @@
     medicaid_federal_cost: 9_000
     medicaid_state_cost: 1_000
 
-- name: Non-enrolled person has zero federal and state cost
+- name: Non-eligible person has zero federal and state cost (medicaid_cost naturally zero)
   period: 2026
   input:
     state_code: MS
     is_medicaid_eligible: false
-    medicaid_cost: 0
   output:
     medicaid_federal_cost: 0
     medicaid_state_cost: 0

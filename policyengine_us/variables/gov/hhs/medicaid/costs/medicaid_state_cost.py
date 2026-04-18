@@ -12,6 +12,7 @@ class medicaid_state_cost(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396b"
+    defined_for = "medicaid_enrolled"
 
     def formula(person, period, parameters):
         cost = person("medicaid_cost", period)
