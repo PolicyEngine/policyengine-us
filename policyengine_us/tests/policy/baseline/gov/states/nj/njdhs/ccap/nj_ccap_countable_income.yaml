@@ -112,15 +112,14 @@
     # (30_000 + 18_000) / 12 = 4_000/month
     nj_ccap_countable_income: 4_000
 
-# Cases 6-8 exercise the NJ CCAP application-form rule: the CC-1
-# application collects employment and self-employment income only from
-# the applicant and co-applicant (the parents seeking child care
-# assistance). There is no field on the application to report a minor
-# child's earnings, so those earnings are operationally excluded from
-# countable income even though N.J.A.C. 10:15 does not enumerate an
-# explicit regulatory exclusion. Unearned income (e.g. child support,
-# SSI, survivors benefits) is reported at the family-unit level and
-# remains countable.
+# Cases 6-8 exercise the minor-earnings exclusion. N.J.A.C. 10:15 does
+# not enumerate an explicit regulatory exclusion, so PolicyEngine
+# applies the same conservative `age >= 18` filter Virginia uses per
+# 8VAC20-790-40(H): earned income of household members under 18 is
+# excluded from NJ CCAP countable income. This matches the NJ CC-1
+# application (03/24) Section D, which does not collect minor
+# children's earnings. Unearned income (child support, SSI, survivors
+# benefits) counts for all SPM-unit members regardless of age.
 - name: Case 6, working teen's employment income is excluded.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -143,7 +142,7 @@
         state_code: NJ
   output:
     # Parent earnings: 36,000 / 12 = 3,000/month
-    # Teen's $6,000 wages are excluded (not reported on CC-1 Section D)
+    # Teen's $6,000 wages are excluded (age < 18)
     nj_ccap_countable_income: 3_000
 
 - name: Case 7, minor child's self-employment income is excluded.
@@ -189,7 +188,36 @@
   output:
     # Parent earnings 24,000 + child SSA survivor 6,000 = 30,000
     # Monthly: 30,000 / 12 = 2,500
-    # The application-form exclusion covers earnings only; unearned
-    # income is reported at the family-unit level under "Other income
-    # or benefits to family unit" on the CC-1.
+    # The `age >= 18` filter applies only to earned income; unearned
+    # income (survivors benefits, child support, SSI, etc.) counts for
+    # all SPM-unit members regardless of age, as on CC-1 Section D's
+    # "Other income or benefits to family unit" line.
     nj_ccap_countable_income: 2_500
+
+- name: Case 9, adult non-applicant's earnings count (not just applicant/co-applicant).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      adult_relative:
+        age: 25
+        employment_income: 18_000
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, adult_relative, child]
+    households:
+      household:
+        members: [parent, adult_relative, child]
+        state_code: NJ
+  output:
+    # Parent + adult relative both age >= 18 → both count
+    # (24,000 + 18,000) / 12 = 3,500/month
+    # This distinguishes the age-based rule from a narrower
+    # applicant/co-applicant-only rule; an adult family member's
+    # earnings still contribute to household countable income.
+    nj_ccap_countable_income: 3_500

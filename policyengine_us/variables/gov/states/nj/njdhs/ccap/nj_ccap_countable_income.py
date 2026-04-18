@@ -14,18 +14,19 @@ class nj_ccap_countable_income(Variable):
         p = parameters(period).gov.states.nj.njdhs.ccap.income.countable_income
         # N.J.A.C. 10:15 does not enumerate an explicit minor-child earnings
         # exclusion the way VA (8VAC20-790-40(H)) and CT (17b-749-05(b)(2)(E))
-        # do. However, the NJ CCAP application form (CC-1, 03/24) Section D
-        # collects wage and self-employment income only for the applicant and
-        # co-applicant; there is no field for minor children's earnings. We
-        # therefore operationalize the NJ rule by summing earned income
-        # sources only for tax-unit heads and spouses (i.e. the applicant
-        # and co-applicant) and summing unearned income across all members,
-        # matching how the application form treats household income.
+        # do, and the PolicyEngine model cannot cite an on-point NJ rule.
+        # Apply the same conservative minor-earnings filter Virginia uses
+        # (`age >= 18`) to the earned-income sources. This matches VA's
+        # explicit exclusion and is strictly narrower than counting all
+        # household earnings; it is also consistent with the NJ CC-1
+        # application form (03/24) Section D, which does not collect
+        # minor children's earnings. Unearned income still counts for
+        # all SPM-unit members.
         person = spm_unit.members
-        # `age` / `is_tax_unit_head_or_spouse` are YEAR-defined; use
-        # period.this_year to read the annual value in a monthly formula.
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        # `age` is YEAR-defined; use period.this_year inside this
+        # monthly formula to get the annual value instead of age/12.
+        is_adult = person("age", period.this_year) >= 18
         earned_per_person = sum(person(source, period) for source in p.earned_sources)
-        applicant_earned_income = spm_unit.sum(earned_per_person * is_head_or_spouse)
+        adult_earned_income = spm_unit.sum(earned_per_person * is_adult)
         unearned_income = add(spm_unit, period, p.unearned_sources)
-        return applicant_earned_income + unearned_income
+        return adult_earned_income + unearned_income
