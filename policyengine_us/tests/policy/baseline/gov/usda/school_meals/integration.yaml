@@ -43,3 +43,94 @@
   output:
     school_meal_tier: FREE
     school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46 (2025 rates)
+
+# High-income California household qualifies under the state universal meals policy.
+- name: California universal meals makes a high-income household FREE.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 4  # Far above the 185% paid threshold
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    state_has_universal_free_school_meals: true
+    school_meal_tier: FREE
+
+# Same high-income household in a non-universal-meals state pays full price.
+- name: High-income Florida household stays in the paid tier without a state universal program.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 4
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    state_has_universal_free_school_meals: false
+    school_meal_tier: PAID
+
+# New York becomes universal in SY 2025-26 (effective 2025-07-01).
+- name: New York is not universal in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 4
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    state_has_universal_free_school_meals: false
+    school_meal_tier: PAID
+
+- name: New York becomes universal in 2026 after the FY26 budget takes effect.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 4
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    state_has_universal_free_school_meals: true
+    school_meal_tier: FREE
