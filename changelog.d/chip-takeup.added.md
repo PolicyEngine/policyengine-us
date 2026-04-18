@@ -1,0 +1,1 @@
+Model CHIP enrollment separately from eligibility via `chip_enrolled`, `takes_up_chip_if_eligible`, `chip_take_up_seed`, and `gov.hhs.chip.takeup_rate` (default 0.93), matching the Medicaid takeup pattern. `chip`, `chip_federal_share`, `chip_federal_cost`, and `chip_state_cost` now gate on enrollment rather than raw eligibility.

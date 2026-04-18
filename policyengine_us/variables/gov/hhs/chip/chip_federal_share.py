@@ -14,7 +14,7 @@ class chip_federal_share(Variable):
     unit = "/1"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1397ee#b"
-    defined_for = "is_chip_eligible"
+    defined_for = "chip_enrolled"
 
     def formula(person, period, parameters):
         fmap = parameters(period).gov.hhs.medicaid.cost_share.fmap

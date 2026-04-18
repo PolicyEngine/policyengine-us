@@ -42,6 +42,15 @@
   output:
     chip_federal_share: 0
 
+- name: CHIP-eligible non-enroller has zero federal share (takeup gate)
+  period: 2026
+  input:
+    state_code: CA
+    is_chip_eligible: true
+    chip_take_up_seed: 0.99
+  output:
+    chip_federal_share: 0
+
 - name: Pre-FY2018 period returns zero eFMAP (sentinel prevents backward extrapolation)
   period: 2016
   input:
