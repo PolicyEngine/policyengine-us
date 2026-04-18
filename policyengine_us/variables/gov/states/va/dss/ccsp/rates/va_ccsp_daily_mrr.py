@@ -22,6 +22,9 @@ class va_ccsp_daily_mrr(Variable):
 
         is_center = provider_type == provider_type.possible_values.CENTER
         center_rate = p.center[region][age_group]
+        # Per the VDOE FY 2024 MRR table, FDH rates vary by Ready Region only;
+        # within each region every age-group column carries the same rate, so
+        # the FDH parameter is indexed by region alone (no age_group lookup).
         fdh_rate = p.family_day_home[region]
         full_day_rate = where(is_center, center_rate, fdh_rate)
         return where(is_full_day, full_day_rate, full_day_rate * p.part_day_factor)
