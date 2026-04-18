@@ -6,10 +6,14 @@ class state_benefit_cost(Variable):
     entity = Person
     label = "State benefit cost attributed to this person"
     documentation = (
-        "Sum of the state-government portion of benefit expenditures for "
-        "programs this person is enrolled in. Grows as programs gain "
-        "federal/state attribution — currently Medicaid and CHIP."
+        "Sum of the state-government share of benefit expenditures for "
+        "programs with statutory federal/state cost attribution (currently "
+        "the state portion of Medicaid and CHIP). Distinct from "
+        "`household_state_benefits`, which sums state-agency-paid "
+        "standalone benefits like state supplements. The list of "
+        "constituent variables lives at gov.household.state_benefit_cost "
+        "so reforms can ablate programs."
     )
     unit = USD
     definition_period = YEAR
-    adds = ["medicaid_state_cost", "chip_state_cost"]
+    adds = "gov.household.state_benefit_cost"
