@@ -1,8 +1,6 @@
-description: New Jersey counts these income sources under the Child Care Assistance Program.
+description: New Jersey counts these unearned income sources under the Child Care Assistance Program. These sources are summed across all family members because the CCAP application treats unearned income (Social Security, SSI, pensions, etc.) as household-level income reported by the applicant/co-applicant on behalf of the family unit.
 values:
   2024-01-01:
-    - employment_income
-    - self_employment_income
     - social_security_retirement
     - social_security_disability
     - social_security_survivors
@@ -18,12 +16,12 @@ values:
     # The following are counted per CCDF State Plan 2.2.4c but have no matching variables:
     # - inheritance
     # - any other source required for federal/state tax reporting
-    # Excluded: TANF cash benefits (WFNJ)
+    # Excluded: TANF cash benefits (WFNJ).
 
 metadata:
   unit: list
   period: year
-  label: New Jersey CCAP countable income sources
+  label: New Jersey CCAP countable unearned income sources
   reference:
     - title: CCDF State Plan for NJ FFY 2025-2027, Section 2.2.4c
       href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=25
