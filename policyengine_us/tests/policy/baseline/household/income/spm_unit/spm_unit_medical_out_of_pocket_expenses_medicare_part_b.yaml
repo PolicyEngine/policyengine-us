@@ -1,0 +1,45 @@
+- name: SPM unit MOOP swaps imputed Medicare Part B for the rules-based computation at the base premium.
+  period: 2024
+  input:
+    people:
+      retiree:
+        age: 70
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 2_000
+        medicare_part_b_premiums: 1_500
+        income_adjusted_part_b_premium: 2_220
+    tax_units:
+      tax_unit:
+        members: [retiree]
+    spm_units:
+      spm_unit:
+        members: [retiree]
+    households:
+      household:
+        members: [retiree]
+        state_code: CA
+  output:
+    spm_unit_medical_out_of_pocket_expenses: 2_720
+
+- name: SPM unit MOOP reflects IRMAA surcharge for high-income Medicare household.
+  period: 2024
+  input:
+    people:
+      retiree:
+        age: 70
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 2_000
+        medicare_part_b_premiums: 1_500
+        income_adjusted_part_b_premium: 5_028
+    tax_units:
+      tax_unit:
+        members: [retiree]
+    spm_units:
+      spm_unit:
+        members: [retiree]
+    households:
+      household:
+        members: [retiree]
+        state_code: CA
+  output:
+    spm_unit_medical_out_of_pocket_expenses: 5_528
