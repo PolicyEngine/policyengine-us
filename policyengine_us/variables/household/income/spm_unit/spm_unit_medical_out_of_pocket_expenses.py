@@ -25,4 +25,11 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
         imputed_part_b = add(spm_unit, period, ["medicare_part_b_premiums"])
         computed_part_b = add(spm_unit, period, ["income_adjusted_part_b_premium"])
         chip_premium = add(spm_unit, period, ["chip_premium"])
-        return imputed_moop - imputed_part_b + computed_part_b + chip_premium
+        medicaid_premium = add(spm_unit, period, ["medicaid_premium"])
+        return (
+            imputed_moop
+            - imputed_part_b
+            + computed_part_b
+            + chip_premium
+            + medicaid_premium
+        )

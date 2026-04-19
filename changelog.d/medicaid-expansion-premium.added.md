@@ -1,0 +1,1 @@
+Added `medicaid_premium` federal aggregator variable plus Indiana HIP POWER Account contribution (`in_hip_power_account_contribution`), and wired `medicaid_premium` into `spm_unit_medical_out_of_pocket_expenses`. Collection is currently paused in Indiana; the encoded schedule is reform-ready.
