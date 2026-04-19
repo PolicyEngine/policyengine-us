@@ -18,5 +18,5 @@ class tx_chip_premium(Variable):
     def formula(tax_unit, period, parameters):
         has_chip_member = add(tax_unit, period, ["is_chip_eligible"]) > 0
         income_level = tax_unit("tax_unit_medicaid_income_level", period)
-        p = parameters(period).gov.states.tx.hhsc.chip.enrollment_fee
+        p = parameters(period).gov.states.tx.hhs.chip.enrollment_fee
         return has_chip_member * p.calc(income_level)

@@ -1,0 +1,31 @@
+description: New York caps the total Child Health Plus monthly premium per family at three children's worth, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: New York Child Health Plus monthly premium family cap
+  reference:
+    - title: New York State Department of Health - Child Health Plus Eligibility and Cost
+      href: https://www.health.ny.gov/health_care/child_health_plus/eligibility_and_cost.htm
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 2.23
+    amount:
+      2021-01-01: 45
+  - threshold:
+      2021-01-01: 2.51
+    amount:
+      2021-01-01: 90
+  - threshold:
+      2021-01-01: 3.01
+    amount:
+      2021-01-01: 135
+  - threshold:
+      2021-01-01: 3.51
+    amount:
+      2021-01-01: 180

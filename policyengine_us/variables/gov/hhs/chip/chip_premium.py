@@ -15,4 +15,22 @@ class chip_premium(Variable):
     )
     definition_period = YEAR
     reference = "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-E/section-457.560"
-    adds = ["tx_chip_premium"]
+    adds = [
+        "al_chip_premium",
+        "ct_chip_premium",
+        "de_chip_premium",
+        "fl_chip_premium",
+        "ga_chip_premium",
+        "ia_chip_premium",
+        "id_chip_premium",
+        "il_chip_premium",
+        "in_chip_premium",
+        "ks_chip_premium",
+        "la_chip_premium",
+        "ma_chip_premium",
+        "mi_chip_premium",
+        "mo_chip_premium",
+        "ny_chip_premium",
+        "tx_chip_premium",
+        "wi_chip_premium",
+    ]

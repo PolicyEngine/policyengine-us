@@ -1,0 +1,43 @@
+description: Missouri charges this MO HealthNet for Kids monthly CHIP premium to tax units above 185 up to 225 percent FPL, by family size.
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  label: Missouri CHIP premium tier 2 (above 185 through 225 percent FPL)
+  reference:
+    - title: Missouri DSS Appendix E - CHIP Premium Schedule
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+brackets:
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 60
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 81
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 102
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 124
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 144
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 165
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 187
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 207

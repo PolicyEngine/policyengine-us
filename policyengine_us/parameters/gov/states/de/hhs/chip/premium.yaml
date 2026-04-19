@@ -1,0 +1,25 @@
+description: Delaware charges this monthly Delaware Healthy Children Program premium per household, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Delaware Healthy Children Program monthly premium
+  reference:
+    - title: Delaware Healthy Children Program flyer
+      href: https://dhss.delaware.gov/dmma/dhcpflyer/
+    - title: NASHP Delaware CHIP Fact Sheet
+      href: https://nashp.org/delaware-chip-fact-sheet/
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.43
+    amount:
+      2021-01-01: 15
+  - threshold:
+      2021-01-01: 1.77
+    amount:
+      2021-01-01: 25

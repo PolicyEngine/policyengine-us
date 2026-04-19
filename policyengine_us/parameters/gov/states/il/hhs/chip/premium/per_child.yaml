@@ -1,0 +1,23 @@
+description: Illinois charges this All Kids monthly premium per CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Illinois All Kids monthly premium per child
+  reference:
+    - title: Illinois HFS All Kids income and premium information
+      href: https://hfs.illinois.gov/medicalprograms/allkids/income.html
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.58
+    amount:
+      2021-01-01: 15
+  - threshold:
+      2021-01-01: 2.10
+    amount:
+      2021-01-01: 40

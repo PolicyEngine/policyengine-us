@@ -1,0 +1,27 @@
+description: Massachusetts charges this MassHealth CommonHealth and Family Assistance monthly premium per CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Massachusetts MassHealth monthly premium per child
+  reference:
+    - title: 130 CMR 506.011 - MassHealth Premium Formulas and Monthly Premiums
+      href: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-506-011
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.51
+    amount:
+      2021-01-01: 12
+  - threshold:
+      2021-01-01: 2.01
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 2.51
+    amount:
+      2021-01-01: 28

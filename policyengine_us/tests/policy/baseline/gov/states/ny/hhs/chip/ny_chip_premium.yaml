@@ -1,0 +1,62 @@
+- name: New York Child Health Plus below 223 percent FPL owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.10
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium: 0
+
+- name: New York Child Health Plus tier 1 tax unit with one child pays 15 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.40
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium: 180
+
+- name: New York Child Health Plus tier 3 tax unit with four children is capped at 135 dollars monthly.
+  period: 2024
+  input:
+    people:
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [c1, c2, c3, c4]
+        tax_unit_medicaid_income_level: 3.25
+    households:
+      household:
+        members: [c1, c2, c3, c4]
+        state_code: NY
+  output:
+    ny_chip_premium: 1620

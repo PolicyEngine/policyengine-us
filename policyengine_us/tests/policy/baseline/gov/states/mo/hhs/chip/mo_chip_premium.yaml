@@ -1,0 +1,65 @@
+- name: Missouri tier 1 family of 3 pays 31 dollars monthly.
+  period: 2024
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    mo_chip_premium: 372
+
+- name: Missouri tier 2 family of 4 pays 124 dollars monthly.
+  period: 2024
+  input:
+    people:
+      p1:
+        is_chip_eligible: false
+      p2:
+        is_chip_eligible: false
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [p1, p2, c1, c2]
+        tax_unit_medicaid_income_level: 2.00
+    households:
+      household:
+        members: [p1, p2, c1, c2]
+        state_code: MO
+  output:
+    mo_chip_premium: 1488
+
+- name: Missouri below 151 percent FPL owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: MO
+  output:
+    mo_chip_premium: 0
