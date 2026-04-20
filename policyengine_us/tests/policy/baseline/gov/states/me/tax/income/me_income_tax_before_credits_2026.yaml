@@ -67,3 +67,34 @@
   output:
    # .055*20000 = 1100
     me_income_tax_before_credits: 1_100
+
+# 2025 tests — verify new brackets do NOT apply before 2026
+- name: Single filer 2025, $600K stays in 3 brackets (top rate 7.15%)
+  period: 2025
+  input:
+    me_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .058*26800 + .0675*(63450-26800) + .0715*(600000-63450) = 42391.6
+    me_income_tax_before_credits: 42_391.6
+
+- name: Joint filer 2025, $1M stays in 3 brackets (top rate 7.15%)
+  period: 2025
+  input:
+    me_taxable_income: 1_000_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+   # .058*53600 + .0675*(126900-53600) + .0715*(1000000-126900) = 70483.2
+    me_income_tax_before_credits: 70_483.2
+
+- name: Single 2025 vs 2026 at $200K — 2025 uses old 3-bracket structure
+  period: 2025
+  input:
+    me_taxable_income: 200_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .058*26800 + .0675*(63450-26800) + .0715*(200000-63450) = 13791.6
+    me_income_tax_before_credits: 13_791.6
