@@ -1,0 +1,69 @@
+- name: Single filer 2026, income in 4th bracket
+  period: 2026
+  input:
+    me_taxable_income: 200_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .055*27450 + .0675*(64950-27450) + .0715*(144500-64950) + .0775*(200000-144500) = 14030.075
+    me_income_tax_before_credits: 14_030.075
+
+- name: Single filer 2026, income in all 5 brackets
+  period: 2026
+  input:
+    me_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .055*27450 + .0675*(64950-27450) + .0715*(144500-64950) + .0775*(500000-144500) + .0895*(600000-500000) = 46230.075
+    me_income_tax_before_credits: 46_230.075
+
+- name: Joint filer 2026, income in 4th bracket
+  period: 2026
+  input:
+    me_taxable_income: 400_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+   # .055*54900 + .0675*(129900-54900) + .0715*(289000-129900) + .0775*(400000-289000) = 28060.15
+    me_income_tax_before_credits: 28_060.15
+
+- name: Head of household filer 2026, income in 4th bracket
+  period: 2026
+  input:
+    me_taxable_income: 300_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+   # .055*41150 + .0675*(97450-41150) + .0715*(216750-97450) + .0775*(300000-216750) = 21045.325
+    me_income_tax_before_credits: 21_045.325
+
+- name: Separate filer 2026, same as single
+  period: 2026
+  input:
+    me_taxable_income: 200_000
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+   # Same brackets as single
+    me_income_tax_before_credits: 14_030.075
+
+- name: Surviving spouse 2026, same as joint
+  period: 2026
+  input:
+    me_taxable_income: 400_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: ME
+  output:
+   # Same brackets as joint
+    me_income_tax_before_credits: 28_060.15
+
+- name: Single filer 2026, income only in 1st bracket
+  period: 2026
+  input:
+    me_taxable_income: 20_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .055*20000 = 1100
+    me_income_tax_before_credits: 1_100
