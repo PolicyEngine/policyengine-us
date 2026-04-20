@@ -142,7 +142,9 @@ def create_ny_working_families_tax_credit() -> Reform:
         entity = TaxUnit
         label = "EITC phase-out rate"
         unit = USD
-        documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        documentation = (
+            "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        )
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
@@ -164,9 +166,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_younger_phase_out_start", period)
             phase_out_rate = tax_unit("eitc_younger_phase_out_rate", period)
-            phase_out_region = max_(
-                0, highest_income_variable - phase_out_start
-            )
+            phase_out_region = max_(0, highest_income_variable - phase_out_start)
             return phase_out_rate * phase_out_region
 
     class eitc_younger_demographic_eligible(Variable):
@@ -191,17 +191,11 @@ def create_ny_working_families_tax_credit() -> Reform:
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
             )
-            demographic_eligible = tax_unit(
-                "eitc_younger_demographic_eligible", period
-            )
-            no_older_children = (
-                tax_unit("eitc_older_children_count", period) == 0
-            )
+            demographic_eligible = tax_unit("eitc_younger_demographic_eligible", period)
+            no_older_children = tax_unit("eitc_older_children_count", period) == 0
             # Define eligibility before considering separate filer limitation.
             eligible = (
-                demographic_eligible
-                & investment_income_eligible
-                & no_older_children
+                demographic_eligible & investment_income_eligible & no_older_children
             )
             # This parameter is true if separate filers are eligible.
             if eitc.eligibility.separate_filer:
@@ -270,9 +264,7 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             older_child_count = tax_unit("eitc_older_children_count", period)
-            younger_child_count = tax_unit(
-                "eitc_younger_children_count", period
-            )
+            younger_child_count = tax_unit("eitc_younger_children_count", period)
             child_count = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             # We will reduce the maximum credit amount by the amount for self
@@ -290,9 +282,7 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             older_child_count = tax_unit("eitc_older_children_count", period)
-            younger_child_count = tax_unit(
-                "eitc_younger_children_count", period
-            )
+            younger_child_count = tax_unit("eitc_younger_children_count", period)
             child_count = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             return eitc.phase_in_rate.calc(child_count)
@@ -322,9 +312,7 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             older_child_count = tax_unit("eitc_older_children_count", period)
-            younger_child_count = tax_unit(
-                "eitc_younger_children_count", period
-            )
+            younger_child_count = tax_unit("eitc_younger_children_count", period)
             count_children = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             is_joint = tax_unit("tax_unit_is_joint", period)
@@ -337,15 +325,15 @@ def create_ny_working_families_tax_credit() -> Reform:
         entity = TaxUnit
         label = "EITC phase-out rate"
         unit = USD
-        documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        documentation = (
+            "Percentage of earnings above the phase-out threshold that reduce the EITC."
+        )
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
             older_child_count = tax_unit("eitc_older_children_count", period)
-            younger_child_count = tax_unit(
-                "eitc_younger_children_count", period
-            )
+            younger_child_count = tax_unit("eitc_younger_children_count", period)
             count_children = younger_child_count + older_child_count
             return eitc.phase_out.rate.calc(count_children)
 
@@ -363,9 +351,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_older_phase_out_start", period)
             phase_out_rate = tax_unit("eitc_older_phase_out_rate", period)
-            phase_out_region = max_(
-                0, highest_income_variable - phase_out_start
-            )
+            phase_out_region = max_(0, highest_income_variable - phase_out_start)
             return phase_out_rate * phase_out_region
 
     class eitc_older_demographic_eligible(Variable):
@@ -382,16 +368,10 @@ def create_ny_working_families_tax_credit() -> Reform:
             # Relative parameter reference break branching in some states that
             # modify EITC age limits.
             min_age_student = (
-                parameters.gov.irs.credits.eitc.eligibility.age.min_student(
-                    period
-                )
+                parameters.gov.irs.credits.eitc.eligibility.age.min_student(period)
             )
-            max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(
-                period
-            )
-            meets_age_requirements = (age >= min_age_student) & (
-                age <= max_age
-            )
+            max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
+            meets_age_requirements = (age >= min_age_student) & (age <= max_age)
             return has_child | tax_unit.any(meets_age_requirements)
 
     class older_eitc_eligible(Variable):
@@ -406,9 +386,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
             )
-            demographic_eligible = tax_unit(
-                "eitc_older_demographic_eligible", period
-            )
+            demographic_eligible = tax_unit("eitc_older_demographic_eligible", period)
             younger_eitc_eligible = tax_unit("younger_eitc_eligible", period)
             # Define eligibility before considering separate filer limitation.
             eligible = (
@@ -475,10 +453,10 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(person, period, parameters):
             p = parameters(period).gov.contrib.states.ny.wftc.exemptions
             if p.in_effect:
-                child_dependent = person("is_child_dependent", period)
+                child_dependent = person("is_qualifying_child_dependent", period)
                 wftc_eligible_child = person("ny_wftc_eligible_child", period)
                 return child_dependent & ~wftc_eligible_child
-            return person("is_child_dependent", period)
+            return person("is_qualifying_child_dependent", period)
 
     class ny_exemptions(Variable):
         value_type = float
@@ -491,9 +469,7 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
 
-            count_dependents = add(
-                tax_unit, period, ["ny_exemptions_dependent"]
-            )
+            count_dependents = add(tax_unit, period, ["ny_exemptions_dependent"])
             dependent_exemption = parameters(
                 period
             ).gov.states.ny.tax.income.exemptions.dependent

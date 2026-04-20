@@ -1,0 +1,31 @@
+- name: Employment income only returns ratio of 1
+  period: 2024
+  input:
+    employment_income: 50_000
+    self_employment_income: 0
+  output:
+    emp_self_emp_ratio: 1.0
+
+- name: Self-employment income only returns ratio of 0
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 50_000
+  output:
+    emp_self_emp_ratio: 0.0
+
+- name: Equal employment and self-employment returns ratio of 0.5
+  period: 2024
+  input:
+    employment_income: 25_000
+    self_employment_income: 25_000
+  output:
+    emp_self_emp_ratio: 0.5
+
+- name: Zero earnings returns ratio of 1 (default)
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    emp_self_emp_ratio: 1.0

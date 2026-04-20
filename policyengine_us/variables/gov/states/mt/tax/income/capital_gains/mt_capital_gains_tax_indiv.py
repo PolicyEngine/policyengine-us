@@ -4,11 +4,13 @@ from policyengine_us.model_api import *
 class mt_capital_gains_tax_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Montana net long-term capital gains tax when married couples file separately"
+    label = (
+        "Montana net long-term capital gains tax when married couples file separately"
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6"  # Net Long-Term Capital Gains Tax Table
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
@@ -54,19 +56,13 @@ class mt_capital_gains_tax_indiv(Variable):
                 ],
             )
             # Calculate taxes
-            capital_gains_below_threshold = min_(
-                applicable_threshold, capital_gains
-            )
+            capital_gains_below_threshold = min_(applicable_threshold, capital_gains)
             capital_gains_above_threshold = max_(
                 capital_gains - applicable_threshold, 0
             )
 
-            lower_capital_gains_tax = (
-                capital_gains_below_threshold * lower_rate
-            )
-            higher_capital_gains_tax = (
-                capital_gains_above_threshold * higher_rate
-            )
+            lower_capital_gains_tax = capital_gains_below_threshold * lower_rate
+            higher_capital_gains_tax = capital_gains_above_threshold * higher_rate
 
             return max_(lower_capital_gains_tax + higher_capital_gains_tax, 0)
             # Only apply tax if capital gains are positive

@@ -21,9 +21,7 @@ class ca_investment_interest_deduction(Variable):
         # Line 5
         investment_expenses = add(tax_unit, period, ["investment_expenses"])
         # Line 6
-        net_investment_income = (
-            investment_interest_expense - investment_expenses
-        )
+        net_investment_income = investment_interest_expense - investment_expenses
         # Line 8
         investment_interest_expense_deduction = min_(
             investment_interest_expense, net_investment_income

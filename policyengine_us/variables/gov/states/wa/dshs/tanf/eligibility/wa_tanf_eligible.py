@@ -19,9 +19,7 @@ class wa_tanf_eligible(Variable):
 
         # Must have at least one U.S. citizen or qualified immigrant
         # Per WAC 388-424-0001, follows federal immigration eligibility
-        has_citizen = spm_unit.any(
-            person("is_citizen_or_legal_immigrant", period)
-        )
+        has_citizen = spm_unit.any(person("is_citizen_or_legal_immigrant", period))
 
         # Must meet income eligibility (gross earned income < limit)
         # Per WAC 388-478-0035
@@ -29,14 +27,7 @@ class wa_tanf_eligible(Variable):
 
         # Must meet resource eligibility (countable resources <= $6,000)
         # Per WAC 388-470-0045
-        resources_eligible = spm_unit(
-            "wa_tanf_resources_eligible", period.this_year
-        )
+        resources_eligible = spm_unit("wa_tanf_resources_eligible", period.this_year)
 
         # All requirements must be met
-        return (
-            demographic_eligible
-            & has_citizen
-            & income_eligible
-            & resources_eligible
-        )
+        return demographic_eligible & has_citizen & income_eligible & resources_eligible

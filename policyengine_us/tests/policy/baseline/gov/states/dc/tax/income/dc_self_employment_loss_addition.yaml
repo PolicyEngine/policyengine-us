@@ -10,6 +10,65 @@
     dc_self_employment_loss_addition: 8_000
     dc_agi: 68_000
 
+- name: Case 3, large SE loss capped by federal 461(l).
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -25_000_000
+    state_code: DC
+  output:
+    # Federal loss_ald caps SE loss at $305,000 (single, 2024).
+    # SE loss in federal AGI: $305,000
+    # DC addition: max(0, 305_000 - 12_000) = $293,000
+    dc_self_employment_loss_addition: 293_000
+
+- name: Case 4, SE loss below federal cap but above DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -50_000
+    state_code: DC
+  output:
+    # SE loss ($50K) is below federal cap ($305K), so full loss flows through.
+    # DC addition: max(0, 50_000 - 12_000) = $38,000
+    dc_self_employment_loss_addition: 38_000
+
+- name: Case 5, SE loss below DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -10_000
+    state_code: DC
+  output:
+    # SE loss ($10K) is below DC threshold ($12K).
+    # DC addition: max(0, 10_000 - 12_000) = $0
+    dc_self_employment_loss_addition: 0
+
+- name: Case 6, large SE loss with capital losses.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -25_000_000
+    capital_losses: 5_000
+    state_code: DC
+  output:
+    # limited_capital_loss = min(3_000, 5_000) = 3_000
+    # loss_ald = min(305_000, 25_000_000 + 3_000) = 305_000
+    # SE portion of loss_ald: 305_000 - 3_000 = 302_000
+    # DC addition: max(0, 302_000 - 12_000) = 290_000
+    dc_self_employment_loss_addition: 290_000
+
+- name: Case 7, SE loss exactly at DC threshold.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    self_employment_income: -12_000
+    state_code: DC
+  output:
+    # SE loss equals DC threshold exactly.
+    # DC addition: max(0, 12_000 - 12_000) = 0
+    dc_self_employment_loss_addition: 0
+
 - name: dc_self_employment_loss_addition unit test 2
   absolute_error_margin: 0.01
   period: 2021

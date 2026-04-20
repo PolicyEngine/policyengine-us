@@ -1,0 +1,121 @@
+# Historical tests for Utah FEP parameters (pre-October 2022 values)
+# Tests use 2020 period to verify backdated parameter values
+# Source: Utah DWS Obsolete Table 1 (May 2012 to September 30, 2022)
+
+- name: Case 1, historical 2020 payment standard for family of 3.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: UT
+    spm_unit_size: 3
+  output:
+    ut_fep_payment_standard: 498
+
+- name: Case 2, historical 2020 payment standard for family of 1.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: UT
+    spm_unit_size: 1
+  output:
+    ut_fep_payment_standard: 288
+
+- name: Case 3, historical 2020 payment standard for family of 6.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: UT
+    spm_unit_size: 6
+  output:
+    ut_fep_payment_standard: 731
+
+- name: Case 4, historical 2020 payment standard at max old size 16.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: UT
+    spm_unit_size: 16
+  output:
+    ut_fep_payment_standard: 1_090
+
+- name: Case 5, eligible family of 3 with moderate earnings.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        tanf_gross_earned_income: 600
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Family size = 3
+    # Gross income = $600, Gross limit = $1,050 (185% of $568) -> PASS
+    # After work expense = max(600 - 100, 0) = 500
+    # Countable earned = 500 * 0.50 = 250
+    # Countable income = 250
+    # Net limit = $568 (100% SNB), $250 < $568 -> PASS
+    # Payment standard = $498 (old value, not $662)
+    # Benefit = $498 - $250 = $248
+    ut_fep_payment_standard: 498
+    ut_fep_countable_earned_income: 250
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 250
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 248
+
+- name: Case 6, no income family of 2 receives full payment standard.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Family size = 2
+    # No income, passes all tests
+    # Payment standard = $399 (old value, not $531)
+    # Benefit = $399
+    ut_fep_payment_standard: 399
+    ut_fep_gross_income_eligible: true
+    ut_fep_countable_income: 0
+    ut_fep_net_income_eligible: true
+    ut_fep_resources_eligible: true
+    ut_fep_income_eligible: true
+    ut_fep_eligible: true
+    ut_fep: 399

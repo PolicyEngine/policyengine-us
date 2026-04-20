@@ -1,0 +1,214 @@
+# Unit tests for Iowa FIP eligibility
+# Requires: demographic eligibility (minor child), immigration eligibility,
+#           resource eligibility, and income eligibility
+# Reference: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.41.pdf
+
+- name: Case 1, eligible family with minor child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_fip_eligible: true
+
+- name: Case 2, ineligible due to no minor child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Single adult without minor child fails demographic eligibility
+    ia_fip_eligible: false
+
+- name: Case 3, ineligible due to high income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Gross income $24,000 > 185% of standard of need ($8,628 * 1.85 = $15,961.80)
+    # Fails Test 1 (gross income test)
+    ia_fip_eligible: false
+
+- name: Case 4, ineligible due to high assets (applicant).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # $3,000 > $2,000 applicant resource limit
+    ia_fip_eligible: false
+
+- name: Case 5, recipient eligible with higher assets.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 4_000
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Recipients have $5,000 limit, $4,000 < $5,000
+    ia_fip_eligible: true
+
+- name: Case 6, recipient ineligible with assets over limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 6_000
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Recipients have $5,000 limit, $6,000 > $5,000
+    ia_fip_eligible: false
+
+- name: Case 7, eligible pregnant woman.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Pregnant woman is demographically eligible
+    ia_fip_eligible: true
+
+- name: Case 8, eligible family with moderate income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+        is_tax_unit_head: true
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Family of 3 with $6,000/year earned income
+    # Standard of need: $849 * 12 = $10,188
+    # Gross income limit: $10,188 * 1.85 = $18,847.80 > $6,000 - PASS Test 1
+    # 20% deduction: $6,000 * 0.20 = $1,200
+    # Net income: $6,000 - $1,200 = $4,800 < $10,188 - PASS Test 2
+    # Remaining earned: $4,800
+    # 58% work incentive: $4,800 * 0.58 = $2,784
+    # Countable income: $4,800 - $2,784 = $2,016 < $5,112 - PASS Test 3
+    ia_fip_eligible: true

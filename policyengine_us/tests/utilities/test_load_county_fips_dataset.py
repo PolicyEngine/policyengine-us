@@ -62,9 +62,7 @@ class TestCountyFIPSDatasetFile:
     HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
     COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
 
-    def test_when_downloading_county_fips__download_is_successful(
-        self, tmp_fips_dir
-    ):
+    def test_when_downloading_county_fips__download_is_successful(self, tmp_fips_dir):
 
         download_huggingface_dataset(
             repo=self.HUGGINGFACE_REPO,

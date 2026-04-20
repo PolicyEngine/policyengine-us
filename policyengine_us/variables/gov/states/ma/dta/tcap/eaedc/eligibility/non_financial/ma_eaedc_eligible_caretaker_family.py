@@ -6,9 +6,7 @@ class ma_eaedc_eligible_caretaker_family(Variable):
     entity = SPMUnit
     label = "Eligible caretaker family for the Massachusetts EAEDC"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-700"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-700"
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):

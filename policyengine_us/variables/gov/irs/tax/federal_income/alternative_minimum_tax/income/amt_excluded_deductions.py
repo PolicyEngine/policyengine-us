@@ -16,6 +16,4 @@ class amt_excluded_deductions(Variable):
         itemized_deductions_add_back = add(
             tax_unit, period, p.itemized_deductions_add_back
         )
-        return where(
-            itemizing, itemized_deductions_add_back, standard_deduction
-        )
+        return where(itemizing, itemized_deductions_add_back, standard_deduction)

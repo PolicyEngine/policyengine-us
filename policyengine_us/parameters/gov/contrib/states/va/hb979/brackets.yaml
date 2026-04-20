@@ -1,0 +1,36 @@
+description: Virginia HB979 income tax brackets adding high-earner rates.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Virginia HB979 income tax brackets
+  reference:
+    - title: Virginia HB979 Bill Text
+      href: https://lis.blob.core.windows.net/files/1086770.PDF
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    rate:
+      2027-01-01: 0.02
+  - threshold:
+      2027-01-01: 3_000
+    rate:
+      2027-01-01: 0.03
+  - threshold:
+      2027-01-01: 5_000
+    rate:
+      2027-01-01: 0.05
+  - threshold:
+      2027-01-01: 17_000
+    rate:
+      2027-01-01: 0.0575
+  - threshold:
+      2027-01-01: 600_000
+    rate:
+      2027-01-01: 0.08
+  - threshold:
+      2027-01-01: 1_000_000
+    rate:
+      2027-01-01: 0.10

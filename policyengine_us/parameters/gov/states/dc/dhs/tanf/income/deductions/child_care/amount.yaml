@@ -19,10 +19,10 @@ metadata:
 # Use a scale parameter with two brackets:
 brackets:
   - threshold:
-      2020-10-01: 0 # Age zero until the next bracket threshold.
+      2001-10-01: 0 # Age zero until the next bracket threshold.
     amount:
-      2020-10-01: 200 # Age zero until the next bracket threshold.
+      2001-10-01: 200 # Age zero until the next bracket threshold.
   - threshold:
-      2020-10-01: 2
+      2001-10-01: 2
     amount:
-      2020-10-01: 175
+      2001-10-01: 175

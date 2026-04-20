@@ -24,3 +24,47 @@
     az_charitable_contributions_credit: 500
   output:
     az_increased_standard_deduction_for_charitable_contributions: 155
+
+# 2025 tests with 34% rate per A.R.S. 43-1041 and HB 2113 CPI adjustment
+# Rate for 2025 = 34%
+
+- name: test for 2025 basic calculation
+  period: 2025
+  input:
+    state_code: AZ
+    charitable_deduction: 1_000
+    az_charitable_contributions_credit: 500
+  output:
+    # (charitable_deduction - az_charitable_contributions_credit) * rate
+    # ($1,000 - $500) * 0.34 = $170
+    az_increased_standard_deduction_for_charitable_contributions: 170
+
+- name: test for 2025 no charitable contributions credit
+  period: 2025
+  input:
+    state_code: AZ
+    charitable_deduction: 2_000
+    az_charitable_contributions_credit: 0
+  output:
+    # $2,000 * 0.34 = $680
+    az_increased_standard_deduction_for_charitable_contributions: 680
+
+- name: test for 2025 all contributions used for credit
+  period: 2025
+  input:
+    state_code: AZ
+    charitable_deduction: 1_000
+    az_charitable_contributions_credit: 1_000
+  output:
+    # ($1,000 - $1,000) * 0.34 = $0
+    az_increased_standard_deduction_for_charitable_contributions: 0
+
+- name: test for 2025 large charitable contribution
+  period: 2025
+  input:
+    state_code: AZ
+    charitable_deduction: 10_000
+    az_charitable_contributions_credit: 1_500
+  output:
+    # ($10,000 - $1,500) * 0.34 = $2,890
+    az_increased_standard_deduction_for_charitable_contributions: 2_890

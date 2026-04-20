@@ -1,0 +1,28 @@
+description: Montana limits the newborn credit to taxpayers with AGI at or below this amount.
+
+SINGLE:
+  values:
+    2027-01-01: 60_000
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2027-01-01: 60_000
+
+JOINT:
+  values:
+    2027-01-01: 120_000
+
+SEPARATE:
+  values:
+    2027-01-01: 60_000
+
+SURVIVING_SPOUSE:
+  values:
+    2027-01-01: 120_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Montana newborn credit phase-out threshold
+  breakdown:
+    - filing_status

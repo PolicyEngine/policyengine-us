@@ -1,0 +1,45 @@
+- name: Case 1, no earned income, $0 after deduction.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_earned_income_person: 0
+  output:
+    mt_tanf_earned_income_after_disregard_person: 0
+
+- name: Case 2, $500 monthly income, $0 per year after deduction.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: MT
+    mt_tanf_gross_earned_income_person: 500
+  output:
+    mt_tanf_earned_income_after_disregard_person: 225  #(500 - 200)*0.75
+
+- name: Case 3, integration.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 6_000 # 500 monthly
+        weekly_hours_worked: 25
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 40
+        employment_income_before_lsr: 12_000 # 1_000 monthly
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_tanf_earned_income_after_disregard_person: [225, 0, 600]

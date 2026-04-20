@@ -21,9 +21,7 @@ class ms_blind_exemption(Variable):
 
         # Determine whether spouse is eligible.
         joint = filing_status == filing_status.possible_values.JOINT
-        spouse_eligible = (tax_unit("blind_spouse", period) * joint).astype(
-            int
-        )
+        spouse_eligible = (tax_unit("blind_spouse", period) * joint).astype(int)
 
         # Calculate total blind exemption.
         return (head_eligible + spouse_eligible) * p.amount

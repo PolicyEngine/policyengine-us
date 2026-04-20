@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class in_tanf_countable_earned_income_for_eligibility(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "Indiana TANF countable earned income for eligibility determination"
-    )
+    label = "Indiana TANF countable earned income for eligibility determination"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -24,10 +22,6 @@ class in_tanf_countable_earned_income_for_eligibility(Variable):
         gross_earned = person("tanf_gross_earned_income", period)
 
         # $90 per earner, then $30 + 1/3 per unit (470 IAC 10.3-4-4(c))
-        after_work_expense = spm_unit.sum(
-            max_(gross_earned - p.work_expense.amount, 0)
-        )
-        after_flat = max_(
-            after_work_expense - p.eligibility.flat_disregard.amount, 0
-        )
+        after_work_expense = spm_unit.sum(max_(gross_earned - p.work_expense.amount, 0))
+        after_flat = max_(after_work_expense - p.eligibility.flat_disregard.amount, 0)
         return after_flat * (1 - p.eligibility.earned_income_disregard.rate)

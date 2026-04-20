@@ -56,3 +56,52 @@
     taxable_pension_income: 75_000
   output:
     ri_retirement_income_subtraction: 50_000
+
+# Per-person cap tests for joint filers
+- name: 2024 - Joint filers each get $20K cap (cap is per-person, not per tax unit)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 42_767
+        is_tax_unit_head: true
+      person2:
+        age: 75
+        taxable_pension_income: 42_767
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_retirement_income_subtraction_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 44
+  output:
+    ri_retirement_income_subtraction: 40_000
+
+- name: 2025 - Joint filers each get $50K cap (cap is per-person, not per tax unit)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 60_000
+        is_tax_unit_head: true
+      person2:
+        age: 75
+        taxable_pension_income: 60_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_retirement_income_subtraction_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 44
+  output:
+    ri_retirement_income_subtraction: 100_000

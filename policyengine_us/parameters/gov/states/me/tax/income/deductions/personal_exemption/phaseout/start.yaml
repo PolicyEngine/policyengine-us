@@ -16,6 +16,8 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
     - title: §5126-A. Personal exemptions on or after January 1, 2018 (2)
       href: https://legislature.maine.gov/statutes/36/title36sec5126-A.html
+    - title: 2025 Instructions for Form 1040ME - Worksheet for Phaseout of Personal Exemption Deduction Amount, Line 2
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=6
   breakdown:
     - filing_status
 SINGLE:
@@ -24,6 +26,7 @@ SINGLE:
     2022-01-01: 286_200
     2023-01-01: 305_150
     2024-01-01: 323_900
+    2025-01-01: 333_450
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -35,6 +38,7 @@ SEPARATE:
     2022-01-01: 171_700
     2023-01-01: 183_050
     2024-01-01: 194_325
+    2025-01-01: 200_050
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -46,6 +50,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 314_800
     2023-01-01: 335_650
     2024-01-01: 356_300
+    2025-01-01: 366_750
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -57,6 +62,7 @@ JOINT:
     2022-01-01: 343_400
     2023-01-01: 366_100
     2024-01-01: 388_650
+    2025-01-01: 400_100
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -68,6 +74,7 @@ SURVIVING_SPOUSE:
     2022-01-01: 343_400
     2023-01-01: 366_100
     2024-01-01: 388_650
+    2025-01-01: 400_100
   uprating:
     parameter: gov.irs.uprating
     rounding:

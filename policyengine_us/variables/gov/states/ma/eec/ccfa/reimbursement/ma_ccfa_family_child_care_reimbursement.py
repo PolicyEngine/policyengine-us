@@ -16,6 +16,4 @@ class ma_ccfa_family_child_care_reimbursement(Variable):
         ).gov.states.ma.eec.ccfa.reimbursement_rates.family_child_care
         region = person.household("ma_ccfa_region", period)
         age = person("monthly_age", period)
-        return where(
-            age >= p.age_threshold, p.older[region], p.younger[region]
-        )
+        return where(age >= p.age_threshold, p.older[region], p.younger[region])

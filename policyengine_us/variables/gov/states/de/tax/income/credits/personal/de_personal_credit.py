@@ -7,7 +7,9 @@ class de_personal_credit(Variable):
     label = "Delaware personal credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
+    reference = (
+        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
+    )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):

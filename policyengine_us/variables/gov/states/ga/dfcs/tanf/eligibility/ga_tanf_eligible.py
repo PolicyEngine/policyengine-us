@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class ga_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = (
-        "Eligible for Georgia Temporary Assistance for Needy Families (TANF)"
-    )
+    label = "Eligible for Georgia Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
     reference = (
         "https://rules.sos.ga.gov/gac/290-2-28",

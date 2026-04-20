@@ -10,9 +10,7 @@ class az_family_tax_credit_eligible(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.az.tax.income.credits.family_tax_credits
+        p = parameters(period).gov.states.az.tax.income.credits.family_tax_credits
         # Per ARS 43-1073: "Arizona adjusted gross income, plus the amount
         # subtracted for exemptions under section 43-1023"
         az_agi = tax_unit("az_agi", period)

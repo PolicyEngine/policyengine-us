@@ -6,9 +6,7 @@ class hi_disabled_exemptions(Variable):
     entity = TaxUnit
     label = "Hawaii disabled exemptions"
     unit = USD
-    documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
-    )
+    documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
     definition_period = YEAR
     defined_for = StateCode.HI
 
@@ -38,7 +36,6 @@ class hi_disabled_exemptions(Variable):
             conditional_head_or_spouse_amount
         )
         total_amount = (
-            conditional_dependent_amount
-            + total_conditional_head_or_spouse_amount
+            conditional_dependent_amount + total_conditional_head_or_spouse_amount
         )
         return where(any_disabled_head_or_spouse, total_amount, 0)

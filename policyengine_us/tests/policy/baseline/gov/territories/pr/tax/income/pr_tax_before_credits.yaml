@@ -2,7 +2,7 @@
   period: 2024
   input:
     state_code: PR
-    pr_gross_income: 100_000
+    pr_gross_income_person: 100_000
     pr_normal_tax: 2_000
     pr_gradual_adjustment_amount: 0
   output:
@@ -12,7 +12,7 @@
   period: 2024
   input:
     state_code: PR
-    pr_gross_income: 100_001
+    pr_gross_income_person: 100_001
     pr_normal_tax: 1_000
     pr_gradual_adjustment_amount: 500
   output:

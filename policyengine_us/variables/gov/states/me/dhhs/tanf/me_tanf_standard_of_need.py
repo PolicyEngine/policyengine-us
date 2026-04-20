@@ -28,6 +28,6 @@ class me_tanf_standard_of_need(Variable):
         base_amount = p.standard_of_need.amount[capped_size]
 
         # Add incremental amount for households larger than max size
-        incremental = additional_members * p.standard_of_need.each_additional
+        incremental = additional_members * p.standard_of_need.additional_person
 
         return base_amount + incremental

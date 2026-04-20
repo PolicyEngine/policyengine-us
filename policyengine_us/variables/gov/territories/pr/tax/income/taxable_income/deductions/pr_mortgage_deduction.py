@@ -18,15 +18,12 @@ class pr_mortgage_deduction(Variable):
         agi = tax_unit("pr_agi", period)
         limit = agi * p.floor  # plus any income excluded from AGI
 
-        mortgage_interest = add(
-            tax_unit, period, ["deductible_mortgage_interest"]
-        )
+        mortgage_interest = add(tax_unit, period, ["deductible_mortgage_interest"])
         person = tax_unit.members
         age = person("age", period)
 
         is_senior_exception = tax_unit.any(
-            person("is_tax_unit_head_or_spouse", period)
-            & (age >= p.age_threshold)
+            person("is_tax_unit_head_or_spouse", period) & (age >= p.age_threshold)
         )
         # True if any member fulfills condition
 

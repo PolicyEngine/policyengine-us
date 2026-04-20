@@ -7,7 +7,9 @@ class vt_eitc(Variable):
     label = "Vermont earned income tax credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=1"
+    reference = (
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=1"
+    )
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):

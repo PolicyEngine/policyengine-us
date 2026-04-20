@@ -69,3 +69,271 @@
   output:
     co_sales_tax_refund: 177
     co_income_tax: -977
+
+# 2025 Integration Tests
+# Key 2025 parameters:
+# - Income tax rate: 4.4%
+# - EITC match: 50% of federal EITC
+# - Sales tax refund: Bracket-based (see co_sales_tax_refund.yaml)
+# - CTC max: $1,200 for ages 0-5
+# - Family Affordability Credit: $3,273 (ages 0-5), $2,455 (ages 6-16)
+
+- name: 2025 Single filer with employment income - basic tax calculation
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Taxable income after federal standard deduction ($15,000 for 2025)
+    # CO taxable income = Federal AGI - CO subtractions = $60,000
+    # CO tax = taxable income * 4.4% rate
+    # Sales tax refund: $60k income -> second bracket ($52,001-$105,000) = $25
+    co_sales_tax_refund: 25
+
+- name: 2025 Joint filers with employment income - 4.4% tax rate
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Combined income: $120,000
+    # Sales tax refund: $120k income -> third bracket ($105,001-$168,000)
+    # Joint amount = $29 * 2 = $58
+    co_sales_tax_refund: 58
+
+- name: 2025 Family with young child - CTC and Family Affordability Credit
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 20_000
+        is_tax_unit_head: true
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: CO
+  output:
+    # Child under 6 qualifies for:
+    # - CTC: $1,200 max (income below $25k single threshold)
+    # - Family Affordability Credit: $3,273 (ages 0-5) * multiplier
+    # Sales tax refund: $20k income -> first bracket ($0-$52,000) = $19
+    co_sales_tax_refund: 19
+    co_ctc: 1_200
+
+- name: 2025 Family with older child - Family Affordability Credit only
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 15_000
+        is_tax_unit_head: true
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+        co_ctc: 0
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: CO
+  output:
+    # Child age 10 qualifies for Family Affordability Credit only (age 6-16)
+    # $2,455 * 0.75 multiplier = $1,841.25 at full amount
+    # At $15k income (below threshold), should get full credit
+    co_family_affordability_credit: [0, 2_455]
+
+- name: 2025 EITC integration - low income worker with child
+  absolute_error_margin: 10
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 28
+        employment_income: 25_000
+        is_tax_unit_head: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: CO
+  output:
+    # Federal EITC for 1 child at $25k income (head of household)
+    # CO EITC = 50% of federal EITC
+    # Sales tax refund: $25k income -> first bracket = $19
+    co_sales_tax_refund: 19
+
+- name: 2025 Senior with pension - senior subtraction eligible
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 30_000
+        social_security: 18_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Senior (age 65+) qualifies for pension/SS subtraction
+    # Sales tax refund: $48k total income -> first bracket = $19
+    co_sales_tax_refund: 19
+
+- name: 2025 High income family - phased out credits
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 150_000
+        is_tax_unit_head: true
+      parent2:
+        age: 43
+        employment_income: 100_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        filing_status: JOINT
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: CO
+  output:
+    # Combined income: $250,000
+    # CTC: Phased out at this income level (joint limit ~$87k)
+    # Family Affordability Credit: Phased out (joint limit ~$96k)
+    # Sales tax refund: $250k -> fifth bracket ($233,001-$299,000)
+    # Joint amount = $37 * 2 = $74
+    co_sales_tax_refund: 74
+    co_ctc: 0
+
+- name: 2025 Family with multiple children - different age groups
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child1:
+        age: 2
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, child1, child2, child3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        premium_tax_credit: 0
+        co_ctc: 0
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, child1, child2, child3]
+        state_code: CO
+  output:
+    # Child age 2: CTC $1,200 + FATC $3,273
+    # Child age 8: FATC $2,455 (age 6-16 category)
+    # Child age 14: FATC $2,455 (age 6-16 category)
+    # At $10k income (below thresholds), full credit amounts
+    co_family_affordability_credit: [0, 3_273, 2_455, 2_455]

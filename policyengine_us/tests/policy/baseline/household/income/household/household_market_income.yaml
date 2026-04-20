@@ -1,0 +1,48 @@
+- name: UC is not market income
+  period: 2026
+  input:
+    people:
+      person:
+        unemployment_compensation: 10_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 0
+
+- name: SS is not market income
+  period: 2026
+  input:
+    people:
+      person:
+        social_security: 15_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 0
+
+- name: Employment income is market income
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 50_000
+
+- name: Employment income plus UC does not double count
+  period: 2026
+  input:
+    people:
+      person:
+        employment_income: 50_000
+        unemployment_compensation: 10_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 50_000

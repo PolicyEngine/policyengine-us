@@ -23,8 +23,6 @@ class pa_tanf_standard_of_need(Variable):
         standard = p.standard_of_need.amount[county_group][capped_size]
 
         additional_people = max_(size - max_size, 0)
-        additional_amount = (
-            additional_people * p.standard_of_need.additional_person
-        )
+        additional_amount = additional_people * p.standard_of_need.additional_person
 
         return standard + additional_amount

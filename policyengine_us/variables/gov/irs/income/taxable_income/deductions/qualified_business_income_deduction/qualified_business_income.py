@@ -5,7 +5,9 @@ class qualified_business_income(Variable):
     value_type = float
     entity = Person
     label = "Qualified business income"
-    documentation = "Business income that qualifies for the qualified business income deduction."
+    documentation = (
+        "Business income that qualifies for the qualified business income deduction."
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/199A#c"

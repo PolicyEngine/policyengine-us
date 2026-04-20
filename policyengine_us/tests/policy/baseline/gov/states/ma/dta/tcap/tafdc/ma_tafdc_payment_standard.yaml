@@ -14,7 +14,8 @@
     is_in_public_housing: false
     state_code: MA
   output:
-    ma_tafdc_payment_standard: 1_766
+    # Uses table value directly (max_unit_size = 10)
+    ma_tafdc_payment_standard: 1_754
 
 - name: Case 3, in public housing, 7 people.
   period: 2024-01

@@ -15,9 +15,7 @@ class nm_works_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         resources_eligible = spm_unit("nm_works_resources_eligible", period)
-        gross_income_eligible = spm_unit(
-            "nm_works_gross_income_eligible", period
-        )
+        gross_income_eligible = spm_unit("nm_works_gross_income_eligible", period)
         net_income_eligible = spm_unit("nm_works_net_income_eligible", period)
 
         return (

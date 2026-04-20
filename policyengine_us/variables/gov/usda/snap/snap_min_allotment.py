@@ -6,9 +6,7 @@ class snap_min_allotment(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "SNAP minimum allotment"
-    documentation = (
-        "Minimum allotment for SNAP based on household size and state"
-    )
+    documentation = "Minimum allotment for SNAP based on household size and state"
     unit = USD
 
     def formula(spm_unit, period, parameters):
@@ -41,9 +39,7 @@ class snap_min_allotment(Variable):
             md_min_allotment = p_md.amount
             in_md = state_code == "MD"
             has_elderly = spm_unit("md_snap_elderly_present", period)
-            min_allotment = where(
-                in_md & has_elderly, md_min_allotment, min_allotment
-            )
+            min_allotment = where(in_md & has_elderly, md_min_allotment, min_allotment)
 
         p_nj = parameters(period).gov.states.nj.snap
         if p_nj.in_effect:

@@ -1,7 +1,8 @@
 description: Missouri does not issue TANF payments below this amount.
 
 values:
-  2024-01-01: 10
+  # Rule originated April 22, 1948 with AFDC; carried forward to TANF
+  2002-01-01: 10
 
 metadata:
   unit: currency-USD

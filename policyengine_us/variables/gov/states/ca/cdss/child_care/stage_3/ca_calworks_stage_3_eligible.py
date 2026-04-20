@@ -23,9 +23,7 @@ class ca_calworks_stage_3_eligible(Variable):
         exhausted_stage_2 = months_since > p.time_limit_months
 
         # Former recipient who exhausted Stage 2
-        stage_3_recipient = (
-            ever_received & ~currently_receiving & exhausted_stage_2
-        )
+        stage_3_recipient = ever_received & ~currently_receiving & exhausted_stage_2
 
         # Income must be at or below 85% SMI
         income_eligible = spm_unit("ca_child_care_income_eligible", period)
@@ -40,6 +38,4 @@ class ca_calworks_stage_3_eligible(Variable):
 
         # NOTE: Stage 3 is subject to funding availability, which cannot be
         # modeled in PolicyEngine. We assume funding is available.
-        return (
-            stage_3_recipient & income_eligible & need_eligible & age_eligible
-        )
+        return stage_3_recipient & income_eligible & need_eligible & age_eligible

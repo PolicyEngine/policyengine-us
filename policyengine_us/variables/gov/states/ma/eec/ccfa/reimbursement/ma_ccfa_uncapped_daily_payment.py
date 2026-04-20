@@ -30,12 +30,10 @@ class ma_ccfa_uncapped_daily_payment(Variable):
         care_provider_type = person("ma_ccfa_care_provider_type", period)
         care_provider_types = care_provider_type.possible_values
         center_based_early_education = (
-            care_provider_type
-            == care_provider_types.CENTER_BASED_CARE_EARLY_EDUCATION
+            care_provider_type == care_provider_types.CENTER_BASED_CARE_EARLY_EDUCATION
         )
         center_based_school_age = (
-            care_provider_type
-            == care_provider_types.CENTER_BASED_CARE_SCHOOL_AGE
+            care_provider_type == care_provider_types.CENTER_BASED_CARE_SCHOOL_AGE
         )
         head_start_partner_and_kindergarten = (
             care_provider_type
@@ -44,9 +42,7 @@ class ma_ccfa_uncapped_daily_payment(Variable):
         informal_child_care = (
             care_provider_type == care_provider_types.INFORMAL_CHILD_CARE
         )
-        family_child_care = (
-            care_provider_type == care_provider_types.FAMILY_CHILD_CARE
-        )
+        family_child_care = care_provider_type == care_provider_types.FAMILY_CHILD_CARE
         return select(
             [
                 center_based_early_education,

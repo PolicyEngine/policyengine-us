@@ -1,0 +1,113 @@
+# Vermont Reach Up Dependent Care Deduction
+# Max $175/month per participant (head or spouse)
+# Source: Code Vt. R. 13-170-220-X Section 2252.2
+
+- name: Case 1, zero childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_reach_up_dependent_care_deduction: 0
+
+- name: Case 2, one participant childcare below max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 1_200  # $100/month
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # min($100, $175) = $100
+    vt_reach_up_dependent_care_deduction: 100
+
+- name: Case 3, one participant childcare above max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        childcare_expenses: 3_600  # $300/month
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # min($300, $175) = $175 (capped)
+    vt_reach_up_dependent_care_deduction: 175
+
+- name: Case 4, two participants childcare below double max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # 2 participants = $350 max
+    # min($250, $350) = $250
+    vt_reach_up_dependent_care_deduction: 250
+
+- name: Case 5, two participants childcare above double max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # 2 participants = $350 max
+    # min($500, $350) = $350 (capped)
+    vt_reach_up_dependent_care_deduction: 350

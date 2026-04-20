@@ -14,9 +14,7 @@ class ca_state_supplement_eligible_person(Variable):
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
         immigration_status = person("immigration_status", period)
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return (
             meets_resource_test

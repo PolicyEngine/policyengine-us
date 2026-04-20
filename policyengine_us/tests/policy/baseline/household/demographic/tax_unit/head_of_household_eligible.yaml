@@ -1,13 +1,134 @@
-- name: Default is single.
+- name: Default is single with no dependents.
   period: 2022
   output:
     head_of_household_eligible: false
 
-- name: If unmarried and has children, then head of household is eligible.
-  period: 2022
+- name: Unmarried with qualifying child is eligible for HOH.
+  period: 2024
   input:
-    tax_unit_married: false
-    tax_unit_child_dependents: 1
-    surviving_spouse_eligible: false
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
   output:
     head_of_household_eligible: true
+
+- name: Unmarried parent with 19-year-old non-student child (low income) qualifies for HOH.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Low income under $5,050 threshold
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    # 19-year-old non-student fails qualifying child test but is a qualifying
+    # relative with income below $5,050 threshold
+    head_of_household_eligible: true
+
+- name: Adult child with income over threshold does not qualify parent for HOH.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Income over $5,050 threshold
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    # 19-year-old with income over threshold fails qualifying relative test
+    head_of_household_eligible: false
+
+- name: Married person does not qualify for head of household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child]
+    households:
+      household:
+        members: [person1, person2, child]
+  output:
+    head_of_household_eligible: false
+
+- name: Person with no dependents does not qualify for head of household.
+  period: 2024
+  input:
+    people:
+      single_person:
+        age: 35
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [single_person]
+    households:
+      household:
+        members: [single_person]
+  output:
+    head_of_household_eligible: false
+
+- name: Unrelated qualifying relative does not qualify for HOH per IRC 2(b)(3).
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      unrelated_person:
+        age: 25
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_related_to_head_or_spouse: false
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, unrelated_person]
+    households:
+      household:
+        members: [head, unrelated_person]
+  output:
+    # Unrelated household members are qualifying relatives under IRC 152(d)
+    # but do not count for HOH purposes per IRC 2(b)(3)
+    head_of_household_eligible: false

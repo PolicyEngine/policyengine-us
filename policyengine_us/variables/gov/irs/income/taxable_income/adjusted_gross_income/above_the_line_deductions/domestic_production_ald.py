@@ -6,6 +6,8 @@ class domestic_production_ald(Variable):
     entity = TaxUnit
     label = "Domestic production activities ALD"
     unit = USD
-    documentation = "Above-the-line deduction from gross income for domestic production activities."
+    documentation = (
+        "Above-the-line deduction from gross income for domestic production activities."
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/199"

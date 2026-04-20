@@ -13,12 +13,8 @@ class ky_personal_tax_credits(Variable):
     def formula(tax_unit, period, parameters):
         ky_files_separately = tax_unit("ky_files_separately", period)
         person = tax_unit.members
-        ky_personal_tax_credits_indiv = person(
-            "ky_personal_tax_credits_indiv", period
-        )
-        ky_personal_tax_credits_joint = person(
-            "ky_personal_tax_credits_joint", period
-        )
+        ky_personal_tax_credits_indiv = person("ky_personal_tax_credits_indiv", period)
+        ky_personal_tax_credits_joint = person("ky_personal_tax_credits_joint", period)
         return where(
             ky_files_separately,
             tax_unit.sum(ky_personal_tax_credits_indiv),

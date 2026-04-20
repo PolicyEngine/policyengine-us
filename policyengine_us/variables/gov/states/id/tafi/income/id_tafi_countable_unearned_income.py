@@ -7,9 +7,7 @@ class id_tafi_countable_unearned_income(Variable):
     label = "Idaho TAFI countable unearned income"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.250"
-    )
+    reference = "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.250"
     defined_for = StateCode.ID
 
     # Per IDAPA 16.03.08.250: 100% of unearned income is counted

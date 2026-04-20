@@ -25,9 +25,7 @@ class oh_lump_sum_retirement_credit(Variable):
         head_or_spouse_pension = head_or_spouse * pension_income
 
         head_or_spouse_credit = (
-            p.pension_based.amount.calc(
-                head_or_spouse_pension / divisor, right=True
-            )
+            p.pension_based.amount.calc(head_or_spouse_pension / divisor, right=True)
             * divisor
         )
         total_credit = where(divisor == 0, 0, head_or_spouse_credit)

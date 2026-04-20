@@ -76,6 +76,6 @@ def create_cdcc_single_parent_work_requirement_reform(
         return None
 
 
-cdcc_single_parent_work_requirement = (
-    create_cdcc_single_parent_work_requirement_reform(None, None, bypass=True)
+cdcc_single_parent_work_requirement = create_cdcc_single_parent_work_requirement_reform(
+    None, None, bypass=True
 )

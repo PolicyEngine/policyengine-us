@@ -1,23 +1,36 @@
-- name: If no children and one adult, need standard is $158/mo.
-  period: 2023
+- name: Case 1, one person household.
+  period: 2023-01
   input:
     state_code: NY
     spm_unit_size: 1
   output:
-    ny_tanf_need_standard: 158 * 12
+    # Need standard for 1 person = $158/month
+    ny_tanf_need_standard: 158
 
-- name: If not eligible, we don't calculate it.
-  period: 2023
+- name: Case 2, non-NY state returns zero.
+  period: 2023-01
   input:
     state_code: CA
     spm_unit_size: 1
   output:
     ny_tanf_need_standard: 0
 
-- name: If 10 people, need standard is $617 + 4 * $85 = $957 per month.
-  period: 2023
+- name: Case 3, three person household.
+  period: 2023-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+  output:
+    # Need standard for 3 people = $336/month
+    ny_tanf_need_standard: 336
+
+- name: Case 4, ten person household.
+  period: 2023-01
   input:
     state_code: NY
     spm_unit_size: 10
   output:
-    ny_tanf_need_standard: 957 * 12
+    # Need standard for 6 people = $617
+    # Additional 4 people at $85 each = $340
+    # Total = $617 + $340 = $957/month
+    ny_tanf_need_standard: 957

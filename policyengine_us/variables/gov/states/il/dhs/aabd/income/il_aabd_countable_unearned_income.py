@@ -5,7 +5,9 @@ class il_aabd_countable_unearned_income(Variable):
     value_type = float
     entity = Person
     definition_period = MONTH
-    label = "Illinois Aid to the Aged, Blind or Disabled (AABD) countable unearned income"
+    label = (
+        "Illinois Aid to the Aged, Blind or Disabled (AABD) countable unearned income"
+    )
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.120",
     )

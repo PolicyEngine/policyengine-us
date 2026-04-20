@@ -11,9 +11,7 @@ class pr_earned_income_credit(Variable):
     defined_for = "pr_earned_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.credits.earned_income
+        p = parameters(period).gov.territories.pr.tax.income.credits.earned_income
 
         child_count = tax_unit("eitc_child_count", period)
         filing_status = tax_unit("filing_status", period)
@@ -42,8 +40,6 @@ class pr_earned_income_credit(Variable):
             ],
         )
         # could be negative if gross income not over threshold, so make the minimum value 0
-        phase_out = max_(
-            0, (gross_income - phase_out_threshold) * phase_out_rate
-        )
+        phase_out = max_(0, (gross_income - phase_out_threshold) * phase_out_rate)
         # minimum value 0 in case person isn't eligible for any amount of credit
         return max_(0, phase_in - phase_out)

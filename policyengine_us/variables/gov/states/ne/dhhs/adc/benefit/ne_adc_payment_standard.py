@@ -7,9 +7,7 @@ class ne_adc_payment_standard(Variable):
     label = "Nebraska ADC payment standard"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=43-512"
-    )
+    reference = "https://nebraskalegislature.gov/laws/statutes.php?statute=43-512"
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):

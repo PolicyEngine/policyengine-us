@@ -86,3 +86,44 @@
         or_agi: 25_000
   output:
     or_ctc: 5_000
+
+# 2025 tests - CTC amount increased from $1,000 to $1,050 and phase-out start increased
+- name: 2025 - $1,050 maximum
+  period: 2025
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 0
+  output:
+    or_ctc: 1_050
+
+- name: 2025 - Phase-out starts at $26,550
+  period: 2025
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 26_550
+  output:
+    or_ctc: 1_050
+
+- name: 2025 - Halfway phased out at $29,050
+  period: 2025
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 29_050
+  output:
+    or_ctc: 525
+
+- name: 2025 - Fully phases out at $31,550
+  period: 2025
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 31_550
+  output:
+    or_ctc: 0

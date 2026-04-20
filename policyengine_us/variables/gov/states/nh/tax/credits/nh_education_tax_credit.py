@@ -7,9 +7,7 @@ class nh_education_tax_credit(Variable):
     label = "New Hampshire Education Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.gencourt.state.nh.us/rsa/html/NHTOC/NHTOC-V-77-G.htm"
-    )
+    reference = "https://gc.nh.gov/rsa/html/NHTOC/NHTOC-V-77-G.htm"
     defined_for = StateCode.NH
 
     def formula(tax_unit, period, parameters):

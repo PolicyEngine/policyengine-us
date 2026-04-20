@@ -7,9 +7,7 @@ class nj_wfnj_resources_eligible(Variable):
     label = "New Jersey WFNJ resources eligible"
     definition_period = MONTH
     defined_for = StateCode.NJ
-    reference = (
-        "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-20"
-    )
+    reference = "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-20"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nj.njdhs.wfnj.resources

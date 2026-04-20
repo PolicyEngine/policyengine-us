@@ -6,9 +6,7 @@ class il_isbe_was_teen_parent_at_first_birth(Variable):
     entity = SPMUnit
     label = "Parent was a teen at birth of first child"
     definition_period = YEAR
-    reference = (
-        "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf"
-    )
+    reference = "https://www.isbe.net/Documents/pdg-eg-grant-enrollment-form.pdf"
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):

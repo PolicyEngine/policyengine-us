@@ -1,0 +1,96 @@
+# Unit tests for Arizona TANF earned income after disregard per person
+# $90 flat disregard, then 30% percentage disregard
+# Reference: https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Benefit_Determination.html
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 2, $500 monthly earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Monthly gross: $500
+    # After $90 flat: $500 - $90 = $410
+    # After 30% disregard: $410 * 0.70 = $287
+    az_tanf_earned_income_after_disregard_person: [287]
+
+- name: Case 3, $400 monthly earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 4_800  # $400/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Monthly gross: $400
+    # After $90 flat: $400 - $90 = $310
+    # After 30% disregard: $310 * 0.70 = $217
+    az_tanf_earned_income_after_disregard_person: [217]
+
+- name: Case 4, earned income below $90 flat disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 600  # $50/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Monthly gross: $50
+    # After $90 flat: max($50 - $90, 0) = $0
+    # After 30% disregard: $0 * 0.70 = $0
+    az_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 5, earned income exactly $90.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_080  # $90/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Monthly gross: $90
+    # After $90 flat: $90 - $90 = $0
+    # After 30% disregard: $0
+    az_tanf_earned_income_after_disregard_person: [0]
+
+- name: Case 6, higher earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month annual
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Monthly gross: $1,000
+    # After $90 flat: $1,000 - $90 = $910
+    # After 30% disregard: $910 * 0.70 = $637
+    az_tanf_earned_income_after_disregard_person: [637]

@@ -6,9 +6,7 @@ class ok_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Oklahoma TANF"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10"
-    )
+    reference = "https://www.law.cornell.edu/regulations/oklahoma/title-340/chapter-10"
     defined_for = StateCode.OK
 
     def formula(spm_unit, period, parameters):

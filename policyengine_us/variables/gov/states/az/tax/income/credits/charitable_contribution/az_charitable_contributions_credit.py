@@ -8,9 +8,7 @@ class az_charitable_contributions_credit(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
-    reference = (
-        "https://law.justia.com/codes/arizona/2022/title-43/section-43-1088/"
-    )
+    reference = "https://law.justia.com/codes/arizona/2022/title-43/section-43-1088/"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -31,6 +29,4 @@ class az_charitable_contributions_credit(Variable):
         capped_foster_care_contributions = min_(
             foster_care_contributions, p.qualifying_foster[filing_status]
         )
-        return (
-            capped_charitable_contributions + capped_foster_care_contributions
-        )
+        return capped_charitable_contributions + capped_foster_care_contributions

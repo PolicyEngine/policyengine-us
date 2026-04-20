@@ -7,9 +7,7 @@ def create_ctc_older_child_supplement() -> Reform:
         entity = Person
         label = "CTC maximum amount (child)"
         unit = USD
-        documentation = (
-            "The CTC entitlement in respect of this person as a child."
-        )
+        documentation = "The CTC entitlement in respect of this person as a child."
         definition_period = YEAR
         reference = (
             "https://www.law.cornell.edu/uscode/text/26/24#a",
@@ -34,9 +32,7 @@ def create_ctc_older_child_supplement() -> Reform:
     return reform
 
 
-def create_ctc_older_child_supplement_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ctc_older_child_supplement_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_older_child_supplement()
 

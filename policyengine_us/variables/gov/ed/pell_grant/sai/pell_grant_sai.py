@@ -10,14 +10,10 @@ class pell_grant_sai(Variable):
 
     def formula(person, period, parameters):
         head_contribution = person("pell_grant_head_contribution", period)
-        dependent_contribution = person(
-            "pell_grant_dependent_contribution", period
-        )
+        dependent_contribution = person("pell_grant_dependent_contribution", period)
         formula = person("pell_grant_formula", period)
         eligibility_type = person("pell_grant_eligibility_type", period)
-        max_eligible = (
-            eligibility_type == eligibility_type.possible_values.MAXIMUM
-        )
+        max_eligible = eligibility_type == eligibility_type.possible_values.MAXIMUM
         p = parameters(period).gov.ed.pell_grant.sai
         min_sai = p.limits.min_sai
         max_sai = where(max_eligible, 0, p.limits.max_sai)

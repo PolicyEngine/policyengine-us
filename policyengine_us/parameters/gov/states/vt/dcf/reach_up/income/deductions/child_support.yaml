@@ -1,0 +1,17 @@
+description: Vermont excludes up to this amount of child support payments from countable income under the Reach Up program.
+
+values:
+  2000-01-01: 50
+  2024-01-01: 100
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Vermont Reach Up child support disregard
+  reference:
+    - title: 33 V.S.A. Section 1103(f) ($100 effective Jan 1, 2024)
+      href: https://legislature.vermont.gov/statutes/section/33/011/01103
+    - title: Act 133 (2021 Adj. Sess.) Section 2 ($50 to $100, effective Jan 1, 2024)
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT133/ACT133%20As%20Enacted.pdf#page=2
+    - title: VTLawHelp - Reach Up and Child Support ($100)
+      href: https://www.vtlawhelp.org/does-reach-change-my-child-support

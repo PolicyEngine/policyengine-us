@@ -16,6 +16,8 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=14
     - title: 2024 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=15
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=15
 brackets:
   - threshold:
       2021-01-01: 0
@@ -25,8 +27,9 @@ brackets:
         2022-01-01: 3_625
         2023-01-01: 3_900
         2024-01-01: 4_125
+        2025-01-01: 4_250
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -39,8 +42,9 @@ brackets:
         2022-01-01: 2_900
         2023-01-01: 3_125
         2024-01-01: 3_300
+        2025-01-01: 3_400
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -53,12 +57,13 @@ brackets:
         2022-01-01: 2_175
         2023-01-01: 2_350
         2024-01-01: 2_500
+        2025-01-01: 2_550
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 135_000
     amount:
@@ -67,12 +72,13 @@ brackets:
         2022-01-01: 1_450
         2023-01-01: 1_550
         2024-01-01: 1_650
+        2025-01-01: 1_700
       metadata:
-        uprating:  
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 140_000
     amount:
@@ -81,12 +87,13 @@ brackets:
         2022-01-01: 725
         2023-01-01: 775
         2024-01-01: 825
+        2025-01-01: 850
       metadata:
         uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
-            interval: 100
+            interval: 25
   - threshold:
       2021-01-01: 145_000
     amount:

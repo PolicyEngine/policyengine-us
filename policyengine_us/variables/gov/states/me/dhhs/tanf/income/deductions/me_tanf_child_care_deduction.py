@@ -22,14 +22,12 @@ class me_tanf_child_care_deduction(Variable):
         is_disabled = person("is_disabled", period)
 
         # Special needs children get the higher amount (bracket 0 = $200)
-        max_per_child = where(
-            is_disabled, p.amount.amounts[0], p.amount.calc(age)
-        )
+        max_per_child = where(is_disabled, p.amount.amounts[0], p.amount.calc(age))
 
         # Only children count toward the deduction cap
         max_deduction_per_person = max_per_child * is_child
         total_max_deduction = spm_unit.sum(max_deduction_per_person)
 
-        # Deduction is lesser of actual expenses or maximum
+        # Deduction is lesser of actual expenses or maximum.
         childcare_expenses = spm_unit("childcare_expenses", period)
         return min_(childcare_expenses, total_max_deduction)

@@ -43,11 +43,10 @@
     mt_regular_income_tax_indiv: [230, 0]
 
 
-- name: Calculation of a head of household after 2024
+- name: Indiv path disabled in 2024 (MFSS repealed)
   period: 2024
   input:
-  # The taxable income will always default to 0 for the non-head 
-    people: 
+    people:
       person1:
         mt_taxable_income_indiv: 10_000
         long_term_capital_gains: 5_000
@@ -63,5 +62,5 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_capital_gains_tax_indiv: [150, 60]
-    mt_regular_income_tax_indiv: [235, 0]
+    mt_capital_gains_tax_indiv: [0, 0]
+    mt_regular_income_tax_indiv: [0, 0]

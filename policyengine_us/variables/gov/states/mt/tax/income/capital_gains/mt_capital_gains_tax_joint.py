@@ -22,9 +22,7 @@ class mt_capital_gains_tax_joint(Variable):
             capital_gains = person("long_term_capital_gains", period)
             # No tax on zero or negative capital gains
             # Line 3
-            lesser_of_cg_and_taxable_income = min_(
-                capital_gains, taxable_income
-            )
+            lesser_of_cg_and_taxable_income = min_(capital_gains, taxable_income)
             # Line 4
             excess_over_taxable_income = max_(
                 taxable_income - lesser_of_cg_and_taxable_income, 0
@@ -77,9 +75,7 @@ class mt_capital_gains_tax_joint(Variable):
                 excess_over_threshold, lesser_of_cg_and_taxable_income
             )
             # Line 8
-            lower_capital_gains_tax = (
-                capital_gains_below_threshold * lower_rate
-            )
+            lower_capital_gains_tax = capital_gains_below_threshold * lower_rate
             # Line 9
             income_above_threshold = max_(
                 lesser_of_cg_and_taxable_income - excess_over_threshold, 0

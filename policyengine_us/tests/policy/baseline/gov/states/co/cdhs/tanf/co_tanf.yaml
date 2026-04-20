@@ -27,3 +27,53 @@
     co_tanf_countable_gross_unearned_income: 11
   output:
     co_tanf: 0
+
+# --- 2013 era (period 2014) ---
+
+- name: Case 4, eligible with partial income in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 5_000
+    co_tanf_countable_earned_income_grant_standard: 2_000
+    co_tanf_countable_gross_unearned_income: 1_000
+  output:
+    # $5,000 - ($2,000 + $1,000) = $2,000
+    co_tanf: 2_000
+
+- name: Case 5, ineligible gets zero in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: false
+    co_tanf_grant_standard: 5_000
+    co_tanf_countable_earned_income_grant_standard: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf: 0
+
+# --- 2024 era (period 2025) ---
+
+- name: Case 6, eligible with no income in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 7_104
+    co_tanf_countable_earned_income_grant_standard: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf: 7_104
+
+- name: Case 7, income exceeds grant standard in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 7_104
+    co_tanf_countable_earned_income_grant_standard: 5_000
+    co_tanf_countable_gross_unearned_income: 3_000
+  output:
+    # max($7,104 - $8,000, 0) = $0
+    co_tanf: 0

@@ -1,4 +1,7 @@
-- name: taxsim_record_41443_2024.yaml
+# Oklahoma Income Tax Integration Tests
+# Tests the complete tax calculation flow with real household scenarios
+
+- name: OK Integration - 2024 - joint with dependents (TAXSIM record)
   absolute_error_margin: 2
   period: 2024
   input:
@@ -11,7 +14,7 @@
         head_start: 0
         early_head_start: 0
         commodity_supplemental_food_program: 0
-        taxable_interest_income: 15066.296
+        taxable_interest_income: 15_066.296
         is_tax_unit_head: true
       person2:
         age: 35
@@ -21,7 +24,7 @@
         head_start: 0
         early_head_start: 0
         commodity_supplemental_food_program: 0
-        taxable_interest_income: 15066.296
+        taxable_interest_income: 15_066.296
         is_tax_unit_spouse: true
       person3:
         age: 10
@@ -69,3 +72,239 @@
     # Only match 5% of the actual federal CTC
     ok_child_care_child_tax_credit: 0
     ok_income_tax: 110
+
+# 2025 Comprehensive Integration Tests
+
+- name: OK Integration - 2025 - single with employment income
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 45_000
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 40
+  output:
+    # AGI: $45,000
+    # Standard deduction (single): $6,350
+    # Personal exemption: $1,000
+    # Taxable income: $45,000 - $6,350 - $1,000 = $37,650
+    # Tax calculation:
+    #   0.25% on $1,000 = $2.50
+    #   0.75% on $1,500 = $11.25
+    #   1.75% on $1,250 = $21.875
+    #   2.75% on $1,150 = $31.625
+    #   3.75% on $2,300 = $86.25
+    #   4.75% on $30,450 = $1,446.38
+    # Total: $1,599.88
+    ok_standard_deduction: 6_350
+    ok_income_tax_before_credits: 1_600
+
+- name: OK Integration - 2025 - joint with pension (testing new $20k limit)
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 20_000
+        taxable_pension_income: 25_000
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+      person2:
+        age: 66
+        employment_income: 0
+        taxable_pension_income: 15_000
+        is_tax_unit_spouse: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 40
+  output:
+    # Gross income: $20,000 + $25,000 + $15,000 = $60,000
+    # Pension subtraction (HB 2020 - $20k limit):
+    #   Person1: min($25,000, $20,000) = $20,000
+    #   Person2: min($15,000, $20,000) = $15,000
+    #   Total: $35,000
+    # OK AGI: $60,000 - $35,000 = $25,000
+    # Standard deduction (joint): $12,700
+    # Personal exemptions: 2 * $1,000 = $2,000
+    # Taxable income: $25,000 - $12,700 - $2,000 = $10,300
+    ok_pension_subtraction: 35_000
+    ok_standard_deduction: 12_700
+
+- name: OK Integration - 2025 - HOH with EITC eligible child
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+      child1:
+        age: 8
+        employment_income: 0
+        is_tax_unit_dependent: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+        ok_tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_fips: 40
+  output:
+    # AGI: $25,000
+    # Standard deduction (HOH): $9,350
+    # Exemptions: 2 * $1,000 = $2,000
+    # Taxable income: $25,000 - $9,350 - $2,000 = $13,650
+    # HOH uses joint brackets
+    ok_standard_deduction: 9_350
+    # Sales tax credit: 2 * $40 = $80 (has dependents, under $50k)
+    ok_stc: 80
+
+- name: OK Integration - 2025 - elderly couple with property tax credit
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 18_000
+        taxable_pension_income: 8_000
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+        real_estate_taxes: 500
+      person2:
+        age: 70
+        social_security: 12_000
+        taxable_pension_income: 0
+        is_tax_unit_spouse: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+        ok_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 40
+  output:
+    # Pension subtraction: min($8,000, $20,000) = $8,000
+    ok_pension_subtraction: 8_000
+    # Sales tax credit: elderly, 2 exemptions * $40 = $80
+    ok_stc: 80
+
+- name: OK Integration - 2025 - family with CTC eligible children
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+        ssi: 0
+        wic: 0
+      parent2:
+        age: 38
+        employment_income: 15_000
+        is_tax_unit_spouse: true
+        ssi: 0
+        wic: 0
+      child1:
+        age: 12
+        employment_income: 0
+        is_tax_unit_dependent: true
+        ssi: 0
+        wic: 0
+      child2:
+        age: 8
+        employment_income: 0
+        is_tax_unit_dependent: true
+        ssi: 0
+        wic: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        ok_use_tax: 0
+        tax_unit_childcare_expenses: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        snap: 0
+        tanf: 0
+        ok_tanf: 0
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_fips: 40
+  output:
+    # AGI: $45,000
+    # Standard deduction (joint): $12,700
+    # Exemptions: 4 * $1,000 = $4,000
+    # Under $100,000 AGI limit for OK child credit
+    ok_standard_deduction: 12_700
+    # Sales tax credit: 4 exemptions * $40 = $160 (has dependents, under $50k)
+    ok_stc: 160

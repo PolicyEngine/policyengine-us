@@ -22,9 +22,7 @@ class ne_adc_eligible(Variable):
         # Income eligibility
         income_eligible = spm_unit("ne_adc_income_eligible", period)
         # Resource eligibility (YEAR variable)
-        resources_eligible = spm_unit(
-            "ne_adc_resources_eligible", period.this_year
-        )
+        resources_eligible = spm_unit("ne_adc_resources_eligible", period.this_year)
         return (
             demographic_eligible
             & immigration_eligible

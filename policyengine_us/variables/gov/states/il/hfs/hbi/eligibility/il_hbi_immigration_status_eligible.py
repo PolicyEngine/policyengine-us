@@ -17,7 +17,5 @@ class il_hbi_immigration_status_eligible(Variable):
     def formula(person, period, parameters):
         # Eligible for HBI if NOT eligible for federal Medicaid
         # due to immigration status
-        federal_eligible = person(
-            "is_medicaid_immigration_status_eligible", period
-        )
+        federal_eligible = person("is_medicaid_immigration_status_eligible", period)
         return ~federal_eligible

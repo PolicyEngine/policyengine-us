@@ -13,4 +13,5 @@ class nd_tanf(Variable):
     def formula(spm_unit, period, parameters):
         standard_of_need = spm_unit("nd_tanf_standard_of_need", period)
         countable_income = spm_unit("nd_tanf_countable_income", period)
-        return max_(standard_of_need - countable_income, 0)
+        benefit = max_(standard_of_need - countable_income, 0)
+        return min_(benefit, standard_of_need)

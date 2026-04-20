@@ -6,7 +6,9 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
     entity = Person
     label = "Is eligible for the full earned income disregard under the Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC)"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"  # (A)
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"  # (A)
+    )
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

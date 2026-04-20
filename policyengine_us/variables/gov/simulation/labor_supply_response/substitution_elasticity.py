@@ -39,9 +39,7 @@ class substitution_elasticity(Variable):
             ],
         )
         earnings = max_(raw_earnings, 0)
-        earnings_decile = (
-            np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
-        )
+        earnings_decile = np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
 
         tax_unit = person.tax_unit
         # Primary earner == highest earner in tax unit
@@ -65,9 +63,7 @@ class substitution_elasticity(Variable):
             ]
             for i in range(10):
                 mask = (
-                    non_zero_earnings
-                    & (earnings_decile == i + 1)
-                    & is_primary_earner
+                    non_zero_earnings & (earnings_decile == i + 1) & is_primary_earner
                 )
                 elasticities[mask] = decile_elasticities[i]
 

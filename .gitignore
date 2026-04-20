@@ -38,6 +38,7 @@ taxcalc_output
 .vscode/settings.json
 settings.local.json
 .vscode/configurationCache.log
+settings.local.json
 .vscode/dryrun.log
 .vscode/targets.log
 
@@ -63,3 +64,6 @@ oryx-build-commands.txt
 
 # Claude Code settings
 .claude/settings.local.json
+
+# Claude Code temporary files
+tmpclaude-*-cwd

@@ -12,9 +12,7 @@ class oh_lump_sum_distribution_credit_eligible_person(Variable):
     defined_for = StateCode.OH
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.lump_sum_distribution
+        p = parameters(period).gov.states.oh.tax.income.credits.lump_sum_distribution
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age_eligible = person("age", period) >= p.age_threshold
         return is_head_or_spouse & age_eligible

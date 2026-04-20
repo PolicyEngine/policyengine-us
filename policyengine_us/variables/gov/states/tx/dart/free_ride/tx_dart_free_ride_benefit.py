@@ -8,9 +8,7 @@ class tx_dart_free_ride_benefit(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "tx_dart_free_ride_eligible_young_child"
-    reference = (
-        "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
-    )
+    reference = "https://www.dart.org/fare/general-fares-and-overview/reduced-fares"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.tx.dart.monthly_pass_cost

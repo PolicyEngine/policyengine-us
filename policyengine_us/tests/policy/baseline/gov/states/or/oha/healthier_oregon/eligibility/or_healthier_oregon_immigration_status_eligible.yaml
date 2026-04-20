@@ -1,0 +1,73 @@
+# Tests for Oregon Healthier Oregon immigration status eligibility
+
+# Undocumented immigrants are eligible
+- name: Undocumented adult eligible
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: true
+
+# DACA recipients are eligible
+- name: DACA recipient eligible
+  period: 2024
+  input:
+    immigration_status: DACA
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: true
+
+# TPS holders are eligible
+- name: TPS holder eligible
+  period: 2024
+  input:
+    immigration_status: TPS
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: true
+
+# Citizens should use regular federal Medicaid
+- name: US citizen NOT eligible (uses federal Medicaid)
+  period: 2024
+  input:
+    immigration_status: CITIZEN
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: false
+
+# LPRs should use regular federal Medicaid
+- name: LPR NOT eligible (uses federal Medicaid)
+  period: 2024
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: false
+
+# Refugees should use regular federal Medicaid
+- name: Refugee NOT eligible (uses federal Medicaid)
+  period: 2024
+  input:
+    immigration_status: REFUGEE
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: false
+
+# Asylees should use regular federal Medicaid
+- name: Asylee NOT eligible (uses federal Medicaid)
+  period: 2024
+  input:
+    immigration_status: ASYLEE
+    state_code: OR
+  output:
+    or_healthier_oregon_immigration_status_eligible: false
+
+# Non-OR residents not eligible
+- name: Undocumented person in CA not eligible for OR program
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    or_healthier_oregon_immigration_status_eligible: false

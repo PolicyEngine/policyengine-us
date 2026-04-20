@@ -17,25 +17,17 @@ class vt_capital_gains_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get adjusted net capital gains, which is capped at 0
-        adjusted_net_capital_gain = tax_unit(
-            "adjusted_net_capital_gain", period
-        )
-        qualified_dividend_income = add(
-            tax_unit, period, ["qualified_dividend_income"]
-        )
+        adjusted_net_capital_gain = tax_unit("adjusted_net_capital_gain", period)
+        qualified_dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
         reduced_adjusted_net_capital_gain = max_(
             adjusted_net_capital_gain - qualified_dividend_income, 0
         )
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.exclusions.capital_gain
+        p = parameters(period).gov.states.vt.tax.income.agi.exclusions.capital_gain
         # The flat exclusion is the less of a capped amount
         # or the actual amount of net adjusted capital gains
         flat_exclusion = min_(reduced_adjusted_net_capital_gain, p.flat.cap)
         # Get percentage exclusion
-        percentage_exclusion = tax_unit(
-            "vt_percentage_capital_gains_exclusion", period
-        )
+        percentage_exclusion = tax_unit("vt_percentage_capital_gains_exclusion", period)
         # Filer can choose from flat or percentage exclusion.
         # Assume the filer will always choose the larger one
         chosen_exclusion = max_(flat_exclusion, percentage_exclusion)

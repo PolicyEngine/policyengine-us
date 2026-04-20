@@ -1,10 +1,10 @@
-description: Utah provides up to this maximum benefit amount under the Family Employment Program, based on household size.
+description: Utah provides this amount as the payment standard under the Family Employment Program.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
-    - range(1, 20)
+    - range(1, 17)
   breakdown_labels:
     - Household size
   label: Utah FEP maximum benefit amount
@@ -13,42 +13,57 @@ metadata:
       href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239
     - title: Utah DWS Table 1 - Financial Monthly Income Limits and Assistance Amounts
       href: https://jobs.utah.gov/Infosource/eligibilitymanual/Tables,_Appendicies,_and_Charts/Tables,_Appendicies,_and_Charts/Table_1_-_Financial_Monthly_Income_Limits_and_Assistance_Amounts.htm
+    - title: Utah DWS Obsolete Table 1 (2008 to April 30, 2012)
+      href: https://jobs.utah.gov/infosource/eligibilitymanual/Obsolete_Policy/Obsolete_Tables%2c_Appendices%2c_and_Charts/Table_1/ObsoleteTable1_(2008_to_4_30_12).htm
+    - title: Utah DWS Obsolete Table 1 (May 2012 to September 30, 2022)
+      href: https://jobs.utah.gov/infosource/eligibilitymanual/Obsolete_Policy/Obsolete_Tables%2c_Appendices%2c_and_Charts/Table_1/Obsolete_Table_1_(05_01_12_to_09_30_22).htm
+
 
 1:
+  2008-01-01: 288
   2022-10-01: 383
 2:
+  2008-01-01: 399
   2022-10-01: 531
 3:
+  2008-01-01: 498
   2022-10-01: 662
 4:
+  2008-01-01: 583
   2022-10-01: 775
 5:
+  2008-01-01: 663
   2022-10-01: 882
 6:
+  2008-01-01: 731
   2022-10-01: 972
 7:
+  2008-01-01: 765
   2022-10-01: 1_017
 8:
+  2008-01-01: 801
   2022-10-01: 1_065
 9:
+  2008-01-01: 839
   2022-10-01: 1_116
 10:
+  2008-01-01: 874
   2022-10-01: 1_162
 11:
+  2008-01-01: 910
   2022-10-01: 1_210
 12:
+  2008-01-01: 946
   2022-10-01: 1_258
 13:
+  2008-01-01: 982
   2022-10-01: 1_306
 14:
+  2008-01-01: 1_018
   2022-10-01: 1_354
 15:
+  2008-01-01: 1_055
   2022-10-01: 1_403
 16:
+  2008-01-01: 1_090
   2022-10-01: 1_450
-17:
-  2022-10-01: 1_498
-18:
-  2022-10-01: 1_546
-19:
-  2022-10-01: 1_594

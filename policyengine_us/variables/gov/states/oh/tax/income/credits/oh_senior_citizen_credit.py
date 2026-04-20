@@ -23,8 +23,7 @@ class oh_senior_citizen_credit(Variable):
         age_head = tax_unit("age_head", period)
         elderly_head = age_head >= p.age_threshold
         eligible_head = (
-            tax_unit.any(head_has_not_taken_lump_sum_distribution)
-            & elderly_head
+            tax_unit.any(head_has_not_taken_lump_sum_distribution) & elderly_head
         )
         agi = tax_unit("oh_modified_agi", period)
         exemptions = tax_unit("oh_personal_exemptions", period)

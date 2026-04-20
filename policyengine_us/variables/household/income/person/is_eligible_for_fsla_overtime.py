@@ -19,9 +19,7 @@ class is_eligible_for_fsla_overtime(Variable):
         # The worker is exempt if:
         # 1. Their income exceeds the threshold corresponding to their exemption category
         # 2. They're not paid hourly
-        is_exempt = (employment_income >= applicable_threshold) & (
-            ~is_paid_hourly
-        )
+        is_exempt = (employment_income >= applicable_threshold) & (~is_paid_hourly)
 
         # Return True if eligible for overtime protection, False if exempt
         return ~is_exempt

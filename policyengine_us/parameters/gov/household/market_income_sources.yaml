@@ -17,8 +17,8 @@ values:
   - debt_relief
   # Decedent income
   # Estate interest income
-  - unemployment_compensation
-  - social_security
+  # unemployment_compensation and social_security are government transfers,
+  # not market income. They are included in household_benefits instead.
   - illicit_income
   - retirement_distributions
   - miscellaneous_income

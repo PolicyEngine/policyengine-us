@@ -26,9 +26,7 @@ class ri_social_security_modification(Variable):
         aged_head_or_spouse_ss = tax_unit.sum(
             total_social_security * head_or_spouse_aged
         )
-        head_or_spouse_ss = tax_unit.sum(
-            total_social_security * head_or_spouse
-        )
+        head_or_spouse_ss = tax_unit.sum(total_social_security * head_or_spouse)
         # The social security modification is calculated as the percentage of social security
         # received by the aged head or spouse relative to the total social security received
         aged_ss_as_a_percentage_of_total_ss = np.zeros_like(head_or_spouse_ss)

@@ -22,9 +22,7 @@ class ct_eitc(Variable):
             eitc_eligible = federal_eitc > 0
             has_qualifying_child = tax_unit("eitc_child_count", period) > 0
             bonus = (
-                eitc_eligible
-                * has_qualifying_child
-                * p.qualifying_child_bonus.amount
+                eitc_eligible * has_qualifying_child * p.qualifying_child_bonus.amount
             )
             return base_credit + bonus
         return base_credit

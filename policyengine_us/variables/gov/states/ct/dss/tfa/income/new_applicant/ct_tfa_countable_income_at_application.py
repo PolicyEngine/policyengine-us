@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ct_tfa_countable_income_at_application(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Connecticut Temporary Family Assistance (TFA) countable income at application"
+    label = (
+        "Connecticut Temporary Family Assistance (TFA) countable income at application"
+    )
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.CT

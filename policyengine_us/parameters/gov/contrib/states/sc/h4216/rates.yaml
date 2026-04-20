@@ -1,0 +1,24 @@
+# Note: H.4216 Items 2-3 also include automatic rate reductions beginning
+# in 2027 if individual income tax revenues project to grow at least 5%
+# year-over-year. These future rate reductions are not modeled.
+description: South Carolina H.4216 establishes new income tax rates.
+
+metadata:
+  reference:
+    - title: South Carolina H.4216 Section 1 - Section 12-6-510(C)
+      href: https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm
+  label: South Carolina H.4216 income tax rates
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.0199
+  - threshold:
+      2026-01-01: 30_000
+    rate:
+      2026-01-01: 0.0521

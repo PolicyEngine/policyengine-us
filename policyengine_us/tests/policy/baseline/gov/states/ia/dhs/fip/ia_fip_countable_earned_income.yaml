@@ -1,0 +1,60 @@
+- name: Case 1, no earned income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_fip_countable_earned_income: 0
+
+- name: Case 2, earned income with deductions.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Gross earned: $12,000/year = $1,000/month
+    # After 20% deduction: $1,000 * 0.8 = $800
+    # After 58% work incentive disregard: $800 * 0.42 = $336
+    # Annual: $336 * 12 = $4,032
+    ia_fip_countable_earned_income: 4_032
+
+- name: Case 3, higher earned income.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Gross earned: $24,000/year = $2,000/month
+    # After 20% deduction: $2,000 * 0.8 = $1,600
+    # After 58% work incentive disregard: $1,600 * 0.42 = $672
+    # Annual: $672 * 12 = $8,064
+    ia_fip_countable_earned_income: 8_064

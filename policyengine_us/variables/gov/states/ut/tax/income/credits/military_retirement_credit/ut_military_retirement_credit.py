@@ -11,10 +11,6 @@ class ut_military_retirement_credit(Variable):
     defined_for = "ut_military_retirement_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        military_retirement_pay = add(
-            tax_unit, period, ["military_retirement_pay"]
-        )
-        p = parameters(
-            period
-        ).gov.states.ut.tax.income.credits.military_retirement
+        military_retirement_pay = add(tax_unit, period, ["military_retirement_pay"])
+        p = parameters(period).gov.states.ut.tax.income.credits.military_retirement
         return military_retirement_pay * p.rate

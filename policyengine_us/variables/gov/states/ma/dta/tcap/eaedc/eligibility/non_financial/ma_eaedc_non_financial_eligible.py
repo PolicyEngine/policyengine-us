@@ -7,9 +7,7 @@ class ma_eaedc_non_financial_eligible(Variable):
     label = "Non-financial eligible for Massachusetts EAEDC"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
 
     def formula(spm_unit, period, parameters):
         elderly_present = spm_unit("ma_eaedc_eligible_elderly_present", period)

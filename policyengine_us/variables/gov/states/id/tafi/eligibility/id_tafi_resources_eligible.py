@@ -6,9 +6,7 @@ class id_tafi_resources_eligible(Variable):
     entity = SPMUnit
     label = "Idaho TAFI resources eligible"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.200"
-    )
+    reference = "https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.08.200"
     defined_for = StateCode.ID
 
     def formula(spm_unit, period, parameters):

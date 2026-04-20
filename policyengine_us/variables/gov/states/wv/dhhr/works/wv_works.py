@@ -19,4 +19,5 @@ class wv_works(Variable):
         # Step 9: Eligibility check (handled by defined_for = "wv_works_eligible")
         # Step 10: Subtract countable income from payment standard
         countable_income = spm_unit("wv_works_countable_income", period)
-        return max_(payment_standard - countable_income, 0)
+        benefit = max_(payment_standard - countable_income, 0)
+        return min_(benefit, payment_standard)

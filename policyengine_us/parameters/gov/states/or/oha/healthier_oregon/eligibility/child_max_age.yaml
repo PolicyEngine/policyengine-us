@@ -1,0 +1,11 @@
+description: Oregon applies the higher child income limit to individuals under this age under the Healthier Oregon program.
+metadata:
+  unit: year
+  period: year
+  label: Oregon Healthier Oregon child maximum age
+  reference:
+    - title: ORS 414.231 - Coverage for noncitizens (defines child as under 19)
+      href: https://oregon.public.law/statutes/ors_414.231
+
+values:
+  2023-07-01: 19  # Children under 19 (ages 0-18)

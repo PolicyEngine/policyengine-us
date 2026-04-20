@@ -10,9 +10,7 @@ def create_remove_head_of_household() -> Reform:
     return reform
 
 
-def create_remove_head_of_household_reform(
-    parameters, period, bypass: bool = False
-):
+def create_remove_head_of_household_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_remove_head_of_household()
 

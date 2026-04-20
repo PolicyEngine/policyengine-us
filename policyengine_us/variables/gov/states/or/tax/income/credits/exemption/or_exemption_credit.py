@@ -24,9 +24,5 @@ class or_exemption_credit(Variable):
             period,
             ["or_" + i + "_exemptions" for i in EXEMPTION_TYPES],
         )
-        amount = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.income.credits.exemption.amount
-        )
+        amount = parameters(period).gov.states["or"].tax.income.credits.exemption.amount
         return exemptions * amount

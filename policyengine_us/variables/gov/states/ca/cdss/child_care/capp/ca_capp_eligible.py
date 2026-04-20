@@ -31,9 +31,4 @@ class ca_capp_eligible(Variable):
 
         # NOTE: CAPP is subject to funding availability and waitlists,
         # which cannot be modeled in PolicyEngine. We assume enrollment.
-        return (
-            not_calworks_recipient
-            & income_eligible
-            & need_eligible
-            & age_eligible
-        )
+        return not_calworks_recipient & income_eligible & need_eligible & age_eligible

@@ -10,16 +10,12 @@ def create_afa_other_dependent_credit() -> Reform:
         entity = TaxUnit
         label = "Other Dependent Credit which is independent of the CTC"
         unit = USD
-        documentation = (
-            "The standalone dependent credit in respect of this person."
-        )
+        documentation = "The standalone dependent credit in respect of this person."
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
-            maximum_amount = add(
-                tax_unit, period, ["other_dependent_credit_maximum"]
-            )
+            maximum_amount = add(tax_unit, period, ["other_dependent_credit_maximum"])
             reduction = tax_unit("other_dependent_credit_phase_out", period)
             return max_(0, maximum_amount - reduction)
 
@@ -32,9 +28,7 @@ def create_afa_other_dependent_credit() -> Reform:
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(person, period, parameters):
-            p = parameters(
-                period
-            ).gov.contrib.congress.afa.other_dependent_credit
+            p = parameters(period).gov.contrib.congress.afa.other_dependent_credit
             is_dependent = person("is_tax_unit_dependent", period)
             is_child = person("ctc_child_individual_maximum", period) > 0
             is_adult_dependent = ~is_child & is_dependent
@@ -119,9 +113,7 @@ def create_afa_other_dependent_credit() -> Reform:
         entity = TaxUnit
         label = "refundable CTC"
         unit = USD
-        documentation = (
-            "The portion of the Child Tax Credit that is refundable."
-        )
+        documentation = "The portion of the Child Tax Credit that is refundable."
         definition_period = YEAR
         reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
@@ -140,9 +132,7 @@ def create_afa_other_dependent_credit() -> Reform:
             if ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_lower_phase_out", period)
                 p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-                qualifying_children = tax_unit(
-                    "ctc_qualifying_children", period
-                )
+                qualifying_children = tax_unit("ctc_qualifying_children", period)
                 lower_floor = p.lower_floor * qualifying_children
                 capped_credit = min_(lower_floor, maximum_amount)
                 reduced_max_amount_lower = max_(
@@ -159,12 +149,8 @@ def create_afa_other_dependent_credit() -> Reform:
             phase_in = tax_unit("ctc_phase_in", period)
             limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-            ctc_capped_by_increased_tax = min_(
-                total_ctc, limiting_tax + phase_in
-            )
-            amount_ctc_would_increase = (
-                ctc_capped_by_increased_tax - ctc_capped_by_tax
-            )
+            ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
+            amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
     class ctc(Variable):
@@ -184,9 +170,7 @@ def create_afa_other_dependent_credit() -> Reform:
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
             qualifying_children = tax_unit("ctc_qualifying_children", period)
             lower_floor = p.lower_floor * qualifying_children
-            reduced_max_amount_lower = max_(
-                lower_floor, maximum_amount - reduction
-            )
+            reduced_max_amount_lower = max_(lower_floor, maximum_amount - reduction)
             higher_reduction = tax_unit("ctc_higher_phase_out", period)
             return max_(0, reduced_max_amount_lower - higher_reduction)
 
@@ -208,8 +192,7 @@ def create_afa_other_dependent_credit() -> Reform:
             is_baby = age < 1
             monthly_base_amount = base_amount / MONTHS_IN_YEAR
             baby_bonus = (
-                monthly_base_amount * p.baby_bonus
-                - monthly_base_amount * multiplier
+                monthly_base_amount * p.baby_bonus - monthly_base_amount * multiplier
             )
             baby_bonus_amount = baby_bonus * is_baby
             return pre_baby_bonus_amount + baby_bonus_amount
@@ -263,9 +246,7 @@ def create_afa_other_dependent_credit() -> Reform:
     return reform
 
 
-def create_afa_other_dependent_credit_reform(
-    parameters, period, bypass: bool = False
-):
+def create_afa_other_dependent_credit_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_afa_other_dependent_credit()
 

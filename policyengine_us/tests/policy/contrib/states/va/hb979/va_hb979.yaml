@@ -1,0 +1,138 @@
+# Test VA HB979 Income Tax Reform
+# For 2027+: adds 8% bracket ($600k-$1M) and 10% bracket ($1M+)
+
+- name: VA HB979 - income below $600k threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        va_taxable_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Uses baseline rates since income is below $600k threshold
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 483000*0.0575
+    # = 60 + 60 + 600 + 27772.50 = 28492.50
+    va_income_tax_before_non_refundable_credits: 28492.50
+
+- name: VA HB979 - income between $600k and $1M
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        va_taxable_income: 700_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 583000*0.0575 + 100000*0.08
+    # = 60 + 60 + 600 + 33522.50 + 8000 = 42242.50
+    va_income_tax_before_non_refundable_credits: 42242.50
+
+- name: VA HB979 - income at $1M threshold
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        va_taxable_income: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 583000*0.0575 + 400000*0.08
+    # = 60 + 60 + 600 + 33522.50 + 32000 = 66242.50
+    va_income_tax_before_non_refundable_credits: 66242.50
+
+- name: VA HB979 - income above $1M
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        va_taxable_income: 1_500_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 583000*0.0575 + 400000*0.08 + 500000*0.10
+    # = 60 + 60 + 600 + 33522.50 + 32000 + 50000 = 116242.50
+    va_income_tax_before_non_refundable_credits: 116242.50
+
+- name: VA HB979 - joint filers above $1M
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: true
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        va_taxable_income: 2_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 583000*0.0575 + 400000*0.08 + 1000000*0.10
+    # = 60 + 60 + 600 + 33522.50 + 32000 + 100000 = 166242.50
+    va_income_tax_before_non_refundable_credits: 166242.50
+
+- name: VA HB979 - reform not in effect uses baseline
+  period: 2027
+  reforms: policyengine_us.reforms.states.va.hb979.va_hb979_reform.va_hb979
+  input:
+    gov.contrib.states.va.hb979.in_effect: false
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        va_taxable_income: 700_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Uses baseline rates (no 8% or 10% brackets)
+    # 3000*0.02 + 2000*0.03 + 12000*0.05 + 683000*0.0575
+    # = 60 + 60 + 600 + 39272.50 = 39992.50
+    va_income_tax_before_non_refundable_credits: 39992.50

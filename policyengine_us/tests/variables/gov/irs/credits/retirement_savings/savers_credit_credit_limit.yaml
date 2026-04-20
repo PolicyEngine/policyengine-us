@@ -1,0 +1,13 @@
+- name: Savers credit limit equals income tax before credits with no preceding credits
+  period: 2024
+  input:
+    income_tax_before_credits: 5_000
+  output:
+    savers_credit_credit_limit: 5_000
+
+- name: Savers credit limit is zero when income tax before credits is zero
+  period: 2024
+  input:
+    income_tax_before_credits: 0
+  output:
+    savers_credit_credit_limit: 0

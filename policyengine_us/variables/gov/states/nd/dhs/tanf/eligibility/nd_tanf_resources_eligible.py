@@ -6,9 +6,7 @@ class nd_tanf_resources_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for North Dakota TANF due to resources"
     definition_period = MONTH
-    reference = (
-        "https://www.nd.gov/dhs/policymanuals/40019/400_19_55_05_10.htm"
-    )
+    reference = "https://www.nd.gov/dhs/policymanuals/40019/400_19_55_05_10.htm"
     defined_for = StateCode.ND
 
     def formula(spm_unit, period, parameters):

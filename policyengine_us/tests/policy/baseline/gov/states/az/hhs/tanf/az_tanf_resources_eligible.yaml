@@ -1,0 +1,102 @@
+# Unit tests for Arizona TANF resources eligibility
+# Resource limit: $2,000
+# Reference: https://az.db101.org/az/programs/income_support/tanf/program2.htm
+
+- name: Case 1, no assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_resources_eligible: true
+
+- name: Case 2, assets below limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $1,500 < $2,000 limit
+    az_tanf_resources_eligible: true
+
+- name: Case 3, assets at limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $2,000 = $2,000 limit (eligible at limit)
+    az_tanf_resources_eligible: true
+
+- name: Case 4, assets exceed limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $2,500 > $2,000 limit
+    az_tanf_resources_eligible: false
+
+- name: Case 5, assets significantly exceed limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $5,000 > $2,000 limit
+    az_tanf_resources_eligible: false

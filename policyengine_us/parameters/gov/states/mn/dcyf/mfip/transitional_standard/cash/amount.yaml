@@ -1,0 +1,120 @@
+description: Minnesota provides this cash portion of the Transitional Standard under the Minnesota Family Investment Program.
+# NOTE: MFIP is a combined cash+food program. This parameter models only the
+# cash portion. The food portion is in a separate parameter. The full
+# Transitional Standard (cash + food) is used in FWL and benefit calculation
+# per MN Stat. 142G.17, Subd. 5 & 7. The food portion is then subtracted
+# from the final benefit because PolicyEngine models SNAP separately.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(0, 20)
+  breakdown_labels:
+    - Assistance unit size
+  label: Minnesota MFIP Transitional Standard cash portion
+  reference:
+    - title: Minnesota Combined Manual MFIP/DWP Assistance Standards (latest version)
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_002009
+    - title: Minnesota House Research - MFIP Grants Calculation and Exit Points
+      href: https://www.house.mn.gov/hrd/pubs/mfipgrant.pdf#page=3
+    - title: Laws 2019, First Special Session, ch. 9, art. 1, sec. 20 - $100/household cash increase effective 02/01/2020
+      href: https://www.revisor.mn.gov/laws/2019/1/9/laws.1.20.0
+    - title: Minnesota DHS Combined Manual February 2020 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=128627
+    - title: Minnesota DHS Combined Manual December 2021 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/dhs-337945.pdf#page=911
+    - title: Minnesota House Research - Cash Assistance in Minnesota December 2022
+      href: https://www.house.mn.gov/hrd/pubs/cashassist.pdf#page=10
+    - title: Minnesota DHS Combined Manual October 2023 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=139469
+    - title: Minnesota House Research - Minnesota Family Investment Program (2024)
+      href: https://www.house.mn.gov/hrd/pubs/pap_mfip.pdf#page=17
+    - title: Minnesota DHS Combined Manual October 2025 - MFIP/DWP Assistance Standards
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dID=160643
+
+# Cash portion was frozen at AFDC levels from 1997.
+# $100/household increase effective 02/01/2020 per Laws 2019, First Special
+# Session, ch. 9, art. 1, sec. 20 (amending MN Stat. 256J.24, subd. 5;
+# now renumbered 142G.17, subd. 5).
+# CPI-U COLA adjustments per MN Stat. 142G.17 from 2021-10-01 onward.
+1:
+  1997-01-01: 250
+  2020-02-01: 350
+  2021-10-01: 355
+  2022-10-01: 380
+  2023-10-01: 405
+  2024-10-01: 419
+  2025-10-01: 431
+2:
+  1997-01-01: 437
+  2020-02-01: 537
+  2021-10-01: 545
+  2022-10-01: 583
+  2023-10-01: 621
+  2024-10-01: 642
+  2025-10-01: 661
+3:
+  1997-01-01: 532
+  2020-02-01: 632
+  2021-10-01: 641
+  2022-10-01: 686
+  2023-10-01: 731
+  2024-10-01: 756
+  2025-10-01: 778
+4:
+  1997-01-01: 621
+  2020-02-01: 721
+  2021-10-01: 731
+  2022-10-01: 782
+  2023-10-01: 833
+  2024-10-01: 861
+  2025-10-01: 886
+5:
+  1997-01-01: 697
+  2020-02-01: 797
+  2021-10-01: 808
+  2022-10-01: 865
+  2023-10-01: 921
+  2024-10-01: 952
+  2025-10-01: 980
+6:
+  1997-01-01: 773
+  2020-02-01: 873
+  2021-10-01: 885
+  2022-10-01: 947
+  2023-10-01: 1_009
+  2024-10-01: 1_043
+  2025-10-01: 1_073
+7:
+  1997-01-01: 850
+  2020-02-01: 950
+  2021-10-01: 963
+  2022-10-01: 1_030
+  2023-10-01: 1_097
+  2024-10-01: 1_134
+  2025-10-01: 1_167
+8:
+  1997-01-01: 916
+  2020-02-01: 1_016
+  2021-10-01: 1_030
+  2022-10-01: 1_102
+  2023-10-01: 1_174
+  2024-10-01: 1_214
+  2025-10-01: 1_249
+9:
+  1997-01-01: 980
+  2020-02-01: 1_080
+  2021-10-01: 1_095
+  2022-10-01: 1_172
+  2023-10-01: 1_248
+  2024-10-01: 1_290
+  2025-10-01: 1_327
+10:
+  1997-01-01: 1_035
+  2020-02-01: 1_135
+  2021-10-01: 1_151
+  2022-10-01: 1_232
+  2023-10-01: 1_312
+  2024-10-01: 1_357
+  2025-10-01: 1_396

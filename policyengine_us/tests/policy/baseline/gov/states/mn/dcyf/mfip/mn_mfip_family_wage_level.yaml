@@ -1,5 +1,6 @@
 - name: Case 1, single person household.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -12,12 +13,13 @@
         members: [person1]
         state_code: MN
   output:
-    # Transitional standard for size 1: $661
+    # Full TS for size 1: cash $419 + food $242 = $661
     # Family Wage Level = 661 * 1.1 = 727.1
     mn_mfip_family_wage_level: 727.1
 
 - name: Case 2, family of three.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -34,12 +36,13 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # Transitional standard for size 3: $1,394
-    # Family Wage Level = 1,394 * 1.1 = 1,533.4
+    # Full TS for size 3: cash $756 + food $638 = $1,394
+    # Family Wage Level = 1394 * 1.1 = 1,533.4
     mn_mfip_family_wage_level: 1_533.4
 
 - name: Case 3, family of five.
   period: 2025-01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -60,6 +63,6 @@
         members: [person1, person2, person3, person4, person5]
         state_code: MN
   output:
-    # Transitional standard for size 5: $1,933
-    # Family Wage Level = 1,933 * 1.1 = 2,126.3
+    # Full TS for size 5: cash $952 + food $981 = $1,933
+    # Family Wage Level = 1933 * 1.1 = 2,126.3
     mn_mfip_family_wage_level: 2_126.3

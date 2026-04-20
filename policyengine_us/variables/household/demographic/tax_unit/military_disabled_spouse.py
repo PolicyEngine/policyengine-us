@@ -5,9 +5,7 @@ class military_disabled_spouse(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
-    label = (
-        "Tax unit spouse is legally disabled as a result of military service"
-    )
+    label = "Tax unit spouse is legally disabled as a result of military service"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members

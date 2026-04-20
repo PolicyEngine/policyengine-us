@@ -15,9 +15,7 @@ class ri_property_tax_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         # minimum age eligibility
-        greater_head_or_spouse_age = tax_unit(
-            "greater_age_head_spouse", period
-        )
+        greater_head_or_spouse_age = tax_unit("greater_age_head_spouse", period)
         age_eligible = greater_head_or_spouse_age >= p.age_threshold
         # disability eligibility
         head_is_disabled = tax_unit("head_is_disabled", period)
@@ -27,6 +25,4 @@ class ri_property_tax_credit_eligible(Variable):
         income_threshold = p.rate.one_person.thresholds[-1]
         # The tax form RI-1040H specifies the income of a household as a eligibility requirement
         household_income_eligible = household_income <= income_threshold
-        return (
-            age_eligible | head_or_spouse_disabled
-        ) & household_income_eligible
+        return (age_eligible | head_or_spouse_disabled) & household_income_eligible

@@ -29,8 +29,7 @@ class first_county_in_state(Variable):
             state_counties = [
                 county
                 for county in County
-                if county != County.UNKNOWN
-                and county.value.endswith(f", {state_abbr}")
+                if county != County.UNKNOWN and county.value.endswith(f", {state_abbr}")
             ]
 
             # Sort alphabetically and get the first one

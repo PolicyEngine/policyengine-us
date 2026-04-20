@@ -15,13 +15,9 @@ class tx_tanf_countable_unearned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         # Sum person-level gross unearned income
-        gross_unearned = add(
-            spm_unit, period, ["tx_tanf_gross_unearned_income"]
-        )
+        gross_unearned = add(spm_unit, period, ["tx_tanf_gross_unearned_income"])
 
         # Apply household-level child support deduction (up to $75/month per household)
-        child_support_deduction = spm_unit(
-            "tx_tanf_child_support_deduction", period
-        )
+        child_support_deduction = spm_unit("tx_tanf_child_support_deduction", period)
 
         return max_(gross_unearned - child_support_deduction, 0)

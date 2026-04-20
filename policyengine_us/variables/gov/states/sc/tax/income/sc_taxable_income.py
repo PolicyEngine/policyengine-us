@@ -8,9 +8,7 @@ class sc_taxable_income(Variable):
     defined_for = StateCode.SC
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=33"
-    )
+    reference = "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=33"
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("taxable_income", period)

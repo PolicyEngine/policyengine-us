@@ -38,9 +38,7 @@ def create_senior_deduction_extension() -> Reform:
     return reform
 
 
-def create_senior_deduction_extension_reform(
-    parameters, period, bypass: bool = False
-):
+def create_senior_deduction_extension_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_senior_deduction_extension()
 

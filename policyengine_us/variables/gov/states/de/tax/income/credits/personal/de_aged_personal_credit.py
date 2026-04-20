@@ -7,15 +7,11 @@ class de_aged_personal_credit(Variable):
     label = "Delaware aged personal credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://delcode.delaware.gov/title30/c011/sc02/index.html#1110"
-    )
+    reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html#1110"
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.de.tax.income.credits.personal_credits
+        p = parameters(period).gov.states.de.tax.income.credits.personal_credits
         """
           Legal code says "An additional $110 in the case of each resident
           person age 60 or over.  Tax form limits it to heads and spouses,

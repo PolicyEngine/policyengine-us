@@ -25,11 +25,7 @@ class tn_ff(Variable):
         unit_size = spm_unit("spm_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_family_size)
 
-        deficit = max_(
-            p.consolidated_need_standard[capped_size] - countable_income, 0
-        )
+        deficit = max_(p.consolidated_need_standard[capped_size] - countable_income, 0)
         calculated_benefit = min_(payment_standard, deficit)
 
-        return where(
-            calculated_benefit >= p.minimum_grant, calculated_benefit, 0
-        )
+        return where(calculated_benefit >= p.minimum_grant, calculated_benefit, 0)

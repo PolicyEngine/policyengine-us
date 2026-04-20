@@ -19,8 +19,6 @@ class nv_tanf_need_standard(Variable):
         # For sizes > 8, use base at size 8 + increment per additional person
         base_amount = p.need_standard.amount[min_(size, max_explicit_size)]
         additional_persons = max_(size - max_explicit_size, 0)
-        additional_amount = (
-            additional_persons * p.need_standard.additional_person
-        )
+        additional_amount = additional_persons * p.need_standard.additional_person
 
         return base_amount + additional_amount

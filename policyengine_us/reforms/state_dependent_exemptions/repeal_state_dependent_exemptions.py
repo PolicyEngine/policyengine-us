@@ -8,9 +8,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         entity = TaxUnit
         label = "Hawaii regular exemptions"
         unit = USD
-        documentation = (
-            "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
-        )
+        documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
         definition_period = YEAR
         defined_for = StateCode.HI
 
@@ -119,16 +117,12 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             filing_status = tax_unit("filing_status", period)
             agi_eligible = fagi <= p.special_agi_limit[filing_status]
             # head exemptions
-            age_eligible = (
-                tax_unit("age_head", period) >= p.special_age_minimum
+            age_eligible = tax_unit("age_head", period) >= p.special_age_minimum
+            head_exemptions = where(tax_unit("blind_head", period), 2, 1) + where(
+                agi_eligible & age_eligible, 1, 0
             )
-            head_exemptions = where(
-                tax_unit("blind_head", period), 2, 1
-            ) + where(agi_eligible & age_eligible, 1, 0)
             # spouse exemptions
-            age_eligible = (
-                tax_unit("age_spouse", period) >= p.special_age_minimum
-            )
+            age_eligible = tax_unit("age_spouse", period) >= p.special_age_minimum
             spouse_exemptions = where(
                 filing_status == filing_status.possible_values.JOINT,
                 (
@@ -175,17 +169,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.VT
-        reference = (
-            "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
-        )
+        reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.vt.tax.income.exemption
             is_joint = tax_unit("tax_unit_is_joint", period)
             elsewhere_head = tax_unit("head_is_dependent_elsewhere", period)
-            elsewhere_spouse = tax_unit(
-                "spouse_is_dependent_elsewhere", period
-            )
+            elsewhere_spouse = tax_unit("spouse_is_dependent_elsewhere", period)
             eligible_head = (~elsewhere_head).astype(int)
             eligible_spouse = (~elsewhere_spouse).astype(int)
             eligible_count = eligible_head + (eligible_spouse * is_joint)
@@ -200,13 +190,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.VA
         unit = USD
         definition_period = YEAR
-        reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        reference = (
+            "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        )
 
         def formula(person, period, parameters):
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            amount = parameters(
-                period
-            ).gov.states.va.tax.income.exemptions.personal
+            amount = parameters(period).gov.states.va.tax.income.exemptions.personal
             return amount * head_or_spouse
 
     class wv_personal_exemption(Variable):
@@ -239,22 +229,19 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
             # calculating phase out amount per credit
-            over_agi_threshold = max_(
-                0, agi - p.phase_out.start[filing_status]
-            )
+            over_agi_threshold = max_(0, agi - p.phase_out.start[filing_status])
             increments = np.ceil(
                 over_agi_threshold / p.phase_out.increment[filing_status]
             )
             exemption_reduction = increments * p.phase_out.amount
             # Personal Exemptions
             personal_exemption_count = p.personal_scale[filing_status]
-            personal_aged_blind_exemption_count = (
-                personal_exemption_count + tax_unit("aged_blind_count", period)
+            personal_aged_blind_exemption_count = personal_exemption_count + tax_unit(
+                "aged_blind_count", period
             )
             personal_aged_blind_exemption = max_(
                 0,
-                personal_aged_blind_exemption_count
-                * (p.amount - exemption_reduction),
+                personal_aged_blind_exemption_count * (p.amount - exemption_reduction),
             )
             # Dependent exemptions
             # total exemptions
@@ -274,13 +261,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ga.tax.income.exemptions
-            filing_status = tax_unit("filing_status", period)
-
-            # Personal Exemptions
-            personal_exemptions = p.personal[filing_status]
-
-            # total exemptions
-            return personal_exemptions
+            # Personal exemptions only (dependent exemptions excluded)
+            if p.personal.availability:
+                filing_status = tax_unit("filing_status", period)
+                return p.personal.amount[filing_status]
+            return 0
 
     class in_base_exemptions(Variable):
         value_type = float
@@ -302,8 +287,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://tax.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
-            "https://tax.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
+            "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
+            "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
         )
         defined_for = StateCode.IA
 
@@ -317,38 +302,51 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             p = parameters(period).gov.states.ia.tax.income
             exemption = p.credits.exemption
             elder_head = tax_unit("age_head", period) >= exemption.elderly_age
-            elder_spouse = (
-                tax_unit("age_spouse", period) >= exemption.elderly_age
-            )
+            elder_spouse = tax_unit("age_spouse", period) >= exemption.elderly_age
             elder_count = elder_head.astype(int) + elder_spouse.astype(int)
             blind_head = tax_unit("blind_head", period)
             blind_spouse = tax_unit("blind_spouse", period)
             blind_count = blind_head.astype(int) + blind_spouse.astype(int)
             additional_count = elder_count + blind_count
             return (
-                (adult_count + hoh_bonus) * exemption.personal
-                + additional_count * exemption.additional
-            )
+                adult_count + hoh_bonus
+            ) * exemption.personal + additional_count * exemption.additional
 
-    class ks_count_exemptions(Variable):
+    class ks_exemptions(Variable):
         value_type = float
         entity = TaxUnit
-        label = "number of KS exemptions"
+        label = "Kansas exemptions amount"
         unit = USD
         definition_period = YEAR
-        reference = (
-            "https://www.ksrevenue.gov/pdf/ip21.pdf"
-            "https://www.ksrevenue.gov/pdf/ip22.pdf"
-        )
+        reference = "https://law.justia.com/codes/kansas/chapter-79/article-32/section-79-32-121/"
         defined_for = StateCode.KS
 
         def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.ks.tax.income.exemptions
+            veteran_exemptions_count = add(
+                tax_unit,
+                period,
+                ["ks_disabled_veteran_exemptions_eligible_person"],
+            )
+            veterans_exemption_amount = (
+                veteran_exemptions_count * p.disabled_veteran.base
+            )
+            if p.by_filing_status.in_effect:
+                filing_status = tax_unit("filing_status", period)
+                base_amount = p.by_filing_status.amount[filing_status]
+                head_of_household = (
+                    filing_status == filing_status.possible_values.HEAD_OF_HOUSEHOLD
+                )
+                hoh_additional = (
+                    head_of_household * p.by_filing_status.hoh_additional_amount
+                )
+                return base_amount + veterans_exemption_amount + hoh_additional
             filing_status = tax_unit("filing_status", period)
             statuses = filing_status.possible_values
             joint = filing_status == statuses.JOINT
             hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
             adults = where(joint | hoh, 2, 1)
-            return adults
+            return adults * p.consolidated.amount + veterans_exemption_amount
 
     class ma_income_tax_exemption_threshold(Variable):
         value_type = float
@@ -368,9 +366,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 exempt_status.personal_exemption_added[filing_status]
                 * tax.exemptions.personal[filing_status]
             )
-            return (
-                exempt_status.base[filing_status] + personal_exemptions_added
-            )
+            return exempt_status.base[filing_status] + personal_exemptions_added
 
     # Using head and spouse count instead of exemptions count
     class wi_base_exemption(Variable):
@@ -493,7 +489,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(ca_exemptions)
             self.update_variable(ga_exemptions)
             self.update_variable(in_base_exemptions)
-            self.update_variable(ks_count_exemptions)
+            self.update_variable(ks_exemptions)
             self.update_variable(ma_income_tax_exemption_threshold)
             self.update_variable(wi_base_exemption)
             self.update_variable(ia_exemption_credit)
@@ -527,6 +523,6 @@ def create_repeal_state_dependent_exemptions_reform(
         return None
 
 
-repeal_state_dependent_exemptions = (
-    create_repeal_state_dependent_exemptions_reform(None, None, bypass=True)
+repeal_state_dependent_exemptions = create_repeal_state_dependent_exemptions_reform(
+    None, None, bypass=True
 )

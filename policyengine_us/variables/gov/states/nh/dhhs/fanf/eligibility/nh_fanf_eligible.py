@@ -18,9 +18,7 @@ class nh_fanf_eligible(Variable):
             add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("nh_fanf_income_eligible", period)
-        resources_eligible = spm_unit(
-            "nh_fanf_resources_eligible", period.this_year
-        )
+        resources_eligible = spm_unit("nh_fanf_resources_eligible", period.this_year)
         return (
             demographic_eligible
             & immigration_eligible

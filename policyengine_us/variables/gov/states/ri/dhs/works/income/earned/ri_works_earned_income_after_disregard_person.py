@@ -17,9 +17,7 @@ class ri_works_earned_income_after_disregard_person(Variable):
         # Per 218-RICR-20-00-2.15: Disregard $525 + 50% of remainder
         # "This disregard is allowed for each individual who has
         # otherwise been found eligible to receive cash assistance."
-        p = parameters(
-            period
-        ).gov.states.ri.dhs.works.income.earned_income_disregard
+        p = parameters(period).gov.states.ri.dhs.works.income.earned_income_disregard
         gross_earned = person("tanf_gross_earned_income", period)
         after_flat_disregard = max_(gross_earned - p.amount, 0)
         return after_flat_disregard * (1 - p.rate)

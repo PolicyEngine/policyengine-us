@@ -1,13 +1,13 @@
-- name: Single household with $101,002 taxable income 
+- name: Single household with $101,002 taxable income
   period: 2022
   input:
     people:
       person1:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 101_002
+        ar_net_taxable_income_joint: 101_002
       person2:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -20,13 +20,12 @@
   output:
     ar_inflation_relief_credit_person: 0
 
-- name: Single household with $100,000 taxable income 
+- name: Single household with $100,000 taxable income
   period: 2022
   input:
     people:
       person1:
         ar_taxable_income_indiv: 100_000
-        ar_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -39,16 +38,14 @@
   output:
     ar_inflation_relief_credit_person: 20
 
-- name: Single household with $100,000 taxable income 
+- name: Single household with $100,000 taxable income
   period: 2022
   input:
     people:
       person1:
         ar_taxable_income_indiv: 10_000
-        ar_taxable_income_joint: 0
       person2:
         ar_taxable_income_indiv: 90_000
-        ar_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -67,10 +64,10 @@
     people:
       person1:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 98_200
+        ar_net_taxable_income_joint: 98_200
       person2:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -89,10 +86,10 @@
     people:
       person1:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 175_000
+        ar_net_taxable_income_joint: 175_000
       person2:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -111,10 +108,10 @@
     people:
       person1:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 80_000
+        ar_net_taxable_income_joint: 80_000
       person2:
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]

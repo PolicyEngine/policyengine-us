@@ -1,0 +1,26 @@
+description: California limits Supplemental Nutrition Assistance Program eligibility to these immigration statuses.
+values:
+  2018-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+
+  2026-04-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - CUBAN_HAITIAN_ENTRANT
+
+metadata:
+  label: California SNAP eligible immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: California CDSS All County Letter No. 25-92 - CalFresh Implementation of H.R. 1 Noncitizen Eligibility Changes
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-92.pdf#page=7
+    - title: 7 USC 2015(f) - Eligibility disqualifications
+      href: https://www.law.cornell.edu/uscode/text/7/2015#f

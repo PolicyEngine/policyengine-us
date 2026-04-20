@@ -22,9 +22,4 @@ class ca_calworks_child_care_eligible(Variable):
                 period,
             )
         )
-        return (
-            receives_tanf
-            & age_eligible
-            & work_requirement
-            & immigration_eligible
-        )
+        return receives_tanf & age_eligible & work_requirement & immigration_eligible

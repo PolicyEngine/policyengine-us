@@ -5,10 +5,10 @@ class OregonWFHDCEligibilityCategory(Enum):
     YOUNGEST = "Youngest"  # under 3 years old
     YOUNG = "Young"  # between 3 and 6 years old
     OLD = "Old"  # between 6 and 13 years old
-    DISABLED_TEENS = "Disabled teenagers"  # disabled teenagers that are between 13 and 18 years old
-    DISABLED_ADULTS = (
-        "Disabled adults"  # disabled adults that are over 18 years old
+    DISABLED_TEENS = (
+        "Disabled teenagers"  # disabled teenagers that are between 13 and 18 years old
     )
+    DISABLED_ADULTS = "Disabled adults"  # disabled adults that are over 18 years old
     NONE = "None"
 
 
@@ -25,11 +25,7 @@ class or_wfhdc_eligibility_category(Variable):
     def formula(tax_unit, period, parameters):
         # Column determined by age of youngest child and whether they have a disability.
 
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.income.credits.wfhdc.age_range
-        )
+        p = parameters(period).gov.states["or"].tax.income.credits.wfhdc.age_range
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
         age = person("age", period)
@@ -57,6 +53,4 @@ class or_wfhdc_eligibility_category(Variable):
             OregonWFHDCEligibilityCategory.DISABLED_TEENS,
             OregonWFHDCEligibilityCategory.DISABLED_ADULTS,
         ]
-        return select(
-            conditions, values, default=OregonWFHDCEligibilityCategory.NONE
-        )
+        return select(conditions, values, default=OregonWFHDCEligibilityCategory.NONE)

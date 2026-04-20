@@ -1,0 +1,26 @@
+description: South Carolina H.4216 provides the SC Income Adjusted Deduction (SCIAD) at these base amounts by filing status.
+
+metadata:
+  label: South Carolina H.4216 SCIAD base amount
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: South Carolina H.4216 Section 3 - Section 12-6-1140(15)(a)
+      href: https://www.scstatehouse.gov/sess126_2025-2026/prever/4216_20260224.htm
+
+SINGLE:
+  2026-01-01: 15_000
+
+SEPARATE:
+  2026-01-01: 15_000
+
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 22_500
+
+JOINT:
+  2026-01-01: 30_000
+
+SURVIVING_SPOUSE:
+  2026-01-01: 30_000
