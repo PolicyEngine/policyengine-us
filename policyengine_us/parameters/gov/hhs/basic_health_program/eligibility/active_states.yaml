@@ -1,0 +1,33 @@
+description: The Department of Health and Human Services treats these states as offering Basic Health Program coverage under this model.
+
+values:
+  2015-01-01:
+    - MN
+  2015-04-01:
+    - MN
+    - NY
+  2024-07-01:
+    - MN
+    - NY
+    - OR
+  2026-01-01:
+    - MN
+    - NY
+    - OR
+    - DC
+
+metadata:
+  unit: list
+  period: year
+  label: Basic Health Program active states
+  reference:
+    - title: Basic Health Program | Medicaid
+      href: https://www.medicaid.gov/basic-health-program
+    - title: MinnesotaCare | Minnesota Department of Human Services
+      href: https://mn.gov/dhs/people-we-serve/adults/health-care/health-care-programs/programs-and-services/minnesotacare.jsp
+    - title: Essential Plan Information | NY State of Health
+      href: https://info.nystateofhealth.ny.gov/EssentialPlan
+    - title: Oregon Health Plan (OHP) Bridge | Oregon Health Authority
+      href: https://www.oregon.gov/oha/ohp/pages/bridge.aspx
+    - title: Basic Health Plan | DC Health Benefit Exchange Authority
+      href: https://hbx.dc.gov/page/basic-health-plan
