@@ -6,9 +6,8 @@ class id_taxable_income(Variable):
     entity = TaxUnit
     label = "Idaho taxable income"
     unit = USD
-    documentation = "Idaho taxable income"
     definition_period = YEAR
-    reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf"
+    reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=30"
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):

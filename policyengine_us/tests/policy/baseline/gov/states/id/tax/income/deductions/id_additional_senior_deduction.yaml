@@ -26,3 +26,117 @@
   output:
     additional_senior_deduction: 9_000
     id_additional_senior_deduction: 9_000
+
+- name: Idaho senior deduction is zero before 2025.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 0
+
+- name: Single filer senior deduction with non-joint phase-out
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # $6,000 base - 6% * ($100,000 - $75,000) = $6,000 - $1,500 = $4,500
+    id_additional_senior_deduction: 4_500
+
+- name: Age 64 does not qualify for senior deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 0
+
+- name: Age 65 qualifies for senior deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Below $75k threshold, no phase-out
+    id_additional_senior_deduction: 6_000
+
+- name: Phase-out fully eliminates senior deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # 6% * ($200,000 - $75,000) = $7,500 > $6,000, so capped at 0
+    id_additional_senior_deduction: 0
