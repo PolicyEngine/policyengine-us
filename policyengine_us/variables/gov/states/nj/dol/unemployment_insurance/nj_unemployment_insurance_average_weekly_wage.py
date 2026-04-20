@@ -16,7 +16,11 @@ class nj_unemployment_insurance_average_weekly_wage(Variable):
         base_wages = person(
             "nj_unemployment_insurance_base_period_wages", period
         )
-        base_weeks = person(
+        qualifying_base_weeks = person(
             "nj_unemployment_insurance_base_period_weeks", period
         )
-        return where(base_weeks > 0, base_wages / base_weeks, 0)
+        return where(
+            qualifying_base_weeks > 0,
+            base_wages / qualifying_base_weeks,
+            0,
+        )

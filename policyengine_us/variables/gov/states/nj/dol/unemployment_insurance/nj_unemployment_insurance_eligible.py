@@ -13,13 +13,13 @@ class nj_unemployment_insurance_eligible(Variable):
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        base_weeks = person(
+        qualifying_base_weeks = person(
             "nj_unemployment_insurance_base_period_weeks", period
         )
         base_wages = person(
             "nj_unemployment_insurance_base_period_wages", period
         )
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
-        meets_weeks_test = base_weeks >= p.min_base_weeks
+        meets_weeks_test = qualifying_base_weeks >= p.min_base_weeks
         meets_earnings_test = base_wages >= p.min_total_base_earnings
         return meets_weeks_test | meets_earnings_test

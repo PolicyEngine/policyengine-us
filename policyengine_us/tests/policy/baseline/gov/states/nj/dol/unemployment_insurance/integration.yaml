@@ -113,7 +113,7 @@
 # BOUNDARY CONDITIONS - BASE WEEKS
 #######################################
 
-- name: NJ UI exactly 20 base weeks - minimum threshold met (2024)
+- name: NJ UI exactly 20 qualifying base weeks - minimum threshold met (2024)
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -135,10 +135,10 @@
   output:
     people:
       person:
-        # Exactly 20 weeks = eligible
+        # Exactly 20 qualifying base weeks = eligible
         nj_unemployment_insurance_eligible: true
 
-- name: NJ UI exactly 19 base weeks - just below threshold (2024)
+- name: NJ UI exactly 19 qualifying base weeks - just below threshold (2024)
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -160,10 +160,10 @@
   output:
     people:
       person:
-        # 19 weeks < 20 minimum, $5,700 < $14,200 alternative
+        # 19 qualifying base weeks < 20 minimum, $5,700 < $14,200 alternative
         nj_unemployment_insurance_eligible: false
 
-- name: NJ UI 19 base weeks but meets alternative earnings threshold (2024)
+- name: NJ UI 19 qualifying base weeks but meets alternative earnings threshold (2024)
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -185,7 +185,7 @@
   output:
     people:
       person:
-        # 19 weeks < 20 but $14,200 meets alternative threshold
+        # 19 qualifying base weeks < 20 but $14,200 meets alternative threshold
         nj_unemployment_insurance_eligible: true
 
 #######################################
@@ -352,7 +352,7 @@
       person:
         nj_unemployment_insurance_eligible: true
         # avg weekly wage = $11000/22 = $500, WBR = $300
-        # Claims 26 weeks but capped at 22 base weeks
+        # Claims 26 weeks but capped at 22 qualifying base weeks
         # $300 * 22 = $6,600
         nj_unemployment_insurance: 6600
 
@@ -367,30 +367,21 @@
     people:
       person:
         age: 45
-        is_tax_unit_dependent: false
-      dependent1:
-        age: 15
-        is_tax_unit_dependent: true
-      dependent2:
-        age: 12
-        is_tax_unit_dependent: true
-      dependent3:
-        age: 8
-        is_tax_unit_dependent: true
+        nj_unemployment_insurance_qualifying_dependents: 3
     tax_units:
       tax_unit:
-        members: [person, dependent1, dependent2, dependent3]
+        members: [person]
     spm_units:
       spm_unit:
-        members: [person, dependent1, dependent2, dependent3]
+        members: [person]
     households:
       household:
-        members: [person, dependent1, dependent2, dependent3]
+        members: [person]
         state_code: NJ
   output:
     people:
       person:
-        # 3 dependents = 7% + 4% + 4% = 15%
+        # 3 qualifying dependents = 7% + 4% + 4% = 15%
         nj_unemployment_insurance_dependency_allowance: 0.15
 
 #######################################
@@ -422,7 +413,7 @@
       person:
         nj_unemployment_insurance_eligible: true
         # avg weekly wage = $5660/20 = $283, WBR floors to $169
-        # Claims 26 but capped at 20 base weeks
+        # Claims 26 but capped at 20 qualifying base weeks
         # $169 * 20 = $3,380
         nj_unemployment_insurance: 3380
 

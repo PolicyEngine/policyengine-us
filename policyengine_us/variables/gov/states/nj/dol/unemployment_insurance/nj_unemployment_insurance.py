@@ -23,14 +23,14 @@ class nj_unemployment_insurance(Variable):
         weeks_claimed = person(
             "nj_unemployment_insurance_weeks_claimed", period
         )
-        base_weeks = person(
+        qualifying_base_weeks = person(
             "nj_unemployment_insurance_base_period_weeks", period
         )
         working_less_than_full_time = person(
             "nj_unemployment_insurance_working_less_than_full_time", period
         )
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
-        available_weeks = min_(base_weeks, p.max_benefit_weeks)
+        available_weeks = min_(qualifying_base_weeks, p.max_benefit_weeks)
         actual_weeks = min_(weeks_claimed, available_weeks)
         reduced_weekly_benefit = min_(
             weekly_benefit,

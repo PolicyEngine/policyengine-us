@@ -1,13 +1,13 @@
 # Tests for NJ Unemployment Insurance monetary eligibility
 # Eligibility can be met via two alternative paths:
-# Option 1: 20+ base weeks with earnings at or above the minimum base week earnings
+# Option 1: 20+ qualifying base weeks
 # Option 2: Total base year earnings at or above the minimum total earnings threshold
 #
 # NOTE: The eligibility variable uses:
-# - nj_unemployment_insurance_base_period_weeks: number of weeks worked
+# - nj_unemployment_insurance_base_period_weeks: number of qualifying base weeks
 # - nj_unemployment_insurance_base_period_wages: total wages earned in base period
 
-- name: NJ UI eligible with 20 base weeks at required earnings (2024)
+- name: NJ UI eligible with 20 qualifying base weeks (2024)
   period: 2024
   input:
     people:
@@ -27,7 +27,7 @@
       person:
         nj_unemployment_insurance_eligible: true
 
-- name: NJ UI eligible with more than 20 base weeks (2024)
+- name: NJ UI eligible with more than 20 qualifying base weeks (2024)
   period: 2024
   input:
     people:
@@ -68,7 +68,7 @@
         # Eligible because total earnings ($15,000) >= $14,200 minimum
         nj_unemployment_insurance_eligible: true
 
-- name: NJ UI ineligible - insufficient base weeks and earnings (2024)
+- name: NJ UI ineligible - insufficient qualifying base weeks and earnings (2024)
   period: 2024
   input:
     people:
@@ -86,10 +86,10 @@
   output:
     people:
       person:
-        # Not eligible: only 10 weeks (need 20) and only $2,000 total (need $14,200)
+        # Not eligible: only 10 qualifying base weeks (need 20) and only $2,000 total (need $14,200)
         nj_unemployment_insurance_eligible: false
 
-- name: NJ UI ineligible - enough weeks but total earnings below alternative threshold (2024)
+- name: NJ UI ineligible - insufficient qualifying base weeks and low earnings (2024)
   period: 2024
   input:
     people:
@@ -107,11 +107,11 @@
   output:
     people:
       person:
-        # 19 weeks < 20 minimum
+        # 19 qualifying base weeks < 20 minimum
         # Total earnings $5,000 < $14,200 min
         nj_unemployment_insurance_eligible: false
 
-- name: NJ UI eligible with exactly minimum base weeks (2024)
+- name: NJ UI eligible with exactly minimum qualifying base weeks (2024)
   period: 2024
   input:
     people:
@@ -129,7 +129,7 @@
   output:
     people:
       person:
-        # Exactly at threshold: 20 weeks
+        # Exactly at threshold: 20 qualifying base weeks
         nj_unemployment_insurance_eligible: true
 
 - name: NJ UI eligible with exactly minimum total earnings (2024)
@@ -171,7 +171,7 @@
   output:
     people:
       person:
-        # 20 weeks meets minimum base weeks requirement
+        # 20 qualifying base weeks meets the minimum requirement
         nj_unemployment_insurance_eligible: true
 
 - name: NJ UI ineligible in 2025 with insufficient weeks and earnings
@@ -192,7 +192,7 @@
   output:
     people:
       person:
-        # 19 weeks < 20 minimum
+        # 19 qualifying base weeks < 20 minimum
         # Total earnings $5,800 < $15,200 (2025 alternative threshold)
         nj_unemployment_insurance_eligible: false
 
@@ -214,7 +214,7 @@
   output:
     people:
       person:
-        # 20 weeks meets minimum base weeks requirement
+        # 20 qualifying base weeks meets the minimum requirement
         nj_unemployment_insurance_eligible: true
 
 - name: NJ UI eligible via 2026 alternative total earnings path
