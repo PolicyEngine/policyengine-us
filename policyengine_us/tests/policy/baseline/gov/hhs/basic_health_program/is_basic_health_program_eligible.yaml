@@ -64,7 +64,6 @@
         age: 34
         immigration_status: CITIZEN
         medicaid_income_level: 1.7
-        is_medicaid_eligible: false
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
@@ -73,6 +72,7 @@
         members: [person]
         state_code: DC
   output:
+    is_medicaid_eligible: [false]
     is_basic_health_program_eligible: [true]
 
 - name: California does not have a Basic Health Program path
@@ -93,3 +93,23 @@
         state_code: CA
   output:
     is_basic_health_program_eligible: [false]
+
+- name: Minnesota adult above Medicaid ceiling moves to the Basic Health Program path
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    is_adult_for_medicaid: [false]
+    is_medicaid_eligible: [false]
+    is_basic_health_program_eligible: [true]
