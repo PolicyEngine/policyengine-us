@@ -2,7 +2,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
-    md_federal_eitc_without_age_minimum: 500
+    federal_eitc_without_age_minimum: 500
     state_code: MD
   output:
     md_unmarried_childless_non_refundable_eitc: 500 # 500*100%
@@ -11,7 +11,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
-    md_federal_eitc_without_age_minimum: 600
+    federal_eitc_without_age_minimum: 600
     state_code: MD
   output:
     md_unmarried_childless_non_refundable_eitc: 530 # min(530, 600*100%)
@@ -20,7 +20,7 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    md_federal_eitc_without_age_minimum: 500
+    federal_eitc_without_age_minimum: 500
     state_code: MD
   output:
     md_unmarried_childless_non_refundable_eitc: 0
