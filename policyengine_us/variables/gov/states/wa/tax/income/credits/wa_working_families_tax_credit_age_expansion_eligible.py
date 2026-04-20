@@ -6,7 +6,7 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for Washington Working Families Tax Credit via age expansion"
     definition_period = YEAR
-    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=61"
+    reference = "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=60"
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):

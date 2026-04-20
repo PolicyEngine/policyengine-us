@@ -184,4 +184,60 @@
   output:
     # Base income = $1.1M AGI + $100K tax-exempt interest = $1.2M
     # Taxable = $1.2M - $1M standard = $200K
+    wa_millionaires_tax_base_income: 1_200_000
+    wa_millionaires_tax_taxable_income: 200_000
     wa_millionaires_tax: 19_800
+
+- name: Case 18, long-term capital loss is added back into Washington base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_900_000
+    long_term_capital_gains: -100_000
+  output:
+    # Base income = $1.9M AGI - (-$100K LTCG) = $2M
+    # Taxable = $2M - $1M standard = $1M
+    wa_millionaires_tax_base_income: 2_000_000
+    wa_millionaires_tax: 99_000
+
+- name: Case 19, MFS filer gets half of the combined standard deduction.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    filing_status: SEPARATE
+    adjusted_gross_income: 1_000_000
+  output:
+    # MFS standard deduction = $500K (half of the $1M combined amount)
+    # Taxable = $1M - $500K = $500K
+    wa_millionaires_tax_standard_deduction: 500_000
+    wa_millionaires_tax: 49_500
+
+- name: Case 20, MFS filer gets half of the combined charitable cap.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    filing_status: SEPARATE
+    adjusted_gross_income: 1_600_000
+    charitable_cash_donations: 80_000
+  output:
+    # MFS charitable cap = $50K (half of the $100K combined amount)
+    # Standard deduction = $500K (half)
+    # Taxable = $1.6M - $500K - $50K = $1.05M
+    wa_millionaires_tax_charitable_deduction: 50_000
+    wa_millionaires_tax: 103_950
+
+- name: Case 21, millionaires tax applies even when the filer also owes the capital gains tax.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_500_000
+    long_term_capital_gains: 500_000
+  output:
+    # Base income removes LTCG, then adds back WA capital gains that are
+    # above the exemption. Both the capital gains tax and the millionaires
+    # tax flow into wa_income_tax_before_refundable_credits.
+    wa_millionaires_tax: 99_000

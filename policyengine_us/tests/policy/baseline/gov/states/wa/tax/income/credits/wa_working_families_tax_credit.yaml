@@ -175,3 +175,18 @@
     eitc_child_count: 0
   output:
     wa_working_families_tax_credit: 0
+
+- name: Case 13, joint filer with an under-18 head and an 18+ spouse qualifies via age expansion.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    age_head: 16
+    age_spouse: 22
+    eitc: 0
+    filing_status: JOINT
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Either head or spouse meeting age 18 is sufficient.
+    wa_working_families_tax_credit: 367
