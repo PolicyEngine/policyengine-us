@@ -13,7 +13,7 @@ class md_unmarried_childless_non_refundable_eitc(Variable):
     def formula(tax_unit, period, parameters):
         # individuals can claim the state eitc even they do not meet the minimum age requirement under the federal credit
         federal_eitc_without_age_minimum = tax_unit(
-            "federal_eitc_without_age_minimum", period
+            "md_federal_eitc_without_age_minimum", period
         )
         p = parameters(
             period
