@@ -68,8 +68,10 @@ ME:
   2021-01-01: 1.38
 MI:
   2018-01-01: 1.38
+# PolicyEngine does not model MinnesotaCare separately, so this uses the
+# effective adult coverage ceiling rather than the narrower Medicaid-only limit.
 MN:
-  2018-01-01: 1.38
+  2018-01-01: 2.0
 MO:
   2018-01-01: -.inf
   2022-01-01: 1.38
@@ -93,8 +95,10 @@ NM:
   2018-01-01: 1.38
 NV:
   2018-01-01: 1.38
+# PolicyEngine does not model the Essential Plan separately, so this uses the
+# effective adult coverage ceiling rather than the narrower Medicaid-only limit.
 NY:
-  2018-01-01: 1.38
+  2018-01-01: 2.0
 OH:
   2018-01-01: 1.38
 OK:
