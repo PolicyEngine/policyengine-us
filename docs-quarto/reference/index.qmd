@@ -1,0 +1,9 @@
+---
+title: "Reference"
+---
+
+Placeholder for auto-generated variable catalog.
+
+Planned approach: build script pulls `/metadata` from a local Microsimulation, groups variables by `gov/agency/program` path, renders each as a `.qmd` page with label, entity, unit, documentation, and source references drawn directly from the Python class attributes. Pages regenerate on each release so reference docs never drift from the code.
+
+For now, the authoritative listing is `policyengine_us/programs.yaml` at the repo root.
