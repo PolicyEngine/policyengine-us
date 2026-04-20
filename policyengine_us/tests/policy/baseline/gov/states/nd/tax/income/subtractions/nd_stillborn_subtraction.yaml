@@ -1,0 +1,39 @@
+- name: No stillborn children, no deduction
+  period: 2023
+  input:
+    state_code: ND
+    tax_unit_stillborn_children: 0
+  output:
+    nd_stillborn_subtraction: 0
+
+- name: One stillborn child in 2022, $4,530 deduction
+  period: 2022
+  input:
+    state_code: ND
+    tax_unit_stillborn_children: 1
+  output:
+    nd_stillborn_subtraction: 4_530
+
+- name: Two stillborn children in 2022, $9,060 deduction
+  period: 2022
+  input:
+    state_code: ND
+    tax_unit_stillborn_children: 2
+  output:
+    nd_stillborn_subtraction: 9_060
+
+- name: One stillborn child in 2023, $4,892 deduction
+  period: 2023
+  input:
+    state_code: ND
+    tax_unit_stillborn_children: 1
+  output:
+    nd_stillborn_subtraction: 4_892
+
+- name: Pre-effective year 2021, deduction is zero
+  period: 2021
+  input:
+    state_code: ND
+    tax_unit_stillborn_children: 1
+  output:
+    nd_stillborn_subtraction: 0

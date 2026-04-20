@@ -1,0 +1,39 @@
+- name: No stillborn children, no credit
+  period: 2023
+  input:
+    state_code: CT
+    tax_unit_stillborn_children: 0
+  output:
+    ct_stillborn_credit: 0
+
+- name: One stillborn child, $2,500 credit
+  period: 2023
+  input:
+    state_code: CT
+    tax_unit_stillborn_children: 1
+  output:
+    ct_stillborn_credit: 2_500
+
+- name: Two stillborn children, $5,000 credit
+  period: 2023
+  input:
+    state_code: CT
+    tax_unit_stillborn_children: 2
+  output:
+    ct_stillborn_credit: 5_000
+
+- name: Pre-effective year 2021, credit is zero
+  period: 2021
+  input:
+    state_code: CT
+    tax_unit_stillborn_children: 1
+  output:
+    ct_stillborn_credit: 0
+
+- name: Effective year 2022, $2,500 per stillborn child
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_stillborn_children: 1
+  output:
+    ct_stillborn_credit: 2_500
