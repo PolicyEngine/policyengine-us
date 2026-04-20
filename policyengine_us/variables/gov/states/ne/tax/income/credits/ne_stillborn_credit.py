@@ -8,9 +8,7 @@ class ne_stillborn_credit(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NE
-    reference = (
-        "https://nebraskalegislature.gov/FloorDocs/107/PDF/Slip/LB432.pdf"
-    )
+    reference = "https://nebraskalegislature.gov/FloorDocs/107/PDF/Slip/LB432.pdf"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits
