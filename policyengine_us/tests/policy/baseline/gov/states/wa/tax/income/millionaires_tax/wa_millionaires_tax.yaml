@@ -237,7 +237,8 @@
     adjusted_gross_income: 2_500_000
     long_term_capital_gains: 500_000
   output:
-    # Base income removes LTCG, then adds back WA capital gains that are
-    # above the exemption. Both the capital gains tax and the millionaires
-    # tax flow into wa_income_tax_before_refundable_credits.
-    wa_millionaires_tax: 99_000
+    # Base income removes LTCG and then adds WA capital gains back in when
+    # the filer owes the capital gains tax, so base income = $2.5M.
+    # Taxable = $2.5M - $1M standard = $1.5M; tax = $1.5M * 9.9% = $148,500.
+    wa_millionaires_tax_base_income: 2_500_000
+    wa_millionaires_tax: 148_500
