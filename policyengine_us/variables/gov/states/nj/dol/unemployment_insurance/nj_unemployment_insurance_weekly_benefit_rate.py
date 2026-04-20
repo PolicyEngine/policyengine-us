@@ -17,4 +17,6 @@ class nj_unemployment_insurance_weekly_benefit_rate(Variable):
             "nj_unemployment_insurance_average_weekly_wage", period
         )
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
-        return min_(average_weekly_wage * p.wbr_rate, p.max_weekly_benefit)
+        return np.floor(
+            min_(average_weekly_wage * p.wbr_rate, p.max_weekly_benefit)
+        )

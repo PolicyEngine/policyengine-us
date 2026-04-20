@@ -10,6 +10,7 @@ class nj_unemployment_insurance_weekly_benefit(Variable):
     reference = (
         "https://www.nj.gov/labor/myunemployment/before/about/calculator/",
         "https://www.nj.gov/labor/myunemployment/before/about/howtoapply/dependencybenefits.shtml",
+        "https://www.nj.gov/labor/ea/help/employer_handbook/ui.shtml",
     )
     defined_for = StateCode.NJ
 
@@ -19,4 +20,7 @@ class nj_unemployment_insurance_weekly_benefit(Variable):
             "nj_unemployment_insurance_dependency_allowance", period
         )
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
-        return min_(wbr * (1 + dependency_rate), p.max_weekly_benefit)
+        return min_(
+            np.floor(wbr * (1 + dependency_rate)),
+            p.max_weekly_benefit,
+        )

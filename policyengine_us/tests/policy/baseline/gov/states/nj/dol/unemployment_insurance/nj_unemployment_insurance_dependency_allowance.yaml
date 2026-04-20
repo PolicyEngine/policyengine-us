@@ -160,3 +160,112 @@
       person:
         # No dependents = 0% rate
         nj_unemployment_insurance_dependency_allowance: 0
+
+- name: NJ UI dependency allowance rate - unemployed spouse qualifies (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 37
+      spouse:
+        age: 35
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person, spouse]
+    households:
+      household:
+        members: [person, spouse]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_dependency_allowance: 0.07
+
+- name: NJ UI dependency allowance rate - employed spouse bars all dependency benefits (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 40
+      spouse:
+        age: 38
+        employment_income: 10_000
+      dependent1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, spouse, dependent1]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person, spouse, dependent1]
+    households:
+      household:
+        members: [person, spouse, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_dependency_allowance: 0
+
+- name: NJ UI dependency allowance rate - full-time student child under 22 qualifies (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 45
+      dependent1:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person, dependent1]
+    households:
+      household:
+        members: [person, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_dependency_allowance: 0.07
+
+- name: NJ UI dependency allowance rate - non-student adult dependent child does not qualify (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 45
+      dependent1:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person, dependent1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person, dependent1]
+    households:
+      household:
+        members: [person, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_dependency_allowance: 0

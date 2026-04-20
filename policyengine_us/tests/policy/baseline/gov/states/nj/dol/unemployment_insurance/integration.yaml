@@ -421,10 +421,10 @@
     people:
       person:
         nj_unemployment_insurance_eligible: true
-        # avg weekly wage = $5660/20 = $283, WBR = $169.80
+        # avg weekly wage = $5660/20 = $283, WBR floors to $169
         # Claims 26 but capped at 20 base weeks
-        # $169.80 * 20 = $3,396
-        nj_unemployment_insurance: 3396
+        # $169 * 20 = $3,380
+        nj_unemployment_insurance: 3380
 
 - name: NJ UI full annual benefit calculation - max weeks max benefit (2024)
   period: 2024
@@ -507,3 +507,61 @@
       person:
         # Exactly $15,500 = 2026 alternative threshold
         nj_unemployment_insurance_eligible: true
+
+- name: NJ UI part-time wages reduce annual benefits (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 100.75
+        nj_unemployment_insurance_working_less_than_full_time: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # WBR = floor($500 * 60%) = $300, partial rate = $360.
+        # Weekly wages floor to $100, so partial weekly benefit = $260.
+        nj_unemployment_insurance_eligible: true
+        nj_unemployment_insurance: 2600
+
+- name: NJ UI full-time work blocks annual benefits for claimed weeks (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 100
+        nj_unemployment_insurance_working_less_than_full_time: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        nj_unemployment_insurance: 0

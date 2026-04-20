@@ -1,0 +1,53 @@
+- name: NJ UI weekly benefit floors dependency increase down to whole dollars (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        nj_unemployment_insurance_average_weekly_wage: 333.33
+      dependent1:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1]
+    households:
+      household:
+        members: [person, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_weekly_benefit_rate: 199
+        nj_unemployment_insurance_weekly_benefit: 212
+
+- name: NJ UI weekly benefit stays capped after dependency increase (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        nj_unemployment_insurance_average_weekly_wage: 1400
+      dependent1:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person, dependent1]
+    spm_units:
+      spm_unit:
+        members: [person, dependent1]
+    households:
+      household:
+        members: [person, dependent1]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_weekly_benefit_rate: 840
+        nj_unemployment_insurance_weekly_benefit: 854

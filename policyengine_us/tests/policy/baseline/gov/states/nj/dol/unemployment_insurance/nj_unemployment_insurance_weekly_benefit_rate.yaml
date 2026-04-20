@@ -86,8 +86,8 @@
   output:
     people:
       person:
-        # $1,423.33 * 60% = $854 (exactly at max)
-        nj_unemployment_insurance_weekly_benefit_rate: 854
+        # $1,423.33 * 60% = $853.998, which floors to $853
+        nj_unemployment_insurance_weekly_benefit_rate: 853
 
 - name: NJ UI WBR just below cap threshold (2024)
   period: 2024
@@ -191,8 +191,8 @@
   output:
     people:
       person:
-        # $1,508.33 * 60% = $905 (exactly at max)
-        nj_unemployment_insurance_weekly_benefit_rate: 905
+        # $1,508.33 * 60% = $904.998, which floors to $904
+        nj_unemployment_insurance_weekly_benefit_rate: 904
 
 - name: NJ UI WBR very low earnings
   period: 2024
@@ -235,3 +235,24 @@
       person:
         # $5,000 * 60% = $3,000 but capped at $854 (2024 max)
         nj_unemployment_insurance_weekly_benefit_rate: 854
+
+- name: NJ UI WBR floors fractional dollars down (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 29
+        nj_unemployment_insurance_average_weekly_wage: 333.33
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # $333.33 * 60% = $199.998, which floors to $199
+        nj_unemployment_insurance_weekly_benefit_rate: 199
