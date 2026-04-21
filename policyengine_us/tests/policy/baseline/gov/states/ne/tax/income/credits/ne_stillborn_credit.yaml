@@ -37,3 +37,11 @@
     tax_unit_stillborn_children: 1
   output:
     ne_stillborn_credit: 2_000
+
+- name: Non-NE filer with stillborn child receives no NE credit
+  period: 2023
+  input:
+    state_code: CA
+    tax_unit_stillborn_children: 1
+  output:
+    ne_stillborn_credit: 0

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_stillborn_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "North Dakota stillborn child deduction"
+    label = "North Dakota stillborn child subtraction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ND

@@ -37,3 +37,11 @@
     tax_unit_stillborn_children: 1
   output:
     ct_stillborn_credit: 2_500
+
+- name: Non-CT filer with stillborn child receives no CT credit
+  period: 2023
+  input:
+    state_code: CA
+    tax_unit_stillborn_children: 1
+  output:
+    ct_stillborn_credit: 0
