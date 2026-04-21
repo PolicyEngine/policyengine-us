@@ -16,13 +16,15 @@ class mn_renters_credit_household_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income
         minimum_age = p.credits.renters.age_threshold
-        household_agi = add(
-            tax_unit,
-            period,
-            [
-                "adjusted_gross_income",
-                "spouse_separate_adjusted_gross_income",
-            ],
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        lived_apart_all_year = tax_unit(
+            "mn_renters_credit_separate_lived_apart_all_year", period
+        )
+        include_spouse_separate_agi = separate & ~lived_apart_all_year
+        household_agi = tax_unit("adjusted_gross_income", period) + (
+            tax_unit("spouse_separate_adjusted_gross_income", period)
+            * include_spouse_separate_agi
         )
         exemption_amount = p.exemptions.amount
 

@@ -13,10 +13,9 @@ class mn_renters_credit_total_rent_from_crps(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        gross_rent = max_(
-            add(tax_unit, period, ["pre_subsidy_rent"]),
-            add(tax_unit, period, ["rent"]),
-        )
+        # CRP rent should reflect rent actually paid by the renter, not
+        # pre-subsidy contract rent when housing assistance is present.
+        gross_rent = add(tax_unit, period, ["rent"])
         shared_rent_fraction = tax_unit(
             "mn_renters_credit_shared_rent_fraction", period
         )
