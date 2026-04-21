@@ -24,8 +24,11 @@
         members: [person1, person2]
         state_code: ID
   output:
-    additional_senior_deduction: 9_000
-    id_additional_senior_deduction: 9_000
+    # Joint, both age 70, AGI $200k: per-senior allowed is
+    # max($6,000 - 6% * ($200,000 - $150,000), 0) = $3,000,
+    # times 2 eligible seniors = $6,000 (Schedule 1-A per-senior phase-out).
+    additional_senior_deduction: 6_000
+    id_additional_senior_deduction: 6_000
 
 - name: Idaho senior deduction is zero before 2025.
   period: 2024
