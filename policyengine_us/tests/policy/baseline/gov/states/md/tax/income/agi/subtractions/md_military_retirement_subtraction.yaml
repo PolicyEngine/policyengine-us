@@ -83,3 +83,33 @@
         state_code: MD
   output:
     md_military_retirement_subtraction: 40_000
+
+- name: Surviving spouse age 55+ receiving only Survivor Benefit Plan payments, capped at $20,000
+  period: 2023
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 25_000
+  output:
+    md_military_retirement_subtraction: 20_000
+
+- name: Surviving spouse under 55 receiving only Survivor Benefit Plan payments, capped at $12,500
+  period: 2023
+  input:
+    state_code: MD
+    age: 45
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 15_000
+  output:
+    md_military_retirement_subtraction: 12_500
+
+- name: Person receiving both own military retirement and survivor benefits, combined amount capped
+  period: 2023
+  input:
+    state_code: MD
+    age: 50
+    military_retirement_pay: 5_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    md_military_retirement_subtraction: 12_500
