@@ -5,7 +5,6 @@
   period: 2026
   reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
   input:
-    gov.contrib.states.me.ld229.in_effect: true
     people:
       person1:
         age: 40
@@ -27,7 +26,6 @@
   period: 2026
   reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
   input:
-    gov.contrib.states.me.ld229.in_effect: true
     people:
       person1:
         age: 40
@@ -49,7 +47,6 @@
   period: 2026
   reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
   input:
-    gov.contrib.states.me.ld229.in_effect: true
     people:
       person1:
         age: 40
@@ -73,7 +70,6 @@
   period: 2026
   reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
   input:
-    gov.contrib.states.me.ld229.in_effect: true
     people:
       person1:
         age: 40
@@ -91,24 +87,3 @@
     # = 2263.25 + 3800.25 + 8529.95 + 6451.875 = 21045.325
     me_income_tax_before_credits: 21_045.325
 
-- name: ME LD 229 - reform not in effect uses baseline
-  period: 2026
-  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
-  absolute_error_margin: 1
-  input:
-    gov.contrib.states.me.ld229.in_effect: false
-    people:
-      person1:
-        age: 40
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-        me_taxable_income: 600_000
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-  output:
-    # Uses baseline 3-bracket structure (top rate 7.15%)
-    me_income_tax_before_credits: 42_391.6

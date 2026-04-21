@@ -16,12 +16,9 @@ def create_me_ld229() -> Reform:
             filing_status = tax_unit("filing_status", period)
             status = filing_status.possible_values
 
-            p_baseline = parameters(period).gov.states.me.tax.income.main
-            p_reform = parameters(period).gov.contrib.states.me.ld229
+            p = parameters(period).gov.contrib.states.me.ld229
 
-            reform_active = p_reform.in_effect
-
-            baseline_tax = select(
+            return select(
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.JOINT,
@@ -30,32 +27,13 @@ def create_me_ld229() -> Reform:
                     filing_status == status.SEPARATE,
                 ],
                 [
-                    p_baseline.single.calc(taxable_income),
-                    p_baseline.joint.calc(taxable_income),
-                    p_baseline.head_of_household.calc(taxable_income),
-                    p_baseline.surviving_spouse.calc(taxable_income),
-                    p_baseline.separate.calc(taxable_income),
+                    p.single.calc(taxable_income),
+                    p.joint.calc(taxable_income),
+                    p.head_of_household.calc(taxable_income),
+                    p.joint.calc(taxable_income),
+                    p.single.calc(taxable_income),
                 ],
             )
-
-            reform_tax = select(
-                [
-                    filing_status == status.SINGLE,
-                    filing_status == status.JOINT,
-                    filing_status == status.HEAD_OF_HOUSEHOLD,
-                    filing_status == status.SURVIVING_SPOUSE,
-                    filing_status == status.SEPARATE,
-                ],
-                [
-                    p_reform.single.calc(taxable_income),
-                    p_reform.joint.calc(taxable_income),
-                    p_reform.head_of_household.calc(taxable_income),
-                    p_reform.joint.calc(taxable_income),
-                    p_reform.single.calc(taxable_income),
-                ],
-            )
-
-            return where(reform_active, reform_tax, baseline_tax)
 
     class reform(Reform):
         def apply(self):
