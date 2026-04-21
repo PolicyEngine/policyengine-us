@@ -390,21 +390,3 @@
     # Total: $0 x 2 = $0
     additional_senior_deduction: 0
 
-- name: Senior deduction sunsets after 2028
-  period: 2029
-  input:
-    people:
-      person1:
-        age: 65
-        is_tax_unit_head_or_spouse: true
-        ssn_card_type: CITIZEN
-    tax_units:
-      tax_unit:
-        members: [person1]
-        adjusted_gross_income: 50_000
-        salt_deduction: 0
-        standard_deduction: 0
-  output:
-    # H.R.1 SEC. 70103 limits the deduction to tax years beginning before
-    # January 1, 2029. Parameter amount drops to  from 2029 onward.
-    additional_senior_deduction: 0

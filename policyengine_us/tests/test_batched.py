@@ -23,7 +23,10 @@ def count_yaml_files(directory: Path) -> int:
 
 
 def split_into_batches(
-    base_path: Path, num_batches: int, exclude: List[str] = None
+    base_path: Path,
+    num_batches: int,
+    exclude: List[str] = None,
+    mode: str = "auto",
 ) -> List[List[str]]:
     """
     Split test directories into specified number of batches.
@@ -34,9 +37,30 @@ def split_into_batches(
         base_path: Path to the test directory
         num_batches: Number of batches to split into
         exclude: List of directory names to exclude (for contrib tests)
+        mode: Batching mode. "auto" (default) uses the per-path heuristics
+            below. "per-subdir" runs each immediate subdir as its own batch
+            with loose yamls collected into a trailing batch. "per-file"
+            runs every yaml (recursively) as its own batch.
     """
     if exclude is None:
         exclude = []
+
+    # Explicit modes — bypass the per-path auto heuristics so new files
+    # added to the target auto-route without a Makefile edit.
+    if mode == "per-file":
+        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
+
+    if mode == "per-subdir":
+        subdirs = sorted(
+            item
+            for item in base_path.iterdir()
+            if item.is_dir() and item.name not in exclude
+        )
+        root_files = sorted(base_path.glob("*.yaml"))
+        batches = [[str(s)] for s in subdirs]
+        if root_files:
+            batches.append([str(f) for f in root_files])
+        return batches
 
     # Special handling for contrib tests - one batch per heavy folder.
     # Only apply to policy/contrib (structural tests), not baseline/contrib.
@@ -48,93 +72,42 @@ def split_into_batches(
     # heavy folder its own batch keeps peaks under ~5 GB and eliminates
     # the intermittent failures without reducing total coverage.
     if str(base_path).endswith("policy/contrib"):
-        # Heavy folders each get their own batch (~3-5 GB peak each).
-        HEAVY_BATCHES = [
-            ["federal"],
-            ["harris"],
-            ["treasury"],
-            ["ctc"],
-            ["snap_ea"],
-            ["ubi_center"],
-            ["deductions"],
-            ["aca"],
-            ["snap"],
-            ["tax_exempt"],
-            ["eitc"],
-            ["crfb"],
-            ["congress"],
-        ]
-        # Small folders/root YAML files pair into two catch-all batches
-        # rather than one so new unknown folders have somewhere safe to
-        # land without pushing either group past ~5 GB.
-        LIGHT_A = [
-            "state_dependent_exemptions",
-            "additional_tax_bracket",
-            "local",
-            "dc_single_joint_threshold_ratio.yaml",
-        ]
-        LIGHT_B = [
-            "reconciliation",
-            "dc_kccatc.yaml",
-            "reported_state_income_tax.yaml",
-        ]
+        # Heavy folders each get their own batch (~3-5 GB peak each) so
+        # a single subprocess doesn't exceed the 16 GB runner cap.
+        HEAVY = {
+            "federal",
+            "harris",
+            "treasury",
+            "ctc",
+            "snap_ea",
+            "ubi_center",
+            "deductions",
+            "aca",
+            "snap",
+            "tax_exempt",
+            "eitc",
+            "crfb",
+            "congress",
+        }
 
-        # Get all subdirectories (excluding states which is in Heavy job)
         subdirs = sorted(
-            [
-                item
-                for item in base_path.iterdir()
-                if item.is_dir() and item.name not in exclude
-            ]
+            item
+            for item in base_path.iterdir()
+            if item.is_dir() and item.name not in exclude
         )
+        root_files = sorted(base_path.glob("*.yaml"))
 
-        # Get root level YAML files
-        root_files = sorted(list(base_path.glob("*.yaml")))
+        # One batch per heavy subdir (if present).
+        batches = [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
-        def get_batch_paths(batch_names, subdirs, root_files):
-            paths = []
-            for name in batch_names:
-                for subdir in subdirs:
-                    if subdir.name == name:
-                        paths.append(str(subdir))
-                        break
-                for f in root_files:
-                    if f.name == name:
-                        paths.append(str(f))
-                        break
-            return paths
-
-        # Collect known folders/files
-        all_known = set()
-        for batch in HEAVY_BATCHES:
-            all_known.update(batch)
-        all_known.update(LIGHT_A)
-        all_known.update(LIGHT_B)
-
-        # Find unknown folders/files (new additions land in LIGHT_B —
-        # keeps LIGHT_A's deterministic grouping stable as the repo grows)
-        unknown = []
-        for subdir in subdirs:
-            if subdir.name not in all_known:
-                unknown.append(str(subdir))
-        for f in root_files:
-            if f.name not in all_known:
-                unknown.append(str(f))
-
-        # Build heavy batches (one per folder)
-        batches = []
-        for batch_names in HEAVY_BATCHES:
-            paths = get_batch_paths(batch_names, subdirs, root_files)
-            if paths:
-                batches.append(paths)
-
-        # Add the two light catch-all batches
-        light_a = get_batch_paths(LIGHT_A, subdirs, root_files)
-        if light_a:
-            batches.append(light_a)
-        light_b = get_batch_paths(LIGHT_B, subdirs, root_files) + unknown
-        if light_b:
-            batches.append(light_b)
+        # Catch-all batch for everything else — light subdirs and root
+        # yaml files. Auto-collects any newly added folders/files so
+        # they're exercised without extra config.
+        light_paths = [
+            str(subdir) for subdir in subdirs if subdir.name not in HEAVY
+        ] + [str(f) for f in root_files]
+        if light_paths:
+            batches.append(light_paths)
 
         return batches
 
@@ -168,7 +141,12 @@ def split_into_batches(
                 if item.is_dir() and item.name not in exclude
             ]
         )
-        if not subdirs:
+        # Root-level YAML files (e.g. cross-state filing-status test) are
+        # state-agnostic and would be invisible to subdir-based batching
+        # otherwise — collect them into a dedicated trailing batch.
+        root_files = sorted(base_path.glob("*.yaml"))
+
+        if not subdirs and not root_files:
             return []
         # Split into num_batches sequential groups
         if num_batches > 1:
@@ -182,8 +160,15 @@ def split_into_batches(
                 if batch:
                     batches.append(batch)
                 start = end
+            if root_files:
+                batches.append([str(f) for f in root_files])
             return batches
-        return [[str(subdir) for subdir in subdirs]]
+        batches = []
+        if subdirs:
+            batches.append([str(subdir) for subdir in subdirs])
+        if root_files:
+            batches.append([str(f) for f in root_files])
+        return batches
 
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
@@ -410,9 +395,32 @@ def main():
         default="",
         help="Comma-separated list of directory names to exclude (for contrib tests)",
     )
+    parser.add_argument(
+        "--shard",
+        type=str,
+        default=None,
+        help="Run a shard of the batches across parallel CI runners (format: 'I/N'; 1-indexed)",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["auto", "per-subdir", "per-file"],
+        default="auto",
+        help="Batching mode. 'per-subdir' = each immediate subdir is its own batch; 'per-file' = each yaml is its own batch.",
+    )
 
     args = parser.parse_args()
     exclude_list = [x.strip() for x in args.exclude.split(",") if x.strip()]
+
+    shard_idx = shard_count = None
+    if args.shard:
+        try:
+            shard_idx, shard_count = (int(x) for x in args.shard.split("/"))
+        except ValueError:
+            print(f"Error: --shard must be in format 'I/N' (got {args.shard!r})")
+            sys.exit(1)
+        if not (1 <= shard_idx <= shard_count):
+            print(f"Error: --shard I must satisfy 1 <= I <= N (got {args.shard!r})")
+            sys.exit(1)
 
     if not os.path.exists("policyengine_us"):
         print("Error: Must run from PolicyEngine US root directory")
@@ -435,7 +443,19 @@ def main():
     print(f"Total test files: {total_tests}")
 
     # Split into batches
-    batches = split_into_batches(test_path, args.batches, exclude_list)
+    batches = split_into_batches(test_path, args.batches, exclude_list, args.mode)
+
+    # Apply sharding: slice every Nth batch starting from the shard index.
+    # Alphabetical subfolder ordering means new folders auto-distribute by
+    # position rather than requiring manual re-assignment per runner.
+    if shard_count is not None:
+        all_batch_count = len(batches)
+        batches = batches[shard_idx - 1 :: shard_count]
+        print(
+            f"Sharding: running shard {shard_idx}/{shard_count} "
+            f"({len(batches)} of {all_batch_count} batches)"
+        )
+
     if len(batches) != args.batches:
         print(f"Actual batches: {len(batches)} (optimized for {total_tests} files)")
     else:

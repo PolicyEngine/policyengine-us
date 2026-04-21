@@ -1,3 +1,24 @@
+## [1.659.4] - 2026-04-20
+
+### Fixed
+
+- Split heavy CI test jobs into parallel matrix runners with 60-min timeouts to avoid memory exhaustion on 16 GB GitHub Actions runners.
+
+
+## [1.659.3] - 2026-04-20
+
+### Fixed
+
+- Rewrite `federal_eitc_without_age_minimum` to compose the federal EITC without mutating the shared tax-benefit system, eliminating an order-dependent test pollution bug in Maryland EITC calculations.
+
+
+## [1.659.2] - 2026-04-20
+
+### Fixed
+
+- Reverted the 2029 sunset from `senior_deduction/amount.yaml` and removed its corresponding test — the sunset is handled at the deduction aggregator level, and zeroing the amount parameter broke the CRFB `senior_deduction_extension` tests.
+
+
 ## [1.659.1] - 2026-04-20
 
 ### Fixed
