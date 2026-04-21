@@ -1,4 +1,4 @@
-description: Progressive rate schedule for a surviving spouse in Maine. 
+description: Progressive rate schedule for a surviving spouse in Maine.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
@@ -22,14 +22,13 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2024.pdf
     - title: Maine 2025 Individual Income Tax Rate Schedules
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2025.pdf
-    - title: Maine LD 229 (2026 bracket expansion)
+    - title: Maine LD 229 (2026 bracket expansion, passed legislature, not yet signed)
       href: https://legislature.maine.gov/bills/display_ps.asp?LD=229&snum=132
 brackets:
   - threshold:
       2017-01-01: 0
     rate:
       2017-01-01: 0.058
-      2026-01-01: 0.055
   - threshold:
       values:
         2017-01-01: 42_100
@@ -38,7 +37,6 @@ brackets:
         2023-01-01: 49_050
         2024-01-01: 52_100
         2025-01-01: 53_600
-        2026-01-01: 54_900
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -54,7 +52,6 @@ brackets:
         2023-01-01: 116_100
         2024-01-01: 123_250
         2025-01-01: 126_900
-        2026-01-01: 129_900
       uprating:
         parameter: gov.irs.uprating
         rounding:
@@ -64,11 +61,9 @@ brackets:
       2017-01-01: 0.0715
   - threshold:
       2017-01-01: .inf
-      2026-01-01: 289_000
     rate:
-      2026-01-01: 0.0775
+      2017-01-01: 0
   - threshold:
       2017-01-01: .inf
-      2026-01-01: 1_000_000
     rate:
-      2026-01-01: 0.0895
+      2017-01-01: 0
