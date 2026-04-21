@@ -48,3 +48,29 @@
   output:
     # select picks first True condition; joint_claim is checked first
     ak_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+
+- name: Case 5, both spouses individually ABD but not jointly claiming.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: false
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Both spouses are individually eligible. Neither should be
+    # treated as COUPLE_ONE_ELIGIBLE, because neither has an
+    # ineligible spouse. With joint_claim false, they fall back to
+    # INDIVIDUAL claims for purposes of the AK SSP classification.
+    ak_ssp_claim_type: [INDIVIDUAL, INDIVIDUAL]

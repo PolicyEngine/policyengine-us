@@ -17,7 +17,7 @@ class ma_gross_income_loss_adjustment(Variable):
         # Line 10 instruction: "Be sure to subtract any losses
         # in lines 6 or 7."
         # Line 6a: Business/profession loss (Schedule C)
-        se_income = add(tax_unit, period, ["self_employment_income"])
+        se_income = add(tax_unit, period, ["total_self_employment_income"])
         # Line 6b: Farm loss (Schedule F)
         farm = add(tax_unit, period, ["farm_income"])
         # Line 7: Rental, partnership, S-corp, farm rent losses

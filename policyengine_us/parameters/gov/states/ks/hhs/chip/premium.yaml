@@ -1,0 +1,27 @@
+description: Kansas charges this KanCare monthly CHIP premium per household, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Kansas KanCare monthly CHIP premium
+  reference:
+    - title: Kansas Legislative Research Department Briefing Book 2026 - Children's Eligibility
+      href: https://klrd.gov/2026/03/02/briefing-book-2026-childrens-eligibility-for-chip-mchip-medicaid-and-hcbs-including-information-on-premium-requirements-for-chip/
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.67
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 1.92
+    amount:
+      2021-01-01: 30
+  - threshold:
+      2021-01-01: 2.19
+    amount:
+      2021-01-01: 50

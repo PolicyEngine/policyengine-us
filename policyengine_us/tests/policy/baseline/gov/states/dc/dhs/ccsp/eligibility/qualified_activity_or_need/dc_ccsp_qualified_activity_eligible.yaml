@@ -28,6 +28,16 @@
   output: 
     dc_ccsp_qualified_activity_eligible: true
 
+- name: Case 3b, SSTB self-employment counts as working.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    sstb_self_employment_income: 100
+    is_full_time_student: false
+    state_code: DC
+  output:
+    dc_ccsp_qualified_activity_eligible: true
+
 - name: Case 4, both parents are working, eligible. 
   period: 2023-01
   absolute_error_margin: 0.5

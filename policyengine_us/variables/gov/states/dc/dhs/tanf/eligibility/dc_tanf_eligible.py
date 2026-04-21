@@ -10,8 +10,9 @@ class dc_tanf_eligible(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        meets_basic_eligibility_requirements = spm_unit(
-            "dc_tanf_basic_eligibility_requirements", period
-        )
-        meets_work_requirements = spm_unit("dc_tanf_meets_work_requirements", period)
-        return meets_basic_eligibility_requirements & meets_work_requirements
+        basic = spm_unit("dc_tanf_basic_eligibility_requirements", period)
+        enrolled = spm_unit("is_tanf_enrolled", period)
+        meets_work = spm_unit("dc_tanf_meets_work_requirements", period)
+        # Non-enrolled applicants must meet work requirements for eligibility.
+        # Enrolled recipients who fail get a benefit sanction instead (in dc_tanf).
+        return basic & (enrolled | meets_work)

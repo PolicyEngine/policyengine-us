@@ -15,34 +15,25 @@ class dc_liheap_payment(Variable):
         housing_type = spm_unit("dc_liheap_housing_type", period)
         heating_type = spm_unit("dc_liheap_heating_type", period)
         income_level = spm_unit("dc_liheap_income_level", period)
-        size = spm_unit("spm_unit_size", period)
-        capped_size = clip(size, 1, 4)
+        capped_size = clip(spm_unit("spm_unit_size", period), 1, 4)
+        heating_expenses = add(spm_unit, period, ["heating_expense_person"])
+        types = heating_type.possible_values
 
-        electricity = heating_type == heating_type.possible_values.ELECTRICITY
-        uncapped_electricity_payment = p.electricity[housing_type][income_level][
-            capped_size
-        ]
-        electricity_expense = spm_unit("pre_subsidy_electricity_expense", period)
-        electricity_payment = min_(uncapped_electricity_payment, electricity_expense)
-
-        gas = heating_type == heating_type.possible_values.GAS
-        uncapped_gas_payment = p.gas[housing_type][income_level][capped_size]
-        gas_expense = spm_unit("gas_expense", period)
-        gas_payment = min_(uncapped_gas_payment, gas_expense)
-
-        heat_in_rent = heating_type == heating_type.possible_values.HEAT_IN_RENT
-
-        oil = heating_type == heating_type.possible_values.OIL
-        oil_expense = spm_unit("fuel_oil_expense", period)
-        oil_payment = min_(p.oil, oil_expense)
-
-        return select(
-            [electricity, gas, heat_in_rent, oil],
+        # Heat-in-rent is a direct subsidy — no expense cap.
+        matrix_amount = select(
             [
-                electricity_payment,
-                gas_payment,
+                heating_type == types.ELECTRICITY,
+                heating_type == types.GAS,
+                heating_type == types.HEAT_IN_RENT,
+                heating_type == types.OIL,
+            ],
+            [
+                p.electricity[housing_type][income_level][capped_size],
+                p.gas[housing_type][income_level][capped_size],
                 p.heat_in_rent,
-                oil_payment,
+                p.oil,
             ],
             default=0,
         )
+        heat_in_rent = heating_type == types.HEAT_IN_RENT
+        return where(heat_in_rent, matrix_amount, min_(matrix_amount, heating_expenses))

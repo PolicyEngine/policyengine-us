@@ -151,3 +151,22 @@
         state_code: DE
   output:
     de_poc_activity_eligible: true
+
+- name: Case 5b, SSTB self-employed parent counts as activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        sstb_self_employment_income: 18_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_activity_eligible: true

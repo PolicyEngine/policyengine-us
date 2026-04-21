@@ -1,0 +1,12 @@
+- name: Reported SS retirement is an input variable
+  period: 2024
+  input:
+    social_security_retirement_reported: 18_000
+  output:
+    social_security_retirement_reported: 18_000
+
+- name: Reported SS retirement defaults to zero
+  period: 2024
+  input: {}
+  output:
+    social_security_retirement_reported: 0

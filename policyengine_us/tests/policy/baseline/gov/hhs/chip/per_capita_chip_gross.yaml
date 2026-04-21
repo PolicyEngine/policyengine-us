@@ -1,0 +1,25 @@
+- name: Texas gross per-capita CHIP is non-zero for an eligible person.
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    is_chip_eligible: true
+    state_code: TX
+  output:
+    per_capita_chip_gross: 1_696
+
+- name: Missouri gross per-capita CHIP exceeds the net figure by the state's premium offset per enrollee.
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    is_chip_eligible: true
+    state_code: MO
+  output:
+    per_capita_chip_gross: 4_286
+
+- name: Texas ineligible person has zero gross CHIP value.
+  period: 2024
+  input:
+    is_chip_eligible: false
+    state_code: TX
+  output:
+    per_capita_chip_gross: 0

@@ -1,0 +1,38 @@
+- name: unit test 1 - single filer below surcharge threshold
+  period: 2025
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2023: 80_000
+    tax_exempt_interest_income:
+      2023: 0
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 0
+
+- name: unit test 2 - joint filer in middle bracket
+  period: 2025
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2023: 266_001
+    tax_exempt_interest_income:
+      2023: 0
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 423.6
+
+- name: unit test 3 - separate filer top bracket
+  period: 2024
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2022: 397_000
+    tax_exempt_interest_income:
+      2022: 0
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 972

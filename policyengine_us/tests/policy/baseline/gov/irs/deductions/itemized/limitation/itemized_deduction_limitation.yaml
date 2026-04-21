@@ -1,0 +1,90 @@
+# Tests for the consolidated itemized deduction limitation
+# These tests verify the Pease limitation (pre-TCJA), TCJA suspension,
+# and OBBB limitation (2026+)
+
+# Pre-TCJA period (2017) - Pease limitation active
+- name: Pease limitation active in 2017 - SINGLE filer over threshold
+  period: 2017
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 50_000
+  output:
+    # AGI threshold for SINGLE in 2017: 261_500
+    # AGI excess: 400_000 - 261_500 = 138_500
+    # AGI excess reduction (3%): 138_500 * 0.03 = 4_155
+    # Max deductions reduction (80% of 50_000): 40_000
+    # Reduction is min(4_155, 40_000) = 4_155
+    itemized_taxable_income_deductions_reduction: 4_155
+
+- name: Pease limitation active in 2017 - JOINT filer over threshold
+  period: 2017
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: JOINT
+    total_itemized_taxable_income_deductions: 30_000
+  output:
+    # AGI threshold for JOINT in 2017: 313_800
+    # AGI excess: 500_000 - 313_800 = 186_200
+    # AGI excess reduction (3%): 186_200 * 0.03 = 5_586
+    # Max deductions reduction (80% of 30_000): 24_000
+    # Reduction is min(5_586, 24_000) = 5_586
+    itemized_taxable_income_deductions_reduction: 5_586
+
+- name: Pease limitation - filer below threshold in 2017
+  period: 2017
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 30_000
+  output:
+    # AGI threshold for SINGLE in 2017: 261_500
+    # AGI below threshold, no reduction
+    itemized_taxable_income_deductions_reduction: 0
+
+# TCJA period (2018-2025) - Pease limitation suspended
+- name: No Pease limitation during TCJA (2024)
+  period: 2024
+  input:
+    adjusted_gross_income: 1_000_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 100_000
+  output:
+    # Pease limitation suspended during TCJA
+    itemized_taxable_income_deductions_reduction: 0
+
+- name: No Pease limitation during TCJA (2020)
+  period: 2020
+  input:
+    adjusted_gross_income: 800_000
+    filing_status: JOINT
+    total_itemized_taxable_income_deductions: 75_000
+  output:
+    itemized_taxable_income_deductions_reduction: 0
+
+# Post-TCJA (2026+) - OBBB limitation applies
+- name: OBBB limitation in 2026 - high income SINGLE filer
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 200_000
+  output:
+    # OBBB uses different calculation based on taxable income excess
+    # over top bracket threshold (37% bracket)
+    # Rate is 2/37 = 0.05405405
+    itemized_taxable_income_deductions_reduction: 10_811
+
+- name: OBBB limitation in 2026 - income below top bracket
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: SINGLE
+    total_itemized_taxable_income_deductions: 50_000
+  output:
+    # If taxable income is below top bracket threshold, no OBBB reduction
+    itemized_taxable_income_deductions_reduction: 0

@@ -1,0 +1,236 @@
+description: South Carolina provides these maximum weekly payment rates for registered family child care homes under the Child Care Scholarship Program.
+# Registered family homes only have quality levels B+, B, and C.
+metadata:
+  period: week
+  unit: currency-USD
+  label: South Carolina CCAP registered family home weekly rates
+  breakdown:
+    - sc_ccap_time_category
+    - sc_ccap_registered_quality_level
+    - sc_ccap_age_group
+    - sc_ccap_geography
+  reference:
+    - title: SC CCAP Maximum Payments Allowed FFY2023
+      href: https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=11
+    - title: SC CCAP Policy Manual Vol. 038 Appendix 3 - Maximum Payments Allowed
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=183
+
+FULL_TIME:
+  B_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 157
+      RURAL:
+        2022-10-01: 123
+    AGE_1:
+      URBAN:
+        2022-10-01: 157
+      RURAL:
+        2022-10-01: 123
+    AGE_2:
+      URBAN:
+        2022-10-01: 157
+      RURAL:
+        2022-10-01: 123
+    AGE_3:
+      URBAN:
+        2022-10-01: 143
+      RURAL:
+        2022-10-01: 116
+    AGE_4:
+      URBAN:
+        2022-10-01: 143
+      RURAL:
+        2022-10-01: 116
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 138
+      RURAL:
+        2022-10-01: 100
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 105
+      RURAL:
+        2022-10-01: 99
+  B:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 153
+      RURAL:
+        2022-10-01: 122
+    AGE_1:
+      URBAN:
+        2022-10-01: 153
+      RURAL:
+        2022-10-01: 122
+    AGE_2:
+      URBAN:
+        2022-10-01: 153
+      RURAL:
+        2022-10-01: 112
+    AGE_3:
+      URBAN:
+        2022-10-01: 142
+      RURAL:
+        2022-10-01: 108
+    AGE_4:
+      URBAN:
+        2022-10-01: 142
+      RURAL:
+        2022-10-01: 108
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 142
+      RURAL:
+        2022-10-01: 98
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 103
+      RURAL:
+        2022-10-01: 97
+  C:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 121
+    AGE_1:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 95
+    AGE_2:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 95
+    AGE_3:
+      URBAN:
+        2022-10-01: 120
+      RURAL:
+        2022-10-01: 90
+    AGE_4:
+      URBAN:
+        2022-10-01: 120
+      RURAL:
+        2022-10-01: 90
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 120
+      RURAL:
+        2022-10-01: 90
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 90
+      RURAL:
+        2022-10-01: 75
+
+HALF_TIME:
+  B_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 132
+      RURAL:
+        2022-10-01: 122
+    AGE_1:
+      URBAN:
+        2022-10-01: 132
+      RURAL:
+        2022-10-01: 122
+    AGE_2:
+      URBAN:
+        2022-10-01: 132
+      RURAL:
+        2022-10-01: 122
+    AGE_3:
+      URBAN:
+        2022-10-01: 111
+      RURAL:
+        2022-10-01: 103
+    AGE_4:
+      URBAN:
+        2022-10-01: 111
+      RURAL:
+        2022-10-01: 103
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 111
+      RURAL:
+        2022-10-01: 103
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 102
+      RURAL:
+        2022-10-01: 77
+  B:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 128
+      RURAL:
+        2022-10-01: 121
+    AGE_1:
+      URBAN:
+        2022-10-01: 128
+      RURAL:
+        2022-10-01: 121
+    AGE_2:
+      URBAN:
+        2022-10-01: 128
+      RURAL:
+        2022-10-01: 121
+    AGE_3:
+      URBAN:
+        2022-10-01: 102
+      RURAL:
+        2022-10-01: 102
+    AGE_4:
+      URBAN:
+        2022-10-01: 102
+      RURAL:
+        2022-10-01: 102
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 102
+      RURAL:
+        2022-10-01: 102
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 101
+      RURAL:
+        2022-10-01: 76
+  C:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 70
+    AGE_1:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 70
+    AGE_2:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 70
+    AGE_3:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 65
+    AGE_4:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 65
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 95
+      RURAL:
+        2022-10-01: 65
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 60
+      RURAL:
+        2022-10-01: 50

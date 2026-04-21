@@ -599,18 +599,20 @@ programs:
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
       - state: CT
-        status: in_progress
+        status: complete
         name: Connecticut SSP
         full_name: Connecticut State Supplement Program
+        variable: ct_ssp
       - state: CO
         status: complete
         name: Colorado SSP
         full_name: Colorado State Supplementary Payment
         variable: co_state_supplement
       - state: DC
-        status: in_progress
+        status: complete
         name: DC OSSP
         full_name: DC Optional State Supplemental Payment
+        variable: dc_ossp
       - state: DE
         status: complete
         name: Delaware SSP
@@ -621,9 +623,10 @@ programs:
         name: Florida OSS
         full_name: Florida Optional State Supplementation
       - state: GA
-        status: in_progress
+        status: complete
         name: Georgia SSP
         full_name: Georgia State Supplementary Payment
+        variable: ga_ssp
       - state: HI
         status: in_progress
         name: Hawaii OSS
@@ -633,39 +636,45 @@ programs:
         name: Iowa SSP
         full_name: Iowa State Supplemental Payment
       - state: ID
-        status: in_progress
+        status: complete
         name: Idaho AABD
         full_name: Idaho AABD cash assistance
+        variable: id_aabd
       - state: IN
-        status: in_progress
+        status: complete
         name: Indiana SSP
         full_name: Indiana State Supplementary Payment
+        variable: in_ssp
       - state: MA
         status: complete
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
       - state: KS
-        status: in_progress
+        status: complete
         name: Kansas SSPP
         full_name: Kansas State Supplemental Payment Program
+        variable: ks_sspp
       - state: IL
         status: complete
         name: Illinois AABD
         full_name: Illinois Aid to the Aged, Blind or Disabled
         variable: il_aabd
       - state: NM
-        status: in_progress
+        status: complete
         name: New Mexico SSI supplement
         full_name: New Mexico SSI state supplement
+        variable: nm_ssi_state_supplement
       - state: SC
-        status: in_progress
+        status: complete
         name: South Carolina SSI supplement
         full_name: South Carolina SSI state supplement
+        variable: sc_ssi_state_supplement
       - state: TX
-        status: in_progress
+        status: complete
         name: Texas SSI supplement
         full_name: Texas SSI state supplement
+        variable: tx_ssi_state_supplement
 
   - id: social_security
     name: Social Security

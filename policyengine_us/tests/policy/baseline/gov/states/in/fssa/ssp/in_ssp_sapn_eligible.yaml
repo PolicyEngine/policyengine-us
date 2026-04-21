@@ -1,0 +1,133 @@
+- name: Case 1, SSI recipient Medicaid enrolled adult in federal Medicaid facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: true
+
+- name: Case 2, child under 18 in Medicaid facility is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 3, adult not in federal Medicaid facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 4, SSI-ineligible adult in Medicaid facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_eligible: false
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 5, not Medicaid enrolled in Medicaid facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        is_ssi_eligible: true
+        is_medicaid_eligible: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 6, non-IN resident.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 7, in medical facility but Medicaid does not pay majority.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+
+- name: Case 8, adult exactly at age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: true

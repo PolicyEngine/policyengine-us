@@ -1,0 +1,85 @@
+- name: Case 1, single applicant under the MSP asset limit.
+  period: 2024-01
+  input:
+    age: 67
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
+    state_code: TX
+  output:
+    msp_asset_eligible: true
+
+- name: Case 2, couple resources use the spouses' combined assets.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 68
+        bank_account_assets: 8_000
+      person2:
+        age: 66
+        bank_account_assets: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    msp_asset_eligible: [false, false]
+
+- name: Case 3, non-spouse household members' assets are excluded.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 67
+        bank_account_assets: 5_000
+      person2:
+        age: 30
+        bank_account_assets: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    msp_asset_eligible: [true, false]
+
+- name: Case 4, 2026 individual asset limit uses the current Medicare.gov value.
+  period: 2026-01
+  input:
+    age: 67
+    bank_account_assets: 9_950
+    spm_unit_is_married: false
+    state_code: TX
+  output:
+    msp_asset_eligible: true
+
+- name: Case 5, 2026 individual asset limit rejects amounts above the current threshold.
+  period: 2026-01
+  input:
+    age: 67
+    bank_account_assets: 9_951
+    spm_unit_is_married: false
+    state_code: TX
+  output:
+    msp_asset_eligible: false

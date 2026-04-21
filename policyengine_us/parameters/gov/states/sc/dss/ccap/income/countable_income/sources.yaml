@@ -1,0 +1,33 @@
+description: South Carolina counts these income sources under the Child Care Scholarship Program.
+values:
+  2022-10-01:
+    - employment_income
+    - self_employment_income
+    - farm_income
+    - social_security
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - dividend_income
+    - rental_income
+    - veterans_benefits
+    # - tanf
+    # The following are counted per Policy Manual 2.1.14 but have
+    # no matching variables:
+    # - royalties
+    # - income from estates/trusts
+    # - income from boarders/lodgers
+    # - general assistance (other than TANF)
+
+metadata:
+  unit: list
+  period: year
+  label: South Carolina CCAP countable income sources
+  reference:
+    - title: SC CCAP Policy Manual Vol. 038 Section 2.1.14
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=43
+    - title: SC CCAP Policy Manual Vol. 038 Section 2.1.15
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=43

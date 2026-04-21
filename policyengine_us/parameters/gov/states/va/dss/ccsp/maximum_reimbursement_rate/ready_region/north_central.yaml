@@ -1,0 +1,23 @@
+description: Virginia defines these localities as the North Central Ready Region under the Child Care Subsidy Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP North Central Ready Region localities
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+values:
+  2023-08-01:
+    - CAROLINE_COUNTY_VA
+    - CULPEPER_COUNTY_VA
+    - FAUQUIER_COUNTY_VA
+    - FREDERICKSBURG_CITY_VA
+    - KING_GEORGE_COUNTY_VA
+    - LOUDOUN_COUNTY_VA
+    # - MANASSAS_CITY_VA  # not in county_enum
+    - MANASSAS_PARK_CITY_VA
+    - PRINCE_WILLIAM_COUNTY_VA
+    - SPOTSYLVANIA_COUNTY_VA
+    - STAFFORD_COUNTY_VA

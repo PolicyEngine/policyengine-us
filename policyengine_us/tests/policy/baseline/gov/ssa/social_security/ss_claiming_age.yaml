@@ -1,0 +1,21 @@
+- name: Claiming age defaults to current age
+  period: 2024
+  input:
+    age: 65
+  output:
+    ss_claiming_age: 65
+
+- name: Claiming age can be set independently
+  period: 2024
+  input:
+    age: 70
+    ss_claiming_age: 62
+  output:
+    ss_claiming_age: 62
+
+- name: Claiming age at 62
+  period: 2024
+  input:
+    age: 62
+  output:
+    ss_claiming_age: 62

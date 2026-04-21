@@ -14,7 +14,9 @@ class vt_ccfap_meets_activity_test(Variable):
         is_adult = person("is_adult", period)
         # Employment (II B 1 a) or Self Employment (II B 1 b)
         has_employment = person("employment_income", period.this_year) > 0
-        has_self_employment = person("self_employment_income", period.this_year) > 0
+        has_self_employment = (
+            person("total_self_employment_income", period.this_year) > 0
+        )
         employed = spm_unit.any(is_adult & (has_employment | has_self_employment))
         # Training or Education (II B 1 e)
         in_training = spm_unit.any(

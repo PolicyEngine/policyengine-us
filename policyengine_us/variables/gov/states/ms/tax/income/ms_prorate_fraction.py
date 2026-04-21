@@ -33,34 +33,9 @@ class ms_prorate_fraction(Variable):
             max_(standard_deduction, itemized_deductions) + total_exemptions
         )
 
-        # Mississippi lets joint filers split their combined deduction and
-        # exemption amounts between spouses however they want, so choose the
-        # split that minimizes combined liability.
-        best_head_allocation = total_allocable_deductions
-        best_tax = rate.calc(max_(head_agi - best_head_allocation, 0)) + rate.calc(
-            max_(spouse_agi - (total_allocable_deductions - best_head_allocation), 0)
+        best_head_allocation = allocate_joint_amount_to_minimize_combined_tax(
+            rate, head_agi, spouse_agi, total_allocable_deductions
         )
-
-        for threshold in rate.thresholds:
-            if not np.isfinite(threshold):
-                continue
-
-            for candidate in (
-                np.clip(head_agi - threshold, 0, total_allocable_deductions),
-                np.clip(
-                    total_allocable_deductions - (spouse_agi - threshold),
-                    0,
-                    total_allocable_deductions,
-                ),
-            ):
-                candidate_tax = rate.calc(max_(head_agi - candidate, 0)) + rate.calc(
-                    max_(spouse_agi - (total_allocable_deductions - candidate), 0)
-                )
-                improves_tax = candidate_tax < (best_tax - 1e-9)
-                best_tax = where(improves_tax, candidate_tax, best_tax)
-                best_head_allocation = where(
-                    improves_tax, candidate, best_head_allocation
-                )
 
         head_fraction = where(
             total_allocable_deductions > 0,

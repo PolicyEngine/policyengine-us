@@ -1,0 +1,7 @@
+- name: DC includes US government bond interest in income subtractions
+  period: 2024
+  input:
+    state_code: DC
+    us_govt_interest_person: 5_000
+  output:
+    dc_income_subtractions: 5_000

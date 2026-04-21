@@ -1,0 +1,33 @@
+description: Virginia defines these localities as the Southwest Ready Region under the Child Care Subsidy Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP Southwest Ready Region localities
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+values:
+  2023-08-01:
+    - BLAND_COUNTY_VA
+    - BRISTOL_CITY_VA
+    - BUCHANAN_COUNTY_VA
+    - CARROLL_COUNTY_VA
+    - DICKENSON_COUNTY_VA
+    - FLOYD_COUNTY_VA
+    # - GALAX_CITY_VA  # not in county_enum
+    - GILES_COUNTY_VA
+    - GRAYSON_COUNTY_VA
+    - LEE_COUNTY_VA
+    - MONTGOMERY_COUNTY_VA
+    - NORTON_CITY_VA
+    - PULASKI_COUNTY_VA
+    - RADFORD_CITY_VA
+    - RUSSELL_COUNTY_VA
+    - SCOTT_COUNTY_VA
+    - SMYTH_COUNTY_VA
+    - TAZEWELL_COUNTY_VA
+    - WASHINGTON_COUNTY_VA
+    - WISE_COUNTY_VA
+    - WYTHE_COUNTY_VA

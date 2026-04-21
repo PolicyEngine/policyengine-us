@@ -1,0 +1,562 @@
+- name: Case 1, low-income single parent, center care, Eastern.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 30_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: NEW_LONDON_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: EASTERN
+    ct_c4k_age_group: [SCHOOL_AGE, PRE_SCHOOL]
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME]
+    # Monthly countable: 30,000 / 12 = 2,500
+    ct_c4k_countable_income: 2_500
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Jan 2025 center FT Eastern preschool = $228/week
+    ct_c4k_payment_rate: [0, 228]
+    # SMI ratio: 2,500 / 8,265 = 0.302 => 20%-40% bracket => 3%
+    # Monthly fee: 2,500 * 0.03 = 75
+    ct_c4k_family_fee: 75
+    # Monthly approved: 228 * 52/12 = 988
+    # Monthly expenses: 15,000/12 = 1,250
+    # Capped: min(988, 1,250) = 988
+    # Subsidy: max(988 - 75, 0) = 913
+    ct_c4k: 913
+
+- name: Case 2, moderate-income continuing recipient, family care, Southwest.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 45
+        ct_c4k_provider_type: FAMILY
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 22_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: FAIRFIELD_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: SOUTHWEST
+    ct_c4k_age_group: [SCHOOL_AGE, INFANT_TODDLER]
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME]
+    # Continuing: 85% of 99,180 = 84,303; 60,000 < 84,303 => eligible
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Jan 2025 family FT Southwest infant/toddler = $333
+    ct_c4k_payment_rate: [0, 333]
+    # SMI ratio: 5,000 / 8,265 = 0.605 => 60%+ bracket => 7%
+    # Monthly fee: 5,000 * 0.07 = 350
+    ct_c4k_family_fee: 350
+    # Monthly approved: 333 * 52/12 = 1,443
+    # Monthly expenses: 22,000/12 = 1,833
+    # Capped: min(1,443, 1,833) = 1,443
+    # Subsidy: max(1,443 - 350, 0) = 1,093
+    ct_c4k: 1_093
+
+- name: Case 3, two children, special needs, center care, North Central.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        is_disabled: true
+        childcare_hours_per_week: 50
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: false
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+        county_str: HARTFORD_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true, true]
+    ct_c4k_region: NORTH_CENTRAL
+    ct_c4k_age_group: [SCHOOL_AGE, INFANT_TODDLER, SCHOOL_AGE]
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME, HALF_TIME]
+    ct_c4k_countable_income: 3_000
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # person2: center FT NC infant/toddler $376 * 1.15 (special needs) = $432.40
+    # person3: center HT NC school-age = $117
+    ct_c4k_payment_rate: [0, 432.4, 117]
+    # SMI ratio: 3,000 / 10,210 = 0.294 => 20%-40% => 3%
+    # Monthly fee: 3,000 * 0.03 = 90
+    ct_c4k_family_fee: 90
+    # Monthly approved: (432.40 + 117) * 52/12 = 2,381.07
+    # Monthly expenses: 25,000/12 = 2,083.33
+    # Capped: min(2,381.07, 2,083.33) = 2,083.33
+    # Subsidy: max(2,083.33 - 90, 0) = 1,993.33
+    ct_c4k: 1_993.33
+
+- name: Case 4, new applicant income above 60% SMI, ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_tfa_eligible: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: MIDDLESEX_COUNTY_CT
+  output:
+    # 60% of 99,180 = 59,508; 80,000 > 59,508 => ineligible
+    ct_c4k_income_eligible: false
+    ct_c4k_eligible: false
+    ct_c4k: 0
+
+- name: Case 5, unlicensed relative care, low income, fee waived.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 18_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 35
+        ct_c4k_provider_type: RELATIVE
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: WINDHAM_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: EASTERN
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME]
+    ct_c4k_countable_income: 1_500
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Relative FT flat: $245/week
+    ct_c4k_payment_rate: [0, 245]
+    # SMI ratio: 1,500 / 8,265 = 0.181 => <20% => 0%
+    ct_c4k_family_fee: 0
+    # Monthly approved: 245 * 52/12 = 1,062
+    # Monthly expenses: 12,000/12 = 1,000
+    # Capped: min(1,062, 1,000) = 1,000
+    # Subsidy: max(1,000 - 0, 0) = 1,000
+    ct_c4k: 1_000
+
+- name: Case 6, accredited provider, moderate income, two-parent family.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 30_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 31
+        employment_income: 20_000
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 55
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+        county_str: NEW_HAVEN_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, false, true]
+    ct_c4k_region: SOUTH_CENTRAL
+    ct_c4k_care_level: [QUARTER_TIME, QUARTER_TIME, FULL_TIME_PLUS]
+    # (30,000 + 20,000) / 12 = 4,166.67
+    ct_c4k_countable_income: 4_166.67
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Center FTP South Central infant/toddler = $495 * 1.05 = $519.75
+    ct_c4k_payment_rate: [0, 0, 519.75]
+    # SMI ratio: 4,166.67 / 10,210 = 0.408 => 40%-60% => 5%
+    # Monthly fee: 4,166.67 * 0.05 = 208.33
+    ct_c4k_family_fee: 208.33
+    # Monthly approved: 519.75 * 52/12 = 2,252.25
+    # Monthly expenses: 30,000/12 = 2,500
+    # Capped: min(2,252.25, 2,500) = 2,252.25
+    # Subsidy: max(2,252.25 - 208.33, 0) = 2,043.92
+    ct_c4k: 2_043.92
+
+- name: Case 7, continuing recipient between initial and continuing thresholds.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 72_000
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        ct_c4k_provider_type: FAMILY
+        ct_c4k_provider_accredited: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 15
+        ct_c4k_provider_type: FAMILY
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+        county_str: LITCHFIELD_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true, true]
+    ct_c4k_region: NORTHWEST
+    ct_c4k_age_group: [SCHOOL_AGE, PRE_SCHOOL, SCHOOL_AGE]
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME, QUARTER_TIME]
+    ct_c4k_countable_income: 6_000
+    # Continuing: 85% of monthly SMI 10,210 = 8,678; 6,000 < 8,678 => eligible
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # person2: family FT Northwest preschool = $228
+    # person3: family QT Northwest school-age = $68
+    ct_c4k_payment_rate: [0, 228, 68]
+    # SMI ratio: 6,000 / 10,210 = 0.588 => 40%-60% => 5%
+    # Monthly fee: 6,000 * 0.05 = 300
+    ct_c4k_family_fee: 300
+    # Monthly approved: (228 + 68) * 52/12 = 1,282.67
+    # Monthly expenses: 20,000/12 = 1,666.67
+    # Capped: min(1,282.67, 1,666.67) = 1,282.67
+    # Subsidy: max(1,282.67 - 300, 0) = 982.67
+    ct_c4k: 982.67
+
+- name: Case 8, special needs child with accredited provider, highest rate region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 24_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        is_disabled: true
+        childcare_hours_per_week: 55
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_pre_subsidy_childcare_expenses: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: FAIRFIELD_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: SOUTHWEST
+    ct_c4k_age_group: [SCHOOL_AGE, INFANT_TODDLER]
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME_PLUS]
+    ct_c4k_countable_income: 2_000
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Center FTP SW infant/toddler $627 * (1+0.15+0.05) = $627 * 1.20 = $752.40
+    ct_c4k_payment_rate: [0, 752.4]
+    # SMI ratio: 2,000 / 8,265 = 0.242 => 20%-40% => 3%
+    # Monthly fee: 2,000 * 0.03 = 60
+    ct_c4k_family_fee: 60
+    # Monthly approved: 752.40 * 52/12 = 3,260.40
+    # Monthly expenses: 50,000/12 = 4,166.67
+    # Capped: min(3,260.40, 4,166.67) = 3,260.40
+    # Subsidy: max(3,260.40 - 60, 0) = 3,200.40
+    ct_c4k: 3_200.40
+
+- name: Case 9, zero income family, fee waived, full subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 22
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        ct_c4k_provider_type: RELATIVE
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: HARTFORD_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: NORTH_CENTRAL
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME]
+    ct_c4k_countable_income: 0
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Relative FT flat: $245/week
+    ct_c4k_payment_rate: [0, 245]
+    ct_c4k_family_fee: 0
+    # Monthly approved: 245 * 52/12 = 1,061.67
+    # Monthly expenses: 10,000/12 = 833.33
+    # Capped: min(1,061.67, 833.33) = 833.33
+    # Subsidy: max(833.33 - 0, 0) = 833.33
+    ct_c4k: 833.33
+
+- name: Case 10, TFA-eligible parent with only unearned income, fee waived.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 9_600
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        ct_c4k_provider_type: CENTER
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: MIDDLESEX_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: SOUTH_CENTRAL
+    ct_c4k_care_level: [QUARTER_TIME, HALF_TIME]
+    # Monthly countable: 9,600 / 12 = 800
+    ct_c4k_countable_income: 800
+    ct_c4k_income_eligible: true
+    # TFA eligible (low unearned income) => passes activity test
+    ct_c4k_eligible: true
+    # Center HT South Central preschool = $176/week (2024-07-01 rate)
+    ct_c4k_payment_rate: [0, 176]
+    # No earned income => fee waived
+    ct_c4k_family_fee: 0
+    # Monthly approved: 176 * 52/12 = 762.67
+    # Monthly expenses: 8,000/12 = 666.67
+    # Capped: min(762.67, 666.67) = 666.67
+    # Subsidy: max(666.67 - 0, 0) = 666.67
+    ct_c4k: 666.67
+
+- name: Case 11, fee exceeds approved cost, subsidy reduced.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 55_000
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 5
+        ct_c4k_provider_type: RELATIVE
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: NEW_HAVEN_COUNTY_CT
+  output:
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: SOUTH_CENTRAL
+    ct_c4k_care_level: [QUARTER_TIME, QUARTER_TIME]
+    # 55,000 / 12 = 4,583.33
+    ct_c4k_countable_income: 4_583.33
+    # Continuing: 85% of monthly SMI 8,265 = 7,025; 4,583.33 < 7,025
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Relative QT flat: $74/week
+    ct_c4k_payment_rate: [0, 74]
+    # SMI ratio: 4,583.33 / 8,265 = 0.555 => 40%-60% => 5%
+    # Monthly fee: 4,583.33 * 0.05 = 229.17
+    ct_c4k_family_fee: 229.17
+    # Monthly approved: 74 * 52/12 = 320.67
+    # Monthly expenses: 5,000/12 = 416.67
+    # Capped: min(320.67, 416.67) = 320.67
+    # Subsidy: max(320.67 - 229.17, 0) = 91.50
+    ct_c4k: 91.50
+
+- name: Case 12, disabled child age 16, special needs eligibility.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+        childcare_hours_per_week: 35
+        ct_c4k_provider_type: FAMILY
+        ct_c4k_provider_accredited: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: WINDHAM_COUNTY_CT
+  output:
+    # age 16 < 19 (special needs) & disabled => eligible
+    ct_c4k_eligible_child: [false, true]
+    ct_c4k_region: EASTERN
+    ct_c4k_care_level: [QUARTER_TIME, FULL_TIME]
+    ct_c4k_countable_income: 2_500
+    ct_c4k_income_eligible: true
+    ct_c4k_eligible: true
+    # Family FT Eastern school-age = $183 * 1.15 = $210.45
+    ct_c4k_payment_rate: [0, 210.45]
+    # SMI ratio: 2,500 / 8,265 = 0.302 => 20%-40% => 3%
+    # Monthly fee: 2,500 * 0.03 = 75
+    ct_c4k_family_fee: 75
+    # Monthly approved: 210.45 * 52/12 = 911.95
+    # Monthly expenses: 15,000/12 = 1,250
+    # Capped: min(911.95, 1,250) = 911.95
+    # Subsidy: max(911.95 - 75, 0) = 836.95
+    ct_c4k: 836.95
