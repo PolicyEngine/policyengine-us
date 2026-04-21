@@ -9,7 +9,7 @@ class mn_renters_credit_total_rent_from_crps(Variable):
     definition_period = YEAR
     defined_for = StateCode.MN
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf",
     )
 
     def formula(tax_unit, period, parameters):

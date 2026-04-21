@@ -1,4 +1,5 @@
-- name: Rent constituting property taxes equals 17 percent of shared CRP rent
+- name: Case 1, rent constituting property taxes equals 17 percent of shared CRP rent.
+  absolute_error_margin: 0.1
   period: 2025
   input:
     people:

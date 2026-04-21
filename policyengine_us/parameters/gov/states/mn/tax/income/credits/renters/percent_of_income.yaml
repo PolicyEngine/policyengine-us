@@ -1,4 +1,4 @@
-description: Minnesota renter's credit household-income percentage by household income.
+description: Minnesota sets the household-income percentage by household income under the renter's credit.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -6,16 +6,16 @@ metadata:
   period: year
   label: Minnesota renter's credit percent of income
   reference:
-    - title: Minnesota Statutes 290.0693, Subd. 3
-      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf
+    - title: Minnesota Statutes 290.0693, Subd. 3(a) — Percent of income column
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
     - title: 2025 Schedule M1RENT, Renter's Credit
-      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf#page=5
 
 brackets:
   - threshold:
       2024-01-01: 0
     amount:
-      2024-01-01: 0.010
+      2024-01-01: 0.01
   - threshold:
       values:
         2024-01-01: 8_610
@@ -125,7 +125,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.020
+      2024-01-01: 0.02
   - threshold:
       values:
         2024-01-01: 75_390

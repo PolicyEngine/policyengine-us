@@ -1,4 +1,4 @@
-description: Minnesota renter's credit claimant share of excess rent constituting property taxes by household income.
+description: Minnesota sets the claimant share of excess rent constituting property taxes by household income under the renter's credit.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -6,10 +6,10 @@ metadata:
   period: year
   label: Minnesota renter's credit claimant share
   reference:
-    - title: Minnesota Statutes 290.0693, Subd. 3
-      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf
+    - title: Minnesota Statutes 290.0693, Subd. 3(a) — Claimant share column
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
     - title: 2025 Schedule M1RENT, Renter's Credit
-      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf#page=5
 
 brackets:
   - threshold:
@@ -26,7 +26,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.10
+      2024-01-01: 0.1
   - threshold:
       values:
         2024-01-01: 15_090
@@ -48,7 +48,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.20
+      2024-01-01: 0.2
   - threshold:
       values:
         2024-01-01: 30_160
@@ -70,7 +70,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.30
+      2024-01-01: 0.3
   - threshold:
       values:
         2024-01-01: 45_230
@@ -92,7 +92,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.40
+      2024-01-01: 0.4
   - threshold:
       values:
         2024-01-01: 60_320
@@ -114,7 +114,7 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 0.50
+      2024-01-01: 0.5
   - threshold:
       values:
         2024-01-01: 75_390
@@ -125,5 +125,5 @@ brackets:
             type: nearest
             interval: 10
     amount:
-      2024-01-01: 1.0
+      2024-01-01: 1
 

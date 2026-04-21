@@ -1,4 +1,4 @@
-- name: Standard Minnesota renter's credit case
+- name: Case 1, standard renter's credit.
   absolute_error_margin: 10
   period: 2025
   input:
@@ -24,11 +24,11 @@
     households:
       household:
         members: [person1]
-        state_fips: 27
+        state_code: MN
   output:
     mn_renters_credit: 455
 
-- name: Assistance-paid rent prorates the renter's credit
+- name: Case 2, assistance-paid rent prorates the credit.
   absolute_error_margin: 1
   period: 2025
   input:
@@ -50,7 +50,8 @@
   output:
     mn_renters_credit: 966
 
-- name: Property-tax-exempt residence is ineligible
+- name: Case 3, property-tax-exempt residence is ineligible.
+  absolute_error_margin: 0.1
   period: 2025
   input:
     people:

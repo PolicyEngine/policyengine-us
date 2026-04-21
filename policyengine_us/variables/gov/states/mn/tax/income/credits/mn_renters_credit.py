@@ -31,16 +31,19 @@ class mn_renters_credit(Variable):
             0, rent_constituting_property_taxes - percent_of_income * household_income
         )
         line_13_amount = round_(min_(max_credit, excess_rent * (1 - claimant_share)))
-        proration_denominator = household_income + assistance_rent_paid
+        # Per Minn. Stat. 290.0693, Subd. 6(b), the proration uses
+        # adjusted gross income (M1RENT Line 5), not household income
+        # (Line 10 after subtractions).
+        agi = add(tax_unit, period, ["adjusted_gross_income"])
+        proration_denominator = agi + assistance_rent_paid
         proration_ratio = where(
             proration_denominator > 0,
-            round_(household_income / proration_denominator, 5),
+            round_(agi / proration_denominator, 5),
             0,
         )
-        return round_(
-            where(
-                assistance_rent_paid > 0,
-                line_13_amount * proration_ratio,
-                line_13_amount,
-            )
+        prorated_amount = where(
+            assistance_rent_paid > 0,
+            line_13_amount * proration_ratio,
+            line_13_amount,
         )
+        return round_(prorated_amount)

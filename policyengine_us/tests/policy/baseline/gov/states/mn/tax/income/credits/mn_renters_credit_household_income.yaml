@@ -1,30 +1,30 @@
-- name: Household income starts from federal AGI and subtracts renter credit adjustments
+- name: Case 1, household income with age and dependent subtractions.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
         age: 66
         is_tax_unit_head: true
-      dependent1:
+      person2:
         is_tax_unit_dependent: true
-      dependent2:
+      person3:
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
-        members: [person1, dependent1, dependent2]
+        members: [person1, person2, person3]
         adjusted_gross_income: 50_000
-        mn_additions: 1_000
-        mn_subtractions: 500
         mn_renters_credit_seiu_stipend_subtraction: 1_000
     households:
       household:
-        members: [person1, dependent1, dependent2]
+        members: [person1, person2, person3]
         state_code: MN
   output:
     mn_renters_credit_household_income: 29_760
 
-- name: Separate filer household income includes spouse separate AGI proxy
+- name: Case 2, separate filer household income includes spouse separate AGI proxy.
   period: 2025
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

@@ -122,7 +122,7 @@
   output:
     mn_income_tax: -2_119
 
-- name: Minnesota renters credit integrates into refundable credits
+- name: Case 3, Minnesota renters credit integrates into refundable credits.
   absolute_error_margin: 10
   period: 2025
   input:
@@ -148,7 +148,7 @@
     households:
       household:
         members: [person1]
-        state_fips: 27
+        state_code: MN
   output:
     mn_renters_credit: 455
     mn_refundable_credits: 455

@@ -1,4 +1,4 @@
-description: Minnesota renter's credit dependent subtraction multiplier by number of dependents.
+description: Minnesota sets the cumulative dependent subtraction multiplier by number of dependents under the renter's credit.
 metadata:
   label: Minnesota renter's credit dependent subtraction multiplier
   type: single_amount
@@ -6,14 +6,16 @@ metadata:
   amount_unit: /1
   period: year
   reference:
+    - title: Minnesota Statutes 290.0693, Subd. 1(i)(1)-(5)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
     - title: 2025 Schedule M1RENT, Household Income section
-      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf#page=4
 
 brackets:
   - threshold:
       2024-01-01: 0
     amount:
-      2024-01-01: 0.0
+      2024-01-01: 0
   - threshold:
       2024-01-01: 1
     amount:
@@ -29,8 +31,8 @@ brackets:
   - threshold:
       2024-01-01: 4
     amount:
-      2024-01-01: 5.0
+      2024-01-01: 5
   - threshold:
       2024-01-01: 5
     amount:
-      2024-01-01: 6.0
+      2024-01-01: 6

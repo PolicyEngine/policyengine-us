@@ -10,5 +10,5 @@ class mn_renters_credit_shared_rent_fraction(Variable):
     default_value = 1
     defined_for = StateCode.MN
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf",
     )

@@ -1,4 +1,4 @@
-description: Minnesota renter's credit minimum age for the age-based household income subtraction.
+description: Minnesota sets the minimum age for the age-based household income subtraction under the renter's credit.
 values:
   2024-01-01: 65
 
@@ -7,5 +7,7 @@ metadata:
   unit: year
   label: Minnesota renter's credit age threshold
   reference:
+    - title: Minnesota Statutes 290.0693, Subd. 1(i)(6)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
     - title: 2025 Schedule M1RENT, Household Income section
-      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf#page=4
