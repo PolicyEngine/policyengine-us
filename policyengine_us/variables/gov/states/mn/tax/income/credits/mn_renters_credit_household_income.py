@@ -18,13 +18,8 @@ class mn_renters_credit_household_income(Variable):
         minimum_age = p.credits.renters.age_threshold
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        lived_apart_all_year = tax_unit(
-            "mn_renters_credit_separate_lived_apart_all_year", period
-        )
-        include_spouse_separate_agi = separate & ~lived_apart_all_year
         household_agi = tax_unit("adjusted_gross_income", period) + (
-            tax_unit("spouse_separate_adjusted_gross_income", period)
-            * include_spouse_separate_agi
+            tax_unit("spouse_separate_adjusted_gross_income", period) * separate
         )
         exemption_amount = p.exemptions.amount
 
@@ -41,11 +36,6 @@ class mn_renters_credit_household_income(Variable):
             p.credits.renters.dependent_subtraction_multiplier.calc(dependent_count)
         )
         dependent_subtraction = exemption_amount * dependent_subtraction_multiplier
-        seiu_subtraction = tax_unit(
-            "mn_renters_credit_seiu_stipend_subtraction", period
-        )
 
-        subtractions = (
-            age_or_disability_subtraction + dependent_subtraction + seiu_subtraction
-        )
+        subtractions = age_or_disability_subtraction + dependent_subtraction
         return max_(0, household_agi - subtractions)

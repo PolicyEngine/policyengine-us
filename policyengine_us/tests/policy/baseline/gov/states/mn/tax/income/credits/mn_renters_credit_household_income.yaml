@@ -14,13 +14,12 @@
       tax_unit:
         members: [person1, person2, person3]
         adjusted_gross_income: 50_000
-        mn_renters_credit_seiu_stipend_subtraction: 1_000
     households:
       household:
         members: [person1, person2, person3]
         state_code: MN
   output:
-    mn_renters_credit_household_income: 29_760
+    mn_renters_credit_household_income: 30_760
 
 - name: Case 2, separate filer household income includes spouse separate AGI proxy.
   period: 2025
@@ -40,23 +39,3 @@
         state_code: MN
   output:
     mn_renters_credit_household_income: 80_000
-
-- name: Case 3, separate filer living apart all year uses only own AGI.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SEPARATE
-        adjusted_gross_income: 40_000
-        mn_renters_credit_separate_lived_apart_all_year: true
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    mn_renters_credit_household_income: 40_000
