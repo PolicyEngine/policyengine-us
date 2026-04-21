@@ -1,10 +1,11 @@
 # Tests for Pennsylvania UC weekly payable benefit (REQ-009).
-# When fully unemployed (gross weekly earnings == 0):
-#   weekly_payable = WBR + dependent_allowance
-# When partially unemployed (earnings > 0):
-#   weekly_payable = max(0, WBR + PBC - gross_weekly_earnings) + dependent_allowance
-#   capped at WBR + dependent_allowance
-# Reference: § 404(d)(1), 43 P.S. § 804(d).
+# Formula: payable_wbr = max(0, WBR - max(earnings - PBC, 0))
+#          payable = payable_wbr + (dependent_allowance if earnings < WBR + PBC else 0)
+# Per § 4(u), a claimant is "unemployed" for a week only when earnings are
+# less than WBR + PBC. When earnings reach or exceed that sum, no benefits
+# (including the dependent allowance) are payable for that week.
+# References: § 4(u) (43 P.S. § 753(u)), § 404(d)(1) (43 P.S. § 804(d)),
+# § 404(e)(3) (43 P.S. § 804(e)(3)).
 #
 # UCP-1 Handbook / PA DLI example: WBR=$100, PBC=$30, weekly_gross=$31
 # -> payable = max(0, $100 + $30 - $31) = $99 (no dependent allowance).
@@ -63,8 +64,9 @@
     people:
       person1:
         # WBR = $300, PBC = $90 (30% of $300 = $90).
-        # Computed = max(0, $300 + $90 - $50) = $340.
-        # Capped at WBR + dep = $300 + $0 = $300.
+        # earnings_reduction = max($50 - $90, 0) = $0.
+        # payable_wbr = max($300 - $0, 0) = $300.
+        # No dependents -> payable = $300.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_partial_benefit_credit: 90
         pa_uc_weekly_payable: 300
@@ -93,8 +95,9 @@
     people:
       person1:
         # WBR = $300, PBC = $90.
-        # Computed = max(0, $300 + $90 - $100) = $290.
-        # Cap WBR+dep = $300; $290 < $300 -> $290.
+        # earnings_reduction = max($100 - $90, 0) = $10.
+        # payable_wbr = max($300 - $10, 0) = $290.
+        # No dependents -> payable = $290.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_partial_benefit_credit: 90
         pa_uc_weekly_payable: 290
@@ -162,8 +165,10 @@
     people:
       person1:
         # WBR = $300, PBC = $90, dep = $8 (spouse + 1 child).
-        # Computed = max(0, $300 + $90 - $50) = $340.
-        # Cap WBR+dep = $308; $340 > $308 -> $308.
+        # earnings_reduction = max($50 - $90, 0) = $0.
+        # payable_wbr = max($300 - $0, 0) = $300.
+        # earnings ($50) < WBR + PBC ($390) -> unemployed -> dep paid.
+        # payable = $300 + $8 = $308.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_partial_benefit_credit: 90
         pa_uc_dependent_allowance: 8
@@ -193,8 +198,9 @@
     people:
       person1:
         # WBR = $100 (bracket $2,513-$2,537); PBC = $30; dep = $0.
-        # Computed = max(0, $100 + $30 - $31) = $99.
-        # Cap WBR+dep = $100; $99 < $100 -> $99.
+        # earnings_reduction = max($31 - $30, 0) = $1.
+        # payable_wbr = max($100 - $1, 0) = $99.
+        # No dependents -> payable = $99.
         # Matches PA DLI worked example: "$130 - $31 = $99".
         pa_uc_weekly_benefit_rate: 100
         pa_uc_partial_benefit_credit: 30

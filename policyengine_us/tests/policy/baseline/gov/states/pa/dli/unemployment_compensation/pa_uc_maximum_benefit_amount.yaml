@@ -1,5 +1,7 @@
 # Tests for Pennsylvania UC Maximum Benefit Amount (MBA) (REQ-011).
-# Formula: MBA = (WBR + dependent_allowance) x min(credit_weeks, 26).
+# Formula: MBA = WBR x min(credit_weeks, 26).
+# The dependent allowance is paid in addition to the MBA, not as part of it
+# (see § 404(e)(3)).
 # Ineligible claimants (< 18 credit weeks) receive $0 MBA.
 # Reference: § 404(c), 43 P.S. § 804(c).
 
@@ -25,8 +27,8 @@
   output:
     people:
       person1:
-        # WBR = $300, dep = $0, credit weeks = 26.
-        # MBA = ($300 + $0) * 26 = $7,800.
+        # WBR = $300, credit weeks = 26.
+        # MBA = $300 * 26 = $7,800.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_dependent_allowance: 0
         pa_uc_maximum_weeks: 26
@@ -64,12 +66,13 @@
   output:
     people:
       person1:
-        # WBR = $300, dep = $8 (spouse $5 + 1 child $3), credit weeks = 26.
-        # MBA = ($300 + $8) * 26 = $8,008.
+        # WBR = $300, credit weeks = 26.
+        # MBA = $300 * 26 = $7,800 (dep allowance paid in addition,
+        # not part of MBA per § 404(e)(3)).
         pa_uc_weekly_benefit_rate: 300
         pa_uc_dependent_allowance: 8
         pa_uc_maximum_weeks: 26
-        pa_uc_maximum_benefit_amount: 8_008
+        pa_uc_maximum_benefit_amount: 7_800
 
 - name: Case 3, maxed-out WBR with dependents, 26 credit weeks.
   period: 2025
@@ -103,12 +106,12 @@
   output:
     people:
       person1:
-        # WBR = $605 (cap), dep = $8, credit weeks = 26.
-        # MBA = ($605 + $8) * 26 = $15,938.
+        # WBR = $605 (cap), credit weeks = 26.
+        # MBA = $605 * 26 = $15,730 (dep allowance paid in addition).
         pa_uc_weekly_benefit_rate: 605
         pa_uc_dependent_allowance: 8
         pa_uc_maximum_weeks: 26
-        pa_uc_maximum_benefit_amount: 15_938
+        pa_uc_maximum_benefit_amount: 15_730
 
 - name: Case 4, ineligible (fewer than 18 credit weeks) yields MBA $0.
   period: 2025
@@ -159,8 +162,8 @@
   output:
     people:
       person1:
-        # WBR = $300, dep = $0, credit weeks = 20 (below 26 cap).
-        # MBA = ($300 + $0) * 20 = $6,000.
+        # WBR = $300, credit weeks = 20 (below 26 cap).
+        # MBA = $300 * 20 = $6,000.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_maximum_weeks: 20
         pa_uc_maximum_benefit_amount: 6_000

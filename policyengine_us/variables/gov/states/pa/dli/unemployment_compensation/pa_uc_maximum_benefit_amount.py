@@ -14,9 +14,9 @@ class pa_uc_maximum_benefit_amount(Variable):
 
     def formula(person, period, parameters):
         # § 404(c): maximum benefit amount equals the weekly benefit rate
-        # plus the dependent allowance, multiplied by the number of
-        # credit weeks up to a maximum of twenty-six.
+        # multiplied by the number of credit weeks up to twenty-six. The
+        # dependent allowance is paid in addition to (not as part of) the
+        # MBA per § 404(e)(3).
         wbr = person("pa_uc_weekly_benefit_rate", period)
-        dependent_allowance = person("pa_uc_dependent_allowance", period)
         max_weeks = person("pa_uc_maximum_weeks", period)
-        return (wbr + dependent_allowance) * max_weeks
+        return wbr * max_weeks

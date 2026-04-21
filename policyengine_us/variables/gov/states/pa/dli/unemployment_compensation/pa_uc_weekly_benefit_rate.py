@@ -8,7 +8,7 @@ class pa_uc_weekly_benefit_rate(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dli/documents/uc/uc_law.pdf#page=132",
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/dli/documents/uc/uc_law.pdf#page=136",
         "https://www.pacodeandbulletin.gov/Display/pabull?file=/secure/pabulletin/data/vol54/54-52/1863.html",
     )
     defined_for = StateCode.PA

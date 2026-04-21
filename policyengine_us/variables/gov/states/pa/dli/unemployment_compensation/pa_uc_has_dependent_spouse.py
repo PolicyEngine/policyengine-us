@@ -17,6 +17,8 @@ class pa_uc_has_dependent_spouse(Variable):
         # Proxy: the claimant is married and the spouse has no employment
         # income (mirrors NJ's dependency allowance logic). A person flagged
         # as a tax-unit dependent cannot be the dependent spouse.
+        # Attributed only to the claimant (head of tax unit) to avoid
+        # double-counting if multiple adults file UC claims.
         tax_unit = person.tax_unit
         tax_unit_married = tax_unit("tax_unit_married", period)
         is_spouse = tax_unit.members("is_tax_unit_spouse", period)
@@ -25,4 +27,8 @@ class pa_uc_has_dependent_spouse(Variable):
         members_employment = tax_unit.members("employment_income", period)
         spouse_employment = tax_unit.sum(members_employment * is_spouse)
         spouse_is_dependent = tax_unit.sum(is_spouse & is_dep) > 0
-        return tax_unit_married & (spouse_employment == 0) & ~spouse_is_dependent
+        has_dependent_spouse = (
+            tax_unit_married & (spouse_employment == 0) & ~spouse_is_dependent
+        )
+        is_head = person("is_tax_unit_head", period)
+        return has_dependent_spouse & is_head

@@ -300,13 +300,14 @@
 
 # ---------------------------------------------------------------------------
 # Weekly payable boundaries (REQ-009)
-# Formula: min(max(0, WBR - max(earnings - PBC, 0)) + dep_allowance,
-#              WBR + dep_allowance).
+# Formula: max(0, WBR - max(earnings - PBC, 0)) + dep_allowance_if_unemployed
+# where dep_allowance_if_unemployed is 0 when earnings >= WBR + PBC per § 4(u)
+# (claimant is not "unemployed" that week and receives no benefits).
 # Test at gross = WBR + PBC exactly, gross > WBR + PBC, and negative gross.
 # All cases below use HQ $7,625 -> WBR $300; PBC = ceil(0.30 * $300) = $90.
 # ---------------------------------------------------------------------------
 
-- name: Case 14, gross earnings exactly WBR + PBC = $390 - base is zero but dep paid.
+- name: Case 14, gross earnings exactly WBR + PBC = $390 - not unemployed, $0 paid.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -340,14 +341,15 @@
     people:
       person1:
         # earnings_reduction = max($390 - $90, 0) = $300.
-        # base_benefit = max($300 - $300, 0) = $0.
-        # total = $0 + $8 = $8; cap = $300 + $8 = $308 -> $8 (below cap).
+        # payable_wbr = max($300 - $300, 0) = $0.
+        # earnings ($390) >= WBR + PBC ($390) -> § 4(u): not "unemployed",
+        # no dependent allowance paid. payable = $0.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_partial_benefit_credit: 90
         pa_uc_dependent_allowance: 8
-        pa_uc_weekly_payable: 8
+        pa_uc_weekly_payable: 0
 
-- name: Case 15, gross earnings above WBR + PBC with dependents - dep still paid.
+- name: Case 15, gross earnings above WBR + PBC - not unemployed, $0 paid.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -381,16 +383,13 @@
     people:
       person1:
         # earnings_reduction = max($500 - $90, 0) = $410.
-        # base_benefit = max($300 - $410, 0) = $0.
-        # total = $0 + $8 = $8; cap = $300 + $8 = $308 -> $8.
-        # Documents that the implementation continues to pay the dependent
-        # allowance when base benefit is zeroed by earnings. Statute is silent
-        # on this interaction; adjust if a future reviewer finds it should be
-        # zero.
+        # payable_wbr = max($300 - $410, 0) = $0.
+        # earnings ($500) >= WBR + PBC ($390) -> § 4(u): not "unemployed",
+        # no dependent allowance paid. payable = $0.
         pa_uc_weekly_benefit_rate: 300
         pa_uc_partial_benefit_credit: 90
         pa_uc_dependent_allowance: 8
-        pa_uc_weekly_payable: 8
+        pa_uc_weekly_payable: 0
 
 - name: Case 16, negative gross earnings treated as fully unemployed.
   period: 2025

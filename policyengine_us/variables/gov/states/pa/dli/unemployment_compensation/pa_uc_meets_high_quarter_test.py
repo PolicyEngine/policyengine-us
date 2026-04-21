@@ -7,7 +7,7 @@ class pa_uc_meets_high_quarter_test(Variable):
     label = "Meets Pennsylvania unemployment compensation high quarter wages test"
     definition_period = YEAR
     reference = (
-        "https://www.pa.gov/content/dam/copapwp-pagov/en/dli/documents/uc/uc_law.pdf#page=132",
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/dli/documents/uc/uc_law.pdf#page=136",
     )
     defined_for = StateCode.PA
 
