@@ -1,9 +1,7 @@
-# Tests verifying that the new bracket slots (4 and 5) with .inf thresholds
-# do NOT affect baseline calculations for any year.
-# LD 229 has passed the legislature but is NOT signed into law.
-# The bracket slots exist so the reform system can target them.
+# Tests verifying baseline is unchanged — LD 229 is NOT enacted law.
+# The 3-bracket structure (5.8%, 6.75%, 7.15%) remains for all years.
 
-- name: Single filer 2026 baseline, only 3 brackets apply (top rate 7.15%)
+- name: Single filer 2026 baseline, 3 brackets only
   period: 2026
   absolute_error_margin: 1
   input:
@@ -11,11 +9,10 @@
     filing_status: SINGLE
     state_code: ME
   output:
-   # Uprated 3-bracket structure still applies — new brackets are .inf
-   # All income above bracket 2 threshold is taxed at 7.15%
+   # Uprated 3-bracket structure applies — LD 229 is a reform, not baseline
     me_income_tax_before_credits: 42_391.6
 
-- name: Joint filer 2026 baseline, only 3 brackets apply (top rate 7.15%)
+- name: Joint filer 2026 baseline, 3 brackets only
   period: 2026
   absolute_error_margin: 1
   input:
@@ -23,10 +20,9 @@
     filing_status: JOINT
     state_code: ME
   output:
-   # Uprated 3-bracket structure still applies
     me_income_tax_before_credits: 70_483.2
 
-- name: Single filer 2025 baseline, only 3 brackets apply
+- name: Single filer 2025 baseline, 3 brackets only
   period: 2025
   input:
     me_taxable_income: 600_000
@@ -35,23 +31,3 @@
   output:
    # .058*26800 + .0675*(63450-26800) + .0715*(600000-63450) = 42391.6
     me_income_tax_before_credits: 42_391.6
-
-- name: Joint filer 2025 baseline, only 3 brackets apply
-  period: 2025
-  input:
-    me_taxable_income: 1_000_000
-    filing_status: JOINT
-    state_code: ME
-  output:
-   # .058*53600 + .0675*(126900-53600) + .0715*(1000000-126900) = 70483.2
-    me_income_tax_before_credits: 70_483.2
-
-- name: HOH filer 2025 baseline, only 3 brackets apply
-  period: 2025
-  input:
-    me_taxable_income: 300_000
-    filing_status: HEAD_OF_HOUSEHOLD
-    state_code: ME
-  output:
-   # .058*40200 + .0675*(95150-40200) + .0715*(300000-95150) = 20687.5
-    me_income_tax_before_credits: 20_687.5

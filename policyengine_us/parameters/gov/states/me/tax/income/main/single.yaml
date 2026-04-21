@@ -22,8 +22,6 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2024.pdf
     - title: Maine 2025 Individual Income Tax Rate Schedules
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2025.pdf
-    - title: Maine LD 229 (2026 bracket expansion, passed legislature, not yet signed)
-      href: https://legislature.maine.gov/bills/display_ps.asp?LD=229&snum=132
 brackets:
   - threshold:
       2017-01-01: 0
@@ -59,11 +57,3 @@ brackets:
           interval: 50
     rate:
       2017-01-01: 0.0715
-  - threshold:
-      2017-01-01: .inf
-    rate:
-      2017-01-01: 0
-  - threshold:
-      2017-01-01: .inf
-    rate:
-      2017-01-01: 0
