@@ -424,7 +424,9 @@
 # ---------------------------------------------------------------------------
 # Main variable pa_uc edges (REQ-012)
 # weeks_unemployed = 0 -> annual benefit $0.
-# weeks_unemployed > max_weeks -> capped at max_weeks * weekly_payable.
+# Full-week claims beyond max_weeks still cap at the MBA. Partial-benefit
+# claims can continue beyond max_weeks until the MBA is exhausted, while
+# dependent allowances remain limited to weeks of entitlement.
 # Ineligible -> $0. Non-PA residents -> $0 via defined_for filter (this extends
 # integration Case 7 with a different non-PA state: NY).
 # ---------------------------------------------------------------------------
@@ -458,7 +460,7 @@
         pa_uc_weekly_payable: 393
         pa_uc: 0
 
-- name: Case 18, weeks_unemployed (30) exceed max_weeks (26) - capped at max_weeks.
+- name: Case 18, fully unemployed 30 weeks still caps at the maximum benefit amount.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -482,8 +484,9 @@
   output:
     people:
       person1:
-        # weeks_paid = min(30, 26) = 26; pa_uc = $393 * 26 = $10,218.
+        # MBA = $393 * 26 = $10,218, so additional weeks do not increase benefits.
         pa_uc_maximum_weeks: 26
+        pa_uc_maximum_benefit_amount: 10_218
         pa_uc_weekly_payable: 393
         pa_uc: 10_218
 
@@ -543,3 +546,49 @@
       person1:
         # Household is outside PA -> defined_for (StateCode.PA) filters pa_uc.
         pa_uc: 0
+
+- name: Case 21, partial-benefit claims can extend beyond 26 weeks until MBA is exhausted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 30
+        pa_uc_gross_weekly_earnings: 100
+        employment_income: 5_200
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90, weekly base payable = $290.
+        # MBA = $300 * 26 = $7,800, so base benefits can continue beyond
+        # 26 weeks until that balance is exhausted.
+        # Dependent allowance remains limited to 26 payable weeks:
+        # $7,800 + ($8 * 26) = $8,008 total.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_dependent_allowance: 8
+        pa_uc_weekly_payable: 298
+        pa_uc_maximum_benefit_amount: 7_800
+        pa_uc: 8_008
