@@ -1,0 +1,88 @@
+# Tests for Pennsylvania UC maximum benefit weeks (REQ-010).
+# Formula: min(credit_weeks, 26).
+# Reference: § 404(c), 43 P.S. § 804(c).
+
+- name: Case 1, exactly 18 credit weeks - minimum eligible duration.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 18
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(18, 26) = 18.
+        pa_uc_maximum_weeks: 18
+
+- name: Case 2, 25 credit weeks - below cap.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 25
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(25, 26) = 25.
+        pa_uc_maximum_weeks: 25
+
+- name: Case 3, 26 credit weeks - at the cap.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 26
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(26, 26) = 26.
+        pa_uc_maximum_weeks: 26
+
+- name: Case 4, 40 credit weeks (full year) - capped at 26.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_credit_weeks: 40
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(40, 26) = 26 (cap).
+        pa_uc_maximum_weeks: 26
+
+- name: Case 5, 52 credit weeks (full year worked) - capped at 26.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_credit_weeks: 52
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(52, 26) = 26 (cap).
+        pa_uc_maximum_weeks: 26

@@ -1,0 +1,201 @@
+# Tests for Pennsylvania UC weekly payable benefit (REQ-009).
+# When fully unemployed (gross weekly earnings == 0):
+#   weekly_payable = WBR + dependent_allowance
+# When partially unemployed (earnings > 0):
+#   weekly_payable = max(0, WBR + PBC - gross_weekly_earnings) + dependent_allowance
+#   capped at WBR + dependent_allowance
+# Reference: § 404(d)(1), 43 P.S. § 804(d).
+#
+# UCP-1 Handbook / PA DLI example: WBR=$100, PBC=$30, weekly_gross=$31
+# -> payable = max(0, $100 + $30 - $31) = $99 (no dependent allowance).
+
+- name: Case 1, fully unemployed - full WBR paid (single claimant, no deps).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300 (bracket $7,613-$7,637).
+        # dep allowance = $0 (single, no children).
+        # No earnings -> payable = $300 + $0 = $300.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_dependent_allowance: 0
+        pa_uc_weekly_payable: 300
+
+- name: Case 2, partial earnings $50 below PBC - payable capped at WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 50
+        employment_income: 2_600
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90 (30% of $300 = $90).
+        # Computed = max(0, $300 + $90 - $50) = $340.
+        # Capped at WBR + dep = $300 + $0 = $300.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_weekly_payable: 300
+
+- name: Case 3, partial earnings $100 above PBC - payable reduced.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 100
+        employment_income: 5_200
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90.
+        # Computed = max(0, $300 + $90 - $100) = $290.
+        # Cap WBR+dep = $300; $290 < $300 -> $290.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_weekly_payable: 290
+
+- name: Case 4, partial earnings $400 exceed WBR+PBC - payable is $0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 400
+        employment_income: 20_800
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90.
+        # Computed = max(0, $300 + $90 - $400) = max(0, -$10) = $0.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_weekly_payable: 0
+
+- name: Case 5, partial earnings $50 with dependents - capped at WBR + dep.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 50
+        employment_income: 2_600
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90, dep = $8 (spouse + 1 child).
+        # Computed = max(0, $300 + $90 - $50) = $340.
+        # Cap WBR+dep = $308; $340 > $308 -> $308.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_dependent_allowance: 8
+        pa_uc_weekly_payable: 308
+
+- name: Case 6, UCP-1 handbook example (WBR $100, PBC $30, earnings $31 -> $99).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 2_520
+        pa_uc_base_year_wages: 10_100
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 31
+        employment_income: 1_612
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $100 (bracket $2,513-$2,537); PBC = $30; dep = $0.
+        # Computed = max(0, $100 + $30 - $31) = $99.
+        # Cap WBR+dep = $100; $99 < $100 -> $99.
+        # Matches PA DLI worked example: "$130 - $31 = $99".
+        pa_uc_weekly_benefit_rate: 100
+        pa_uc_partial_benefit_credit: 30
+        pa_uc_weekly_payable: 99

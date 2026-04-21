@@ -1,0 +1,265 @@
+# Integration tests for Pennsylvania Unemployment Compensation.
+# End-to-end scenarios checking pa_uc together with intermediate variables.
+# Rate table values sourced from 54 Pa.B. 1863 (2025 Table Specified by Law).
+
+- name: Case 1, single adult fully unemployed, mid-income earner.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # REQ-001: HQ $10,000 >= $1,688 -> pass.
+        pa_uc_meets_high_quarter_test: true
+        # REQ-002: Outside = $18,000 >= 0.37 * $28,000 = $10,360 -> pass.
+        pa_uc_meets_wages_outside_high_quarter_test: true
+        # REQ-003: 26 >= 18 credit weeks -> pass.
+        pa_uc_meets_credit_weeks_test: true
+        # REQ-004: Part C for $10,000 HQ = $15,893; $28,000 >= $15,893 -> pass.
+        pa_uc_meets_qualifying_wages_test: true
+        # Monetarily eligible (all four tests pass).
+        pa_uc_monetarily_eligible: true
+        # WBR from bracket $9,988-$10,012 -> $393.
+        pa_uc_weekly_benefit_rate: 393
+        # No spouse, no children -> $0 dependent allowance.
+        pa_uc_dependent_allowance: 0
+        # Maximum weeks = min(26, 26) = 26.
+        pa_uc_maximum_weeks: 26
+        # Weekly payable = $393 + $0 = $393 (fully unemployed).
+        pa_uc_weekly_payable: 393
+        # Annual PA UC = $393 * 26 weeks = $10,218.
+        pa_uc: 10_218
+
+- name: Case 2, married claimant with two dependent children, fully unemployed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        pa_uc_highest_quarter_wages: 8_000
+        pa_uc_base_year_wages: 24_000
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person2:
+        age: 36
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # REQ-001: HQ $8,000 >= $1,688 -> pass.
+        pa_uc_meets_high_quarter_test: true
+        # REQ-002: Outside = $16,000 >= 0.37 * $24,000 = $8,880 -> pass.
+        pa_uc_meets_wages_outside_high_quarter_test: true
+        # REQ-003: 26 >= 18 credit weeks -> pass.
+        pa_uc_meets_credit_weeks_test: true
+        # REQ-004: Part C for $8,000 HQ = $12,718; $24,000 >= $12,718 -> pass.
+        pa_uc_meets_qualifying_wages_test: true
+        pa_uc_monetarily_eligible: true
+        # WBR from bracket $7,988-$8,012 -> $315.
+        pa_uc_weekly_benefit_rate: 315
+        # Spouse $5 + second dependent $3 = $8 (cap).
+        pa_uc_dependent_allowance: 8
+        pa_uc_maximum_weeks: 26
+        # Weekly payable = $315 + $8 = $323.
+        pa_uc_weekly_payable: 323
+        # Annual PA UC = $323 * 26 = $8,398.
+        pa_uc: 8_398
+
+- name: Case 3, partial employment (claimant works less than full-time).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 100
+        employment_income: 5_200
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Monetarily eligible.
+        pa_uc_monetarily_eligible: true
+        # WBR from bracket $7,613-$7,637 -> $300.
+        pa_uc_weekly_benefit_rate: 300
+        # PBC = ceil(max(30% * $300, $6)) = ceil(max($90, $6)) = $90.
+        pa_uc_partial_benefit_credit: 90
+        # Weekly payable = max(0, $300 + $90 - $100) = $290 (below $300 cap).
+        pa_uc_weekly_payable: 290
+        # Annual PA UC = $290 * 26 = $7,540.
+        pa_uc: 7_540
+
+- name: Case 4, ineligible - high-quarter wages below $1,688 minimum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pa_uc_highest_quarter_wages: 1_500
+        pa_uc_base_year_wages: 2_000
+        pa_uc_credit_weeks: 10
+        pa_uc_weeks_unemployed: 10
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # HQ $1,500 < $1,688 -> fails REQ-001.
+        pa_uc_meets_high_quarter_test: false
+        # Credit weeks 10 < 18 -> also fails REQ-003.
+        pa_uc_meets_credit_weeks_test: false
+        pa_uc_monetarily_eligible: false
+        # WBR = $0 (below minimum bracket).
+        pa_uc_weekly_benefit_rate: 0
+        # Annual PA UC = $0.
+        pa_uc: 0
+
+- name: Case 5, ineligible - fewer than 18 credit weeks despite ample wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 15
+        pa_uc_weeks_unemployed: 15
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Wages tests pass, but 15 < 18 credit weeks -> fails REQ-003.
+        pa_uc_meets_high_quarter_test: true
+        pa_uc_meets_wages_outside_high_quarter_test: true
+        pa_uc_meets_credit_weeks_test: false
+        pa_uc_monetarily_eligible: false
+        # Annual PA UC = $0 despite WBR $393 being computable.
+        pa_uc: 0
+
+- name: Case 6, high earner capped at maximum weekly benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pa_uc_highest_quarter_wages: 25_000
+        pa_uc_base_year_wages: 70_000
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        pa_uc_monetarily_eligible: true
+        # WBR capped at $605 (any HQ >= $15,388).
+        pa_uc_weekly_benefit_rate: 605
+        pa_uc_dependent_allowance: 0
+        pa_uc_maximum_weeks: 26
+        pa_uc_weekly_payable: 605
+        # Annual PA UC = $605 * 26 = $15,730.
+        pa_uc: 15_730
+
+- name: Case 7, non-PA resident (California) receives no PA UC benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        pa_uc_weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    people:
+      person1:
+        # Household is outside PA -> defined_for filters the benefit.
+        pa_uc: 0
