@@ -14,15 +14,11 @@ class nj_unemployment_insurance(Variable):
     defined_for = "nj_unemployment_insurance_eligible"
 
     def formula(person, period, parameters):
-        weekly_benefit = person(
-            "nj_unemployment_insurance_weekly_benefit", period
-        )
+        weekly_benefit = person("nj_unemployment_insurance_weekly_benefit", period)
         weekly_gross_wages = person(
             "nj_unemployment_insurance_weekly_gross_wages", period
         )
-        weeks_claimed = person(
-            "nj_unemployment_insurance_weeks_claimed", period
-        )
+        weeks_claimed = person("nj_unemployment_insurance_weeks_claimed", period)
         qualifying_base_weeks = person(
             "nj_unemployment_insurance_base_period_weeks", period
         )

@@ -7,15 +7,11 @@ class nj_unemployment_insurance_average_weekly_wage(Variable):
     label = "New Jersey unemployment insurance average weekly wage"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.nj.gov/labor/myunemployment/before/about/calculator/",
-    )
+    reference = ("https://www.nj.gov/labor/myunemployment/before/about/calculator/",)
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        base_wages = person(
-            "nj_unemployment_insurance_base_period_wages", period
-        )
+        base_wages = person("nj_unemployment_insurance_base_period_wages", period)
         qualifying_base_weeks = person(
             "nj_unemployment_insurance_base_period_weeks", period
         )

@@ -16,9 +16,7 @@ class nj_unemployment_insurance_dependency_allowance(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
         qualifying_dependents = min_(
-            person(
-                "nj_unemployment_insurance_qualifying_dependents", period
-            ),
+            person("nj_unemployment_insurance_qualifying_dependents", period),
             p.max_dependents,
         )
         spouse_employed = person(
@@ -28,8 +26,9 @@ class nj_unemployment_insurance_dependency_allowance(Variable):
         calculated_rate = where(
             qualifying_dependents > 0,
             p.dependency_allowance_first
-            + max_(0, qualifying_dependents - 1)
-            * p.dependency_allowance_additional,
+            + max_(0, qualifying_dependents - 1) * p.dependency_allowance_additional,
             0,
         )
-        return where(spouse_employed, 0, min_(calculated_rate, p.max_dependency_allowance))
+        return where(
+            spouse_employed, 0, min_(calculated_rate, p.max_dependency_allowance)
+        )

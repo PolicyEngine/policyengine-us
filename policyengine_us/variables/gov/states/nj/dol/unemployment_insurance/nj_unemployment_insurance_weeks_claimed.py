@@ -7,7 +7,5 @@ class nj_unemployment_insurance_weeks_claimed(Variable):
     label = "New Jersey unemployment insurance weeks claimed"
     unit = "week"
     definition_period = YEAR
-    reference = (
-        "https://law.justia.com/codes/new-jersey/title-43/section-43-21-3/"
-    )
+    reference = "https://law.justia.com/codes/new-jersey/title-43/section-43-21-3/"
     defined_for = StateCode.NJ
