@@ -3,10 +3,11 @@ description: These states use the expanded Basic Health Program income limit und
 values:
   2015-01-01:
     []
-  # New York's 250% FPL Essential Plan expansion begins 2024-04-01 under
-  # the approved section 1332 waiver. The model carries that expanded ceiling
-  # forward in this BHP-like path, even though the formal BHP restarts later.
-  2024-04-01:
+  # New York's 250% FPL Essential Plan expansion launched 2024-04-01 under
+  # the approved section 1332 waiver; first full coverage year is 2025.
+  # The model carries that expanded ceiling forward in this BHP-like path,
+  # even though the formal BHP restarts later.
+  2025-01-01:
     - NY
 
 metadata:

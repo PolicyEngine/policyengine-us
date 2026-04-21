@@ -1,18 +1,23 @@
 description: The Department of Health and Human Services treats these states as offering Basic Health Program coverage under this model.
 
 values:
+  # MinnesotaCare was reclassified as BHP effective 2015-01-01
+  # (pre-existing program since 1992).
   2015-01-01:
     - MN
-  2015-04-01:
+  # NY Essential Plan launched 2015-04-01; first full coverage year is 2016.
+  2016-01-01:
     - MN
     - NY
-  # New York's Essential Plan moved to a section 1332 waiver path on
-  # 2024-04-01. We keep it in this modeled BHP-like coverage path for
-  # continuity, and CMS later approved BHP reinstatement effective 2026-07-01.
-  2024-07-01:
+  # OR OHP Bridge launched 2024-07-01; first full coverage year is 2025.
+  # NY's Essential Plan moved to a section 1332 waiver path on
+  # 2024-04-01 but we keep it in this modeled BHP-like coverage path for
+  # continuity (CMS reinstated NY BHP effective 2026-07-01).
+  2025-01-01:
     - MN
     - NY
     - OR
+  # DC Healthy DC Plan launches 2026-01-01.
   2026-01-01:
     - MN
     - NY

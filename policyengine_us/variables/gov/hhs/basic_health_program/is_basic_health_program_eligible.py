@@ -37,9 +37,7 @@ class is_basic_health_program_eligible(Variable):
         chip_eligible = person("is_chip_eligible", period)
         esi_eligible = person("is_aca_eshi_eligible", period)
         medicare_eligible = person("is_medicare_eligible", period)
-        immigration_eligible = person(
-            "is_aca_ptc_immigration_status_eligible", period
-        )
+        immigration_eligible = person("is_aca_ptc_immigration_status_eligible", period)
 
         income_level = person("medicaid_income_level", period)
         expanded_limit_state = np.isin(state, p.expanded_income_limit_states)
@@ -47,6 +45,14 @@ class is_basic_health_program_eligible(Variable):
             expanded_limit_state,
             p.expanded_income_limit,
             p.income_limit,
+        )
+        # 42 USC 18051(b)(2)(B): BHP covers income above 133% FPL. The
+        # ~medicaid_eligible guard alone is insufficient for non-expansion
+        # states (where Medicaid may cut off below 133% FPL), so enforce
+        # the statutory floor explicitly. Citizens below 133% are in
+        # Medicaid in expansion states or the coverage gap otherwise.
+        in_income_range = (income_level >= p.income_floor) & (
+            income_level <= income_limit
         )
 
         return (
@@ -57,5 +63,5 @@ class is_basic_health_program_eligible(Variable):
             & ~chip_eligible
             & ~esi_eligible
             & ~medicare_eligible
-            & (income_level <= income_limit)
+            & in_income_range
         )
