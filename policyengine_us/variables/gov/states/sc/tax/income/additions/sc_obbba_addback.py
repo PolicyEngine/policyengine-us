@@ -15,25 +15,23 @@ class sc_obbba_addback(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.sc.tax.income.additions.obbba
         # SC has not conformed to the One Big Beautiful Bill Act
         # (signed July 4, 2025). SC1040 line e adds back federal
         # deductions SC does not recognize.
-        #
-        # 1. Standard deduction increase ($750 S/MFS, $1,125 HOH,
-        #    $1,500 MFJ/SS). Only if taxpayer used standard deduction.
+        p = parameters(period).gov.states.sc.tax.income.additions.obbba
         filing_status = tax_unit("filing_status", period)
         itemizes = tax_unit("tax_unit_itemizes", period)
         federal_std_ded = parameters(period).gov.irs.deductions.standard.amount[
             filing_status
         ]
         pre_obbba_std_ded = p.pre_obbba_standard_deduction[filing_status]
+        # Only taxpayers who used the standard deduction federally
+        # add back the OBBBA-driven portion of it.
         std_ded_addback = where(
             itemizes, 0, max_(federal_std_ded - pre_obbba_std_ded, 0)
         )
-        # 2. Enhanced senior deduction ($6,000 for age 65+).
+        # Schedule 1-A deductions SC does not adopt.
         senior_deduction = tax_unit("additional_senior_deduction", period)
-        # 3. Other non-conformity deductions (tips, overtime, auto loan).
         tip_deduction = tax_unit("tip_income_deduction", period)
         overtime_deduction = tax_unit("overtime_income_deduction", period)
         auto_loan_deduction = tax_unit("auto_loan_interest_deduction", period)

@@ -1,27 +1,66 @@
-description: South Carolina uses this amount as the pre-One Big Beautiful Bill Act standard deduction for federal non-conformity additions under the individual income tax program.
+description: South Carolina, which conforms to the Internal Revenue Code as amended through December 31, 2024, does not adopt the One Big Beautiful Bill Act's increase to the federal standard deduction. This parameter holds the pre-OBBBA federal standard deduction amount that SC effectively recognizes, based on the TCJA statutory base (IRC § 63(c)(7) as enacted by Pub. L. 115-97 § 11021) inflation-adjusted under IRC § 63(c)(4). Pre-2025 values mirror the federal standard deduction; 2025 onward continues the pre-OBBBA inflation trajectory via uprating.
 
 SINGLE:
-  2025-01-01: 15_000
+  2018-01-01: 12_000
+  2019-01-01: 12_200
+  2020-01-01: 12_400
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+  2023-01-01: 13_850
+  2024-01-01: 14_600
 JOINT:
-  2025-01-01: 30_000
-HEAD_OF_HOUSEHOLD:
-  2025-01-01: 22_500
+  2018-01-01: 24_000
+  2019-01-01: 24_400
+  2020-01-01: 24_800
+  2021-01-01: 25_100
+  2022-01-01: 25_900
+  2023-01-01: 27_700
+  2024-01-01: 29_200
 SEPARATE:
-  2025-01-01: 15_000
+  2018-01-01: 12_000
+  2019-01-01: 12_200
+  2020-01-01: 12_400
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+  2023-01-01: 13_850
+  2024-01-01: 14_600
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 18_000
+  2019-01-01: 18_350
+  2020-01-01: 18_650
+  2021-01-01: 18_800
+  2022-01-01: 19_400
+  2023-01-01: 20_800
+  2024-01-01: 21_900
 SURVIVING_SPOUSE:
-  2025-01-01: 30_000
+  2018-01-01: 24_000
+  2019-01-01: 24_400
+  2020-01-01: 24_800
+  2021-01-01: 25_100
+  2022-01-01: 25_900
+  2023-01-01: 27_700
+  2024-01-01: 29_200
 
 metadata:
   unit: currency-USD
-  period: year
   label: South Carolina pre-OBBBA conformity standard deduction
+  period: year
   breakdown:
     - filing_status
   propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
-    - title: SC DOR Internal Revenue Code Conformity Update
-      href: https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update
-    - title: SC 1040 Instructions 2025, Line e
-      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=5
-    - title: IRS Revenue Procedure 2024-40, Section 3.01
+    - title: SC Code § 12-6-40(A)(1)(a) - IRC conformity as amended through December 31, 2024
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: 26 U.S.C. § 63(c)(7) (as enacted by TCJA Pub. L. 115-97 § 11021)
+      href: https://www.congress.gov/115/plaws/publ97/PLAW-115publ97.pdf#page=24
+    - title: 26 U.S.C. § 63(c)(4) (cost-of-living adjustment)
+      href: https://www.law.cornell.edu/uscode/text/26/63#c_4
+    - title: IRS Rev. Proc. 2024-40 § 3.01 (2025 inflation-adjusted values under pre-OBBBA rule)
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12
+    - title: SC DOR - Internal Revenue Code Conformity Update
+      href: https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update
