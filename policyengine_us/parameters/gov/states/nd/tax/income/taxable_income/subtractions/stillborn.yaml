@@ -1,6 +1,6 @@
 description: North Dakota provides this subtraction from federal taxable income for each child who was stillborn during the tax year, provided a Fetal Death Record was filed with the North Dakota Division of Vital Records and the child would have been a dependent. The amount is adjusted annually for inflation.
 values:
-  2021-01-01: 0
+  2021-01-01: 4_310
   2022-01-01: 4_530
   2023-01-01: 4_892
   2024-01-01: 5_088
@@ -9,12 +9,15 @@ metadata:
   unit: currency-USD
   period: year
   label: North Dakota stillborn child subtraction amount
+  # ND indexes to Midwest CPI-U; IRS uprating is a proxy until available.
   uprating: gov.irs.uprating
   reference:
     - title: N.D.C.C. § 57-38-30.3(2) - Individual income tax - Subtraction for stillborn child
       href: https://ndlegis.gov/cencode/t57c38.pdf#nameddest=57-38-30p3
     - title: N.D.C.C. § 57-38-30.3(2) (Casetext rendering)
       href: https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax
+    - title: 2021 North Dakota Individual Income Tax Booklet, page 15, Line 8 instructions
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf#page=15
     - title: 2022 Schedule ND-1SA Statutory Adjustments, Line 5 instructions
       href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/schedule-nd-1sa-2022.pdf#page=2
     - title: 2023 Schedule ND-1SA Statutory Adjustments, Line 8 instructions

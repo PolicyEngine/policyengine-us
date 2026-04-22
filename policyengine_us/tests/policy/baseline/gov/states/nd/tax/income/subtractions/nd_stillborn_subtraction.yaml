@@ -46,13 +46,13 @@
   output:
     nd_stillborn_subtraction: 5_241
 
-- name: Pre-effective year 2021, subtraction is zero
+- name: One stillborn child in 2021, $4,310 subtraction
   period: 2021
   input:
     state_code: ND
     tax_unit_stillborn_children: 1
   output:
-    nd_stillborn_subtraction: 0
+    nd_stillborn_subtraction: 4_310
 
 - name: Non-ND filer with stillborn child receives no ND subtraction
   period: 2023
