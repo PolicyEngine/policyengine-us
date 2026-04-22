@@ -1,4 +1,4 @@
-description: The following states always use the standard utility allowance under the SNAP program.
+description: The following states always use the standard utility allowance under the SNAP program. This captures Heat and Eat states that provide a nominal LIHEAP payment to every SNAP household (at least $20.01 per year since the 2014 Farm Bill), which under 7 CFR §273.9(d)(6)(iii)(E) entitles the household to the full SUA.
 AK:
   2015-10-01: false
 AL:
@@ -8,14 +8,14 @@ AR:
 AZ:
   2015-10-01: false
 CA:
-  2015-10-01: false
+  2015-10-01: true
 CO:
   2015-10-01: false
   2024-10-01: true
 CT:
-  2015-10-01: false
+  2015-10-01: true
 DC:
-  2015-10-01: false
+  2015-10-01: true
 DE:
   2015-10-01: false
 FL:
@@ -41,13 +41,13 @@ KY:
 LA:
   2015-10-01: false
 MA:
-  2015-10-01: false
+  2015-10-01: true
 MD:
-  2015-10-01: false
+  2015-10-01: true
 ME:
-  2015-10-01: false
+  2015-10-01: true
 MI:
-  2015-10-01: false
+  2015-10-01: true
 MN:
   2015-10-01: false
 MO:
@@ -71,17 +71,17 @@ NM:
 NV:
   2015-10-01: false
 NY:
-  2015-10-01: false
+  2015-10-01: true
 OH:
   2015-10-01: false
 OK:
   2015-10-01: false
 OR:
-  2015-10-01: false
+  2015-10-01: true
 PA:
-  2015-10-01: false
+  2015-10-01: true
 RI:
-  2015-10-01: false
+  2015-10-01: true
 SC:
   2015-10-01: false
 SD:
@@ -99,7 +99,7 @@ VI:
 VT:
   2015-10-01: false
 WA:
-  2015-10-01: false
+  2015-10-01: true
 WI:
   2015-10-01: false
 WV:
@@ -117,3 +117,7 @@ metadata:
       href: https://www.ecfr.gov/current/title-7/subtitle-B/chapter-II/subchapter-C/part-273/subpart-D/section-273.9#p-273.9(d)(6)(iii)
     - title: USDA FNS SNAP State Options Report, 16th Edition (June 2024) - Standard Utility Allowances
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-16th-state-options-report-june24.pdf#page=12
+    - title: FRAC - Cuts to Utility Deductions in SNAP Would Harm Households Facing High Food, Basic Needs Costs
+      href: https://frac.org/blog/cuts-to-utility-deductions-in-snap-would-harm-households-facing-high-food-basic-needs-costs
+    - title: LIHEAP Clearinghouse - A New Framework for Heat and Eat (2014)
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/HeatEat.pdf
