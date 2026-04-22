@@ -1,4 +1,4 @@
-description: South Carolina, which conforms to the Internal Revenue Code as amended through December 31, 2024, does not adopt the One Big Beautiful Bill Act's increase to the federal standard deduction. This parameter holds the pre-OBBBA federal standard deduction amount that SC effectively recognizes, based on the TCJA statutory base (IRC § 63(c)(7) as enacted by Pub. L. 115-97 § 11021) inflation-adjusted forward under IRC § 63(c)(4). Only used by the SC OBBBA addback, which takes effect in 2025.
+description: South Carolina uses this amount as the pre-One Big Beautiful Bill Act standard deduction under the individual income tax program.
 
 SINGLE:
   2018-01-01: 12_000
@@ -13,7 +13,7 @@ SURVIVING_SPOUSE:
 
 metadata:
   unit: currency-USD
-  label: South Carolina pre-OBBBA conformity standard deduction
+  label: South Carolina pre-One Big Beautiful Bill Act standard deduction
   period: year
   breakdown:
     - filing_status
