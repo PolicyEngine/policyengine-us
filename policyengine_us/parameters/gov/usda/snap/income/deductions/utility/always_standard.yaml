@@ -1,4 +1,4 @@
-description: The following states always use the standard utility allowance under the SNAP program. This captures Heat and Eat states that provide a nominal LIHEAP payment to every SNAP household (at least $20.01 per year since the 2014 Farm Bill), which under 7 CFR §273.9(d)(6)(iii)(E) entitles the household to the full SUA.
+description: The following states always use the Standard Utility Allowance under the Supplemental Nutrition Assistance Program.
 AK:
   2015-10-01: false
 AL:
@@ -109,7 +109,7 @@ WY:
 metadata:
   unit: bool
   period: month
-  label: SNAP States using SUA
+  label: SNAP states always using the standard utility allowance
   breakdown:
     - state_code
   reference:
