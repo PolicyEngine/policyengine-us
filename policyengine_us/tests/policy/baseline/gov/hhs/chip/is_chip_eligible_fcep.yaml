@@ -190,3 +190,35 @@
         members: [head]
   output:
     is_chip_fcep_eligible_person: False
+
+- name: DC exact 2025 Medicaid cutoff does not create FCEP eligibility
+  period: 2025
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.24
+    households:
+      household:
+        state_code: DC
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
+
+- name: WA exact 2025 Medicaid cutoff does not create FCEP eligibility
+  period: 2025
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.15
+    households:
+      household:
+        state_code: WA
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
