@@ -1,0 +1,13 @@
+description: >-
+  When true, Social Security retirement benefits use reported
+  values from survey data rather than computing from the formula
+  chain. Defaults to true so that baseline tests and CPS-based
+  microsimulation keep their existing reported values; set to
+  false to exercise the formula chain in the household calculator.
+values:
+  0000-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Use reported Social Security retirement benefits
+  economy: false

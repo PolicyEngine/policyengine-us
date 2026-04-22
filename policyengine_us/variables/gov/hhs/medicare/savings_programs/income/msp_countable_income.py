@@ -12,6 +12,7 @@ class msp_countable_income(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
@@ -31,29 +32,57 @@ class msp_countable_income(Variable):
     """
 
     def formula(person, period, parameters):
-        # MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B).
-        # When both spouses are Medicare-eligible, SSI couple rules apply:
-        # combine both incomes and apply the $20 exclusion once to the couple.
-        is_medicare_eligible = person("is_medicare_eligible", period.this_year)
+        year = period.this_year
+        earned_income = person("ssi_earned_income", year)
+        unearned_income = person("ssi_unearned_income", year)
+        is_medicare_eligible = person("is_medicare_eligible", year)
         both_medicare_eligible = person.marital_unit.sum(is_medicare_eligible) == 2
 
-        earned = person("ssi_earned_income", period.this_year)
-        unearned = person("ssi_unearned_income", period.this_year)
-
-        # Aggregate couple income when both spouses are Medicare-eligible
-        combined_earned = where(
-            both_medicare_eligible,
-            person.marital_unit.sum(earned),
-            earned,
+        blind_or_disabled_working_student_exclusion = person(
+            "ssi_blind_or_disabled_working_student_exclusion", year
         )
-        combined_unearned = where(
-            both_medicare_eligible,
-            person.marital_unit.sum(unearned),
-            unearned,
+        personal_earned_income = max_(
+            earned_income - blind_or_disabled_working_student_exclusion,
+            0,
+        )
+        deeming_applies = person("is_ssi_spousal_deeming_applies", year)
+
+        spouse_earned_income = person(
+            "ssi_earned_income_deemed_from_ineligible_spouse", year
+        )
+        spouse_unearned_income = person(
+            "ssi_unearned_income_deemed_from_ineligible_spouse", year
+        )
+        personal_countable_income = _apply_ssi_exclusions(
+            personal_earned_income,
+            unearned_income,
+            parameters,
+            year,
         )
 
-        # Apply SSI exclusions once to the (possibly combined) income
-        annual_countable = _apply_ssi_exclusions(
-            combined_earned, combined_unearned, parameters, period.this_year
+        couple_countable = _apply_ssi_exclusions(
+            max_(
+                person.marital_unit.sum(earned_income)
+                - person.marital_unit.sum(blind_or_disabled_working_student_exclusion),
+                0,
+            ),
+            person.marital_unit.sum(unearned_income),
+            parameters,
+            year,
+        )
+
+        deemed_countable = _apply_ssi_exclusions(
+            personal_earned_income + spouse_earned_income,
+            unearned_income + spouse_unearned_income,
+            parameters,
+            year,
+        )
+
+        single_countable = where(
+            deeming_applies, deemed_countable, personal_countable_income
+        )
+
+        annual_countable = where(
+            both_medicare_eligible, couple_countable, single_countable
         )
         return annual_countable / MONTHS_IN_YEAR

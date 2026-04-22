@@ -1,0 +1,347 @@
+- name: Case 1, income below 20% SMI, post-2025, fee waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 1_250
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 1,250; SMI at month: 99,180/12 = 8,265
+    # Ratio: 1,250/8,265 = 0.1512 (< 0.20 SMI)
+    # Fee rate = 0%
+    ct_c4k_family_fee: 0
+
+- name: Case 2, income 25% SMI, post-2025, 3% fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 2_083.33
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 2,083.33; SMI at month: 8,265
+    # Ratio: 2,083.33/8,265 = 0.2520 (20%-40% SMI bracket)
+    # Fee rate = 3%
+    # Fee = 2,083.33 * 0.03 = 62.50
+    ct_c4k_family_fee: 62.50
+
+- name: Case 3, income 45% SMI, post-2025, 5% fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 45_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 3_750
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 3,750; SMI at month: 8,265
+    # Ratio: 3,750/8,265 = 0.4537 (40%-60% SMI bracket)
+    # Fee rate = 5%
+    # Fee = 3,750 * 0.05 = 187.50
+    ct_c4k_family_fee: 187.50
+
+- name: Case 4, income 70% SMI, post-2025, 7% fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 5_833.33
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 5,833.33; SMI at month: 8,265
+    # Ratio: 5,833.33/8,265 = 0.7058 (60%-85% SMI bracket)
+    # Fee rate = 7%
+    # Fee = 5,833.33 * 0.07 = 408.33
+    ct_c4k_family_fee: 408.33
+
+- name: Case 5, unearned income only, fee waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Families with only unearned income have no fee (REQ-017)
+    ct_c4k_family_fee: 0
+
+- name: Case 6, zero income, fee is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 0
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # 0% of 0 = 0
+    ct_c4k_family_fee: 0
+
+- name: Case 7, income at exactly 20% SMI boundary, post-2025, transitions to 3%.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 19_836
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 19,836/12 = 1,653; SMI at month: 8,265
+    # Ratio: 1,653/8,265 = 0.2000 (exactly at 20% boundary)
+    # Fee rate: 20%-40% bracket => 3%
+    # Fee = 1,653 * 0.03 = 49.59
+    ct_c4k_family_fee: 49.59
+
+- name: Case 8, income just below 20% SMI, post-2025, fee waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 19_835
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 19,835/12 = 1,652.92; SMI at month: 8,265
+    # Ratio: 1,652.92/8,265 = 0.19999 (just below 20%)
+    # Fee rate: <20% => 0%
+    ct_c4k_family_fee: 0
+
+- name: Case 9, income at exactly 40% SMI boundary, post-2025, transitions to 5%.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_672
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 39,672/12 = 3,306; SMI at month: 8,265
+    # Ratio: 3,306/8,265 = 0.4000 (exactly at 40% boundary)
+    # Fee rate: 40%-60% => 5%
+    # Fee = 3,306 * 0.05 = 165.30
+    ct_c4k_family_fee: 165.30
+
+- name: Case 10, income at exactly 60% SMI boundary, post-2025, transitions to 7%.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_508
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 59,508/12 = 4,959; SMI at month: 8,265
+    # Ratio: 4,959/8,265 = 0.6000 (exactly at 60% boundary)
+    # Fee rate: 60%+ => 7%
+    # Fee = 4,959 * 0.07 = 347.13
+    ct_c4k_family_fee: 347.13
+
+- name: Case 11, mixed earned and unearned income, fee applies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+        social_security: 10_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Has earned income => fee applies
+    # Monthly countable: (10,000 + 10,000) / 12 = 1,666.67
+    # SMI at month: 8,265
+    # Ratio: 1,666.67/8,265 = 0.2016 (20%-40% bracket)
+    # Fee = 1,666.67 * 0.03 = 50.00
+    ct_c4k_family_fee: 50.00
+
+- name: Case 12, self-employment income only, fee applies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Self-employment is earned income => fee applies
+    # Monthly countable: 30,000/12 = 2,500
+    # SMI at month: 8,265
+    # Ratio: 2,500/8,265 = 0.3024 (20%-40% bracket)
+    # Fee = 2,500 * 0.03 = 75.00
+    ct_c4k_family_fee: 75.00
+
+- name: Case 13, zero SMI, fee is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Division by zero protection: smi_ratio = 0 when smi = 0
+    # Fee rate for 0 ratio = 0% (first bracket)
+    # Fee = 0
+    ct_c4k_family_fee: 0
+
+- name: Case 14, pre-2025 fee brackets, income 25% SMI, 4% fee.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 2_083.33
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 2,083.33; SMI at month: 8,265
+    # Ratio: 2,083.33/8,265 = 0.2520 (20%-30% SMI bracket, pre-2025)
+    # Pre-2025 fee rate = 4%
+    # Fee = 2,083.33 * 0.04 = 83.33
+    ct_c4k_family_fee: 83.33

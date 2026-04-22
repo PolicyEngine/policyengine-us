@@ -1,0 +1,85 @@
+- name: Case 1, TANF enrolled waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_ccsp_income_test_waived: true
+
+- name: Case 2, Medicaid recipient waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        receives_medicaid: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_ccsp_income_test_waived: true
+
+- name: Case 3, WIC recipient waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        receives_wic: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_ccsp_income_test_waived: true
+
+- name: Case 4, no public assistance does not waive income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_ccsp_income_test_waived: false
+
+- name: Case 5, child on Medicaid waives income test for unit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        receives_medicaid: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_ccsp_income_test_waived: true

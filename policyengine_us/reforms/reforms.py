@@ -25,7 +25,6 @@ from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from .states.ny.a04038 import create_ny_a04038_enhanced_escc_infants_reform
 from .states.ny.s9110 import create_ny_s9110_reform
 from .states.sc.h3492 import create_sc_h3492_eitc_refundable_reform
-from .states.sc.h4216 import create_sc_h4216_reform
 from .states.ny.a06774 import create_ny_a06774_enhanced_cdcc_reform
 from .states.ny.s04487 import create_ny_s04487_newborn_credit_reform
 from .harris.lift.middle_class_tax_credit import (
@@ -45,6 +44,9 @@ from .congress.tlaib.boost import (
 )
 from .states.mn.walz import (
     create_mn_walz_hf1938_repeal_reform,
+)
+from .states.mn.hf4890 import (
+    create_mn_hf4890_reform,
 )
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
@@ -184,8 +186,17 @@ from .states.ct.hb5114 import (
 from .congress.watca import (
     create_watca_reform,
 )
+from .congress.mcdonald_rivet import (
+    create_working_parents_tax_relief_act_reform,
+)
 from .states.wa.sb6346.sb6346 import (
     create_wa_sb6346_reform,
+)
+from .states.nj.stay_nj import (
+    create_nj_stay_nj_reform,
+)
+from .states.nj.anchor import (
+    create_nj_anchor_reform,
 )
 
 
@@ -200,6 +211,45 @@ from .states.nc.eitc import (
 )
 from .states.mi.ctc import (
     create_mi_ctc_reform,
+)
+from .states.al.eitc import (
+    create_al_eitc_reform,
+)
+from .states.ar.eitc import (
+    create_ar_eitc_reform,
+)
+from .states.az.eitc import (
+    create_az_eitc_reform,
+)
+from .states.ga.eitc import (
+    create_ga_eitc_reform,
+)
+from .states.id.eitc import (
+    create_id_eitc_reform,
+)
+from .states.id.s1450 import (
+    create_id_s1450_reform,
+)
+from .states.ky.eitc import (
+    create_ky_eitc_reform,
+)
+from .states.ms.eitc import (
+    create_ms_eitc_reform,
+)
+from .states.nd.eitc import (
+    create_nd_eitc_reform,
+)
+from .states.wv.eitc import (
+    create_wv_eitc_reform,
+)
+from .states.mo.eitc import (
+    create_mo_refundable_eitc_reform,
+)
+from .states.oh.eitc import (
+    create_oh_refundable_eitc_reform,
+)
+from .states.ut.child_poverty_eitc import (
+    create_ut_fully_refundable_eitc_reform,
 )
 from policyengine_core.reforms import Reform
 import warnings
@@ -244,7 +294,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     sc_h3492_eitc_refundable = create_sc_h3492_eitc_refundable_reform(
         parameters, period
     )
-    sc_h4216 = create_sc_h4216_reform(parameters, period)
     ny_a06774_enhanced_cdcc = create_ny_a06774_enhanced_cdcc_reform(parameters, period)
     ny_s04487_newborn_credit = create_ny_s04487_newborn_credit_reform(
         parameters, period
@@ -260,6 +309,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
+    mn_hf4890 = create_mn_hf4890_reform(parameters, period)
 
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
@@ -376,6 +426,26 @@ def create_structural_reforms_from_parameters(parameters, period):
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
     wa_sb6346 = create_wa_sb6346_reform(parameters, period)
+    al_eitc = create_al_eitc_reform(parameters, period)
+    ar_eitc = create_ar_eitc_reform(parameters, period)
+    az_eitc = create_az_eitc_reform(parameters, period)
+    ga_eitc = create_ga_eitc_reform(parameters, period)
+    id_eitc = create_id_eitc_reform(parameters, period)
+    id_s1450 = create_id_s1450_reform(parameters, period)
+    ky_eitc = create_ky_eitc_reform(parameters, period)
+    ms_eitc = create_ms_eitc_reform(parameters, period)
+    nd_eitc = create_nd_eitc_reform(parameters, period)
+    wv_eitc = create_wv_eitc_reform(parameters, period)
+    mo_refundable_eitc = create_mo_refundable_eitc_reform(parameters, period)
+    oh_refundable_eitc = create_oh_refundable_eitc_reform(parameters, period)
+    ut_fully_refundable_eitc = create_ut_fully_refundable_eitc_reform(
+        parameters, period
+    )
+    nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
+    nj_anchor = create_nj_anchor_reform(parameters, period)
+    working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -395,7 +465,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         ny_a04038_enhanced_escc_infants,
         ny_s9110,
         sc_h3492_eitc_refundable,
-        sc_h4216,
         ny_a06774_enhanced_cdcc,
         ny_s04487_newborn_credit,
         middle_class_tax_credit,
@@ -404,6 +473,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         edaa_end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
+        mn_hf4890,
         or_rebate_state_tax_exempt,
         family_security_act_2024_ctc,
         family_security_act_2024_eitc,
@@ -467,6 +537,22 @@ def create_structural_reforms_from_parameters(parameters, period):
         mi_ctc,
         watca,
         wa_sb6346,
+        al_eitc,
+        ar_eitc,
+        az_eitc,
+        ga_eitc,
+        id_eitc,
+        id_s1450,
+        ky_eitc,
+        ms_eitc,
+        nd_eitc,
+        wv_eitc,
+        mo_refundable_eitc,
+        oh_refundable_eitc,
+        ut_fully_refundable_eitc,
+        nj_stay_nj,
+        nj_anchor,
+        working_parents_tax_relief_act,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

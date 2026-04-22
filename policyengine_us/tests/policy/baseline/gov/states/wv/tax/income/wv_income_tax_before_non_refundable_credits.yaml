@@ -75,3 +75,93 @@
     # + 5.12% * ($1,000,000 - $30,000)   [$49664]
     # = $50,755.75
     wv_income_tax_before_non_refundable_credits: 50_755.75
+
+# 2026 tests per SB 392, §11-21-4j
+
+- name: 2026 Single filers with income of $0 pay $0.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 0
+    filing_status: SINGLE
+    state_code: WV
+  output:
+    wv_income_tax_before_non_refundable_credits: 0
+
+- name: 2026 Single filers with income of $1,000,000 pay $45,002.50.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: WV
+  output:
+    #   2.11% * $10,000                     [$211.00]
+    # + 2.81% * ($25,000 - $10,000)         [$421.50]
+    # + 3.16% * ($40,000 - $25,000)         [$474.00]
+    # + 4.22% * ($60,000 - $40,000)         [$844.00]
+    # + 4.58% * ($1,000,000 - $60,000)      [$43,052.00]
+    # = $45,002.50
+    wv_income_tax_before_non_refundable_credits: 45_002.50
+
+- name: 2026 Married filing separately filers with income of $1,000,000 pay $45,401.25.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 1_000_000
+    filing_status: SEPARATE
+    state_code: WV
+  output:
+    #   2.11% * $5,000                      [$105.50]
+    # + 2.81% * ($12,500 - $5,000)          [$210.75]
+    # + 3.16% * ($20,000 - $12,500)         [$237]
+    # + 4.22% * ($30,000 - $20,000)         [$422]
+    # + 4.58% * ($1,000,000 - $30,000)      [$44,426]
+    # = $45,401.25
+    wv_income_tax_before_non_refundable_credits: 45_401.25
+
+- name: 2026 Joint filers with income of $50,000 pay $1,528.50.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 50_000
+    filing_status: JOINT
+    state_code: WV
+  output:
+    #   2.11% * $10,000                     [$211]
+    # + 2.81% * ($25,000 - $10,000)         [$421.50]
+    # + 3.16% * ($40,000 - $25,000)         [$474]
+    # + 4.22% * ($50,000 - $40,000)         [$422]
+    # = $1,528.50
+    wv_income_tax_before_non_refundable_credits: 1_528.50
+
+- name: 2026 Head of household filers with income of $75,000 pay $2,637.50.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 75_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: WV
+  output:
+    #   2.11% * $10,000                     [$211]
+    # + 2.81% * ($25,000 - $10,000)         [$421.50]
+    # + 3.16% * ($40,000 - $25,000)         [$474]
+    # + 4.22% * ($60,000 - $40,000)         [$844]
+    # + 4.58% * ($75,000 - $60,000)         [$687]
+    # = $2,637.50
+    wv_income_tax_before_non_refundable_credits: 2_637.50
+
+- name: 2026 Surviving spouse filers with income of $50,000 pay $1,528.50.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    wv_taxable_income: 50_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: WV
+  output:
+    #   2.11% * $10,000                     [$211]
+    # + 2.81% * ($25,000 - $10,000)         [$421.50]
+    # + 3.16% * ($40,000 - $25,000)         [$474]
+    # + 4.22% * ($50,000 - $40,000)         [$422]
+    # = $1,528.50
+    wv_income_tax_before_non_refundable_credits: 1_528.50

@@ -1,149 +1,196 @@
-- name: Senior citizen with disability priority group
+- name: Case 1, low income senior with nat gas.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      senior:
+      person1:
         age: 65
         is_disabled: true
         social_security: 12_000
         irs_gross_income: 12_000
         rent: 6_000
-        heating_expense_person: 800
-    tax_units:
-      tax_unit:
-        members: [senior]
+        heating_expense_person: 1_500
     spm_units:
       spm_unit:
-        members: [senior]
+        members: [person1]
         heat_expense_included_in_rent: false
+        il_liheap_heating_type: NAT_GAS_OTHER
     households:
       household:
-        members: [senior]
+        members: [person1]
         state_code: IL
   output:
     il_liheap_income_eligible: true
     il_liheap_eligible: true
-    il_liheap_base_payment: 800  # Based on heating expenses
-    il_liheap: 800  # Base payment only (no crisis assistance)
+    il_liheap_heating_type: NAT_GAS_OTHER
+    # 12,000 / ~15,060 FPG ~ 80% -> bracket 2, size 1, nat gas -> $610
+    # min(610, 1,500) = 610
+    il_liheap_base_payment: 610
+    il_liheap: 610
 
-- name: Family with young children priority group
+- name: Case 2, family of 4 with nat gas.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age: 30
         employment_income: 25_000
         irs_gross_income: 25_000
-        rent: 12_000
-        heating_expense_person: 900  # Half of family heating costs
-      parent2:
+        heating_expense_person: 1_800
+      person2:
         age: 28
         employment_income: 20_000
         irs_gross_income: 20_000
-        heating_expense_person: 900  # Half of family heating costs
-      child1:
-        age: 4  # Under 5 - priority group
-        heating_expense_person: 0
-      child2:
-        age: 2  # Under 5 - priority group
-        heating_expense_person: 0
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1, child2]
+      person3:
+        age: 4
+      person4:
+        age: 2
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         heat_expense_included_in_rent: false
+        il_liheap_heating_type: NAT_GAS_OTHER
     households:
       household:
-        members: [parent1, parent2, child1, child2]
+        members: [person1, person2, person3, person4]
         state_code: IL
   output:
-    il_liheap_income_eligible: true  # 45k total income eligible
+    il_liheap_income_eligible: true
     il_liheap_eligible: true
-    il_liheap_base_payment: 1_800  # Based on heating expenses
-    il_liheap: 1_800  # Base payment only (no crisis assistance)
+    il_liheap_heating_type: NAT_GAS_OTHER
+    # 45,000 / ~31,800 FPG ~ 142% -> bracket 3, size 4, nat gas -> $520
+    # min(520, 1,800) = 520
+    il_liheap_base_payment: 520
+    il_liheap: 520
 
-- name: Renter with heat included must meet rent threshold
+- name: Case 3, renter with heat in rent meets rent threshold.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
-      renter:
+      person1:
         age: 35
         employment_income: 24_000
         irs_gross_income: 24_000
-        rent: 8_000  # 33.3% of income
-        heating_expense_person: 1_200  # Irrelevant for heat included
-    tax_units:
-      tax_unit:
-        members: [renter]
+        rent: 8_000
     spm_units:
       spm_unit:
-        members: [renter]
+        members: [person1]
         heat_expense_included_in_rent: true
     households:
       household:
-        members: [renter]
+        members: [person1]
         state_code: IL
   output:
-    il_liheap_income_eligible: true  # 24k < 60% of 50k (30k)
+    il_liheap_income_eligible: true
     il_liheap_eligible: true  # Rent (8k) > 30% of income (7.2k)
-    il_liheap_base_payment: 315  # Fixed minimum for heat included
-    il_liheap: 315  # Base payment only (no crisis assistance)
+    il_liheap_heating_type: CASH
+    # 24,000 / ~15,060 FPG ~ 159% -> bracket 4, size 1, cash -> $170
+    # Cash: no expense cap
+    il_liheap_base_payment: 170
+    il_liheap: 170
 
-- name: Renter with heat included but low rent not eligible
+- name: Case 4, renter with heat in rent fails rent threshold.
   period: 2024
   input:
     people:
-      renter:
+      person1:
         age: 40
         employment_income: 28_000
         irs_gross_income: 28_000
-        rent: 7_000  # 25% of income
-        heating_expense_person: 1_000  # Irrelevant for heat included
-    tax_units:
-      tax_unit:
-        members: [renter]
+        rent: 7_000
     spm_units:
       spm_unit:
-        members: [renter]
+        members: [person1]
         heat_expense_included_in_rent: true
     households:
       household:
-        members: [renter]
+        members: [person1]
         state_code: IL
   output:
-    il_liheap_income_eligible: true  # 28k < 60% of 50k (30k)
+    il_liheap_income_eligible: true
     il_liheap_eligible: false  # Rent (7k) <= 30% of income (8.4k)
     il_liheap: 0
 
-- name: High income household not eligible
+- name: Case 5, high income household not eligible.
   period: 2024
   input:
     people:
-      adult1:
+      person1:
         age: 45
         employment_income: 50_000
         irs_gross_income: 50_000
-        rent: 24_000
-        heating_expense_person: 1_250  # Half of family heating costs
-      adult2:
+        heating_expense_person: 1_500
+      person2:
         age: 43
         employment_income: 45_000
         irs_gross_income: 45_000
-        heating_expense_person: 1_250  # Half of family heating costs
-    tax_units:
-      tax_unit:
-        members: [adult1, adult2]
     spm_units:
       spm_unit:
-        members: [adult1, adult2]
+        members: [person1, person2]
         heat_expense_included_in_rent: false
+        il_liheap_heating_type: NAT_GAS_OTHER
     households:
       household:
-        members: [adult1, adult2]
+        members: [person1, person2]
         state_code: IL
   output:
-    il_liheap_income_eligible: false  # 95k > 60% of 70k (42k) and > 200% of 20.4k (40.8k)
+    il_liheap_income_eligible: false
     il_liheap_eligible: false
     il_liheap: 0
+
+- name: Case 6, all electric senior.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 5_000
+        irs_gross_income: 5_000
+        heating_expense_person: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heat_expense_included_in_rent: false
+        il_liheap_heating_type: ALL_ELECTRIC
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true
+    il_liheap_eligible: true
+    il_liheap_heating_type: ALL_ELECTRIC
+    # 5,000 / ~15,060 FPG ~ 33% -> bracket 1, size 1, all electric -> $840
+    # min(840, 1,200) = 840
+    il_liheap_base_payment: 840
+    il_liheap: 840
+
+- name: Case 7, propane fuel oil.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        irs_gross_income: 8_000
+        heating_expense_person: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heat_expense_included_in_rent: false
+        il_liheap_heating_type: PROPANE_FUEL_OIL
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_liheap_income_eligible: true
+    il_liheap_eligible: true
+    il_liheap_heating_type: PROPANE_FUEL_OIL
+    # 8,000 / ~15,060 FPG ~ 53% -> bracket 2, size 1, propane -> $710
+    # min(710, 1,200) = 710
+    il_liheap_base_payment: 710
+    il_liheap: 710

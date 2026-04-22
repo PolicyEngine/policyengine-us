@@ -8,11 +8,11 @@ class ssi_marital_unearned_income(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        both_eligible = person("ssi_marital_both_eligible", period)
+        couple_computation = person("ssi_couple_computation_applies", period)
         unearned_income = person("ssi_unearned_income", period)
 
         return where(
-            both_eligible,
+            couple_computation,
             person.marital_unit.sum(unearned_income),
             unearned_income,
         )

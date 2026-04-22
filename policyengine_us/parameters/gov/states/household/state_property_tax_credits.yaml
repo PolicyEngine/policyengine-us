@@ -1,24 +1,119 @@
 description: All state property tax credits and circuit breaker programs.
 values:
-  0000-01-01:
-    - az_property_tax_credit  # Arizona Property Tax Credit
-    - ct_property_tax_credit  # Connecticut Property Tax Credit
-    # Exclude ca_renter_credit as it is for renters, not homeowners.
-    - dc_ptc  # DC Property Tax Credit
-    # Exclude hi_tax_credit_for_low_income_household_renters as it is for renters, not homeowners.
-    - ma_senior_circuit_breaker  # Massachusetts Senior Circuit Breaker Credit
-    - me_property_tax_fairness_credit  # Maine Property Tax Fairness Credit
-    - mi_homestead_property_tax_credit  # Michigan homestead property tax credit
-    - mo_property_tax_credit  # Missouri property tax credit
-    - mt_elderly_homeowner_or_renter_credit  # Montana Elderly Homeowner/Renter Credit
-    - nj_property_tax_credit  # New Jersey property tax credit
-    - nm_property_tax_rebate  # New Mexico property tax rebate
-    - ny_real_property_tax_credit  # New York real property tax credit
-    - ri_property_tax_credit  # Rhode Island property tax credit
-    # Omit vt_renter_credit
-    - wi_homestead_credit  # Wisconsin homestead credit
-    - wi_property_tax_credit  # Wisconsin property tax credit
-    - wv_homestead_excess_property_tax_credit  # West Virginia
+  # Year-gated: each credit appears from the year its
+  # parameters are first defined in PE-US.
+  1977-01-01:
+    - ri_property_tax_credit
+  1996-01-01:
+    - nj_property_tax_credit
+    - ri_property_tax_credit
+  1997-01-01:
+    - mo_property_tax_credit
+    - nj_property_tax_credit
+    - ri_property_tax_credit
+  2000-01-01:
+    - mo_property_tax_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_property_tax_credit
+  2001-01-01:
+    - ma_senior_circuit_breaker
+    - mo_property_tax_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_property_tax_credit
+  2008-01-01:
+    - ma_senior_circuit_breaker
+    - mo_property_tax_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2009-01-01:
+    - ma_senior_circuit_breaker
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2011-01-01:
+    - ct_property_tax_credit
+    - ma_senior_circuit_breaker
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_homestead_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2014-01-01:
+    - ct_property_tax_credit
+    - ma_senior_circuit_breaker
+    - me_property_tax_fairness_credit
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_homestead_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2016-01-01:
+    - ct_property_tax_credit
+    - ma_senior_circuit_breaker
+    - me_property_tax_fairness_credit
+    - mi_homestead_property_tax_credit
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - nj_property_tax_credit
+    - ny_real_property_tax_credit
+    - ri_property_tax_credit
+    - wi_homestead_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2021-01-01:
+    - az_property_tax_credit
+    - ct_property_tax_credit
+    - dc_ptc
+    - il_property_tax_credit
+    - ma_senior_circuit_breaker
+    - me_property_tax_fairness_credit
+    - mi_homestead_property_tax_credit
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - nj_property_tax_credit
+    - nm_property_tax_rebate
+    - ny_real_property_tax_credit
+    - ok_ptc
+    - ri_property_tax_credit
+    - wi_homestead_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
+  2022-01-01:
+    - az_property_tax_credit
+    - ct_property_tax_credit
+    - dc_ptc
+    - il_property_tax_credit
+    - ma_senior_circuit_breaker
+    - me_property_tax_fairness_credit
+    - mi_homestead_property_tax_credit
+    - mo_property_tax_credit
+    - mt_elderly_homeowner_or_renter_credit
+    - mt_property_tax_rebate
+    - nj_property_tax_credit
+    - nm_property_tax_rebate
+    - ny_real_property_tax_credit
+    - ok_ptc
+    - ri_property_tax_credit
+    - wi_homestead_credit
+    - wi_property_tax_credit
+    - wv_homestead_excess_property_tax_credit
 
 metadata:
   unit: list

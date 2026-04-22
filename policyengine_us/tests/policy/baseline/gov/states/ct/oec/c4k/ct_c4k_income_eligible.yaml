@@ -1,0 +1,279 @@
+- name: Case 1, new applicant, income below 60% SMI, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 4_166.67
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 4,166.67; SMI at month: 99,180/12 = 8,265
+    # 60% of 8,265 = 4,959; 4,166.67 < 4,959 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 2, new applicant, income above 60% SMI, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 5_416.67
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 5,416.67; SMI at month: 8,265
+    # 60% of 8,265 = 4,959; 5,416.67 > 4,959 => ineligible
+    ct_c4k_income_eligible: false
+
+- name: Case 3, continuing recipient, income below 85% SMI, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 6_666.67
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 6,666.67; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 6,666.67 < 7,025.25 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 4, continuing recipient, income above 85% SMI, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 7_500
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 7,500; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 7,500 > 7,025.25 => ineligible
+    ct_c4k_income_eligible: false
+
+- name: Case 5, new applicant, income at boundary of 60% SMI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ct_c4k_countable_income: 6_125.75
+        hhs_smi: 122_516
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # Family of 3: SMI at month: 122,516/12 = 10,209.67
+    # 60% of 10,209.67 = 6,125.80
+    # 6,125.75 < 6,125.80 => eligible (just below)
+    ct_c4k_income_eligible: true
+
+- name: Case 6, continuing recipient between 60% and 85% SMI, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 5_833.33
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 5,833.33; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 5,833.33 < 7,025.25 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 7, new applicant, income exactly at 60% SMI boundary, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 4_959
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 4,959; SMI at month: 8,265
+    # 60% of 8,265 = 4,959; 4,959 < 4,959 is false => ineligible (strict <)
+    ct_c4k_income_eligible: false
+
+- name: Case 8, new applicant, income one dollar below 60% SMI, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 4_958.92
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 4,958.92; SMI at month: 8,265
+    # 60% of 8,265 = 4,959; 4,958.92 < 4,959 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 9, continuing recipient, income exactly at 85% SMI boundary, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 7_025.25
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 7,025.25; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 7,025.25 < 7,025.25 is false => ineligible (strict <)
+    ct_c4k_income_eligible: false
+
+- name: Case 10, continuing recipient, income one dollar below 85% SMI, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 7_025.17
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 7,025.17; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 7,025.17 < 7,025.25 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 11, zero income, new applicant, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 0
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # 0 < 4,959 => eligible
+    ct_c4k_income_eligible: true
+
+- name: Case 12, maximum income, continuing recipient, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 16_666.67
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly income: 16,666.67; SMI at month: 8,265
+    # 85% of 8,265 = 7,025.25; 16,666.67 > 7,025.25 => ineligible
+    ct_c4k_income_eligible: false

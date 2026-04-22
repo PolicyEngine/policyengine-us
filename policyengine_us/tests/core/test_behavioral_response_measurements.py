@@ -6,6 +6,8 @@ import pytest
 import policyengine_us.variables.gov.simulation.capital_gains_responses as capital_gains_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.income_elasticity_lsr as income_lsr_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.labor_supply_behavioral_response as labor_supply_module
+import policyengine_us.variables.gov.simulation.labor_supply_response.self_employment_income_behavioral_response as self_employment_response_module
+import policyengine_us.variables.gov.simulation.labor_supply_response.sstb_self_employment_income_behavioral_response as sstb_self_employment_response_module
 import policyengine_us.variables.gov.simulation.labor_supply_response.substitution_elasticity_lsr as substitution_lsr_module
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
@@ -118,6 +120,7 @@ class FakePerson:
         self.values = {
             "employment_income_before_lsr": np.array([50_000.0, 20_000.0]),
             "self_employment_income_before_lsr": np.array([0.0, 5_000.0]),
+            "sstb_self_employment_income_before_lsr": np.array([0.0, 0.0]),
             "long_term_capital_gains_before_response": np.array([10_000.0, 500.0]),
         }
 
@@ -246,6 +249,7 @@ def test_lsr_effect_helpers_compute_from_measurements():
         {
             "employment_income_before_lsr": np.array([50_000.0, -20_000.0]),
             "self_employment_income_before_lsr": np.array([10_000.0, 5_000.0]),
+            "sstb_self_employment_income_before_lsr": np.array([20_000.0, 0.0]),
             "income_elasticity": np.array([0.5, 1.0]),
             "substitution_elasticity": np.array([0.2, 0.4]),
         }
@@ -263,14 +267,79 @@ def test_lsr_effect_helpers_compute_from_measurements():
         wage_change_bound=0.8,
     )
 
-    assert np.allclose(earnings_before_lsr(person, 2026), np.array([60_000.0, 0.0]))
+    assert np.allclose(earnings_before_lsr(person, 2026), np.array([80_000.0, 5_000.0]))
     assert np.allclose(
         calculate_income_lsr_effect(person, 2026, parameters, measurements),
-        np.array([3_000.0, 0.0]),
+        np.array([4_000.0, -2_500.0]),
     )
     assert np.allclose(
         calculate_substitution_lsr_effect(person, 2026, parameters, measurements),
-        np.array([1_500.0, 0.0]),
+        np.array([2_000.0, 1_600.0]),
+    )
+
+
+def test_earnings_before_lsr_uses_sstb_loss_magnitude():
+    person = FakePerson(simulation=SimpleNamespace())
+    person.values.update(
+        {
+            "employment_income_before_lsr": np.array([30_000.0, 0.0]),
+            "self_employment_income_before_lsr": np.array([0.0, 0.0]),
+            "sstb_self_employment_income_before_lsr": np.array([-20_000.0, -10_000.0]),
+        }
+    )
+
+    assert np.allclose(
+        earnings_before_lsr(person, 2026), np.array([50_000.0, 10_000.0])
+    )
+
+
+def test_behavioral_response_inputs_split_self_employment_between_buckets():
+    person = FakePerson(simulation=SimpleNamespace())
+    person.values.update(
+        {
+            "labor_supply_behavioral_response": np.array([1_000.0, 1_000.0]),
+            "employment_income_behavioral_response": np.array([0.0, 400.0]),
+            "self_employment_income_before_lsr": np.array([0.0, 10_000.0]),
+            "sstb_self_employment_income_before_lsr": np.array([20_000.0, 30_000.0]),
+        }
+    )
+
+    assert np.allclose(
+        self_employment_response_module.self_employment_income_behavioral_response.formula(
+            person, 2026, None
+        ),
+        np.array([0.0, 150.0]),
+    )
+    assert np.allclose(
+        sstb_self_employment_response_module.sstb_self_employment_income_behavioral_response.formula(
+            person, 2026, None
+        ),
+        np.array([1_000.0, 450.0]),
+    )
+
+
+def test_behavioral_response_inputs_preserve_sstb_loss_bucket():
+    person = FakePerson(simulation=SimpleNamespace())
+    person.values.update(
+        {
+            "labor_supply_behavioral_response": np.array([1_000.0]),
+            "employment_income_behavioral_response": np.array([0.0]),
+            "self_employment_income_before_lsr": np.array([0.0]),
+            "sstb_self_employment_income_before_lsr": np.array([-10_000.0]),
+        }
+    )
+
+    assert np.allclose(
+        self_employment_response_module.self_employment_income_behavioral_response.formula(
+            person, 2026, None
+        ),
+        np.array([0.0]),
+    )
+    assert np.allclose(
+        sstb_self_employment_response_module.sstb_self_employment_income_behavioral_response.formula(
+            person, 2026, None
+        ),
+        np.array([1_000.0]),
     )
 
 

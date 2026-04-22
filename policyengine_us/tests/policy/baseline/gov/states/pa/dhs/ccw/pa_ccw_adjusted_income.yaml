@@ -1,0 +1,143 @@
+# Unit tests for pa_ccw_adjusted_income
+# Tests adjusted annual family income per 55 Pa. Code § 3042.43
+# definition_period = YEAR
+# Steps: gross annual -> monthly, subtract stepparent deduction + deductions, x12
+# Deductions per Appendix A Part II:
+#   A. alimony_expense
+#   B. child_support_expense
+#   C. medical_out_of_pocket_expenses > 10% of gross monthly income
+
+- name: Case 1, no deductions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Gross annual: 36,000
+    # Gross monthly: 36,000 / 12 = 3,000
+    # No deductions
+    # Adjusted monthly: 3,000
+    # Annual: 3,000 * 12 = 36,000
+    pa_ccw_adjusted_income: 36_000
+
+- name: Case 2, with child support paid deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        child_support_expense: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Gross annual: 48,000
+    # Gross monthly: 48,000 / 12 = 4,000
+    # Child support paid: 6,000 / 12 = 500/mo
+    # Adjusted monthly: 4,000 - 500 = 3,500
+    # Annual: 3,500 * 12 = 42,000
+    pa_ccw_adjusted_income: 42_000
+
+- name: Case 3, with alimony paid deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        alimony_expense: 12_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Gross annual: 60,000
+    # Gross monthly: 60,000 / 12 = 5,000
+    # Alimony paid: 12,000 / 12 = 1,000/mo
+    # Adjusted monthly: 5,000 - 1,000 = 4,000
+    # Annual: 4,000 * 12 = 48,000
+    pa_ccw_adjusted_income: 48_000
+
+- name: Case 4, medical expense deduction above 10 percent threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+        medical_out_of_pocket_expenses: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Gross annual: 36,000
+    # Gross monthly: 3,000
+    # Medical threshold: 3,000 * 0.10 = 300/mo
+    # Medical expenses: 6,000 / 12 = 500/mo
+    # Medical deduction: max(500 - 300, 0) = 200/mo
+    # Adjusted monthly: 3,000 - 200 = 2,800
+    # Annual: 2,800 * 12 = 33,600
+    pa_ccw_adjusted_income: 33_600
+
+- name: Case 5, stepparent deduction applies.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 54_000
+      person2:
+        age: 38
+        employment_income: 6_000
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    # Gross annual: 54,000 + 6,000 = 60,000
+    # Gross monthly: 60,000 / 12 = 5,000
+    # Stepparent deduction: Group 1, size 3 = $587/mo
+    # Adjusted monthly: 5,000 - 587 = 4,413
+    # Annual: 4,413 * 12 = 52,956
+    pa_ccw_adjusted_income: 52_956

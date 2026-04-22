@@ -1,0 +1,161 @@
+- name: Case 1, aged individual in small AFC receives OS-A payment.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: OS_A
+    dc_ossp_eligible: true
+    dc_ossp: 681
+
+- name: Case 2, aged couple in small AFC receives OS-A couple rate.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      person2:
+        age: 68
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Couple rate $1,717 / 2 = $858.50 per person
+    dc_ossp: [858.50, 858.50]
+
+- name: Case 3, disabled individual in large AFC receives OS-B payment.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 75
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: OS_B
+    dc_ossp_eligible: true
+    dc_ossp: 791
+
+- name: Case 4, aged individual in Medicaid facility receives OS-G payment.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: OS_G
+    dc_ossp_eligible: true
+    dc_ossp: 79
+
+- name: Case 5, couple both in large AFC receives OS-B couple rate.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 75
+      person2:
+        age: 68
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 75
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: [OS_B, OS_B]
+    # Couple rate $1,937 / 2 = $968.50 per person
+    dc_ossp: [968.50, 968.50]
+
+- name: Case 6, couple both in Medicaid facility receives OS-G couple rate.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 75
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 73
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: [OS_G, OS_G]
+    # Couple rate $158 / 2 = $79 per person
+    dc_ossp: [79, 79]
+
+- name: Case 7, not in qualifying facility is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_ossp_living_arrangement: NONE
+    dc_ossp_eligible: false
+    dc_ossp: 0
+
+- name: Case 8, non-DC resident is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    dc_ossp: 0

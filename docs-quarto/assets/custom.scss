@@ -1,0 +1,21 @@
+/*-- scss:defaults --*/
+
+$primary: #2C6496;
+$link-color: $primary;
+$body-bg: #ffffff;
+$body-color: #212529;
+$headings-color: #1a1a1a;
+
+/*-- scss:rules --*/
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+table {
+  font-size: 0.95em;
+}

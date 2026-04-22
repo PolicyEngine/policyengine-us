@@ -1,0 +1,53 @@
+- name: Case 1 - WV EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: WV
+    eitc: 1_000
+  output:
+    wv_eitc: 100
+    wv_refundable_credits: 100
+
+- name: Case 2 - WV EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: WV
+    eitc: 2_500
+  output:
+    wv_eitc: 500
+    wv_refundable_credits: 500
+
+- name: Case 3 - WV EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: WV
+    eitc: 1_000
+  output:
+    wv_eitc: 0
+    wv_refundable_credits: 0
+
+- name: Case 4 - WV EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: WV
+    eitc: 0
+  output:
+    wv_eitc: 0
+    wv_refundable_credits: 0
+
+- name: Case 5 - WV EITC is 0 for non-WV residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    wv_eitc: 0

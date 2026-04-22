@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: RI
+    ri_income_tax_before_non_refundable_credits: 100
+    ri_cdcc_potential: 80
+  output:
+    ri_cdcc: 80

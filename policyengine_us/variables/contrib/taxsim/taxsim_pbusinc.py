@@ -10,6 +10,8 @@ class taxsim_pbusinc(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        qbi = person("qualified_business_income", period)
+        qbi = person("qualified_business_income", period) + person(
+            "sstb_qualified_business_income", period
+        )
         is_head = person("is_tax_unit_head", period)
         return tax_unit.sum(qbi * is_head)

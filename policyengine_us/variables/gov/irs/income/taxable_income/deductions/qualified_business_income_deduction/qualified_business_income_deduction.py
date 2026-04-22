@@ -17,6 +17,10 @@ class qualified_business_income_deduction(Variable):
         # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
         person = tax_unit.members
         qbid_amt = person("qbid_amount", period)
+        total_qbi = tax_unit.sum(
+            person("qualified_business_income", period)
+            + person("sstb_qualified_business_income", period)
+        )
         uncapped_qbid = tax_unit.sum(qbid_amt)
         # apply taxinc cap at the TaxUnit level following logic
         # in 2018 IRS Publication 535, Worksheet 12-A, lines 32-37
@@ -26,7 +30,6 @@ class qualified_business_income_deduction(Variable):
         taxinc_cap = p.max.rate * max_(0, taxinc_less_qbid - netcg_qdiv)
         pre_floor_qbid = min_(uncapped_qbid, taxinc_cap)
         if p.deduction_floor.in_effect:
-            qualified_business_income = tax_unit("qualified_business_income", period)
-            floor = p.deduction_floor.amount.calc(qualified_business_income)
+            floor = p.deduction_floor.amount.calc(total_qbi)
             return max_(pre_floor_qbid, floor)
         return pre_floor_qbid

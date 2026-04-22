@@ -1,0 +1,63 @@
+- name: Case 1, Fairfield County maps to Southwest.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: FAIRFIELD_COUNTY_CT
+  output:
+    ct_c4k_region: SOUTHWEST
+
+- name: Case 2, Hartford County maps to North Central.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: HARTFORD_COUNTY_CT
+  output:
+    ct_c4k_region: NORTH_CENTRAL
+
+- name: Case 3, Tolland County maps to North Central.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: TOLLAND_COUNTY_CT
+  output:
+    ct_c4k_region: NORTH_CENTRAL
+
+- name: Case 4, Litchfield County maps to Northwest.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: LITCHFIELD_COUNTY_CT
+  output:
+    ct_c4k_region: NORTHWEST
+
+- name: Case 5, Middlesex County maps to South Central.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: MIDDLESEX_COUNTY_CT
+  output:
+    ct_c4k_region: SOUTH_CENTRAL
+
+- name: Case 6, New Haven County maps to South Central.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: NEW_HAVEN_COUNTY_CT
+  output:
+    ct_c4k_region: SOUTH_CENTRAL
+
+- name: Case 7, New London County maps to Eastern.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: NEW_LONDON_COUNTY_CT
+  output:
+    ct_c4k_region: EASTERN
+
+- name: Case 8, Windham County maps to Eastern.
+  period: 2025-01
+  input:
+    state_code: CT
+    county_str: WINDHAM_COUNTY_CT
+  output:
+    ct_c4k_region: EASTERN

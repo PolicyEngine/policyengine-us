@@ -57,7 +57,6 @@ class ok_child_care_child_tax_credit(Variable):
         us_agi = tax_unit("adjusted_gross_income", period)
         agi_eligible = us_agi <= p.child.agi_limit
         # Step 2: Calculate OK CDCC amount (20% of federal potential)
-        # Oklahoma matches the potential federal credit, not the actual credit
         us_cdcc = tax_unit("cdcc_potential", period)
         ok_cdcc = us_cdcc * p.child.cdcc_fraction
         # Step 3: Calculate OK CTC amount (5% of federal CTC)
@@ -65,10 +64,9 @@ class ok_child_care_child_tax_credit(Variable):
         ok_ctc = us_ctc * p.child.ctc_fraction
         # Step 4: Compute proration ratio (OK AGI / Federal AGI)
         ok_agi = tax_unit("ok_agi", period)
-        # Use a mask rather than where to avoid a divide-by-zero warning
         agi_ratio = np.zeros_like(us_agi)
         mask = us_agi != 0
         agi_ratio[mask] = ok_agi[mask] / us_agi[mask]
         prorate = min_(1, max_(0, agi_ratio))
-        # Step 5: Return greater of OK CDCC or OK CTC, prorated, if eligible
+        # Step 5: Return greater of OK CDCC or OK CTC, prorated
         return agi_eligible * prorate * max_(ok_cdcc, ok_ctc)

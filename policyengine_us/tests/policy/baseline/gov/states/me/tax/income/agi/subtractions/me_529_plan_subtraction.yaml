@@ -1,0 +1,54 @@
+- name: Maine 529 subtraction - under cap, one beneficiary
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 500
+    count_529_contribution_beneficiaries: 1
+    adjusted_gross_income: 80_000
+  output:
+    me_529_plan_subtraction: 500
+
+- name: Maine 529 subtraction - over cap, one beneficiary
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 2_000
+    count_529_contribution_beneficiaries: 1
+    adjusted_gross_income: 80_000
+  output:
+    # Cap is $1,000 per beneficiary
+    me_529_plan_subtraction: 1_000
+
+- name: Maine 529 subtraction - two beneficiaries
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: JOINT
+    investment_in_529_plan_indv: 1_500
+    count_529_contribution_beneficiaries: 2
+    adjusted_gross_income: 150_000
+  output:
+    # Cap is $1,000 * 2 = $2,000
+    me_529_plan_subtraction: 1_500
+
+- name: Maine 529 subtraction - over AGI limit
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 1_000
+    count_529_contribution_beneficiaries: 1
+    adjusted_gross_income: 110_000
+  output:
+    me_529_plan_subtraction: 0
+
+- name: Maine 529 subtraction - no contribution
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+  output:
+    me_529_plan_subtraction: 0

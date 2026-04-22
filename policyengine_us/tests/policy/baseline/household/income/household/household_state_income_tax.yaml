@@ -40,3 +40,14 @@
         spm_unit_state_tax_reported: 1_000
   output:
     household_state_income_tax: 500
+
+- name: Wisconsin household state income tax follows the lower exclusion path
+  period: 2025
+  input:
+    state_code: WI
+    wi_income_tax_before_credits: 5_000
+    wi_non_refundable_credits: 500
+    wi_retirement_income_exclusion_tax: 3_000
+    wi_refundable_credits: 200
+  output:
+    household_state_income_tax: 3_000

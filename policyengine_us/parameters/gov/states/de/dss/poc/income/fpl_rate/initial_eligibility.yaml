@@ -1,0 +1,19 @@
+description: Delaware limits the Purchase of Care program to new applicants with income at or below this share of the federal poverty level.
+values:
+  # Effective July 1, 2024
+  2024-01-01: 1.85
+  # Updated for FY2026 per DSS eligibility table (Oct 2025-Sep 2026)
+  # Admin Code still shows 185% FPL; SB 325 expanded to 200%
+  2025-10-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Delaware Purchase of Care initial eligibility FPL rate
+  reference:
+    - title: 16 Del. Admin. Code 11003, Section 11003.9.1(4.B)
+      href: https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml
+    - title: Delaware DSS Child Care Services - Income Eligibility Table
+      href: https://dhss.delaware.gov/dss/childcr/
+    - title: SB 325 (152nd GA) - FY2025 Operating Budget, POC expansion to 200% FPL
+      href: https://legis.delaware.gov/BillDetail/141569

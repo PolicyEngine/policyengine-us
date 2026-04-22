@@ -1,0 +1,19 @@
+description: Michigan charges this MIChild monthly premium per household. The Michigan separate CHIP income band is above 160 percent FPL.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Michigan MIChild monthly premium
+  reference:
+    - title: Michigan MDHHS MIChild program general information
+      href: https://www.michigan.gov/mdhhs/assistance-programs/healthcare/childrenteens/michild/qanda/michild-program-general-information
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.60
+    amount:
+      2021-01-01: 10

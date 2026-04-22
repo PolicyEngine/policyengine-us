@@ -1,0 +1,32 @@
+description: Vermont sets these age thresholds in months for child care age group classification under the Child Care Financial Assistance Program.
+
+brackets:
+  - threshold:
+      2009-02-09: 0
+    amount:
+      2009-02-09: 0  # INFANT
+  - threshold:
+      2009-02-09: 24
+    amount:
+      2009-02-09: 1  # TODDLER
+  - threshold:
+      2009-02-09: 36
+    amount:
+      2009-02-09: 2  # PRESCHOOL
+  - threshold:
+      2009-02-09: 60
+      2025-07-13: 72
+    amount:
+      2009-02-09: 3  # SCHOOL_AGE
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Vermont CCFAP age group month thresholds
+  reference:
+    - title: CCFAP Regulations Section I B 1
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=3
+    - title: CCFAP Capped State Rates Important Definitions (July 13, 2025)
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Guidance-CCFAP-Capped-Rates.pdf#page=1

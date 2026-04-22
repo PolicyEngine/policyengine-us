@@ -1,0 +1,33 @@
+description: Indiana charges this monthly Healthy Indiana Plan (HIP) POWER Account contribution per adult enrollee, tiered by FPL. Contribution is paused since the public health emergency and remains paused through 2025 following a June 27, 2024 federal court ruling.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Indiana HIP POWER Account monthly contribution per enrollee
+  reference:
+    - title: Indiana FSSA HIP POWER Accounts
+      href: https://www.in.gov/fssa/hip/about-hip/power-accounts/
+    - title: Indiana HIP Section 1115 Waiver Special Terms and Conditions
+      href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/in-healthy-indiana-plan-support-20-ca-20230321.pdf
+brackets:
+  - threshold:
+      2015-02-01: -.inf
+    amount:
+      2015-02-01: 1
+  - threshold:
+      2015-02-01: 0.23
+    amount:
+      2015-02-01: 5
+  - threshold:
+      2015-02-01: 0.51
+    amount:
+      2015-02-01: 10
+  - threshold:
+      2015-02-01: 0.76
+    amount:
+      2015-02-01: 15
+  - threshold:
+      2015-02-01: 1.01
+    amount:
+      2015-02-01: 20

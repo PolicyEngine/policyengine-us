@@ -1,0 +1,47 @@
+- name: Case 1, selected plan proxy defaults to the benchmark premium.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
+  output:
+    selected_marketplace_plan_premium_proxy: 1_200
+
+- name: Case 2, selected plan proxy scales with the selected plan ratio.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 10_000
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0.04
+    selected_marketplace_plan_benchmark_ratio: 0.8
+    tax_unit_is_filer: true
+  output:
+    selected_marketplace_plan_premium_proxy: 8_000
+
+- name: Case 3, selected plan proxy is zero when no ACA PTC is available.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.05
+    selected_marketplace_plan_benchmark_ratio: 0.8
+  output:
+    selected_marketplace_plan_premium_proxy: 0
+
+- name: Case 4, selected plan proxy is zero when the tax unit does not take up ACA.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    aca_ptc: 200
+    slcsp: 1_200
+    selected_marketplace_plan_benchmark_ratio: 0.8
+    takes_up_aca_if_eligible: false
+  output:
+    selected_marketplace_plan_premium_proxy: 0

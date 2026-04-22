@@ -210,3 +210,55 @@
     ca_tanf_recipient_financial_test: true
     # Benefit: max(8568 - 1650, 0) = 6918
     ca_tanf: 6_918
+
+- name: Case 6, 2025 R1 non-exempt applicant two-earner family of 4.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        ca_tanf_region1: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    # Person-level earned income (monthly):
+    # person1: 18000/12 = 1500; person2: 12000/12 = 1000
+    # Per-person applicant disregard ($450 each per WIC 11450.12):
+    # person1: max(1500 - 450, 0) = 1050; person2: max(1000 - 450, 0) = 550
+    # Applicant countable earned (yearly): (1050 + 550) * 12 = 19200
+    ca_tanf_countable_income_applicant: 19_200
+    # MBSAC: R1 size 4
+    ca_tanf_applicant_financial_test: true
+    # Recipient EID: $600 flat + 50%
+    # total monthly earned: 1500 + 1000 = 2500
+    # max(2500 - 600, 0) * 0.5 = 950; yearly: 11400
+    ca_tanf_countable_income_recipient: 11_400
+    ca_tanf_recipient_financial_test: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_eligible: true
+    # MAP: R1 non-exempt size 4 = $1416/mo -> 16992/yr
+    ca_tanf_maximum_payment: 16_992
+    # Benefit: max(16992 - 11400, 0) = 5592, all citizens so proration = 1.0
+    ca_tanf: 5_592

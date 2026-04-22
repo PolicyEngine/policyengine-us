@@ -1,0 +1,31 @@
+description: Indiana charges this Hoosier Healthwise Package C monthly premium for a tax unit with one CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Indiana Hoosier Healthwise Package C monthly premium (one child)
+  reference:
+    - title: Indiana Medicaid Hoosier Healthwise Package C Premium Information
+      href: https://www.in.gov/medicaid/members/member-programs/hhw-package-c-medworks-premium/
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.51
+    amount:
+      2021-01-01: 22
+  - threshold:
+      2021-01-01: 1.76
+    amount:
+      2021-01-01: 33
+  - threshold:
+      2021-01-01: 2.01
+    amount:
+      2021-01-01: 42
+  - threshold:
+      2021-01-01: 2.26
+    amount:
+      2021-01-01: 53

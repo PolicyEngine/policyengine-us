@@ -1,0 +1,91 @@
+# Unit tests for pa_ccw_countable_income
+# Tests countable income from sources.yaml
+# 55 Pa. Code Appendix A Part I
+#
+# Sources include: employment_income, self_employment_income, social_security,
+# social_security_disability, social_security_survivors, ssi, pension_income,
+# military_retirement_pay, unemployment_compensation, workers_compensation,
+# veterans_benefits, child_support_received, alimony_income, dividend_income,
+# interest_income, rental_income
+
+- name: Case 1, employment income only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Monthly: 36,000 / 12 = 3,000
+    pa_ccw_countable_income: 3_000
+
+- name: Case 2, multiple income sources.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        self_employment_income: 6_000
+        child_support_received: 3_600
+        interest_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Monthly: (24,000 + 6,000 + 3,600 + 1,200) / 12 = 34,800 / 12 = 2,900
+    pa_ccw_countable_income: 2_900
+
+- name: Case 3, zero income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_countable_income: 0
+
+- name: Case 4, two adults with combined income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+        employment_income: 18_000
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Monthly: (30,000 + 18,000) / 12 = 48,000 / 12 = 4,000
+    pa_ccw_countable_income: 4_000

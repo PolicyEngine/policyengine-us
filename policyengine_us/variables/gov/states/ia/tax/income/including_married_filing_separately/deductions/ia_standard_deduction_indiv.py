@@ -37,8 +37,19 @@ class ia_standard_deduction_indiv(Variable):
         p = parameters(period).gov.states.ia.tax.income.deductions.standard
 
         if p.applies_federal:
+            # IA 1040 line 1d: "Standard deduction from federal 1040, line 12e"
+            # Each spouse gets half the basic + their own additional (elderly/blind).
             fed_p = parameters(period).gov.irs.deductions
-            deduction = fed_p.standard.amount[filing_status]
+            basic_half = fed_p.standard.amount[filing_status]
+            age = person("age", period)
+            aged = age >= fed_p.standard.aged_or_blind.age_threshold
+            is_blind = person("is_blind", period)
+            aged_blind_per_person = aged.astype(int) + is_blind.astype(int)
+            additional_per_person = (
+                aged_blind_per_person
+                * fed_p.standard.aged_or_blind.amount[filing_status]
+            )
+            deduction = basic_half + additional_per_person
         else:
             deduction = p.amount[filing_status]
 

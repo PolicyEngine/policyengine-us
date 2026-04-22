@@ -4,7 +4,7 @@
   input:
     state_code: NY
     me_deduction_phaseout_percentage: 0.40
-    standard_deduction: 20_000
+    me_standard_deduction: 20_000
     me_itemized_deductions_pre_phaseout: 25_000
   output:
     me_deductions: 0
@@ -15,7 +15,7 @@
   input:
     state_code: ME
     me_deduction_phaseout_percentage: 0.90
-    standard_deduction: 25_000
+    me_standard_deduction: 25_000
     me_itemized_deductions_pre_phaseout: 20_000
   output:
     me_deductions: 2_500
@@ -27,7 +27,7 @@
     gov.simulation.branch_to_determine_itemization: true
     state_code: ME
     me_deduction_phaseout_percentage: 0.40
-    standard_deduction: 10_000
+    me_standard_deduction: 10_000
     me_itemized_deductions_pre_phaseout: 15_000
   output:
     tax_liability_if_itemizing: 0
@@ -35,3 +35,32 @@
     state_standard_deduction: 10_000
     state_itemized_deductions: 15_000
     me_deductions: 9_000
+
+- name: ME single 2025 100K self-employment (TaxAct verified, taxsim issue 790)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 54
+        self_employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 23
+  output:
+    me_deductions: 15_000
+    me_taxable_income: 72_785
+    me_income_tax: 4_695

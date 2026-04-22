@@ -20,4 +20,13 @@ class ctc_adult_individual_maximum(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.credits.ctc
         is_adult = person("ctc_child_individual_maximum", period) == 0
-        return is_adult * p.amount.adult_dependent
+        dependent_has_tin = person("has_tin", period)
+        filer_meets_tin_requirement = person.tax_unit(
+            "filer_meets_ctc_identification_requirements", period
+        )
+        return (
+            is_adult
+            * dependent_has_tin
+            * filer_meets_tin_requirement
+            * p.amount.adult_dependent
+        )
