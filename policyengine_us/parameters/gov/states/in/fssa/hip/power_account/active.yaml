@@ -1,0 +1,11 @@
+description: Indiana collects Healthy Indiana Plan (HIP) POWER Account contributions only when this flag is true. Contributions have been suspended since 2020-03-01 under the COVID-19 public health emergency and remain paused after a 2024-06-27 federal court ruling (Rose v. Becerra) vacated CMS's HIP waiver approval.
+metadata:
+  unit: bool
+  period: year
+  label: Indiana HIP POWER Account contributions active
+  reference:
+    - title: Indiana Primary Care Association announcement (HIP cost-sharing paused)
+      href: https://www.indianapca.org/cost-sharing-for-hip-program-to-remain-paused-at-this-time/
+values:
+  2015-02-01: true
+  2020-03-01: false

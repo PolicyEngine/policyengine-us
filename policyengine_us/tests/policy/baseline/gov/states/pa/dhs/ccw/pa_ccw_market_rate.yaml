@@ -1,0 +1,215 @@
+# Unit tests for pa_ccw_market_rate
+# Tests MCCA daily rate lookup by region x provider type x age group x time category
+# defined_for = "pa_ccw_eligible_child" (only eligible children get rates)
+# Source: PA DHS OCDEL MCCA rates, effective January 1, 2025
+
+- name: Case 1, region 1 center infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: INFANT
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # Region 1, CENTER, INFANT, FT = $51.13/day
+    pa_ccw_market_rate: [0, 51.13]
+
+- name: Case 2, region 1 family pre school part time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: FAMILY
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # Region 1, FAMILY, PRE_SCHOOL, PT = $30.42/day
+    pa_ccw_market_rate: [0, 30.42]
+
+- name: Case 3, region 5 center school age full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: SCHOOL_AGE
+        childcare_hours_per_day: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 5
+  output:
+    # Region 5, CENTER, SCHOOL_AGE, FT = $51.97/day
+    pa_ccw_market_rate: [0, 51.97]
+
+- name: Case 4, region 1 relative neighbor old toddler part time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: R_N
+        pa_ccw_age_group: OLD_TODDLER
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # Region 1, R_N, OLD_TODDLER, PT = $11.54/day
+    pa_ccw_market_rate: [0, 11.54]
+
+- name: Case 5, region 17 center infant full time highest rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: INFANT
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 17
+  output:
+    # Region 17, CENTER, INFANT, FT = $77.45/day
+    pa_ccw_market_rate: [0, 77.45]
+
+- name: Case 6, region 19 group young toddler part time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: GROUP
+        pa_ccw_age_group: YOUNG_TODDLER
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 19
+  output:
+    # Region 19, GROUP, YOUNG_TODDLER, PT = $57.71/day
+    pa_ccw_market_rate: [0, 57.71]
+
+- name: Case 7, historical 2023 rates region 1 center infant full time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: INFANT
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # 2023 rate (effective 2023-03-01, still active in 2024-01)
+    # Region 1, CENTER, INFANT, FT = $46.51/day
+    pa_ccw_market_rate: [0, 46.51]

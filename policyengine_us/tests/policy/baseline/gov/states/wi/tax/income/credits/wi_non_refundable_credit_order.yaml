@@ -1,0 +1,14 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2022
+  input:
+    state_code: WI
+    wi_income_tax_before_credits: 100
+    wi_itemized_deduction_credit_potential: 80
+    wi_childcare_expense_credit_potential: 40
+    wi_property_tax_credit_potential: 30
+    wi_married_couple_credit_potential: 20
+  output:
+    wi_itemized_deduction_credit: 80
+    wi_childcare_expense_credit: 20
+    wi_property_tax_credit: 0
+    wi_married_couple_credit: 0

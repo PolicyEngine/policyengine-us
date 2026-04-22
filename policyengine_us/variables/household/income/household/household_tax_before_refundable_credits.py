@@ -14,4 +14,6 @@ class household_tax_before_refundable_credits(Variable):
         "income_tax_before_refundable_credits",
         "flat_tax",
         "household_state_tax_before_refundable_credits",
+        "local_income_tax_before_refundable_credits",
+        "local_occupational_tax",
     ]

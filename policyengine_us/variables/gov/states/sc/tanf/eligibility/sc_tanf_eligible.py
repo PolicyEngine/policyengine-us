@@ -12,7 +12,7 @@ class sc_tanf_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("sc_tanf_income_eligible", period)
         resource_eligible = spm_unit("sc_tanf_resources_eligible", period)

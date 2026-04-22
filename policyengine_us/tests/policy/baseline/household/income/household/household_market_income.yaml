@@ -34,6 +34,18 @@
   output:
     household_market_income: 50_000
 
+- name: SSTB self-employment income is market income
+  period: 2026
+  input:
+    people:
+      person:
+        sstb_self_employment_income: 50_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 50_000
+
 - name: Employment income plus UC does not double count
   period: 2026
   input:

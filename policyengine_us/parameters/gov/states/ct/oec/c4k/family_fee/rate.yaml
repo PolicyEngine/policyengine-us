@@ -1,0 +1,47 @@
+description: Connecticut sets the family fee as this share of gross countable income under the Care 4 Kids program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Connecticut C4K family fee rate
+  reference:
+    - title: RCSA 17b-749-13(f)
+      href: https://eregulations.ct.gov/eRegsPortal/Browse/RCSA/Title_17bSubtitle_17b-749Section_17b-749-13/
+    - title: C4K-POL-24-01 FY 2024-2025 State Median Income Standards
+      href: https://www.ctoec.org/forms-documents/c4k-annual-state-median-incomes-transmittal-fy-2025.pdf#page=3
+    - title: C4K-POL-24-02 Family Fee Scale Transmittal
+      href: https://www.ctoec.org/wp-content/uploads/2024/10/Family-Fee-Transmittal-Update.pdf#page=2
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+      2025-01-01: 0
+    amount:
+      2020-01-01: 0.02
+      2025-01-01: 0
+  - threshold:
+      2020-01-01: 0.2
+      2025-01-01: 0.2
+    amount:
+      2020-01-01: 0.04
+      2025-01-01: 0.03
+  - threshold:
+      2020-01-01: 0.3
+      2025-01-01: 0.4
+    amount:
+      2020-01-01: 0.06
+      2025-01-01: 0.05
+  - threshold:
+      2020-01-01: 0.4
+      2025-01-01: 0.6
+    amount:
+      2020-01-01: 0.08
+      2025-01-01: 0.07
+  - threshold:
+      2020-01-01: 0.5
+      2025-01-01: .inf
+    amount:
+      2020-01-01: 0.1
+      2025-01-01: 0

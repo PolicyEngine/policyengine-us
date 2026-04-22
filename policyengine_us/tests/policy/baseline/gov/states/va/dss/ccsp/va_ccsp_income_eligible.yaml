@@ -1,0 +1,212 @@
+# Virginia CCSP income eligibility tests
+# Logic:
+#   - New applicants (not enrolled): income <= FPG * locality_fpg_rate
+#     GROUP_I: 150% FPG, GROUP_II: 160% FPG, GROUP_III: 185% FPG
+#   - Enrolled (redetermination): income <= 85% SMI
+#   - Families with child <= 5: also eligible if income <= 85% SMI
+#   - TANF recipients: auto income-eligible
+#
+# 2024 FPG (contiguous US): first_person = 15,060, additional = 5,380
+# Family of 2: 20,440   Family of 3: 25,820   Family of 4: 31,200
+#
+# 2024 VA SMI base: 121,130 (effective 2023-10-01)
+# SMI size adj: 0.52 + 0.16*(min(size-1,5)) + 0.03*max(size-6,0)
+# Size 2: 121,130 * 0.68 = 82,368.40
+# Size 3: 121,130 * 0.84 = 101,749.20
+# Size 4: 121,130 * 1.00 = 121,130.00
+# 85% SMI size 2: 69,913.14
+# 85% SMI size 3: 86,486.82
+# 85% SMI size 4: 102,960.50
+
+- name: Case 1, new applicant Group III below 185% FPG.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 48_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG size 2: 20,440
+    # 185% FPG = 20,440 * 1.85 = 37,814
+    # Annual income 48,000, monthly = 4,000
+    # Monthly limit = 37,814 / 12 = 3,151.17
+    # 4,000 > 3,151.17 -> not income eligible
+    va_ccsp_income_eligible: false
+
+- name: Case 2, new applicant Group III below threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 36_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG size 2: 20,440
+    # 185% FPG = 37,814
+    # 36,000 <= 37,814 -> income eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 3, new applicant Group I with lower threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 32_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG size 2: 20,440
+    # 150% FPG = 20,440 * 1.5 = 30,660
+    # 32,000 > 30,660 -> not income eligible
+    va_ccsp_income_eligible: false
+
+- name: Case 4, enrolled family at 85% SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 84_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Enrolled -> exit limit = 85% SMI
+    # SMI size 2: 82,368.40
+    # 85% SMI = 69,913.14
+    # 84,000 > 69,913.14 -> ineligible
+    va_ccsp_income_eligible: false
+
+- name: Case 5, enrolled family within 85% SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 60_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 85% SMI size 2 = 69,913.14
+    # 60,000 <= 69,913.14 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 6, new applicant with young child uses 85% SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 48_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Group I: 150% FPG = 20,440 * 1.5 = 30,660
+    # Young child (age 4 <= 5): also check 85% SMI = 69,913.14
+    # Use max(30,660, 69,913.14) = 69,913.14
+    # 48,000 <= 69,913.14 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 7, TANF recipient auto income-eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # TANF enrolled -> auto income-eligible regardless of income
+    va_ccsp_income_eligible: true

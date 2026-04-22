@@ -11,6 +11,6 @@ class self_employed_health_insurance_ald_person(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/162#l"
 
     def formula(person, period, parameters):
-        earnings = max_(0, person("self_employment_income", period))
+        earnings = max_(0, person("total_self_employment_income", period))
         premiums = person("self_employed_health_insurance_premiums", period)
         return min_(earnings, premiums)

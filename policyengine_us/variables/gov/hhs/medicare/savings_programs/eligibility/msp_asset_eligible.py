@@ -7,6 +7,8 @@ class msp_asset_eligible(Variable):
     label = "Medicare Savings Program asset eligible"
     definition_period = MONTH
     reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://www.law.cornell.edu/uscode/text/42/1382b",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
         "https://www.medicareinteractive.org/understanding-medicare/"
         "cost-saving-programs/medicare-savings-programs-qmb-slmb-qi/"
@@ -19,8 +21,13 @@ class msp_asset_eligible(Variable):
         # Check if asset test applies (some states have eliminated it)
         asset_test_applies = p.asset.applies[state_code]
         # If asset test doesn't apply, everyone is asset-eligible
-        cash_assets = person.spm_unit("spm_unit_cash_assets", period.this_year)
-        married = person.spm_unit("spm_unit_is_married", period)
+        personal_resources = person("ssi_countable_resources", period.this_year)
+        married = person.spm_unit("spm_unit_is_married", period.this_year)
+        countable_resources = where(
+            married,
+            person.marital_unit.sum(personal_resources),
+            personal_resources,
+        )
         asset_limit = where(married, p.asset.couple, p.asset.individual)
-        meets_asset_test = cash_assets <= asset_limit
+        meets_asset_test = countable_resources <= asset_limit
         return where(asset_test_applies, meets_asset_test, True)

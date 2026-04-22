@@ -1,0 +1,150 @@
+# de_poc_income_eligible: SPMUnit, bool, MONTH
+# Income eligible if countable_income <= min(fpl_threshold, 85% SMI)
+# New applicants: 200% FPL; Enrolled: 300% FPL; Hard cap: 85% SMI
+#
+# 2025 FPG (Contiguous US): first_person = 15_650, additional = 5_500
+#   Family of 2: 21_150/yr
+#   Family of 4: 32_150/yr
+#
+# SMI for DE (4-person, 2024-10-01): 120_963
+#   Size adjustments: first=0.52, 2nd-6th=0.16
+#   Family of 2 SMI: 120_963 * 0.68 = 82_254.84
+#   Family of 4 SMI: 120_963 * 1.00 = 120_963.00
+#
+# 85% SMI:
+#   Family of 2: 82_254.84 * 0.85 = 69_916.61
+#   Family of 4: 120_963 * 0.85 = 102_818.55
+
+- name: Case 1, new applicant below 200% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 36_000 / 12 = 3_000
+    # 200% FPL family of 2: 21_150 * 2.0 / 12 = 3_525.00
+    # 85% SMI family of 2: 69_916.61 / 12 = 5_826.38
+    # Limit = min(3_525.00, 5_826.38) = 3_525.00
+    # 3_000 <= 3_525.00 -> eligible
+    de_poc_income_eligible: true
+
+- name: Case 2, new applicant above 200% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 48_000 / 12 = 4_000
+    # 200% FPL family of 2: 21_150 * 2.0 / 12 = 3_525.00
+    # 4_000 > 3_525.00 -> ineligible (not enrolled)
+    de_poc_income_eligible: false
+
+- name: Case 3, enrolled family below 300% FPL.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_poc_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 60_000 / 12 = 5_000
+    # 300% FPL family of 2: 21_150 * 3.0 / 12 = 5_287.50
+    # 85% SMI family of 2: 5_826.38
+    # Limit = min(5_287.50, 5_826.38) = 5_287.50
+    # 5_000 <= 5_287.50 -> eligible
+    de_poc_income_eligible: true
+
+- name: Case 4, enrolled family above 300% FPL.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_poc_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 66_000 / 12 = 5_500
+    # 300% FPL family of 2: 21_150 * 3.0 / 12 = 5_287.50
+    # 5_500 > 5_287.50 -> ineligible
+    de_poc_income_eligible: false
+
+- name: Case 5, income at exact 200% FPL threshold for new applicant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_300
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 42_300 / 12 = 3_525.00
+    # 200% FPL family of 2: 21_150 * 2.0 / 12 = 3_525.00
+    # At threshold -> eligible (<=)
+    de_poc_income_eligible: true
+
+- name: Case 6, zero income is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_income_eligible: true

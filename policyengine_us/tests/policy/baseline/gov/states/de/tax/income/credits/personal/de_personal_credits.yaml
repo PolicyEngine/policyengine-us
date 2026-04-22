@@ -3,29 +3,30 @@
   input:
     exemptions_count: 1
     state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_personal_credit: 110
-
 - name: Delaware personal credit if married filing jointly and above max threshold
   period: 2022
   input:
     exemptions_count: 2
     state_code: DE
-  output:  
+    de_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
     de_personal_credit: 220
-
 - name: Delaware personal credit if surviving spouser
   period: 2022
   input:
     exemptions_count: 5
     state_code: DE
-  output:  
+    de_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
     de_personal_credit: 550
-
 - name: No exemptions
   period: 2022
   input:
     exemptions_count: 0
     state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_personal_credit: 0

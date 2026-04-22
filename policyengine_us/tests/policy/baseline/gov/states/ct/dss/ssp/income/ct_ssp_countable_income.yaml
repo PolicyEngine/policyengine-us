@@ -1,0 +1,192 @@
+- name: Case 1, SSI-only income in community.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 11_928  # $994/mo SSI
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned gross = $994 (SSI is counted as unearned)
+    # Unearned after disregard = max(0, 994 - 562) = $432
+    # Earned disregard = $0 (no earnings)
+    # Countable = $432 + $0 = $432
+    ct_ssp_countable_income: 432
+
+- name: Case 2, SSI plus earnings in community.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 11_928  # $994/mo
+        employment_income: 6_000  # $500/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned gross = $994 (SSI)
+    # Unearned after disregard = max(0, 994 - 562) = $432
+    # Earned disregard (aged) = $65 + 0.5 * (500 - 65) = $282.50
+    # Countable earned = max(0, 500 - 282.50) = $217.50
+    # Countable = $432 + $217.50 = $649.50
+    ct_ssp_countable_income: 649.50
+
+- name: Case 3, unearned income below disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 6_000  # $500/mo < $562 disregard
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned after disregard = max(0, 500 - 562) = $0
+    # Countable = $0
+    ct_ssp_countable_income: 0
+
+- name: Case 4, boarding home resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        ct_ssp_resides_in_boarding_home: true
+        ssi: 11_928  # $994/mo
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned after disregard = max(0, 994 - 469.70) = $524.30
+    # Countable = $524.30
+    ct_ssp_countable_income: 524.30
+
+- name: Case 5, shared living resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        ct_ssp_lives_with_others: true
+        ssi: 11_928  # $994/mo
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned after disregard = max(0, 994 - 629.90) = $364.10
+    # Countable = $364.10
+    ct_ssp_countable_income: 364.10
+
+- name: Case 6, zero unearned income with disregard exceeding it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 0  # No SSI
+        ssi_unearned_income: 0  # No other unearned
+        employment_income: 6_000  # $500/mo earned only
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Unearned: max(0, 0 - 562) = $0 (disregard exceeds income, floored at 0)
+    # Earned disregard (aged): $65 + 0.5 * (500 - 65) = $282.50
+    # Countable earned: max(0, 500 - 282.50) = $217.50
+    # Countable = $0 + $217.50 = $217.50
+    ct_ssp_countable_income: 217.50
+
+- name: Case 7, completely zero income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 0
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Both unearned and earned are $0
+    # Countable = $0 + $0 = $0
+    ct_ssp_countable_income: 0
+
+- name: Case 8, maximum income scenario just under cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 11_928  # $994/mo
+        ssi_unearned_income: 23_856  # $1,988/mo other unearned
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Total unearned = $994 (SSI) + $1,988 (other) = $2,982/mo
+    # Gross = $2,982 = exactly 300% FBR ($994 * 3) = at cap
+    # Unearned: max(0, 2982 - 562) = $2,420
+    # Countable = $2,420
+    ct_ssp_countable_income: 2_420
+
+- name: Case 9, countable income includes deemed spouse income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ssi: 0
+        ssi_unearned_income_deemed_from_ineligible_spouse: 7_200
+        ssi_earned_income_deemed_from_ineligible_spouse: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Deemed spouse income adds $600/mo unearned and $300/mo earned.
+    # Countable unearned = max(600 - 562, 0) = $38.
+    # Countable earned = 300 - (65 + 0.5 * (300 - 65)) = $117.50.
+    ct_ssp_countable_income: 155.50

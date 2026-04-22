@@ -1,16 +1,20 @@
 description: Maryland subtracts the following sources from federal adjusted gross income.
 values:
   2021-01-01:
+    - us_govt_interest
     - md_dependent_care_subtraction
     - md_pension_subtraction
     - md_socsec_subtraction
     - md_two_income_subtraction
+    - md_529_deduction
   2022-01-01:
+    - us_govt_interest
     - md_dependent_care_subtraction
     - md_pension_subtraction
     - md_socsec_subtraction
     - md_two_income_subtraction
     - md_hundred_year_subtraction
+    - md_529_deduction
 
 metadata:
   reference:

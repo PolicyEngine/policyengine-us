@@ -68,7 +68,6 @@ def create_ri_exemption_reform() -> Reform:
         defined_for = StateCode.RI
 
         def formula(tax_unit, period, parameters):
-
             maximum = tax_unit("ri_dependent_exemption_maximum", period)
             phaseout = tax_unit("ri_dependent_exemption_phaseout", period)
 

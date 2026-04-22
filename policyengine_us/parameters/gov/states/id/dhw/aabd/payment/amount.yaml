@@ -1,0 +1,31 @@
+description: >-
+  Idaho provides this maximum monthly AABD cash payment amount based on
+  the participant's living arrangement.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Idaho AABD maximum monthly cash payment
+  breakdown:
+  - id_aabd_living_arrangement
+  reference:
+    - title: IDAPA 16.03.05.514 - AABD Cash Payments
+      href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=41
+    - title: IDAPA 16.03.05.514 - AABD Cash Payments (2022 Archive)
+      href: https://adminrules.idaho.gov/rules/2022%20Archive/16/160305.pdf#page=55
+    - title: Idaho Admin. Code r. 16.03.05.514
+      href: https://www.law.cornell.edu/regulations/idaho/IDAPA-16.03.05.514
+
+SINGLE:
+  2022-07-01: 53
+COUPLE:
+  2022-07-01: 20
+ESSENTIAL_PERSON:
+  2022-07-01: 18
+SIGRIF:
+  2022-07-01: 169
+ROOM_AND_BOARD:
+  2022-07-01: 198
+RALF_CFH:
+  2022-07-01: 0
+NONE:
+  2022-07-01: 0

@@ -1,0 +1,433 @@
+- name: Case 1, own household single adult with no income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_amount_if_eligible: 967
+    ssi_countable_income: 0
+    uncapped_ssi: 967
+    ssi: 967
+
+- name: Case 2, another person's household with one-third reduction and no income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+    # VTR reduces FBR: 967 * (1 - 1/3) = 644.67
+    ssi_amount_if_eligible: 644.67
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 644.67
+    ssi: 644.67
+
+- name: Case 3, medical treatment facility individual with no income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+    ssi_amount_if_eligible: 30
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 30
+    ssi: 30
+
+- name: Case 4, own household with PMV shelter support.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_outside_shelter_support: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_amount_if_eligible: 967
+    # PMV gross = (1/3 x 967) + 20 = 342.33/month
+    ssi_pmv_amount: 342.33
+    ssi_in_kind_support_and_maintenance: 342.33
+    # After $20 general exclusion: 342.33 - 20 = 322.33 countable
+    # Per POMS SI 00835.901: net countable ISM = 1/3 FBR = 322.33
+    ssi_countable_income: 322.33
+    # uncapped = 967 - 322.33 = 644.67 (same as VTR)
+    uncapped_ssi: 644.67
+    ssi: 644.67
+
+- name: Case 5, B should not apply when PMV should apply instead.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        # In another's household with shelter but NOT all meals
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Not B (meals condition fails), so A with PMV
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_amount_if_eligible: 967
+    ssi_pmv_applies: true
+    # PMV gross = 342.33, after $20 exclusion: 322.33 countable
+    ssi_in_kind_support_and_maintenance: 342.33
+    ssi_countable_income: 322.33
+    uncapped_ssi: 644.67
+    ssi: 644.67
+
+- name: Case 6, neither B nor PMV applies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        # In another's household but no shelter and no meals
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: false
+        ssi_others_pay_all_meals: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_amount_if_eligible: 967
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 967
+    ssi: 967
+
+- name: Case 7, child in parental household with deeming.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+        own_children_in_household: 1
+      person2:
+        age: 10
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_federal_living_arrangement: [OWN_HOUSEHOLD, CHILD_IN_PARENTAL_HOUSEHOLD]
+    # Child gets individual FBR (967/month)
+    ssi_amount_if_eligible: [967, 967]
+    # Child ISM = 0 (deeming replaces ISM for child in parental household)
+    ssi_in_kind_support_and_maintenance: [0, 0]
+
+- name: Case 8, PMV rebuttal with actual shelter value below PMV.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_outside_shelter_support: true
+        # Actual annual shelter value $1,200 ($100/month electric bill)
+        ssi_shelter_support_value: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    # PMV annual = 342.33 * 12 = 4,108
+    # Actual = 1,200 < PMV → use actual
+    # ISM monthly = 1,200 / 12 = 100
+    ssi_in_kind_support_and_maintenance: 100
+    # Countable = (100 - 20) = 80 (after $20 general exclusion)
+    ssi_countable_income: 80
+    # uncapped = 967 - 80 = 887
+    uncapped_ssi: 887
+    ssi: 887
+
+- name: Case 9, food-only support before 9/30/2024 triggers PMV.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    # food_counts = true in 2024-01 → PMV applies
+    ssi_pmv_applies: true
+    # PMV monthly = (1/3 x 943) + 20 = 334.33
+    ssi_in_kind_support_and_maintenance: 334.33
+    # Countable = 334.33 - 20 = 314.33
+    ssi_countable_income: 314.33
+    # uncapped = 943 - 314.33 = 628.67
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 10, food-only support after 9/30/2024 does not trigger PMV.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_food_from_others: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    # food_counts = false in 2025-01 → PMV does not apply
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 967
+    ssi: 967
+
+- name: Case 11, couple both eligible with PMV shelter support.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        ssi_receives_outside_shelter_support: true
+      person2:
+        age: 66
+        is_tax_unit_spouse: true
+        ssi_receives_outside_shelter_support: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_federal_living_arrangement: [OWN_HOUSEHOLD, OWN_HOUSEHOLD]
+    # Couple FBR = 1,450/month. Each gets couple/2 = 725.
+    ssi_amount_if_eligible: [725, 725]
+    # Couple PMV = 1/3 x 1,450 + 20 = 503.33/month (per POMS SI 00835.901)
+    ssi_pmv_amount: [503.33, 503.33]
+    # Couple countable ISM = 503.33 - 20 = 483.33
+    # Split: 483.33 / 2 = 241.67 each
+    ssi_countable_income: [241.67, 241.67]
+    # uncapped = 725 - 241.67 = 483.33
+    uncapped_ssi: [483.33, 483.33]
+    ssi: [483.33, 483.33]
+
+- name: Case 12, deeming with PMV shelter support.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        is_ssi_spousal_deeming_applies: true
+        ssi_receives_outside_shelter_support: true
+        ssi_income_deemed_from_ineligible_spouse: 2_160
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_ssi_aged_blind_disabled: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Per POMS SI 01320.150: deeming PMV = 1/6 x 1,450 + 10 = 251.67/month
+    # Person2 (ineligible, no shelter) gets individual PMV (irrelevant, ISM = 0)
+    ssi_pmv_amount: [251.67, 342.33]
+    ssi_in_kind_support_and_maintenance: [251.67, 0]
+    # Person1 countable:
+    #   ISM = 251.67, after $20 exclusion = 231.67
+    #   Spousal deemed = 2,160/12 = 180/month
+    #   Total = 231.67 + 180 = 411.67
+    ssi_countable_income: [411.67, 0]
+
+- name: Case 13, PMV rebuttal with actual shelter value above PMV.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_outside_shelter_support: true
+        # Actual annual shelter value $6,000 exceeds PMV ($4,108)
+        ssi_shelter_support_value: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    # PMV annual = 342.33 * 12 = 4,108
+    # Actual = 6,000 > PMV → capped at PMV
+    # ISM monthly = 342.33 (PMV, not 500)
+    ssi_in_kind_support_and_maintenance: 342.33
+    # Countable = 342.33 - 20 = 322.33
+    ssi_countable_income: 322.33
+    # uncapped = 967 - 322.33 = 644.67
+    uncapped_ssi: 644.67
+    ssi: 644.67
+
+- name: Case 14, one spouse in medical facility, community spouse gets individual FBR.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_federal_living_arrangement: [MEDICAL_TREATMENT_FACILITY, OWN_HOUSEHOLD]
+    # Person1 (facility): $30/month
+    # Person2 (community spouse): individual FBR $967/month (not couple/2 $725)
+    ssi_amount_if_eligible: [30, 967]
+    ssi_countable_income: [0, 0]
+    uncapped_ssi: [30, 967]
+    ssi: [30, 967]
+
+- name: Case 15, couple both in another person's household with VTR.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_federal_living_arrangement: [ANOTHER_PERSONS_HOUSEHOLD, ANOTHER_PERSONS_HOUSEHOLD]
+    # Couple rate / 2 = 1,450 / 2 = 725
+    # VTR: 725 * (1 - 1/3) = 725 * 2/3 = 483.33
+    ssi_amount_if_eligible: [483.33, 483.33]
+    ssi_in_kind_support_and_maintenance: [0, 0]
+    ssi_countable_income: [0, 0]
+    uncapped_ssi: [483.33, 483.33]
+    ssi: [483.33, 483.33]

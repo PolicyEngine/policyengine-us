@@ -9,4 +9,8 @@ class earned_income(Variable):
     documentation = "Income from wages or self-employment"
     definition_period = YEAR
 
-    adds = ["employment_income", "self_employment_income"]
+    adds = [
+        "employment_income",
+        "self_employment_income",
+        "sstb_self_employment_income",
+    ]

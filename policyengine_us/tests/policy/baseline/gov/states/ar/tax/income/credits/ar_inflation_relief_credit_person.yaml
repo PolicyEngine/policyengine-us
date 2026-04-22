@@ -123,3 +123,31 @@
         state_code: AR
   output:
     ar_inflation_relief_credit_person: 150
+
+- name: Joint household with a dependent child does not credit the dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 60_000
+      person2:
+        age: 38
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+      person3:
+        age: 8
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: [150, 150, 0]

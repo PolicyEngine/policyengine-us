@@ -1,0 +1,15 @@
+description: Maine uses this indicator to determine whether the simplified two-category time authorization applies under the Child Care Affordability Program.
+values:
+  2024-01-01: false
+  2024-07-06: false
+  2025-05-19: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Maine CCAP simplified time categories in effect
+  reference:
+    - title: Maine Child Care Market Rates July 6, 2024
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/July%206%202024%20Market%20Rates_5_0.pdf
+    - title: Maine Child Care Market Rates May 19, 2025
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/inline-files/5.19.25%20Child%20Care%20Market%20Rates.pdf

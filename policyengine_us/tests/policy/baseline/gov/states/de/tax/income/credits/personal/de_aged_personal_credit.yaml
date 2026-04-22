@@ -4,41 +4,42 @@
     state_code: DE
     age_head: 60
     age_spouse: 60
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_aged_personal_credit: 220
-
 - name: yourself and spouse are both above 60 in 2022.
   period: 2022
   input:
     state_code: DE
     age_head: 60
     age_spouse: 60
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
-    de_aged_personal_credit: 220    
-
+    de_aged_personal_credit: 220
 - name: yourself >= age 60 but spouse is not.
   period: 2022
   input:
     state_code: DE
     age_head: 65
     age_spouse: 59
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_aged_personal_credit: 110
-
 - name: yourself < age 60 but spouse >= 60.
   period: 2023
   input:
     state_code: DE
     age_head: 55
     age_spouse: 65
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_aged_personal_credit: 110
-
 - name: both yourself and spouse under 60.
   period: 2023
   input:
     state_code: DE
     age_head: 55
     age_spouse: 58
+    de_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     de_aged_personal_credit: 0

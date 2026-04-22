@@ -1,0 +1,82 @@
+---
+title: "CHIP"
+subtitle: "Children's Health Insurance Program"
+---
+
+PolicyEngine US models CHIP eligibility, per-capita benefit value, and household-paid premiums and enrollment fees for the 17 states that charge them.
+
+## Eligibility
+
+`is_chip_eligible` is true for a person if all of the following hold:
+
+- They are age-eligible: under the state's CHIP age cap (typically 18 or 19), or pregnant in FCEP / standard-pregnant-person states.
+- Household MAGI (as a fraction of the federal poverty line) is at or below the state's CHIP income limit. Limits vary from ~190 % in Idaho to ~405 % in New York.
+- They are not income-eligible for Medicaid.
+- Immigration status is eligible (not undocumented).
+
+State-specific eligibility is driven by `parameters/gov/hhs/chip/child/income_limit.yaml`.
+
+## Benefit value
+
+`per_capita_chip` is the state's net-of-cost-sharing spending per CHIP enrollee, from MACPAC Exhibit 33. `per_capita_chip_gross` adds back the state's CMS-21 cost-sharing offsets to recover the gross service value. `chip_gross` is the person-level analog summed within the household.
+
+## Premiums
+
+`chip_premium` is the annual household-paid premium or enrollment fee, at the tax unit level. It aggregates state-specific variables via
+
+```python
+adds = [
+    "al_chip_premium",
+    "ct_chip_premium",
+    "de_chip_premium",
+    "fl_chip_premium",
+    "ga_chip_premium",
+    "ia_chip_premium",
+    "id_chip_premium",
+    "il_chip_premium",
+    "in_chip_premium",
+    "ks_chip_premium",
+    "la_chip_premium",
+    "ma_chip_premium",
+    "mi_chip_premium",
+    "mo_chip_premium",
+    "ny_chip_premium",
+    "tx_chip_premium",
+    "wi_chip_premium",
+]
+```
+
+Each state uses one of four structural patterns:
+
+| Structure | States |
+|---|---|
+| Annual enrollment fee (per child, family cap) | AL, TX |
+| Monthly family flat fee by FPL band | CT, DE, FL, KS, LA, MI |
+| Monthly per-child with family cap | GA, IA, IL, MA, NY |
+| Monthly per-child without family cap | ID, WI |
+| Monthly per-child with 1-child vs 2+-child rates | IN |
+| Family-size × FPL tier matrix | MO |
+
+## States not encoded
+
+- **Nevada** — $25 / $50 / $80 quarterly family premium exists but the FPL tier boundaries are not published on primary state sources.
+- **Pennsylvania** — premium varies by chosen MCO across ~14 plans and tiers; PolicyEngine US doesn't currently model plan choice.
+- **North Dakota, New Jersey** — current status couldn't be verified from primary sources (NJ appears suspended).
+- **M-CHIP-funded pieces of MA, MI, NY, CT, DE** — cost-sharing offsets appear on Line 49 (Less Collection) of the Separate CHIP sheet for these combination-program states, not on the dedicated cost-sharing-offset lines. The Line 49 proxy is used in the gross reconstruction with a documented caveat about third-party liability noise.
+
+## SPM treatment
+
+`chip_premium` flows into `spm_unit_medical_out_of_pocket_expenses` (see [MOOP decomposition](../methodology/moop-decomposition.qmd)) and through `household_health_costs` into `household_net_income`, gated on the `gov.simulation.include_health_benefits_in_net_income` flag that already gates the benefit side.
+
+## Cost-sharing cap (not enforced)
+
+42 CFR 457.560 caps total CHIP cost sharing (premiums + copays) at 5 % of family income. PolicyEngine US does not currently enforce this cap. Enforcement on premiums alone would rarely bite because state schedules are designed below 5 % by construction; the cap mostly binds on premium + copay combinations, which require the copay modeling tracked in [issue #8101](https://github.com/PolicyEngine/policyengine-us/issues/8101).
+
+## Data sources
+
+Primary sources for state premium schedules vary by state. For each encoded state, the YAML parameter files cite the relevant state handbook, regulation, or Medicaid agency fee schedule. KFF's annual 50-state Medicaid and CHIP cost-sharing survey is the best cross-reference.
+
+## See also
+
+- [MOOP decomposition](../methodology/moop-decomposition.qmd)
+- GitHub issue [#5889](https://github.com/PolicyEngine/policyengine-us/issues/5889) — original framework request

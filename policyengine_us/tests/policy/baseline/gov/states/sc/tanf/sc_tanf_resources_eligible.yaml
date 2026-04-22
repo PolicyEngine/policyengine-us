@@ -2,7 +2,7 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_assets: 2_000
+    spm_unit_cash_assets: 2_000
   output:
     sc_tanf_resources_eligible: true
     # 2,000 <= 2,500 -> eligible
@@ -11,7 +11,7 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     sc_tanf_resources_eligible: false
     # 3,000 > 2,500 -> not eligible
@@ -21,7 +21,7 @@
   absolute_error_margin: 0.1
   input:
     state_code: SC
-    spm_unit_assets: 2_500
+    spm_unit_cash_assets: 2_500
   output:
     sc_tanf_resources_eligible: true
     # 2,500 <= 2,500 -> eligible (uses <=)
@@ -30,7 +30,7 @@
   period: 2025-01
   input:
     state_code: SC
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     sc_tanf_resources_eligible: true
     # 0 <= 2,500 -> eligible

@@ -1,0 +1,150 @@
+# Edge cases for ri_ccap_eligible_child
+# Child age threshold: < 13
+# Disabled child age threshold: <= 18
+
+- name: Case 1, child age 12 is last eligible year.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # age 12 < 13 -> eligible
+    ri_ccap_eligible_child: [false, true]
+
+- name: Case 2, non-disabled child age 13 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # age 13 not < 13 -> ineligible
+    ri_ccap_eligible_child: [false, false]
+
+- name: Case 3, disabled child age 18 is last eligible year.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # disabled, age 18 <= 18 -> eligible
+    ri_ccap_eligible_child: [false, true]
+
+- name: Case 4, disabled child age 19 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # disabled, age 19 not <= 18 -> ineligible
+    ri_ccap_eligible_child: [false, false]
+
+- name: Case 5, disabled child age 13 is still eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # disabled, age 13 <= 18 -> eligible (uses disabled threshold)
+    ri_ccap_eligible_child: [false, true]
+
+- name: Case 6, age 0 infant is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # age 0 < 13 -> eligible
+    ri_ccap_eligible_child: [false, true]

@@ -1,0 +1,174 @@
+- name: Case 1, employed parent with part-time job.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_meets_activity_test: true
+
+- name: Case 2, self-employed parent running home business.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_meets_activity_test: true
+
+- name: Case 3, teen parent attending high school.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_parent: true
+        is_in_k12_school: true
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_meets_activity_test: true
+
+- name: Case 4, parent receiving TFA benefits.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # No earned income, but TFA eligible (low income parent with child)
+    ct_c4k_meets_activity_test: true
+
+- name: Case 5, high-income parent with only unearned income and no activity.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        pension_income: 200_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # No employment, no self-employment, not TFA eligible (income too high),
+    # not a teen parent in school
+    ct_c4k_meets_activity_test: false
+
+- name: Case 6, parent age 20 in school exceeds teen parent age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_parent: true
+        is_in_k12_school: true
+        pension_income: 200_000
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Age 20 is NOT < 20 threshold, no employment, high income prevents TFA
+    ct_c4k_meets_activity_test: false
+
+- name: Case 7, working teen dependent does not satisfy activity test for family.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        pension_income: 60_000
+      teen_dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen_dependent]
+    spm_units:
+      spm_unit:
+        members: [parent, teen_dependent]
+    households:
+      household:
+        members: [parent, teen_dependent]
+        state_code: CT
+  output:
+    # Activity test applies to applicant/caretaker (head or spouse) only.
+    # A working dependent (e.g., teen summer job) does not qualify the family.
+    # Parent has only pension income, no TFA, not a teen parent -> false.
+    ct_c4k_meets_activity_test: false
+
+- name: Case 8, self-employed teen dependent also excluded.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        pension_income: 60_000
+      teen_dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        self_employment_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen_dependent]
+    spm_units:
+      spm_unit:
+        members: [parent, teen_dependent]
+    households:
+      household:
+        members: [parent, teen_dependent]
+        state_code: CT
+  output:
+    # Self-employment income of a dependent should also not satisfy the
+    # activity test; only the head/spouse's work activity counts.
+    ct_c4k_meets_activity_test: false

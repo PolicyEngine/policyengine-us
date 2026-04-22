@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    earnings_before_lsr,
+)
 
 
 class weekly_hours_worked(Variable):
@@ -39,9 +42,7 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         else:
             income_effect = np.zeros_like(original)
 
-        original_emp = person("employment_income_before_lsr", period)
-        original_self_emp = person("self_employment_income_before_lsr", period)
-        original_earnings = original_emp + original_self_emp
+        original_earnings = earnings_before_lsr(person, period)
 
         lsr_relative_change = np.divide(
             income_effect,
@@ -68,9 +69,7 @@ class weekly_hours_worked_behavioural_response_substitution_elasticity(Variable)
             substitution_effect = person("substitution_elasticity_lsr", period)
         else:
             substitution_effect = np.zeros_like(original)
-        original_emp = person("employment_income_before_lsr", period)
-        original_self_emp = person("self_employment_income_before_lsr", period)
-        original_earnings = original_emp + original_self_emp
+        original_earnings = earnings_before_lsr(person, period)
 
         lsr_relative_change = np.divide(
             substitution_effect,

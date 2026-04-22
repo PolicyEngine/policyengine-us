@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ct_property_tax_credit(Variable):
@@ -11,13 +14,14 @@ class ct_property_tax_credit(Variable):
     defined_for = "ct_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("ct_agi", period)
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.ct.tax.income.credits.property_tax
-        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        max_credit = min_(real_estate_taxes, p.cap)
-        excess = max_(agi - p.reduction.start[filing_status], 0)
-        total_increments = np.ceil(excess / p.reduction.increment[filing_status])
-        reduction_percent = p.reduction.rate * total_increments
-        reduction_amount = max_credit * reduction_percent
-        return max_(max_credit - reduction_amount, 0)
+        ordered_credits = parameters(
+            period
+        ).gov.states.ct.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ct_income_tax_after_amt",
+            "ct_property_tax_credit",
+            "ct_property_tax_credit_potential",
+        )

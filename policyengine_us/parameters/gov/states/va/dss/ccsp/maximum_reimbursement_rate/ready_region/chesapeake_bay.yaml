@@ -1,0 +1,28 @@
+description: Virginia defines these localities as the Chesapeake Bay Ready Region under the Child Care Subsidy Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP Chesapeake Bay Ready Region localities
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+values:
+  2023-08-01:
+    - ESSEX_COUNTY_VA
+    - GLOUCESTER_COUNTY_VA
+    - HAMPTON_CITY_VA
+    - JAMES_CITY_COUNTY_VA
+    - KING_AND_QUEEN_COUNTY_VA
+    - KING_WILLIAM_COUNTY_VA
+    - LANCASTER_COUNTY_VA
+    - MATHEWS_COUNTY_VA
+    - MIDDLESEX_COUNTY_VA
+    - NEWPORT_NEWS_CITY_VA
+    - NORTHUMBERLAND_COUNTY_VA
+    - POQUOSON_CITY_VA
+    - RICHMOND_COUNTY_VA
+    - WESTMORELAND_COUNTY_VA
+    # - WILLIAMSBURG_CITY_VA  # not in county_enum
+    - YORK_COUNTY_VA

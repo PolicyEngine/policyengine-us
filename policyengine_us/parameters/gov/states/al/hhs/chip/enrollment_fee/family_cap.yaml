@@ -1,0 +1,23 @@
+description: Alabama caps the total ALL Kids annual enrollment fee per family at this amount, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: Alabama ALL Kids annual enrollment fee family cap
+  reference:
+    - title: Alabama ALL Kids Premiums and Copays
+      href: https://www.alabamapublichealth.gov/allkids/premiums-and-copays.html
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.47
+    amount:
+      2021-01-01: 156
+  - threshold:
+      2021-01-01: 1.59
+    amount:
+      2021-01-01: 312

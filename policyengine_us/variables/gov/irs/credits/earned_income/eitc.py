@@ -16,4 +16,16 @@ class eitc(Variable):
         phased_in = tax_unit("eitc_phased_in", period)
         reduction = tax_unit("eitc_reduction", period)
         limitation = max_(0, maximum - reduction)
-        return min_(phased_in, limitation) * takes_up_eitc
+        # EITC is claimed on a filed federal return (26 USC § 32, Form
+        # 1040 with Schedule EIC). Non-filers receive $0. We cannot use
+        # `tax_unit_is_filer` directly because it depends on
+        # `eligible_for_refundable_credits`, which reads `eitc` — a
+        # circular reference. Instead, compose the filer condition from
+        # its non-circular inputs.
+        is_required = tax_unit("tax_unit_is_required_to_file", period)
+        files_voluntarily = tax_unit("would_file_taxes_voluntarily", period)
+        would_file_for_credits = tax_unit(
+            "would_file_if_eligible_for_refundable_credit", period
+        )
+        is_filer = is_required | files_voluntarily | would_file_for_credits
+        return min_(phased_in, limitation) * takes_up_eitc * is_filer

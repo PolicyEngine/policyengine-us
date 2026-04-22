@@ -1,0 +1,35 @@
+- name: Default SUTA is zero.
+  period: 2025
+  output:
+    employer_state_unemployment_tax: 0
+
+- name: State unemployment tax uses the default rate and wage base.
+  period: 2025
+  input:
+    state_code: TX
+    payroll_tax_gross_wages: 10_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 9_000
+    employer_state_unemployment_tax_default_rate: 0.027
+    employer_state_unemployment_tax_rate: 0.027
+    employer_state_unemployment_tax: 243
+
+- name: An override can replace the model default SUTA rate.
+  period: 2025
+  input:
+    state_code: TX
+    payroll_tax_gross_wages: 10_000
+    employer_state_unemployment_tax_rate_override: 0
+  output:
+    employer_state_unemployment_tax_rate: 0
+    employer_state_unemployment_tax: 0
+
+- name: Virgin Islands uses the jurisdiction mask with its own wage base and rate.
+  period: 2025
+  input:
+    state_code: VI
+    payroll_tax_gross_wages: 50_000
+  output:
+    taxable_earnings_for_state_unemployment_tax: 31_000
+    employer_state_unemployment_tax_default_rate: 0.02
+    employer_state_unemployment_tax: 620

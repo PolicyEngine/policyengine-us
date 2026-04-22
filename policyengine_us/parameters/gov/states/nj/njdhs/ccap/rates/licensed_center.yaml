@@ -1,0 +1,221 @@
+description: New Jersey provides these weekly reimbursement rates for licensed child care centers under the Child Care Assistance Program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: New Jersey CCAP licensed center weekly rates
+  breakdown:
+    - nj_ccap_time_category
+    - nj_ccap_grow_nj_kids_rating
+    - nj_ccap_age_group
+  reference:
+    - title: CC-230 (02/25) Maximum Child Care Payment Rates, Licensed Child Care Centers
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=1
+    - title: CC-230 (02/24) Maximum Child Care Payment Rates, Licensed Child Care Centers
+      href: http://www.bccap.org/wp-content/uploads/2024/03/Maximum-Child-Care-Payment-Rates-March-2024.pdf#page=1
+
+# 2024-01-01 values are CC-230 (02/24) rates effective March 1, 2024,
+# backdated to January 1 for microsimulation coverage.
+# The prior (March 2023) rates could not be sourced.
+FULL_TIME:
+  NONE:
+    INFANT:
+      2024-01-01: 363.04
+      2025-03-01: 366.67
+    INFANT_SN:
+      2024-01-01: 435.65
+      2025-03-01: 440.01
+    TODDLER:
+      2024-01-01: 321.55
+      2025-03-01: 326.56
+    TODDLER_SN:
+      2024-01-01: 385.86
+      2025-03-01: 391.87
+    PRESCHOOL:
+      2024-01-01: 287.27
+      2025-03-01: 291.57
+    PRESCHOOL_SN:
+      2024-01-01: 364.84
+      2025-03-01: 370.29
+    SCHOOL_AGE:
+      2024-01-01: 273.59
+      2025-03-01: 274.96
+    SCHOOL_AGE_SN:
+      2024-01-01: 347.46
+      2025-03-01: 349.20
+  STAR_3:
+    INFANT:
+      2024-01-01: 387.44
+      2025-03-01: 391.32
+    INFANT_SN:
+      2024-01-01: 464.93
+      2025-03-01: 469.58
+    TODDLER:
+      2024-01-01: 331.80
+      2025-03-01: 336.96
+    TODDLER_SN:
+      2024-01-01: 398.16
+      2025-03-01: 404.36
+    PRESCHOOL:
+      2024-01-01: 300.77
+      2025-03-01: 305.27
+    PRESCHOOL_SN:
+      2024-01-01: 381.98
+      2025-03-01: 387.70
+    SCHOOL_AGE:
+      2024-01-01: 273.59
+      2025-03-01: 274.96
+    SCHOOL_AGE_SN:
+      2024-01-01: 347.46
+      2025-03-01: 349.20
+  STAR_4:
+    INFANT:
+      2024-01-01: 398.29
+      2025-03-01: 402.27
+    INFANT_SN:
+      2024-01-01: 477.95
+      2025-03-01: 482.73
+    TODDLER:
+      2024-01-01: 340.39
+      2025-03-01: 345.68
+    TODDLER_SN:
+      2024-01-01: 408.46
+      2025-03-01: 414.82
+    PRESCHOOL:
+      2024-01-01: 308.10
+      2025-03-01: 312.71
+    PRESCHOOL_SN:
+      2024-01-01: 391.28
+      2025-03-01: 397.14
+    SCHOOL_AGE:
+      2024-01-01: 273.59
+      2025-03-01: 274.96
+    SCHOOL_AGE_SN:
+      2024-01-01: 347.46
+      2025-03-01: 349.20
+  STAR_5:
+    INFANT:
+      2024-01-01: 412.30
+      2025-03-01: 416.42
+    INFANT_SN:
+      2024-01-01: 494.76
+      2025-03-01: 499.70
+    TODDLER:
+      2024-01-01: 351.50
+      2025-03-01: 356.97
+    TODDLER_SN:
+      2024-01-01: 421.80
+      2025-03-01: 428.36
+    PRESCHOOL:
+      2024-01-01: 317.59
+      2025-03-01: 322.34
+    PRESCHOOL_SN:
+      2024-01-01: 403.34
+      2025-03-01: 409.37
+    SCHOOL_AGE:
+      2024-01-01: 273.59
+      2025-03-01: 274.96
+    SCHOOL_AGE_SN:
+      2024-01-01: 347.46
+      2025-03-01: 349.20
+
+PART_TIME:
+  NONE:
+    INFANT:
+      2024-01-01: 181.52
+      2025-03-01: 183.34
+    INFANT_SN:
+      2024-01-01: 217.83
+      2025-03-01: 220.00
+    TODDLER:
+      2024-01-01: 160.78
+      2025-03-01: 163.28
+    TODDLER_SN:
+      2024-01-01: 192.93
+      2025-03-01: 195.94
+    PRESCHOOL:
+      2024-01-01: 143.64
+      2025-03-01: 145.79
+    PRESCHOOL_SN:
+      2024-01-01: 182.42
+      2025-03-01: 185.15
+    SCHOOL_AGE:
+      2024-01-01: 136.79
+      2025-03-01: 137.48
+    SCHOOL_AGE_SN:
+      2024-01-01: 173.73
+      2025-03-01: 174.60
+  STAR_3:
+    INFANT:
+      2024-01-01: 193.72
+      2025-03-01: 195.66
+    INFANT_SN:
+      2024-01-01: 232.47
+      2025-03-01: 234.79
+    TODDLER:
+      2024-01-01: 165.90
+      2025-03-01: 168.48
+    TODDLER_SN:
+      2024-01-01: 199.08
+      2025-03-01: 202.18
+    PRESCHOOL:
+      2024-01-01: 150.39
+      2025-03-01: 152.64
+    PRESCHOOL_SN:
+      2024-01-01: 190.99
+      2025-03-01: 193.85
+    SCHOOL_AGE:
+      2024-01-01: 136.79
+      2025-03-01: 137.48
+    SCHOOL_AGE_SN:
+      2024-01-01: 173.73
+      2025-03-01: 174.60
+  STAR_4:
+    INFANT:
+      2024-01-01: 199.15
+      2025-03-01: 201.14
+    INFANT_SN:
+      2024-01-01: 238.97
+      2025-03-01: 241.36
+    TODDLER:
+      2024-01-01: 170.19
+      2025-03-01: 172.84
+    TODDLER_SN:
+      2024-01-01: 204.23
+      2025-03-01: 207.41
+    PRESCHOOL:
+      2024-01-01: 154.05
+      2025-03-01: 156.35
+    PRESCHOOL_SN:
+      2024-01-01: 195.64
+      2025-03-01: 198.57
+    SCHOOL_AGE:
+      2024-01-01: 136.79
+      2025-03-01: 137.48
+    SCHOOL_AGE_SN:
+      2024-01-01: 173.73
+      2025-03-01: 174.60
+  STAR_5:
+    INFANT:
+      2024-01-01: 206.15
+      2025-03-01: 208.21
+    INFANT_SN:
+      2024-01-01: 247.38
+      2025-03-01: 249.85
+    TODDLER:
+      2024-01-01: 175.75
+      2025-03-01: 178.48
+    TODDLER_SN:
+      2024-01-01: 210.90
+      2025-03-01: 214.18
+    PRESCHOOL:
+      2024-01-01: 158.80
+      2025-03-01: 161.17
+    PRESCHOOL_SN:
+      2024-01-01: 201.67
+      2025-03-01: 204.69
+    SCHOOL_AGE:
+      2024-01-01: 136.79
+      2025-03-01: 137.48
+    SCHOOL_AGE_SN:
+      2024-01-01: 173.73
+      2025-03-01: 174.60

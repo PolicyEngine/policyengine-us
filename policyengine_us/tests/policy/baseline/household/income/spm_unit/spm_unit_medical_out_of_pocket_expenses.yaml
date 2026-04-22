@@ -1,0 +1,44 @@
+- name: SPM unit medical OOP sums person MOOP and tax unit CHIP premium.
+  period: 2024
+  input:
+    people:
+      parent:
+        medical_out_of_pocket_expenses: 500
+      child:
+        medical_out_of_pocket_expenses: 100
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_medicaid_income_level: 1.70
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    spm_unit_medical_out_of_pocket_expenses: 635
+
+- name: Non-CHIP state SPM unit medical OOP is just the sum of person MOOP.
+  period: 2024
+  input:
+    people:
+      parent:
+        medical_out_of_pocket_expenses: 500
+      child:
+        medical_out_of_pocket_expenses: 100
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    spm_unit_medical_out_of_pocket_expenses: 600

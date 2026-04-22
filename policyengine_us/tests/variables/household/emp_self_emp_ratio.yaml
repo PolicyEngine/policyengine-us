@@ -29,3 +29,12 @@
     self_employment_income: 0
   output:
     emp_self_emp_ratio: 1.0
+
+- name: SSTB self-employment income is included in the earnings ratio
+  period: 2024
+  input:
+    employment_income: 25_000
+    self_employment_income: 0
+    sstb_self_employment_income: 25_000
+  output:
+    emp_self_emp_ratio: 0.5

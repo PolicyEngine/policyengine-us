@@ -15,3 +15,53 @@
     ca_tanf_resources_limit: 2_000
   output:
     ca_tanf_resources_eligible: false
+
+- name: Case 1, resources at exactly $12,137 lower limit boundary.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_resources: 12_137
+    ca_tanf_resources_limit: 12_137
+  output:
+    ca_tanf_resources_eligible: true
+
+- name: Case 2, resources one dollar above $12,137 lower limit boundary.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_resources: 12_138
+    ca_tanf_resources_limit: 12_137
+  output:
+    ca_tanf_resources_eligible: false
+
+- name: Case 3, resources at exactly $18,206 higher limit boundary.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_resources: 18_206
+    ca_tanf_resources_limit: 18_206
+  output:
+    ca_tanf_resources_eligible: true
+
+- name: Case 4, resources one dollar above $18,206 higher limit boundary.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_resources: 18_207
+    ca_tanf_resources_limit: 18_206
+  output:
+    ca_tanf_resources_eligible: false
+
+- name: Case 5, zero resources always eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    ca_tanf_resources: 0
+    ca_tanf_resources_limit: 12_137
+  output:
+    ca_tanf_resources_eligible: true

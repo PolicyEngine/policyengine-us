@@ -30,14 +30,40 @@
         age: 14
     tax_units:
       tax_unit:
-        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
-        md_income_tax_before_credits: 3_000
-        md_married_or_has_child_non_refundable_eitc: 2_000
-        tax_unit_earned_income: 20_000
+        members:
+        - parent
+        - parent2
+        - child1
+        - child2
+        - child3
+        - child4
+        - child5
+        - child6
+        - child7
+        - child8
+        - child9
+        - child10
+        - child11
+        md_income_tax_before_credits: 3000
+        md_married_or_has_child_non_refundable_eitc: 2000
+        tax_unit_earned_income: 20000
         is_eligible_md_poverty_line_credit: true
     households:
       household:
-        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9,child10, child11]
+        members:
+        - parent
+        - parent2
+        - child1
+        - child2
+        - child3
+        - child4
+        - child5
+        - child6
+        - child7
+        - child8
+        - child9
+        - child10
+        - child11
         state_code: MD
   output:
-      md_poverty_line_credit: 1_000
+    md_poverty_line_credit: 1000

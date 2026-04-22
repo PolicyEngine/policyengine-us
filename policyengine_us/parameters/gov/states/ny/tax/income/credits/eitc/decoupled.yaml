@@ -1,0 +1,18 @@
+description: New York uses this indicator to determine whether the state Earned Income Tax Credit is decoupled from post-March 2020 IRC amendments under the individual income tax program.
+
+values:
+  1994-01-01: false
+  2021-01-01: true
+  2022-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New York EITC IRC decoupled
+  reference:
+    - title: Tax Law 607(a), Part WWW of Chapter 58 of the Laws of 2020
+      href: https://www.tax.ny.gov/legal/2020/pit-corp-changes.htm#decoupling
+    - title: 2021 IT-215 Instructions
+      href: https://www.tax.ny.gov/pdf/2021/inc/it215i_2021.pdf#page=1
+    - title: 2022 PIT Changes - Recoupling
+      href: https://www.tax.ny.gov/legal/2022/pit-corp-changes.htm#recoupling

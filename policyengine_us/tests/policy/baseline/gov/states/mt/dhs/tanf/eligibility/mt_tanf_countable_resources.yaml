@@ -1,0 +1,28 @@
+- name: Montana counts liquid assets but does not yet model non-home real property separately.
+  period: 2025-01
+  input:
+    state_code: MT
+    bank_account_assets: 2_000
+    assessed_property_value: 500
+  output:
+    mt_tanf_countable_resources: 2_000
+
+- name: Montana excludes one vehicle with the highest equity value.
+  period: 2025-01
+  input:
+    state_code: MT
+    bank_account_assets: 500
+    household_vehicles_owned: 2
+    household_vehicles_value: 8_000
+  output:
+    mt_tanf_countable_resources: 4_500
+
+- name: Montana excludes a single vehicle.
+  period: 2025-01
+  input:
+    state_code: MT
+    bank_account_assets: 500
+    household_vehicles_owned: 1
+    household_vehicles_value: 8_000
+  output:
+    mt_tanf_countable_resources: 500

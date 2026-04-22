@@ -5,11 +5,13 @@ brackets:
     amount:
       2018-01-01: 2_400
       2023-01-01: 10_000
+      2028-01-01: 2_400
   - threshold:
       2018-01-01: 2
     amount:
       2018-01-01: 4_800
       2023-01-01: 20_000
+      2028-01-01: 4_800
 metadata:
   type: single_amount
   threshold_unit: child
@@ -32,3 +34,8 @@ metadata:
       href: https://files.hawaii.gov/tax/forms/2018/schx_i.pdf#page=2
     - title: 2025 Hawaii Schedule X
       href: https://files.hawaii.gov/tax/forms/current/schx_i.pdf#page=2
+    - title: Act 163 (SLH 2023) Section 4 - Sunset provision
+      # Act 163 is enacted law (Session Laws of Hawaii 2023).
+      href: https://www.capitol.hawaii.gov/slh/Years/SLH2023/SLH2023_Act163.pdf
+    - title: Hawaii Tax Information Release No. 2023-04 - Act 163 Tax Law Changes
+      href: https://files.hawaii.gov/tax/news/announce/ann23-04.pdf

@@ -12,7 +12,7 @@ class ma_eaedc_immigration_status_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         is_undocumented = (
             immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )

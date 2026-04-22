@@ -1,0 +1,15 @@
+description: Kentucky uses this indicator to determine whether the flat earned income disregard applies under the Kentucky Transitional Assistance Program.
+
+metadata:
+  unit: bool
+  period: month
+  label: Kentucky K-TAP earned income flat disregard in effect
+  reference:
+    - title: 921 KAR 2:016 Section 5(3)(e)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+    - title: 921 KAR 2:016 Section 5(3)(e) (pre-2023 version)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/10142/
+
+values:
+  1997-07-01: true
+  2023-02-16: false

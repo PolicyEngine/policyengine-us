@@ -1,0 +1,63 @@
+description: The US credits one Social Security quarter of coverage when a person earns at least this amount.
+values:
+  # Historical values from SSA.gov/OACT/COLA/QC.html
+  1978-01-01: 250
+  1979-01-01: 260
+  1980-01-01: 290
+  1981-01-01: 310
+  1982-01-01: 340
+  1983-01-01: 370
+  1984-01-01: 390
+  1985-01-01: 410
+  1986-01-01: 440
+  1987-01-01: 460
+  1988-01-01: 470
+  1989-01-01: 500
+  1990-01-01: 520
+  1991-01-01: 540
+  1992-01-01: 570
+  1993-01-01: 590
+  1994-01-01: 620
+  1995-01-01: 630
+  1996-01-01: 640
+  1997-01-01: 670
+  1998-01-01: 700
+  1999-01-01: 740
+  2000-01-01: 780
+  2001-01-01: 830
+  2002-01-01: 870
+  2003-01-01: 890
+  2004-01-01: 900
+  2005-01-01: 920
+  2006-01-01: 970
+  2007-01-01: 1_000
+  2008-01-01: 1_050
+  2009-01-01: 1_090
+  2010-01-01: 1_120
+  2011-01-01: 1_120
+  2012-01-01: 1_130
+  2013-01-01: 1_160
+  2014-01-01: 1_200
+  2015-01-01: 1_220
+  2016-01-01: 1_260
+  2017-01-01: 1_300
+  2018-01-01: 1_320
+  2019-01-01: 1_360
+  2020-01-01: 1_410
+  2021-01-01: 1_470
+  2022-01-01: 1_510
+  2023-01-01: 1_640
+  2024-01-01: 1_730
+  2025-01-01: 1_810
+metadata:
+  unit: currency-USD
+  period: year
+  label: Quarter of coverage threshold
+  uprating: gov.ssa.uprating
+  reference:
+    - title: 42 U.S.C. § 413(d)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/413#d_2
+    - title: 20 CFR § 404.143
+      href: https://www.law.cornell.edu/cfr/text/20/404.143
+    - title: Social Security Quarters of Coverage
+      href: https://www.ssa.gov/OACT/COLA/QC.html

@@ -1,0 +1,80 @@
+# SC CCAP age group tests
+# sc_ccap_age_group is Person (enum)
+
+- name: Case 1, infant under 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [UNDER_1]
+
+- name: Case 2, toddler age 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [AGE_1]
+
+- name: Case 3, toddler age 2.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [AGE_2]
+
+- name: Case 4, preschool age 3.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [AGE_3]
+
+- name: Case 5, preschool age 4.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [AGE_4]
+
+- name: Case 6, school age child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 8
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: [AGE_5_12_IN_SCHOOL]
