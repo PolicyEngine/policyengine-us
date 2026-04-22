@@ -12,6 +12,8 @@ class ok_eitc(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-EIC.pdf",
         # Oklahoma Statutes 68 O.S. Section 2357.43 - Earned Income Tax Credit
         "https://law.justia.com/codes/oklahoma/title-68/section-68-2357-43/",
+        # HB 2962 (Laws 2021, c. 493) enrolled - restored refundability from 2022
+        "https://www.oklegislature.gov/cf_pdf/2021-22%20ENR/hB/HB2962%20ENR.PDF",
     )
     defined_for = StateCode.OK
     documentation = """
@@ -25,38 +27,32 @@ class ok_eitc(Variable):
     the federal EITC parameters that were in effect for tax year 2020,
     regardless of the current tax year.
 
-    2020 Federal EITC Parameters (frozen for Oklahoma):
-    - Maximum credit (0 children): $538
-    - Maximum credit (1 child): $3,584
-    - Maximum credit (2 children): $5,920
-    - Maximum credit (3+ children): $6,660
+    Refundability history:
+    - 2002-2015: Refundable (original enactment, Laws 2001, c. 383)
+    - 2016-2021: Non-refundable (Laws 2016, c. 341 sec. 1)
+    - 2022-present: Refundable (HB 2962, Laws 2021, c. 493, sec. 2)
 
-    Calculation steps:
-    1. Compute federal EITC using 2020 parameters (ok_federal_eitc)
-    2. Calculate proration ratio: OK AGI / Federal AGI (capped at 0-100%)
-    3. Multiply: federal_eitc * 5% * proration_ratio
-
-    Example for 2025 (single filer, 2 children, $30,000 earnings):
-    - Federal EITC (2020 params): $4,420
-    - Oklahoma match rate: 5%
-    - Proration (assume 100% OK income): 1.0
-    - Oklahoma EITC: $4,420 * 0.05 * 1.0 = $221
-
-    Note: The proration ensures part-year or nonresident filers receive
-    a credit proportional to their Oklahoma-source income.
+    When non-refundable, the credit is capped at Oklahoma tax liability
+    net of other non-refundable credits, matching Form 511 line ordering.
     """
 
     def formula(tax_unit, period, parameters):
-        # Calculate proration ratio based on OK AGI vs Federal AGI
         us_agi = tax_unit("adjusted_gross_income", period)
         ok_agi = tax_unit("ok_agi", period)
         agi_ratio = np.zeros_like(us_agi)
         mask = us_agi != 0
         agi_ratio[mask] = ok_agi[mask] / us_agi[mask]
-        # Proration must be between 0 and 1
         prorate = min_(1, max_(0, agi_ratio))
-        # Get federal EITC computed using frozen 2020 parameters
         federal_eitc = tax_unit("ok_federal_eitc", period)
-        p = parameters(period).gov.states.ok.tax.income.credits.earned_income
-        # Oklahoma EITC = 5% of federal EITC, prorated
-        return prorate * p.eitc_fraction * federal_eitc
+        p = parameters(period).gov.states.ok.tax.income.credits
+        tentative = prorate * p.earned_income.eitc_fraction * federal_eitc
+        # Laws 2016, c. 341 made the credit non-refundable; HB 2962
+        # (Laws 2021, c. 493) restored refundability effective 2022-01-01.
+        # When non-refundable, cap at remaining Oklahoma tax after other
+        # non-refundable credits.
+        if "ok_eitc" in p.nonrefundable:
+            tax_before_credits = tax_unit("ok_income_tax_before_credits", period)
+            other_nonrefundable = tax_unit("ok_child_care_child_tax_credit", period)
+            remaining_tax = max_(0, tax_before_credits - other_nonrefundable)
+            return min_(tentative, remaining_tax)
+        return tentative
