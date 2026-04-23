@@ -83,3 +83,74 @@
         state_code: TX
   output:
     meets_snap_work_requirements: false
+
+- name: Case 7, two adults, one passes one fails, unit eligible (per-person disqualification).
+  # Per 7 CFR 273.7(f)(1), the non-compliant adult is individually
+  # disqualified and excluded; the remaining member continues.
+  period: 2024-01
+  input:
+    people:
+      adult_a:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      adult_b:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [adult_a, adult_b]
+    tax_units:
+      tax_unit:
+        members: [adult_a, adult_b]
+    households:
+      household:
+        members: [adult_a, adult_b]
+        state_code: CA
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 8, two adults, both fail, unit ineligible.
+  period: 2024-01
+  input:
+    people:
+      adult_a:
+        age: 35
+        weekly_hours_worked_before_lsr: 0
+      adult_b:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [adult_a, adult_b]
+    tax_units:
+      tax_unit:
+        members: [adult_a, adult_b]
+    households:
+      household:
+        members: [adult_a, adult_b]
+        state_code: CA
+  output:
+    meets_snap_work_requirements: false
+
+- name: Case 9, two adults both pass, unit eligible (regression guard).
+  period: 2024-01
+  input:
+    people:
+      adult_a:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      adult_b:
+        age: 30
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [adult_a, adult_b]
+    tax_units:
+      tax_unit:
+        members: [adult_a, adult_b]
+    households:
+      household:
+        members: [adult_a, adult_b]
+        state_code: CA
+  output:
+    meets_snap_work_requirements: true

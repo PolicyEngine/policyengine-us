@@ -6,9 +6,26 @@ class meets_snap_work_requirements(Variable):
     entity = SPMUnit
     label = "SPM Unit is eligible for SNAP benefits via work requirements"
     definition_period = MONTH
-    reference = "https://www.fns.usda.gov/snap/work-requirements"
+    reference = (
+        "https://www.fns.usda.gov/snap/work-requirements",
+        # 7 CFR 273.7(f)(1) — general work requirement; individual
+        # disqualification is the default rule.
+        "https://www.law.cornell.edu/cfr/text/7/273.7",
+        # 7 CFR 273.24(b) — ABAWD time limit; always individual.
+        "https://www.law.cornell.edu/cfr/text/7/273.24",
+    )
 
     def formula(spm_unit, period, parameters):
+        # Per 7 CFR 273.7(f)(1) and 273.24(b), a non-compliant member is
+        # individually disqualified and excluded from the SNAP unit.
+        # Remaining members continue to receive SNAP (with income and
+        # resources of the excluded member prorated under 7 CFR
+        # 273.11(c)(2) — proration not yet modeled). Only the narrow
+        # 7 CFR 273.7(f)(5) state option — elected by 8 jurisdictions
+        # (AZ, FL, MA, MN, MS, TX, VA, VI) — permits household-wide
+        # disqualification when the head of household fails the general
+        # work requirement, bounded to at most 180 days. That option is
+        # not yet parameterized here.
         person = spm_unit.members
         general_work_requirements = person(
             "meets_snap_general_work_requirements", period
@@ -31,4 +48,7 @@ class meets_snap_work_requirements(Variable):
             abawd_work_requirements & general_work_requirements,
             general_work_requirements,
         )
-        return spm_unit.sum(~meets_work_requirements_person) == 0
+        # Unit is eligible as long as at least one member meets
+        # requirements (or is exempt). Members who fail are individually
+        # disqualified per 273.7(f)(1) / 273.24(b).
+        return spm_unit.any(meets_work_requirements_person)
