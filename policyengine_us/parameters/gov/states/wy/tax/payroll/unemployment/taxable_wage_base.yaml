@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Wyoming.
+values:
+  0000-01-01: 30_900
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Wyoming unemployment taxable wage base
+  reference:
+    - title: Wyoming Statutes Section 27-3-104(a)(xviii)(A)
+      href: https://wyoleg.gov/statutes/compress/title27.pdf#page=14
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=62

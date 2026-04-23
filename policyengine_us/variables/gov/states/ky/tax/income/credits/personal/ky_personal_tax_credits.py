@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ky_personal_tax_credits(Variable):
@@ -11,12 +14,14 @@ class ky_personal_tax_credits(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        ky_files_separately = tax_unit("ky_files_separately", period)
-        person = tax_unit.members
-        ky_personal_tax_credits_indiv = person("ky_personal_tax_credits_indiv", period)
-        ky_personal_tax_credits_joint = person("ky_personal_tax_credits_joint", period)
-        return where(
-            ky_files_separately,
-            tax_unit.sum(ky_personal_tax_credits_indiv),
-            tax_unit.sum(ky_personal_tax_credits_joint),
+        ordered_credits = parameters(
+            period
+        ).gov.states.ky.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ky_income_tax_before_non_refundable_credits_unit",
+            "ky_personal_tax_credits",
+            "ky_personal_tax_credits_potential",
         )

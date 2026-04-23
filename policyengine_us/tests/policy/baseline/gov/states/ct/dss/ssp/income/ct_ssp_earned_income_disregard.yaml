@@ -1,0 +1,212 @@
+- name: Case 1, aged person with earnings above initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 6_000  # $500/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged/disabled: $65 + 0.5 * (500 - 65) = $65 + $217.50 = $282.50
+    ct_ssp_earned_income_disregard: 282.50
+
+- name: Case 2, blind person with earnings above initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 6_000  # $500/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Blind: $85 + 0.5 * (500 - 85) = $85 + $207.50 = $292.50
+    ct_ssp_earned_income_disregard: 292.50
+
+- name: Case 3, aged person with earnings below initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 600  # $50/mo < $65
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged/disabled: disregard = min($65, $50) + 0 = $50 (capped at earnings)
+    ct_ssp_earned_income_disregard: 50
+
+- name: Case 4, no earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_earned_income_disregard: 0
+
+- name: Case 5, blind person age 65+ uses blind disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        employment_income: 12_000  # $1,000/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Blind (even though reclassified as aged at 65): $85 + 0.5 * (1000 - 85) = $85 + $457.50 = $542.50
+    ct_ssp_earned_income_disregard: 542.50
+
+- name: Case 6, earnings exactly at initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 780  # $65/mo exactly
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged/disabled: $65 + 0.5 * (65 - 65) = $65
+    ct_ssp_earned_income_disregard: 65
+
+- name: Case 7, blind person earnings exactly at blind initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 1_020  # $85/mo exactly
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Blind: min(85, 85) + 0.5 * max(85 - 85, 0) = $85 + $0 = $85
+    ct_ssp_earned_income_disregard: 85
+
+- name: Case 8, aged person earnings one dollar above initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 792  # $66/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged/disabled: $65 + 0.5 * (66 - 65) = $65 + $0.50 = $65.50
+    ct_ssp_earned_income_disregard: 65.50
+
+- name: Case 9, blind person earnings one dollar above blind initial disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 1_032  # $86/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Blind: $85 + 0.5 * (86 - 85) = $85 + $0.50 = $85.50
+    ct_ssp_earned_income_disregard: 85.50
+
+- name: Case 10, blind person earnings between aged and blind initial disregards.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        employment_income: 900  # $75/mo (between $65 aged and $85 blind)
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Blind: min(85, 75) = $75 (all earnings disregarded, below $85 initial)
+    # Remainder = max(75 - 85, 0) = $0
+    # Total = $75 + $0 = $75
+    ct_ssp_earned_income_disregard: 75
+
+- name: Case 11, aged person earnings between aged and blind initial disregards.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        employment_income: 900  # $75/mo (between $65 aged and $85 blind)
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged/disabled: $65 + 0.5 * (75 - 65) = $65 + $5 = $70
+    ct_ssp_earned_income_disregard: 70
+
+- name: Case 12, married couple one blind one aged with same earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        employment_income: 6_000  # $500/mo
+      person2:
+        age: 68
+        is_blind: false
+        employment_income: 6_000  # $500/mo
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # person1 (blind): $85 + 0.5 * (500 - 85) = $85 + $207.50 = $292.50
+    # person2 (aged): $65 + 0.5 * (500 - 65) = $65 + $217.50 = $282.50
+    ct_ssp_earned_income_disregard: [292.50, 282.50]

@@ -17,7 +17,7 @@ class de_tanf_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Delaware follows federal immigration rules
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         # State-specific eligibility tests
         gross_income_eligible = spm_unit("de_tanf_gross_income_eligible", period)

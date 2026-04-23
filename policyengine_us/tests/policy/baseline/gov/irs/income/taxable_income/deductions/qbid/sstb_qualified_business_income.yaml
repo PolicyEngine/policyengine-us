@@ -1,0 +1,65 @@
+- name: SSTB SE income only, no deductions
+  period: 2026
+  input:
+    sstb_self_employment_income: 100_000
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    sstb_qualified_business_income: 100_000
+
+- name: SSTB SE income with would_be_qualified flag false
+  period: 2026
+  input:
+    sstb_self_employment_income: 100_000
+    sstb_self_employment_income_would_be_qualified: false
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    sstb_qualified_business_income: 0
+
+- name: SSTB SE income still counts when business_is_qualified is false
+  period: 2026
+  input:
+    business_is_qualified: false
+    sstb_self_employment_income: 100_000
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    sstb_qualified_business_income: 100_000
+
+- name: Mixed SSTB and non-SSTB SE income, deductions pro-rated by gross share
+  period: 2026
+  input:
+    self_employment_income: 30_000
+    sstb_self_employment_income: 70_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    # SSTB share = 70_000 / 100_000 = 0.7
+    # SSTB QBI = 70_000 - 0.7 * 1_000 = 69_300
+    sstb_qualified_business_income: 69_300
+
+- name: No SSTB SE income returns zero
+  period: 2026
+  input:
+    self_employment_income: 50_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    sstb_qualified_business_income: 0
+
+- name: Mixed-sign non-SSTB loss does not create a negative SSTB deduction share
+  period: 2026
+  input:
+    self_employment_income: -50_000
+    sstb_self_employment_income: 100_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    sstb_qualified_business_income: 99_000

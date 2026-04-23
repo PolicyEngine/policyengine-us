@@ -5,7 +5,7 @@
     cdcc_potential: 800
     state_code: WI
   output:
-    wi_childcare_expense_credit: 400 # 800 * 0.5
+    wi_childcare_expense_credit_potential: 400 # 800 * 0.5
 
 - name: WI CDCC 2023 pre-Act-101, still uses federal limits (fraction 0.5)
   absolute_error_margin: 0.01
@@ -14,7 +14,7 @@
     cdcc_potential: 600
     state_code: WI
   output:
-    wi_childcare_expense_credit: 300 # 600 * 0.5
+    wi_childcare_expense_credit_potential: 300 # 600 * 0.5
 
 - name: WI CDCC 2024 one child, expenses under federal limit - same as federal
   absolute_error_margin: 0.01
@@ -40,7 +40,7 @@
       spm_unit:
         members: [head, child]
   output:
-    wi_childcare_expense_credit: 400 # 2000 * 0.20 * 1.0
+    wi_childcare_expense_credit_potential: 400 # 2000 * 0.20 * 1.0
 
 - name: WI CDCC 2024 one child, expenses between federal limit and WI limit
   absolute_error_margin: 0.01
@@ -66,7 +66,7 @@
       spm_unit:
         members: [head, child]
   output:
-    wi_childcare_expense_credit: 1_400 # 7000 * 0.20 * 1.0
+    wi_childcare_expense_credit_potential: 1_400 # 7000 * 0.20 * 1.0
 
 - name: WI CDCC 2024 two children, expenses between federal limit and WI limit
   absolute_error_margin: 0.01
@@ -97,7 +97,7 @@
       spm_unit:
         members: [head, spouse, child1, child2]
   output:
-    wi_childcare_expense_credit: 3_000 # 15000 * 0.20 * 1.0
+    wi_childcare_expense_credit_potential: 3_000 # 15000 * 0.20 * 1.0
 
 - name: WI CDCC 2024 one child, expenses above WI limit - capped at $10,000
   absolute_error_margin: 0.01
@@ -123,4 +123,4 @@
       spm_unit:
         members: [head, child]
   output:
-    wi_childcare_expense_credit: 2_000 # min(12000, 10000) * 0.20 * 1.0
+    wi_childcare_expense_credit_potential: 2_000 # min(12000, 10000) * 0.20 * 1.0

@@ -1,0 +1,48 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - "assets/**"
+
+website:
+  title: "PolicyEngine US"
+  description: "Methodology and reference for the US tax-benefit microsimulation model."
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+      - methodology/index.qmd
+      - programs/index.qmd
+      - reference/index.qmd
+  sidebar:
+    - id: methodology
+      title: "Methodology"
+      contents:
+        - methodology/index.qmd
+        - methodology/moop-decomposition.qmd
+    - id: programs
+      title: "Programs"
+      contents:
+        - programs/index.qmd
+        - programs/chip.qmd
+    - id: reference
+      title: "Reference"
+      contents:
+        - reference/index.qmd
+  page-footer:
+    center: "PolicyEngine — code at [github.com/PolicyEngine/policyengine-us](https://github.com/PolicyEngine/policyengine-us)."
+
+format:
+  html:
+    theme: [cosmo, assets/custom.scss]
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    anchor-sections: true
+
+bibliography: references.bib
+
+execute:
+  freeze: auto

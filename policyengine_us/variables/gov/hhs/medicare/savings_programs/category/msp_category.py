@@ -17,7 +17,7 @@ class msp_category(Variable):
     definition_period = MONTH
     reference = (
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
-        "https://www.law.cornell.edu/cfr/text/42/435.121",
+        "https://www.law.cornell.edu/uscode/text/42/1396d#p",
     )
 
     def formula(person, period, parameters):

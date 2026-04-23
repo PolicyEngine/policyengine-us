@@ -3,10 +3,10 @@
   input:
     people:
       head:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 10
       spouse:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 20
     marital_units: 
       unit:
@@ -19,10 +19,10 @@
   input:
     people:
       head:
-        ssi_marital_both_eligible: false
+        ssi_couple_computation_applies: false
         ssi_unearned_income: 10
       spouse:
-        ssi_marital_both_eligible: false
+        ssi_couple_computation_applies: false
         ssi_unearned_income: 20
     marital_units: 
       unit:
@@ -35,10 +35,10 @@
   input:
     people:
       head:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 10
       spouse:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 0
     marital_units: 
       unit:
@@ -51,10 +51,10 @@
   input:
     people:
       head:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 0
       spouse:
-        ssi_marital_both_eligible: true
+        ssi_couple_computation_applies: true
         ssi_unearned_income: 10
     marital_units: 
       unit:

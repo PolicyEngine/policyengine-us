@@ -1,21 +1,30 @@
-- name: MS prorate fraction unit test 1
-  period: 2021
+- name: MS joint allocation minimizes combined tax
+  period: 2025
   input:
     people:
       person1:
         is_tax_unit_head: true
         age: 40
-        ms_agi: 200
+        ms_agi: 25_671.262
       person2:
         is_tax_unit_spouse: true
         age: 40
-        ms_agi: 800
+        ms_agi: 15_148.763
+      child1:
+        age: 4
+      child2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        ms_total_exemptions: 15_000
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, child1, child2]
         state_code: MS
   output:
-    ms_prorate_fraction: [0.2, 0.8]
+    ms_prorate_fraction: [0.79955417, 0.20044583, 0, 0]
 
 - name: If no net income and single, assign entirely to them as head.
   period: 2021
@@ -38,3 +47,79 @@
         state_code: MS
   output:
     ms_prorate_fraction: [1, 0]
+
+- name: Equal income - flat rate means any split is optimal, default to head
+  # With 2025's single bracket (4.4% above $10k), equal-income spouses
+  # owe the same total tax regardless of split, so optimizer keeps default.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ms_agi: 30_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        ms_agi: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_prorate_fraction: [1, 0]
+
+- name: Single earner gets all deductions
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ms_agi: 60_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        ms_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_prorate_fraction: [1, 0]
+
+- name: Itemized deductions above the standard deduction are used in allocation
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ms_agi: 16_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        ms_agi: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ms_itemized_deductions_unit: 8_000
+        ms_total_exemptions: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_prorate_fraction: [0.75, 0.25]

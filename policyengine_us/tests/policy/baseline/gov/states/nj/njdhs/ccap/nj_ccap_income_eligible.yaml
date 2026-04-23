@@ -1,0 +1,192 @@
+# nj_ccap_income_eligible: SPMUnit, bool, MONTH
+# Initial (not enrolled): income <= FPL * 2.0 (200% FPL)
+# Continuing (enrolled): income <= FPL * 2.5 (250% FPL)
+# Exit: income <= SMI * 0.85
+#
+# 2026 FPG (Contiguous US): first_person = 15_960, additional = 5_680
+#   Family of 2: 15_960 + 5_680 = 21_640
+#   Family of 3: 15_960 + 2*5_680 = 27_320
+#   Family of 4: 15_960 + 3*5_680 = 33_000
+#
+# 200% FPL family of 2: 21_640 * 2 = 43_280
+# 250% FPL family of 2: 21_640 * 2.5 = 54_100
+
+- name: Case 1, initial applicant at 150% FPL is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 32_460
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 32_460 / 12 = 2_705/mo; FPG fam of 2 = 21_640
+    # 200% FPL = 43_280; 32_460 <= 43_280 -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 2, initial applicant exactly at 200% FPL is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_280
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 43_280 = 200% FPL family of 2 -> exactly at limit -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 3, initial applicant above 200% FPL is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_281
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 43_281 > 43_280 (200% FPL) -> ineligible for initial
+    nj_ccap_income_eligible: false
+
+- name: Case 4, enrolled family at 220% FPL is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_608
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 47_608 = ~220% FPL; enrolled -> limit is 250% = 54_100
+    # 47_608 <= 54_100 -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 5, enrolled family exactly at 250% FPL is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_100
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 54_100 = 250% FPL family of 2; enrolled -> limit is 54_100
+    # 54_100 <= 54_100 -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 6, enrolled family above 250% FPL but below 85% SMI is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_101
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 54_101 > 250% FPL (54_100) but enrolled families use 85% SMI
+    # 85% SMI family of 2 = 88_516; 54_101 <= 88_516 -> eligible
+    # (graduated phase-out, CCDF State Plan Section 2.5)
+    nj_ccap_income_eligible: true
+
+- name: Case 7, zero income is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # $0 <= 43_280 (200% FPL) -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 8, family of 4 at 200% FPL boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 66_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # FPG family of 4 = 33_000; 200% = 66_000
+    # 66_000 <= 66_000 -> eligible
+    nj_ccap_income_eligible: true

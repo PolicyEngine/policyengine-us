@@ -20,7 +20,23 @@ class marginal_tax_rate(Variable):
         adult_indexes = person("adult_earnings_index", period)
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
+        sstb_self_employment_income = person("sstb_self_employment_income", period)
         emp_self_emp_ratio = person("emp_self_emp_ratio", period)
+        positive_self_employment_income = max_(0, self_employment_income)
+        positive_sstb_self_employment_income = max_(0, sstb_self_employment_income)
+        positive_self_employment_total = (
+            positive_self_employment_income + positive_sstb_self_employment_income
+        )
+        non_sstb_share = where(
+            positive_self_employment_total > 0,
+            positive_self_employment_income / positive_self_employment_total,
+            1,
+        )
+        sstb_share = where(
+            positive_self_employment_total > 0,
+            positive_sstb_self_employment_income / positive_self_employment_total,
+            0,
+        )
 
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
@@ -36,10 +52,16 @@ class marginal_tax_rate(Variable):
                 period,
                 employment_income + mask * delta * emp_self_emp_ratio,
             )
+            self_employment_delta = mask * delta * (1 - emp_self_emp_ratio)
             alt_sim.set_input(
                 "self_employment_income",
                 period,
-                self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
+                self_employment_income + self_employment_delta * non_sstb_share,
+            )
+            alt_sim.set_input(
+                "sstb_self_employment_income",
+                period,
+                sstb_self_employment_income + self_employment_delta * sstb_share,
             )
             alt_person = alt_sim.person
             netinc_alt = alt_person.household("household_net_income", period)

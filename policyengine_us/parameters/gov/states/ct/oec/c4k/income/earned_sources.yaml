@@ -1,0 +1,16 @@
+description: Connecticut counts these earned income sources as countable income under the Care 4 Kids program. Per RCSA 17b-749-05(b)(2)(E), the earnings of a family member who is under 18 and is not the parent of a child for whom assistance is requested are excluded. We sum these sources only for members aged 18 or older or who are the tax-unit head or spouse (i.e. the parent/applicant of the child receiving assistance).
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+    - farm_income
+
+metadata:
+  unit: list
+  period: year
+  label: Connecticut C4K countable earned income sources (subject to non-parent minor exclusion)
+  reference:
+    - title: RCSA 17b-749-05(b)(2)(E)
+      href: https://eregulations.ct.gov/eRegsPortal/Browse/RCSA/Title_17bSubtitle_17b-749Section_17b-749-05/
+    - title: Care 4 Kids Policies and Procedures (Former Regulations) 17b-749-05(b)
+      href: https://www.ctoec.org/care-4-kids-regulations/#17b-749-05

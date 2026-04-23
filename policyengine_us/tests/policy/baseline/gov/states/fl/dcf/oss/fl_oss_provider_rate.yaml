@@ -1,0 +1,134 @@
+# Tests for fl_oss_provider_rate variable.
+# Redesign (I) = SSI FBR (individual) + offset.
+# Protected (I) = SSI FBR (individual) + offset.
+# Couple = 2 * individual rate - $97 couple reduction.
+
+- name: Case 1, individual Redesign provider rate Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # SSI FBR (I) 2025 = $967/month = $11,604/year.
+    # Redesign offset = $24.40/month = $292.80/year.
+    # Provider rate = $11,604 + $292.80 = $11,896.80/year.
+    # Monthly output = $11,896.80 / 12 = $991.40.
+    fl_oss_provider_rate: [991.40]
+
+- name: Case 2, individual Protected provider rate Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # SSI FBR (I) 2025 = $967/month = $11,604/year.
+    # Protected offset = $185/month = $2,220/year.
+    # Provider rate = $11,604 + $2,220 = $13,824/year.
+    # Monthly output = $13,824 / 12 = $1,152.
+    fl_oss_provider_rate: [1_152]
+
+- name: Case 3, couple Redesign provider rate Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Individual rate = $991.40/month.
+    # Couple rate = 2 * $991.40 - $97 = $1,885.80/month.
+    # Per person = $1,885.80 / 2 = $942.90/month.
+    # Annual per person = $942.90 * 12 = $11,314.80.
+    # Monthly output = $11,314.80 / 12 = $942.90.
+    fl_oss_provider_rate: [942.90, 942.90]
+
+- name: Case 4, couple Protected provider rate Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Individual Protected rate = $1,152/month.
+    # Couple rate = 2 * $1,152 - $97 = $2,207/month.
+    # Per person = $2,207 / 2 = $1,103.50/month.
+    fl_oss_provider_rate: [1_103.50, 1_103.50]
+
+- name: Case 5, individual Redesign provider rate 2024-01 (pre-restructuring era).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # SSI FBR (I) 2024 = $943/month.
+    # Redesign offset = $24.40/month.
+    # Provider rate = $943 + $24.40 = $967.40/month.
+    fl_oss_provider_rate: [967.40]

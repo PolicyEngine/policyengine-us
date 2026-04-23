@@ -1,4 +1,4 @@
-description: Kentucky caps the assistance unit size at this value for parameter lookups under the Kentucky Transitional Assistance Program.
+description: Kentucky limits K-TAP assistance unit size to this number of persons.
 
 metadata:
   unit: person
@@ -7,6 +7,8 @@ metadata:
   reference:
     - title: 921 KAR 2:016 Section 9(2)(a)
       href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
+    - title: 921 KAR 2:016 Section 9(2)(a) (pre-2023 version)
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/10142/
 
 values:
-  2023-03-01: 7
+  1997-07-01: 7

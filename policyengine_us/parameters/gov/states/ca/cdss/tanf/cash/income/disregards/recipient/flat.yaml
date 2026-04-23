@@ -1,6 +1,11 @@
 description: California disregards this amount of monthly income when computing CalWORKS payments for recipients.
 
 values:
+  1998-01-01: 225
+  2011-06-01: 112
+  2013-03-01: 225
+  2020-06-01: 500
+  2021-06-01: 550
   2022-06-01: 600
 
 metadata:
@@ -9,4 +14,6 @@ metadata:
   label: California CalWORKs flat monthly income exclusion for recipients
   reference:
     - title: Los Angeles Department of Public Social Services E-Policy | CalWORKs Earned Income Disregards
-      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-111_23_Earned_Income_Disregards%2F44-111_23_Earned_Income_Disregards.htm%23Policybc-2&rhtocid=_3_1_6_2_1
+      href: https://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-111_23_Earned_Income_Disregards%2F44-111_23_Earned_Income_Disregards.htm%23Policybc-2&rhtocid=_3_1_6_2_1
+    - title: SB 80 (Ch. 27, Statutes of 2019) - Recipient EID increases
+      href: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=201920200SB80

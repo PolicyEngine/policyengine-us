@@ -1,16 +1,3 @@
-# Arizona Dependent Tax Credit Tests
-# Per A.R.S. 43-1073.01
-#
-# Credit Amounts:
-# - Under 17: $100
-# - Age 17+: $25
-#
-# Phase-Out Thresholds:
-# - Single/HOH/Separate: $200,000
-# - Joint: $400,000
-#
-# Phase-Out Rate: 5% per $1,000 over threshold
-
 - name: Household with no dependents
   period: 2023
   input:
@@ -20,16 +7,18 @@
         age: 25
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 200_000
+        members:
+        - person1
+        adjusted_gross_income: 200000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1]
+        members:
+        - person1
         state_code: AZ
   output:
     az_dependent_tax_credit: 0
-
 - name: One young dependent without reduction
   period: 2023
   input:
@@ -39,16 +28,18 @@
         age: 16
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 200_000
+        members:
+        - person1
+        adjusted_gross_income: 200000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1]
+        members:
+        - person1
         state_code: AZ
   output:
     az_dependent_tax_credit: 100
-
 - name: One young and one old dependent without reduction
   period: 2023
   input:
@@ -61,16 +52,20 @@
         age: 17
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 200_000
+        members:
+        - person1
+        - person2
+        adjusted_gross_income: 200000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: AZ
   output:
     az_dependent_tax_credit: 125
-
 - name: One young and one old dependent with maximum reduction
   period: 2023
   input:
@@ -83,16 +78,20 @@
         age: 17
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 220_000
+        members:
+        - person1
+        - person2
+        adjusted_gross_income: 220000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: AZ
   output:
     az_dependent_tax_credit: 0
-
 - name: One young and one old dependent with maximum reduction, capped at 0
   period: 2023
   input:
@@ -105,16 +104,20 @@
         age: 17
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 300_000
+        members:
+        - person1
+        - person2
+        adjusted_gross_income: 300000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: AZ
   output:
     az_dependent_tax_credit: 0
-
 - name: One young and one old dependent without reduction, joint
   period: 2023
   input:
@@ -127,16 +130,20 @@
         age: 17
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 400_000
+        members:
+        - person1
+        - person2
+        adjusted_gross_income: 400000
         filing_status: JOINT
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: AZ
   output:
     az_dependent_tax_credit: 125
-
 - name: Two old dependents with partial reduction
   period: 2023
   input:
@@ -149,22 +156,20 @@
         age: 17
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 202_000
+        members:
+        - person1
+        - person2
+        adjusted_gross_income: 202000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: AZ
   output:
-    # Over threshold by $2,000 = 2 * 5% = 10% reduction
-    # 2 * $25 * (1 - 0.10) = $45
     az_dependent_tax_credit: 45
-
-# =============================================================================
-# 2025 Tax Year Tests
-# =============================================================================
-
 - name: 2025 - Single with one young dependent at threshold
   period: 2025
   input:
@@ -174,17 +179,18 @@
         age: 10
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 200_000
+        members:
+        - person1
+        adjusted_gross_income: 200000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1]
+        members:
+        - person1
         state_code: AZ
   output:
-    # At $200,000 threshold - no reduction
     az_dependent_tax_credit: 100
-
 - name: 2025 - Single with partial phase-out
   period: 2025
   input:
@@ -194,19 +200,18 @@
         age: 10
     tax_units:
       tax_unit:
-        members: [person1]
-        adjusted_gross_income: 205_000
+        members:
+        - person1
+        adjusted_gross_income: 205000
         filing_status: SINGLE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1]
+        members:
+        - person1
         state_code: AZ
   output:
-    # Over threshold by $5,000
-    # Reduction: ceil(5,000 / 1,000) = 5 * 5% = 25%
-    # Credit: $100 * (1 - 0.25) = $75
     az_dependent_tax_credit: 75
-
 - name: 2025 - Joint with multiple dependents at threshold
   period: 2025
   input:
@@ -222,18 +227,22 @@
         age: 18
     tax_units:
       tax_unit:
-        members: [child1, child2, child3]
-        adjusted_gross_income: 400_000
+        members:
+        - child1
+        - child2
+        - child3
+        adjusted_gross_income: 400000
         filing_status: JOINT
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [child1, child2, child3]
+        members:
+        - child1
+        - child2
+        - child3
         state_code: AZ
   output:
-    # At $400,000 joint threshold - no reduction
-    # 2 young ($100 each) + 1 older ($25) = $225
     az_dependent_tax_credit: 225
-
 - name: 2025 - Joint with partial phase-out
   period: 2025
   input:
@@ -246,19 +255,20 @@
         age: 10
     tax_units:
       tax_unit:
-        members: [child1, child2]
-        adjusted_gross_income: 410_000
+        members:
+        - child1
+        - child2
+        adjusted_gross_income: 410000
         filing_status: JOINT
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [child1, child2]
+        members:
+        - child1
+        - child2
         state_code: AZ
   output:
-    # Over threshold by $10,000
-    # Reduction: ceil(10,000 / 1,000) = 10 * 5% = 50%
-    # Credit: 2 * $100 * (1 - 0.50) = $100
     az_dependent_tax_credit: 100
-
 - name: 2025 - HOH at threshold
   period: 2025
   input:
@@ -268,17 +278,18 @@
         age: 15
     tax_units:
       tax_unit:
-        members: [child1]
-        adjusted_gross_income: 200_000
+        members:
+        - child1
+        adjusted_gross_income: 200000
         filing_status: HEAD_OF_HOUSEHOLD
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [child1]
+        members:
+        - child1
         state_code: AZ
   output:
-    # HOH has same $200,000 threshold as single
     az_dependent_tax_credit: 100
-
 - name: 2025 - Separate at threshold
   period: 2025
   input:
@@ -288,13 +299,15 @@
         age: 8
     tax_units:
       tax_unit:
-        members: [child1]
-        adjusted_gross_income: 200_000
+        members:
+        - child1
+        adjusted_gross_income: 200000
         filing_status: SEPARATE
+        az_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [child1]
+        members:
+        - child1
         state_code: AZ
   output:
-    # Separate has same $200,000 threshold as single
     az_dependent_tax_credit: 100

@@ -1,0 +1,44 @@
+description: South Carolina determines child age group from age for payment rates under the Child Care Scholarship Program.
+# 0 = UNDER_1, 1 = AGE_1, 2 = AGE_2, 3 = AGE_3, 4 = AGE_4,
+# 5 = AGE_5_NOT_IN_K, 6 = AGE_5_12_IN_SCHOOL
+# Note: age 5 classification depends on school enrollment, handled in variable formula.
+# This bracket only handles the age-based portion (not the school enrollment check).
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: South Carolina CCAP child age group by age
+  reference:
+    - title: SC CCAP Maximum Payments Allowed FFY2023
+      href: https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=1
+
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 0
+  - threshold:
+      2022-10-01: 1
+    amount:
+      2022-10-01: 1
+  - threshold:
+      2022-10-01: 2
+    amount:
+      2022-10-01: 2
+  - threshold:
+      2022-10-01: 3
+    amount:
+      2022-10-01: 3
+  - threshold:
+      2022-10-01: 4
+    amount:
+      2022-10-01: 4
+  - threshold:
+      2022-10-01: 5
+    amount:
+      2022-10-01: 5
+  - threshold:
+      2022-10-01: 6
+    amount:
+      2022-10-01: 6

@@ -1,0 +1,147 @@
+- name: Case 1, community alone with full shelter.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        ct_ssp_has_therapeutic_diet: false
+        rent: 12_000  # $1,000/mo -> shelter capped at $400
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($400) + PNA ($197.35) + Special Needs ($0) = $597.35
+    ct_ssp_need_standard: 597.35
+
+- name: Case 2, community alone with therapeutic diet.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        ct_ssp_has_therapeutic_diet: true
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($400) + PNA ($197.35) + Diet ($36.20) = $633.55
+    ct_ssp_need_standard: 633.55
+
+- name: Case 3, community shared.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_lives_with_others: true
+        ct_ssp_has_therapeutic_diet: false
+        rent: 6_000  # $500/mo -> shelter capped at $200
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($200) + PNA ($197.35) + Special Needs ($0) = $397.35
+    ct_ssp_need_standard: 397.35
+
+- name: Case 4, boarding home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_resides_in_boarding_home: true
+        ct_ssp_has_therapeutic_diet: false
+        rent: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($0) + PNA ($34.75) + Special Needs ($0) = $34.75
+    ct_ssp_need_standard: 34.75
+
+- name: Case 5, Medicaid facility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ct_ssp_has_therapeutic_diet: false
+        rent: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($0) + PNA ($75) + Special Needs ($0) = $75
+    ct_ssp_need_standard: 75
+
+- name: Case 6, community alone zero rent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        ct_ssp_has_therapeutic_diet: false
+        rent: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($0) + PNA ($197.35) + Special Needs ($0) = $197.35
+    ct_ssp_need_standard: 197.35
+
+- name: Case 7, boarding home with therapeutic diet.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_resides_in_boarding_home: true
+        ct_ssp_has_therapeutic_diet: true
+        rent: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = Shelter ($0) + PNA ($34.75) + Diet ($36.20) = $70.95
+    ct_ssp_need_standard: 70.95

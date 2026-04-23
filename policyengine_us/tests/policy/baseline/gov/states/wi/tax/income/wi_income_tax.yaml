@@ -1,0 +1,27 @@
+# Integration test from issue #7805:
+# Single filer, age 85, WI, 2025 with retirement income.
+# Verifies that state_income_tax equals wi_income_tax when the
+# retirement income exclusion path produces a lower tax.
+- name: WI retirement exclusion reflected in state_income_tax
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 85
+        taxable_interest_income: 18_145
+        short_term_capital_gains: 11_677
+        long_term_capital_gains: 85_655
+        taxable_pension_income: 71_458
+        social_security: 19_429
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_income_tax: 6_631
+    state_income_tax: 6_631

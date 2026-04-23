@@ -6,7 +6,7 @@
     real_estate_taxes: 800
     state_code: WI
   output:
-    wi_property_tax_credit: 96
+    wi_property_tax_credit_potential: 96
 
 - name: WI property tax credit unit test 2
   absolute_error_margin: 0.01
@@ -16,7 +16,7 @@
     real_estate_taxes: 0
     state_code: WI
   output:
-    wi_property_tax_credit: 96
+    wi_property_tax_credit_potential: 96
 
 - name: WI property tax credit unit test 3
   absolute_error_margin: 0.01
@@ -26,4 +26,4 @@
     real_estate_taxes: 2_000
     state_code: WI
   output:
-    wi_property_tax_credit: 300
+    wi_property_tax_credit_potential: 300

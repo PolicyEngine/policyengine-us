@@ -1,0 +1,14 @@
+description: SSA uses this share of the federal benefit rate in calculating the presumed maximum value of in-kind support and maintenance.
+
+values:
+  1975-01-01: 0.333333333
+
+metadata:
+  unit: /1
+  period: year
+  label: SSI presumed maximum value FBR fraction
+  reference:
+    - title: 20 CFR § 416.1140 - The presumed value rule
+      href: https://www.law.cornell.edu/cfr/text/20/416.1140
+    - title: POMS SI 00835.300 - Presumed Maximum Value (PMV) Rule
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0500835300

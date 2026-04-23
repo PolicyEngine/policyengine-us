@@ -1,0 +1,170 @@
+# Unit tests for pa_ccw_eligible_child
+# Tests child-level eligibility: age + disability + immigration + dependent status
+# 55 Pa. Code § 3042.11(b),(d), § 3042.36
+# Formula: age_eligible (where disabled: age < 19, else: age < 13)
+#          & is_tax_unit_dependent & is_ccdf_immigration_eligible_child
+
+- name: Case 1, child under 13 citizen and dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        is_disabled: false
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_eligible_child: [true]
+
+- name: Case 2, child exactly 13 not disabled.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: false
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # age 13 not < 13 -> ineligible
+    pa_ccw_eligible_child: [false]
+
+- name: Case 3, disabled child age 15.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # disabled: age 15 < 19 -> eligible
+    pa_ccw_eligible_child: [true]
+
+- name: Case 4, disabled child age 19 too old.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # disabled: age 19 not < 19 -> ineligible
+    pa_ccw_eligible_child: [false]
+
+- name: Case 5, undocumented child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Not immigration eligible -> ineligible
+    pa_ccw_eligible_child: [false]
+
+- name: Case 6, adult is not eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_eligible_child: [false]
+
+- name: Case 7, infant citizen dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_disabled: false
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_eligible_child: [true]
+
+- name: Case 8, legal permanent resident child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_disabled: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_eligible_child: [true]
+
+- name: Case 9, disabled child age 18 at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # disabled: age 18 < 19 -> eligible
+    pa_ccw_eligible_child: [true]
+
+- name: Case 10, child not dependent ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: false
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Not a tax unit dependent -> ineligible
+    pa_ccw_eligible_child: [false]

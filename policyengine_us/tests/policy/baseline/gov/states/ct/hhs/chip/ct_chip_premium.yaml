@@ -1,0 +1,59 @@
+- name: Connecticut HUSKY B below 254 percent FPL owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.20
+    households:
+      household:
+        members: [child]
+        state_code: CT
+  output:
+    ct_chip_premium: 0
+
+- name: Connecticut HUSKY B Band 2 with one child pays 30 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.80
+    households:
+      household:
+        members: [child]
+        state_code: CT
+  output:
+    ct_chip_premium: 360
+
+- name: Connecticut HUSKY B Band 2 with three children is capped at 50 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2, child3]
+        tax_unit_medicaid_income_level: 2.80
+    households:
+      household:
+        members: [child1, child2, child3]
+        state_code: CT
+  output:
+    ct_chip_premium: 600

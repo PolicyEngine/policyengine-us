@@ -1,0 +1,853 @@
+# Edge case tests for Illinois TANF covering county groups, family size
+# boundaries, negative income, child-only vs with-adult, EID rate
+# transition, regional-to-FPG transition, empty AU, and non-IL state.
+
+# ===================================================================
+# 1. COUNTY GROUP BOUNDARIES (regional era, 2017-01)
+# ===================================================================
+
+- name: Case 1, Group I county with adult family of 3 in regional era.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    # Cook County = Group I, size 3 with-adult = $432
+    il_tanf_payment_level_for_initial_eligibility: 432
+    il_tanf_payment_level_for_grant_calculation: 432
+    il_tanf: 432
+
+- name: Case 2, Group II county with adult family of 3 in regional era.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    # Sangamon County = Group II, size 3 with-adult = $417
+    il_tanf_payment_level_for_initial_eligibility: 417
+    il_tanf_payment_level_for_grant_calculation: 417
+    il_tanf: 417
+
+- name: Case 3, Group III county with adult family of 3 in regional era.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    # Alexander County = Group III, size 3 with-adult = $399
+    il_tanf_payment_level_for_initial_eligibility: 399
+    il_tanf_payment_level_for_grant_calculation: 399
+    il_tanf: 399
+
+# ===================================================================
+# 2. CHILD-ONLY VS WITH-ADULT (regional era, Group I)
+# ===================================================================
+
+- name: Case 4, child-only case in Group I regional era.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    # Parent undocumented -> not payment eligible
+    # Child-only AU size = 2, Group I child-only size 2 = $230
+    il_tanf_assistance_unit_size: 2
+    il_tanf_payment_level_for_initial_eligibility: 318
+    # Grant uses child-only amount
+    il_tanf_payment_level_for_grant_calculation: 230
+    il_tanf: 230
+
+# ===================================================================
+# 3. CHILD-ONLY VS WITH-ADULT (FPG era, 2025-01)
+# ===================================================================
+
+- name: Case 5, child-only case in FPG era.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # AU size = 2 (only children eligible)
+    # AU FPG (Oct-lagged = 2024): (15_060 + 5_380) / 12 = 1_703.33
+    # Initial eligibility payment = 0.35 * 1_703.33 = 596.17
+    # Grant child-only payment = 0.75 * 0.35 * 1_703.33 = 447.13
+    il_tanf_assistance_unit_size: 2
+    il_tanf_assistance_unit_fpg: 1_703.33
+    il_tanf_payment_level_for_initial_eligibility: 596.17
+    il_tanf_payment_level_for_grant_calculation: 447.13
+    il_tanf: 447.13
+
+- name: Case 6, with-adult case same family size in FPG era.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # AU size = 3 (parent + 2 children)
+    # AU FPG (Oct-lagged = 2024): (15_060 + 5_380*2) / 12 = 2_151.67
+    # Payment = 0.35 * 2_151.67 = 753.08
+    il_tanf_assistance_unit_size: 3
+    il_tanf_assistance_unit_fpg: 2_151.67
+    il_tanf_payment_level_for_initial_eligibility: 753.08
+    il_tanf_payment_level_for_grant_calculation: 753.08
+    il_tanf: 753.08
+
+# ===================================================================
+# 4. ZERO INCOME - full payment level
+# ===================================================================
+
+- name: Case 7, zero income gets full payment level.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # AU FPG size 2 (Oct-lagged 2024): (15_060 + 5_380) / 12 = 1_703.33
+    # Payment = 0.35 * 1_703.33 = 596.17
+    # Countable income = 0
+    # Benefit = 596.17 - 0 = 596.17
+    il_tanf_countable_income_for_grant_calculation: 0
+    il_tanf: 596.17
+
+# ===================================================================
+# 5. NEGATIVE INCOME - benefit capped at payment level
+# ===================================================================
+
+- name: Case 8, negative countable income does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # AU FPG size 2: (15_060 + 5_380) / 12 = 1_703.33
+    # Payment = 0.35 * 1_703.33 = 596.17
+    # Countable earned income is max_(..., 0) = 0
+    # Benefit = max(596.17 - 0, 0) = 596.17 (not 5M+)
+    il_tanf: 596.17
+
+# ===================================================================
+# 6. FAMILY SIZE BOUNDARIES (using direct input)
+# ===================================================================
+
+- name: Case 9, family size 1 in regional era Group I.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_assistance_unit_size: 1
+    il_tanf_county_group: GROUP_I
+    state_code: IL
+  output:
+    # Group I, size 1, with-adult = $243
+    il_tanf_payment_level_for_initial_eligibility: 243
+
+- name: Case 10, family size 18 in regional era Group I.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_assistance_unit_size: 18
+    il_tanf_county_group: GROUP_I
+    state_code: IL
+  output:
+    # Group I, size 18 (max explicit bracket), with-adult = $1_156
+    il_tanf_payment_level_for_initial_eligibility: 1_156
+
+- name: Case 11, family size 18 in regional era Group II.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_assistance_unit_size: 18
+    il_tanf_county_group: GROUP_II
+    state_code: IL
+  output:
+    # Group II, size 18, with-adult = $1_124
+    il_tanf_payment_level_for_initial_eligibility: 1_124
+
+- name: Case 12, family size 18 in regional era Group III.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_assistance_unit_size: 18
+    il_tanf_county_group: GROUP_III
+    state_code: IL
+  output:
+    # Group III, size 18, with-adult = $1_085
+    il_tanf_payment_level_for_initial_eligibility: 1_085
+
+# ===================================================================
+# 7. REGIONAL TO FPG TRANSITION (same household, different eras)
+# ===================================================================
+
+- name: Case 13, regional era 2017-01 Group II size 3.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    # Regional era, Group II, size 3 = $417 (flat grant)
+    il_tanf_payment_level_for_grant_calculation: 417
+    il_tanf: 417
+
+- name: Case 14, FPG era 2019-01 same family composition.
+  period: 2019-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    # FPG era (2018-10-01+), 30% FPG rate
+    # AU FPG (Oct-lagged = 2018): (12_140 + 4_320*2) / 12 = 1_731.67
+    # Payment = 0.30 * 1_731.67 = 519.50
+    il_tanf_payment_level_for_grant_calculation: 519.50
+    il_tanf: 519.50
+
+# ===================================================================
+# 8. EID RATE TRANSITION (2/3 vs 3/4)
+# ===================================================================
+
+- name: Case 15, EID rate 3/4 post July 2010 for grant calculation.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_countable_gross_earned_income: 600
+    il_tanf_childcare_deduction: 0
+    state_code: IL
+  output:
+    # EID disregard rate = 0.75 (post 2010-07-01)
+    # Disregard = 0.75 * 600 = 450
+    # Countable = 600 - 450 = 150
+    il_tanf_countable_earned_income_for_grant_calculation: 150
+
+# ===================================================================
+# 9. EMPTY/ZERO AU SIZE
+# ===================================================================
+
+- name: Case 16, empty assistance unit with no eligible members.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 1_200
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Both adults receive SSI -> not payment eligible
+    # No children -> not demographically eligible
+    il_tanf_assistance_unit_size: 0
+    il_tanf_eligible: false
+    il_tanf: 0
+
+# ===================================================================
+# 10. NON-IL STATE
+# ===================================================================
+
+- name: Case 17, non-IL state returns zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    il_tanf: 0
+
+# ===================================================================
+# 11. PARENT-ONLY CASE (FPG era)
+# ===================================================================
+
+- name: Case 18, parent-only case in FPG era.
+  period: 2025-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 23
+        is_tax_unit_head_or_spouse: true
+        is_pregnant: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Size 1 (parent only, no children - pregnant makes demographic eligible)
+    # AU FPG (Oct-lagged = 2024): 15_060 / 12 = 1_255
+    # Base payment = 0.35 * 1_255 = 439.25
+    # Parent-only = 0.25 * 439.25 = 109.81
+    il_tanf_assistance_unit_size: 1
+    il_tanf_payment_level_for_grant_calculation: 109.81
+    il_tanf: 109.81
+
+# ===================================================================
+# 12. CHILD-ONLY IN REGIONAL ERA (Group II)
+# ===================================================================
+
+- name: Case 19, child-only case in regional era Group II.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    # Parent undocumented -> excluded from AU
+    # Child-only AU size 2, Group II child-only size 2 = $222
+    il_tanf_assistance_unit_size: 2
+    il_tanf_payment_level_for_grant_calculation: 222
+    il_tanf: 222
+
+# ===================================================================
+# 13. CHILD-ONLY IN REGIONAL ERA (Group III)
+# ===================================================================
+
+- name: Case 20, child-only case in regional era Group III.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    # Parent undocumented -> excluded
+    # Child-only AU size 2, Group III child-only size 2 = $215
+    il_tanf_assistance_unit_size: 2
+    il_tanf_payment_level_for_grant_calculation: 215
+    il_tanf: 215
+
+# ===================================================================
+# 14. PRE-2010 EID RATE (2/3 disregard)
+# ===================================================================
+
+- name: Case 21, pre-2010 EID rate two-thirds for grant calculation.
+  period: 2009-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_countable_gross_earned_income: 600
+    il_tanf_childcare_deduction: 0
+    state_code: IL
+  output:
+    # EID disregard rate = 0.6667 (pre 2010-07-01, Work Pays)
+    # Disregard = 0.6667 * 600 = 400.02
+    # Countable = 600 - 400.02 = 199.98
+    il_tanf_countable_earned_income_for_grant_calculation: 199.98
+
+# ===================================================================
+# 15. FULL PIPELINE WITH EARNINGS (pre-2018, Group I)
+# ===================================================================
+
+- name: Case 22, pre-2018 Cook County Group I with earnings and childcare.
+  period: 2017-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 9_600  # $800/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 3
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+        childcare_expenses: 4_800  # $400/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    il_tanf_county_group: GROUP_I
+    il_tanf_assistance_unit_size: 3
+
+    # Payment levels (Group I, size 3, Nov 2008 era = $432)
+    il_tanf_payment_level_for_initial_eligibility: 432
+    il_tanf_payment_level_for_grant_calculation: 432
+
+    # Childcare: min($400, $175 + $200) = $375
+    # person2 age 3 -> $175, person3 age 1 -> $200
+    il_tanf_childcare_deduction: 375
+
+    # IED FPG (size 3, 2016 FPG at 2016-03-01):
+    # ($11,880 + 2*$4,160)/12 = $1,683.33
+    # IED = max(0.5*$1,683.33 - $432, 0) = $409.67
+    # Capped at gross: min($800, $409.67) = $409.67
+    il_tanf_initial_employment_deduction_person: [409.67, 0, 0]
+
+    # Initial eligibility:
+    # Countable earned = max($800 - $375 - $409.67, 0) = $15.33
+    il_tanf_countable_earned_income_for_initial_eligibility: 15.33
+    il_tanf_countable_income_for_initial_eligibility: 15.33
+    il_tanf_eligible: true
+
+    # Grant calculation:
+    # EID = 0.75 * ($800 - $375) = $318.75
+    # Countable earned = $425 - $318.75 = $106.25
+    il_tanf_countable_earned_income_for_grant_calculation: 106.25
+    il_tanf_countable_income_for_grant_calculation: 106.25
+
+    # Benefit = max($432 - $106.25, 0) = $325.75
+    il_tanf: 325.75
+
+# ===================================================================
+# 16. FULL PIPELINE WITH EARNINGS (pre-2018, Group III child-only)
+# ===================================================================
+
+- name: Case 23, pre-2018 Alexander County Group III child-only with earnings.
+  period: 2017-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 4_800  # $400/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 5
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        childcare_expenses: 2_400  # $200/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    il_tanf_county_group: GROUP_III
+
+    # Parent undocumented -> child-only, AU size = 1
+    il_tanf_assistance_unit_size: 1
+
+    # Payment levels (Group III, size 1)
+    # Initial eligibility uses with-adult: $198
+    il_tanf_payment_level_for_initial_eligibility: 198
+    # Grant uses child-only: $108
+    il_tanf_payment_level_for_grant_calculation: 108
+
+    # Childcare: min($200, $175) = $175 (person2 age 5 -> $175)
+    il_tanf_childcare_deduction: 175
+
+    # IED FPG (size 1, 2016 FPG at 2016-03-01):
+    # $11,880/12 = $990
+    # IED = max(0.5*$990 - $198, 0) = $297
+    # Capped at gross: min($400, $297) = $297
+    il_tanf_initial_employment_deduction_person: [297, 0]
+
+    # Initial eligibility:
+    # Countable earned = max($400 - $175 - $297, 0) = max(-$72, 0) = $0
+    il_tanf_countable_earned_income_for_initial_eligibility: 0
+    il_tanf_eligible: true
+
+    # Grant calculation:
+    # EID = 0.75 * ($400 - $175) = $168.75
+    # Countable earned = $225 - $168.75 = $56.25
+    il_tanf_countable_earned_income_for_grant_calculation: 56.25
+    il_tanf_countable_income_for_grant_calculation: 56.25
+
+    # Benefit = max($108 - $56.25, 0) = $51.75
+    il_tanf: 51.75
+
+# ===================================================================
+# 17. HIGH INCOME INELIGIBLE (pre-2018)
+# ===================================================================
+
+- name: Case 24, pre-2018 high income ineligible.
+  period: 2017-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 72_000  # $6,000/month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    # Group I, size 2, with-adult = $318
+    # IED FPG (size 2): ($11,880 + $4,160)/12 = $1,336.67
+    # IED = max(0.5*$1,336.67 - $318, 0) = $350.33
+    # Capped at gross: min($6,000, $350.33) = $350.33
+    # Countable earned initial: max($6,000 - 0 - $350.33, 0) = $5,649.67
+    # $5,649.67 > $318 -> ineligible
+    il_tanf_eligible: false
+    il_tanf: 0

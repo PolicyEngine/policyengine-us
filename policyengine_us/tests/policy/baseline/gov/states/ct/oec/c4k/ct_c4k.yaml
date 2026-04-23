@@ -1,0 +1,182 @@
+- name: Case 1, basic eligible family, subsidy equals rate minus fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+        ct_c4k_eligible_child: true
+        ct_c4k_payment_rate: 228
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 75
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+        county_str: NEW_LONDON_COUNTY_CT
+  output:
+    # Monthly approved cost: 228 * 52 / 12 = 988
+    # Expenses at month: 20,000 / 12 = 1,666.67
+    # Capped: min(988, 1,666.67) = 988
+    # Subsidy: max(988 - 75, 0) = 913
+    ct_c4k: 913
+
+- name: Case 2, ineligible family, zero subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: false
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k: 0
+
+- name: Case 3, expenses less than fee, subsidy is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ct_c4k_eligible_child: true
+        ct_c4k_payment_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 1_250
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly approved: 300 * 52 / 12 = 1,300
+    # Expenses at month: 10,000 / 12 = 833.33
+    # Capped: min(1,300, 833.33) = 833.33
+    # max(833.33 - 1,250, 0) = 0
+    ct_c4k: 0
+
+- name: Case 4, fee exactly equals expenses, subsidy is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ct_c4k_eligible_child: true
+        ct_c4k_payment_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 833.33
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly approved: 1,300; Expenses at month: 833.33
+    # Capped: 833.33; max(833.33 - 833.33, 0) = 0
+    ct_c4k: 0
+
+- name: Case 5, zero expenses, subsidy is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k: 0
+
+- name: Case 6, expenses lower than approved cost, capped at expenses minus fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ct_c4k_eligible_child: true
+        ct_c4k_payment_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 83.33
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly approved: 300 * 52 / 12 = 1,300
+    # Expenses at month: 10,000 / 12 = 833.33
+    # Capped: min(1,300, 833.33) = 833.33
+    # Subsidy: max(833.33 - 83.33, 0) = 750
+    ct_c4k: 750
+
+- name: Case 7, zero fee, full subsidy equals capped cost.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ct_c4k_eligible_child: true
+        ct_c4k_payment_rate: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_eligible: true
+        ct_c4k_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Monthly approved: 200 * 52 / 12 = 866.67
+    # Expenses at month: 50,000 / 12 = 4,166.67
+    # Capped: min(866.67, 4,166.67) = 866.67
+    # Subsidy: max(866.67 - 0, 0) = 866.67
+    ct_c4k: 866.67

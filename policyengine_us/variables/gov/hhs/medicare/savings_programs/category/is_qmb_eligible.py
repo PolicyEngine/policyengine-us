@@ -7,7 +7,7 @@ class is_qmb_eligible(Variable):
     label = "Qualified Medicare Beneficiary (QMB) eligible"
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/cfr/text/42/435.121",
+        "https://www.law.cornell.edu/cfr/text/42/435.123",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
 

@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2017
+  input:
+    state_code: NC
+    nc_income_tax_before_credits: 100
+    nc_ctc_potential: 80
+  output:
+    nc_ctc: 80

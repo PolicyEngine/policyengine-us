@@ -1,0 +1,380 @@
+description: South Carolina provides these maximum weekly payment rates for child care centers under the Child Care Scholarship Program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: South Carolina CCAP center weekly rates
+  breakdown:
+    - sc_ccap_time_category
+    - sc_ccap_quality_level
+    - sc_ccap_age_group
+    - sc_ccap_geography
+  reference:
+    - title: SC CCAP Maximum Payments Allowed FFY2023
+      href: https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=1
+    - title: SC CCAP Policy Manual Vol. 038 Appendix 3 - Maximum Payments Allowed
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=183
+
+# Level A+ (NAC)
+FULL_TIME:
+  A_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 296
+      RURAL:
+        2022-10-01: 158
+    AGE_1:
+      URBAN:
+        2022-10-01: 284
+      RURAL:
+        2022-10-01: 158
+    AGE_2:
+      URBAN:
+        2022-10-01: 284
+      RURAL:
+        2022-10-01: 155
+    AGE_3:
+      URBAN:
+        2022-10-01: 275
+      RURAL:
+        2022-10-01: 150
+    AGE_4:
+      URBAN:
+        2022-10-01: 274
+      RURAL:
+        2022-10-01: 150
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 274
+      RURAL:
+        2022-10-01: 150
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 274
+      RURAL:
+        2022-10-01: 130
+  A:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 254
+      RURAL:
+        2022-10-01: 155
+    AGE_1:
+      URBAN:
+        2022-10-01: 254
+      RURAL:
+        2022-10-01: 155
+    AGE_2:
+      URBAN:
+        2022-10-01: 250
+      RURAL:
+        2022-10-01: 150
+    AGE_3:
+      URBAN:
+        2022-10-01: 242
+      RURAL:
+        2022-10-01: 140
+    AGE_4:
+      URBAN:
+        2022-10-01: 242
+      RURAL:
+        2022-10-01: 140
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 242
+      RURAL:
+        2022-10-01: 139
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 242
+      RURAL:
+        2022-10-01: 125
+  B_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 240
+      RURAL:
+        2022-10-01: 150
+    AGE_1:
+      URBAN:
+        2022-10-01: 237
+      RURAL:
+        2022-10-01: 150
+    AGE_2:
+      URBAN:
+        2022-10-01: 231
+      RURAL:
+        2022-10-01: 140
+    AGE_3:
+      URBAN:
+        2022-10-01: 218
+      RURAL:
+        2022-10-01: 135
+    AGE_4:
+      URBAN:
+        2022-10-01: 218
+      RURAL:
+        2022-10-01: 135
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 218
+      RURAL:
+        2022-10-01: 135
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 197
+      RURAL:
+        2022-10-01: 120
+  B:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 223
+      RURAL:
+        2022-10-01: 145
+    AGE_1:
+      URBAN:
+        2022-10-01: 223
+      RURAL:
+        2022-10-01: 140
+    AGE_2:
+      URBAN:
+        2022-10-01: 216
+      RURAL:
+        2022-10-01: 135
+    AGE_3:
+      URBAN:
+        2022-10-01: 203
+      RURAL:
+        2022-10-01: 130
+    AGE_4:
+      URBAN:
+        2022-10-01: 200
+      RURAL:
+        2022-10-01: 130
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 200
+      RURAL:
+        2022-10-01: 130
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 175
+      RURAL:
+        2022-10-01: 115
+  C:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 213
+      RURAL:
+        2022-10-01: 135
+    AGE_1:
+      URBAN:
+        2022-10-01: 213
+      RURAL:
+        2022-10-01: 135
+    AGE_2:
+      URBAN:
+        2022-10-01: 205
+      RURAL:
+        2022-10-01: 130
+    AGE_3:
+      URBAN:
+        2022-10-01: 195
+      RURAL:
+        2022-10-01: 127
+    AGE_4:
+      URBAN:
+        2022-10-01: 191
+      RURAL:
+        2022-10-01: 125
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 191
+      RURAL:
+        2022-10-01: 125
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 165
+      RURAL:
+        2022-10-01: 110
+
+HALF_TIME:
+  A_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 197
+      RURAL:
+        2022-10-01: 125
+    AGE_1:
+      URBAN:
+        2022-10-01: 196
+      RURAL:
+        2022-10-01: 125
+    AGE_2:
+      URBAN:
+        2022-10-01: 196
+      RURAL:
+        2022-10-01: 125
+    AGE_3:
+      URBAN:
+        2022-10-01: 195
+      RURAL:
+        2022-10-01: 125
+    AGE_4:
+      URBAN:
+        2022-10-01: 195
+      RURAL:
+        2022-10-01: 125
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 195
+      RURAL:
+        2022-10-01: 125
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 150
+      RURAL:
+        2022-10-01: 125
+  A:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 180
+      RURAL:
+        2022-10-01: 123
+    AGE_1:
+      URBAN:
+        2022-10-01: 180
+      RURAL:
+        2022-10-01: 123
+    AGE_2:
+      URBAN:
+        2022-10-01: 177
+      RURAL:
+        2022-10-01: 120
+    AGE_3:
+      URBAN:
+        2022-10-01: 171
+      RURAL:
+        2022-10-01: 110
+    AGE_4:
+      URBAN:
+        2022-10-01: 169
+      RURAL:
+        2022-10-01: 110
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 169
+      RURAL:
+        2022-10-01: 110
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 86
+  B_PLUS:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 175
+      RURAL:
+        2022-10-01: 121
+    AGE_1:
+      URBAN:
+        2022-10-01: 165
+      RURAL:
+        2022-10-01: 121
+    AGE_2:
+      URBAN:
+        2022-10-01: 155
+      RURAL:
+        2022-10-01: 112
+    AGE_3:
+      URBAN:
+        2022-10-01: 150
+      RURAL:
+        2022-10-01: 105
+    AGE_4:
+      URBAN:
+        2022-10-01: 150
+      RURAL:
+        2022-10-01: 105
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 139
+      RURAL:
+        2022-10-01: 105
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 110
+      RURAL:
+        2022-10-01: 85
+  B:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 160
+      RURAL:
+        2022-10-01: 105
+    AGE_1:
+      URBAN:
+        2022-10-01: 160
+      RURAL:
+        2022-10-01: 105
+    AGE_2:
+      URBAN:
+        2022-10-01: 150
+      RURAL:
+        2022-10-01: 105
+    AGE_3:
+      URBAN:
+        2022-10-01: 139
+      RURAL:
+        2022-10-01: 100
+    AGE_4:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 100
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 125
+      RURAL:
+        2022-10-01: 100
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 100
+      RURAL:
+        2022-10-01: 80
+  C:
+    UNDER_1:
+      URBAN:
+        2022-10-01: 140
+      RURAL:
+        2022-10-01: 100
+    AGE_1:
+      URBAN:
+        2022-10-01: 140
+      RURAL:
+        2022-10-01: 100
+    AGE_2:
+      URBAN:
+        2022-10-01: 140
+      RURAL:
+        2022-10-01: 100
+    AGE_3:
+      URBAN:
+        2022-10-01: 123
+      RURAL:
+        2022-10-01: 95
+    AGE_4:
+      URBAN:
+        2022-10-01: 122
+      RURAL:
+        2022-10-01: 85
+    AGE_5_NOT_IN_K:
+      URBAN:
+        2022-10-01: 122
+      RURAL:
+        2022-10-01: 85
+    AGE_5_12_IN_SCHOOL:
+      URBAN:
+        2022-10-01: 88
+      RURAL:
+        2022-10-01: 75

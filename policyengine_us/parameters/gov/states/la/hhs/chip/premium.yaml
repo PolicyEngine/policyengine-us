@@ -1,0 +1,19 @@
+description: Louisiana charges this LaCHIP Affordable Plan monthly premium per household, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line. Regular LaCHIP (below 213% FPL) charges no premium.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Louisiana LaCHIP Affordable Plan monthly premium
+  reference:
+    - title: Louisiana Department of Health - LaCHIP Affordable Plan FAQ
+      href: https://ldh.la.gov/faq/category/19
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 2.13
+    amount:
+      2021-01-01: 50

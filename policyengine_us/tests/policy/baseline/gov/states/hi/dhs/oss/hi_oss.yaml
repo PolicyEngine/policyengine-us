@@ -1,0 +1,205 @@
+- name: Case 1, individual in community care receives 2025 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+    hi_oss_care_facility_type: COMMUNITY_CARE
+  output:
+    hi_oss: 784
+
+- name: Case 2, individual in domiciliary care I receives 2025 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+    hi_oss_care_facility_type: DOMICILIARY_CARE_I
+  output:
+    hi_oss: 784
+
+- name: Case 3, individual in domiciliary care II receives 2025 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+    hi_oss_care_facility_type: DOMICILIARY_CARE_II
+  output:
+    hi_oss: 892
+
+- name: Case 4, individual in Medicaid institution receives 2025 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+  output:
+    hi_oss: 45
+
+- name: Case 5, SSI-eligible not in qualifying facility gets zero.
+  period: 2025-01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+  output:
+    hi_oss: 0
+
+- name: Case 6, person not SSI-eligible in qualifying facility gets zero.
+  period: 2025-01
+  input:
+    state_code: HI
+    hi_oss_care_facility_type: COMMUNITY_CARE
+  output:
+    hi_oss: 0
+
+- name: Case 7, non-Hawaii resident is ineligible.
+  period: 2025-01
+  input:
+    state_code: CA
+    is_ssi_eligible: true
+    hi_oss_care_facility_type: COMMUNITY_CARE
+  output:
+    hi_oss: 0
+
+- name: Case 8, couple both SSI-eligible in community care receives couple rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_oss_couple_rate_applies: [true, true]
+    hi_oss: [952.50, 952.50]
+
+- name: Case 9, couple in Medicaid institution receives couple rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_oss_couple_rate_applies: [true, true]
+    hi_oss: [45, 45]
+
+- name: Case 10, asymmetric couple, one not SSI-eligible gets individual rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      person2:
+        is_ssi_eligible: false
+        ssi_claim_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_oss_couple_rate_applies: [false, false]
+    hi_oss: [784, 0]
+
+- name: Case 11, individual in community care receives 2023 rate.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    is_ssi_eligible: true
+    hi_oss_care_facility_type: COMMUNITY_CARE
+  output:
+    hi_oss: 651.9
+
+- name: Case 12, couple in different facility types gets individual rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        hi_oss_care_facility_type: DOMICILIARY_CARE_II
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_oss_couple_rate_applies: [false, false]
+    hi_oss: [784, 892]

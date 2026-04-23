@@ -10,8 +10,10 @@
         age: 12
       henrys_mother:
         pension_income: 365 * 12
+        own_children_in_household: 2
       henrys_father:
         employment_income: 1_165 * 12
+        own_children_in_household: 2
     tax_units:
       tax_unit:
         members: [henry, henrys_brother, henrys_mother, henrys_father]
@@ -34,6 +36,7 @@
         age: 12
       mother:
         ssi_unearned_income: 542 * 12
+        own_children_in_household: 2
     tax_units:
       tax_unit:
         members: [james, tony, mother]
@@ -59,8 +62,10 @@
         age: 12
       jacks_mother:
         pension_income: 350 * 12
+        own_children_in_household: 3
       jacks_father:
         employment_income: 1_525 * 12
+        own_children_in_household: 3
     tax_units:
       tax_unit:
         members: [jack, jacks_first_brother, jacks_second_brother, jacks_mother, jacks_father]

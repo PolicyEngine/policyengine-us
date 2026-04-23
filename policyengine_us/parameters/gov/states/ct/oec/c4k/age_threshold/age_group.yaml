@@ -1,0 +1,25 @@
+description: Connecticut determines the age group for the Care 4 Kids program based on child age.
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Connecticut C4K age group thresholds
+  reference:
+    - title: C4K Weekly Payment Rates Jul 2025-Jun 2026
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/12/Care-4-Kids-Weekly-Payment-Rates-jul-june.2026.pdf#page=1
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 3
+    amount:
+      2020-01-01: 1
+  - threshold:
+      2020-01-01: 6
+    amount:
+      2020-01-01: 2

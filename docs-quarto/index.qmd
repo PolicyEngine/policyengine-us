@@ -1,0 +1,14 @@
+---
+title: "PolicyEngine US"
+subtitle: "Methodology and reference for the US tax-benefit microsimulation model"
+---
+
+PolicyEngine US is an open-source microsimulation model of the US tax and benefit system. It combines statutory rules encoded as Python formulas with a calibrated microdata foundation to answer policy questions at the household, state, and national level.
+
+This site covers:
+
+- **[Methodology](methodology/index.qmd)** — how the model is built: rules, data, calibration, and decompositions like medical out-of-pocket expenses.
+- **[Programs](programs/index.qmd)** — program-by-program writeups that trace eligibility, benefit value, and household-paid costs.
+- **[Reference](reference/index.qmd)** — auto-generated variable catalog pulled from the model's metadata API.
+
+The underlying code lives at [github.com/PolicyEngine/policyengine-us](https://github.com/PolicyEngine/policyengine-us). Every page here is reproducible — code blocks run against the installed model version when the site is built, so numeric results track the release rather than being pinned to whenever prose was written.

@@ -1,0 +1,664 @@
+# Virginia CCSP copay edge case tests
+# Focus: copay bracket boundaries, income cap binding vs not, max children cap,
+#   2025-07-01 new copay scale (tested at 2026-01)
+#
+# 2024 FPG (contiguous US): Family of 2: 20,440
+#   Monthly FPG: 20,440/12 = 1,703.333...
+#
+# Current copay scale (2023-01-01):
+#   0: $0, >0-100%: $0, >100-200%: $60, >200-300%: $120, >300%+: $180
+# Income cap: 7%
+# Max children: 3
+#
+# New copay scale (2025-07-01):
+#   0: $0, >0-100%: $5, >100-150%: $125, >150-200%: $175,
+#   >200-250%: $225, >250-300%: $275, >300-350%: $325, >350%+: $375
+# Income cap: 5%
+# Max children: 3
+#
+# 2025 FPG: Family of 2: 21,150
+#   Monthly FPG: 21,150/12 = 1,762.50
+
+# === CURRENT SCALE (2024) BRACKET BOUNDARIES ===
+
+- name: Case 1, current scale income at exactly 100% FPG boundary.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Annual income = FPG for size 2 = 20,440
+        # Monthly income = 20,440/12 = 1,703.33
+        # Monthly FPG = 20,440/12 = 1,703.33
+        # FPG ratio = 1.0000 -> at 100%, still in 0-100% bracket
+        employment_income: 20_440
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG ratio = 1.0 -> bracket threshold is 1.0001 for $60
+    # 1.0 < 1.0001 -> stays in $0 bracket
+    # 1 child * $0 = $0
+    # Income cap: 20,440 * 0.07 / 12 = 119.23
+    # Copay: min(0, 119.23) = $0
+    va_ccsp_copay: 0
+
+- name: Case 2, current scale income just above 100% FPG boundary.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Need FPG ratio just above 1.0001
+        # Monthly FPG = 1,703.33
+        # Monthly income = 1,703.33 * 1.001 = 1,705.04
+        # Annual = 1,705.04 * 12 = 20,460.44
+        employment_income: 20_461
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 20,461/12 = 1,705.08
+    # FPG ratio: 1,705.08 / 1,703.33 = 1.0010 -> above 1.0001
+    # Per-child copay: $60
+    # 1 child * $60 = $60
+    # Income cap: 20,461 * 0.07 / 12 = 119.36
+    # Copay: min(60, 119.36) = $60
+    va_ccsp_copay: 60
+
+- name: Case 3, current scale income at exactly 200% FPG boundary.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # 200% FPG = 40,880 annual
+        # FPG ratio = 2.0 -> threshold for $120 is 2.0001
+        # 2.0 < 2.0001 -> stays in $60 bracket
+        employment_income: 40_880
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG ratio = 2.0 -> still in $60 bracket (threshold is 2.0001)
+    # 1 child * $60 = $60
+    # Income cap: 40,880 * 0.07 / 12 = 238.47
+    # Copay: min(60, 238.47) = $60
+    va_ccsp_copay: 60
+
+- name: Case 4, current scale income just above 300% FPG.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # 300% FPG = 61,320 annual
+        # Need above 3.0001: 61,321 -> ratio = 61,321/20,440 = 2.9999...
+        # Actually: monthly 61,321/12 = 5,110.08 / (20,440/12 = 1,703.33) = 2.9999
+        # Need higher: 61,350 -> 5,112.50/1,703.33 = 3.001 -> above 3.0001
+        employment_income: 61_350
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 61,350/12 = 5,112.50
+    # FPG ratio: 5,112.50/1,703.33 = 3.001 -> $180 bracket
+    # 1 child * $180 = $180
+    # Income cap: 61,350 * 0.07 / 12 = 357.88
+    # Copay: min(180, 357.88) = $180
+    va_ccsp_copay: 180
+
+# === MAX CHILDREN CAP ===
+
+- name: Case 5, exactly 3 eligible children assessed.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # Monthly income: 48,000/12 = 4,000
+    # FPG size 4: 31,200, monthly = 2,600
+    # FPG ratio: 4,000/2,600 = 1.5385 -> $60/child
+    # 3 eligible children = min(3, 3) = 3
+    # Scale total: $60 * 3 = $180
+    # Income cap: 48,000 * 0.07 / 12 = 280
+    # Copay: min(180, 280) = $180
+    va_ccsp_copay: 180
+
+- name: Case 6, 5 eligible children still capped at 3.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 9
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person5:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person6:
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: VA
+  output:
+    # Monthly income: 60,000/12 = 5,000
+    # FPG size 6: 15,060 + 5*5,380 = 41,960, monthly = 3,496.67
+    # FPG ratio: 5,000/3,496.67 = 1.4299 -> $60/child
+    # 5 eligible children, capped at 3
+    # Scale total: $60 * 3 = $180
+    # Income cap: 60,000 * 0.07 / 12 = 350
+    # Copay: min(180, 350) = $180
+    va_ccsp_copay: 180
+
+# === INCOME CAP BINDING ===
+
+- name: Case 7, income cap binds below scale total.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # Monthly income: 24,000/12 = 2,000
+    # FPG size 4: 31,200, monthly = 2,600
+    # FPG ratio: 2,000/2,600 = 0.7692 -> $0/child
+    # Scale total: $0 * 3 = $0
+    # Income cap: 24,000 * 0.07 / 12 = 140
+    # Copay: min(0, 140) = $0
+    va_ccsp_copay: 0
+
+- name: Case 8, income cap binds with high copay bracket and low income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Need FPG ratio > 300% but low absolute income
+        # Use large family to get low FPG
+        # Single person: FPG = 15,060 for size 1 (not possible with child)
+        # Family of 2: FPG = 20,440
+        # Income = 36,000, Monthly = 3,000
+        # FPG ratio: 3,000/(20,440/12) = 3,000/1,703.33 = 1.761 -> $60
+        # Not high enough. Need >300%: income > 61,320
+        # But that makes income cap high too.
+        # Better: 3 children at $180 each = $540
+        # With income = 84,000, cap = 84,000*0.07/12 = 490
+        # 490 < 540 -> cap binds!
+        employment_income: 84_000
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # Monthly income: 84,000/12 = 7,000
+    # FPG size 4: 31,200, monthly = 2,600
+    # FPG ratio: 7,000/2,600 = 2.6923 -> $120/child
+    # 3 children, scale total: $120 * 3 = $360
+    # Income cap: 84,000 * 0.07 / 12 = 490
+    # Copay: min(360, 490) = $360
+    va_ccsp_copay: 360
+
+# === 2025-07-01 NEW COPAY SCALE (tested at 2026-01) ===
+#
+# 2026 FPG: first_person = 15,960, additional = 5,680
+#   Family of 2: 21,640
+#   Monthly FPG: 21,640/12 = 1,803.33
+#
+# New brackets (2025-07-01):
+#   0%: $0, >0-100%: $5, >100-150%: $125, >150-200%: $175,
+#   >200-250%: $225, >250-300%: $275, >300-350%: $325, >350%+: $375
+# Income cap: 5%
+
+- name: Case 9, new scale zero income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Zero income -> FPG ratio = 0 -> $0/child
+    va_ccsp_copay: 0
+
+- name: Case 10, new scale above $0 but under 100% FPG ($5 bracket).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 12,000/12 = 1,000
+    # Monthly FPG: 21,640/12 = 1,803.33
+    # FPG ratio: 1,000/1,803.33 = 0.5546 -> new scale >0 = $5
+    # 1 child * $5 = $5
+    # Income cap: 12,000 * 0.05 / 12 = 50
+    # Copay: min(5, 50) = $5
+    va_ccsp_copay: 5
+
+- name: Case 11, new scale above 100% FPG ($125 bracket).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 24,000/12 = 2,000
+    # Monthly FPG: 21,640/12 = 1,803.33
+    # FPG ratio: 2,000/1,803.33 = 1.1090 -> new scale >100% = $125
+    # 1 child * $125 = $125
+    # Income cap: 24,000 * 0.05 / 12 = 100
+    # Copay: min(125, 100) = $100 (income cap binds)
+    va_ccsp_copay: 100
+
+- name: Case 12, new scale above 200% FPG ($225 bracket).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 48,000/12 = 4,000
+    # Monthly FPG: 21,640/12 = 1,803.33
+    # FPG ratio: 4,000/1,803.33 = 2.2178 -> new scale >200% = $225
+    # 1 child * $225 = $225
+    # Income cap: 48,000 * 0.05 / 12 = 200
+    # Copay: min(225, 200) = $200 (income cap binds)
+    va_ccsp_copay: 200
+
+- name: Case 13, new scale above 350% FPG ($375 bracket).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 84,000/12 = 7,000
+    # Monthly FPG: 21,640/12 = 1,803.33
+    # FPG ratio: 7,000/1,803.33 = 3.8814 -> new scale >350% = $375
+    # 1 child * $375 = $375
+    # Income cap: 84,000 * 0.05 / 12 = 350
+    # Copay: min(375, 350) = $350 (income cap binds)
+    va_ccsp_copay: 350
+
+- name: Case 14, new scale 5% income cap with 3 children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 84_000
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # Monthly income: 84,000/12 = 7,000
+    # FPG size 4: 15,960 + 5,680*3 = 33,000, monthly = 2,750
+    # FPG ratio: 7,000/2,750 = 2.5455 -> new scale >250% = $275
+    # 3 eligible children, scale total: $275 * 3 = $825
+    # Income cap: 84,000 * 0.05 / 12 = 350 (5% cap)
+    # Copay: min(825, 350) = $350
+    va_ccsp_copay: 350
+
+# === TANF RECIPIENT ZERO COPAY ===
+
+- name: Case 15, TANF recipient with high income still pays zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # TANF -> $0 regardless of income/bracket
+    va_ccsp_copay: 0
+
+# === SINGLE CHILD COPAY ===
+
+- name: Case 16, single child copay not inflated by max_children.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 72_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # FPG ratio > 300% -> $180/child
+    # 1 child * $180 = $180
+    # Income cap: 72,000 * 0.07 / 12 = 420
+    # Copay: min(180, 420) = $180
+    va_ccsp_copay: 180

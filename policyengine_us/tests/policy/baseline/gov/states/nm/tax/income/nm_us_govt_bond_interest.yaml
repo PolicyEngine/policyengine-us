@@ -1,0 +1,7 @@
+- name: NM deducts US government bond interest
+  period: 2024
+  input:
+    state_code: NM
+    us_govt_interest: 5_000
+  output:
+    nm_other_deductions_and_exemptions: 5_000

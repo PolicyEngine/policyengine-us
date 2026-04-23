@@ -5,7 +5,7 @@
 - name: Case 1, no resources, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
     state_code: RI
   output:
     ri_works_resource_eligible: true
@@ -13,7 +13,7 @@
 - name: Case 2, resources below limit, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
     state_code: RI
   output:
     # Resources: $3,000
@@ -24,7 +24,7 @@
 - name: Case 3, resources at limit, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 5_000
+    spm_unit_cash_assets: 5_000
     state_code: RI
   output:
     # Resources: $5,000
@@ -35,7 +35,7 @@
 - name: Case 4, resources above limit, ineligible.
   period: 2025-01
   input:
-    spm_unit_assets: 6_000
+    spm_unit_cash_assets: 6_000
     state_code: RI
   output:
     # Resources: $6,000
@@ -46,7 +46,7 @@
 - name: Case 5, resources one dollar above limit, ineligible.
   period: 2025-01
   input:
-    spm_unit_assets: 5_001
+    spm_unit_cash_assets: 5_001
     state_code: RI
   output:
     # Resources: $5,001
@@ -57,7 +57,7 @@
 - name: Case 6, resources one dollar below limit, eligible.
   period: 2025-01
   input:
-    spm_unit_assets: 4_999
+    spm_unit_cash_assets: 4_999
     state_code: RI
   output:
     # Resources: $4,999

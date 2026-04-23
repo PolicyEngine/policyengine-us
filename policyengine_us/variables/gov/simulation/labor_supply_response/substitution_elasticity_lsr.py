@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    calculate_substitution_lsr_effect,
+)
 
 
 class substitution_elasticity_lsr(Variable):
@@ -10,14 +13,4 @@ class substitution_elasticity_lsr(Variable):
     requires_computation_after = "labor_supply_behavioral_response"
 
     def formula(person, period, parameters):
-        raw_earnings = add(
-            person,
-            period,
-            [
-                "employment_income_before_lsr",
-                "self_employment_income_before_lsr",
-            ],
-        )
-        earnings = max_(raw_earnings, 0)
-        wage_change = person("relative_wage_change", period)
-        return earnings * wage_change * person("substitution_elasticity", period)
+        return calculate_substitution_lsr_effect(person, period, parameters)

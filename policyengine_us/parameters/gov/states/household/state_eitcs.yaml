@@ -1,41 +1,279 @@
-description: All state Earned Income Tax Credits.
+description: All state Earned Income Tax Credits and related credits.
 values:
-  0000-01-01:
-    - ca_eitc  # California
-    - co_eitc  # Colorado
-    - ct_eitc  # Connecticut
-    - dc_eitc  # District of Columbia
-    - de_eitc  # Delaware
-    - hi_eitc  # Hawaii
-    - il_eitc  # Illinois
-    - in_eitc  # Indiana
-    - ia_eitc  # Iowa
-    - ks_total_eitc  # Kansas - combined nonrefundable and refundable components
-    - la_eitc  # Louisiana
-    - ma_eitc  # Massachusetts
-    - md_non_refundable_eitc  # Maryland non-refundable EITC
-    - md_refundable_eitc  # Maryland refundable EITC
-    - me_eitc  # Maine
-    - mi_eitc  # Michigan
-    - mn_wfc  # Minnesota (called "Working Family Credit") repealed in 2023
-    - mo_wftc  # Missouri (called "Working Families Tax Credit")
-    - mt_eitc  # Montana
-    - ne_eitc  # Nebraska
-    - nj_eitc  # New Jersey
-    - nm_eitc  # New Mexico
-    - ny_eitc  # New York
-    - oh_eitc  # Ohio
-    - ok_eitc  # Oklahoma
-    - or_eitc  # Oregon
-    - pa_eitc  # Pennsylvania
-    - ri_eitc  # Rhode Island
-    - sc_eitc  # South Carolina
-    - ut_eitc  # Utah
-    - vt_eitc  # Vermont
-    - va_non_refundable_eitc  # Virginia non-refundable EITC
-    - va_refundable_eitc  # Virginia refundable EITC
-    - wa_working_families_tax_credit  # Washington
-    - wi_earned_income_credit  # Wisconsin
+  # Year-gated: each credit appears from the year its
+  # parameters are first defined in PE-US.
+  1994-01-01:
+    - ny_eitc
+  2000-01-01:
+    - nj_eitc
+    - ny_eitc
+  2001-01-01:
+    - ma_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+  2006-01-01:
+    - ma_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - va_non_refundable_eitc
+  2008-01-01:
+    - ma_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - va_non_refundable_eitc
+  2010-01-01:
+    - in_eitc
+    - ks_total_eitc
+    - ma_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - va_non_refundable_eitc
+  2014-01-01:
+    - in_eitc
+    - ks_total_eitc
+    - ma_eitc
+    - md_refundable_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - ri_eitc
+    - va_non_refundable_eitc
+  2015-01-01:
+    - ca_eitc
+    - dc_eitc
+    - in_eitc
+    - ks_total_eitc
+    - ma_eitc
+    - md_refundable_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - ri_eitc
+    - va_non_refundable_eitc
+  2017-01-01:
+    - ca_eitc
+    - ct_eitc
+    - dc_eitc
+    - in_eitc
+    - ks_total_eitc
+    - ma_eitc
+    - md_refundable_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - ri_eitc
+    - va_non_refundable_eitc
+  2018-01-01:
+    - ca_eitc
+    - ct_eitc
+    - dc_eitc
+    - hi_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_refundable_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - va_non_refundable_eitc
+  2019-01-01:
+    - ca_eitc
+    - ct_eitc
+    - dc_eitc
+    - hi_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - va_non_refundable_eitc
+  2020-01-01:
+    - ca_eitc
+    - ct_eitc
+    - dc_eitc
+    - de_eitc
+    - hi_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - me_eitc
+    - mi_eitc
+    - ne_eitc
+    - nj_eitc
+    - ny_eitc
+    - oh_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - va_non_refundable_eitc
+  2021-01-01:
+    - ca_eitc
+    - co_eitc
+    - ct_eitc
+    - dc_eitc
+    - de_eitc
+    - hi_eitc
+    - ia_eitc
+    - il_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - me_eitc
+    - mi_eitc
+    - mn_wfc
+    - mt_eitc
+    - ne_eitc
+    - nj_eitc
+    - nm_eitc
+    - ny_eitc
+    - oh_eitc
+    - ok_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - va_non_refundable_eitc
+    - va_refundable_eitc
+    - vt_eitc
+    - wi_earned_income_credit
+  2022-01-01:
+    - ca_eitc
+    - co_eitc
+    - ct_eitc
+    - dc_eitc
+    - de_eitc
+    - hi_eitc
+    - ia_eitc
+    - il_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - me_eitc
+    - mi_eitc
+    - mn_wfc
+    - mt_eitc
+    - ne_eitc
+    - nj_eitc
+    - nm_eitc
+    - ny_eitc
+    - oh_eitc
+    - ok_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - ut_eitc
+    - va_non_refundable_eitc
+    - va_refundable_eitc
+    - vt_eitc
+    - wa_working_families_tax_credit
+    - wi_earned_income_credit
+  2023-01-01:
+    - ca_eitc
+    - co_eitc
+    - ct_eitc
+    - dc_eitc
+    - de_eitc
+    - hi_eitc
+    - ia_eitc
+    - il_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - me_eitc
+    - mi_eitc
+    - mn_wfc
+    - mo_wftc
+    - mt_eitc
+    - ne_eitc
+    - nj_eitc
+    - nm_eitc
+    - ny_eitc
+    - oh_eitc
+    - ok_eitc
+    - or_eitc
+    - ri_eitc
+    - sc_eitc
+    - ut_eitc
+    - va_non_refundable_eitc
+    - va_refundable_eitc
+    - vt_eitc
+    - wa_working_families_tax_credit
+    - wi_earned_income_credit
+  2025-01-01:
+    - ca_eitc
+    - co_eitc
+    - ct_eitc
+    - dc_eitc
+    - de_eitc
+    - hi_eitc
+    - ia_eitc
+    - il_eitc
+    - in_eitc
+    - ks_total_eitc
+    - la_eitc
+    - ma_eitc
+    - md_non_refundable_eitc
+    - md_refundable_eitc
+    - me_eitc
+    - mi_eitc
+    - mn_wfc
+    - mo_wftc
+    - mt_eitc
+    - ne_eitc
+    - nj_eitc
+    - nm_eitc
+    - ny_eitc
+    - oh_eitc
+    - ok_eitc
+    - or_eitc
+    - pa_eitc
+    - ri_eitc
+    - sc_eitc
+    - ut_eitc
+    - va_non_refundable_eitc
+    - va_refundable_eitc
+    - vt_eitc
+    - wa_working_families_tax_credit
+    - wi_earned_income_credit
 
 metadata:
   unit: list

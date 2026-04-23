@@ -1,0 +1,16 @@
+- name: Household health costs are zero when health benefits are excluded from net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: false
+    chip_premium: 360
+  output:
+    household_health_costs: 0
+
+- name: Household health costs pick up chip_premium when health benefits are included in net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip_premium: 360
+  output:
+    household_health_costs: 360
+

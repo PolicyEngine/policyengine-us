@@ -2,106 +2,105 @@
   period: 2023
   input:
     filing_status: SINGLE
-    adjusted_gross_income: 100_000
+    adjusted_gross_income: 100000
     state_code: MD
     age_head: 65
+    md_income_tax_before_credits: 1000000
   output:
     md_senior_tax_credit: 0
-  
 - name: Single ineligible by age.
   period: 2023
   input:
     filing_status: SINGLE
-    adjusted_gross_income: 99_999
+    adjusted_gross_income: 99999
     age_head: 64
     state_code: MD
+    md_income_tax_before_credits: 1000000
   output:
     md_senior_tax_credit: 0
-
 - name: Joint ineligible by income.
   period: 2023
   input:
     filing_status: JOINT
-    adjusted_gross_income: 150_000
+    adjusted_gross_income: 150000
     state_code: MD
     age_head: 65
     age_spouse: 65
+    md_income_tax_before_credits: 1000000
   output:
     md_senior_tax_credit: 0
-
 - name: Joint ineligible by age.
   period: 2023
   input:
     filing_status: JOINT
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 64
     age_spouse: 64
+    md_income_tax_before_credits: 1000000
   output:
     md_senior_tax_credit: 0
-
 - name: Joint one aged eligible.
   period: 2023
   input:
     filing_status: JOINT
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
     age_spouse: 64
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_000
-
-
+    md_senior_tax_credit: 1000
 - name: Joint two aged eligible.
   period: 2023
   input:
     filing_status: JOINT
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
     age_spouse: 65
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_750
-
+    md_senior_tax_credit: 1750
 - name: Surviving spouse eligible.
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_750
-
+    md_senior_tax_credit: 1750
 - name: Head of household no spouse eligible.
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_750
-
+    md_senior_tax_credit: 1750
 - name: Head of household with spouse both aged eligible.
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
     age_spouse: 65
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_750
-
+    md_senior_tax_credit: 1750
 - name: Head of household with spouse one aged eligible.
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
-    adjusted_gross_income: 149_999
+    adjusted_gross_income: 149999
     state_code: MD
     age_head: 65
     age_spouse: 64
+    md_income_tax_before_credits: 1000000
   output:
-    md_senior_tax_credit: 1_750
-
+    md_senior_tax_credit: 1750

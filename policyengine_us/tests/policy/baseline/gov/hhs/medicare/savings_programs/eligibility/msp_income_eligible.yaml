@@ -1,0 +1,19 @@
+- name: MSP income eligible - below 135% FPL
+  period: 2024-01
+  input:
+    age: 67
+    # $19,440 unearned -> ($1,620 - $20) = $1,600/month countable
+    ssi_unearned_income: 19_440
+    spm_unit_is_married: false
+  output:
+    msp_income_eligible: true
+
+- name: MSP income eligible - exact 135% FPL is excluded
+  period: 2024-01
+  input:
+    age: 67
+    # $20,571 unearned -> ($1,714.25 - $20) = $1,694.25/month countable
+    ssi_unearned_income: 20_571
+    spm_unit_is_married: false
+  output:
+    msp_income_eligible: false

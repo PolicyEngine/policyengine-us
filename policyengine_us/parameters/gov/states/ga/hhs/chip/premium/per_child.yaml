@@ -1,0 +1,41 @@
+description: Georgia charges this PeachCare for Kids monthly premium per CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Georgia PeachCare for Kids monthly premium per child
+  reference:
+    - title: Georgia DFCS Medicaid Manual 2194, Premiums
+      href: https://pamms.dhs.ga.gov/dfcs/medicaid/2194/
+    - title: Georgia DCH PeachCare for Kids premiums and copays resume October 1, 2024
+      href: https://dch.georgia.gov/announcement/2024-08-13/peachcare-kidsr-co-payments-and-premiums-resume-oct-1-2024
+brackets:
+  - threshold:
+      2024-10-01: -.inf
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 1.34
+    amount:
+      2024-10-01: 11
+  - threshold:
+      2024-10-01: 1.59
+    amount:
+      2024-10-01: 22
+  - threshold:
+      2024-10-01: 1.71
+    amount:
+      2024-10-01: 24
+  - threshold:
+      2024-10-01: 1.91
+    amount:
+      2024-10-01: 29
+  - threshold:
+      2024-10-01: 2.11
+    amount:
+      2024-10-01: 32
+  - threshold:
+      2024-10-01: 2.32
+    amount:
+      2024-10-01: 36

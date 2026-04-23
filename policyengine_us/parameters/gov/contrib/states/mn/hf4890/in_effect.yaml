@@ -1,0 +1,12 @@
+description: Minnesota uses this indicator to determine whether the HF4890 income tax rate schedules apply.
+
+values:
+  0001-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Minnesota HF4890 income tax rate schedules in effect
+  reference:
+    - title: Minnesota HF4890 (2026), Sec. 1 -- effective for taxable years after December 31, 2025
+      href: https://www.revisor.mn.gov/bills/94/2026/0/HF/4890/versions/0/pdf/#page=3
