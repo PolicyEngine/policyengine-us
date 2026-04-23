@@ -26,7 +26,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
     households:
       household:
         members: [parent, child1, child2]
@@ -58,7 +58,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [parent, child1, child2]
@@ -82,7 +82,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1]
-        spm_unit_assets: 2_500  # Over $2,000 limit
+        spm_unit_cash_assets: 2_500  # Over $2,000 limit
     households:
       household:
         members: [parent, child1]

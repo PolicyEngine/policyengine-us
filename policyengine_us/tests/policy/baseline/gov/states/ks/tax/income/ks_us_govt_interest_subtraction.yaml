@@ -1,0 +1,10 @@
+- name: Kansas subtracts US government bond interest from AGI
+  period: 2022
+  input:
+    adjusted_gross_income: 80_000
+    us_govt_interest: 1_000
+    state_code: KS
+  output:
+    # AGI exceeds OASDI limit so social security is not subtracted,
+    # but US government bond interest is still subtracted.
+    ks_agi_subtractions: 1_000

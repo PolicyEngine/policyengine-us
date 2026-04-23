@@ -1,0 +1,43 @@
+- name: Louisiana 529 deduction - single under cap, one beneficiary
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 2_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # Cap for single is $2,400 per beneficiary
+    # Deduction = min(2,000, 2,400) = 2,000
+    la_529_plan_deduction: 2_000
+
+- name: Louisiana 529 deduction - single over cap, one beneficiary
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 3_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # Cap for single is $2,400 per beneficiary
+    # Deduction = min(3,000, 2,400) = 2,400
+    la_529_plan_deduction: 2_400
+
+- name: Louisiana 529 deduction - joint, two beneficiaries
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: JOINT
+    investment_in_529_plan_indv: 8_000
+    count_529_contribution_beneficiaries: 2
+  output:
+    # Cap for joint is $4,800 per beneficiary * 2 = $9,600
+    # Deduction = min(8,000, 9,600) = 8,000
+    la_529_plan_deduction: 8_000
+
+- name: Louisiana 529 deduction - no contribution
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: SINGLE
+  output:
+    la_529_plan_deduction: 0

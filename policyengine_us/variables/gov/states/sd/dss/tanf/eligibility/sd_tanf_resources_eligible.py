@@ -11,5 +11,5 @@ class sd_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.tanf.resources
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= p.limit

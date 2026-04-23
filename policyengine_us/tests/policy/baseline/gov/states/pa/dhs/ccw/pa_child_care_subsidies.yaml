@@ -1,0 +1,26 @@
+# Unit tests for pa_child_care_subsidies
+# Tests the annual aggregator that rolls up pa_ccw to household benefits
+
+- name: Case 1, ineligible family gets zero annual subsidy.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_child_care_subsidies: 0

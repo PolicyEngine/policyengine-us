@@ -1,0 +1,19 @@
+- name: SSTB self-employment satisfies the Vermont activity test
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        sstb_self_employment_income: 30_000
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    vt_ccfap_meets_activity_test: true

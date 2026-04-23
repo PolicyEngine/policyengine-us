@@ -1,0 +1,11 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2023
+  input:
+    state_code: MS
+    ms_income_tax_before_credits_unit: 100
+    ms_charitable_contributions_credit_potential: 80
+    ms_cdcc_eligible: true
+    ms_cdcc_potential: 40
+  output:
+    ms_charitable_contributions_credit: 80
+    ms_cdcc: 20

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class sc_cdcc(Variable):
@@ -12,29 +15,14 @@ class sc_cdcc(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        # Get South Carolina CDCC rate.
-        p_sc = parameters(period).gov.states.sc.tax.income.credits.cdcc
-        p_us = parameters(period).gov.irs.credits.cdcc
-
-        # Year 2021 is different from federal cdcc
-        max_decoupled_year_offset = p_sc.max_care_expense_year_offset
-        period_max = period.offset(max_decoupled_year_offset)
-        sc_max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
-
-        # Get child care expenses.
-        childcare_expenses = tax_unit("cdcc_relevant_expenses", period)
-
-        # Married filing separate are ineligible.
-        filing_status = tax_unit("filing_status", period)
-        eligible = filing_status != filing_status.possible_values.SEPARATE
-
-        # Number of qualifying people
-        count_cdcc_eligible = min_(
-            tax_unit("count_cdcc_eligible", period), p_us.eligibility.max
+        ordered_credits = parameters(
+            period
+        ).gov.states.sc.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "sc_income_tax_before_non_refundable_credits",
+            "sc_cdcc",
+            "sc_cdcc_potential",
         )
-        # Maximum value cannot exceed cap
-        # Calculate total CDCC
-        capped_expenses = min_(
-            childcare_expenses, sc_max_care_expense * count_cdcc_eligible
-        )
-        return eligible * capped_expenses * p_sc.rate

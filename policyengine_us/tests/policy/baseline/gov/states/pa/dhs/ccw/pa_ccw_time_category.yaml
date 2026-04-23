@@ -1,0 +1,74 @@
+# Unit tests for pa_ccw_time_category
+# Tests FT/PT classification based on childcare_hours_per_day
+# Formula: hours_per_day >= 5 -> FULL_TIME, else PART_TIME
+
+- name: Case 1, full time 8 hours per day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_time_category: [FULL_TIME]
+
+- name: Case 2, part time 4 hours per day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_time_category: [PART_TIME]
+
+- name: Case 3, exactly 5 hours per day is full time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 5
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # 5 >= 5 -> FULL_TIME
+    pa_ccw_time_category: [FULL_TIME]
+
+- name: Case 4, 3 hours per day is part time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 3
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_time_category: [PART_TIME]
+
+- name: Case 5, zero hours per day default part time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Default childcare_hours_per_day = 0 -> 0 < 5 -> PART_TIME
+    pa_ccw_time_category: [PART_TIME]

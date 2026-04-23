@@ -135,3 +135,27 @@
         state_fips: 34
   output:
     nj_income_tax: 2_640
+
+- name: NJ single filer should not infer never-eligible SS status from missing SS income
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        taxable_interest_income: 104_762
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    never_eligible_for_social_security_benefits: false
+    nj_other_retirement_special_exclusion: 0
+    nj_income_tax: 2_014.5629

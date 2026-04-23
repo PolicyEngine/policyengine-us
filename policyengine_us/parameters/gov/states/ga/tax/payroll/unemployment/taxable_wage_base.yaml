@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Georgia.
+values:
+  0000-01-01: 9_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Georgia unemployment taxable wage base
+  reference:
+    - title: Georgia House Bill 347 amending Official Code of Georgia Section 34-8-49
+      href: https://www.legis.ga.gov/api/document/docs/default-source/general-statutes/2012sumdoc.pdf?sfvrsn=77e95ae6_2#page=20
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=20

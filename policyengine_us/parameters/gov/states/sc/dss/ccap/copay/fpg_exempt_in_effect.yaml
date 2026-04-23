@@ -1,0 +1,14 @@
+description: Whether South Carolina's FPL-based copay exemption for the Child Care Scholarship Program is in effect.
+values:
+  2022-10-01: false
+  2024-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: South Carolina CCAP FPL copay exemption in effect
+  reference:
+    - title: SC CCAP Fee Scale 2025-2026
+      href: https://www.scchildcare.org/media/ih2mrjw5/fee-scale-2025-2026.pdf#page=1
+    - title: SC CCDF State Plan FFY 2025-2027, Section 3.3.1(i)(ii)
+      href: https://www.scchildcare.org/media/cr5dc51w/submitted-version-of-the-ccdf-ffy-2025-2027-for-south-carolina-as-of-7-1-24pdf.pdf#page=25

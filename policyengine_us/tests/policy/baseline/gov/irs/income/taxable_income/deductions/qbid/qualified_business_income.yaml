@@ -57,3 +57,37 @@
     self_employed_pension_contribution_ald_person: 0
   output:
     qualified_business_income: 9_000
+
+- name: SSTB SE income excluded; deductions pro-rated to non-SSTB
+  period: 2026
+  input:
+    self_employment_income: 30_000
+    sstb_self_employment_income: 70_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    # Non-SSTB share = 30_000 / 100_000 = 0.3
+    # Non-SSTB QBI = 30_000 - 0.3 * 1_000 = 29_700
+    qualified_business_income: 29_700
+
+- name: Only SSTB SE income, non-SSTB QBI is zero
+  period: 2026
+  input:
+    sstb_self_employment_income: 100_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    qualified_business_income: 0
+
+- name: Mixed-sign SSTB loss does not create a negative non-SSTB deduction share
+  period: 2026
+  input:
+    self_employment_income: 100_000
+    sstb_self_employment_income: -50_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    qualified_business_income: 99_000

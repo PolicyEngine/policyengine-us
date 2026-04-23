@@ -1,0 +1,486 @@
+- name: Case 1, single aged individual living independently with zero income.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+        ak_ssp_living_arrangement: INDEPENDENT
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Eligibility: aged_blind_disabled=true, age=67>=18, resource_test=true
+    ak_ssp_eligible: [true]
+    # Claim type: not joint, no deeming => INDIVIDUAL
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [4_344]
+    # ssi_amount_if_eligible: individual = $674/mo * 12 = $8,088/yr
+    # uncapped_ssi = 8_088 - 0 = 8_088 (positive, no reduction)
+    # ak_ssp = max(0, 4_344 - 0) * eligible(1) = $4,344/yr
+    ak_ssp: [4_344]
+    ssi: [8_088]
+
+- name: Case 2, single disabled individual in Medicaid facility with zero income.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_aged_blind_disabled: true
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: MEDICAID_FACILITY.INDIVIDUAL = $45/mo * 12 = $540/yr
+    ak_ssp_payment_standard: [540]
+    # Federal SSI is limited to $30/month in a Medicaid facility.
+    ssi: [360]
+    ak_ssp: [540]
+
+- name: Case 3, child under 18 not eligible for APA even if SSI eligible.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # age 16 < 18 => not eligible
+    ak_ssp_eligible: [false]
+    # Not joint => INDIVIDUAL claim type
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard still computed: $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [4_344]
+    # Ineligible => benefit = supplement * eligible(0) = 0
+    ak_ssp: [0]
+
+- name: Case 4, individual in household of another with zero income.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: HOUSEHOLD_OF_ANOTHER.INDIVIDUAL = $368/mo * 12 = $4,416/yr
+    ak_ssp_payment_standard: [4_416]
+    # Federal SSI is reduced by one-third in the household-of-another arrangement.
+    ssi: [5_392]
+    ak_ssp: [4_416]
+
+- name: Case 5, individual in assisted living with zero income.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        is_ssi_aged_blind_disabled: true
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+        ak_resides_in_assisted_living_home: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: ASSISTED_LIVING.INDIVIDUAL = $100/mo * 12 = $1,200/yr
+    ak_ssp_payment_standard: [1_200]
+    # uncapped_ssi positive => full supplement
+    ak_ssp: [1_200]
+
+- name: Case 6, individual with income overspill reducing supplement.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 10_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [4_344]
+    # ssi_amount_if_eligible = $674/mo * 12 = $8,088/yr
+    # uncapped_ssi = 8_088 - 10_000 = -1_912 (negative)
+    # reduction = max(0, 1_912) = 1_912
+    # supplement = max(0, 4_344 - 1_912) = 2_432
+    # ak_ssp = 2_432 * eligible(1) = 2_432
+    ak_ssp: [2_432]
+
+- name: Case 7, not eligible due to failing all criteria.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_ssi_aged_blind_disabled: false
+        is_ssi_eligible: false
+        meets_ssi_resource_test: false
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [false]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Not eligible => ak_ssp = 0
+    ak_ssp: [0]
+
+- name: Case 8, very large negative self-employment income does not inflate benefit.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        self_employment_income: -60_000_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [4_344]
+    # SSI countable income floors earned income at 0, so ssi_countable_income = 0
+    # ssi_amount_if_eligible (individual) = $674/mo * 12 = $8,088/yr
+    # uncapped_ssi = 8_088 - 0 = 8_088 (positive, no reduction)
+    # ak_ssp = max(0, 4_344 - 0) * eligible(1) = $4,344/yr
+    ak_ssp: [4_344]
+
+- name: Case 9, couple one eligible with ineligible spouse in assisted living.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        is_tax_unit_head_or_spouse: true
+        ssi_countable_income: 0
+        is_ssi_spousal_deeming_applies: true
+        ak_resides_in_assisted_living_home: true
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: false
+        is_ssi_eligible: false
+        meets_ssi_resource_test: true
+        is_tax_unit_head_or_spouse: true
+        ssi_countable_income: 0
+        ak_resides_in_assisted_living_home: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # person1: ssi_eligible=true, age=70>=18 => eligible
+    # person2: ssi_eligible=false => not eligible
+    ak_ssp_eligible: [true, false]
+    # person1: is_ssi_spousal_deeming_applies=true => COUPLE_ONE_ELIGIBLE
+    # person2: not joint, no deeming => INDIVIDUAL
+    ak_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
+    # person1: ASSISTED_LIVING.COUPLE_ONE_ELIGIBLE = $100/mo * 12 = $1,200/yr
+    # person2: ASSISTED_LIVING.INDIVIDUAL = $100/mo * 12 = $1,200/yr
+    ak_ssp_payment_standard: [1_200, 1_200]
+    # person1: uncapped_ssi positive (deeming uses couple rate) => no reduction
+    # ak_ssp = max(0, 1_200 - 0) * eligible(1) = 1_200
+    # person2: not eligible => 0
+    ak_ssp: [1_200, 0]
+
+- name: Case 10, income overspill exactly equals payment standard so supplement is zero.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        # ssi_amount_if_eligible (individual) = $674/mo * 12 = $8,088/yr
+        # For supplement=0: need uncapped_ssi = -(payment_standard)
+        # uncapped_ssi = 8_088 - countable_income => countable_income = 8_088 + 4_344 = 12_432
+        ssi_countable_income: 12_432
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    # Payment standard: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [4_344]
+    # ssi_amount_if_eligible = $674/mo * 12 = $8,088/yr
+    # uncapped_ssi = 8_088 - 12_432 = -4_344
+    # reduction = max(0, 4_344) = 4_344
+    # supplement = max(0, 4_344 - 4_344) = 0
+    ak_ssp: [0]
+
+- name: Case 11, child exactly age 17 not eligible for APA.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        is_ssi_aged_blind_disabled: true
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # age 17 < 18 => not eligible despite meeting all other criteria
+    ak_ssp_eligible: [false]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    ak_ssp_payment_standard: [4_344]
+    # Ineligible => ak_ssp = 0
+    ak_ssp: [0]
+
+- name: Case 12, adult exactly age 18 is eligible for APA.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        is_ssi_aged_blind_disabled: true
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # age 18 >= 18 => eligible
+    ak_ssp_eligible: [true]
+    ak_ssp_claim_type: [INDIVIDUAL]
+    ak_ssp_payment_standard: [4_344]
+    # uncapped_ssi positive => no reduction
+    ak_ssp: [4_344]
+
+- name: Case 13, couple both eligible living independently.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+      person2:
+        age: 66
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true, true]
+    ak_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE]
+    # INDEPENDENT.COUPLE_BOTH_ELIGIBLE = $528/mo for the couple, so each
+    # person's annual payment standard is half of that amount.
+    ak_ssp_payment_standard: [3_168, 3_168]
+    # Each person: supplement = max(0, 3_168 - 0) * 1 = 3_168
+    # marital_unit.sum = 3_168 + 3_168 = 6_336
+    # Each gets 6_336 / 2 = 3_168
+    ak_ssp: [3_168, 3_168]
+
+- name: Case 14, mixed-arrangement joint claim falls back to individual treatment.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+        ak_resides_in_assisted_living_home: true
+      person2:
+        age: 66
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true, true]
+    # Joint SSI claim is no longer enough for a couple claim when spouses
+    # have different Alaska arrangements.
+    ak_ssp_claim_type: [INDIVIDUAL, INDIVIDUAL]
+    # person1: ASSISTED_LIVING.INDIVIDUAL = $100/mo * 12 = $1,200/yr
+    # person2: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [1_200, 4_344]
+    # Mixed arrangements are paid individually rather than averaged together.
+    ak_ssp: [1_200, 4_344]

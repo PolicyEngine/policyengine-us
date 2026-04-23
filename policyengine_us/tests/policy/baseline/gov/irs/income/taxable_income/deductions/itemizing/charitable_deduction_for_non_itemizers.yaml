@@ -11,8 +11,11 @@
   input:
     charitable_cash_donations: 400
     filing_status: SINGLE
+  # CARES Act §2204 set the non-itemizer cap at $300 for 2020, not $150.
+  # Per IRS Pub. 526 (2020) p.2, MFS was limited to $150 (sharing the
+  # joint $300 cap), but SINGLE/HoH/SURVIVING_SPOUSE get the full $300.
   output:
-    charitable_deduction_for_non_itemizers: 150
+    charitable_deduction_for_non_itemizers: 300
 
 - name: 2020 married filers more than limit
   period: 2020
@@ -21,6 +24,14 @@
     filing_status: JOINT
   output:
     charitable_deduction_for_non_itemizers: 300
+
+- name: 2020 MFS filer capped at $150 (half of joint $300)
+  period: 2020
+  input:
+    charitable_cash_donations: 400
+    filing_status: SEPARATE
+  output:
+    charitable_deduction_for_non_itemizers: 150
 
 - name: 2021 single filer less than limit
   period: 2021

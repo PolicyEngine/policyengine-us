@@ -52,4 +52,20 @@
         state_code: IL
   output:
     il_tanf_childcare_deduction: 375
-    il_tanf_countable_earned_income_for_grant_calculation: 106.25 # (800 - 375)*0.25 
+    il_tanf_countable_earned_income_for_grant_calculation: 106.25 # (800 - 375)*0.25
+
+# Pre-2010 EID rate test: 2/3 disregard instead of 3/4
+# Source: WAG 25-06-03-a (Work Pays, Nov 1993)
+
+- name: Case 4, pre-2010 two-thirds earned income disregard.
+  period: 2009-01
+  absolute_error_margin: 0.01
+  input:
+    il_tanf_countable_gross_earned_income: 900
+    il_tanf_childcare_deduction: 0
+    state_code: IL
+  output:
+    # 900 - 0 = 900
+    # disregard = 0.6667 * 900 = 600.03
+    # countable = 900 - 600.03 = 299.97
+    il_tanf_countable_earned_income_for_grant_calculation: 299.97

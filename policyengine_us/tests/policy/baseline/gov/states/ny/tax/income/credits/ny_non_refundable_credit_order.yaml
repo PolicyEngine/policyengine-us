@@ -1,0 +1,12 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2022
+  input:
+    state_code: NY
+    ny_income_tax_before_credits: 100
+    ny_household_credit_potential: 80
+    ny_solar_energy_systems_equipment_credit_potential: 40
+    ny_geothermal_energy_system_credit_potential: 30
+  output:
+    ny_household_credit: 80
+    ny_solar_energy_systems_equipment_credit: 20
+    ny_geothermal_energy_system_credit: 0

@@ -1,0 +1,141 @@
+- name: Case 1, single aged person in medical facility with no other income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # FLA = MEDICAL_TREATMENT_FACILITY, SSI = $30/mo
+    ssi: 30
+    ks_sspp_eligible: true
+    ks_sspp: 32
+
+- name: Case 2, person in facility with some Social Security income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 120
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # SS = $120/yr = $10/mo, disregard $20 -> countable $0
+    # SSI institutional = $30/mo - $0 = $30/mo
+    ssi: 30
+    ks_sspp_eligible: true
+    ks_sspp: 32
+
+- name: Case 3, person in facility with income just below SSI institutional cutoff.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 480
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # SS = $480/yr = $40/mo, disregard $20 -> countable $20/mo
+    # SSI institutional = $30 - $20 = $10/mo
+    ssi: 10
+    ks_sspp_eligible: true
+    ks_sspp: 32
+
+- name: Case 4, person in facility with income above SSI institutional cutoff.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 720
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # SS = $720/yr = $60/mo, disregard $20 -> countable $40/mo
+    # SSI institutional = max($30 - $40, 0) = $0/mo
+    ssi: 0
+    # No SSI -> no SSPP
+    ks_sspp_eligible: false
+    ks_sspp: 0
+
+- name: Case 5, couple both in medical facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Both in medical facility -> each gets institutional SSI $30/mo
+    ssi: [30, 30]
+    ks_sspp_eligible: [true, true]
+    ks_sspp: [32, 32]
+
+- name: Case 6, couple mixed, one in facility one in community.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Person1: in medical facility -> FLA = MEDICAL_TREATMENT_FACILITY
+    # Person1: SSI institutional = $30/mo, SSPP eligible
+    # Person2: community spouse, not in medical facility -> no SSPP
+    ks_sspp_eligible: [true, false]
+    ks_sspp: [32, 0]

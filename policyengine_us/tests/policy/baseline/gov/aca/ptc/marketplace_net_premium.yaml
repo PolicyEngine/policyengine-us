@@ -1,0 +1,23 @@
+- name: Marketplace net premium equals plan cost minus used PTC.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 6_000
+    used_aca_ptc: 4_000
+  output:
+    marketplace_net_premium: 2_000
+
+- name: Marketplace net premium is zero when the household does not take up coverage.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 0
+    used_aca_ptc: 0
+  output:
+    marketplace_net_premium: 0
+
+- name: Marketplace net premium floors at zero when PTC exceeds plan cost.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 2_000
+    used_aca_ptc: 3_000
+  output:
+    marketplace_net_premium: 0

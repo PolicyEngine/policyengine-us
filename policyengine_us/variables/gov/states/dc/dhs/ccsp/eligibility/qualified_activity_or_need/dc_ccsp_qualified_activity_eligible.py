@@ -18,7 +18,11 @@ class dc_ccsp_qualified_activity_eligible(Variable):
             add(
                 person,
                 period,
-                ["employment_income", "self_employment_income"],
+                [
+                    "employment_income",
+                    "self_employment_income",
+                    "sstb_self_employment_income",
+                ],
             )
             > 0
         )

@@ -1,0 +1,188 @@
+# Tests for fl_oss variable (final OSS payment).
+# Formula: fl_oss = min(max(0, total_needs - countable_income), max_oss)
+
+- name: Case 1, SSI recipient Redesign individual with typical income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # uncapped_ssi > 0 means person receives SSI (Group 1).
+        # $967/month FBR - $800/month income = $167/month uncapped.
+        # Annual: $167 * 12 = $2,004.
+        uncapped_ssi: 2_004
+        # Annual countable income = $800 * 12 = $9,600.
+        ssi_countable_income: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Total needs (I, Redesign) = $991.40 + $160 = $1,151.40/month = $13,816.80/year.
+    # Countable income = $9,600/year.
+    # Calculated OSS = $13,816.80 - $9,600 = $4,216.80/year.
+    # Max OSS (Redesign, I) = $184.40/month = $2,212.80/year.
+    # OSS = min($4,216.80, $2,212.80) = $2,212.80/year.
+    # Monthly output = $2,212.80 / 12 = $184.40.
+    fl_oss: [184.40]
+
+- name: Case 2, SSI recipient Protected individual with typical income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_004
+        ssi_countable_income: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Total needs (I, Protected) = $1,152 + $160 = $1,312/month = $15,744/year.
+    # Countable income = $9,600/year.
+    # Calculated OSS = $15,744 - $9,600 = $6,144/year.
+    # Max OSS (Protected, I) = $345/month = $4,140/year.
+    # OSS = min($6,144, $4,140) = $4,140/year.
+    # Monthly output = $4,140 / 12 = $345.
+    fl_oss: [345]
+
+- name: Case 3, income exceeds total needs, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # Income exceeds total needs, so max(0, total_needs - income) = 0.
+        uncapped_ssi: -2_000
+        # $1,200/month countable income = $14,400/year.
+        # Total needs Redesign (I) = $13,816.80/year.
+        # $14,400 > $13,816.80, so benefit = 0.
+        ssi_countable_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss: [0]
+
+- name: Case 4, zero countable income, capped at max OSS.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 11_604
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Total needs (I, Redesign) = $13,816.80/year.
+    # Countable income = $0.
+    # Calculated OSS = $13,816.80/year.
+    # Max OSS (Redesign, I) = $2,212.80/year.
+    # OSS = min($13,816.80, $2,212.80) = $2,212.80/year.
+    # Monthly output = $2,212.80 / 12 = $184.40.
+    fl_oss: [184.40]
+
+- name: Case 5, income just below total needs, partial benefit under max.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -500
+        # $1,100/month = $13,200/year.
+        # Total needs Redesign (I) = $13,816.80/year.
+        # Calculated = $13,816.80 - $13,200 = $616.80/year.
+        # But income standard (I, Redesign) = $1,045.40/month = $12,544.80/year.
+        # $13,200 > $12,544.80 so Group 2 check fails.
+        # Also uncapped_ssi < 0 so not Group 1.
+        # Person is INELIGIBLE (income above income standard for Group 2).
+        ssi_countable_income: 13_200
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Ineligible: uncapped_ssi <= 0 AND income > income standard.
+    fl_oss: [0]
+
+- name: Case 6, Group 2 eligible with income below income standard, small benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # Not an SSI recipient (income too high for SSI), but within OSS income standard.
+        uncapped_ssi: -100
+        # $1,000/month = $12,000/year.
+        # Income standard (Redesign, I) = $1,045.40/month = $12,544.80/year.
+        # $12,000 < $12,544.80 → Group 2 eligible.
+        ssi_countable_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Total needs (Redesign, I) = $13,816.80/year.
+    # Countable income = $12,000/year.
+    # Calculated = $13,816.80 - $12,000 = $1,816.80/year.
+    # Max OSS (Redesign, I) = $2,212.80/year.
+    # OSS = min($1,816.80, $2,212.80) = $1,816.80/year.
+    # Monthly output = $1,816.80 / 12 = $151.40.
+    fl_oss: [151.40]
+
+- name: Case 7, negative countable income does not inflate benefit beyond max.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 60_000_000
+        ssi_countable_income: -60_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Even with hugely negative income, OSS is capped at max.
+    # Max OSS (Redesign, I) = $184.40/month.
+    fl_oss: [184.40]

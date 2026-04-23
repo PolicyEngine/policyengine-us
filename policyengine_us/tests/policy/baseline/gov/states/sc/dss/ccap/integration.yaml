@@ -1,0 +1,428 @@
+# SC CCAP Integration Tests
+# 2025 FPG (Contiguous US):
+#   first_person = 15,650, additional = 5,500
+#   Family of 2: 21,150
+#   Family of 3: 26,650
+#   Family of 4: 32,150
+# 150% FPG family of 4: 32,150 * 1.50 = 48,225/yr = 4,018.75/mo
+# 85% SMI (SC):
+#   Family of 2: $56,743/yr ($4,729/mo)
+#   Family of 3: $70,095/yr ($5,841/mo)
+#   Family of 4: $83,446/yr ($6,954/mo)
+# Fee Scale 2025-2026 (family size 4):
+#   $0-$4,019/mo -> $0/wk
+#   $4,020-$4,668 -> $6/wk
+#   $4,669-$5,317 -> $11/wk
+#   $5,318-$5,966 -> $14/wk
+#   $5,967-$6,615 -> $17/wk
+#   $6,616-$7,263 -> $20/wk
+
+- name: Case 1, working family with 2 children in center care urban full time.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 35
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # === Eligibility ===
+    # Child ages: 3 and 8, both < 13, citizen, dependent -> eligible
+    sc_ccap_eligible_child: [false, false, true, true]
+
+    # Family size 4, income 60,000 <= 83,446 (85% SMI) -> eligible
+    sc_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Monthly income = 60,000 / 12 = 5,000
+    # Family size 4 fee scale: 4,669 <= 5,000 <= 5,317 -> $11/wk per child
+    # 2% cap: 5,000 * 0.02 = $100/mo; $100 / 4.33 = ~$23.09/wk cap
+    # $11 < $23.09 -> fee scale applies, $11/wk per child
+    # $11/wk * 2 eligible children * (52/12) = $95.33/mo
+    # Annual copay (MONTH var at YEAR period) = $95.33 * 12 = $1,144
+    sc_ccap_copay: 1_144
+
+    # === Time categories ===
+    # person1 (adult, 0 hrs): HT; person2 (adult, 0 hrs): HT
+    # person3: 35 hrs -> FULL_TIME; person4: 30 hrs -> FULL_TIME
+    sc_ccap_time_category: [HALF_TIME, HALF_TIME, FULL_TIME, FULL_TIME]
+
+    # === Provider rates ===
+    # Child1 (age 3): Center C, Urban, FT = $195/wk
+    # Child2 (age 8): Center C, Urban, FT, school age = $165/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 0, 2_340, 1_980]
+
+    # === Benefit (MONTH formula, YEAR test period) ===
+    # Monthly copay = $95.33 (from above)
+    # Monthly max rate = ($195 + $165) * 52 / 12 = $1,560
+    # Monthly expenses = $18,000 / 12 = $1,500
+    # Monthly uncapped = max(1,500 - 95.33, 0) = 1,404.67
+    # Monthly benefit = min(1,404.67, 1,560) = 1,404.67
+    # Annual benefit = 1,404.67 * 12 = 16,856.04
+    sc_ccap: 16_856
+
+- name: Case 2, low income family at zero copay tier.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 25
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # === Eligibility ===
+    sc_ccap_eligible_child: [false, true]
+
+    # Family size 2, income 24,000 <= 56,743 (85% SMI) -> eligible
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Monthly income = 24,000 / 12 = 2,000
+    # Family size 2 fee scale: $0-$2,644 -> $0/wk
+    # 2,000 < 2,645 -> $0 tier
+    sc_ccap_copay: 0
+
+    # === Provider rates ===
+    # person1 (adult, 0 hrs): HT; person2 (age 1, 30 hrs): FT
+    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+
+    # === Benefit ===
+    # Center C, Urban, FT, Age 1 = $213/wk
+    # Monthly max rate = $213 * 52 / 12 = $923
+    # Monthly expenses = $12,000 / 12 = $1,000
+    # Monthly benefit = min(1,000 - 0, 923) = $923 (rate caps it)
+    # Annual benefit = $923 * 12 = $11,076
+    sc_ccap: 11_076
+
+- name: Case 3, family just above 85 percent SMI ineligible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 84_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # === Eligibility ===
+    sc_ccap_eligible_child: [false, false, true, true]
+
+    # Family size 4, 85% SMI = $83,446/yr
+    # 84,000 > 83,446 -> ineligible
+    sc_ccap_income_eligible: false
+    sc_ccap_eligible: false
+
+    # === Benefit ===
+    sc_ccap: 0
+
+- name: Case 4, FFN provider care scenario.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: RURAL
+  output:
+    # === Eligibility ===
+    sc_ccap_eligible_child: [false, true]
+
+    # Family size 2, income 30,000 <= 56,743 -> eligible
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Monthly income = 30,000 / 12 = 2,500
+    # Family size 2: $0-$2,644 -> $0/wk
+    # 2,500 < 2,645 -> $0 tier
+    sc_ccap_copay: 0
+
+    # === Provider rates ===
+    # person1 (adult, 0 hrs): HT; person2 (age 2, 30 hrs): FT
+    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 600]
+
+    # === Benefit ===
+    # Annual max = $50 * 52 = $2,600
+    # Uncapped benefit = max(5,000 - 0, 0) = 5,000
+    # Annual benefit = min(5,000, 2,600) = 2,600
+    sc_ccap: 2_600
+
+- name: Case 5, special needs child with surcharge.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # === Eligibility ===
+    # Disabled child age 5 < 19 -> eligible
+    sc_ccap_eligible_child: [false, true]
+
+    # Family size 2, income 40,000 <= 56,743 -> eligible
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Disabled child in family -> exempt from copay ($0)
+    sc_ccap_copay: 0
+
+    # === Provider rates ===
+    # person1 (adult, 0 hrs): HT; person2 (child, 30 hrs): FT
+    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+
+    # === Benefit (MONTH formula, YEAR test period) ===
+    # Age 5 defaults in-school (is_in_k12_school True for ages 5-17)
+    # Center C, Urban, FT, Age 5-12 in school = $165 + $20 surcharge = $185/wk
+    # Monthly max rate = $185 * 52 / 12 = $801.67
+    # Monthly expenses = $12,000 / 12 = $1,000
+    # Monthly uncapped = max(1,000 - 0, 0) = $1,000
+    # Monthly benefit = min(1,000, 801.67) = $801.67
+    # Annual benefit = $801.67 * 12 = $9,620
+    sc_ccap: 9_620
+
+- name: Case 6, foster care family with zero copay and surcharge.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        childcare_hours_per_week: 35
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # === Eligibility ===
+    sc_ccap_eligible_child: [false, true]
+
+    # Family size 2, income 50,000 <= 56,743 -> eligible
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Foster care -> $0 copay
+    sc_ccap_copay: 0
+
+    # === Provider rates ===
+    # person1 (adult, 0 hrs): HT; person2 (child, 35 hrs): FT
+    sc_ccap_time_category: [HALF_TIME, FULL_TIME]
+    # Center C, Urban, FT, Age 3 = $195 + $30 foster surcharge = $225/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 2_700]
+
+    # === Benefit ===
+    # Annual max = $225 * 52 = $11,700
+    # Uncapped benefit = max(14,000 - 0, 0) = 14,000
+    # Annual benefit = min(14,000, 11,700) = 11,700
+    sc_ccap: 11_700
+
+- name: Case 7, half time care scenario.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: RURAL
+  output:
+    # === Eligibility ===
+    sc_ccap_eligible_child: [false, true]
+
+    # Family size 2, income 25,000 <= 56,743 -> eligible
+    sc_ccap_income_eligible: true
+    # weekly_hours_worked 20 >= 15 -> activity eligible
+    sc_ccap_eligible: true
+
+    # === Copay ===
+    # Monthly income = 25,000 / 12 = 2,083.33
+    # Family size 2: $0-$2,644 -> $0/wk
+    sc_ccap_copay: 0
+
+    # === Provider rates ===
+    # person1 (adult, 0 hrs): HT; person2 (child, 20 hrs < 25): HT
+    sc_ccap_time_category: [HALF_TIME, HALF_TIME]
+    # FFN, HT, Under 3 = $30/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 360]
+
+    # === Benefit ===
+    # Annual max = $30 * 52 = $1,560
+    # Uncapped benefit = max(3,000 - 0, 0) = 3,000
+    # Annual benefit = min(3,000, 1,560) = 1,560
+    sc_ccap: 1_560

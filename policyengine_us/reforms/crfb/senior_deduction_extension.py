@@ -8,7 +8,6 @@ def create_senior_deduction_extension() -> Reform:
         # Update deductions_if_itemizing to include additional_senior_deduction after 2028
         parameters.gov.irs.deductions.deductions_if_itemizing.update(
             start=instant("2029-01-01"),
-            stop=instant("2099-12-31"),
             value=[
                 "qualified_business_income_deduction",
                 "wagering_losses_deduction",
@@ -20,7 +19,6 @@ def create_senior_deduction_extension() -> Reform:
         # Update deductions_if_not_itemizing to include additional_senior_deduction after 2028
         parameters.gov.irs.deductions.deductions_if_not_itemizing.update(
             start=instant("2029-01-01"),
-            stop=instant("2099-12-31"),
             value=[
                 "standard_deduction",
                 "qualified_business_income_deduction",

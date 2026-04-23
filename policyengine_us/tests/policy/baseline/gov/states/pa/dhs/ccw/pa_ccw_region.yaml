@@ -1,0 +1,87 @@
+# Unit tests for pa_ccw_region
+# Tests ELRC region assignment from county_str
+# 19 regions per PA DHS ELRC map
+
+- name: Case 1, Erie County maps to region 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: ERIE_COUNTY_PA
+  output:
+    pa_ccw_region: 1
+
+- name: Case 2, Allegheny County maps to region 5.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    pa_ccw_region: 5
+
+- name: Case 3, Montgomery County maps to region 17.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: MONTGOMERY_COUNTY_PA
+  output:
+    pa_ccw_region: 17
+
+- name: Case 4, Chester County maps to region 19.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: CHESTER_COUNTY_PA
+  output:
+    pa_ccw_region: 19
+
+- name: Case 5, Philadelphia County maps to region 18.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: PHILADELPHIA_COUNTY_PA
+  output:
+    pa_ccw_region: 18
+
+- name: Case 6, Lancaster County maps to region 10.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: LANCASTER_COUNTY_PA
+  output:
+    pa_ccw_region: 10

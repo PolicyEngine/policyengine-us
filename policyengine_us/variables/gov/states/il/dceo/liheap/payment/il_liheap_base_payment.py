@@ -8,21 +8,35 @@ class il_liheap_base_payment(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = "https://dceo.illinois.gov/communityservices/utilitybillassistance.html"
+    reference = "https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.il.dceo.liheap.payment.base_amount
+        p = parameters(period).gov.states.il.dceo.liheap.payment.matrix
+        fuel_type = spm_unit("il_liheap_heating_type", period)
+        income_bracket = spm_unit("il_liheap_income_bracket", period)
+        size = spm_unit("spm_unit_size", period)
+        capped_size = clip(size, 1, 6)
 
-        # Check if heat is included in rent
-        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        is_electric = fuel_type == fuel_type.possible_values.ALL_ELECTRIC
+        is_gas = fuel_type == fuel_type.possible_values.NAT_GAS_OTHER
+        is_propane = fuel_type == fuel_type.possible_values.PROPANE_FUEL_OIL
+        is_cash = fuel_type == fuel_type.possible_values.CASH
+
+        matrix_amount = select(
+            [is_electric, is_gas, is_propane, is_cash],
+            [
+                p.all_electric[income_bracket][capped_size],
+                p.nat_gas[income_bracket][capped_size],
+                p.propane[income_bracket][capped_size],
+                p.cash[income_bracket][capped_size],
+            ],
+            default=0,
+        )
+        # Cap non-cash benefits at actual heating expenses.
+        # Cash (heat in rent) is a direct payment — no expense cap.
         heating_expenses = add(spm_unit, period, ["heating_expense_person"])
-
-        # For renters with heat included in rent, provide minimum cash benefit
-        # For others, benefit based on actual heating expenses up to maximum
-        capped_heating_expenses = min_(heating_expenses, p.max)
-
         return where(
-            heat_in_rent,
-            p.min,  # Fixed minimum for heat included in rent
-            capped_heating_expenses,  # Based on actual expenses, up to maximum
+            is_cash,
+            matrix_amount,
+            min_(matrix_amount, heating_expenses),
         )

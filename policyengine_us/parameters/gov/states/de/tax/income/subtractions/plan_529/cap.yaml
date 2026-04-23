@@ -1,0 +1,23 @@
+description: Delaware caps the 529 plan contributions subtraction at this amount by filing status.
+metadata:
+  label: Delaware 529 plan contribution subtraction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Delaware Code Title 30, Section 1106(b)
+    href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - title: DE529 Education Savings Plan
+    href: https://treasurer.delaware.gov/education-savings-plan/
+
+JOINT:
+  2022-01-01: 2_000
+SURVIVING_SPOUSE:
+  2022-01-01: 2_000
+SINGLE:
+  2022-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 1_000
+SEPARATE:
+  2022-01-01: 1_000

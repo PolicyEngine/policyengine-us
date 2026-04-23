@@ -1,0 +1,232 @@
+# Unit tests for pa_ccw_activity_eligible (YEAR period)
+# Tests activity/work requirement for parents
+# 55 Pa. Code § 3042.33(a): >= 20 hrs/week work
+# § 3042.33(c)(1): full-time student under 22 exempt
+# § 3042.33(c)(2): >= 10 hrs work + education/training combo
+#
+# All parents must qualify individually (55 Pa. Code 3042.33).
+# Falls back to meets_ccdf_activity_test for non-derivable activities.
+
+- name: Case 1, single parent works 30 hours meets requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+        is_full_time_student: false
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 30 >= 20 -> meets work req
+    pa_ccw_activity_eligible: true
+
+- name: Case 2, single parent works 5 hours fails all requirements.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 5
+        is_full_time_student: false
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 5 < 20 (work) and 5 < 10 (training combo) and not student -> fails
+    pa_ccw_activity_eligible: false
+
+- name: Case 3, single parent works exactly 20 hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+        is_full_time_student: false
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 20 >= 20 -> meets work req
+    pa_ccw_activity_eligible: true
+
+- name: Case 4, two parents both work sufficient hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+        is_full_time_student: false
+      person2:
+        age: 33
+        weekly_hours_worked: 25
+        is_full_time_student: false
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    pa_ccw_activity_eligible: true
+
+- name: Case 5, two parents one works 5 hours fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+        is_full_time_student: false
+      person2:
+        age: 33
+        weekly_hours_worked: 5
+        is_full_time_student: false
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # person2 works 5 < 10 (training combo) and 5 < 20 -> fails
+    pa_ccw_activity_eligible: false
+
+- name: Case 6, full time student exempt from work requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 20
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Full-time student -> exempt from work hours
+    pa_ccw_activity_eligible: true
+
+- name: Case 7, parent works 10 hours without training fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 10
+        is_full_time_student: false
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 10 >= 10 but NOT a student -> training combo requires both
+    pa_ccw_activity_eligible: false
+
+- name: Case 9, parent works 10 hours with training qualifies via combo.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 10
+        is_full_time_student: true
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 10 >= 10 AND is_student -> training combo met
+    pa_ccw_activity_eligible: true
+
+- name: Case 8, student age 25 not exempt from work requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 25 >= 22 (teen_parent_max_age) -> student exemption does not apply
+    # 0 < 20 (work) and 0 < 10 (training combo) -> fails
+    pa_ccw_activity_eligible: false

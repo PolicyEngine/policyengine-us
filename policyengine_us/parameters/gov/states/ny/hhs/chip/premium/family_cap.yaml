@@ -1,0 +1,53 @@
+description: New York caps the total Child Health Plus monthly premium per family at three children's worth, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: New York Child Health Plus monthly premium family cap
+  reference:
+    - title: New York State Department of Health - Child Health Plus Eligibility and Cost (current)
+      href: https://www.health.ny.gov/health_care/child_health_plus/eligibility_and_cost.htm
+    - title: Child Health Plus page captured January 2020 (pre-2023 schedule with $27 cap at 160-222 percent FPL)
+      href: https://web.archive.org/web/20200118155511/https://www.health.ny.gov/health_care/child_health_plus/eligibility_and_cost.htm
+    - title: Child Health Plus page captured February 2023 (restructured schedule)
+      href: https://web.archive.org/web/20230207084107/https://www.health.ny.gov/health_care/child_health_plus/eligibility_and_cost.htm
+brackets:
+  - threshold:
+      2020-01-01: -.inf
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1.60
+      2023-02-01: 2.22
+      2026-02-17: 2.23
+    amount:
+      2020-01-01: 27
+      2023-02-01: 45
+  - threshold:
+      2020-01-01: 2.22
+      2023-02-01: 2.50
+      2026-02-17: 2.51
+    amount:
+      2020-01-01: 45
+      2023-02-01: 90
+  - threshold:
+      2020-01-01: 2.50
+      2023-02-01: 3.00
+      2026-02-17: 3.01
+    amount:
+      2020-01-01: 90
+      2023-02-01: 135
+  - threshold:
+      2020-01-01: 3.00
+      2023-02-01: 3.50
+      2026-02-17: 3.51
+    amount:
+      2020-01-01: 135
+      2023-02-01: 180
+  - threshold:
+      2020-01-01: 3.50
+      2023-02-01: 4.00
+    amount:
+      2020-01-01: 180
+      2023-02-01: 0

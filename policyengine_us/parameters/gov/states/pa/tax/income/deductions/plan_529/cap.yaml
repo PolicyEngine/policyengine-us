@@ -1,0 +1,18 @@
+description: >
+  Pennsylvania caps the 529 plan contributions deduction per beneficiary
+  at this amount, which is tied to the federal annual gift tax exclusion.
+values:
+  2021-01-01: 15_000
+  2022-01-01: 16_000
+  2023-01-01: 17_000
+  2024-01-01: 18_000
+  2025-01-01: 19_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Pennsylvania 529 plan contribution deduction cap per beneficiary
+  reference:
+  - title: PA Revenue - What is the limit on a deduction to a 529 plan?
+    href: https://revenue-pa.custhelp.com/app/answers/detail/a_id/2208/~/what-is-the-limit-on-a-deduction-to-a-529-plan
+  - title: PA 529 Plan FAQs
+    href: https://www.pa529.com/faqs/
