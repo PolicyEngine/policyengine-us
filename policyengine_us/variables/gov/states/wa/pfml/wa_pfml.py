@@ -8,9 +8,8 @@ class wa_pfml(Variable):
     documentation = (
         "Annual Washington Paid Family and Medical Leave benefit. "
         "Computed as the weekly benefit amount multiplied by the "
-        "combined maximum leave duration in weeks, for eligible "
-        "workers. Represents the maximum potential annual benefit "
-        "if the full allowed combined leave is taken."
+        "claimed leave weeks, capped at the maximum duration for the "
+        "selected leave type."
     )
     unit = USD
     definition_period = YEAR
@@ -23,4 +22,30 @@ class wa_pfml(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.pfml
         weekly_benefit = person("wa_pfml_weekly_benefit_amount", period)
-        return weekly_benefit * p.duration.combined_max_weeks
+        leave_type = person("wa_pfml_leave_type", period)
+        leave_type_values = leave_type.possible_values
+        max_leave_weeks = select(
+            [
+                leave_type == leave_type_values.FAMILY,
+                leave_type == leave_type_values.MEDICAL,
+                leave_type == leave_type_values.COMBINED,
+                leave_type
+                == leave_type_values.MEDICAL_WITH_PREGNANCY_INCAPACITY,
+                leave_type
+                == leave_type_values.COMBINED_WITH_PREGNANCY_INCAPACITY,
+            ],
+            [
+                p.duration.family_leave_weeks,
+                p.duration.medical_leave_weeks,
+                p.duration.combined_max_weeks,
+                p.duration.medical_leave_weeks_with_pregnancy_incapacity,
+                p.duration.combined_max_weeks_with_pregnancy_incapacity,
+            ],
+            default=0,
+        )
+        leave_weeks = clip(
+            person("wa_pfml_leave_weeks", period),
+            0,
+            max_leave_weeks,
+        )
+        return weekly_benefit * leave_weeks

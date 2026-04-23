@@ -5,6 +5,8 @@
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
+        wa_pfml_leave_weeks: 16
+        wa_pfml_leave_type: COMBINED
     households:
       household:
         members: [person1]
@@ -23,3 +25,86 @@
     # Combined family + medical leave max = 16 weeks per RCW 50A.15.020(3)(c).
     # Annual benefit = 866 * 16 = 13,856
     wa_pfml: 13_856
+
+- name: Case 2, eligible Washington worker with no leave claim receives no annual benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_eligible: true
+    wa_pfml: 0
+
+- name: Case 3, leave weeks above the statutory cap are limited to the combined maximum.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_weeks: 16
+        wa_pfml_leave_type: FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Family leave is capped at 12 weeks under RCW 50A.15.020(3)(a).
+    wa_pfml: 10_392
+
+- name: Case 4, medical leave without pregnancy incapacity is limited to 12 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_weeks: 16
+        wa_pfml_leave_type: MEDICAL
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Medical leave is capped at 12 weeks under RCW 50A.15.020(3)(b).
+    wa_pfml: 10_392
+
+- name: Case 5, pregnancy-related medical leave uses the 14 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_weeks: 16
+        wa_pfml_leave_type: MEDICAL_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Pregnancy-related medical leave is capped at 14 weeks.
+    wa_pfml: 12_124
+
+- name: Case 6, combined leave with pregnancy incapacity uses the 18 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_weeks: 20
+        wa_pfml_leave_type: COMBINED_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Combined leave with pregnancy incapacity is capped at 18 weeks.
+    wa_pfml: 15_588

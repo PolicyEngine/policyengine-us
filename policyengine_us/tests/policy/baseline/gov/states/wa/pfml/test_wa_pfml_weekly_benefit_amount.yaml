@@ -16,8 +16,8 @@
     employment_income: 47_580
   output:
     # AWW = 47,580 / 52 = 915
-    # AWW (915) <= H (915), so benefit = 0.90 * 915 = 823.50
-    wa_pfml_weekly_benefit_amount: 823.50
+    # AWW (915) <= H (915), so benefit = 0.90 * 915 = 823.50, rounded down to 823
+    wa_pfml_weekly_benefit_amount: 823
 
 - name: Case 3, AWW above the SAWW breakpoint uses two-tier formula.
   period: 2026
@@ -76,8 +76,8 @@
     employment_income: 47_528
   output:
     # AWW = 47,528 / 52 = 914
-    # AWW (914) <= H (915), so benefit = 0.90 * 914 = 822.60
-    wa_pfml_weekly_benefit_amount: 822.60
+    # AWW (914) <= H (915), so benefit = 0.90 * 914 = 822.60, rounded down to 822
+    wa_pfml_weekly_benefit_amount: 822
 
 - name: Case 8, AWW one dollar above the SAWW breakpoint.
   period: 2026
@@ -88,8 +88,8 @@
     # AWW = 47,632 / 52 = 916
     # AWW (916) > H (915), so benefit = 0.90 * 915 + 0.50 * (916 - 915)
     # = 823.50 + 0.50
-    # = 824.00
-    wa_pfml_weekly_benefit_amount: 824.00
+    # = 824.00, rounded down to 824
+    wa_pfml_weekly_benefit_amount: 824
 
 - name: Case 9, AWW exactly at the maximum weekly benefit threshold.
   period: 2026
@@ -104,3 +104,14 @@
     # = 1,647
     # Equal to max weekly benefit (0.90 * 1,830 = 1,647), so benefit = 1,647
     wa_pfml_weekly_benefit_amount: 1_647
+
+- name: Case 10, non-integer AWW is rounded down before applying the benefit formula.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 47_579
+  output:
+    # Raw AWW approximation = 47,579 / 52 = 914.98...
+    # RCW 50A.05.010(6) rounds AWW down to the next lower dollar, so AWW = 914.
+    # Benefit = 0.90 * 914 = 822.60, rounded down to 822.
+    wa_pfml_weekly_benefit_amount: 822

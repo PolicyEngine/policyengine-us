@@ -8,7 +8,8 @@ class wa_pfml_average_weekly_wage(Variable):
     documentation = (
         "Employee's average weekly wage for Washington Paid Family and "
         "Medical Leave. Simplified as annual employment income divided by "
-        "the number of weeks in a year."
+        "the number of weeks in a year and rounded down to the next lower "
+        "dollar."
     )
     unit = USD
     definition_period = YEAR
@@ -19,4 +20,4 @@ class wa_pfml_average_weekly_wage(Variable):
     )
 
     def formula(person, period, parameters):
-        return person("employment_income", period) / WEEKS_IN_YEAR
+        return np.floor(person("employment_income", period) / WEEKS_IN_YEAR)
