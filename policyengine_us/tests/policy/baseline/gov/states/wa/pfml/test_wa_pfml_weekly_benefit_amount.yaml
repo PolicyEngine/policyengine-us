@@ -1,0 +1,106 @@
+- name: Case 1, low earner below the SAWW breakpoint receives 90 percent of AWW.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 26_000
+  output:
+    # AWW = 26,000 / 52 = 500
+    # SAWW 2026 = 1,830; breakpoint H = 0.5 * 1,830 = 915
+    # AWW (500) <= H (915), so benefit = 0.90 * 500 = 450
+    wa_pfml_weekly_benefit_amount: 450
+
+- name: Case 2, AWW exactly at the SAWW breakpoint.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 47_580
+  output:
+    # AWW = 47,580 / 52 = 915
+    # AWW (915) <= H (915), so benefit = 0.90 * 915 = 823.50
+    wa_pfml_weekly_benefit_amount: 823.50
+
+- name: Case 3, AWW above the SAWW breakpoint uses two-tier formula.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 78_000
+  output:
+    # AWW = 78,000 / 52 = 1,500
+    # AWW (1,500) > H (915), so benefit = 0.90 * 915 + 0.50 * (1,500 - 915)
+    # = 823.50 + 0.50 * 585
+    # = 823.50 + 292.50
+    # = 1,116
+    wa_pfml_weekly_benefit_amount: 1_116
+
+- name: Case 4, high earner with benefit capped at the maximum weekly benefit.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 156_000
+  output:
+    # AWW = 156,000 / 52 = 3,000
+    # Raw = 0.90 * 915 + 0.50 * (3,000 - 915)
+    # = 823.50 + 0.50 * 2,085
+    # = 823.50 + 1,042.50
+    # = 1,866
+    # Max weekly benefit 2026 = 0.90 * 1,830 = 1,647
+    # Benefit = min(1,866, 1,647) = 1,647
+    wa_pfml_weekly_benefit_amount: 1_647
+
+- name: Case 5, AWW below 100 dollars returns full AWW per RCW 50A.15.020(6)(b).
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 4_160
+  output:
+    # AWW = 4,160 / 52 = 80
+    # AWW < 100 per RCW 50A.15.020(6)(b), so benefit = AWW = 80
+    # (not the 100 minimum; uses employee's full wage)
+    wa_pfml_weekly_benefit_amount: 80
+
+- name: Case 6, zero employment income produces zero benefit.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 0
+  output:
+    # AWW = 0 / 52 = 0
+    # Per RCW 50A.15.020(6)(b), if AWW < 100 the benefit equals AWW;
+    # with no wages there is no benefit.
+    wa_pfml_weekly_benefit_amount: 0
+
+- name: Case 7, AWW one dollar below the SAWW breakpoint.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 47_528
+  output:
+    # AWW = 47,528 / 52 = 914
+    # AWW (914) <= H (915), so benefit = 0.90 * 914 = 822.60
+    wa_pfml_weekly_benefit_amount: 822.60
+
+- name: Case 8, AWW one dollar above the SAWW breakpoint.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 47_632
+  output:
+    # AWW = 47,632 / 52 = 916
+    # AWW (916) > H (915), so benefit = 0.90 * 915 + 0.50 * (916 - 915)
+    # = 823.50 + 0.50
+    # = 824.00
+    wa_pfml_weekly_benefit_amount: 824.00
+
+- name: Case 9, AWW exactly at the maximum weekly benefit threshold.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 133_224
+  output:
+    # AWW = 133,224 / 52 = 2,562
+    # Raw = 0.90 * 915 + 0.50 * (2,562 - 915)
+    # = 823.50 + 0.50 * 1,647
+    # = 823.50 + 823.50
+    # = 1,647
+    # Equal to max weekly benefit (0.90 * 1,830 = 1,647), so benefit = 1,647
+    wa_pfml_weekly_benefit_amount: 1_647

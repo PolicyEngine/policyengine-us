@@ -1,0 +1,25 @@
+- name: Case 1, Washington worker with AWW above breakpoint gets annual benefit for combined max weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # SAWW 2026 = 1,830; breakpoint H = 0.5 * 1,830 = 915
+    # Max weekly benefit 2026 = 0.90 * 1,830 = 1,647
+    # AWW = 52,000 / 52 = 1,000
+    # AWW (1,000) > H (915), so weekly benefit = 0.90 * 915 + 0.50 * (1,000 - 915)
+    # = 823.50 + 0.50 * 85
+    # = 823.50 + 42.50
+    # = 866 (below the 1,647 cap, above the 100 floor)
+    wa_pfml_weekly_benefit_amount: 866
+    # Eligibility: 20 weekly hours * 52 = 1,040 annual hours >= 820 threshold.
+    wa_pfml_eligible: true
+    # Combined family + medical leave max = 16 weeks per RCW 50A.15.020(3)(c).
+    # Annual benefit = 866 * 16 = 13,856
+    wa_pfml: 13_856
