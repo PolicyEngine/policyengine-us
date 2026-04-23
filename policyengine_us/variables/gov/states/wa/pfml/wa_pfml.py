@@ -29,10 +29,8 @@ class wa_pfml(Variable):
                 leave_type == leave_type_values.FAMILY,
                 leave_type == leave_type_values.MEDICAL,
                 leave_type == leave_type_values.COMBINED,
-                leave_type
-                == leave_type_values.MEDICAL_WITH_PREGNANCY_INCAPACITY,
-                leave_type
-                == leave_type_values.COMBINED_WITH_PREGNANCY_INCAPACITY,
+                leave_type == leave_type_values.MEDICAL_WITH_PREGNANCY_INCAPACITY,
+                leave_type == leave_type_values.COMBINED_WITH_PREGNANCY_INCAPACITY,
             ],
             [
                 p.duration.family_leave_weeks,
