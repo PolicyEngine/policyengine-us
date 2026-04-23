@@ -9,13 +9,18 @@ class snap_unit_size(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2014#b",
         "https://www.law.cornell.edu/uscode/text/7/2015#f",
+        # 7 CFR 273.11(c)(2) — treatment of disqualified members: the
+        # individual is excluded from the SNAP unit for size purposes.
+        "https://www.law.cornell.edu/cfr/text/7/273.11",
     )
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
         person = spm_unit.members
-        ineligible = person("is_snap_ineligible_student", period) | ~person(
-            "is_snap_immigration_status_eligible", period
+        ineligible = (
+            person("is_snap_ineligible_student", period)
+            | ~person("is_snap_immigration_status_eligible", period)
+            | person("is_snap_work_requirements_disqualified", period)
         )
         ineligible_count = spm_unit.sum(ineligible)
         return max_(unit_size - ineligible_count, 0)

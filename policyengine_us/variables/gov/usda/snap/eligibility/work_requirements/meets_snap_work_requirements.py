@@ -18,37 +18,15 @@ class meets_snap_work_requirements(Variable):
     def formula(spm_unit, period, parameters):
         # Per 7 CFR 273.7(f)(1) and 273.24(b), a non-compliant member is
         # individually disqualified and excluded from the SNAP unit.
-        # Remaining members continue to receive SNAP (with income and
-        # resources of the excluded member prorated under 7 CFR
-        # 273.11(c)(2) — proration not yet modeled). Only the narrow
-        # 7 CFR 273.7(f)(5) state option — elected by 8 jurisdictions
-        # (AZ, FL, MA, MN, MS, TX, VA, VI) — permits household-wide
-        # disqualification when the head of household fails the general
-        # work requirement, bounded to at most 180 days. That option is
-        # not yet parameterized here.
+        # Remaining members continue to receive SNAP. The unit remains
+        # eligible on the work-requirement dimension so long as at least
+        # one member meets requirements or is exempt.
+        #
+        # The narrow 7 CFR 273.7(f)(5) state option — elected by 8
+        # jurisdictions (AZ, FL, MA, MN, MS, TX, VA, VI) — permitting
+        # household-wide disqualification when the head of household
+        # fails the general work requirement, bounded to at most 180
+        # days, is not yet parameterized here.
         person = spm_unit.members
-        general_work_requirements = person(
-            "meets_snap_general_work_requirements", period
-        )
-        abawd_work_requirements = person("meets_snap_abawd_work_requirements", period)
-        # Dependent child threshold differs: pre-HR1 (18) vs post-HR1 (14)
-        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
-        p = parameters(period).gov.usda.snap.work_requirements.abawd.age_threshold
-        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
-        p_pre = parameters(
-            "2025-06-01"
-        ).gov.usda.snap.work_requirements.abawd.age_threshold
-        dep_threshold = where(hr1_in_effect, p.dependent, p_pre.dependent)
-        age = person("monthly_age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_child = age < dep_threshold
-        no_dependent_child = person.spm_unit.sum(is_dependent & is_child) == 0
-        meets_work_requirements_person = where(
-            no_dependent_child,
-            abawd_work_requirements & general_work_requirements,
-            general_work_requirements,
-        )
-        # Unit is eligible as long as at least one member meets
-        # requirements (or is exempt). Members who fail are individually
-        # disqualified per 273.7(f)(1) / 273.24(b).
-        return spm_unit.any(meets_work_requirements_person)
+        disqualified = person("is_snap_work_requirements_disqualified", period)
+        return spm_unit.any(~disqualified)
