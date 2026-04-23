@@ -1,12 +1,12 @@
-description: New York divides high quarter wages by this amount to compute the weekly benefit rate when high quarter wages are at or below the low threshold under the Unemployment Insurance program.
+description: New York sets this minimum weekly benefit rate for divisor-26 formula cases under the Unemployment Insurance program.
 
 values:
-  2020-01-01: 25
+  2020-01-01: 143
 
 metadata:
-  unit: /1
-  period: year
-  label: New York UI low weekly benefit divisor
+  unit: currency-USD
+  period: week
+  label: New York UI formula minimum weekly benefit rate
   reference:
     - title: NY Labor Law § 590(5) — Rights to benefits
       href: https://www.nysenate.gov/legislation/laws/LAB/590

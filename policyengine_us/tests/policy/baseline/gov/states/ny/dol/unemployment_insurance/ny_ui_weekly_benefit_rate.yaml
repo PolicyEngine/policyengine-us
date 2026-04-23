@@ -8,7 +8,7 @@
 #   HQ <= $3,575 -> WBR_raw = floor(HQ / 25)
 # Final WBR = min(max(WBR_raw, min_amount), max_amount).
 # min_amount: $104 (2020-), $140 (2026-01-01).
-# max_amount: $504 (2020-), $869 (2025-10-13).
+# max_amount: $504 (2020-), $869 (2025-10-06).
 # Reference: NY Lab. Law § 590(5); NYSDOL P832 (Feb 2026).
 
 - name: Case 1, P832 worked example - 2-quarter case with HQ > $4,000.
@@ -142,7 +142,7 @@
       person1:
         # 4 quarters, HQ $50,000 > $3,575 -> divisor 26.
         # $50,000 / 26 = $1,923.08; floor = $1,923.
-        # $1,923 capped at $869 (effective 2025-10-13) -> WBR = $869.
+        # $1,923 capped at $869 (effective 2025-10-06) -> WBR = $869.
         ny_ui_weekly_benefit_rate: 869
 
 - name: Case 7, boundary - HQ exactly at low threshold uses low divisor 25.
@@ -185,9 +185,9 @@
     people:
       person1:
         # HQ $3,576 > $3,575 TRUE -> standard divisor 26.
-        # floor($3,576 / 26) = 137.
-        # $104 <= $137 <= $504 -> WBR = $137.
-        ny_ui_weekly_benefit_rate: 137
+        # floor($3,576/26)=$137 < $143 formula floor -> raw lifted to $143.
+        # $104 <= $143 <= $504 -> WBR = $143.
+        ny_ui_weekly_benefit_rate: 143
 
 - name: Case 9, boundary - HQ one dollar above low threshold in 2026, lifted by new minimum.
   period: 2026
@@ -207,9 +207,9 @@
     people:
       person1:
         # HQ $3,576 > $3,575 -> standard divisor 26.
-        # floor($3,576 / 26) = 137.
-        # $137 < $140 (2026 minimum) -> lifted to $140.
-        ny_ui_weekly_benefit_rate: 140
+        # floor($3,576/26)=$137 < $143 formula floor -> raw lifted to $143.
+        # $143 > $140 (2026 minimum), within $869 max -> WBR = $143.
+        ny_ui_weekly_benefit_rate: 143
 
 - name: Case 10, 2/3-quarter tier 2 boundary - HQ exactly at tier-2 upper threshold uses divisor 26.
   period: 2025

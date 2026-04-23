@@ -19,13 +19,18 @@ class ny_ui_raw_weekly_benefit_rate(Variable):
 
         # Four-quarter formula: high quarter wages divided by the standard
         # divisor (or the low divisor when wages are at or below the low
-        # threshold).
-        divisor_four_quarter = where(
-            high_quarter_wages > p.low_hq_threshold,
-            p.standard_divisor,
-            p.low_divisor,
+        # threshold). Divisor-26 cases have a $143 formula floor per P832 p.2.
+        above_low_threshold = high_quarter_wages > p.low_hq_threshold
+        raw_four_quarter_divisor_26 = max_(
+            np.floor(high_quarter_wages / p.standard_divisor),
+            p.formula_min_amount,
         )
-        raw_four_quarter = np.floor(high_quarter_wages / divisor_four_quarter)
+        raw_four_quarter_divisor_25 = np.floor(high_quarter_wages / p.low_divisor)
+        raw_four_quarter = where(
+            above_low_threshold,
+            raw_four_quarter_divisor_26,
+            raw_four_quarter_divisor_25,
+        )
 
         # Two- or three-quarter formula has three tiers:
         #   Tier 1: high quarter wages above two-quarter threshold ($4,000) →
@@ -35,9 +40,17 @@ class ny_ui_raw_weekly_benefit_rate(Variable):
         #       divisor.
         #   Tier 3: high quarter wages at or below low threshold → high
         #       quarter wages / low divisor.
+        # Tiers 1 and 2 use divisor 26 and therefore have a $143 formula floor
+        # per P832 p.2; tier 3 (divisor 25) does not.
         average_two_quarters = (high_quarter_wages + second_high_quarter_wages) / 2
-        raw_two_three_tier_1 = np.floor(average_two_quarters / p.standard_divisor)
-        raw_two_three_tier_2 = np.floor(high_quarter_wages / p.standard_divisor)
+        raw_two_three_tier_1 = max_(
+            np.floor(average_two_quarters / p.standard_divisor),
+            p.formula_min_amount,
+        )
+        raw_two_three_tier_2 = max_(
+            np.floor(high_quarter_wages / p.standard_divisor),
+            p.formula_min_amount,
+        )
         raw_two_three_tier_3 = np.floor(high_quarter_wages / p.low_divisor)
 
         raw_two_three_quarter = select(

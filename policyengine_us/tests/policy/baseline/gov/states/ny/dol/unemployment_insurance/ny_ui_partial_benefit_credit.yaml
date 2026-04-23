@@ -90,14 +90,15 @@
         # 0.5 * $200 = $100; max($100, $100) = $100 (floor equals rate-based).
         ny_ui_partial_benefit_credit: 100
 
-- name: Case 5, boundary - low WBR $140 triggers $100 floor.
+- name: Case 5, boundary - low WBR $143 triggers $100 floor.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # WBR from HQ $3,600: floor($3,600 / 26) = $138 -> lifted to $140 min.
+        # WBR from HQ $3,600: floor($3,600/26)=$138 < $143 formula floor
+        # -> raw lifted to $143; $143 > $140 min -> WBR = $143.
         ny_ui_high_quarter_wages: 3_600
         ny_ui_base_period_wages: 12_000
         ny_ui_quarters_with_wages: 4
@@ -108,8 +109,8 @@
   output:
     people:
       person1:
-        ny_ui_weekly_benefit_rate: 140
-        # 0.5 * $140 = $70; max($70, $100) = $100 (floor applies).
+        ny_ui_weekly_benefit_rate: 143
+        # 0.5 * $143 = $71.50; ceil($71.50) = $72; max($72, $100) = $100.
         ny_ui_partial_benefit_credit: 100
 
 - name: Case 6, odd WBR $307 - ceil rounds 0.50 * WBR up to nearest dollar.
