@@ -6,6 +6,11 @@ class nj_unemployment_insurance(Variable):
     entity = Person
     label = "New Jersey unemployment insurance"
     unit = USD
+    documentation = (
+        "Annualized New Jersey unemployment insurance benefit amount. "
+        "Within-year dynamics are approximated through weeks_claimed and "
+        "weekly claiming inputs rather than modeled week by week."
+    )
     definition_period = YEAR
     reference = (
         "https://www.nj.gov/labor/myunemployment/before/about/calculator/",
