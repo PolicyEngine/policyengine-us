@@ -19,7 +19,5 @@ class is_snap_disqualified_prorated(Variable):
 
     def formula(person, period, parameters):
         ineligible_student = person("is_snap_ineligible_student", period)
-        immigration_ineligible = ~person(
-            "is_snap_immigration_status_eligible", period
-        )
+        immigration_ineligible = ~person("is_snap_immigration_status_eligible", period)
         return ineligible_student | immigration_ineligible

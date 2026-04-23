@@ -8,12 +8,13 @@ class snap_child_support_deduction(Variable):
     unit = USD
     documentation = "Deduction from SNAP gross income for child support payments"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_4"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/7/2014#e_4",
+        "https://www.law.cornell.edu/cfr/text/7/273.11#c_2",
+    )
 
-    # Excluding deduction for child support, which is applies to the gross income
-    # calculation
     def formula(spm_unit, period, parameters):
-        child_support = add(spm_unit, period, ["child_support_expense"])
+        child_support = spm_unit("snap_child_support_expense", period)
         gross_income_deduction = spm_unit(
             "snap_child_support_gross_income_deduction", period
         )

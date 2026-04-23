@@ -1,0 +1,165 @@
+# Tests for SNAP income and expense proration under 7 CFR 273.11(c)(2) / (c)(3)
+# for members disqualified under the "prorated" treatment (ineligible students,
+# immigration-ineligible). For each prorated-disqualified member, their income
+# is divided evenly among all household members and only the portion that
+# would go to eligible members is counted.
+
+- name: No prorated-disqualified members — no proration.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        employment_income: 24_000
+      b:
+        age: 38
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    snap_prorated_earned_income_reduction: 0
+    snap_prorated_unearned_income_reduction: 0
+    snap_earned_income: 3_000   # $36k annual / 12
+
+- name: 4-person household with 1 ineligible student — 1/4 of student's earned income excluded.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        employment_income: 24_000
+      b:
+        age: 38
+        employment_income: 24_000
+      c:
+        age: 20
+        employment_income: 24_000
+      d:
+        age: 19
+        employment_income: 24_000
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [a, b, c, d]
+    tax_units:
+      tax_unit:
+        members: [a, b, c, d]
+    households:
+      household:
+        members: [a, b, c, d]
+        state_code: CA
+  output:
+    snap_unit_size: 3
+    snap_prorated_earned_income_reduction: 500   # $2k/mo × 1/4
+    snap_earned_income: 7_500                    # $8k raw − $500
+
+- name: 2-person household with 1 ineligible student — 1/2 of their income excluded.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        employment_income: 12_000
+      b:
+        age: 19
+        employment_income: 12_000
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    snap_unit_size: 1
+    snap_prorated_earned_income_reduction: 500   # b's $1k/mo × 1/2
+    snap_earned_income: 1_500                    # $2k raw − $500
+
+- name: Unearned income prorated for ineligible student.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        unemployment_compensation: 12_000
+      b:
+        age: 19
+        unemployment_compensation: 12_000
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    snap_prorated_unearned_income_reduction: 500  # b's $1k × 1/2
+    snap_unearned_income: 1_500                   # $2k raw − $500
+
+- name: Child support expense of ineligible student prorated.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        child_support_expense: 2_400
+      b:
+        age: 19
+        child_support_expense: 2_400
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    # a: $200/mo × share 1.0 = $200; b: $200/mo × share 0.5 = $100; total $300
+    snap_child_support_expense: 300
+
+- name: Work-requirement-disqualified member's income counts in full (entirety treatment under (c)(1)).
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000
+      b:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    snap_unit_size: 1                              # b excluded from size
+    snap_prorated_earned_income_reduction: 0       # (c)(1) entirety, no reduction
+    snap_earned_income: 4_000                      # full $2k/mo each
