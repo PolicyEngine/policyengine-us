@@ -1,0 +1,133 @@
+# Tests for New York UI weekly payable amount.
+# Combines weekly benefit rate with:
+#   - Earnings cap: gross earnings > max WBR -> $0 for the week (P803).
+#   - Hours-tier reduction: fraction of WBR based on weekly hours worked.
+#   - Partial employment test: gross earnings < WBR + PBC to be "unemployed".
+# References: NY Lab. Law § 522, § 525, § 590; NYSDOL P803.
+
+- name: Case 1, fully unemployed and monetarily eligible - full WBR paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible (HQ >= $3,400; 4 qtrs; $28,000 >= 1.5 * $10,000).
+        ny_ui_monetarily_eligible: true
+        # WBR = floor($10,000 / 26) = $384.
+        ny_ui_weekly_benefit_rate: 384
+        # 0 hours, 0 earnings -> full WBR payable.
+        ny_ui_weekly_payable: 384
+
+- name: Case 2, partial employment in 11-16 hour tier - 75 percent of WBR paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 13
+        ny_ui_gross_weekly_earnings: 200
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; PBC = max(0.5 * $384, $100) = $192.
+        # Earnings $200 <= max WBR ($504) -> not earnings-cap disqualified.
+        # Earnings $200 < $384 + $192 = $576 -> partial payment eligible.
+        # 13 hours -> tier 2, 75% of WBR.
+        # Partial amount = 0.75 * $384 = $288.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_partial_benefit_credit: 192
+        ny_ui_weekly_payable: 288
+
+- name: Case 3, earnings exceed max WBR - no benefit for the week.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 870
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 2026 max WBR = $869.
+        # Earnings $870 > $869 -> earnings-cap disqualified -> $0.
+        ny_ui_weekly_payable: 0
+
+- name: Case 4, partial earnings above WBR + PBC - not partially employed, no benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 600
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; PBC = $192; threshold = $576.
+        # 2026 max WBR = $869; earnings $600 <= $869 so not cap-disqualified.
+        # Earnings $600 >= $576 -> not partially employed per § 522.
+        # Claimant does not qualify for any weekly payment.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_partial_benefit_credit: 192
+        ny_ui_weekly_payable: 0
+
+- name: Case 5, monetarily ineligible - no weekly payment regardless of hours.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 1_000
+        ny_ui_base_period_wages: 3_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $1,000 < $3,400 (2025 minimum) -> monetarily ineligible.
+        ny_ui_monetarily_eligible: false
+        ny_ui_weekly_payable: 0

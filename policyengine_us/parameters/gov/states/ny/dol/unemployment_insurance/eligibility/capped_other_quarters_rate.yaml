@@ -1,0 +1,14 @@
+description: New York requires other base period quarters to provide at least this share of the high quarter cap when high quarter wages reach the cap under the Unemployment Insurance program.
+
+values:
+  2020-01-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: New York UI capped other quarters wages share
+  reference:
+    - title: NY Labor Law § 527 — Valid original claim
+      href: https://www.nysenate.gov/legislation/laws/LAB/527
+    - title: NYSDOL P832 (Feb 2026), page 1
+      href: https://dol.ny.gov/system/files/documents/2026/02/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=1

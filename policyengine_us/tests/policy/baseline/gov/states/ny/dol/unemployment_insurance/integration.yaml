@@ -1,0 +1,215 @@
+# Integration tests for New York Unemployment Insurance (NY UI).
+# End-to-end scenarios checking ny_ui together with intermediate variables.
+# References: NY Lab. Law §§ 522, 525, 527, 590; NYSDOL P803 (Oct 2025),
+# P832 (Feb 2026).
+
+- name: Case 1, standard full unemployment with 4-quarter wage history.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ny_ui_high_quarter_wages: 8_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible (§ 527):
+        #   HQ $8,000 >= $3,400 (2025 minimum).
+        #   4 quarters >= 2 required.
+        #   Base $28,000 >= 1.5 * $8,000 = $12,000.
+        ny_ui_monetarily_eligible: true
+        # WBR (§ 590): 4 quarters, HQ > $3,575 -> floor($8,000 / 26) = $307.
+        # $104 <= $307 <= $504 (2025 range) -> WBR = $307.
+        ny_ui_weekly_benefit_rate: 307
+        # Weekly payable: 0 hours, 0 earnings -> full WBR.
+        ny_ui_weekly_payable: 307
+        # Annual benefit: $307 * 26 weeks = $7,982; MBA = $307 * 26 = $7,982.
+        ny_ui: 7_982
+
+- name: Case 2, P832 worked example - 2-quarter claimant in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 4_500
+        ny_ui_second_high_quarter_wages: 4_288
+        ny_ui_base_period_wages: 8_788
+        ny_ui_quarters_with_wages: 2
+        ny_ui_weeks_unemployed: 10
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible: HQ $4,500 >= $3,500 (2026); 2 quarters;
+        # Base $8,788 >= 1.5 * $4,500 = $6,750.
+        ny_ui_monetarily_eligible: true
+        # WBR (2/3-quarter tier 1, HQ > $4,000):
+        # avg = ($4,500 + $4,288) / 2 = $4,394; floor($4,394 / 26) = $169.
+        # $140 <= $169 <= $869 -> WBR = $169.
+        ny_ui_weekly_benefit_rate: 169
+        ny_ui_weekly_payable: 169
+        # Annual benefit: $169 * 10 weeks = $1,690; MBA = $169 * 26 = $4,394.
+        ny_ui: 1_690
+
+- name: Case 3, partial employment in 11-16 hour tier.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 35_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 4
+        ny_ui_weekly_hours_worked: 13
+        ny_ui_gross_weekly_earnings: 200
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible: HQ $10,000; 4 qtrs; $35,000 >= 1.5 * $10,000.
+        ny_ui_monetarily_eligible: true
+        # WBR: floor($10,000 / 26) = $384.
+        ny_ui_weekly_benefit_rate: 384
+        # PBC: max(0.5 * $384, $100) = $192.
+        ny_ui_partial_benefit_credit: 192
+        # Hours tier: 13 hours -> 11-16 tier -> 0.75 rate.
+        ny_ui_hours_tier_rate: 0.75
+        # Earnings $200 < $576 ($384 + $192) -> partial payment eligible.
+        # Partial amount = 0.75 * $384 = $288.
+        ny_ui_weekly_payable: 288
+        # Annual benefit: $288 * 4 weeks = $1,152.
+        ny_ui: 1_152
+
+- name: Case 4, earnings exceed max WBR - disqualified for the week.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 35_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 600
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible.
+        ny_ui_monetarily_eligible: true
+        # WBR: $384; 2025 max WBR = $504.
+        ny_ui_weekly_benefit_rate: 384
+        # Earnings $600 > $504 (2025 max WBR) -> earnings-cap disqualified.
+        ny_ui_weekly_payable: 0
+        # Annual benefit: $0.
+        ny_ui: 0
+
+- name: Case 5, monetarily ineligible - high quarter wages too low.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ny_ui_high_quarter_wages: 2_000
+        ny_ui_base_period_wages: 8_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 10
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $2,000 < $3,400 (2025 minimum) -> monetarily ineligible.
+        ny_ui_monetarily_eligible: false
+        ny_ui_weekly_payable: 0
+        # Annual benefit: $0.
+        ny_ui: 0
+
+- name: Case 6, high earner in 2026 capped at new $869 maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ny_ui_high_quarter_wages: 50_000
+        ny_ui_base_period_wages: 150_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible (capped case): HQ $50,000 >= $19,118 cap.
+        # Other 3 quarters = $150,000 - $50,000 = $100,000 >= $9,559.
+        ny_ui_monetarily_eligible: true
+        # WBR: floor($50,000 / 26) = $1,923; capped at $869 (2026 max).
+        ny_ui_weekly_benefit_rate: 869
+        ny_ui_weekly_payable: 869
+        # Annual benefit: $869 * 26 weeks = $22,594; MBA = $869 * 26 = $22,594.
+        ny_ui: 22_594
+
+- name: Case 7, maximum benefit amount cap at WBR times 26 weeks.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        ny_ui_high_quarter_wages: 13_000
+        ny_ui_base_period_wages: 52_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible: HQ $13,000; 4 qtrs; $52,000 >= 1.5 * $13,000.
+        ny_ui_monetarily_eligible: true
+        # WBR: floor($13,000 / 26) = $500; within 2025 range ($104-$504).
+        ny_ui_weekly_benefit_rate: 500
+        ny_ui_weekly_payable: 500
+        # Annual benefit: $500 * 26 = $13,000; MBA = $500 * 26 = $13,000.
+        ny_ui: 13_000

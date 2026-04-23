@@ -1,0 +1,14 @@
+description: New York applies the low weekly benefit divisor when high quarter wages are at or below this amount under the Unemployment Insurance program.
+
+values:
+  2020-01-01: 3_575
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York UI low high quarter threshold
+  reference:
+    - title: NY Labor Law § 590(5) — Rights to benefits
+      href: https://www.nysenate.gov/legislation/laws/LAB/590
+    - title: NYSDOL P832 (Feb 2026), page 1
+      href: https://dol.ny.gov/system/files/documents/2026/02/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=1

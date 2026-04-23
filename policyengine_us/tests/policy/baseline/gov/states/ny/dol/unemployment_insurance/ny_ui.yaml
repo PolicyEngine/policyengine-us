@@ -1,0 +1,129 @@
+# Tests for New York UI annual benefit (§ 590).
+# ny_ui = min(weekly_payable * weeks_unemployed, weekly_benefit_rate * 26).
+# Reference: NY Lab. Law § 590.
+
+- name: Case 1, boundary - 26 weeks unemployed yields full MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 30_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = floor($10,000 / 26) = $384.
+        # Weekly payable = $384 (no hours, no earnings).
+        # Annual = $384 * 26 = $9,984; MBA = $384 * 26 = $9,984.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui: 9_984
+
+- name: Case 2, boundary - 0 weeks unemployed yields zero annual benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 30_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 0
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Annual = $384 * 0 = $0; MBA cap does not bind.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui: 0
+
+- name: Case 3, boundary - 27 weeks capped at MBA (26 * WBR).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 30_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 27
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384.
+        # Annual uncapped = $384 * 27 = $10,368.
+        # MBA = $384 * 26 = $9,984; min($10,368, $9,984) = $9,984.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui: 9_984
+
+- name: Case 4, max WBR boundary - HQ $20,000 in 2025 capped at $504.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ny_ui_high_quarter_wages: 20_000
+        ny_ui_base_period_wages: 60_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($20,000 / 26) = $769; capped at 2025 max $504.
+        ny_ui_weekly_benefit_rate: 504
+        # Annual = $504 * 26 = $13,104; MBA = $504 * 26 = $13,104.
+        ny_ui: 13_104
+
+- name: Case 5, max WBR boundary - HQ $20,000 in 2026 capped at $869.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ny_ui_high_quarter_wages: 20_000
+        ny_ui_base_period_wages: 60_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weeks_unemployed: 26
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($20,000 / 26) = $769; within 2026 range ($140-$869) -> $769.
+        ny_ui_weekly_benefit_rate: 769
+        # Annual = $769 * 26 = $19,994; MBA = $769 * 26 = $19,994.
+        ny_ui: 19_994
