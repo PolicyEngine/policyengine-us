@@ -18,5 +18,7 @@ class wa_pfml_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.pfml
+        hours_override = person("wa_pfml_qualifying_period_hours_worked", period)
         annual_hours = person("weekly_hours_worked", period) * WEEKS_IN_YEAR
-        return annual_hours >= p.hours_threshold
+        qualifying_hours = where(hours_override >= 0, hours_override, annual_hours)
+        return qualifying_hours >= p.hours_threshold

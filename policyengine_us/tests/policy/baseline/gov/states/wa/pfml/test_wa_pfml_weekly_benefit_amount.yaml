@@ -115,3 +115,14 @@
     # RCW 50A.05.010(6) rounds AWW down to the next lower dollar, so AWW = 914.
     # Benefit = 0.90 * 914 = 822.60, rounded down to 822.
     wa_pfml_weekly_benefit_amount: 822
+
+- name: Case 11, average weekly wage override replaces the annual-income proxy.
+  period: 2026
+  input:
+    state_code: WA
+    employment_income: 78_000
+    wa_pfml_average_weekly_wage_override: 800.75
+  output:
+    # Override AWW is rounded down to 800 before applying the formula.
+    # AWW (800) <= H (915), so benefit = 0.90 * 800 = 720.
+    wa_pfml_weekly_benefit_amount: 720

@@ -108,3 +108,40 @@
   output:
     # Combined leave with pregnancy incapacity is capped at 18 weeks.
     wa_pfml: 15_588
+
+- name: Case 7, leave hours claimed can prorate the benefit using typical workweek hours.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: COMBINED
+        wa_pfml_leave_hours_claimed: 240
+        wa_pfml_typical_workweek_hours: 40
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 240 leave hours / 40 typical workweek hours = 6 leave weeks.
+    # Annual benefit = 866 * 6 = 5,196.
+    wa_pfml: 5_196
+
+- name: Case 8, leave-hour claims below the 2026 minimum claim duration receive no benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: COMBINED
+        wa_pfml_leave_hours_claimed: 3
+        wa_pfml_typical_workweek_hours: 40
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # RCW 50A.15.020(2) requires at least 4 consecutive leave hours for 2026 claims.
+    wa_pfml: 0

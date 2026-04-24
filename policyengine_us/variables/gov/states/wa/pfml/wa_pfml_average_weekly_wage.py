@@ -20,4 +20,6 @@ class wa_pfml_average_weekly_wage(Variable):
     )
 
     def formula(person, period, parameters):
-        return np.floor(person("employment_income", period) / WEEKS_IN_YEAR)
+        override = person("wa_pfml_average_weekly_wage_override", period)
+        proxy_aww = np.floor(person("employment_income", period) / WEEKS_IN_YEAR)
+        return where(override >= 0, np.floor(override), proxy_aww)

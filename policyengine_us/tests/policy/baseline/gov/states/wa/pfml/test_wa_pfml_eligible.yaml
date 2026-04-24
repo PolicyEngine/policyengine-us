@@ -35,3 +35,25 @@
   output:
     # annual_hours = 0 < 820, so ineligible.
     wa_pfml_eligible: false
+
+- name: Case 5, qualifying-period hours override can make a worker eligible.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 0
+    wa_pfml_qualifying_period_hours_worked: 900
+  output:
+    # Override replaces the weekly-hours proxy for eligibility.
+    # 900 >= 820 threshold, so eligible.
+    wa_pfml_eligible: true
+
+- name: Case 6, qualifying-period hours override takes precedence over weekly-hours proxy.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 20
+    wa_pfml_qualifying_period_hours_worked: 800
+  output:
+    # Override replaces the weekly-hours proxy for eligibility.
+    # 800 < 820 threshold, so ineligible.
+    wa_pfml_eligible: false

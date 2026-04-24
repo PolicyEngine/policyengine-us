@@ -41,9 +41,31 @@ class wa_pfml(Variable):
             ],
             default=0,
         )
-        leave_weeks = clip(
+        leave_hours_claimed = np.floor(person("wa_pfml_leave_hours_claimed", period))
+        typical_workweek_hours = person("wa_pfml_typical_workweek_hours", period)
+        leave_hours_meet_minimum = where(
+            leave_hours_claimed >= p.min_claim_hours,
+            leave_hours_claimed,
+            0,
+        )
+        leave_weeks_from_hours = np.divide(
+            clip(
+                leave_hours_meet_minimum,
+                0,
+                max_leave_weeks * typical_workweek_hours,
+            ),
+            typical_workweek_hours,
+            out=np.zeros_like(leave_hours_meet_minimum, dtype=np.float32),
+            where=typical_workweek_hours > 0,
+        )
+        leave_weeks_from_weeks = clip(
             person("wa_pfml_leave_weeks", period),
             0,
             max_leave_weeks,
+        )
+        leave_weeks = where(
+            (leave_hours_claimed > 0) & (typical_workweek_hours > 0),
+            leave_weeks_from_hours,
+            leave_weeks_from_weeks,
         )
         return weekly_benefit * leave_weeks
