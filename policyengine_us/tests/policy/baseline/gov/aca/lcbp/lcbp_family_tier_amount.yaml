@@ -1,0 +1,19 @@
+- name: NY family bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 507
+    slcsp_family_tier_applies: true
+    slcsp_family_tier_multiplier: 2.85
+  output:
+    lcbp_family_tier_amount: 1_444.95
+
+- name: VT single parent with child bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 824
+    slcsp_family_tier_applies: true
+    slcsp_family_tier_multiplier: 1.93
+  output:
+    lcbp_family_tier_amount: 1_590.32

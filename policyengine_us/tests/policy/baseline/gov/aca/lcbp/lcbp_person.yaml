@@ -1,0 +1,43 @@
+- name: Alabama youth
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    is_aca_ptc_eligible: true
+    state_code_str: AL
+    monthly_age: 15
+    lcbp_age_0: 270
+  output:
+    lcbp_age_curve_amount_person: 270
+
+- name: DC middle age
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    is_aca_ptc_eligible: true
+    state_code_str: DC
+    monthly_age: 55
+    lcbp_age_0: 388
+  output:
+    lcbp_age_curve_amount_person: 1_028.12
+
+- name: Utah young adult
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    is_aca_ptc_eligible: true
+    state_code_str: UT
+    monthly_age: 26
+    lcbp_age_0: 371
+  output:
+    lcbp_age_curve_amount_person: 637.67
+
+- name: California teen
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    is_aca_ptc_eligible: true
+    state_code_str: CA
+    monthly_age: 15
+    lcbp_age_0: 244
+  output:
+    lcbp_age_curve_amount_person: 265.69
