@@ -22,9 +22,7 @@ def test_qualifying_child_age_test_matches_irs_thresholds():
 
 
 def test_reference_relationship_predicates_match_cps_codes():
-    assert reference_relationship_allows_qualifying_child(
-        CPSRelationshipCode.OWN_CHILD
-    )
+    assert reference_relationship_allows_qualifying_child(CPSRelationshipCode.OWN_CHILD)
     assert reference_relationship_allows_qualifying_child(
         CPSRelationshipCode.GRANDCHILD
     )
@@ -32,9 +30,7 @@ def test_reference_relationship_predicates_match_cps_codes():
         CPSRelationshipCode.PARENT
     )
 
-    assert reference_relationship_allows_qualifying_relative(
-        CPSRelationshipCode.PARENT
-    )
+    assert reference_relationship_allows_qualifying_relative(CPSRelationshipCode.PARENT)
     assert reference_relationship_allows_qualifying_relative(
         CPSRelationshipCode.SIBLING
     )
