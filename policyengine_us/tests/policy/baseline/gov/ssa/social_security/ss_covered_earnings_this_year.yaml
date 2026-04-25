@@ -22,6 +22,14 @@
   output:
     ss_covered_earnings_this_year: 30_000
 
+- name: SSTB self-employment income only
+  period: 2024
+  input:
+    employment_income: 0
+    sstb_self_employment_income: 30_000
+  output:
+    ss_covered_earnings_this_year: 30_000
+
 - name: Combined employment and self-employment income
   period: 2024
   input:
@@ -53,4 +61,3 @@
     self_employment_income: 0
   output:
     ss_covered_earnings_this_year: 160_200  # 2023 wage base
-
