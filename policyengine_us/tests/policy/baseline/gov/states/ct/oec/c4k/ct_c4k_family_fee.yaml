@@ -296,6 +296,31 @@
     # Fee = 2,500 * 0.03 = 75.00
     ct_c4k_family_fee: 75.00
 
+- name: Farm operations income only, fee applies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        farm_operations_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_countable_income: 2_500
+        hhs_smi: 99_180
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Farm operations income is earned income => fee applies
+    # Ratio: 2,500/8,265 = 0.3024 (20%-40% bracket)
+    # Fee = 2,500 * 0.03 = 75.00
+    ct_c4k_family_fee: 75.00
+
 - name: Case 13, zero SMI, fee is zero.
   period: 2025-01
   absolute_error_margin: 0.01
