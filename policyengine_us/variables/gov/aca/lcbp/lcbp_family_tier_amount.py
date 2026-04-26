@@ -11,5 +11,5 @@ class lcbp_family_tier_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         base_cost = tax_unit.household("lcbp_age_0", period)
-        family_tier_multiplier = tax_unit("slcsp_family_tier_multiplier", period)
+        family_tier_multiplier = tax_unit("lcbp_family_tier_multiplier", period)
         return base_cost * family_tier_multiplier
