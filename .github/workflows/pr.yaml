@@ -116,7 +116,7 @@ jobs:
         if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
         uses: codecov/codecov-action@v6
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           fail_ci_if_error: false
           flags: unittests
           name: codecov-umbrella
