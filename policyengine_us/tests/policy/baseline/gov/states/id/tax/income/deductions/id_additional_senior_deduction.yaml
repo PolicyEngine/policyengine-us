@@ -143,3 +143,187 @@
   output:
     # 6% * ($200,000 - $75,000) = $7,500 > $6,000, so capped at 0
     id_additional_senior_deduction: 0
+
+- name: Single filer just below $75,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 74_999
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 6_000
+
+- name: Single filer at $75,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 75_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 6_000
+
+- name: Single filer one dollar above $75,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 75_001
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # max($6,000 - 6% * $1, 0) = $5,999.94
+    id_additional_senior_deduction: 5_999.94
+
+- name: Joint filer just below $150,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 149_999
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 12_000
+
+- name: Joint filer at $150,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_additional_senior_deduction: 12_000
+
+- name: Joint filer one dollar above $150,000 phase-out threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 150_001
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # Per senior: max($6,000 - 6% * $1, 0) = $5,999.94, times two seniors = $11,999.88.
+    id_additional_senior_deduction: 11_999.88
+
+- name: Joint filer fully phased out at $350,000 AGI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 350_000
+        salt_deduction: 0
+        standard_deduction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # 6% * ($350,000 - $150,000) = $12,000 >= $6,000 per senior, so deduction is fully phased out.
+    id_additional_senior_deduction: 0

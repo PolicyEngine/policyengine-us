@@ -13,6 +13,4 @@ class id_additional_senior_deduction(Variable):
         "https://legislature.idaho.gov/sessioninfo/2026/legislation/H0559/",
         "https://tax.idaho.gov/pressrelease/update-on-filing-2025-idaho-income-taxes-now-that-conformity-is-law/",
     )
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit("additional_senior_deduction", period)
+    adds = ["additional_senior_deduction"]
