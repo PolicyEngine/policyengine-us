@@ -1,0 +1,31 @@
+- name: IL exact 2024 Medicaid cutoff does not create CHIP child eligibility
+  period: 2024
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.18
+    households:
+      household:
+        state_code: IL
+        members: [head]
+  output:
+    is_chip_eligible_child: False
+
+- name: NC exact 2024 Medicaid cutoff does not create CHIP child eligibility
+  period: 2024
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.16
+    households:
+      household:
+        state_code: NC
+        members: [head]
+  output:
+    is_chip_eligible_child: False

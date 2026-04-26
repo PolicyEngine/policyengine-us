@@ -1,0 +1,368 @@
+# Integration tests for Florida OSS (Optional State Supplementation).
+# Uses real income sources and verifies the full federal SSI → state OSS chain.
+
+- name: Case 1, SSI recipient in ALF (Redesign), $800/month Social Security.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Federal SSI: $800 - $20 general exclusion = $780 countable.
+    # SSI = $967 FBR - $780 = $187/month.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [780]
+    ssi: [187]
+    # State OSS: provider rate $991.40 + PNA $160 = $1,151.40 total needs.
+    # OSS = min(max($1,151.40 - $780, 0), $184.40) = min($371.40, $184.40) = $184.40.
+    fl_oss_eligible: [true]
+    fl_oss_provider_rate: [991.40]
+    fl_oss_income_standard: [1_045.40]
+    fl_oss_max_oss: [184.40]
+    fl_oss: [184.40]
+
+- name: Case 2, couple in AFCH (Redesign), $600/month Social Security each.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        social_security: 7_200
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+      person2:
+        age: 68
+        social_security: 7_200
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Federal SSI (couple): each $600 - $10 exclusion = $590 countable.
+    # SSI per person = $725 (half couple FBR $1,450) - $590 = $135/month.
+    is_ssi_eligible: [true, true]
+    ssi_countable_income: [590, 590]
+    ssi: [135, 135]
+    # State OSS: couple provider rate = 2 * $991.40 - $97 = $1,885.80.
+    # Per person = $942.90. Total needs = $942.90 + $160 = $1,102.90.
+    # Couple max = $368.80, per person $184.40 (same as individual cap).
+    # OSS per person = min(max($1,102.90 - $590, 0), $184.40) = $184.40.
+    fl_oss_eligible: [true, true]
+    fl_oss_couple_rate_applies: [true, true]
+    fl_oss_provider_rate: [942.90, 942.90]
+    fl_oss_max_oss: [184.40, 184.40]
+    fl_oss: [184.40, 184.40]
+
+- name: Case 3, Group 2 non-SSI recipient, $1,000/month Social Security.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Federal SSI: $1,000 - $20 = $980 countable > $967 FBR → SSI = $0.
+    # But $980 < income standard $1,045.40 → Group 2 eligible.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [980]
+    ssi: [0]
+    fl_oss_eligible: [true]
+    fl_oss_income_standard: [1_045.40]
+    # OSS = min(max($1,151.40 - $980, 0), $184.40) = min($171.40, $184.40) = $171.40.
+    fl_oss: [171.40]
+
+- name: Case 4, income above income standard, ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 13_200
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # $1,100 - $20 = $1,080 countable > $1,045.40 standard → ineligible.
+    # SSI = $0 (income > FBR). Not Group 1 or Group 2.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [1_080]
+    ssi: [0]
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+- name: Case 5, disabled person in MHRTF (Protected), $700/month Social Security.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        social_security: 8_400
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Federal SSI: $700 - $20 = $680 countable.
+    # SSI = $967 - $680 = $287/month.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [680]
+    ssi: [287]
+    # State OSS (Protected): provider rate $1,152 + PNA $160 = $1,312.
+    # OSS = min(max($1,312 - $680, 0), $345) = min($632, $345) = $345.
+    fl_oss_eligible: [true]
+    fl_oss_provider_rate: [1_152]
+    fl_oss_max_oss: [345]
+    fl_oss: [345]
+
+- name: Case 6, SSI-eligible but no facility, not OSS eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_ssi_eligible: [true]
+    ssi: [187]
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+- name: Case 7, asymmetric couple, one eligible one not, individual rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+      person2:
+        age: 40
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Person2 is not aged/blind/disabled → not SSI eligible.
+    # fl_oss_couple_rate_applies = false (both must be is_ssi_eligible).
+    # Person1 gets individual rates.
+    is_ssi_eligible: [true, false]
+    fl_oss_couple_rate_applies: [false, false]
+    fl_oss_eligible: [true, false]
+    fl_oss_provider_rate: [991.40, 991.40]
+    fl_oss: [184.40, 0]
+
+- name: Case 8, 2024-01, before PNA change, $700/month Social Security.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 8_400
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Federal SSI 2024: FBR $943. $700 - $20 = $680 countable.
+    # SSI = $943 - $680 = $263/month.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [680]
+    ssi: [263]
+    # Pre-Jul 2024: PNA = $54, max OSS = $78.40.
+    # Provider rate = $943 + $24.40 = $967.40.
+    fl_oss_provider_rate: [967.40]
+    fl_oss_income_standard: [1_021.40]
+    fl_oss_max_oss: [78.40]
+    # OSS = min(max($1,021.40 - $680, 0), $78.40) = $78.40.
+    fl_oss: [78.40]
+
+- name: Case 9, 2011 historical, $500/month Social Security.
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Federal SSI 2011: FBR $674. $500 - $20 = $480 countable.
+    # SSI = $674 - $480 = $194/month.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [480]
+    ssi: [194]
+    # 2011: offset $24.40, PNA $54, max OSS $78.40.
+    fl_oss_provider_rate: [698.40]
+    fl_oss_income_standard: [752.40]
+    fl_oss_max_oss: [78.40]
+    # OSS = min(max($752.40 - $480, 0), $78.40) = $78.40.
+    fl_oss: [78.40]
+
+- name: Case 10, couple with high combined income, SSI equal split.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_600
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+      person2:
+        age: 68
+        social_security: 13_200
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # SSI couple: combined $1,900 - $20 exclusion = $1,880 countable.
+    # Per person = $940 (equal split). Couple FBR per person = $725.
+    # SSI = max($725 - $940, 0) = $0 each. Both fail Group 1.
+    is_ssi_eligible: [true, true]
+    ssi_countable_income: [940, 940]
+    ssi: [0, 0]
+    # Group 2: $940 < $996.90 (couple income standard) → both eligible.
+    # SSI equal-split ensures symmetric eligibility.
+    fl_oss_couple_rate_applies: [true, true]
+    fl_oss_eligible: [true, true]
+    fl_oss_provider_rate: [942.90, 942.90]
+    fl_oss_income_standard: [996.90, 996.90]
+    # Couple max = $368.80, per person $184.40 (same as individual cap).
+    fl_oss_max_oss: [184.40, 184.40]
+    # OSS per person = min(max($1,102.90 - $940, 0), $184.40) = min($162.90, $184.40) = $162.90.
+    fl_oss: [162.90, 162.90]
+
+- name: Case 11, earnings with SSI earned income exclusions.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 6_000
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Earned: $500/month. SSI exclusions: $500 - $20 - $65 = $415.
+    # 50% of $415 = $207.50 countable.
+    # SSI = $967 - $207.50 = $759.50/month.
+    is_ssi_eligible: [true]
+    ssi_countable_income: [207.50]
+    ssi: [759.50]
+    fl_oss_eligible: [true]
+    # OSS = min(max($1,151.40 - $207.50, 0), $184.40) = $184.40.
+    fl_oss: [184.40]
+
+- name: Case 12, mixed-track MHRTF couple, each gets individual rates (regression).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        social_security: 12_120
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: REDESIGN
+      person2:
+        age: 42
+        is_disabled: true
+        social_security: 12_120
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Combined SS $2,020/mo - $20 exclusion = $2,000 countable, equal-split
+    # = $1,000 per person. Both fail Group 1 ($725 couple FBR < $1,000).
+    # Both pass Group 2 ($1,000 ≤ Redesign $1,045.40 and ≤ Protected $1,152).
+    is_ssi_eligible: [true, true]
+    ssi_countable_income: [1_000, 1_000]
+    ssi: [0, 0]
+    fl_oss_eligible: [true, true]
+    # Tracks mismatch → couple rate does not apply → each spouse takes
+    # their own individual provider rate and max OSS cap.
+    # Bug (pre-fix) would have halved couple rates: provider
+    # = [942.90, 1103.50], max_oss = [193.40, 345], fl_oss = [102.90, 263.50].
+    fl_oss_couple_rate_applies: [false, false]
+    fl_oss_provider_rate: [991.40, 1_152]
+    fl_oss_max_oss: [184.40, 345]
+    # person1 OSS = min(max($991.40 + $160 - $1,000, 0), $184.40) = $151.40.
+    # person2 OSS = min(max($1,152 + $160 - $1,000, 0), $345) = $312.
+    fl_oss: [151.40, 312]

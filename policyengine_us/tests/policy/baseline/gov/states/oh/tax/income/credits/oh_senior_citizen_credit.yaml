@@ -145,3 +145,80 @@
         oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_senior_citizen_credit: 50
+
+- name: Issue 8121 - spouse is 65+, head is not
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_modified_agi: 90_000
+        oh_personal_exemptions: 0
+        oh_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    oh_senior_citizen_credit: 50
+
+- name: Spouse is 65+ but took lump sum, head is 62
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        oh_has_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_modified_agi: 90_000
+        oh_personal_exemptions: 0
+        oh_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # Spouse is 65+ but took lump sum — excluded. Head is 62 — not 65+.
+    oh_senior_citizen_credit: 0
+
+- name: Both spouses 65+, head took lump sum, spouse did not
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        oh_has_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 68
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_modified_agi: 90_000
+        oh_personal_exemptions: 0
+        oh_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # Head 66 took lump sum (excluded), but spouse 68 didn't — eligible
+    oh_senior_citizen_credit: 50

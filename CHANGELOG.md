@@ -1,3 +1,116 @@
+## [1.668.0] - 2026-04-26
+
+### Added
+
+- - Added 2026 ACA lowest-cost bronze plan (`lcbp`) rating-area premiums and bronze companion variables.
+
+
+## [1.667.1] - 2026-04-25
+
+### Fixed
+
+- Fix farm operations income, business self-employment tax, and labor supply response inputs.
+
+
+## [1.667.0] - 2026-04-25
+
+### Added
+
+- Add shared CPS tax-unit construction helper rules.
+
+
+## [1.666.2] - 2026-04-24
+
+### Fixed
+
+- Backfilled Medicaid and CHIP income limit parameters to 2018 using official CMS sources, including thresholds stored with the 5 percentage-point MAGI disregard.
+
+
+## [1.666.1] - 2026-04-23
+
+### Fixed
+
+- Removed the one-time Connecticut child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023-2026.
+
+
+## [1.666.0] - 2026-04-23
+
+### Added
+
+- North Carolina Child and Dependent Care Credit contrib reform (refundable, 30% match of federal credit, 2026+).
+
+
+## [1.665.0] - 2026-04-22
+
+### Added
+
+- Add Florida Optional State Supplementation (OSS).
+
+
+## [1.664.0] - 2026-04-22
+
+### Added
+
+- Add Washington millionaires tax (9.9% on income above $1M) and WFTC age expansion (18+) per ESSB 6346. Removes contributed reform since bill is now law.
+
+
+## [1.663.0] - 2026-04-22
+
+### Added
+
+- Maryland military retirement income subtraction (Md. Code Tax-General § 10-207(q)) from 2021 onward, including the Keep Our Heroes Home Act increase to $12,500 / $20,000 effective 2023.
+
+
+## [1.662.1] - 2026-04-22
+
+### Fixed
+
+- Cap the Oklahoma earned income tax credit at remaining tax liability in years where it is non-refundable (2016-2021).
+
+
+## [1.662.0] - 2026-04-22
+
+### Added
+
+- Add California AB 2591 contributed reform: standard deduction at the federal poverty line.
+
+
+## [1.661.0] - 2026-04-21
+
+### Added
+
+- Added Kansas State Supplemental Payment Program (SSPP) for SSI recipients in Medicaid-approved institutions.
+
+
+## [1.660.1] - 2026-04-21
+
+### Fixed
+
+- Update SSI state supplement program registry to mark CT, DC, ID, IN, NM, SC, and TX as complete.
+
+
+## [1.660.0] - 2026-04-21
+
+### Added
+
+- Add DC Optional State Supplemental Payment (OSSP) program.
+
+
+## [1.659.6] - 2026-04-21
+
+### Fixed
+
+- Fix test_batched.py silently dropping `--batches N` and `--exclude` for folders without subdirectories, which caused duplicated and under-parallelized CI test runs.
+
+
+## [1.659.5] - 2026-04-21
+
+### Fixed
+
+- Fixed MT state_income_tax returning $0 for 2024+ by replacing min_(indiv, joint) with where(filing_separately, indiv, joint) in mt_income_tax_before_refundable_credits_unit.
+- Fixed OH senior citizen credit to check both head and spouse age per ORC 5747.055.
+
+
 ## [1.659.4] - 2026-04-20
 
 ### Fixed

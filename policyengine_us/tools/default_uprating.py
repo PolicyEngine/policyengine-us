@@ -61,7 +61,7 @@ INPUT_VARIABLES = [
     "non_sch_d_capital_gains",
     "spm_unit_state_tax_reported",
     "spm_unit_capped_work_childcare_expenses",
-    "farm_income",
+    "farm_operations_income",
     "taxable_403b_distributions",
     "qualified_tuition_expenses",
     "disability_benefits",

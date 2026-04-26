@@ -7,13 +7,24 @@ class wa_working_families_tax_credit(Variable):
     label = "Washington Working Families Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206"
+    reference = (
+        "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206",
+        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=61",
+    )
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
-        # Filers must claim EITC and be in Washington to be eligible.
-        # TODO: Include ITIN children.
-        eligible = tax_unit("eitc", period) > 0
+        # Baseline eligibility: filers who claim EITC
+        eitc = tax_unit("eitc", period)
+        eitc_eligible = eitc > 0
+
+        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
+        age_expansion_eligible = tax_unit(
+            "wa_working_families_tax_credit_age_expansion_eligible", period
+        )
+
+        eligible = eitc_eligible | age_expansion_eligible
+
         # Parameters are based on EITC-eligible children.
         p = parameters(
             period

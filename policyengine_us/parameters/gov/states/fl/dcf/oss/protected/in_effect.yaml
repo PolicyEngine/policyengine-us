@@ -1,0 +1,14 @@
+description: Florida uses this indicator to determine whether the Protected program track applies under the Optional State Supplementation program.
+values:
+  2011-01-01: false
+  2023-01-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Florida OSS Protected track in effect
+  reference:
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2024-07-01, shows Protected columns for Jan 2023, Jan 2024, Jul 2024)
+      href: https://www.myflfamilies.com/sites/default/files/2024-06/Appendix%20A-12.pdf
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2025-01-01)
+      href: https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf

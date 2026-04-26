@@ -5,6 +5,8 @@ metadata:
   breakdown:
   - state_code
   reference:
+    - title: Medicaid Income Eligibility Limits for Other Adults, 2011-2025 | KFF State Health Facts
+      href: https://www.kff.org/medicaid/state-indicator/medicaid-income-eligibility-limits-for-other-adults/?currentTimeframe=0&selectedDistributions=january-2018--january-2021--january-2025&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=40
     - title: medicaidscreener.com
@@ -13,101 +15,110 @@ metadata:
       href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels/index.html
     - title: Medicaid and CHIP Eligibility, Enrollment, Renewal, and Cost Sharing Policies as of January 2018
       href: https://files.kff.org/attachment/Report-Medicaid-and-CHIP-Eligibility-Enrollment-Renewal-and-Cost-Sharing-Policies-as-of-January-2018#page=36
+    - title: Medicaid and CHIP Eligibility Levels | CMS Data.Medicaid.gov dataset page (April 1, 2018)
+      href: https://data.medicaid.gov/dataset/d7e4cccb-1c56-5b5d-acce-5e7744c6d3b4
+    - title: Medicaid and CHIP Eligibility Levels | CMS Data.Medicaid.gov CSV download (April 1, 2018)
+      href: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
 AK:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 AL:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 AR:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 AZ:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 CA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 CO:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 CT:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 DC:
-  2021-01-01: 2.15
+  2018-01-01: 2.15
 DE:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 FL:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 GA:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 HI:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 IA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 ID:
   2018-01-01: -.inf
   2021-01-01: 1.38
 IL:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 IN:
   2018-01-01: 1.39
   2021-01-01: 1.38
 KS:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 KY:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 LA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 MA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 MD:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 ME:
   2018-01-01: -.inf
   2021-01-01: 1.38
 MI:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
+# PolicyEngine does not model MinnesotaCare separately, so this uses the
+# effective adult coverage ceiling rather than the narrower Medicaid-only limit.
 MN:
-  2021-01-01: 2.00
+  2018-01-01: 2.0
 MO:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2021-10-01: 1.38
 MS:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 MT:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 NC:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
   2023-12-01: 1.38
 ND:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 NE:
   2018-01-01: -.inf
   2021-01-01: 1.38
 NH:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 NJ:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 NM:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 NV:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
+# PolicyEngine does not model the Essential Plan separately, so this uses the
+# effective adult coverage ceiling rather than the narrower Medicaid-only limit.
 NY:
-  2021-01-01: 2.00
+  2018-01-01: 2.0
 OH:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 OK:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2021-07-01: 1.38
 OR:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 PA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 RI:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 SC:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 SD:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
+  2023-07-01: 1.38
 TN:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 TX:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
 UT:
   2018-01-01: -.inf
   2021-01-01: 1.38
@@ -115,12 +126,12 @@ VA:
   2018-01-01: -.inf
   2021-01-01: 1.38
 VT:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 WA:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 WI:
-  2021-01-01: 1.00
+  2018-01-01: 1.00
 WV:
-  2021-01-01: 1.38
+  2018-01-01: 1.38
 WY:
-  2021-01-01: -.inf
+  2018-01-01: -.inf
