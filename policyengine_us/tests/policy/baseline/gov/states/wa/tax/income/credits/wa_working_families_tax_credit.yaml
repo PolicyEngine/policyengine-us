@@ -1,4 +1,7 @@
-- name: Ineligible without EITC.
+# Washington Working Families Tax Credit tests
+# RCW 82.08.0206 and ESSB 6346 Sec. 901 (age expansion)
+
+- name: Case 1, ineligible without EITC.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -6,7 +9,7 @@
   output:
     wa_working_families_tax_credit: 0
 
-- name: Single eligible person with no income will get the maximum credit.
+- name: Case 2, single eligible person with no income gets maximum credit.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -17,7 +20,7 @@
   output:
     wa_working_families_tax_credit: 300
 
-- name: Family with income over the limit doesn't receive it.
+- name: Case 3, family with income over the limit receives no credit.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -28,7 +31,7 @@
   output:
     wa_working_families_tax_credit: 0
 
-- name: At EITC AGI limit, credit phases to $50 minimum per RCW 82.08.0206(3)(f).
+- name: Case 4, at EITC AGI limit credit phases to $50 minimum.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -38,9 +41,10 @@
     eitc_agi_limit: 50_000
     filer_adjusted_earnings: 50_000
   output:
+    # Per RCW 82.08.0206(3)(f), minimum credit is $50
     wa_working_families_tax_credit: 50
 
-- name: Mid-phaseout gives correctly reduced credit.
+- name: Case 5, mid-phaseout gives correctly reduced credit.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -52,7 +56,7 @@
   output:
     wa_working_families_tax_credit: 345
 
-- name: Joint filer with 1 child and moderate income receives credit.
+- name: Case 6, joint filer with 1 child and moderate income receives credit.
   period: 2024
   absolute_error_margin: 50
   input:
@@ -81,3 +85,108 @@
         state_code: WA
   output:
     wa_working_families_tax_credit: 640
+
+# ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2029)
+
+- name: Case 7, age 18+ without EITC gets WFTC under 2029 age expansion.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Eligible via age expansion: age 18+, has earned income
+    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
+    wa_working_families_tax_credit: 367
+
+- name: Case 7b, age 18 boundary is eligible under 2029 age expansion.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    age_head: 18
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Exact age-18 boundary: eligible via age expansion
+    wa_working_families_tax_credit: 367
+
+- name: Case 8, age 17 without EITC gets no WFTC in 2029.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 17
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Not EITC eligible and under age 18 minimum
+    wa_working_families_tax_credit: 0
+
+- name: Case 9, age 18+ without earned income gets no WFTC in 2029.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 25
+    eitc: 0
+    filer_adjusted_earnings: 0
+    eitc_child_count: 0
+  output:
+    # Age expansion requires earned income
+    wa_working_families_tax_credit: 0
+
+- name: Case 10, WFTC age expansion not in effect before 2029.
+  period: 2028
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Age expansion starts 2029, no EITC eligibility
+    wa_working_families_tax_credit: 0
+
+- name: Case 11, traditional EITC-eligible filer still works in 2029.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    eitc: 1
+    filer_adjusted_earnings: 0
+    eitc_child_count: 0
+  output:
+    # Standard EITC pathway still works
+    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
+    wa_working_families_tax_credit: 367
+
+- name: Case 12, age expansion preserves EITC investment income eligibility.
+  period: 2029
+  input:
+    state_code: WA
+    age_head: 20
+    eitc: 0
+    filer_adjusted_earnings: 10_000
+    tax_exempt_interest_income: 100_000
+    eitc_child_count: 0
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Case 13, joint filer with an under-18 head and an 18+ spouse qualifies via age expansion.
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    age_head: 16
+    age_spouse: 22
+    eitc: 0
+    filing_status: JOINT
+    filer_adjusted_earnings: 10_000
+    eitc_child_count: 0
+  output:
+    # Either head or spouse meeting age 18 is sufficient.
+    wa_working_families_tax_credit: 367

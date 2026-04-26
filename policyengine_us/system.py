@@ -158,10 +158,18 @@ class Simulation(CoreSimulation):
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
-        for known_period in employment_income.get_known_periods():
+        for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input("self_employment_income_before_lsr", known_period, array)
             self_employment_income.delete_arrays(known_period)
+
+        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
+        for known_period in sstb_self_employment_income.get_known_periods():
+            array = sstb_self_employment_income.get_array(known_period)
+            self.set_input(
+                "sstb_self_employment_income_before_lsr", known_period, array
+            )
+            sstb_self_employment_income.delete_arrays(known_period)
 
         weekly_hours = self.get_holder("weekly_hours_worked")
         for known_period in weekly_hours.get_known_periods():
@@ -299,6 +307,14 @@ class Microsimulation(CoreMicrosimulation):
             self.set_input("self_employment_income_before_lsr", known_period, array)
             self_employment_income.delete_arrays(known_period)
 
+        sstb_self_employment_income = self.get_holder("sstb_self_employment_income")
+        for known_period in sstb_self_employment_income.get_known_periods():
+            array = sstb_self_employment_income.get_array(known_period)
+            self.set_input(
+                "sstb_self_employment_income_before_lsr", known_period, array
+            )
+            sstb_self_employment_income.delete_arrays(known_period)
+
         weekly_hours = self.get_holder("weekly_hours_worked")
         for known_period in weekly_hours.get_known_periods():
             array = weekly_hours.get_array(known_period)
@@ -322,12 +338,14 @@ class Microsimulation(CoreMicrosimulation):
             not in [
                 "employment_income",
                 "self_employment_income",
+                "sstb_self_employment_income",
                 "weekly_hours_worked",
                 "capital_gains",
             ]
         ] + [
             "employment_income_before_lsr",
             "self_employment_income_before_lsr",
+            "sstb_self_employment_income_before_lsr",
             "weekly_hours_worked_before_lsr",
             "long_term_capital_gains_before_response",
         ]

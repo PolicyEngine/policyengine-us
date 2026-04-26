@@ -48,8 +48,7 @@ test-yaml-no-structural-states-ny:
 	# NY credits clone the tax_benefit_system per scenario (~12 GB) —
 	# split explicitly. Everything else under ny/ auto-fans out.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income/credits --batches 3
-	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income/taxable_income --batches 1
-	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income --exclude credits,taxable_income --batches 1
+	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income --exclude credits --mode per-subdir
 	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny --exclude tax --mode per-subdir
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states

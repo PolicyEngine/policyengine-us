@@ -228,8 +228,45 @@ def split_into_batches(
 
             return batches
 
-    # Default: return the entire path as a single batch
-    return [[str(base_path)]]
+    # Default: honor num_batches and exclude generically. The cheapest
+    # common case (no chunking, no exclusion) returns the base_path as a
+    # single batch so policyengine-core walks the tree once. Otherwise we
+    # enumerate explicit paths — necessary because the test runner has no
+    # way to skip excluded subpaths on its own, and because splitting into
+    # multiple subprocesses requires discrete path lists.
+    if num_batches <= 1 and not exclude:
+        return [[str(base_path)]]
+
+    if exclude:
+        # Exclude applies to immediate children by name (same semantics as
+        # the special-branch excludes above). Previously, `--exclude` in
+        # the default branch was silently ignored, causing duplicated
+        # work — e.g. `ny --exclude tax` still re-ran every `tax/*` test.
+        paths = sorted(
+            str(item)
+            for item in base_path.iterdir()
+            if (item.is_dir() or item.suffix == ".yaml") and item.name not in exclude
+        )
+    else:
+        paths = sorted(str(f) for f in base_path.rglob("*.yaml"))
+
+    if not paths:
+        return []
+
+    if num_batches <= 1:
+        return [paths]
+
+    chunk_size = len(paths) // num_batches
+    remainder = len(paths) % num_batches
+    batches = []
+    start = 0
+    for i in range(num_batches):
+        end = start + chunk_size + (1 if i < remainder else 0)
+        chunk = paths[start:end]
+        if chunk:
+            batches.append(chunk)
+        start = end
+    return batches
 
 
 def run_batch(test_paths: List[str], batch_name: str) -> Dict:

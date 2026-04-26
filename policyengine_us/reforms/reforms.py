@@ -189,9 +189,6 @@ from .congress.watca import (
 from .congress.mcdonald_rivet import (
     create_working_parents_tax_relief_act_reform,
 )
-from .states.wa.sb6346.sb6346 import (
-    create_wa_sb6346_reform,
-)
 from .states.nj.stay_nj import (
     create_nj_stay_nj_reform,
 )
@@ -200,6 +197,9 @@ from .states.nj.anchor import (
 )
 
 
+from .states.ca.ab2591 import (
+    create_ca_ab2591_reform,
+)
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
 )
@@ -208,6 +208,9 @@ from .states.hi.hb2306_cdcc import (
 )
 from .states.nc.eitc import (
     create_nc_eitc_reform,
+)
+from .states.nc.cdcc import (
+    create_nc_cdcc_reform,
 )
 from .states.mi.ctc import (
     create_mi_ctc_reform,
@@ -420,12 +423,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
         parameters, period
     )
+    ca_ab2591 = create_ca_ab2591_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
+    nc_cdcc = create_nc_cdcc_reform(parameters, period)
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
-    wa_sb6346 = create_wa_sb6346_reform(parameters, period)
     al_eitc = create_al_eitc_reform(parameters, period)
     ar_eitc = create_ar_eitc_reform(parameters, period)
     az_eitc = create_az_eitc_reform(parameters, period)
@@ -531,12 +535,13 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_sb100,
         ct_tax_rebate_2026,
         al_hb527_overtime_deduction,
+        ca_ab2591,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,
+        nc_cdcc,
         mi_ctc,
         watca,
-        wa_sb6346,
         al_eitc,
         ar_eitc,
         az_eitc,
