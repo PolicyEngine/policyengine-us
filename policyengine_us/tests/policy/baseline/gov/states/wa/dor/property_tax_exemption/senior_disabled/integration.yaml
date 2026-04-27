@@ -34,7 +34,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # combined_disposable_income = AGI = 40_000 (no add-backs / deductions)
     # King County 2024: T1=$60k, T2=$72k, T3=$84k
@@ -65,7 +64,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_WITH_MORTGAGE
   output:
     # combined_disposable_income = AGI 25_000 (SSDI typically already in AGI)
     # 25_000 <= T1 60_000 -> Tier 1
@@ -93,7 +91,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # King County 2024 T2 = $72,000
     # 72_000 > T1 (60_000) and <= T2 (72_000) -> Tier 2
@@ -121,7 +118,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # King County 2024 T3 = $84,000
     # 84_000 > T2 (72_000) and <= T3 (84_000) -> Tier 3
@@ -149,7 +145,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # 84_001 > T3 (84_000) -> ineligible
     wa_pte_income_eligible: false
@@ -176,7 +171,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: RENTED
   output:
     wa_pte_eligible: false
     wa_senior_disabled_property_tax_exemption: 0
@@ -201,7 +195,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_WITH_MORTGAGE
   output:
     wa_pte_eligible: false
     wa_senior_disabled_property_tax_exemption: 0
@@ -225,7 +218,6 @@
         members: [person1]
         state_code: WA
         county: ADAMS_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Adams County 2024: T1=$30,300, T2=$36,000, T3=$41,000
     # 50_000 > T3 (41_000) -> ineligible
@@ -253,7 +245,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # combined_disposable_income = -5,000,000 still falls under Tier 1
     # Benefit must be capped at monthly real_estate_taxes * tier_1_rate, not inflated
@@ -281,7 +272,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Pre-2020 statewide flat: T1=$30k, T2=$35k, T3=$40k
     # Same income/county pair gets a different tier across years; verifies
@@ -309,7 +299,6 @@
       household:
         members: [person1]
         state_code: OR
-        tenure_type: OWNED_OUTRIGHT
   output:
     # defined_for = StateCode.WA on wa_pte_eligible blocks calculation
     wa_pte_eligible: false
@@ -336,7 +325,6 @@
         members: [person1, person2]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Combined AGI 80k > T2 72k and <= T3 84k -> Tier 3
     # 4800/12 * 0.4 = 160

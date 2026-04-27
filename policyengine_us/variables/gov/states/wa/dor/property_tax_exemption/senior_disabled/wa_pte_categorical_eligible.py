@@ -14,8 +14,11 @@ class wa_pte_categorical_eligible(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        # We don't track "retired due to disability" at the moment;
-        # use SSDI receipt as a proxy.
-        ssdi = person("social_security_disability", period)
+        # The statute requires being "retired from regular gainful employment
+        # by reason of disability" (RCW 84.36.381(3)(a)(ii)). We use is_disabled
+        # as a proxy — it captures unable-to-work disability across SSDI, SSI,
+        # VA, and physician-certified pathways, but doesn't directly verify the
+        # "retired from gainful employment" condition.
+        is_disabled = person("is_disabled", period)
         p = parameters(period).gov.states.wa.dor.property_tax_exemption.senior_disabled
-        return (age >= p.age_threshold) | (ssdi > 0)
+        return (age >= p.age_threshold) | is_disabled

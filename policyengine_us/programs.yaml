@@ -971,17 +971,6 @@ programs:
     parameter_prefix: gov.states.il.idor.scretd
     notes: Deferral amount is a loan, not a benefit
 
-  - id: wa_senior_disabled_property_tax_exemption
-    name: Washington Senior/Disabled Property Tax Exemption
-    full_name: Washington Property Tax Exemption Program for Senior Citizens and People with Disabilities
-    category: Benefits
-    agency: State
-    status: partial
-    coverage: WA
-    variable: wa_senior_disabled_property_tax_exemption
-    parameter_prefix: gov.states.wa.dor.property_tax_exemption.senior_disabled
-    notes: Tier reduction rates are statewide approximations; levy decomposition not modeled
-
   - id: il_ipass_assist
     name: Illinois I-PASS Assist
     full_name: Illinois Tollway I-PASS Assist Program

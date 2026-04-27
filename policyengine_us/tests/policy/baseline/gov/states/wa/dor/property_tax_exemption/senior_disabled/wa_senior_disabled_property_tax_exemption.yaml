@@ -17,7 +17,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Tier 1 (income $40k <= $60k T1)
     # Annual taxes $6,000 -> monthly $500
@@ -43,7 +42,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Tier 2 (income $70k > T1 $60k and <= T2 $72k)
     # Monthly benefit: $500 * 0.6 = $300
@@ -68,7 +66,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Tier 3 (income $80k > T2 $72k and <= T3 $84k)
     # Monthly benefit: $500 * 0.4 = $200
@@ -93,7 +90,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Income $100k > T3 $84k -> ineligible
     wa_senior_disabled_property_tax_exemption: 0
@@ -117,7 +113,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Negative income still falls under Tier 1
     # Benefit capped at real_estate_taxes/12 * tier_1_rate, never inflated
@@ -143,7 +138,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Tier 1 eligible, but no tax bill -> 0 * 0.8 = 0
     wa_senior_disabled_property_tax_exemption: 0
@@ -167,7 +161,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # No add-back categories present, income = 0 <= Tier 1 -> Tier 1
     # 4800/12 * 0.8 = 320
@@ -191,7 +184,6 @@
       household:
         members: [person1]
         state_code: OR
-        tenure_type: OWNED_OUTRIGHT
   output:
     # defined_for = StateCode.WA on wa_pte_eligible blocks the benefit
     wa_senior_disabled_property_tax_exemption: 0
@@ -216,7 +208,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Age 60 < 61 (not age-eligible), but SSDI > 0 (disability-eligible)
     # Tier 1 (30k <= 60k); 6000/12 * 0.8 = 400

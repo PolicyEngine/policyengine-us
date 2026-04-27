@@ -16,7 +16,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # King County 2024: T1=$60k, T2=$72k, T3=$84k
     # income $60k <= T1 -> Tier 1
@@ -40,7 +39,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # income $72k > T1 ($60k) and <= T2 ($72k) -> Tier 2
     wa_pte_tier: 2
@@ -63,7 +61,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # income $80k > T2 ($72k) and <= T3 ($84k) -> Tier 3
     wa_pte_tier: 3
@@ -86,7 +83,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # income $100k > T3 ($84k) -> not in any tier
     wa_pte_tier: 0
@@ -109,7 +105,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: RENTED
   output:
     # wa_pte_tier only checks income vs thresholds, not ownership.
     # 40k <= T1 60k -> Tier 1 even for renter; ownership is enforced
@@ -134,7 +129,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # King 2024 T1 = 60,000; 60,001 > T1 and <= T2 (72,000) -> Tier 2
     wa_pte_tier: 2
@@ -157,7 +151,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # 84,001 > T3 (84,000) -> not in any tier
     wa_pte_tier: 0
@@ -180,7 +173,6 @@
         members: [person1]
         state_code: WA
         county: ADAMS_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Adams 2024: T1=$30,300, T2=$36,000, T3=$41,000
     # 50,000 > T3 41,000 -> Tier 0 (proves county lookup picks up Adams not King)
@@ -204,7 +196,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Pre-2020 statewide flat: T1=$30k, T2=$35k, T3=$40k
     # 40,000 > T2 (35,000) and <= T3 (40,000) -> Tier 3
@@ -228,7 +219,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # King 2024: T1=$60k, T2=$72k, T3=$84k
     # 40,000 <= T1 -> Tier 1 (same income, different year/thresholds)
@@ -254,7 +244,6 @@
         members: [person1, person2]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Combined AGI 80k: > T2 (72k) and <= T3 (84k) -> Tier 3
     wa_pte_tier: 3
