@@ -5,7 +5,7 @@ class wa_pte_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for the Washington Senior Citizens and Disabled Persons Property Tax Exemption"
-    definition_period = MONTH
+    definition_period = YEAR
     defined_for = StateCode.WA
     reference = (
         "https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381",
@@ -13,10 +13,10 @@ class wa_pte_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        has_categorical_member = spm_unit.any(
-            person("wa_pte_categorical_eligible", period)
+        has_categorical_member = (
+            add(spm_unit, period, ["wa_pte_categorical_eligible"]) > 0
         )
-        owner_occupant = spm_unit("wa_pte_owner_occupant", period)
+        # Owner-occupancy proxy: only homeowners pay real_estate_taxes directly.
+        pays_property_tax = add(spm_unit, period, ["real_estate_taxes"]) > 0
         income_eligible = spm_unit("wa_pte_income_eligible", period)
-        return has_categorical_member & owner_occupant & income_eligible
+        return has_categorical_member & pays_property_tax & income_eligible

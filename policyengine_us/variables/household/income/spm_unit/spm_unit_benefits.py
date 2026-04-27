@@ -36,8 +36,6 @@ class spm_unit_benefits(Variable):
             "sc_ssi_state_supplement",
             # Texas programs.
             "tx_ssi_state_supplement",
-            # Washington programs.
-            "wa_senior_disabled_property_tax_exemption",
             "snap",
             "wic",
             "free_school_meals",

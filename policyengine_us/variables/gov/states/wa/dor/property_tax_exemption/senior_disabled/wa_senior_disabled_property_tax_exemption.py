@@ -6,7 +6,7 @@ class wa_senior_disabled_property_tax_exemption(Variable):
     entity = SPMUnit
     unit = USD
     label = "Washington Senior Citizens and Disabled Persons Property Tax Exemption"
-    definition_period = MONTH
+    definition_period = YEAR
     defined_for = "wa_pte_eligible"
     reference = (
         "https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381",
@@ -15,15 +15,11 @@ class wa_senior_disabled_property_tax_exemption(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # real_estate_taxes is a Person-level YEAR-defined input;
-        # aggregate across the SPM unit and convert to a monthly amount.
-        annual_taxes = add(spm_unit, period.this_year, ["real_estate_taxes"])
-        monthly_taxes = annual_taxes / MONTHS_IN_YEAR
+        annual_taxes = add(spm_unit, period, ["real_estate_taxes"])
         tier = spm_unit("wa_pte_tier", period)
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.benefit
-        # Tier 1 = strictest income, biggest exemption; Tier 0 = ineligible.
         rate = select(
             [tier == 1, tier == 2, tier == 3],
             [
@@ -33,4 +29,4 @@ class wa_senior_disabled_property_tax_exemption(Variable):
             ],
             default=0,
         )
-        return monthly_taxes * rate
+        return annual_taxes * rate

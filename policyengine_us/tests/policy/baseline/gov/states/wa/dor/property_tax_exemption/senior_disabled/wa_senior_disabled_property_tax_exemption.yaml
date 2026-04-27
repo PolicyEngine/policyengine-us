@@ -1,5 +1,5 @@
 - name: Case 1, Tier 1 senior in King County receives 80% reduction.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -22,10 +22,10 @@
     # Tier 1 (income $40k <= $60k T1)
     # Annual taxes $6,000 -> monthly $500
     # Monthly benefit: $500 * 0.8 = $400
-    wa_senior_disabled_property_tax_exemption: 400
+    wa_senior_disabled_property_tax_exemption: 4_800
 
 - name: Case 2, Tier 2 senior in King County receives 60% reduction.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -47,10 +47,10 @@
   output:
     # Tier 2 (income $70k > T1 $60k and <= T2 $72k)
     # Monthly benefit: $500 * 0.6 = $300
-    wa_senior_disabled_property_tax_exemption: 300
+    wa_senior_disabled_property_tax_exemption: 3_600
 
 - name: Case 3, Tier 3 senior in King County receives 40% reduction.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -72,10 +72,10 @@
   output:
     # Tier 3 (income $80k > T2 $72k and <= T3 $84k)
     # Monthly benefit: $500 * 0.4 = $200
-    wa_senior_disabled_property_tax_exemption: 200
+    wa_senior_disabled_property_tax_exemption: 2_400
 
 - name: Case 4, ineligible household receives no benefit.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -99,7 +99,7 @@
     wa_senior_disabled_property_tax_exemption: 0
 
 - name: Case 5, negative countable income does not inflate benefit beyond cap.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -122,10 +122,10 @@
     # Negative income still falls under Tier 1
     # Benefit capped at real_estate_taxes/12 * tier_1_rate, never inflated
     # $500 * 0.8 = $400
-    wa_senior_disabled_property_tax_exemption: 400
+    wa_senior_disabled_property_tax_exemption: 4_800
 
 - name: Case 6, zero real_estate_taxes yields zero benefit even when eligible.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -149,7 +149,7 @@
     wa_senior_disabled_property_tax_exemption: 0
 
 - name: Case 7, zero AGI senior in King County qualifies for Tier 1.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -171,10 +171,10 @@
   output:
     # No add-back categories present, income = 0 <= Tier 1 -> Tier 1
     # 4800/12 * 0.8 = 320
-    wa_senior_disabled_property_tax_exemption: 320
+    wa_senior_disabled_property_tax_exemption: 3_840
 
 - name: Case 8, OR state household receives no benefit (defined_for filter).
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -197,7 +197,7 @@
     wa_senior_disabled_property_tax_exemption: 0
 
 - name: Case 9, age 60 with SSDI is benefit-eligible via disability path.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
@@ -220,4 +220,4 @@
   output:
     # Age 60 < 61 (not age-eligible), but SSDI > 0 (disability-eligible)
     # Tier 1 (30k <= 60k); 6000/12 * 0.8 = 400
-    wa_senior_disabled_property_tax_exemption: 400
+    wa_senior_disabled_property_tax_exemption: 4_800

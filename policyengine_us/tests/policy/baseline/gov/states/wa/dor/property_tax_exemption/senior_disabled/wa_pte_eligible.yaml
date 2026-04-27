@@ -1,9 +1,10 @@
 - name: Case 1, senior owner-occupant with low income is eligible.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
         age: 70
+        real_estate_taxes: 6_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -16,16 +17,16 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     wa_pte_eligible: true
 
-- name: Case 2, senior renter is ineligible.
-  period: 2024-01
+- name: Case 2, senior renter (no real_estate_taxes) is ineligible.
+  period: 2024
   input:
     people:
       person1:
         age: 70
+        real_estate_taxes: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -38,17 +39,17 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: RENTED
   output:
     wa_pte_eligible: false
 
 - name: Case 3, young owner-occupant without disability is ineligible.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
         age: 50
         social_security_disability: 0
+        real_estate_taxes: 6_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -61,17 +62,17 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_WITH_MORTGAGE
   output:
     wa_pte_eligible: false
 
 - name: Case 4, disabled owner-occupant is eligible.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
         age: 45
         social_security_disability: 12_000
+        real_estate_taxes: 6_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -84,16 +85,16 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_WITH_MORTGAGE
   output:
     wa_pte_eligible: true
 
 - name: Case 5, senior owner-occupant with high income is ineligible.
-  period: 2024-01
+  period: 2024
   input:
     people:
       person1:
         age: 70
+        real_estate_taxes: 6_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -106,7 +107,6 @@
         members: [person1]
         state_code: WA
         county: KING_COUNTY_WA
-        tenure_type: OWNED_OUTRIGHT
   output:
     # Income $100K > King County Tier 3 threshold $84K -> ineligible
     wa_pte_eligible: false
