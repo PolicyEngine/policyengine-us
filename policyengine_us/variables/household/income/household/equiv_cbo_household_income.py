@@ -13,6 +13,7 @@ class equiv_cbo_household_income(Variable):
     unit = USD
 
     def formula(household, period, parameters):
-        return household("cbo_household_income", period) / household(
-            "household_size", period
-        ) ** 0.5
+        return (
+            household("cbo_household_income", period)
+            / household("household_size", period) ** 0.5
+        )

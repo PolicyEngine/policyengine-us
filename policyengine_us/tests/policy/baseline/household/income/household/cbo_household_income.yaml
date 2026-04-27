@@ -76,9 +76,11 @@
     income_tax: -1_500
     employee_payroll_tax: 2_295
     self_employment_tax: 0
+    cbo_corporate_income_tax: 100
+    cbo_excise_tax: 20
     household_state_tax_before_refundable_credits: 9_999
   output:
     cbo_household_income_before_transfers_and_taxes: 37_337
     cbo_household_means_tested_transfers: 11_000
-    cbo_household_federal_taxes: 3_132
-    cbo_household_income_after_transfers_and_taxes: 45_205
+    cbo_household_federal_taxes: 3_252
+    cbo_household_income_after_transfers_and_taxes: 45_085

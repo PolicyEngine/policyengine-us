@@ -6,9 +6,9 @@ class cbo_excise_tax(Variable):
     entity = Household
     label = "Optional excise tax incidence input for CBO analysis"
     documentation = (
-        "Optional household federal excise tax incidence input for "
-        "CBO-style analysis. This is reserved for future explicit incidence "
-        "allocation and is not included in the default PE-US CBO benchmark."
+        "Optional household share of federal excise taxes for CBO-style "
+        "analysis. Defaults to zero until an explicit incidence allocation is "
+        "provided."
     )
     definition_period = YEAR
     unit = USD

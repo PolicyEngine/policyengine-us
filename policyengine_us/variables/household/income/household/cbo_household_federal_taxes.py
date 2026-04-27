@@ -8,9 +8,8 @@ class cbo_household_federal_taxes(Variable):
     documentation = (
         "Modeled federal taxes included in the PE-US CBO-style household "
         "income framework: individual income taxes plus employee, self-"
-        "employment, and employer-side federal payroll taxes. Corporate and "
-        "excise tax incidence are excluded until they are explicitly "
-        "allocated to households."
+        "employment, employer-side federal payroll taxes, and any explicitly "
+        "provided corporate or excise tax incidence."
     )
     definition_period = YEAR
     unit = USD
