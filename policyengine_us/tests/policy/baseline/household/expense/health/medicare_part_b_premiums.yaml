@@ -33,3 +33,14 @@
     msp_part_b_premium_coverage: 0
   output:
     medicare_part_b_premiums: 0
+
+- name: Medicare Part B premiums preserve multiple legacy person inputs
+  period: 2025
+  input:
+    people:
+      person1:
+        medicare_part_b_premiums: 1_200
+      person2:
+        medicare_part_b_premiums: 2_400
+  output:
+    medicare_part_b_premiums: [1_200, 2_400]
