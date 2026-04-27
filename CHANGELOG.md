@@ -1,3 +1,11 @@
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
 ## [1.669.0] - 2026-04-27
 
 ### Added
