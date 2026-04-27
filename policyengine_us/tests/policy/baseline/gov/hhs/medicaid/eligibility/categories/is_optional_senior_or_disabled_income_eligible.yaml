@@ -1,7 +1,7 @@
 - name: low income, eligible for Medicaid
   period: 2022
   input:
-    ssi_countable_income: 600
+    medicaid_optional_senior_or_disabled_countable_income: 600
     state_code: CT
   output:
     is_optional_senior_or_disabled_income_eligible: true
@@ -9,26 +9,64 @@
 - name: high income, ineligible for Medicaid
   period: 2022
   input:
-    ssi_countable_income: 1_000_000
+    medicaid_optional_senior_or_disabled_countable_income: 1_000_000
     state_code: FL
   output:
     is_optional_senior_or_disabled_income_eligible: false
     
 
-- name: Joint, above limit
+- name: Joint filers over Connecticut's couple limit are ineligible.
   period: 2022
   input:
-    ssi_countable_income: 13_400
-    tax_unit_is_joint: true
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 9_000
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Joint filers under Connecticut's couple limit are eligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_700
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_700
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Earned income below Connecticut's 2025 limit is eligible.
+  period: 2025
+  input:
+    age: 70
+    employment_income: 20_000
     state_code: CT
   output:
     is_optional_senior_or_disabled_income_eligible: true
 
-- name: Joint, below limit
-  period: 2022
+- name: Earned income over Connecticut's 2025 limit is ineligible.
+  period: 2025
   input:
-    ssi_countable_income: 13_300
-    tax_unit_is_joint: true
+    age: 70
+    employment_income: 34_000
     state_code: CT
   output:
-    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_income_eligible: false

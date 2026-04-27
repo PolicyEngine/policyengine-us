@@ -15,12 +15,11 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
 
     def formula(person, period, parameters):
-        # income
-        personal_income = person("ssi_countable_income", period)
+        personal_income = person(
+            "medicaid_optional_senior_or_disabled_countable_income", period
+        )
         tax_unit = person.tax_unit
         income = tax_unit.sum(personal_income)
-        # TODO: Each state may has its own way of calculating countable income. Not necessary follow the SSA rule.
-        # Add countable income on state level, then consolidate them with this file.
 
         #  Flags & state info
         is_joint = tax_unit("tax_unit_is_joint", period)
@@ -31,16 +30,6 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
 
-        # Monthly disregard
-        monthly_income_disregard = where(
-            is_joint,
-            p.income.disregard.couple[state],
-            p.income.disregard.individual[state],
-        )
-
-        # Annualize
-        income_disregard = monthly_income_disregard * MONTHS_IN_YEAR
-
         #  Poverty-guideline-based income limit
         limit_pct = where(
             is_joint,
@@ -50,6 +39,4 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         fpg_annual = tax_unit("tax_unit_fpg", period)
         income_limit = limit_pct * fpg_annual
 
-        #  Income test
-        countable_income = income - income_disregard
-        return countable_income < income_limit
+        return income < income_limit
