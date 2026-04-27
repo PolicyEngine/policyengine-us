@@ -1,3 +1,10 @@
+## [1.670.2] - 2026-04-27
+
+### Fixed
+
+- Fix Marketplace selected-plan and net premiums for unsubsidized households.
+
+
 ## [1.670.1] - 2026-04-27
 
 ### Fixed
