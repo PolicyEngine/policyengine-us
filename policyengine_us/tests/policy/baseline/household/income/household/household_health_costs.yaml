@@ -14,3 +14,11 @@
   output:
     household_health_costs: 360
 
+- name: Household health costs include Marketplace net premium when health benefits are included in net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip_premium: 360
+    marketplace_net_premium: 2_000
+  output:
+    household_health_costs: 2_360
