@@ -1,3 +1,10 @@
+## [1.670.1] - 2026-04-27
+
+### Fixed
+
+- Exclude children with employer-sponsored insurance from CHIP eligibility.
+
+
 ## [1.670.0] - 2026-04-27
 
 ### Added
