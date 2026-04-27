@@ -1,3 +1,18 @@
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
+## [1.669.0] - 2026-04-27
+
+### Added
+
+- Added Basic Health Program (ACA §1331) coverage modeling. Creates a shared `gov/hhs/basic_health_program` coverage path covering MN MinnesotaCare, NY Essential Plan, OR OHP Bridge (2025+), and DC Healthy DC Plan (2026+). BHP-eligible people are excluded from ACA Premium Tax Credit eligibility, so per-state PTC projections now zero out for BHP enrollees. Eligibility enforces the statutory 133–200% FPL band (250% FPL in NY from 2025). Moves the state adult/parent Medicaid income ceilings back to Medicaid-only levels in BHP states so people above the Medicaid line fall through to BHP rather than silently losing coverage. Refs #8112.
+
+
 ## [1.668.0] - 2026-04-26
 
 ### Added

@@ -47,3 +47,21 @@
         state_code: TX
   output:
     is_parent_for_medicaid: [true, true, false]
+
+- name: DC parent above the Medicaid ceiling is not parent-eligible after Healthy DC Plan starts
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        medicaid_income_level: 1.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_count_dependents: 1
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    is_parent_for_medicaid: [false]

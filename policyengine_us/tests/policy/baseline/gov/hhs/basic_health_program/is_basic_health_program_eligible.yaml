@@ -1,0 +1,219 @@
+- name: Minnesota Basic Health Program eligibility above Medicaid range
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    is_basic_health_program_eligible: [true]
+    basic_health_program_enrolled: [true]
+
+- name: New York expanded Basic Health Program range uses 250 percent FPL ceiling
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+
+- name: Oregon Basic Health Program is active after the 2024 launch
+  period: 2025
+  input:
+    people:
+      person:
+        age: 45
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.8
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    is_basic_health_program_eligible: [true]
+
+- name: DC Basic Health Program is active in 2026
+  period: 2026
+  input:
+    people:
+      person:
+        age: 34
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.7
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    is_medicaid_eligible: [false]
+    is_basic_health_program_eligible: [true]
+
+- name: California does not have a Basic Health Program path
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.7
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    is_basic_health_program_eligible: [false]
+
+- name: Minnesota adult above Medicaid ceiling moves to the Basic Health Program path
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    is_adult_for_medicaid: [false]
+    is_medicaid_eligible: [false]
+    is_basic_health_program_eligible: [true]
+
+# Regression: income below the 133% FPL BHP floor must fail eligibility
+# even if the person is flagged as Medicaid-ineligible. Without an explicit
+# floor, a low-income adult in a non-expansion state (or anyone whose
+# Medicaid eligibility was overridden to false) would incorrectly qualify.
+- name: BHP floor at 133 percent FPL excludes low-income adults even if Medicaid-ineligible
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.2
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    is_basic_health_program_eligible: [false]
+
+# Regression: NY Essential Plan at 150% FPL in 2016 (first full BHP year).
+- name: New York Basic Health Program is active from 2016 onward in annual simulations
+  period: 2016
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.5
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+
+# Regression: OR OHP Bridge first full year is 2025 (launched July 2024).
+- name: Oregon Basic Health Program is not yet active in 2024 under annual simulation
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.8
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    is_basic_health_program_eligible: [false]
+
+# Regression: NY 250% FPL expansion kicks in at 2025 (launched April 2024).
+- name: New York expanded 250 percent FPL ceiling is effective from 2025 in annual simulation
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+
+# At 230% FPL in 2024 (before expansion took effect for the full year),
+# NY should fall back to 200% FPL standard limit and BHP-ineligible.
+- name: New York at 230 percent FPL in 2024 is above the standard 200 percent BHP limit
+  period: 2024
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [false]
