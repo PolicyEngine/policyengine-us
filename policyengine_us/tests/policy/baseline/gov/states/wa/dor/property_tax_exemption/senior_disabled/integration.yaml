@@ -1,7 +1,7 @@
 # Integration tests for Washington Senior Citizens and Disabled Persons
 # Property Tax Exemption (RCW 84.36.379-389; WAC 458-16A-100..150).
 #
-# Eligibility: age 61+ OR social_security_disability > 0; SPM-unit owner-occupant;
+# Eligibility: age 61+ OR is_disabled; SPM-unit owner-occupant;
 # combined disposable income (annual) <= Tier 3 threshold for the household's county.
 #
 # Combined disposable income (RCW 84.36.383(7), simplified):
@@ -50,7 +50,7 @@
     people:
       person1:
         age: 45
-        social_security_disability: 12_000
+        is_disabled: true
         real_estate_taxes: 4_800
     tax_units:
       tax_unit:
@@ -65,11 +65,11 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # combined_disposable_income = AGI 25_000 (SSDI typically already in AGI)
+    # combined_disposable_income = AGI 25_000
     # 25_000 <= T1 60_000 -> Tier 1
     wa_pte_eligible: true
     wa_pte_tier: 1
-    # 4_800 / 12 = 400 monthly; 400 * 0.8 = 320
+    # Annual taxes 4_800 * Tier 1 rate 0.8 = 3_840
     wa_senior_disabled_property_tax_exemption: 3_840
 
 - name: Case 3, King County income just at Tier 2 boundary gets 60% reduction.
@@ -181,7 +181,7 @@
     people:
       person1:
         age: 50
-        social_security_disability: 0
+        is_disabled: false
         real_estate_taxes: 5_000
     tax_units:
       tax_unit:

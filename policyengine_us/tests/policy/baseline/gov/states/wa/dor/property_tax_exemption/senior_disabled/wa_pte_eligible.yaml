@@ -48,7 +48,7 @@
     people:
       person1:
         age: 50
-        social_security_disability: 0
+        is_disabled: false
         real_estate_taxes: 6_000
     tax_units:
       tax_unit:
@@ -71,7 +71,7 @@
     people:
       person1:
         age: 45
-        social_security_disability: 12_000
+        is_disabled: true
         real_estate_taxes: 6_000
     tax_units:
       tax_unit:

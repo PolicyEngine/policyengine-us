@@ -2,34 +2,34 @@
   period: 2024
   input:
     age: 61
-    social_security_disability: 0
+    is_disabled: false
     state_code: WA
   output:
     wa_pte_categorical_eligible: true
 
-- name: Case 2, person under age threshold receiving SSDI is categorically eligible by disability.
+- name: Case 2, person under age threshold who is disabled is categorically eligible by disability.
   period: 2024
   input:
     age: 45
-    social_security_disability: 12_000
+    is_disabled: true
     state_code: WA
   output:
     wa_pte_categorical_eligible: true
 
-- name: Case 3, person under age threshold without SSDI is not categorically eligible.
+- name: Case 3, person under age threshold who is not disabled is not categorically eligible.
   period: 2024
   input:
     age: 45
-    social_security_disability: 0
+    is_disabled: false
     state_code: WA
   output:
     wa_pte_categorical_eligible: false
 
-- name: Case 4, person aged 70 receiving SSDI is categorically eligible (OR semantics).
+- name: Case 4, person aged 70 who is also disabled is categorically eligible (OR semantics).
   period: 2024
   input:
     age: 70
-    social_security_disability: 12_000
+    is_disabled: true
     state_code: WA
   output:
     wa_pte_categorical_eligible: true

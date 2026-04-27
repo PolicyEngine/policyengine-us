@@ -188,13 +188,13 @@
     # defined_for = StateCode.WA on wa_pte_eligible blocks the benefit
     wa_senior_disabled_property_tax_exemption: 0
 
-- name: Case 9, age 60 with SSDI is benefit-eligible via disability path.
+- name: Case 9, age 60 disabled is benefit-eligible via disability path.
   period: 2024
   input:
     people:
       person1:
         age: 60
-        social_security_disability: 12_000
+        is_disabled: true
         real_estate_taxes: 6_000
     tax_units:
       tax_unit:
@@ -209,6 +209,6 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Age 60 < 61 (not age-eligible), but SSDI > 0 (disability-eligible)
-    # Tier 1 (30k <= 60k); 6000/12 * 0.8 = 400
+    # Age 60 < 61 (not age-eligible), but is_disabled (disability-eligible)
+    # Tier 1 (30k <= 60k); annual taxes 6_000 * Tier 1 rate 0.8 = 4_800
     wa_senior_disabled_property_tax_exemption: 4_800
