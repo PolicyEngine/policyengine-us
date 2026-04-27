@@ -1,0 +1,114 @@
+- name: Case 1, child claimed by aunt uses the non-filer exception.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false]
+    medicaid_uses_non_filer_rules: [false, true]
+
+- name: Case 2, child claimed by one parent while living with both parents uses the non-filer exception.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        own_children_in_household: 1
+      person2:
+        age: 32
+        employment_income: 20_000
+        own_children_in_household: 1
+      person3:
+        age: 10
+    tax_units:
+      tax_unit1:
+        members: [person1, person3]
+      tax_unit2:
+        members: [person2]
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, false, true]
+    medicaid_tax_dependent_exception_living_with_both_parents: [false, false, true]
+    medicaid_uses_non_filer_rules: [false, false, true]
+
+- name: Case 3, adult claimed elsewhere falls back to the non-filer rules.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      person2:
+        age: 50
+        employment_income: 40_000
+        own_children_in_household: 1
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_is_tax_dependent: [true, false]
+    medicaid_uses_non_filer_rules: [true, false]
+
+- name: Case 4, a 20-year-old full-time student is not treated as child-age eligible unless the state adopts the under-21 option.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    medicaid_non_filer_child_age_eligible: [false]

@@ -1,0 +1,10 @@
+description: States use this flag to determine whether full-time students younger than 21 are treated as children under Medicaid MAGI household rules.
+values:
+  2014-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid MAGI household full-time-student-under-21 rule
+  reference:
+    - title: 42 CFR 435.603(f)(3)(iv)(B)
+      href: https://www.law.cornell.edu/cfr/text/42/435.603#f_3_iv_B
