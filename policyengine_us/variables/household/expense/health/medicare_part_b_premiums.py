@@ -22,9 +22,10 @@ def _get_explicit_legacy_part_b_inputs(person):
 
         for period_str, value in legacy_values.items():
             period_obj = periods.period(period_str)
-            if period_obj not in explicit_inputs:
-                explicit_inputs[period_obj] = np.full(person.count, np.nan)
-            explicit_inputs[period_obj][person_index] = value
+            period_inputs = explicit_inputs.setdefault(
+                period_obj, np.full(person.count, np.nan)
+            )
+            period_inputs[person_index] = value
 
     return explicit_inputs
 
