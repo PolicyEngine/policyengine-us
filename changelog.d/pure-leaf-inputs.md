@@ -1,0 +1,1 @@
+- Removed non-geographic guards from input variables so they remain pure data inputs, and added checks preventing input variables from using formulas, adds, subtracts, or non-geographic `defined_for` gates.
