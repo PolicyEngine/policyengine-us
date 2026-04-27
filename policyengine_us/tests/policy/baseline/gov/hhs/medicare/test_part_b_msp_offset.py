@@ -1,10 +1,35 @@
+from types import SimpleNamespace
+
+import numpy as np
 import pytest
+from policyengine_core import periods
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+import policyengine_us.variables.household.expense.health.medicare_part_b_premiums as part_b_module
+from policyengine_us.variables.household.expense.health.medicare_part_b_premiums import (
+    _get_explicit_legacy_part_b_inputs,
+    medicare_part_b_premiums,
+)
 
 
 SYSTEM = CountryTaxBenefitSystem()
 PERIOD = "2025"
+
+
+class FakePartBPerson:
+    ids = ["person"]
+    count = 1
+
+    def __init__(self, situation_input=None):
+        self.simulation = SimpleNamespace(situation_input=situation_input)
+        self.values = {
+            "medicare_enrolled": np.array([True]),
+            "income_adjusted_part_b_premium": np.array([123.0]),
+            "msp_part_b_premium_coverage": np.array([0.0]),
+        }
+
+    def __call__(self, variable, period):
+        return self.values[variable]
 
 
 def make_simulation(
@@ -137,6 +162,60 @@ def test_legacy_medicare_part_b_input_uprates_forward():
         1_030.8833,
         abs=1e-3,
     )
+
+
+def test_legacy_part_b_helper_handles_missing_situation_input():
+    person = SimpleNamespace(simulation=SimpleNamespace(situation_input=None))
+
+    assert _get_explicit_legacy_part_b_inputs(person) == {}
+
+
+def test_legacy_part_b_helper_handles_missing_people_input():
+    person = SimpleNamespace(simulation=SimpleNamespace(situation_input={}))
+
+    assert _get_explicit_legacy_part_b_inputs(person) == {}
+
+
+def test_legacy_part_b_helper_skips_non_dict_person_input():
+    person = SimpleNamespace(
+        ids=["person"],
+        count=1,
+        simulation=SimpleNamespace(
+            situation_input={"people": {"person": "not a dict"}}
+        ),
+    )
+
+    assert _get_explicit_legacy_part_b_inputs(person) == {}
+
+
+def test_legacy_part_b_formula_uses_current_direct_input():
+    situation_input = {
+        "people": {"person": {"medicare_part_b_premiums": {PERIOD: 1_000}}}
+    }
+    person = FakePartBPerson(situation_input)
+
+    result = medicare_part_b_premiums.formula(
+        person, periods.period(PERIOD), parameters=None
+    )
+
+    assert result[0] == pytest.approx(1_000)
+
+
+def test_legacy_part_b_formula_uses_modeled_value_when_prior_input_is_missing(
+    monkeypatch,
+):
+    monkeypatch.setattr(
+        part_b_module,
+        "_get_explicit_legacy_part_b_inputs",
+        lambda person: {periods.period("2024"): np.array([np.nan])},
+    )
+    person = FakePartBPerson()
+
+    result = medicare_part_b_premiums.formula(
+        person, periods.period(PERIOD), parameters=None
+    )
+
+    assert result[0] == pytest.approx(123)
 
 
 def test_msp_part_b_premium_coverage_scales_with_eligible_months():
