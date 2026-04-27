@@ -9,8 +9,9 @@ class wa_pfml_eligible(Variable):
         "Eligibility for Washington Paid Family and Medical Leave "
         "benefits. Requires working at least the qualifying hours "
         "threshold in the qualifying period per RCW 50A.15.010. "
-        "Annual hours worked is approximated as weekly hours worked "
-        "multiplied by the number of weeks in a year."
+        "If no qualifying-period hours override is provided, annual hours "
+        "worked are approximated as weekly hours worked multiplied by the "
+        "number of weeks in a year."
     )
     definition_period = YEAR
     defined_for = StateCode.WA

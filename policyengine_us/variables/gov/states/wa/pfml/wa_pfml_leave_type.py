@@ -13,7 +13,7 @@ class WAPFMLLeaveType(Enum):
 class wa_pfml_leave_type(Variable):
     value_type = Enum
     entity = Person
-    label = "Washington PFML leave type"
+    label = "Washington PFML selected leave type"
     definition_period = YEAR
     possible_values = WAPFMLLeaveType
     default_value = WAPFMLLeaveType.NONE

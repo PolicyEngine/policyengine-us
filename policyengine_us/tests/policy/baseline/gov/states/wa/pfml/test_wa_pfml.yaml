@@ -1,32 +1,22 @@
-- name: Case 1, Washington worker with AWW above breakpoint gets annual benefit for combined max weeks.
+- name: Case 1, eligible worker with combined leave facts gets the maximum annual benefit.
   period: 2026
   input:
     people:
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
-        wa_pfml_leave_weeks: 16
         wa_pfml_leave_type: COMBINED
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # SAWW 2026 = 1,830; breakpoint H = 0.5 * 1,830 = 915
-    # Max weekly benefit 2026 = 0.90 * 1,830 = 1,647
-    # AWW = 52,000 / 52 = 1,000
-    # AWW (1,000) > H (915), so weekly benefit = 0.90 * 915 + 0.50 * (1,000 - 915)
-    # = 823.50 + 0.50 * 85
-    # = 823.50 + 42.50
-    # = 866 (below the 1,647 cap, above the 100 floor)
-    wa_pfml_weekly_benefit_amount: 866
-    # Eligibility: 20 weekly hours * 52 = 1,040 annual hours >= 820 threshold.
     wa_pfml_eligible: true
-    # Combined family + medical leave max = 16 weeks per RCW 50A.15.020(3)(c).
-    # Annual benefit = 866 * 16 = 13,856
+    wa_pfml_weekly_benefit_amount: 866
+    wa_pfml_max_leave_weeks: 16
     wa_pfml: 13_856
 
-- name: Case 2, eligible Washington worker with no leave claim receives no annual benefit.
+- name: Case 2, no leave type selected produces no maximum benefit estimate.
   period: 2026
   input:
     people:
@@ -39,109 +29,86 @@
         state_code: WA
   output:
     wa_pfml_eligible: true
+    wa_pfml_max_leave_weeks: 0
     wa_pfml: 0
 
-- name: Case 3, leave weeks above the statutory cap are limited to the combined maximum.
+- name: Case 3, family leave estimate uses the 12 week cap.
   period: 2026
   input:
     people:
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
-        wa_pfml_leave_weeks: 16
         wa_pfml_leave_type: FAMILY
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # Family leave is capped at 12 weeks under RCW 50A.15.020(3)(a).
+    wa_pfml_max_leave_weeks: 12
     wa_pfml: 10_392
 
-- name: Case 4, medical leave without pregnancy incapacity is limited to 12 weeks.
+- name: Case 4, medical leave estimate uses the 12 week cap.
   period: 2026
   input:
     people:
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
-        wa_pfml_leave_weeks: 16
         wa_pfml_leave_type: MEDICAL
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # Medical leave is capped at 12 weeks under RCW 50A.15.020(3)(b).
+    wa_pfml_max_leave_weeks: 12
     wa_pfml: 10_392
 
-- name: Case 5, pregnancy-related medical leave uses the 14 week cap.
+- name: Case 5, pregnancy-related medical leave estimate uses the 14 week cap.
   period: 2026
   input:
     people:
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
-        wa_pfml_leave_weeks: 16
         wa_pfml_leave_type: MEDICAL_WITH_PREGNANCY_INCAPACITY
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # Pregnancy-related medical leave is capped at 14 weeks.
+    wa_pfml_max_leave_weeks: 14
     wa_pfml: 12_124
 
-- name: Case 6, combined leave with pregnancy incapacity uses the 18 week cap.
+- name: Case 6, combined leave with pregnancy incapacity estimate uses the 18 week cap.
   period: 2026
   input:
     people:
       person1:
         weekly_hours_worked: 20
         employment_income: 52_000
-        wa_pfml_leave_weeks: 20
         wa_pfml_leave_type: COMBINED_WITH_PREGNANCY_INCAPACITY
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # Combined leave with pregnancy incapacity is capped at 18 weeks.
+    wa_pfml_max_leave_weeks: 18
     wa_pfml: 15_588
 
-- name: Case 7, leave hours claimed can prorate the benefit using typical workweek hours.
+- name: Case 7, ineligible workers get no leave or benefit estimate.
   period: 2026
   input:
     people:
       person1:
-        weekly_hours_worked: 20
+        weekly_hours_worked: 15
         employment_income: 52_000
         wa_pfml_leave_type: COMBINED
-        wa_pfml_leave_hours_claimed: 240
-        wa_pfml_typical_workweek_hours: 40
     households:
       household:
         members: [person1]
         state_code: WA
   output:
-    # 240 leave hours / 40 typical workweek hours = 6 leave weeks.
-    # Annual benefit = 866 * 6 = 5,196.
-    wa_pfml: 5_196
-
-- name: Case 8, leave-hour claims below the 2026 minimum claim duration receive no benefit.
-  period: 2026
-  input:
-    people:
-      person1:
-        weekly_hours_worked: 20
-        employment_income: 52_000
-        wa_pfml_leave_type: COMBINED
-        wa_pfml_leave_hours_claimed: 3
-        wa_pfml_typical_workweek_hours: 40
-    households:
-      household:
-        members: [person1]
-        state_code: WA
-  output:
-    # RCW 50A.15.020(2) requires at least 4 consecutive leave hours for 2026 claims.
+    wa_pfml_eligible: false
+    wa_pfml_max_leave_weeks: 0
     wa_pfml: 0
