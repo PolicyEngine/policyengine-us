@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class wa_pte_combined_disposable_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = TaxUnit
     unit = USD
     definition_period = YEAR
     label = (

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class wa_senior_disabled_property_tax_exemption(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = TaxUnit
     unit = USD
     label = "Washington Senior Citizens and Disabled Persons Property Tax Exemption"
     definition_period = YEAR
@@ -14,9 +14,9 @@ class wa_senior_disabled_property_tax_exemption(Variable):
         "https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf#page=2",
     )
 
-    def formula(spm_unit, period, parameters):
-        annual_taxes = add(spm_unit, period, ["real_estate_taxes"])
-        tier = spm_unit("wa_pte_tier", period)
+    def formula(tax_unit, period, parameters):
+        annual_taxes = tax_unit("real_estate_taxes", period)
+        tier = tax_unit("wa_pte_tier", period)
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.benefit

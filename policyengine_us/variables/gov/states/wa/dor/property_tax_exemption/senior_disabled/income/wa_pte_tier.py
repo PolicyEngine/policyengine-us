@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class wa_pte_tier(Variable):
     value_type = int
-    entity = SPMUnit
+    entity = TaxUnit
     label = "Washington Senior/Disabled Property Tax Exemption tier"
     definition_period = YEAR
     defined_for = StateCode.WA
@@ -13,9 +13,9 @@ class wa_pte_tier(Variable):
         "https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf#page=2",
     )
 
-    def formula(spm_unit, period, parameters):
-        income = spm_unit("wa_pte_combined_disposable_income", period)
-        county = spm_unit.household("county_str", period)
+    def formula(tax_unit, period, parameters):
+        income = tax_unit("wa_pte_combined_disposable_income", period)
+        county = tax_unit.household("county_str", period)
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income.thresholds
