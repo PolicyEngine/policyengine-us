@@ -15,6 +15,7 @@ class pays_aca_premium(Variable):
         INELIGIBLE_COVERAGE = [
             "is_medicaid_eligible",
             "is_chip_eligible",
+            "is_basic_health_program_eligible",
             "is_aca_eshi_eligible",
             "is_medicare_eligible",
         ]
