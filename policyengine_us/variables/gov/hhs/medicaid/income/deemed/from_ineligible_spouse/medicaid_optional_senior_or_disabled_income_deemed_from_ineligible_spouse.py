@@ -26,10 +26,9 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         individual_earned = person("ssi_earned_income", period)
         individual_unearned = person("ssi_unearned_income", period)
 
-        p = (
-            parameters(period)
-            .gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
-        )
+        p = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         state = person.household("state_code_str", period)
 
         alone_countable = _apply_ssi_exclusions(

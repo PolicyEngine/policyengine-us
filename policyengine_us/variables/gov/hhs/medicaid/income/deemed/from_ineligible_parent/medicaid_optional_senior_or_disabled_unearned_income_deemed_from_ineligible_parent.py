@@ -28,8 +28,7 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
         parental_earned_income = max_(
-            prereduction_parental_earned_income
-            - blind_disabled_working_student_income,
+            prereduction_parental_earned_income - blind_disabled_working_student_income,
             0,
         )
 
@@ -71,7 +70,5 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         count_eligible_children = tax_unit.sum(eligible_child)
         income = np.zeros_like(count_eligible_children)
         mask = count_eligible_children > 0
-        income[mask] = net_parental_deemed_income[mask] / count_eligible_children[
-            mask
-        ]
+        income[mask] = net_parental_deemed_income[mask] / count_eligible_children[mask]
         return income

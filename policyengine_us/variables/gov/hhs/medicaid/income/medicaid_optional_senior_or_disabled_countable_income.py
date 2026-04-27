@@ -38,8 +38,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
         earned_income = max_(
-            pre_reduction_earned_income
-            - blind_disabled_working_student_income,
+            pre_reduction_earned_income - blind_disabled_working_student_income,
             0,
         )
 
@@ -52,10 +51,9 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
 
         both_eligible = person("ssi_marital_both_eligible", period)
         state = person.household("state_code_str", period)
-        p = (
-            parameters(period)
-            .gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
-        )
+        p = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         income_disregard = where(
             both_eligible,
             p.couple[state],

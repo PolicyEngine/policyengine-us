@@ -23,9 +23,7 @@ def _apply_ssi_exclusions(
     unearned_monthly = unearned_income / MONTHS_IN_YEAR
 
     p = parameters(period).gov.ssa.ssi.income.exclusions
-    general_exclusion = (
-        p.general if general_exclusion is None else general_exclusion
-    )
+    general_exclusion = p.general if general_exclusion is None else general_exclusion
 
     # Step 1: Subtract general exclusion from unearned first
     applied_general = min_(general_exclusion, unearned_monthly)
