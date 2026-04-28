@@ -9,30 +9,19 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
     definition_period = YEAR
     documentation = (
         "Total medical out-of-pocket expenses at the SPM unit level, "
-        "combining person-level imputed `medical_out_of_pocket_expenses` "
-        "with rules-based premium variables (CHIP premium, Medicaid premium, "
-        "Marketplace net premium, and Medicare Part B with IRMAA). The "
-        "imputed Medicare Part B (`medicare_part_b_premiums`) that ships "
-        "with person-level MOOP is subtracted out and replaced with the "
-        "rules-based `income_adjusted_part_b_premium`, so reforms to the "
-        "Medicare Part B base premium or IRMAA thresholds propagate through "
-        "SPM resources. Consumers reading person-level "
-        "`medical_out_of_pocket_expenses` directly (SNAP excess medical "
-        "deduction, state itemized medical deductions) are unaffected."
+        "combining health insurance premiums with non-premium medical "
+        "expenses. Health insurance premiums include data-imputed residual "
+        "premiums plus modeled Marketplace, CHIP, Medicaid, and Medicare "
+        "Part B premiums. Non-premium expenses include other medical expenses "
+        "and over-the-counter health expenses."
     )
 
     def formula(spm_unit, period, parameters):
-        imputed_moop = add(spm_unit, period, ["medical_out_of_pocket_expenses"])
-        imputed_part_b = add(spm_unit, period, ["medicare_part_b_premiums"])
-        computed_part_b = add(spm_unit, period, ["income_adjusted_part_b_premium"])
-        chip_premium = add(spm_unit, period, ["chip_premium"])
-        medicaid_premium = add(spm_unit, period, ["medicaid_premium"])
-        marketplace_net_premium = add(spm_unit, period, ["marketplace_net_premium"])
-        return (
-            imputed_moop
-            - imputed_part_b
-            + computed_part_b
-            + chip_premium
-            + medicaid_premium
-            + marketplace_net_premium
+        return add(
+            spm_unit,
+            period,
+            [
+                "spm_unit_health_insurance_premiums",
+                "spm_unit_non_premium_medical_out_of_pocket_expenses",
+            ],
         )
