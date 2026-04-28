@@ -24,7 +24,7 @@
   output:
     per_capita_chip_gross: 0
 
-- name: Florida gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
+- name: Case 4, Florida gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -33,7 +33,7 @@
   output:
     per_capita_chip_gross: 3_055.90
 
-- name: New York gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
+- name: Case 5, New York gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
   period: 2024
   absolute_error_margin: 0.01
   input:
