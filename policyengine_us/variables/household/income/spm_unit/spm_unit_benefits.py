@@ -24,6 +24,7 @@ class spm_unit_benefits(Variable):
             "fl_oss",
             "ks_sspp",  # Kansas benefits
             "hi_oss",
+            "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.

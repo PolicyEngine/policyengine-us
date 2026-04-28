@@ -1,0 +1,76 @@
+- name: High-income person still pays ACA premium in 2026
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 5
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+
+- name: Medicaid eligibility prevents ACA premium payment
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: true
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: Married filing separately can pay ACA premium without PTC
+  period: 2026
+  input:
+    age: 40
+    filing_status: SEPARATE
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    aca_magi_fraction: 2.5
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+
+- name: Maximum three children pay ACA premium
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person2:
+        age: 16
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person3:
+        age: 14
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person4:
+        age: 12
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person5:
+        age: 10
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 5
+  output:
+    pays_aca_premium: [true, true, true, true, false]
+    is_aca_ptc_eligible: [false, false, false, false, false]

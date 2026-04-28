@@ -1,0 +1,25 @@
+description: These states use the expanded Basic Health Program income limit under this model.
+
+values:
+  2015-01-01:
+    []
+  # New York's 250% FPL Essential Plan expansion launched 2024-04-01 under
+  # the approved section 1332 waiver; first full coverage year is 2025.
+  # The model carries that expanded ceiling forward in this BHP-like path,
+  # even though the formal BHP restarts later.
+  2025-01-01:
+    - NY
+
+metadata:
+  unit: list
+  period: year
+  label: Basic Health Program expanded-income states
+  reference:
+    - title: Essential Plan Information | NY State of Health
+      href: https://info.nystateofhealth.ny.gov/EssentialPlan
+    - title: New York State Department of Health and NY State of Health Announce the Essential Plan Expansion Increasing Access to Affordable Health Insurance Begins Today
+      href: https://healthweb-back.health.ny.gov/press/releases/2024/2024-04-01_affordable_health_insurance.htm
+    - title: New York BHP suspension approval letter | CMS
+      href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-suspension-appvl-ltr-mar-2024.pdf
+    - title: New York BHP Blueprint revision | CMS
+      href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-blueprint-revision-feb2026.pdf

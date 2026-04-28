@@ -1,3 +1,88 @@
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
+## [1.670.2] - 2026-04-27
+
+### Fixed
+
+- Fix Marketplace selected-plan and net premiums for unsubsidized households.
+
+
+## [1.670.1] - 2026-04-27
+
+### Fixed
+
+- Exclude children with employer-sponsored insurance from CHIP eligibility.
+
+
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
+## [1.669.0] - 2026-04-27
+
+### Added
+
+- Added Basic Health Program (ACA §1331) coverage modeling. Creates a shared `gov/hhs/basic_health_program` coverage path covering MN MinnesotaCare, NY Essential Plan, OR OHP Bridge (2025+), and DC Healthy DC Plan (2026+). BHP-eligible people are excluded from ACA Premium Tax Credit eligibility, so per-state PTC projections now zero out for BHP enrollees. Eligibility enforces the statutory 133–200% FPL band (250% FPL in NY from 2025). Moves the state adult/parent Medicaid income ceilings back to Medicaid-only levels in BHP states so people above the Medicaid line fall through to BHP rather than silently losing coverage. Refs #8112.
+
+
+## [1.668.0] - 2026-04-26
+
+### Added
+
+- - Added 2026 ACA lowest-cost bronze plan (`lcbp`) rating-area premiums and bronze companion variables.
+
+
+## [1.667.1] - 2026-04-25
+
+### Fixed
+
+- Fix farm operations income, business self-employment tax, and labor supply response inputs.
+
+
+## [1.667.0] - 2026-04-25
+
+### Added
+
+- Add shared CPS tax-unit construction helper rules.
+
+
+## [1.666.2] - 2026-04-24
+
+### Fixed
+
+- Backfilled Medicaid and CHIP income limit parameters to 2018 using official CMS sources, including thresholds stored with the 5 percentage-point MAGI disregard.
+
+
+## [1.666.1] - 2026-04-23
+
+### Fixed
+
+- Removed the one-time Connecticut child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023-2026.
+
+
+## [1.666.0] - 2026-04-23
+
+### Added
+
+- North Carolina Child and Dependent Care Credit contrib reform (refundable, 30% match of federal credit, 2026+).
+
+
 ## [1.665.0] - 2026-04-22
 
 ### Added
