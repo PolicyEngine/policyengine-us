@@ -11,8 +11,9 @@ class medicaid_claimed_by_parent_in_tax_unit(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/42/435.603#f_2"
 
     def formula(person, period, parameters):
-        # PolicyEngine US only has a direct parent signal here when household
-        # relationship inputs such as own_children_in_household are populated.
+        # In tax-unit-only inputs, child dependents are usually the filer's
+        # children even when own_children_in_household is not provided.
         return person("is_tax_unit_dependent", period) & (
-            person.tax_unit.sum(person("is_parent", period)) > 0
+            person("is_qualifying_child_dependent", period)
+            | (person.tax_unit.sum(person("is_parent", period)) > 0)
         )

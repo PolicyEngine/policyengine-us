@@ -7,6 +7,7 @@
         employment_income: 40_000
       person2:
         age: 10
+        medicaid_claimed_by_parent_in_tax_unit: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -112,3 +113,32 @@
         members: [person1]
   output:
     medicaid_non_filer_child_age_eligible: [false]
+
+- name: Case 5, child tax dependents default to parent-claimed when relationship inputs are absent.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_claimed_by_parent_in_tax_unit: [false, true]
+    medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false]
+    medicaid_uses_non_filer_rules: [false, false]
