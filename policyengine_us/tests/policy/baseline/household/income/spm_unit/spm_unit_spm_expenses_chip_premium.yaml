@@ -14,6 +14,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
+        marketplace_net_premium: 0
         tax_unit_medicaid_income_level: 1.70
     spm_units:
       spm_unit:
@@ -38,6 +39,7 @@
     tax_units:
       tax_unit:
         members: [child]
+        marketplace_net_premium: 0
         tax_unit_medicaid_income_level: 1.70
     spm_units:
       spm_unit:
