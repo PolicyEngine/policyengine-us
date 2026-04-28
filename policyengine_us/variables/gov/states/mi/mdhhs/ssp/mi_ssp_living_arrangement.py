@@ -7,7 +7,7 @@ class MISSPLivingArrangement(Enum):
     DOMICILIARY_CARE = "Adult foster care - domiciliary care"
     PERSONAL_CARE = "Adult foster care - personal care"
     HOME_FOR_AGED = "Home for the aged"
-    INSTITUTION = "Medicaid facility"
+    INSTITUTION = "Institution"
     NONE = "Not in a qualifying arrangement"
 
 
