@@ -35,11 +35,11 @@
       person1:
         ssi: 450
         ssi_claim_is_joint: true
-        me_ssp_resides_in_adult_foster_home: true
+        me_ssp_living_arrangement_input: ADULT_FOSTER_HOME
       person2:
         ssi: 450
         ssi_claim_is_joint: true
-        me_ssp_resides_in_adult_foster_home: true
+        me_ssp_living_arrangement_input: ADULT_FOSTER_HOME
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -62,7 +62,7 @@
       person2:
         ssi: 600
         ssi_claim_is_joint: true
-        me_ssp_resides_in_household_of_another: true
+        me_ssp_living_arrangement_input: HOUSEHOLD_OF_ANOTHER
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -84,11 +84,11 @@
       person1:
         ssi: 600
         ssi_claim_is_joint: true
-        me_ssp_resides_in_flat_rate_boarding_home: true
+        me_ssp_living_arrangement_input: FLAT_RATE_BOARDING_HOME
       person2:
         ssi: 0
         ssi_claim_is_joint: true
-        me_ssp_resides_in_flat_rate_boarding_home: true
+        me_ssp_living_arrangement_input: FLAT_RATE_BOARDING_HOME
     marital_units:
       marital_unit:
         members: [person1, person2]

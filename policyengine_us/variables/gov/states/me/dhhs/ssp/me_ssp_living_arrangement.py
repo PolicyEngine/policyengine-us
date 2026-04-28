@@ -32,40 +32,9 @@ class me_ssp_living_arrangement(Variable):
             federal_arrangement
             == federal_arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
         )
-        in_residential_care = person(
-            "me_ssp_resides_in_residential_care_facility", period
-        )
-        in_cost_reimbursed_boarding = person(
-            "me_ssp_resides_in_cost_reimbursed_boarding_home", period
-        )
-        in_adult_family_care = person(
-            "me_ssp_resides_in_adult_family_care_home", period
-        )
-        in_flat_rate_boarding = person(
-            "me_ssp_resides_in_flat_rate_boarding_home", period
-        )
-        in_adult_foster = person("me_ssp_resides_in_adult_foster_home", period)
-        in_household_of_another = person(
-            "me_ssp_resides_in_household_of_another", period
-        )
-        return select(
-            [
-                in_medical_facility,
-                in_residential_care,
-                in_cost_reimbursed_boarding,
-                in_adult_family_care,
-                in_flat_rate_boarding,
-                in_adult_foster,
-                in_household_of_another,
-            ],
-            [
-                MESSPLivingArrangement.MEDICAID_FACILITY,
-                MESSPLivingArrangement.RESIDENTIAL_CARE_FACILITY,
-                MESSPLivingArrangement.COST_REIMBURSED_BOARDING_HOME,
-                MESSPLivingArrangement.ADULT_FAMILY_CARE_HOME,
-                MESSPLivingArrangement.FLAT_RATE_BOARDING_HOME,
-                MESSPLivingArrangement.ADULT_FOSTER_HOME,
-                MESSPLivingArrangement.HOUSEHOLD_OF_ANOTHER,
-            ],
-            default=MESSPLivingArrangement.LIVING_ALONE_OR_WITH_OTHERS,
+        state_input = person("me_ssp_living_arrangement_input", period)
+        return where(
+            in_medical_facility,
+            MESSPLivingArrangement.MEDICAID_FACILITY,
+            state_input,
         )
