@@ -2,11 +2,12 @@
 # End-to-end scenarios with full household setup.
 #
 # Eligibility: aged/blind/disabled AND in a Medicaid LTC facility AND in Louisiana.
-# Formula: la_oss (monthly) = min(max(PNA - federal_institutional_SSI - ssi_countable_income, 0), max_payment).
+# Formula: la_oss (monthly) = min(max(PNA - ssi - ssi_countable_income, 0), max_payment).
+# Both ssi and ssi_countable_income are YEAR-period; PolicyEngine divides by 12
+# when the formula reads them at MONTH.
 #
-# Pre-July-2025: PNA = $38, max payment = $8/month.
+# Pre-July-2025: PNA = $38, max payment = $8/month. Federal SSI institutional FBR = $30/mo.
 # From July 1, 2025: PNA = $45, max payment = $15/month.
-# Federal institutional SSI rate = $30/month (since 1988).
 #
 # Reference: LDH J-300, Z-700; SSA Publication 13-11975 (2011) - Louisiana, Table 1.
 
@@ -18,7 +19,7 @@
       person1:
         age: 70
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -38,7 +39,7 @@
       person1:
         age: 45
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -57,7 +58,7 @@
       person1:
         age: 70
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: false
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
         ssi_countable_income: 0
         ssi: 11_928
     households:
@@ -76,7 +77,7 @@
       person1:
         age: 50
         is_ssi_aged_blind_disabled: false
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 0
     households:
@@ -95,7 +96,7 @@
       person1:
         age: 68
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -114,7 +115,7 @@
       person1:
         age: 72
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -135,13 +136,13 @@
       person1:
         age: 72
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
       person2:
         age: 70
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -161,7 +162,7 @@
       person1:
         age: 10
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -180,7 +181,7 @@
       person1:
         age: 70
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:
@@ -199,7 +200,7 @@
       person1:
         age: 40
         is_ssi_aged_blind_disabled: false
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 0
     households:
@@ -218,13 +219,13 @@
       person1:
         age: 72
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
       person2:
         age: 70
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: false
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
         ssi_countable_income: 0
         ssi: 11_928
     households:
@@ -244,7 +245,7 @@
       person1:
         age: 75
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
         ssi: 360
     households:

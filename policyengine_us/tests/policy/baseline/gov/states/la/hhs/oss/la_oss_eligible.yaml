@@ -1,5 +1,5 @@
 # Unit tests for Louisiana OSS eligibility.
-# Eligible if: aged/blind/disabled AND in a Medicaid LTC facility AND in Louisiana.
+# Eligible if: aged/blind/disabled AND ssi_federal_living_arrangement == MEDICAL_TREATMENT_FACILITY AND in Louisiana.
 # Reference: LDH J-300, H-831.2, H-831.6; SSA 2011 State Assistance Programs - Louisiana.
 
 - name: Case 1, aged person in Medicaid LTC facility in Louisiana.
@@ -8,7 +8,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
     households:
       household:
         members: [person1]
@@ -22,7 +22,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: false
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
     households:
       household:
         members: [person1]
@@ -36,7 +36,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: false
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
     households:
       household:
         members: [person1]
@@ -50,7 +50,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
     households:
       household:
         members: [person1]
@@ -64,7 +64,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: true
-        is_in_medicaid_facility: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
     households:
       household:
         members: [person1]
@@ -78,7 +78,7 @@
     people:
       person1:
         is_ssi_aged_blind_disabled: false
-        is_in_medicaid_facility: false
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
     households:
       household:
         members: [person1]
