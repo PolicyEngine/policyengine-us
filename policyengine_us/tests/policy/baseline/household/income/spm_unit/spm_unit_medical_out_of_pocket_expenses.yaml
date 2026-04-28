@@ -42,3 +42,26 @@
         state_code: VA
   output:
     spm_unit_medical_out_of_pocket_expenses: 600
+
+- name: SPM unit medical OOP includes rules-based Medicaid premiums.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        medical_out_of_pocket_expenses: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 25_000
+        tax_unit_medicaid_income_level: 1.25
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    spm_unit_medical_out_of_pocket_expenses: 600

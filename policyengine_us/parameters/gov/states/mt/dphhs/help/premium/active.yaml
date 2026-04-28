@@ -1,0 +1,13 @@
+description: Montana uses this switch to collect premiums under the Montana HELP program.
+values:
+  2016-01-01: true
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana HELP premiums active
+  reference:
+    - title: Montana Medicaid Section 1115 Eligibility and Coverage Monitoring Report | Executive summary
+      href: https://dphhs.mt.gov/HELPPlan/MT2022helpExpanQ4-annNarrB.pdf#page=4
+    - title: Montana Department of Public Health and Human Services | Changes Coming to Montana Medicaid
+      href: https://dphhs.mt.gov/assets/MedicaidTribalConsultation/December2022/MedicaidExpansionProgramFactSheet2023.pdf#page=1
