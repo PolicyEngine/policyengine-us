@@ -1,0 +1,256 @@
+# Integration tests for Louisiana Optional State Supplement (OSS).
+# End-to-end scenarios with full household setup.
+#
+# Eligibility: aged/blind/disabled AND in a Medicaid LTC facility AND in Louisiana.
+# Formula: la_oss (monthly) = min(max(PNA - federal_institutional_SSI - ssi_countable_income, 0), max_payment).
+#
+# Pre-July-2025: PNA = $38, max payment = $8/month.
+# From July 1, 2025: PNA = $45, max payment = $15/month.
+# Federal institutional SSI rate = $30/month (since 1988).
+#
+# Reference: LDH J-300, Z-700; SSA Publication 13-11975 (2011) - Louisiana, Table 1.
+
+- name: Scenario 1, aged SSI recipient in LA Medicaid LTC facility (2024-01).
+  # 70-year-old aged person with no countable income gets the max OSS.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+    # Monthly: max(38 - 30 - 0, 0) = 8, capped at 8.
+    la_oss: 8
+
+- name: Scenario 2, disabled adult in LA ICF/IID facility (2024-01).
+  # 45-year-old disabled SSI recipient in an ICF/IID facility.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+    la_oss: 8
+
+- name: Scenario 3, eligible individual NOT in Medicaid LTC facility.
+  # SSI recipient living in the community gets no OSS.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: false
+        ssi_countable_income: 0
+        ssi: 11_928
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+    la_oss: 0
+
+- name: Scenario 4, person in Medicaid LTC facility but NOT aged/blind/disabled.
+  # Categorical requirement fails so no OSS.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: false
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+    la_oss: 0
+
+- name: Scenario 5, eligible individual in Medicaid LTC facility but in Texas.
+  # defined_for StateCode.LA filters out non-LA residents.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    la_oss_eligible: false
+    la_oss: 0
+
+- name: Scenario 6, post-July-2025 eligible individual gets higher max OSS (2026-01).
+  # PNA increases to $45 and max payment to $15 from July 1, 2025.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+    # Monthly: max(45 - 30 - 0, 0) = 15, capped at 15.
+    la_oss: 15
+
+- name: Scenario 7, couple both aged in LA Medicaid LTC facility (2024-01).
+  # Each spouse receives the per-person individual rate (REQ-014).
+  # SSA 2011 Table 1 confirms couple = 2 x individual.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+      person2:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_oss_eligible: [true, true]
+    # Each person: monthly max(38 - 30 - 0, 0) = 8.
+    la_oss: [8, 8]
+
+- name: Scenario 8, disabled child in LA Medicaid LTC facility (REQ-017).
+  # Children are eligible (no minimum age) per SSA 2011 report.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+    la_oss: 8
+
+- name: Scenario 9, eligible adjacent-state resident in MS gets nothing (defined_for filter).
+  # Mississippi shares a border with Louisiana but defined_for excludes non-LA residents.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    la_oss_eligible: false
+    la_oss: 0
+
+- name: Scenario 10, person with zero SSI and zero income but no SSI categorical status.
+  # Without aged/blind/disabled status, no payment regardless of income or LTC residence.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+    la_oss: 0
+
+- name: Scenario 11, mixed couple - one eligible, one not (asymmetric eligibility).
+  # Only the LTC-residing spouse gets OSS; the community-residing spouse gets zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+      person2:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: false
+        ssi_countable_income: 0
+        ssi: 11_928
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_oss_eligible: [true, false]
+    # person1: monthly 8. person2: not in LTC, so 0.
+    la_oss: [8, 0]
+
+- name: Scenario 12, pre-July-2025 monthly snapshot in LA (2025-01).
+  # 2025-01 falls before the July 2025 PNA/max increase, so the old amounts apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+        ssi_countable_income: 0
+        ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+    la_oss: 8

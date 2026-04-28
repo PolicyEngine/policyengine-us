@@ -1,0 +1,87 @@
+# Unit tests for Louisiana OSS eligibility.
+# Eligible if: aged/blind/disabled AND in a Medicaid LTC facility AND in Louisiana.
+# Reference: LDH J-300, H-831.2, H-831.6; SSA 2011 State Assistance Programs - Louisiana.
+
+- name: Case 1, aged person in Medicaid LTC facility in Louisiana.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: true
+
+- name: Case 2, aged/blind/disabled but NOT in Medicaid LTC facility.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+
+- name: Case 3, in Medicaid LTC facility but NOT aged/blind/disabled.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: false
+        is_in_medicaid_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+
+- name: Case 4, meets all criteria but in Texas (defined_for filters by state).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    la_oss_eligible: false
+
+- name: Case 5, meets all criteria but in Mississippi (adjacent state, defined_for filters).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        is_in_medicaid_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    la_oss_eligible: false
+
+- name: Case 6, neither aged/blind/disabled nor in LTC facility in Louisiana.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: false
+        is_in_medicaid_facility: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false

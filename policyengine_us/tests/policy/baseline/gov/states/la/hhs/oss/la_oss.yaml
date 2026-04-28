@@ -1,0 +1,202 @@
+# Unit tests for Louisiana Optional State Supplement (OSS) benefit amount.
+# Formula (monthly): la_oss = min(max(PNA - federal_institutional_SSI - ssi_countable_income, 0), max_payment)
+# ssi_countable_income is YEAR-period; reading at MONTH yields annual / 12.
+#
+# Pre-July-2025: PNA = $38, federal institutional SSI = $30, max payment = $8.
+# From July 1, 2025: PNA = $45, max payment = $15. Federal institutional rate stays $30.
+#
+# Reference: LDH J-300, Z-700; SSA 2011 State Assistance Programs - Louisiana, Table 1.
+
+- name: Case 1, eligible individual with zero countable income (2024-01).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: max(38 - 30 - 0, 0) = 8, capped at 8.
+    la_oss: 8
+
+- name: Case 2, not eligible receives zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 3, eligible individual post-July-2025 (2026-01 has new PNA and max in effect).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: max(45 - 30 - 0, 0) = 15, capped at 15.
+    la_oss: 15
+
+- name: Case 4, eligible individual with countable income that reduces supplement (2024-01).
+  # Annual ssi_countable_income of 60 -> 5/month; 38 - 30 - 5 = 3.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 60
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 3
+
+- name: Case 5, eligible individual with countable income that fully offsets supplement (2024-01).
+  # Annual 1200 -> 100/month; 38 - 30 - 100 < 0, floored at 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 6, countable income exactly equals PNA minus federal institutional rate (boundary, 2024-01).
+  # Annual 96 -> 8/month; 38 - 30 - 8 = 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 96
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 7, countable income just below boundary yields tiny positive supplement (2024-01).
+  # Annual 84 -> 7/month; 38 - 30 - 7 = 1.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 84
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 1
+
+- name: Case 8, countable income one cent above monthly boundary clips to zero (2024-01).
+  # Annual 96.12 -> 8.01/month; 38 - 30 - 8.01 < 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 96.12
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 9, extreme negative countable income clips to maximum payment (2024-01).
+  # Verifies the rate cap engages so a very negative ssi_countable_income
+  # can never inflate the supplement above the max payment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: -1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: min(max(38 - 30 - (-monthly), 0), 8) = 8.
+    la_oss: 8
+
+- name: Case 10, pre-July-2025 monthly period uses old PNA and max (2025-01).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 8
+
+- name: Case 11, eligible with extreme negative countable income post-July-2025 clips to new max (2026-01).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: -1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: min(max(45 - 30 - (-monthly), 0), 15) = 15.
+    la_oss: 15
+
+- name: Case 12, post-July-2025 countable income at new boundary yields zero (2026-01).
+  # Annual 180 -> 15/month; 45 - 30 - 15 = 0.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 180
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 13, post-July-2025 countable income just below new boundary yields tiny supplement (2026-01).
+  # Annual 168 -> 14/month; 45 - 30 - 14 = 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi_countable_income: 168
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 1
