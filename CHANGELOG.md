@@ -1,3 +1,10 @@
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
 ## [1.670.2] - 2026-04-27
 
 ### Fixed
