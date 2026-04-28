@@ -4,7 +4,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
     households:
       household:
         members: [person1]
@@ -19,7 +20,7 @@
   input:
     people:
       person1:
-        ssi: 0
+        is_ssi_eligible: false
     households:
       household:
         members: [person1]
@@ -33,11 +34,13 @@
   input:
     people:
       person1:
-        ssi: 450
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
       person2:
-        ssi: 450
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
     marital_units:
@@ -57,10 +60,12 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
       person2:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     marital_units:
@@ -76,17 +81,18 @@
     # Different arrangements => no couple rate; each gets the individual amount.
     me_ssp: [10, 8]
 
-- name: Case 5, asymmetric couple where one spouse not receiving SSI.
+- name: Case 5, asymmetric couple where one spouse not SSI-eligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
       person2:
-        ssi: 0
+        is_ssi_eligible: false
         ssi_claim_is_joint: true
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
     marital_units:
@@ -101,13 +107,13 @@
     # person2 ineligible: $0.
     me_ssp: [217, 0]
 
-- name: Case 6, person in Medicaid facility but not receiving SSI gets zero.
+- name: Case 6, person in Medicaid facility but not SSI-eligible gets zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 0
+        is_ssi_eligible: false
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
     households:
@@ -115,16 +121,17 @@
         members: [person1]
         state_code: ME
   output:
-    # Code H requires ssi > 0; without SSI receipt, no benefit.
+    # Code H requires SSI eligibility; without it, no benefit.
     me_ssp: 0
 
-- name: Case 7, person in Medicaid facility receiving SSI gets code H amount.
+- name: Case 7, person in Medicaid facility SSI-eligible gets code H amount.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 30
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
     households:
@@ -141,7 +148,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
     households:
       household:
         members: [person1]
@@ -155,10 +163,12 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
       person2:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         # person2 explicitly placed in NONE arrangement.
         me_ssp_living_arrangement: NONE
@@ -181,10 +191,12 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: false
       person2:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: false
     marital_units:
       marital_unit:
@@ -197,16 +209,18 @@
     # Default arrangement A for both, but joint claim is false => individual rate $10 each.
     me_ssp: [10, 10]
 
-- name: Case 11, both spouses arrangement A with joint claim and both SSI receive couple rate.
+- name: Case 11, both spouses arrangement A with joint claim and both SSI-eligible receive couple rate.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 450
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
       person2:
-        ssi: 450
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
     marital_units:
       marital_unit:
@@ -225,12 +239,14 @@
   input:
     people:
       person1:
-        ssi: 30
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
       person2:
-        ssi: 30
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         ssi_claim_is_joint: true
         # person2 manually set to MEDICAID_FACILITY arrangement.
         me_ssp_living_arrangement: MEDICAID_FACILITY
@@ -251,7 +267,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: NONE
     households:
       household:
@@ -261,19 +278,18 @@
     # NONE arrangement => not eligible => $0.
     me_ssp: 0
 
-- name: Case 14, single person not receiving SSI in arrangement A gets zero.
+- name: Case 14, single person not SSI-eligible in arrangement A gets zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        ssi: 0
+        is_ssi_eligible: false
     households:
       household:
         members: [person1]
         state_code: ME
   output:
-    # Default arrangement A but ssi == 0 => not eligible => $0.
     me_ssp: 0
 
 - name: Case 15, parameter coverage starts 2008-01.
@@ -282,7 +298,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
     households:
       household:
         members: [person1]
@@ -290,3 +307,42 @@
   output:
     # First period with parameter coverage; default arrangement A => $10.
     me_ssp: 10
+
+- name: Case 16, SS-only path with partial reduction in flat rate boarding home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$2,400 -> $200/month income excess.
+        uncapped_ssi: -2_400
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Income above the federal SSI break-even but below the combined
+    # SSI + ME standard => reduced state supplement: $217 - $200 = $17.
+    me_ssp: 17
+
+- name: Case 17, federal another-person's-household derives Maine code C.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Federal classifier derives ANOTHER_PERSONS_HOUSEHOLD =>
+    # Maine code C HOUSEHOLD_OF_ANOTHER => individual amount $8.
+    me_ssp: 8

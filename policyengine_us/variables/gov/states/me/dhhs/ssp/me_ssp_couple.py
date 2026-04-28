@@ -19,4 +19,15 @@ class me_ssp_couple(Variable):
         # Maine's couple amounts for D/E/F/G are not 2x the individual
         # amount -- they are the facility's couple rate covering both
         # spouses. Per-person attribution splits the couple total 50/50.
-        return p.couple[category] / 2
+        per_person_share = p.couple[category] / 2
+        # State Supplement-only path: when countable income exceeds the
+        # federal SSI break-even, uncapped_ssi goes negative. ssa/ssi
+        # already splits couple countable income 50/50 across eligible
+        # spouses, so each person's share of the excess offsets their
+        # share of the couple supplement. Maine also disregards an
+        # additional $80 (couple) for codes A and C on top of the
+        # federal exclusions per SSA 2011 Table 1; we don't model that
+        # state disregard at the moment, so SS-only couple supplements
+        # in those categories are slightly under-paid.
+        monthly_excess = max_(0, -person("uncapped_ssi", period))
+        return max_(0, per_person_share - monthly_excess)

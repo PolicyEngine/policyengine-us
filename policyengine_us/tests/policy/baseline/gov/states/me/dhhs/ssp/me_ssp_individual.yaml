@@ -4,7 +4,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     households:
       household:
@@ -19,7 +20,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     households:
       household:
@@ -34,7 +36,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
     households:
       household:
@@ -49,7 +52,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
     households:
       household:
@@ -64,7 +68,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
     households:
       household:
@@ -79,7 +84,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
     households:
       household:
@@ -94,7 +100,8 @@
   input:
     people:
       person1:
-        ssi: 30
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: MEDICAID_FACILITY
     households:
       household:
@@ -109,7 +116,8 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
     households:
       household:
@@ -124,11 +132,49 @@
   input:
     people:
       person1:
-        ssi: 600
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
         me_ssp_living_arrangement: NONE
     households:
       household:
         members: [person1]
         state_code: ME
   output:
+    me_ssp_individual: 0
+
+- name: Case 10, SS-only with partial reduction in adult family care home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$2,400 -> $200/month income excess.
+        uncapped_ssi: -2_400
+        me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $234 table - $200 monthly excess = $34.
+    me_ssp_individual: 34
+
+- name: Case 11, SS-only income exceeds combined SSI + ME standard, payment is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$12,000 -> $1,000/month income excess,
+        # which exceeds every Maine table amount.
+        uncapped_ssi: -12_000
+        me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # max_(0, $234 - $1,000) = $0.
     me_ssp_individual: 0

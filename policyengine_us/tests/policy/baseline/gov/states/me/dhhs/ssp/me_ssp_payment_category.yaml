@@ -89,3 +89,27 @@
     me_ssp_living_arrangement: NONE
   output:
     me_ssp_payment_category: NONE
+
+- name: Case 12, federal another-person's-household derives Maine code C (HOUSEHOLD_OF_ANOTHER).
+  period: 2025-01
+  input:
+    state_code: ME
+    # The federal classifier requires all three flags below to land on
+    # ANOTHER_PERSONS_HOUSEHOLD per 20 CFR 416.1131-1133.
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    me_ssp_payment_category: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 13, federal medical facility takes priority over federal another-household.
+  period: 2025-01
+  input:
+    state_code: ME
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    me_ssp_payment_category: MEDICAID_FACILITY

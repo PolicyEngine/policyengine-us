@@ -14,13 +14,13 @@ class me_ssp_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # Part 11 §1: "the individual must be receiving SSI." `ssi > 0`
-        # already implies categorical (ABD), resource, immigration, the
-        # federal income test, and takeup. The non-SSI but-for-income
-        # and 8/96-citizenship pathways are not modeled because we
-        # don't track income-in-kind or the 8/96 immigration category
-        # at the moment.
-        receives_ssi = person("ssi", period) > 0
+        # Part 11 covers SSI recipients AND people who would qualify for
+        # SSI except for income (Chart 3.6's State Supplement-only path).
+        # `is_ssi_eligible` checks aged/blind/disabled, resource, and
+        # immigration but NOT income, so it captures both groups. The
+        # but-for-citizenship pathway is not modeled because we don't
+        # track the 8/96 immigration category at the moment.
+        categorically_eligible = person("is_ssi_eligible", period.this_year)
         category = person("me_ssp_payment_category", period)
         in_qualifying_category = category != category.possible_values.NONE
-        return receives_ssi & in_qualifying_category
+        return categorically_eligible & in_qualifying_category

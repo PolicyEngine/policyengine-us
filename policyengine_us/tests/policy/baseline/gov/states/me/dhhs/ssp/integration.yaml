@@ -217,3 +217,35 @@
     # Code G individual amount = $234/month.
     me_ssp: 234
     household_state_benefits: 234
+
+- name: Case 8, federal another-person's-household derives Maine code C.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        employment_income: 0
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    is_ssi_eligible: true
+    me_ssp_eligible: true
+    # Federal ANOTHER_PERSONS_HOUSEHOLD => Maine code C => $8/month.
+    me_ssp: 8
+    household_state_benefits: 8
