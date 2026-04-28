@@ -21,6 +21,6 @@ class me_ssp_eligible(Variable):
         # don't track income-in-kind or the 8/96 immigration category
         # at the moment.
         receives_ssi = person("ssi", period) > 0
-        arrangement = person("me_ssp_living_arrangement", period)
-        in_qualifying_arrangement = arrangement != arrangement.possible_values.NONE
-        return receives_ssi & in_qualifying_arrangement
+        category = person("me_ssp_payment_category", period)
+        in_qualifying_category = category != category.possible_values.NONE
+        return receives_ssi & in_qualifying_category

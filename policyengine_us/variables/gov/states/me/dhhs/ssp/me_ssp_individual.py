@@ -15,5 +15,5 @@ class me_ssp_individual(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.me.dhhs.ssp.amount
-        arrangement = person("me_ssp_living_arrangement", period)
-        return p.individual[arrangement]
+        category = person("me_ssp_payment_category", period)
+        return p.individual[category]

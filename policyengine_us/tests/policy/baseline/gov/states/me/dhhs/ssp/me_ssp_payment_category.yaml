@@ -3,7 +3,7 @@
   input:
     state_code: ME
   output:
-    me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    me_ssp_payment_category: LIVING_ALONE_OR_WITH_OTHERS
 
 - name: Case 2, federal medical treatment facility derives Medicaid facility.
   period: 2025-01
@@ -12,55 +12,55 @@
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
   output:
-    me_ssp_living_arrangement: MEDICAID_FACILITY
+    me_ssp_payment_category: MEDICAID_FACILITY
 
 - name: Case 3, household of another from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: HOUSEHOLD_OF_ANOTHER
-  output:
     me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+  output:
+    me_ssp_payment_category: HOUSEHOLD_OF_ANOTHER
 
 - name: Case 4, adult foster home from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: ADULT_FOSTER_HOME
-  output:
     me_ssp_living_arrangement: ADULT_FOSTER_HOME
+  output:
+    me_ssp_payment_category: ADULT_FOSTER_HOME
 
 - name: Case 5, flat rate boarding home from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: FLAT_RATE_BOARDING_HOME
-  output:
     me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+  output:
+    me_ssp_payment_category: FLAT_RATE_BOARDING_HOME
 
 - name: Case 6, adult family care home from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: ADULT_FAMILY_CARE_HOME
-  output:
     me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+  output:
+    me_ssp_payment_category: ADULT_FAMILY_CARE_HOME
 
 - name: Case 7, cost reimbursed boarding home from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: COST_REIMBURSED_BOARDING_HOME
-  output:
     me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+  output:
+    me_ssp_payment_category: COST_REIMBURSED_BOARDING_HOME
 
 - name: Case 8, residential care facility from state input.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: RESIDENTIAL_CARE_FACILITY
-  output:
     me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+  output:
+    me_ssp_payment_category: RESIDENTIAL_CARE_FACILITY
 
 - name: Case 9, federal medical treatment facility takes priority over state input.
   period: 2025-01
@@ -68,9 +68,9 @@
     state_code: ME
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
-    me_ssp_living_arrangement_input: RESIDENTIAL_CARE_FACILITY
+    me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
   output:
-    me_ssp_living_arrangement: MEDICAID_FACILITY
+    me_ssp_payment_category: MEDICAID_FACILITY
 
 - name: Case 10, federal medical facility overrides adult foster home state input.
   period: 2025-01
@@ -78,14 +78,14 @@
     state_code: ME
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
-    me_ssp_living_arrangement_input: ADULT_FOSTER_HOME
+    me_ssp_living_arrangement: ADULT_FOSTER_HOME
   output:
-    me_ssp_living_arrangement: MEDICAID_FACILITY
+    me_ssp_payment_category: MEDICAID_FACILITY
 
 - name: Case 11, NONE state input remains NONE when no federal override.
   period: 2025-01
   input:
     state_code: ME
-    me_ssp_living_arrangement_input: NONE
-  output:
     me_ssp_living_arrangement: NONE
+  output:
+    me_ssp_payment_category: NONE

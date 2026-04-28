@@ -15,8 +15,8 @@ class me_ssp_couple(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.me.dhhs.ssp.amount
-        arrangement = person("me_ssp_living_arrangement", period)
+        category = person("me_ssp_payment_category", period)
         # Maine's couple amounts for D/E/F/G are not 2x the individual
         # amount -- they are the facility's couple rate covering both
         # spouses. Per-person attribution splits the couple total 50/50.
-        return p.couple[arrangement] / 2
+        return p.couple[category] / 2
