@@ -1,3 +1,10 @@
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
 ## [1.671.0] - 2026-04-28
 
 ### Added
