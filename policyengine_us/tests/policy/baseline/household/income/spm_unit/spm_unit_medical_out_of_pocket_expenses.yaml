@@ -11,6 +11,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
+        marketplace_net_premium: 0
         tax_unit_medicaid_income_level: 1.70
     spm_units:
       spm_unit:
@@ -33,6 +34,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
+        marketplace_net_premium: 0
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -42,3 +44,29 @@
         state_code: VA
   output:
     spm_unit_medical_out_of_pocket_expenses: 600
+
+- name: SPM unit medical OOP includes Marketplace net premium from selected plan.
+  period: 2024
+  input:
+    people:
+      person1:
+        medical_out_of_pocket_expenses: 100
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 10_000
+        selected_marketplace_plan_benchmark_ratio: 0.8
+        takes_up_aca_if_eligible: true
+        used_aca_ptc: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    selected_marketplace_plan_premium_proxy: 8_000
+    marketplace_net_premium: 5_000
+    spm_unit_medical_out_of_pocket_expenses: 5_100
