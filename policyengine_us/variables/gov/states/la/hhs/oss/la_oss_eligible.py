@@ -8,11 +8,6 @@ class la_oss_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible for Louisiana Optional State Supplement (OSS)"
-    documentation = (
-        "Eligible if the person is aged, blind, or disabled and resides in a "
-        "non-psychiatric Medicaid long-term care facility (federal Code D living "
-        "arrangement: nursing facility or ICF/IID) in Louisiana "
-    )
     definition_period = MONTH
     defined_for = StateCode.LA
     reference = (
