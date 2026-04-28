@@ -1,0 +1,30 @@
+description: Maryland provides this amount as the monthly provider rate by living arrangement under the Public Assistance to Adults program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Maryland PAA provider rate
+  breakdown:
+    - md_paa_living_arrangement
+  reference:
+    - title: Maryland DHS-FIA Action Transmittal 23-02, 2023 COLA Mass Mod, Master PAA Rates and Per Diems Chart
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2023/23-02%20AT%20-%20COLA%20Mass%20Mod%20FFY23.pdf#page=3
+    - title: COMAR 07.03.07.04 Allowable Needs
+      href: https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-04
+    - title: COMAR 07.03.07.09 Amount of Grant and Payee
+      href: https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-09
+
+CARE_HOME_LEVEL_A:
+  2021-01-01: 776
+CARE_HOME_LEVEL_B:
+  2021-01-01: 875
+CARE_HOME_LEVEL_C:
+  2021-01-01: 1_173
+CARE_HOME_LEVEL_D:
+  2021-01-01: 1_376
+ASSISTED_LIVING:
+  2021-01-01: 894
+REHAB_RESIDENCE:
+  2021-01-01: 0
+NONE:
+  2021-01-01: 0

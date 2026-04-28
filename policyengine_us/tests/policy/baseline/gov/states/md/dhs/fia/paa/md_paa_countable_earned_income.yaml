@@ -1,0 +1,112 @@
+# Tests for md_paa_countable_earned_income variable.
+# Formula: max(earned - $85, 0) * 0.5 (per PAA Manual §500.3, AT 23-02).
+# Note: PAA earned disregard is $85 (NOT $65 like federal SSI).
+# ssi_earned_income is YEAR-defined; inputs are annual (= 12 * monthly).
+
+- name: Case 1, zero earned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 0/12 = 0.
+    # max(0 - 85, 0) * 0.5 = 0
+    md_paa_countable_earned_income: 0
+
+- name: Case 2, earned exactly at $85/mo disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # $85/mo * 12 = $1,020/yr.
+        ssi_earned_income: 1_020
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 1020/12 = 85.
+    # max(85 - 85, 0) * 0.5 = 0
+    md_paa_countable_earned_income: 0
+
+- name: Case 3, earned $185/mo (above disregard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $185/mo * 12 = $2,220/yr.
+        ssi_earned_income: 2_220
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 2220/12 = 185.
+    # max(185 - 85, 0) * 0.5 = 100 * 0.5 = 50
+    md_paa_countable_earned_income: 50
+
+- name: Case 4, earned $50/mo (below initial disregard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # $50/mo * 12 = $600/yr.
+        ssi_earned_income: 600
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 600/12 = 50.
+    # max(50 - 85, 0) * 0.5 = 0 (floored at 0)
+    md_paa_countable_earned_income: 0
+
+# Boundary cases around the $85 initial disregard.
+- name: Case 5, earned $84/mo just below initial disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $84/mo * 12 = $1,008/yr.
+        ssi_earned_income: 1_008
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 1008/12 = 84.
+    # max(84 - 85, 0) * 0.5 = 0 (max_ floors at 0)
+    md_paa_countable_earned_income: 0
+
+- name: Case 6, earned $86/mo just above initial disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $86/mo * 12 = $1,032/yr.
+        ssi_earned_income: 1_032
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly earned = 1032/12 = 86.
+    # max(86 - 85, 0) * 0.5 = 1 * 0.5 = 0.5
+    md_paa_countable_earned_income: 0.5

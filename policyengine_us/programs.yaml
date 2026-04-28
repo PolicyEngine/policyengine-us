@@ -651,6 +651,11 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MD
+        status: complete
+        name: Maryland PAA
+        full_name: Maryland Public Assistance to Adults
+        variable: md_paa
       - state: KS
         status: complete
         name: Kansas SSPP

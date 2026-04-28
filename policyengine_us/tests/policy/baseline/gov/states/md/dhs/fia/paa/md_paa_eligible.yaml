@@ -1,0 +1,63 @@
+# Tests for md_paa_eligible variable.
+# Eligibility requires: ssi > 0 AND md_paa_living_arrangement != NONE
+# AND state_code = MD (defined_for filter).
+
+- name: Case 1, SSI recipient in CARE_HOME_LEVEL_B in Maryland is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+- name: Case 2, no living arrangement (NONE) is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        md_paa_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+- name: Case 3, no SSI receipt is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+- name: Case 4, out-of-state resident is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    md_paa_eligible: false

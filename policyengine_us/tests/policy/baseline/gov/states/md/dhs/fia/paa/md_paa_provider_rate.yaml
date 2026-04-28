@@ -1,0 +1,140 @@
+# Tests for md_paa_provider_rate variable.
+# Rate is determined by md_paa_living_arrangement enum.
+# Each tier has at least one test (per testing-patterns: every dimension value).
+# Rates effective 2021-01-01 onwards (per AT 23-02).
+
+- name: Case 1, CARE_HOME_LEVEL_A.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 776
+
+- name: Case 2, CARE_HOME_LEVEL_B.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 875
+
+- name: Case 3, CARE_HOME_LEVEL_C.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 1_173
+
+- name: Case 4, CARE_HOME_LEVEL_D.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 1_376
+
+- name: Case 5, ASSISTED_LIVING.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: ASSISTED_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 894
+
+- name: Case 6, REHAB_RESIDENCE pays no provider rate (MDH covers cost).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        md_paa_living_arrangement: REHAB_RESIDENCE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 0
+
+- name: Case 7, NONE living arrangement returns zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        md_paa_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 0
+
+# Pre-2021 dates use forward-fill: rates were first set 2021-01-01 in the
+# parameter file, so PolicyEngine returns the 2021 value for any earlier
+# period (rates have been frozen since 2021).
+- name: Case 8, pre-2021 period uses forward-filled CARE_HOME_LEVEL_C rate.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 1_173
+
+- name: Case 9, pre-2021 period uses forward-filled ASSISTED_LIVING rate.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: ASSISTED_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 894

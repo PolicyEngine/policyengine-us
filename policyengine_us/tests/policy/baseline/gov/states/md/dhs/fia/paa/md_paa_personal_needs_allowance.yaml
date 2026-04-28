@@ -1,0 +1,86 @@
+# Tests for md_paa_personal_needs_allowance variable.
+# Tests parameter values across the timeline:
+# 2023-01-01: $93
+# 2024-07-01: $102 (effective date unverified)
+# 2025-07-01: $106
+
+- name: Case 1, 2023 PNA.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 93
+
+- name: Case 2, 2025 January PNA (after 2024-07-01 effective date).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 102
+
+- name: Case 3, 2026 January PNA (after 2025-07-01 effective date).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 106
+
+# Boundary just before the 2024-07-01 transition: January 2024 should still
+# return $93 (the 2023-01-01 value) because the PNA increased only mid-year.
+# Test framework only supports YYYY-MM at the first month, so January is
+# the closest pre-transition checkpoint within 2024.
+- name: Case 4, January 2024 PNA still 93 (before 2024-07-01 transition).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 93
+
+# Pre-2023 dates use forward-fill: parameter starts 2023-01-01 with $93,
+# so any earlier period also returns $93.
+- name: Case 5, pre-2023 PNA uses forward-filled value.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 93

@@ -1,0 +1,117 @@
+# Tests for md_paa main benefit variable.
+# Formula: max(provider_rate + PNA - countable_income, 0) when eligible.
+# Period: 2026-01 used so PNA = $106 (after 2025-07-01 effective date).
+
+- name: Case 1, eligible CARE_HOME_LEVEL_B with no other income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # provider_rate(875) + PNA(106) - countable(0) = 981
+    md_paa: 981
+
+- name: Case 2, eligible REHAB_RESIDENCE receives PNA only (MDH covers cost).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        md_paa_living_arrangement: REHAB_RESIDENCE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # provider_rate(0) + PNA(106) - countable(0) = 106
+    md_paa: 106
+
+- name: Case 3, ineligible (NONE living arrangement).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        md_paa_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa: 0
+
+- name: Case 4, eligible CARE_HOME_LEVEL_A with $300/mo unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi_earned_income: 0
+        # $300/mo * 12 = $3,600/yr.
+        ssi_unearned_income: 3_600
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 3600/12 = 300.
+    # countable_unearned: max(300 - 20, 0) = 280.
+    # provider_rate(776) + PNA(106) - countable(280) = 602.
+    md_paa: 602
+
+- name: Case 5, negative countable income does not inflate benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        # Self-employment loss should not reduce countable income below zero.
+        self_employment_income: -60_000_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Negative earned income is floored at 0 by max_(earned - 85, 0) * 0.5.
+    # provider_rate(875) + PNA(106) - 0 = 981.
+    md_paa: 981
+
+# Out-of-state SSI recipient in a PAA-style facility is filtered out by
+# md_paa_eligible's `defined_for = StateCode.MD`.
+- name: Case 6, out-of-state recipient is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    md_paa: 0

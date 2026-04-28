@@ -1,1 +1,1 @@
-Added Maryland State Supplementary Payment (SSP).
+Add Maryland Public Assistance to Adults (state SSP).

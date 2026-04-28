@@ -1,0 +1,95 @@
+# Tests for md_paa_countable_unearned_income variable.
+# Formula: max(unearned - $20, 0) (per PAA Manual §500.3).
+# $20 disregard matches federal SSI universal disregard.
+# ssi_unearned_income is YEAR-defined; inputs are annual (= 12 * monthly).
+
+- name: Case 1, zero unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi_unearned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 0/12 = 0.
+    # max(0 - 20, 0) = 0
+    md_paa_countable_unearned_income: 0
+
+- name: Case 2, unearned exactly at $20/mo disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # $20/mo * 12 = $240/yr.
+        ssi_unearned_income: 240
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 240/12 = 20.
+    # max(20 - 20, 0) = 0
+    md_paa_countable_unearned_income: 0
+
+- name: Case 3, unearned $300/mo (above disregard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $300/mo * 12 = $3,600/yr.
+        ssi_unearned_income: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 3600/12 = 300.
+    # max(300 - 20, 0) = 280
+    md_paa_countable_unearned_income: 280
+
+# Boundary cases around the $20 unearned disregard.
+- name: Case 4, unearned $19/mo just below disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $19/mo * 12 = $228/yr.
+        ssi_unearned_income: 228
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 228/12 = 19.
+    # max(19 - 20, 0) = 0
+    md_paa_countable_unearned_income: 0
+
+- name: Case 5, unearned $21/mo just above disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $21/mo * 12 = $252/yr.
+        ssi_unearned_income: 252
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Monthly unearned = 252/12 = 21.
+    # max(21 - 20, 0) = 1
+    md_paa_countable_unearned_income: 1
