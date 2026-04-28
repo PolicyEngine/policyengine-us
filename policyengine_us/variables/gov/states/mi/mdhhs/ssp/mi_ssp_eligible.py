@@ -12,12 +12,20 @@ class mi_ssp_eligible(Variable):
     defined_for = StateCode.MI
     reference = (
         "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4",
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=5",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=2",
     )
 
     def formula(person, period, parameters):
+        # Categorical SSI eligibility (aged/blind/disabled + resources +
+        # immigration). Income spillover is handled in mi_ssp_person via
+        # the uncapped_ssi reduction per SSA 2011 baseline: countable
+        # income deducts from federal SSI first; any remaining countable
+        # income reduces the state supplement. Using is_ssi_eligible
+        # (not ssi > 0) keeps the partial-SSP population in scope for
+        # facility-care arrangements where the state supplement adds on
+        # top of the federal FBR.
         # We don't track section 1619 working-disabled status at the moment.
-        receives_ssi = person("ssi", period.this_year) > 0
+        is_ssi_eligible = person("is_ssi_eligible", period.this_year)
         living_arrangement = person("mi_ssp_living_arrangement", period)
         in_qualifying_arrangement = living_arrangement != MISSPLivingArrangement.NONE
-        return receives_ssi & in_qualifying_arrangement
+        return is_ssi_eligible & in_qualifying_arrangement

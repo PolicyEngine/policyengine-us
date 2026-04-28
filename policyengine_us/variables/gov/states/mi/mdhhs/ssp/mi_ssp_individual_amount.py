@@ -7,7 +7,7 @@ class mi_ssp_individual_amount(Variable):
     label = "Michigan SSP individual payment amount"
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.MI
+    defined_for = "mi_ssp_eligible"
     reference = (
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2",
     )

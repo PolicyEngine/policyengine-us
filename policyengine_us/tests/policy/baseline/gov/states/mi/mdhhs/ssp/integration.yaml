@@ -4,8 +4,7 @@
   input:
     people:
       person1:
-        # $943/mo SSI = $11,316/yr individual FBR
-        ssi: 11_316
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     spm_units:
       spm_unit:
@@ -26,8 +25,7 @@
   input:
     people:
       person1:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: PERSONAL_CARE
     spm_units:
       spm_unit:
@@ -48,8 +46,7 @@
   input:
     people:
       person1:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
     spm_units:
       spm_unit:
@@ -276,13 +273,11 @@
   input:
     people:
       person1:
-        # $943/mo SSI = $11,316/yr individual FBR
-        ssi: 11_316
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        ssi: 0
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: false
         is_tax_unit_head_or_spouse: true
@@ -569,7 +564,7 @@
   input:
     people:
       person1:
-        ssi: 11_316
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     spm_units:
       spm_unit:
@@ -590,7 +585,7 @@
   input:
     people:
       person1:
-        ssi: 360
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
     spm_units:
       spm_unit:
@@ -611,7 +606,7 @@
   input:
     people:
       person1:
-        ssi: 360
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: INSTITUTION
     spm_units:
       spm_unit:
@@ -702,18 +697,18 @@
   input:
     people:
       person1:
-        ssi: 8_484
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        ssi: 8_484
+        is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person3:
         # Third SSI recipient (e.g., adult relative) - not in marital unit
-        ssi: 11_316
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     marital_units:
       marital_unit:
@@ -787,7 +782,7 @@
     mi_ssp_person: 14
     mi_ssp: 14
 
-- name: Case 27, countable income above SSI break-even zeros the supplement.
+- name: Case 27, countable income far above SSI break-even zeros the supplement via spillover reduction.
   absolute_error_margin: 0.01
   period: 2024-01
   input:
@@ -795,11 +790,14 @@
       person1:
         age: 70
         is_ssi_aged_blind_disabled: true
-        # Unearned income exceeds the federal SSI break-even point so
-        # uncapped_ssi goes negative, ssi = max_(0, uncapped_ssi) = 0,
-        # and the ssi>0 gate in mi_ssp_eligible fails before the
-        # mi_ssp_person income-reduction branch (max_(0, -uncapped_ssi))
-        # can fire. Per BEM 660, no federal SSI in a month → no SSP.
+        # $30,000/yr social security retirement = $2,500/mo. After the
+        # $20 general unearned income exclusion, annual countable
+        # unearned ≈ $29,760. Uncapped SSI = $11,316 - $29,760 = -$18,444.
+        # Monthly spillover = -uncapped_ssi/12 ≈ $1,537. Personal /
+        # IL SSP base of $14 is far below the spillover, so
+        # max_(0, 14 - 1537) = 0. The recipient is categorically
+        # SSI-eligible (mi_ssp_eligible = true) but the post-spillover
+        # state supplement zeros out.
         social_security_retirement: 30_000
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     spm_units:
@@ -810,7 +808,32 @@
         members: [person1]
         state_code: MI
   output:
-    # Countable income > SSI threshold → ssi = 0 → not eligible → mi_ssp = 0
-    mi_ssp_eligible: false
+    # Categorical eligibility holds; spillover reduction zeros SSP.
+    mi_ssp_eligible: true
     mi_ssp_person: 0
     mi_ssp: 0
+
+- name: Case 28, Personal Care recipient in spillover window receives partial SSP.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # uncapped_ssi annual = -600 → monthly spillover = $50.
+        # Personal Care SSP base = $157.50/mo. Result = max_(0, 157.50 - 50) = $107.50.
+        uncapped_ssi: -600
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Federal SSI exhausted ($0) but state supplement only partially
+    # spilled into → recipient gets $107.50 SSP.
+    mi_ssp_eligible: true
+    mi_ssp_person: 107.50
+    mi_ssp: 107.50

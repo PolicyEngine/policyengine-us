@@ -1,10 +1,9 @@
-- name: Case 1, Michigan resident receiving SSI is eligible.
+- name: Case 1, Michigan resident categorically SSI-eligible is eligible.
   period: 2024-01
   input:
     people:
       person1:
-        # $943/mo federal SSI = $11,316/yr (individual FBR in 2024)
-        ssi: 11_316
+        is_ssi_eligible: true
     households:
       household:
         members: [person1]
@@ -12,12 +11,12 @@
   output:
     mi_ssp_eligible: true
 
-- name: Case 2, Michigan resident not receiving SSI is ineligible.
+- name: Case 2, Michigan resident not SSI-eligible is ineligible.
   period: 2024-01
   input:
     people:
       person1:
-        ssi: 0
+        is_ssi_eligible: false
     households:
       household:
         members: [person1]
@@ -25,13 +24,12 @@
   output:
     mi_ssp_eligible: false
 
-- name: Case 3, non-Michigan resident receiving SSI is ineligible.
+- name: Case 3, non-Michigan resident categorically SSI-eligible is ineligible.
   period: 2024-01
   input:
     people:
       person1:
-        # $943/mo federal SSI = $11,316/yr (individual FBR in 2024)
-        ssi: 11_316
+        is_ssi_eligible: true
     households:
       household:
         members: [person1]
@@ -39,7 +37,7 @@
   output:
     mi_ssp_eligible: false
 
-- name: Case 4, categorically eligible but income too high (ssi=0) is ineligible.
+- name: Case 4, categorically eligible with high income is still mi_ssp_eligible (spillover handles income in benefit formula).
   period: 2024-01
   input:
     people:
@@ -52,4 +50,7 @@
         members: [person1]
         state_code: MI
   output:
-    mi_ssp_eligible: false
+    # Per Delaware SSP pattern, the income test is handled in the
+    # mi_ssp_person spillover formula via uncapped_ssi, not in the
+    # eligibility gate. is_ssi_eligible alone (categorical-only) passes.
+    mi_ssp_eligible: true

@@ -4,8 +4,7 @@
   input:
     people:
       person1:
-        # $943/mo SSI = $11,316/yr individual FBR
-        ssi: 11_316
+        is_ssi_eligible: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     spm_units:
       spm_unit:
