@@ -1,0 +1,40 @@
+- name: Case 1, single filer subtracts person and shared above-the-line deductions.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medicaid_irs_gross_income: 50_000
+        self_employment_tax_ald_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        puerto_rico_income: 2_000
+  output:
+    medicaid_adjusted_gross_income_person: 47_000
+  absolute_error_margin: 0.01
+
+- name: Case 2, joint filers split shared deductions and taxable basic income.
+  period: 2024
+  input:
+    gov.contrib.ubi_center.basic_income.taxable: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        medicaid_irs_gross_income: 60_000
+      person2:
+        is_tax_unit_spouse: true
+        medicaid_irs_gross_income: 40_000
+      person3:
+        is_tax_unit_dependent: true
+        medicaid_irs_gross_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        basic_income: 900
+        puerto_rico_income: 2_000
+  output:
+    medicaid_adjusted_gross_income_person: [59_450, 39_450, 5_000]
+  absolute_error_margin: 0.01
