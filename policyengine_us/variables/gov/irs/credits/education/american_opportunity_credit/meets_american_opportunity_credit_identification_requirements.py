@@ -13,7 +13,8 @@ class meets_american_opportunity_credit_identification_requirements(Variable):
     ]
 
     def formula(person, period, parameters):
-        if period.start.year <= 2025:
+        aoc = parameters(period).gov.irs.credits.education.american_opportunity_credit
+        if not aoc.eligibility.requires_qualifying_ssn:
             return person("has_tin", period)
 
         ssn_card_type = person("ssn_card_type", period)

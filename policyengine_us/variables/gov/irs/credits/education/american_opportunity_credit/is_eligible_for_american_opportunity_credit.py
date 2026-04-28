@@ -13,17 +13,18 @@ class is_eligible_for_american_opportunity_credit(Variable):
     ]
 
     def formula(person, period, parameters):
+        aoc = parameters(period).gov.irs.credits.education.american_opportunity_credit
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
         filing_status_values = filing_status.possible_values
         filing_status_eligible = filing_status != filing_status_values.SEPARATE
-        requires_1098_t = period.start.year >= 2016
+        requires_1098_t = aoc.eligibility.requires_1098_t_or_exception
         has_1098_t_or_exception = (
             person("has_american_opportunity_credit_1098_t_or_exception", period)
             if requires_1098_t
             else True
         )
-        requires_institution_ein = period.start.year >= 2016
+        requires_institution_ein = aoc.eligibility.requires_institution_ein
         has_institution_ein = (
             person("has_american_opportunity_credit_institution_ein", period)
             if requires_institution_ein
