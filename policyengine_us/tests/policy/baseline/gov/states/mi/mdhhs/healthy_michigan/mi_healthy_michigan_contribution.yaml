@@ -73,3 +73,23 @@
         state_code: MI
   output:
     mi_healthy_michigan_contribution: 0
+
+- name: Case 5, pregnant Healthy Michigan adult owes no contribution.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 18_000
+        tax_unit_medicaid_income_level: 1.20
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_healthy_michigan_contribution: 0

@@ -10,6 +10,5 @@ class is_mt_help_adult(Variable):
     reference = "https://dphhs.mt.gov/assets/MedicaidTribalConsultation/December2022/MedicaidExpansionProgramFactSheet2023.pdf"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.hhs.medicaid.eligibility.categories.adult.age_range
-        age = person("age", period)
-        return p.calc(age)
+        category = person("medicaid_category", period)
+        return category == category.possible_values.ADULT

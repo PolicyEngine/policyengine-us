@@ -10,6 +10,5 @@ class is_mi_healthy_michigan_adult(Variable):
     reference = "https://dhhs.michigan.gov/olmweb/ex/BP/Mobile/BEM/BEM%20Mobile.pdf"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.hhs.medicaid.eligibility.categories.adult.age_range
-        age = person("age", period)
-        return p.calc(age)
+        category = person("medicaid_category", period)
+        return category == category.possible_values.ADULT

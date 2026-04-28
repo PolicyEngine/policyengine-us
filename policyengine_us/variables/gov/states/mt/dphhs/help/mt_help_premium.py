@@ -19,7 +19,7 @@ class mt_help_premium(Variable):
             return 0
 
         income_level = tax_unit("tax_unit_medicaid_income_level", period)
-        in_income_range = (income_level > p.income_threshold.lower) & (
+        in_income_range = (income_level >= p.income_threshold.lower) & (
             income_level <= p.income_threshold.upper
         )
         has_help_adult = tax_unit.sum(tax_unit.members("is_mt_help_adult", period)) > 0
