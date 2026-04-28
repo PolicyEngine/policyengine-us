@@ -15,7 +15,8 @@ class medicaid_person_is_required_to_file(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.deductions.standard
+        standard = parameters(period).gov.irs.deductions.standard
+        filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
         earned_income = person("earned_income", period)
         unearned_income = gross_income - earned_income
@@ -23,18 +24,18 @@ class medicaid_person_is_required_to_file(Variable):
         married = person.marital_unit.nb_persons() == 2
         filing_status = where(married, FilingStatus.SEPARATE, FilingStatus.SINGLE)
         aged_or_blind_count = (
-            person("age", period.this_year) >= p.aged_or_blind.age_threshold
+            person("age", period.this_year) >= standard.aged_or_blind.age_threshold
         ).astype(int) + person("is_blind", period).astype(int)
         additional_deduction = (
-            p.aged_or_blind.amount[filing_status] * aged_or_blind_count
+            standard.aged_or_blind.amount[filing_status] * aged_or_blind_count
         )
-        regular_standard_deduction = p.amount[filing_status]
+        regular_standard_deduction = standard.amount[filing_status]
         dependent_standard_deduction = (
             min_(
                 regular_standard_deduction,
                 max_(
-                    p.dependent.amount,
-                    p.dependent.additional_earned_income + earned_income,
+                    standard.dependent.amount,
+                    standard.dependent.additional_earned_income + earned_income,
                 ),
             )
             + additional_deduction
@@ -42,8 +43,14 @@ class medicaid_person_is_required_to_file(Variable):
         spouse_itemizes = married & person.tax_unit("separate_filer_itemizes", period)
 
         return (
-            (spouse_itemizes & (gross_income >= 5))
-            | (unearned_income > (p.dependent.amount + additional_deduction))
+            (
+                spouse_itemizes
+                & (
+                    gross_income
+                    >= filing_requirement.dependent.spouse_itemizes_threshold
+                )
+            )
+            | (unearned_income > (standard.dependent.amount + additional_deduction))
             | (earned_income > (regular_standard_deduction + additional_deduction))
             | (gross_income > dependent_standard_deduction)
         )

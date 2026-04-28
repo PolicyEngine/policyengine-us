@@ -142,3 +142,32 @@
     medicaid_claimed_by_parent_in_tax_unit: [false, true]
     medicaid_tax_dependent_exception_other_than_spouse_or_child: [false, false]
     medicaid_uses_non_filer_rules: [false, false]
+
+- name: Case 6, child claimed by a non-custodial parent uses the non-filer exception when provided.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 10
+        medicaid_tax_dependent_exception_non_custodial_parent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_tax_dependent_exception_non_custodial_parent: [false, true]
+    medicaid_uses_non_filer_rules: [false, true]

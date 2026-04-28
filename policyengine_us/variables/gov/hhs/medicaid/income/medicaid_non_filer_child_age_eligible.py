@@ -13,5 +13,7 @@ class medicaid_non_filer_child_age_eligible(Variable):
         age = person("age", period.this_year)
         student = person("is_full_time_student", period.this_year)
         return (age < p.child_age_limit.non_student) | (
-            p.uses_full_time_student_under_21_rule & student & (age < 21)
+            p.uses_full_time_student_under_21_rule
+            & student
+            & (age < p.child_age_limit.student)
         )
