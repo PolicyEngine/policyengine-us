@@ -85,3 +85,39 @@
         state_code: LA
   output:
     la_oss_eligible: false
+
+- name: Case 7, ABD in LTC facility but fails the SSI resource test.
+  # Countable resources of $5k exceed the $2k individual SSI limit, so
+  # is_ssi_eligible is false even though the categorical and living
+  # arrangement gates pass.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+        ssi_countable_resources: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false
+
+- name: Case 8, ABD in LTC facility but fails SSI immigration status.
+  # Undocumented immigration status fails the SSI nonfinancial gate, so
+  # OSS eligibility fails even though the categorical and living
+  # arrangement gates pass.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss_eligible: false

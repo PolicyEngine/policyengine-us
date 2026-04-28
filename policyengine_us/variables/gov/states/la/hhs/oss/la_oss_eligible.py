@@ -22,12 +22,15 @@ class la_oss_eligible(Variable):
 
     def formula(person, period, parameters):
         # Tie eligibility to the same federal SSI living-arrangement enum
-        # that triggers the $30 institutional FBR. This keeps OSS coherent
-        # with the federal SSI calculation: the population getting the
-        # reduced institutional SSI is the same population getting OSS.
-        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
+        # that triggers the $30 institutional FBR. `is_ssi_eligible` covers
+        # the categorical (aged/blind/disabled), resource, and nonfinancial
+        # (immigration/residency) gates without imposing the federal income
+        # test — which is what we want, since LA OSS also reaches non-SSI
+        # LTC residents whose countable income sits above the FBR but below
+        # the PNA.
+        ssi_eligible = person("is_ssi_eligible", period)
         arrangement = person("ssi_federal_living_arrangement", period)
         in_medical_facility = (
             arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        return aged_blind_disabled & in_medical_facility
+        return ssi_eligible & in_medical_facility
