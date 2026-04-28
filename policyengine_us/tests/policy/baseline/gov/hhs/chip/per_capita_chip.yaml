@@ -7,6 +7,15 @@
   output:
     per_capita_chip: 2_228.77
 
+- name: Alabama uses aligned FY2024 spending and enrollment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    is_chip_eligible: true
+  output:
+    per_capita_chip: 2_209.43
+
 - name: Ineligible - integration test
   period: 2023
   absolute_error_margin: 0.01
