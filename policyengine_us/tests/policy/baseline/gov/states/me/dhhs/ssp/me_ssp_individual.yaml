@@ -178,3 +178,76 @@
   output:
     # max_(0, $234 - $1,000) = $0.
     me_ssp_individual: 0
+
+- name: Case 12, SS-only code A with small excess fully absorbed by $55 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$240 -> $20/month excess.
+        uncapped_ssi: -240
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $20 excess - $55 disregard = $0 adjusted; fixed category pays full $10.
+    me_ssp_individual: 10
+
+- name: Case 13, SS-only code A excess above $10 + $55 limit pays zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$1,200 -> $100/month excess.
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $100 - $55 = $45 adjusted excess > $10 supplement -> $0.
+    me_ssp_individual: 0
+
+- name: Case 14, SS-only code C with small excess absorbed by disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$360 -> $30/month excess.
+        uncapped_ssi: -360
+        me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $30 - $55 disregard = $0 adjusted; fixed C pays full $8.
+    me_ssp_individual: 8
+
+- name: Case 15, SS-only code H (Medicaid facility) gets no state disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$240 -> $20/month excess.
+        uncapped_ssi: -240
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $20 excess > $10 supplement (no disregard for H) -> $0.
+    me_ssp_individual: 0

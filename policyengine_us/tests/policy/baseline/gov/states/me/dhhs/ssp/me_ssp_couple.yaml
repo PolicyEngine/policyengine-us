@@ -167,3 +167,39 @@
   output:
     # Per-person share $295 - $100 monthly excess = $195.
     me_ssp_couple: 195
+
+- name: Case 11, SS-only code A couple with small per-person excess absorbed by $40 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$240 -> $20/month per-person excess.
+        uncapped_ssi: -240
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $20 - $40 per-person disregard = $0 adjusted; fixed A pays full $7.50.
+    me_ssp_couple: 7.5
+
+- name: Case 12, SS-only code A couple excess above $7.50 + $40 limit pays zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$1,200 -> $100/month per-person excess.
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $100 - $40 = $60 adjusted excess > $7.50 share -> $0.
+    me_ssp_couple: 0

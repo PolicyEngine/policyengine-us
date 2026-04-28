@@ -14,20 +14,26 @@ class me_ssp_couple(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.me.dhhs.ssp.amount
+        p = parameters(period).gov.states.me.dhhs.ssp
         category = person("me_ssp_payment_category", period)
-        # Maine's couple amounts for D/E/F/G are not 2x the individual
-        # amount -- they are the facility's couple rate covering both
-        # spouses. Per-person attribution splits the couple total 50/50.
-        per_person_share = p.couple[category] / 2
-        # State Supplement-only path: when countable income exceeds the
-        # federal SSI break-even, uncapped_ssi goes negative. ssa/ssi
-        # already splits couple countable income 50/50 across eligible
-        # spouses, so each person's share of the excess offsets their
-        # share of the couple supplement. Maine also disregards an
-        # additional $80 (couple) for codes A and C on top of the
-        # federal exclusions per SSA 2011 Table 1; we don't model that
-        # state disregard at the moment, so SS-only couple supplements
-        # in those categories are slightly under-paid.
-        monthly_excess = max_(0, -person("uncapped_ssi", period))
-        return max_(0, per_person_share - monthly_excess)
+        categories = category.possible_values
+        # Couple totals for D/E/F/G are facility rates, not 2x individual.
+        # Split 50/50 per person; ssa/ssi splits couple income the same way.
+        per_person_share = p.amount.couple[category] / 2
+        is_fixed = (
+            (category == categories.LIVING_ALONE_OR_WITH_OTHERS)
+            | (category == categories.HOUSEHOLD_OF_ANOTHER)
+            | (category == categories.MEDICAID_FACILITY)
+            | (category == categories.RESIDENTIAL_CARE_FACILITY)
+        )
+        # SS-only path: apply Maine's couple disregard ($80 for A/C, $0
+        # elsewhere) per SSA 2011 Table 1, also split 50/50 per person.
+        federal_excess = max_(0, -person("uncapped_ssi", period))
+        per_person_disregard = p.disregard.couple[category] / 2
+        adjusted_excess = max_(0, federal_excess - per_person_disregard)
+        within_limit = adjusted_excess <= per_person_share
+        return where(
+            is_fixed,
+            per_person_share * within_limit,
+            max_(0, per_person_share - adjusted_excess),
+        )

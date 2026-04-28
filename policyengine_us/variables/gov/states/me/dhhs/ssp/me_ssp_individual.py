@@ -14,17 +14,26 @@ class me_ssp_individual(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.me.dhhs.ssp.amount
+        p = parameters(period).gov.states.me.dhhs.ssp
         category = person("me_ssp_payment_category", period)
-        table_amount = p.individual[category]
-        # State Supplement-only path: when countable income exceeds the
-        # federal SSI break-even, uncapped_ssi goes negative. The
-        # excess is netted against the state supplement so the combined
-        # SSI + SSP standard is preserved. uncapped_ssi is YEAR-defined,
-        # so accessing it with `period` auto-converts to monthly.
-        # Maine also disregards an additional $55 (individual) for codes
-        # A and C on top of the federal exclusions per SSA 2011 Table 1;
-        # we don't model that state disregard at the moment, so SS-only
-        # supplements in those categories are slightly under-paid.
-        monthly_excess = max_(0, -person("uncapped_ssi", period))
-        return max_(0, table_amount - monthly_excess)
+        categories = category.possible_values
+        table_amount = p.amount.individual[category]
+        # A/C/H/I pay a fixed amount; D/E/F/G net excess against the rate.
+        is_fixed = (
+            (category == categories.LIVING_ALONE_OR_WITH_OTHERS)
+            | (category == categories.HOUSEHOLD_OF_ANOTHER)
+            | (category == categories.MEDICAID_FACILITY)
+            | (category == categories.RESIDENTIAL_CARE_FACILITY)
+        )
+        # SS-only path: uncapped_ssi < 0 means income exceeds the federal
+        # SSI standard. Apply Maine's state disregard ($55 for A/C, $0
+        # elsewhere) on top of federal exclusions per SSA 2011 Table 1.
+        federal_excess = max_(0, -person("uncapped_ssi", period))
+        state_disregard = p.disregard.individual[category]
+        adjusted_excess = max_(0, federal_excess - state_disregard)
+        within_limit = adjusted_excess <= table_amount
+        return where(
+            is_fixed,
+            table_amount * within_limit,
+            max_(0, table_amount - adjusted_excess),
+        )
