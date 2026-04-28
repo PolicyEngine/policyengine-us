@@ -782,7 +782,7 @@
     mi_ssp_person: 14
     mi_ssp: 14
 
-- name: Case 27, countable income far above SSI break-even zeros the supplement via spillover reduction.
+- name: Case 27, Independent Living person with no regular federal SSI payment is ineligible.
   absolute_error_margin: 0.01
   period: 2024-01
   input:
@@ -793,11 +793,10 @@
         # $30,000/yr social security retirement = $2,500/mo. After the
         # $20 general unearned income exclusion, annual countable
         # unearned ≈ $29,760. Uncapped SSI = $11,316 - $29,760 = -$18,444.
-        # Monthly spillover = -uncapped_ssi/12 ≈ $1,537. Personal /
-        # IL SSP base of $14 is far below the spillover, so
-        # max_(0, 14 - 1537) = 0. The recipient is categorically
-        # SSI-eligible (mi_ssp_eligible = true) but the post-spillover
-        # state supplement zeros out.
+        # Monthly spillover = -uncapped_ssi/12 ≈ $1,537. BEM 660 limits
+        # MDHHS-issued Independent Living SSPs to months with a regular
+        # first-of-month federal SSI benefit, so this person is not
+        # eligible for the MDHHS-issued payment.
         social_security_retirement: 30_000
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     spm_units:
@@ -808,8 +807,9 @@
         members: [person1]
         state_code: MI
   output:
-    # Categorical eligibility holds; spillover reduction zeros SSP.
-    mi_ssp_eligible: true
+    # MDHHS-administered Independent Living category fails the federal
+    # SSI payment gate.
+    mi_ssp_eligible: false
     mi_ssp_person: 0
     mi_ssp: 0
 
