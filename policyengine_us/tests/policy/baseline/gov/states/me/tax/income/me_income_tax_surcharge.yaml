@@ -48,6 +48,16 @@
   output:
     me_income_tax_surcharge: 4_000
 
+- name: Maine income tax surcharge is zero for married separate taxable income equal to the $750,000 threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SEPARATE
+    me_taxable_income: 750_000
+  output:
+    me_income_tax_surcharge: 0
+
 - name: Maine income tax surcharge applies to married separate taxable income above $750,000 in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -57,6 +67,16 @@
     me_taxable_income: 800_000
   output:
     me_income_tax_surcharge: 1_000
+
+- name: Maine income tax surcharge is zero for head of household taxable income equal to the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_taxable_income: 1_500_000
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge applies to head of household taxable income above $1.5 million in 2026.
   period: 2026
@@ -68,6 +88,16 @@
   output:
     me_income_tax_surcharge: 2_000
 
+- name: Maine income tax surcharge is zero for joint taxable income equal to the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    me_taxable_income: 1_500_000
+  output:
+    me_income_tax_surcharge: 0
+
 - name: Maine income tax surcharge applies to joint taxable income above $1.5 million in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -77,6 +107,16 @@
     me_taxable_income: 1_750_000
   output:
     me_income_tax_surcharge: 5_000
+
+- name: Maine income tax surcharge is zero for surviving spouse taxable income equal to the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SURVIVING_SPOUSE
+    me_taxable_income: 1_500_000
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge applies to surviving spouse taxable income above $1.5 million in 2026.
   period: 2026

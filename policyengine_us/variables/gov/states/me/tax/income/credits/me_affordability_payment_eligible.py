@@ -14,10 +14,6 @@ class me_affordability_payment_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         federal_agi = tax_unit("adjusted_gross_income", period)
         income_eligible = federal_agi < p.income_limit[filing_status]
-        person = tax_unit.members
-        head_or_spouse = person("is_tax_unit_head", period) | person(
-            "is_tax_unit_spouse", period
-        )
-        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
-        any_filer_claimed = tax_unit.any(head_or_spouse & claimed_elsewhere)
-        return income_eligible & ~any_filer_claimed
+        head_dependent = tax_unit("head_is_dependent_elsewhere", period)
+        spouse_dependent = tax_unit("spouse_is_dependent_elsewhere", period)
+        return income_eligible & ~head_dependent & ~spouse_dependent
