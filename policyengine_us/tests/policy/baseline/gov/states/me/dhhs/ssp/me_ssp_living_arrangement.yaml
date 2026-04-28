@@ -1,0 +1,101 @@
+- name: Case 1, default residual is living alone or with others.
+  period: 2025-01
+  input:
+    state_code: ME
+  output:
+    me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+
+- name: Case 2, federal medical treatment facility derives Medicaid facility.
+  period: 2025-01
+  input:
+    state_code: ME
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    me_ssp_living_arrangement: MEDICAID_FACILITY
+
+- name: Case 3, household of another from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_household_of_another: true
+  output:
+    me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 4, adult foster home from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_adult_foster_home: true
+  output:
+    me_ssp_living_arrangement: ADULT_FOSTER_HOME
+
+- name: Case 5, flat rate boarding home from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_flat_rate_boarding_home: true
+  output:
+    me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+
+- name: Case 6, adult family care home from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_adult_family_care_home: true
+  output:
+    me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+
+- name: Case 7, cost reimbursed boarding home from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_cost_reimbursed_boarding_home: true
+  output:
+    me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+
+- name: Case 8, residential care facility from state input.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_residential_care_facility: true
+  output:
+    me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+
+- name: Case 9, federal medical treatment facility takes priority over state inputs.
+  period: 2025-01
+  input:
+    state_code: ME
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    me_ssp_resides_in_residential_care_facility: true
+  output:
+    me_ssp_living_arrangement: MEDICAID_FACILITY
+
+- name: Case 10, federal medical facility overrides adult foster home input.
+  period: 2025-01
+  input:
+    state_code: ME
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    me_ssp_resides_in_adult_foster_home: true
+  output:
+    # Federal override wins over the manually set adult foster home flag.
+    me_ssp_living_arrangement: MEDICAID_FACILITY
+
+- name: Case 11, multiple residential booleans true uses select() priority order.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_ssp_resides_in_residential_care_facility: true
+    me_ssp_resides_in_cost_reimbursed_boarding_home: true
+    me_ssp_resides_in_adult_family_care_home: true
+    me_ssp_resides_in_flat_rate_boarding_home: true
+    me_ssp_resides_in_adult_foster_home: true
+    me_ssp_resides_in_household_of_another: true
+  output:
+    # select() priority (after federal Medicaid facility):
+    # residential care > cost reimbursed > adult family care >
+    # flat rate boarding > adult foster > household of another.
+    # Highest-priority residential boolean wins.
+    me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY

@@ -1,0 +1,292 @@
+- name: Case 1, single eligible individual receives individual rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Default arrangement A: $10 individual.
+    me_ssp: 10
+
+- name: Case 2, ineligible person receives zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp: 0
+
+- name: Case 3, joint couple both eligible same arrangement gets couple rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 450
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_adult_foster_home: true
+      person2:
+        ssi: 450
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_adult_foster_home: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Adult Foster Home couple total $273 / 2 = $136.50 per person.
+    me_ssp: [136.5, 136.5]
+
+- name: Case 4, mixed marital unit different arrangements falls back to individual rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        ssi_claim_is_joint: true
+      person2:
+        ssi: 600
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_household_of_another: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # person1 in arrangement A (individual): $10
+    # person2 in arrangement C (individual): $8
+    # Different arrangements => no couple rate; each gets the individual amount.
+    me_ssp: [10, 8]
+
+- name: Case 5, asymmetric couple where one spouse not receiving SSI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_flat_rate_boarding_home: true
+      person2:
+        ssi: 0
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_flat_rate_boarding_home: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # person1 eligible: gets individual rate $217 (no couple gate since spouse ineligible).
+    # person2 ineligible: $0.
+    me_ssp: [217, 0]
+
+- name: Case 6, person in Medicaid facility but not receiving SSI gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Code H requires ssi > 0; without SSI receipt, no benefit.
+    me_ssp: 0
+
+- name: Case 7, person in Medicaid facility receiving SSI gets code H amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 30
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Code H individual amount = $10.
+    me_ssp: 10
+
+- name: Case 8, non-Maine resident receives zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    me_ssp: 0
+
+- name: Case 9, asymmetric arrangement couple where one spouse is NONE.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        ssi_claim_is_joint: true
+      person2:
+        ssi: 600
+        ssi_claim_is_joint: true
+        # person2 explicitly placed in NONE arrangement.
+        me_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # person1 in default arrangement A (individual): $10.
+    # person2 in NONE arrangement: ineligible, $0.
+    # Both must share an arrangement for couple rate; person2 is NONE so couple_applies is false.
+    me_ssp: [10, 0]
+
+- name: Case 10, both spouses arrangement A but ssi_claim_is_joint false falls back to individual.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        ssi_claim_is_joint: false
+      person2:
+        ssi: 600
+        ssi_claim_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Default arrangement A for both, but joint claim is false => individual rate $10 each.
+    me_ssp: [10, 10]
+
+- name: Case 11, both spouses arrangement A with joint claim and both SSI receive couple rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 450
+        ssi_claim_is_joint: true
+      person2:
+        ssi: 450
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Default arrangement A for both: couple total $15 / 2 = $7.50 per person.
+    me_ssp: [7.5, 7.5]
+
+- name: Case 12, code H couple via federal and manual arrangement inputs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 30
+        ssi_claim_is_joint: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        ssi: 30
+        ssi_claim_is_joint: true
+        # person2 manually set to MEDICAID_FACILITY arrangement.
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Both in MEDICAID_FACILITY arrangement: couple total $20 / 2 = $10 per person.
+    me_ssp: [10, 10]
+
+- name: Case 13, single person in NONE arrangement gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # NONE arrangement => not eligible => $0.
+    me_ssp: 0
+
+- name: Case 14, single person not receiving SSI in arrangement A gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Default arrangement A but ssi == 0 => not eligible => $0.
+    me_ssp: 0
+
+- name: Case 15, parameter coverage starts 2008-01.
+  period: 2008-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # First period with parameter coverage; default arrangement A => $10.
+    me_ssp: 10

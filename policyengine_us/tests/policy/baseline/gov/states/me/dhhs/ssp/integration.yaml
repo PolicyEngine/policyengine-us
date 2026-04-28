@@ -1,0 +1,219 @@
+- name: Case 1, aged Maine resident with no income receives full SSI plus state supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Aged with no income passes federal SSI eligibility.
+    is_ssi_eligible: true
+    # Default arrangement A: individual amount = $10/month.
+    me_ssp_eligible: true
+    me_ssp: 10
+    # household_state_benefits and spm_unit_benefits include me_ssp.
+    household_state_benefits: 10
+
+- name: Case 2, disabled Maine resident in adult foster home receives Code D amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_disabled: true
+        employment_income: 0
+        me_ssp_resides_in_adult_foster_home: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    is_ssi_eligible: true
+    me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    me_ssp_eligible: true
+    # Code D individual amount = $49/month.
+    me_ssp: 49
+    household_state_benefits: 49
+
+- name: Case 3, aged Maine couple both eligible in flat rate boarding home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_ssi_aged: true
+        employment_income: 0
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_flat_rate_boarding_home: true
+      person2:
+        age: 70
+        is_ssi_aged: true
+        employment_income: 0
+        ssi_claim_is_joint: true
+        me_ssp_resides_in_flat_rate_boarding_home: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    is_ssi_eligible: [true, true]
+    me_ssp_eligible: [true, true]
+    # Code E couple total $590 / 2 = $295 per person.
+    me_ssp: [295, 295]
+    # spm_unit me_ssp aggregate = $295 + $295 = $590/month.
+    household_state_benefits: 590
+
+- name: Case 4, aged Maine resident in residential care facility with social security income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_aged: true
+        social_security_retirement: 6_000
+        me_ssp_resides_in_residential_care_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # $6_000/yr social security passes through SSI countable income;
+    # remains under SSI federal threshold so SSI is reduced but positive.
+    is_ssi_eligible: true
+    me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+    me_ssp_eligible: true
+    # Code I individual amount = $10/month.
+    me_ssp: 10
+    household_state_benefits: 10
+
+- name: Case 5, non-Maine resident in same scenario gets nothing from Maine SSP.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    is_ssi_eligible: true
+    me_ssp_eligible: false
+    me_ssp: 0
+
+- name: Case 6, historical 2011 amounts match SSA 2011 Table 1 (rates frozen since 2008).
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        employment_income: 0
+        me_ssp_resides_in_adult_family_care_home: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    is_ssi_eligible: true
+    me_ssp_eligible: true
+    # Code F (Adult Family Care Home) individual = $234/month — same as 2025.
+    me_ssp: 234
+
+- name: Case 7, single adult in cost reimbursed boarding home receives Code G amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_ssi_disabled: true
+        employment_income: 0
+        me_ssp_resides_in_cost_reimbursed_boarding_home: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    is_ssi_eligible: true
+    me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+    me_ssp_eligible: true
+    # Code G individual amount = $234/month.
+    me_ssp: 234
+    household_state_benefits: 234

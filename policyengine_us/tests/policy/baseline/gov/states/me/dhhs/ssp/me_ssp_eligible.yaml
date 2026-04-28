@@ -1,0 +1,97 @@
+- name: Case 1, Maine resident receiving SSI in default arrangement is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 600
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 2, Maine resident in Medicaid facility receiving SSI is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 30
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 3, Maine resident not receiving SSI is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: false
+
+- name: Case 4, non-Maine resident receiving SSI is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 600
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    me_ssp_eligible: false
+
+- name: Case 5, Maine resident in Medicaid facility but not receiving SSI is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: false
+
+- name: Case 6, Maine resident in adult foster home receiving SSI is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_resides_in_adult_foster_home: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 7, Maine resident receiving SSI in NONE arrangement is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # NONE arrangement is excluded even if SSI is received.
+    me_ssp_eligible: false

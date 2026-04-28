@@ -1,0 +1,142 @@
+- name: Case 1, living alone or with others couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $15 / 2 = $7.50 per person.
+    me_ssp_couple: 7.5
+
+- name: Case 2, household of another couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $12 / 2 = $6 per person.
+    me_ssp_couple: 6
+
+- name: Case 3, adult foster home couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $273 / 2 = $136.50 per person.
+    me_ssp_couple: 136.5
+
+- name: Case 4, flat rate boarding home couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $590 / 2 = $295 per person.
+    me_ssp_couple: 295
+
+- name: Case 5, adult family care home couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $636 / 2 = $318 per person.
+    me_ssp_couple: 318
+
+- name: Case 6, cost reimbursed boarding home couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $636 / 2 = $318 per person.
+    me_ssp_couple: 318
+
+- name: Case 7, Medicaid facility couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 30
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $20 / 2 = $10 per person.
+    me_ssp_couple: 10
+
+- name: Case 8, residential care facility couple per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Couple total $15 / 2 = $7.50 per person.
+    me_ssp_couple: 7.5
+
+- name: Case 9, none arrangement couple per-person amount is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 600
+        me_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_couple: 0
