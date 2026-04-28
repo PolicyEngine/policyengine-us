@@ -13,6 +13,6 @@ class mi_ssp_individual_amount(Variable):
     )
 
     def formula(person, period, parameters):
-        living_arrangement = person("mi_ssp_living_arrangement", period)
+        category = person("mi_ssp_payment_category", period)
         p = parameters(period).gov.states.mi.mdhhs.ssp.payment
-        return p.individual[living_arrangement]
+        return p.individual[category]

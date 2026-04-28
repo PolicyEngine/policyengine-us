@@ -5,7 +5,7 @@ metadata:
   period: month
   label: Michigan SSP individual payment
   breakdown:
-    - mi_ssp_living_arrangement
+    - mi_ssp_payment_category
   reference:
     - title: MDHHS RFT 248, SSI Payment Levels
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2
@@ -18,6 +18,8 @@ metadata:
     - title: MDHHS RFT 248, SSI Payment Levels (RFB 2016-001 archive)
       href: https://web.archive.org/web/20161223122049id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
 
+# Individual rates have not changed since 2016 across all six living
+# arrangements (verified against RFT 248 RFB 2016-001 through RFB 2026-001).
 INDEPENDENT_LIVING:
   2016-01-01: 14
 HOUSEHOLD_OF_ANOTHER:

@@ -18,18 +18,15 @@ class mi_ssp_couple_eligible(Variable):
         joint_claim = person("ssi_claim_is_joint", period.this_year)
         eligible = person("mi_ssp_eligible", period)
         both_eligible = person.marital_unit.sum(eligible) == 2
-        living_arrangement = person("mi_ssp_living_arrangement", period)
+        category = person("mi_ssp_payment_category", period)
         qualifying_arrangements = [
-            MISSPLivingArrangement.INDEPENDENT_LIVING,
-            MISSPLivingArrangement.HOUSEHOLD_OF_ANOTHER,
-            MISSPLivingArrangement.DOMICILIARY_CARE,
-            MISSPLivingArrangement.PERSONAL_CARE,
-            MISSPLivingArrangement.HOME_FOR_AGED,
-            MISSPLivingArrangement.INSTITUTION,
+            value
+            for value in MISSPLivingArrangement
+            if value != MISSPLivingArrangement.NONE
         ]
         both_same_arrangement = (
             sum(
-                person.marital_unit.sum(living_arrangement == value) == 2
+                person.marital_unit.sum(category == value) == 2
                 for value in qualifying_arrangements
             )
             > 0

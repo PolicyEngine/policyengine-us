@@ -26,6 +26,6 @@ class mi_ssp_eligible(Variable):
         # top of the federal FBR.
         # We don't track section 1619 working-disabled status at the moment.
         is_ssi_eligible = person("is_ssi_eligible", period.this_year)
-        living_arrangement = person("mi_ssp_living_arrangement", period)
-        in_qualifying_arrangement = living_arrangement != MISSPLivingArrangement.NONE
+        category = person("mi_ssp_payment_category", period)
+        in_qualifying_arrangement = category != MISSPLivingArrangement.NONE
         return is_ssi_eligible & in_qualifying_arrangement

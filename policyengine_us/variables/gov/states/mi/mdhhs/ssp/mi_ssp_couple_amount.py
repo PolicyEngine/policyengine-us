@@ -14,6 +14,6 @@ class mi_ssp_couple_amount(Variable):
     )
 
     def formula(person, period, parameters):
-        living_arrangement = person("mi_ssp_living_arrangement", period)
+        category = person("mi_ssp_payment_category", period)
         p = parameters(period).gov.states.mi.mdhhs.ssp.payment
-        return p.couple[living_arrangement] / 2
+        return p.couple[category] / 2
