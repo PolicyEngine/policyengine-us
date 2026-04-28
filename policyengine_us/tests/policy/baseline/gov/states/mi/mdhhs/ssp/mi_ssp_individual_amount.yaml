@@ -1,0 +1,97 @@
+- name: Case 1, Independent Living looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 14
+
+- name: Case 2, Household of Another looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 9.33
+
+- name: Case 3, Domiciliary Care looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 87
+
+- name: Case 4, Personal Care looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 157.50
+
+- name: Case 5, Home for Aged looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 179.30
+
+- name: Case 6, Institution looks up individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: INSTITUTION
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 7
+
+- name: Case 7, NONE arrangement returns zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 0

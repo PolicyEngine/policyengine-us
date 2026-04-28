@@ -1,0 +1,816 @@
+- name: Case 1, single eligible person in Independent Living gets $14.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Single eligible person, IL → individual rate $14/mo
+    mi_ssp_eligible: true
+    mi_ssp_person: 14
+    mi_ssp: 14
+
+- name: Case 2, single eligible person in Personal Care gets $157.50.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Single eligible person, Personal Care → individual rate $157.50/mo
+    mi_ssp_eligible: true
+    mi_ssp_person: 157.50
+    mi_ssp: 157.50
+
+- name: Case 3, single eligible person in Home for Aged gets $179.30.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Single eligible person, Home for Aged → individual rate $179.30/mo
+    mi_ssp_eligible: true
+    mi_ssp_person: 179.30
+    mi_ssp: 179.30
+
+- name: Case 4, joint SSI couple both in Independent Living gets $21 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Joint claim + both eligible + same LA → couple rate $21 / 2 = $10.50 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [10.50, 10.50]
+    # SPM unit total = $10.50 + $10.50 = $21
+    mi_ssp: 21
+
+- name: Case 5, joint SSI couple both in Domiciliary Care 2024 gets $645 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+      person2:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2024 Domiciliary Care couple rate $645 / 2 = $322.50 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [322.50, 322.50]
+    # SPM unit total = $322.50 + $322.50 = $645
+    mi_ssp: 645
+
+- name: Case 6, joint SSI couple in mismatched arrangements falls back to individual.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Different arrangements → individual rates
+    # person1: IL individual = $14, person2: HoA individual = $9.33
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [14, 9.33]
+    # SPM unit total = $14 + $9.33 = $23.33
+    mi_ssp: 23.33
+
+- name: Case 7, person not receiving SSI gets zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # SSI = 0 (income too high for federal SSI) → not eligible
+    mi_ssp_eligible: false
+    mi_ssp_person: 0
+    mi_ssp: 0
+
+- name: Case 8, Home for Aged couple boundary 2023 vs 2024 reflects COLA.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+      person2:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2022-2023 Home for Aged couple rate $779.60 / 2 = $389.80 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [389.80, 389.80]
+    # SPM unit total = $779.60
+    mi_ssp: 779.60
+
+- name: Case 9, family with one SSI recipient and non-SSI spouse pays only recipient.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        ssi: 0
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Non-SSI spouse breaks joint-claim test → person1 gets individual $14
+    mi_ssp_eligible: [true, false]
+    mi_ssp_person: [14, 0]
+    # SPM unit total = $14
+    mi_ssp: 14
+
+- name: Case 10, couple same LA but only one is SSI-eligible falls back to individual.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        ssi: 0
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: false
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Only person1 receives SSI → person1 eligible, person2 not eligible
+    # Couple rate doesn't apply (person2 not eligible) → individual rate $14
+    mi_ssp_eligible: [true, false]
+    mi_ssp_person: [14, 0]
+    mi_ssp: 14
+
+- name: Case 11, Domiciliary Care couple boundary 2019 reflects pre-COLA rate.
+  absolute_error_margin: 0.01
+  period: 2019-01
+  input:
+    people:
+      person1:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+      person2:
+        # $30/mo SSI = $360/yr institutional rate
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2019 (pre-2020-01 boundary) Domiciliary Care couple rate = $540
+    # $540 / 2 = $270 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [270, 270]
+    mi_ssp: 540
+
+- name: Case 12, Domiciliary Care couple at 2020-01 boundary reflects new COLA rate.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2020-01 boundary: Domiciliary Care couple rate = $565
+    # $565 / 2 = $282.50 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [282.50, 282.50]
+    mi_ssp: 565
+
+- name: Case 13, Personal Care couple at 2023-12 reflects pre-COLA rate.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: PERSONAL_CARE
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Pre-2024-01 (2022-2023 era) Personal Care couple rate = $736
+    # $736 / 2 = $368 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [368, 368]
+    mi_ssp: 736
+
+- name: Case 14, Personal Care couple at 2024-01 boundary reflects new COLA rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: PERSONAL_CARE
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2024-01 boundary: Personal Care couple rate = $786
+    # $786 / 2 = $393 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [393, 393]
+    mi_ssp: 786
+
+- name: Case 15, Home for Aged couple at 2025-12 reflects pre-COLA rate.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Pre-2026-01 (2024-2025 era) Home for Aged couple rate = $829.60
+    # $829.60 / 2 = $414.80 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [414.80, 414.80]
+    mi_ssp: 829.60
+
+- name: Case 16, Home for Aged couple at 2026-01 boundary reflects new COLA rate.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # 2026-01 boundary: Home for Aged couple rate = $855.60
+    # $855.60 / 2 = $427.80 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [427.80, 427.80]
+    mi_ssp: 855.60
+
+- name: Case 17, person with ssi=0 and high income gets zero benefit.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # High earnings prevent SSI eligibility downstream
+        employment_income: 60_000
+        ssi: 0
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # ssi=0 gate fails → not eligible regardless of LA
+    mi_ssp_eligible: false
+    mi_ssp_person: 0
+    mi_ssp: 0
+
+- name: Case 18, single eligible person in NONE arrangement gets zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 11_316
+        mi_ssp_living_arrangement: NONE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # NONE arrangement fails the in-qualifying-arrangement gate
+    mi_ssp_eligible: false
+    mi_ssp_person: 0
+    mi_ssp: 0
+
+- name: Case 19, single eligible person in Household of Another gets $9.33.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 11_316
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # HoA individual rate = $9.33/mo (frozen)
+    mi_ssp_eligible: true
+    mi_ssp_person: 9.33
+    mi_ssp: 9.33
+
+- name: Case 20, single eligible person in Domiciliary Care gets $87.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Domiciliary Care individual rate = $87/mo (frozen)
+    mi_ssp_eligible: true
+    mi_ssp_person: 87
+    mi_ssp: 87
+
+- name: Case 21, single eligible person in Institution gets $7.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 360
+        mi_ssp_living_arrangement: INSTITUTION
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Institution individual rate = $7/mo (frozen)
+    mi_ssp_eligible: true
+    mi_ssp_person: 7
+    mi_ssp: 7
+
+- name: Case 22, joint SSI couple both in Household of Another gets $13.96 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+      person2:
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # HoA couple rate $13.96 / 2 = $6.98 each
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [6.98, 6.98]
+    mi_ssp: 13.96
+
+- name: Case 23, couple with one in Independent Living and one in Personal Care falls back to individual.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        ssi: 360
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Mismatched LAs → individual rates
+    # person1: IL individual = $14, person2: Personal Care individual = $157.50
+    mi_ssp_eligible: [true, true]
+    mi_ssp_person: [14, 157.50]
+    # SPM unit total = $14 + $157.50 = $171.50
+    mi_ssp: 171.50
+
+- name: Case 24, three SSI recipients in same household sum correctly.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person3:
+        # Third SSI recipient (e.g., adult relative) - not in marital unit
+        ssi: 11_316
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # person1+person2 = couple rate $21 → $10.50 each
+    # person3 = individual rate $14
+    mi_ssp_eligible: [true, true, true]
+    mi_ssp_person: [10.50, 10.50, 14]
+    # SPM unit total = $10.50 + $10.50 + $14 = $35
+    mi_ssp: 35
+
+- name: Case 25, non-Michigan resident SSI recipient gets zero MI SSP.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 11_316
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Non-MI state → defined_for=StateCode.MI zeros mi_ssp
+        state_code: CA
+  output:
+    # defined_for filter on mi_ssp returns 0 outside Michigan
+    mi_ssp: 0
+
+- name: Case 26, child SSI recipient gets Independent Living individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_disabled: true
+        # Child receives federal SSI at 2024 individual FBR
+        # $943/mo = $11,316/yr
+        ssi: 11_316
+        # mi_ssp_living_arrangement defaults to INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # BEM 660 covers all SSI recipients including children; RFT 248
+    # "Eligible Child" rate equals the IL individual rate ($14/mo).
+    mi_ssp_eligible: true
+    mi_ssp_individual_amount: 14
+    mi_ssp_person: 14
+    mi_ssp: 14
+
+- name: Case 27, countable income above SSI break-even zeros the supplement.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        # Unearned income exceeds the federal SSI break-even point so
+        # uncapped_ssi goes negative, ssi = max_(0, uncapped_ssi) = 0,
+        # and the ssi>0 gate in mi_ssp_eligible fails before the
+        # mi_ssp_person income-reduction branch (max_(0, -uncapped_ssi))
+        # can fire. Per BEM 660, no federal SSI in a month → no SSP.
+        social_security_retirement: 30_000
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Countable income > SSI threshold → ssi = 0 → not eligible → mi_ssp = 0
+    mi_ssp_eligible: false
+    mi_ssp_person: 0
+    mi_ssp: 0

@@ -1,0 +1,55 @@
+- name: Case 1, Michigan resident receiving SSI is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo federal SSI = $11,316/yr (individual FBR in 2024)
+        ssi: 11_316
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_eligible: true
+
+- name: Case 2, Michigan resident not receiving SSI is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_eligible: false
+
+- name: Case 3, non-Michigan resident receiving SSI is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo federal SSI = $11,316/yr (individual FBR in 2024)
+        ssi: 11_316
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    mi_ssp_eligible: false
+
+- name: Case 4, categorically eligible but income too high (ssi=0) is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_eligible: false

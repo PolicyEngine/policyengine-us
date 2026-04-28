@@ -1,0 +1,104 @@
+- name: Case 1, Independent Living couple amount frozen at $21 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # $21 / 2 = $10.50 per person
+    mi_ssp_couple_amount: 10.50
+
+- name: Case 2, Household of Another couple amount frozen at $13.96 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # $13.96 / 2 = $6.98 per person
+    mi_ssp_couple_amount: 6.98
+
+- name: Case 3, Domiciliary Care couple in 2024 uses 2024 rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2024 rate $645 / 2 = $322.50 per person
+    mi_ssp_couple_amount: 322.50
+
+- name: Case 4, Personal Care couple in 2026 uses 2026 rate.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2026 rate $812 / 2 = $406 per person
+    mi_ssp_couple_amount: 406
+
+- name: Case 5, Home for Aged couple in 2020 uses 2020 rate.
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: HOME_FOR_AGED
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2020 rate $749.60 / 2 = $374.80 per person
+    mi_ssp_couple_amount: 374.80
+
+- name: Case 6, Institution couple frozen at $14 total.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: INSTITUTION
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # $14 / 2 = $7 per person
+    mi_ssp_couple_amount: 7
+
+- name: Case 7, Domiciliary Care couple in 2016 uses 2016 rate.
+  absolute_error_margin: 0.01
+  period: 2016-01
+  input:
+    people:
+      person1:
+        mi_ssp_living_arrangement: DOMICILIARY_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2016 rate $540 / 2 = $270 per person
+    mi_ssp_couple_amount: 270

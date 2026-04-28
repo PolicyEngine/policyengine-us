@@ -1,0 +1,90 @@
+- name: Case 1, single eligible person sums to individual amount.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Single person IL = $14
+    mi_ssp: 14
+
+- name: Case 2, joint couple in same arrangement sums per-person amounts.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Couple rate $21 total ($10.50 + $10.50)
+    mi_ssp: 21
+
+- name: Case 3, no one receives SSI so SPM unit total is zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp: 0
+
+- name: Case 4, non-Michigan SPM unit gets zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    mi_ssp: 0
