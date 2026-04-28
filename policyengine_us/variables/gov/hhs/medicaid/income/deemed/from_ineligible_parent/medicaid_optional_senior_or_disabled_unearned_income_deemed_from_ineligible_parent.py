@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
+    _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
 
 
@@ -56,12 +56,15 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard.individual[
             state
         ]
-        net_parental_deemed_income = _apply_ssi_exclusions(
-            parental_earned_income,
-            parental_unearned_income,
-            parameters,
-            period,
-            general_exclusion=general_disregard,
+        net_parental_deemed_income = (
+            _apply_medicaid_optional_senior_or_disabled_exclusions(
+                parental_earned_income,
+                parental_unearned_income,
+                state,
+                general_disregard,
+                parameters,
+                period,
+            )
         )
         net_parental_deemed_income = max_(
             0, net_parental_deemed_income - parental_allocations

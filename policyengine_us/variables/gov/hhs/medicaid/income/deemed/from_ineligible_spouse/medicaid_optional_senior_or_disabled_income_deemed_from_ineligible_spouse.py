@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
+    _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
 
 
@@ -31,19 +31,21 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         state = person.household("state_code_str", period)
 
-        alone_countable = _apply_ssi_exclusions(
+        alone_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             individual_earned,
             individual_unearned,
+            state,
+            p.individual[state],
             parameters,
             period,
-            general_exclusion=p.individual[state],
         )
-        couple_countable = _apply_ssi_exclusions(
+        couple_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             individual_earned + spouse_earned,
             individual_unearned + spouse_unearned,
+            state,
+            p.couple[state],
             parameters,
             period,
-            general_exclusion=p.couple[state],
         )
 
         deemed_amount = max_(0, couple_countable - alone_countable)
