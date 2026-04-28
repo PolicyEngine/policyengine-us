@@ -5,17 +5,6 @@ class ky_ssp(Variable):
     value_type = float
     entity = Person
     label = "Kentucky State Supplementary Payment"
-    documentation = (
-        "Kentucky State Supplementation per 921 KAR 2:015 and KRS 205.245. "
-        "Four covered living arrangements per §4(1)(c): Personal Care Home "
-        "(PCH), Family Care Home (FCH), Community Integration Supplementation "
-        "(CIS, for residents with severe mental illness), and Caretaker "
-        "Services in a private residence. Medicaid/Title XIX nursing home "
-        "residents are NOT covered by this program. SSI receipt is not "
-        "required (§4(1)(b) — Group 2 pathway): applicants meeting SSI "
-        "categorical criteria whose countable income is below the §9 "
-        "standard of need receive a supplement."
-    )
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.KY
@@ -26,7 +15,7 @@ class ky_ssp(Variable):
         "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLV.pdf#page=5",
     )
 
-    def formula(person, period):
+    def formula(person, period, parameters):
         # §8(2): supplement = max(0, standard_of_need − countable_income).
         # For eligible joint couples (§9(2)), SSI already attributes combined
         # income equally to each spouse via ssi_marital_{earned,unearned}_income,

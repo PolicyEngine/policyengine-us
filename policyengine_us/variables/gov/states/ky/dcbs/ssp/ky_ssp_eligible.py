@@ -12,7 +12,7 @@ class ky_ssp_eligible(Variable):
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=7671",
     )
 
-    def formula(person, period):
+    def formula(person, period, parameters):
         # 921 KAR 2:015 §4(1) — Group 2 pathway. An eligible individual must
         # meet SSI categorical criteria (ABD, resources, immigration) and
         # have income below the state standard. Actual SSI receipt is NOT
