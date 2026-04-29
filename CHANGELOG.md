@@ -1,3 +1,10 @@
+## [1.673.1] - 2026-04-29
+
+### Fixed
+
+- Split medical expenses into program-specific variables and remove the generic medical out-of-pocket expense aggregate.
+
+
 ## [1.672.0] - 2026-04-28
 
 ### Added
