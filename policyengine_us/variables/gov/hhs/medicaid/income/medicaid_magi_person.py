@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 
 
+PERSON_LEVEL_MEDICAID_MAGI_ADDITIONS = ["tax_exempt_interest_income"]
+
+
 class medicaid_magi_person(Variable):
     value_type = float
     entity = Person
@@ -18,7 +21,7 @@ class medicaid_magi_person(Variable):
         person_level_additions = [
             addition
             for addition in additions
-            if addition == "tax_exempt_interest_income"
+            if addition in PERSON_LEVEL_MEDICAID_MAGI_ADDITIONS
         ]
         tax_unit_level_additions = [
             addition for addition in additions if addition not in person_level_additions

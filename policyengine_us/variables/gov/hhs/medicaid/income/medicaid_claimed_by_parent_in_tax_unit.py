@@ -12,8 +12,11 @@ class medicaid_claimed_by_parent_in_tax_unit(Variable):
 
     def formula(person, period, parameters):
         # In tax-unit-only inputs, child dependents are usually the filer's
-        # children even when own_children_in_household is not provided.
+        # children even when parent-child links are not provided.
+        has_parent_filer_in_tax_unit = person.tax_unit.any(
+            person("is_parent", period) & person("is_tax_unit_head_or_spouse", period)
+        )
         return person("is_tax_unit_dependent", period) & (
             person("is_qualifying_child_dependent", period)
-            | (person.tax_unit.sum(person("is_parent", period)) > 0)
+            | has_parent_filer_in_tax_unit
         )

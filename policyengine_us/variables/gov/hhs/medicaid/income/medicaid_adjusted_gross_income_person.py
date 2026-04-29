@@ -1,6 +1,19 @@
 from policyengine_us.model_api import *
 
 
+PERSON_LEVEL_MEDICAID_AGI_ALDS = [
+    "self_employment_tax_ald_person",
+    "self_employed_health_insurance_ald_person",
+    "self_employed_pension_contribution_ald_person",
+]
+
+TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS = (
+    "self_employment_tax_ald",
+    "self_employed_health_insurance_ald",
+    "self_employed_pension_contribution_ald",
+)
+
+
 class medicaid_adjusted_gross_income_person(Variable):
     value_type = float
     entity = Person
@@ -11,22 +24,12 @@ class medicaid_adjusted_gross_income_person(Variable):
 
     def formula(person, period, parameters):
         gross_income = person("medicaid_irs_gross_income", period)
-        person_ald_vars = [
-            "self_employment_tax_ald_person",
-            "self_employed_health_insurance_ald_person",
-            "self_employed_pension_contribution_ald_person",
-        ]
-        ald_sum_person = add(person, period, person_ald_vars)
+        ald_sum_person = add(person, period, PERSON_LEVEL_MEDICAID_AGI_ALDS)
         all_alds = parameters(period).gov.irs.ald.deductions
         other_alds = [
             ald
             for ald in all_alds
-            if ald
-            not in (
-                "self_employment_tax_ald",
-                "self_employed_health_insurance_ald",
-                "self_employed_pension_contribution_ald",
-            )
+            if ald not in TAX_UNIT_AGI_ALDS_WITH_PERSON_LEVEL_EQUIVALENTS
         ]
         ald_sum_taxunit = add(person.tax_unit, period, other_alds)
         filing_status = person.tax_unit("filing_status", period)

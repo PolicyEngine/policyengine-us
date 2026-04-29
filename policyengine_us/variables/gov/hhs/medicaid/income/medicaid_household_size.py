@@ -12,25 +12,26 @@ class medicaid_household_size(Variable):
     )
 
     def formula(person, period, parameters):
-        child = person("medicaid_non_filer_child_age_eligible", period)
+        child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
         non_filer_rules = person("medicaid_uses_non_filer_rules", period)
-        family_child_count = person.family.sum(
-            person("medicaid_non_filer_child_age_eligible", period)
-        )
+        family_child_count = person.family.sum(child_age_eligible)
         family_parent_count = person.family.sum(person("is_parent", period))
-        same_unit_spouse_count = person("is_tax_unit_head_or_spouse", period).astype(
-            int
-        ) * (person.tax_unit("head_spouse_count", period) - 1)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        same_unit_spouse_count = head_or_spouse.astype(int) * (
+            person.tax_unit("head_spouse_count", period) - 1
+        )
         cohabitating_separate = person.tax_unit("cohabitating_spouses", period) & (
             person.tax_unit("head_spouse_count", period) == 1
         )
-        separate_spouse_count = (
-            person("is_tax_unit_head_or_spouse", period)
-            | person("claimed_as_dependent_on_another_return", period)
-        ).astype(int) * cohabitating_separate.astype(int)
+        claimed_by_another_return = person(
+            "claimed_as_dependent_on_another_return", period
+        )
+        separate_spouse_count = (head_or_spouse | claimed_by_another_return).astype(
+            int
+        ) * cohabitating_separate.astype(int)
         spouse_count = same_unit_spouse_count + separate_spouse_count
         non_filer_household_size = where(
-            child,
+            child_age_eligible,
             spouse_count + family_parent_count + family_child_count,
             1 + spouse_count + family_child_count,
         )
