@@ -23,7 +23,7 @@ class medicare_cost(Variable):
 
         # Premiums paid by beneficiary
         part_a_premium = person("base_part_a_premium", period)
-        part_b_premium = person("income_adjusted_part_b_premium", period)
+        part_b_premium = person("medicare_part_b_premium", period)
         total_premiums = part_a_premium + part_b_premium
 
         # Net benefit = spending - premiums
