@@ -5,7 +5,7 @@
 # Deductions per Appendix A Part II:
 #   A. alimony_expense
 #   B. child_support_expense
-#   C. medical_out_of_pocket_expenses > 10% of gross monthly income
+#   C. other_medical_expenses > 10% of gross monthly income
 
 - name: Case 1, no deductions.
   period: 2025
@@ -92,7 +92,7 @@
       person1:
         age: 35
         employment_income: 36_000
-        medical_out_of_pocket_expenses: 6_000
+        other_medical_expenses: 6_000
       person2:
         age: 4
     spm_units:

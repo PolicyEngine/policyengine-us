@@ -4,6 +4,7 @@
   input:
     age: 40
     employment_income: 100_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
@@ -16,6 +17,7 @@
   input:
     age: 40
     employment_income: 100_000 + 2_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
@@ -28,6 +30,7 @@
   input:
     age: 40
     employment_income: 100_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:  # as expected from above two test results
