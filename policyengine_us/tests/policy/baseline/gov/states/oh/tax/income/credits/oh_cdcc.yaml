@@ -1,17 +1,13 @@
-# ORC § 5747.054(A): AGI < $20,000 gets 100% of cdcc_potential (no § 26 cap).
-# AGI $20,000-$39,999 gets 25% of cdcc (limited by § 26). AGI >= $40,000 gets $0.
-
 - name: Low-income filer uses cdcc_potential (100%, AGI below threshold)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 19_999
-    cdcc_potential: 2_000
-    cdcc: 1_500
+    oh_modified_agi: 19999
+    cdcc_potential: 2000
+    cdcc: 1500
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    # Uses cdcc_potential (2_000) because AGI < 20_000
-    oh_cdcc: 2_000
-
+    oh_cdcc: 2000
 - name: Low-income filer at zero AGI
   period: 2021
   input:
@@ -19,59 +15,56 @@
     oh_modified_agi: 0
     cdcc_potential: 500
     cdcc: 200
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    # Uses cdcc_potential (500) because AGI < 20_000
     oh_cdcc: 500
-
 - name: Middle-income filer uses cdcc (25%, AGI at lower threshold)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 20_000
-    cdcc_potential: 2_000
-    cdcc: 1_200
+    oh_modified_agi: 20000
+    cdcc_potential: 2000
+    cdcc: 1200
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    # Uses cdcc (1_200), not cdcc_potential (2_000), because AGI >= 20_000
     oh_cdcc: 300
-
 - name: Middle-income filer uses cdcc (25%, AGI solidly in middle bracket)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 39_999
-    cdcc_potential: 2_000
-    cdcc: 1_600
+    oh_modified_agi: 39999
+    cdcc_potential: 2000
+    cdcc: 1600
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    # Uses cdcc (1_600), not cdcc_potential (2_000)
     oh_cdcc: 400
-
 - name: Middle-income filer where cdcc equals cdcc_potential (no section 26 reduction)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 30_000
-    cdcc_potential: 2_000
-    cdcc: 2_000
+    oh_modified_agi: 30000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
-    # cdcc = cdcc_potential here, so result is 25% of 2_000
     oh_cdcc: 500
-
 - name: High-income filer is ineligible (AGI at upper threshold)
   period: 2021
   input:
     state_code: OH
-    oh_modified_agi: 40_000
-    cdcc_potential: 2_000
-    cdcc: 2_000
+    oh_modified_agi: 40000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_cdcc: 0
-
 - name: Out-of-state filer is ineligible
   period: 2021
   input:
     state_code: CA
-    oh_modified_agi: 10_000
-    cdcc_potential: 2_000
-    cdcc: 2_000
+    oh_modified_agi: 10000
+    cdcc_potential: 2000
+    cdcc: 2000
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_cdcc: 0

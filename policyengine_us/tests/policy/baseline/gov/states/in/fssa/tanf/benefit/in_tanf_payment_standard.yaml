@@ -49,6 +49,30 @@
   output:
     in_tanf_payment_standard: 515
 
+- name: Payment standard for family of 7
+  period: 2024-01
+  input:
+    spm_unit_size: 7
+    state_code: IN
+  output:
+    in_tanf_payment_standard: 580
+
+- name: Payment standard for family of 8
+  period: 2024-01
+  input:
+    spm_unit_size: 8
+    state_code: IN
+  output:
+    in_tanf_payment_standard: 645
+
+- name: Payment standard for family of 9
+  period: 2024-01
+  input:
+    spm_unit_size: 9
+    state_code: IN
+  output:
+    in_tanf_payment_standard: 710
+
 - name: Payment standard for family of 10
   period: 2024-01
   input:

@@ -51,8 +51,8 @@ def create_aca_ptc_simplified_bracket() -> Reform:
             immigration_eligible = person(
                 "is_aca_ptc_immigration_status_eligible", period
             )
-            taxpayer_has_itin = person.tax_unit("taxpayer_has_itin", period)
-            is_status_eligible = taxpayer_has_itin & ~separate & immigration_eligible
+            taxpayer_has_tin = person.tax_unit("taxpayer_has_tin", period)
+            is_status_eligible = taxpayer_has_tin & ~separate & immigration_eligible
 
             # determine coverage eligibility for ACA plan
             INELIGIBLE_COVERAGE = [

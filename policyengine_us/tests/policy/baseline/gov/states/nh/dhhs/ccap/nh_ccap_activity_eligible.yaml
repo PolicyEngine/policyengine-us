@@ -1,0 +1,166 @@
+- name: Case 1, single employed parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: true
+
+- name: Case 2, single student parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        is_full_time_student: true
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: true
+
+- name: Case 3, single disabled parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: true
+
+- name: Case 4, single unemployed non-student non-disabled parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: false
+
+- name: Case 5, two employed parents.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+        is_full_time_student: false
+        is_disabled: false
+      person3:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: true
+
+- name: Case 6, two parents one employed one not qualifying.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person3:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: false
+
+- name: Case 7, child does not affect activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 20
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 10
+        is_tax_unit_head_or_spouse: false
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_activity_eligible: true

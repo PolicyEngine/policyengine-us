@@ -1,0 +1,36 @@
+# Unit tests for pa_ccw_has_stepparent
+# Bare input variable indicating whether a stepparent is in the household
+# Used to gate stepparent deduction (Appendix C)
+
+- name: Case 1, default no stepparent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_has_stepparent: false
+
+- name: Case 2, has stepparent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_ccw_has_stepparent: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_has_stepparent: true

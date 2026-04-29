@@ -1,0 +1,161 @@
+- name: Case 1, income below need standard and below income cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928  # $994/mo
+        employment_income: 0
+        rent: 12_000  # $1,000/mo -> shelter $400
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Need = $400 + $198.55 = $598.55
+    # Countable = max(0, 994 - 562) = $432
+    # Gross = $994 < $2,982 income cap
+    # $432 < $598.55 -> income eligible
+    ct_ssp_income_eligible: true
+
+- name: Case 2, gross income exceeds 300% SSI cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 0
+        employment_income: 36_000  # $3,000/mo > $2,982 cap
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Gross = $3,000 > $2,982 income cap -> ineligible
+    ct_ssp_income_eligible: false
+
+- name: Case 3, gross income at exactly 300% SSI cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 0
+        employment_income: 35_784  # $2,982/mo = 300% * $994
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Gross = $2,982 <= $2,982 income cap -> passes cap test
+    # But countable income may still exceed need standard
+    # Earned disregard (aged) = $65 + 0.5 * (2982 - 65) = $1,523.50
+    # Countable earned = 2982 - 1523.50 = $1,458.50
+    # Need = $598.55
+    # $1,458.50 > $598.55 -> income NOT eligible
+    ct_ssp_income_eligible: false
+
+- name: Case 4, gross income one dollar above 300% SSI cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 0
+        employment_income: 35_796  # $2,983/mo > $2,982 cap
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Gross = $2,983 > $2,982 cap -> fails cap test -> ineligible
+    ct_ssp_income_eligible: false
+
+- name: Case 5, countable income exactly equals need standard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        # Need to engineer countable == need ($597.35)
+        # Need = PNA $197.35 + Shelter $400 = $597.35
+        # Want: countable_unearned + countable_earned = $597.35
+        # With SSI = $994/mo, countable_unearned = max(0, 994 - 562) = $432
+        # Need countable_earned = 597.35 - 432 = $165.35
+        # After disregard: earned - disregard = $165.35
+        # Disregard = $65 + 0.5 * (earned - 65)
+        # 0.5*(earned-65) = 165.35
+        # earned - 65 = 330.70
+        # earned = 395.70
+        ssi: 11_928  # $994/mo
+        employment_income: 4_748.40  # $395.70/mo
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Countable unearned = max(0, 994 - 562) = $432
+    # Earned disregard = $65 + 0.5 * (395.70 - 65) = $65 + $165.35 = $230.35
+    # Countable earned = 395.70 - 230.35 = $165.35
+    # Countable total = 432 + 165.35 = $597.35
+    # Need = $597.35
+    # Countable $597.35 <= Need $597.35 -> income eligible (<=)
+    ct_ssp_income_eligible: true
+
+- name: Case 6, zero income person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 0
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Gross = $0 <= $2,982 cap
+    # Countable = $0 <= Need $598.55
+    ct_ssp_income_eligible: true

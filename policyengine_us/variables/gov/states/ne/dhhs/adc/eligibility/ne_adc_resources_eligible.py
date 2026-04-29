@@ -14,8 +14,8 @@ class ne_adc_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.adc
-        # spm_unit_assets is a YEAR variable
-        countable_resources = spm_unit("spm_unit_assets", period)
+        # Count explicitly modeled liquid financial assets.
+        countable_resources = spm_unit("spm_unit_cash_assets", period)
         size = spm_unit("spm_unit_size", period)
         # Resource limits: $4,000 for 1 person, $6,000 for 2+ persons
         limit = p.resources.limit.calc(size)

@@ -4,25 +4,44 @@ Selective test runner for PolicyEngine US.
 Runs only tests relevant to changed files to reduce test execution time.
 """
 
+import argparse
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Set, List, Dict
-import re
-import argparse
+from typing import Dict, List, Set
+
+
+SOURCE_FILE_SUFFIXES = (".py", ".yaml", ".yml")
+TEST_INFRASTRUCTURE_FILES = ("run_selective_tests.py", "test_batched.py")
+CRITICAL_TEST_TRIGGER_FILES = ("pyproject.toml", "requirements", "Makefile")
+STOP_TEST_DIRS = frozenset(
+    {
+        Path("policyengine_us/tests/policy/baseline"),
+        Path("policyengine_us/tests/policy/contrib"),
+        Path("policyengine_us/tests/policy/reform"),
+        Path("policyengine_us/tests"),
+    }
+)
 
 
 class SelectiveTestRunner:
     def __init__(self, base_branch: str = "master"):
         self.base_branch = base_branch
-        self.repo_root = Path.cwd()
+        self.max_test_targets = int(os.environ.get("SELECTIVE_TEST_MAX_TARGETS", "25"))
+        self.max_test_files = int(os.environ.get("SELECTIVE_TEST_MAX_FILES", "250"))
 
         # Define regex patterns for matching files to tests
         # Paths that contain only aggregation lists and should not
         # trigger any tests (the Full Suite already covers them).
         self.skip_patterns = [
             r"policyengine_us/parameters/gov/states/household/",
+            # Registry files only import reforms; the Full Suite covers them.
+            r"policyengine_us/reforms/reforms\.py$",
+            r"policyengine_us/reforms/[^/]+/__init__\.py$",
+            # Lock files have no test relevance.
+            r"uv\.lock$",
         ]
 
         self.test_patterns = [
@@ -40,6 +59,11 @@ class SelectiveTestRunner:
             {
                 "file_pattern": r"policyengine_us/(parameters|variables)/gov/local/([^/]+)",
                 "test_pattern": r"policyengine_us/tests/policy/baseline/gov/local/\2",
+            },
+            # Match state-specific reforms to state-specific contrib tests
+            {
+                "file_pattern": r"policyengine_us/reforms/states/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/states/\1",
             },
             # Match reforms in specific organization folders to their contrib test folders
             # (exclude states/, congress/, and local/ which have their own patterns below)
@@ -67,9 +91,14 @@ class SelectiveTestRunner:
                 "file_pattern": r"policyengine_us/parameters/contrib/",
                 "test_pattern": r"policyengine_us/tests/policy/contrib",
             },
+            # Match gov/contrib/states parameters to state-specific contrib tests
+            {
+                "file_pattern": r"policyengine_us/parameters/gov/contrib/states/([^/]+)",
+                "test_pattern": r"policyengine_us/tests/policy/contrib/states/\1",
+            },
             # Match gov/contrib parameters to their specific contrib subfolder tests
             {
-                "file_pattern": r"policyengine_us/parameters/gov/contrib/([^/]+)/",
+                "file_pattern": r"policyengine_us/parameters/gov/contrib/(?!states/)([^/]+)/",
                 "test_pattern": r"policyengine_us/tests/policy/contrib/\1",
             },
             # Match household variables to household tests
@@ -120,15 +149,75 @@ class SelectiveTestRunner:
             },
         ]
 
+    @staticmethod
+    def run_git_command(*args):
+        return subprocess.run(["git", *args], capture_output=True, text=True)
+
+    @staticmethod
+    def get_output_lines(result) -> Set[str]:
+        return {line for line in result.stdout.splitlines() if line}
+
+    @staticmethod
+    def is_supported_source_file(path: str) -> bool:
+        return path.endswith(SOURCE_FILE_SUFFIXES)
+
+    @staticmethod
+    def is_test_file(path: str) -> bool:
+        return path.startswith("policyengine_us/tests/") and path.endswith(
+            SOURCE_FILE_SUFFIXES
+        )
+
+    @staticmethod
+    def is_test_infrastructure_file(path: str) -> bool:
+        return path.endswith(TEST_INFRASTRUCTURE_FILES)
+
+    def get_direct_changed_tests(self, changed_files: Set[str]) -> Set[str]:
+        return {
+            file
+            for file in changed_files
+            if self.is_test_file(file) and not self.is_test_infrastructure_file(file)
+        }
+
+    def get_diff_files(self, base_ref: str):
+        result = self.run_git_command("diff", f"{base_ref}...HEAD", "--name-only")
+        if result.returncode == 0:
+            return self.get_output_lines(result)
+        print(f"Could not diff against {base_ref}")
+        return None
+
+    def get_uncommitted_changes(self) -> Set[str]:
+        changed_files = set()
+
+        staged = self.get_output_lines(
+            self.run_git_command("diff", "--cached", "--name-only")
+        )
+        if staged:
+            changed_files.update(staged)
+            print(f"  Found {len(staged)} staged changes")
+
+        unstaged = self.get_output_lines(self.run_git_command("diff", "--name-only"))
+        if unstaged:
+            changed_files.update(unstaged)
+            print(f"  Found {len(unstaged)} unstaged changes")
+
+        untracked = {
+            file
+            for file in self.get_output_lines(
+                self.run_git_command("ls-files", "--others", "--exclude-standard")
+            )
+            if self.is_supported_source_file(file)
+        }
+        if untracked:
+            changed_files.update(untracked)
+            print(f"  Found {len(untracked)} untracked Python/YAML files")
+
+        return changed_files
+
     def get_changed_files(self) -> Set[str]:
         """Get list of changed files compared to base branch."""
         try:
             # Check if we're in a git repository
-            git_dir_result = subprocess.run(
-                ["git", "rev-parse", "--git-dir"],
-                capture_output=True,
-                text=True,
-            )
+            git_dir_result = self.run_git_command("rev-parse", "--git-dir")
 
             if git_dir_result.returncode != 0:
                 print(f"Error: Not in a git repository. Error: {git_dir_result.stderr}")
@@ -143,128 +232,23 @@ class SelectiveTestRunner:
                 print(f"Detected GitHub Actions PR build against {github_base_ref}")
 
                 # GitHub Actions already has the base branch fetched
-                result = subprocess.run(
-                    [
-                        "git",
-                        "diff",
-                        f"origin/{github_base_ref}...HEAD",
-                        "--name-only",
-                    ],
-                    capture_output=True,
-                    text=True,
-                )
-
-                if result.returncode == 0:
-                    files = result.stdout.strip().split("\n")
-                    changed_files = set(f for f in files if f)
+                changed_files = self.get_diff_files(f"origin/{github_base_ref}")
+                if changed_files is not None:
                     return changed_files
-                else:
-                    print(
-                        f"Failed to diff against origin/{github_base_ref}: {result.stderr}"
-                    )
 
             # Try to fetch the base branch (but don't fail if offline)
-            fetch_result = subprocess.run(
-                ["git", "fetch", "origin", self.base_branch],
-                capture_output=True,
-                text=True,
-            )
+            fetch_result = self.run_git_command("fetch", "origin", self.base_branch)
 
             if fetch_result.returncode != 0:
                 print(f"Warning: Could not fetch from origin (working offline?)")
 
-            # Try different methods to get changed files
-            changed_files = set()
+            for base_ref in (f"origin/{self.base_branch}", self.base_branch):
+                changed_files = self.get_diff_files(base_ref)
+                if changed_files is not None:
+                    return changed_files
 
-            # Method 1: Compare with origin/base_branch
-            result = subprocess.run(
-                [
-                    "git",
-                    "diff",
-                    f"origin/{self.base_branch}...HEAD",
-                    "--name-only",
-                ],
-                capture_output=True,
-                text=True,
-            )
-
-            if result.returncode == 0:
-                files = result.stdout.strip().split("\n")
-                changed_files.update(f for f in files if f)
-            else:
-                print(f"Could not diff against origin/{self.base_branch}")
-
-                # Method 2: Try without origin/ prefix (local branch)
-                result = subprocess.run(
-                    [
-                        "git",
-                        "diff",
-                        f"{self.base_branch}...HEAD",
-                        "--name-only",
-                    ],
-                    capture_output=True,
-                    text=True,
-                )
-
-                if result.returncode == 0:
-                    files = result.stdout.strip().split("\n")
-                    changed_files.update(f for f in files if f)
-                else:
-                    # Method 3: Get uncommitted changes
-                    print("Falling back to uncommitted changes...")
-
-                    # Staged changes
-                    result = subprocess.run(
-                        ["git", "diff", "--cached", "--name-only"],
-                        capture_output=True,
-                        text=True,
-                    )
-                    if result.returncode == 0 and result.stdout.strip():
-                        files = result.stdout.strip().split("\n")
-                        staged = [f for f in files if f]
-                        changed_files.update(staged)
-                        if staged:
-                            print(f"  Found {len(staged)} staged changes")
-
-                    # Unstaged changes
-                    result = subprocess.run(
-                        ["git", "diff", "--name-only"],
-                        capture_output=True,
-                        text=True,
-                    )
-                    if result.returncode == 0 and result.stdout.strip():
-                        files = result.stdout.strip().split("\n")
-                        unstaged = [f for f in files if f]
-                        changed_files.update(unstaged)
-                        if unstaged:
-                            print(f"  Found {len(unstaged)} unstaged changes")
-
-                    # Untracked files
-                    result = subprocess.run(
-                        ["git", "ls-files", "--others", "--exclude-standard"],
-                        capture_output=True,
-                        text=True,
-                    )
-                    if result.returncode == 0 and result.stdout.strip():
-                        files = result.stdout.strip().split("\n")
-                        # Only include Python and YAML files
-                        untracked = [
-                            f
-                            for f in files
-                            if f
-                            and (
-                                f.endswith(".py")
-                                or f.endswith(".yaml")
-                                or f.endswith(".yml")
-                            )
-                        ]
-                        changed_files.update(untracked)
-                        if untracked:
-                            print(
-                                f"  Found {len(untracked)} untracked Python/YAML files"
-                            )
-
-            return changed_files
+            print("Falling back to uncommitted changes...")
+            return self.get_uncommitted_changes()
 
         except subprocess.CalledProcessError as e:
             print(f"Error running git command: {e}")
@@ -280,19 +264,17 @@ class SelectiveTestRunner:
         test_paths = set()
 
         for file in changed_files:
+            # Changed test files are already the most precise signal.
+            if self.is_test_file(file):
+                if not self.is_test_infrastructure_file(file):
+                    test_paths.add(file)
+                continue
+
             # Skip non-Python and non-YAML files unless they're critical
-            if not (
-                file.endswith(".py") or file.endswith(".yaml") or file.endswith(".yml")
+            if not self.is_supported_source_file(file) and not any(
+                critical in file for critical in CRITICAL_TEST_TRIGGER_FILES
             ):
-                if not any(
-                    critical in file
-                    for critical in [
-                        "pyproject.toml",
-                        "requirements",
-                        "Makefile",
-                    ]
-                ):
-                    continue
+                continue
 
             # Skip files that are aggregation-only and need no
             # selective tests (the Full Suite already covers them).
@@ -303,11 +285,6 @@ class SelectiveTestRunner:
             for pattern in self.test_patterns:
                 match = re.search(pattern["file_pattern"], file)
                 if match:
-                    # Substitute captured groups into test pattern
-                    test_path = re.sub(
-                        pattern["file_pattern"], pattern["test_pattern"], file
-                    )
-                    # Extract just the matched portion
                     test_path = match.expand(pattern["test_pattern"])
                     test_paths.add(test_path)
 
@@ -315,16 +292,6 @@ class SelectiveTestRunner:
                     for comp_pattern in self.component_patterns:
                         if re.search(comp_pattern["file_pattern"], file):
                             test_paths.add(comp_pattern["test_pattern"])
-
-            # Special handling for test files themselves
-            if "tests" in file and file.endswith(".py"):
-                # Skip test infrastructure files that shouldn't trigger all tests
-                if file.endswith(("run_selective_tests.py", "test_batched.py")):
-                    continue
-                # Add the directory containing the test file
-                test_dir = os.path.dirname(file)
-                if test_dir:
-                    test_paths.add(test_dir)
 
         # Filter out non-existent paths and return
         existing_test_paths = set()
@@ -335,6 +302,9 @@ class SelectiveTestRunner:
                 # Try to find the closest existing parent directory
                 path_obj = Path(path)
                 while path_obj.parent != path_obj:
+                    # Stop walking if we've reached a base test directory
+                    if path_obj in STOP_TEST_DIRS:
+                        break
                     if path_obj.exists() and path_obj.is_dir():
                         # Check if this directory contains test files
                         if any(path_obj.glob("**/test_*.py")) or any(
@@ -345,6 +315,52 @@ class SelectiveTestRunner:
                     path_obj = path_obj.parent
 
         return existing_test_paths
+
+    def count_test_files(self, test_paths: Set[str]) -> int:
+        total = 0
+        for path in test_paths:
+            path_obj = Path(path)
+            if path_obj.is_file():
+                total += 1
+            elif path_obj.is_dir():
+                total += sum(
+                    1
+                    for file in path_obj.rglob("*")
+                    if file.is_file() and file.suffix in SOURCE_FILE_SUFFIXES
+                )
+        return total
+
+    def limit_test_paths(
+        self, test_paths: Set[str], changed_files: Set[str]
+    ) -> Set[str]:
+        total_test_files = self.count_test_files(test_paths)
+        if (
+            len(test_paths) <= self.max_test_targets
+            and total_test_files <= self.max_test_files
+        ):
+            return test_paths
+
+        direct_changed_tests = self.get_direct_changed_tests(changed_files)
+        bounded_test_paths = direct_changed_tests | {
+            path for path in test_paths if Path(path).is_file()
+        }
+
+        print(
+            "\nSelective test scope is too broad for quick feedback "
+            f"({len(test_paths)} targets / ~{total_test_files} test files)."
+        )
+        if bounded_test_paths:
+            print(
+                "Running only directly changed tests and explicit file targets; "
+                "the full suite jobs provide exhaustive coverage."
+            )
+            return bounded_test_paths
+
+        print(
+            "No directly changed tests were found, so Quick Feedback will skip "
+            "broad directory-level selective tests and defer to the full suites."
+        )
+        return set()
 
     def run_tests(
         self,
@@ -365,8 +381,6 @@ class SelectiveTestRunner:
         # Construct pytest command
         if with_coverage:
             # Use coverage to run the tests
-            import sys
-
             # First check if coverage is importable
             try:
                 import coverage
@@ -389,17 +403,20 @@ class SelectiveTestRunner:
             else:
                 # Fallback to directory-based patterns if no changed files provided
                 for test_path in test_paths:
+                    base_test_path = test_path
+                    if Path(test_path).is_file():
+                        base_test_path = str(Path(test_path).parent)
                     # Convert test path to variable path
-                    if "tests/policy/baseline/" in test_path:
-                        var_path = test_path.replace(
+                    if "tests/policy/baseline/" in base_test_path:
+                        var_path = base_test_path.replace(
                             "tests/policy/baseline/", "variables/"
                         )
                         include_patterns.append(f"{var_path}/**/*.py")
                         include_patterns.append(f"{var_path}/*.py")
-                    elif "tests/policy/reform/" in test_path:
+                    elif "tests/policy/reform/" in base_test_path:
                         include_patterns.append("policyengine_us/reforms/**/*.py")
                         include_patterns.append("policyengine_us/reforms/*.py")
-                    elif "tests/policy/contrib/" in test_path:
+                    elif "tests/policy/contrib/" in base_test_path:
                         include_patterns.append(
                             "policyengine_us/parameters/contrib/**/*.py"
                         )
@@ -432,7 +449,9 @@ class SelectiveTestRunner:
             )
         else:
             pytest_args = [
-                "policyengine-core",
+                sys.executable,
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
                 "test",
                 "-c",
                 "policyengine_us",
@@ -451,7 +470,9 @@ class SelectiveTestRunner:
     def run_all_tests(self) -> int:
         """Run all tests (fallback option)."""
         print("Running all tests...")
-        result = subprocess.run(["pytest", "policyengine_us/tests"])
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "policyengine_us/tests"]
+        )
         return result.returncode
 
     def generate_test_plan(self, changed_files: Set[str]) -> Dict[str, List[str]]:
@@ -459,19 +480,10 @@ class SelectiveTestRunner:
         test_plan = {}
 
         for file in changed_files:
-            if not (
-                file.endswith(".py") or file.endswith(".yaml") or file.endswith(".yml")
-            ):
+            if not self.is_supported_source_file(file):
                 continue
 
-            file_tests = []
-
-            # Check against regex patterns
-            for pattern in self.test_patterns:
-                match = re.search(pattern["file_pattern"], file)
-                if match:
-                    test_path = match.expand(pattern["test_pattern"])
-                    file_tests.append(test_path)
+            file_tests = sorted(self.map_files_to_tests({file}))
 
             if file_tests:
                 test_plan[file] = file_tests
@@ -613,9 +625,11 @@ def main():
     # Map to test paths and run tests
     test_paths = runner.map_files_to_tests(changed_files)
 
+    test_paths = runner.limit_test_paths(test_paths, changed_files)
+
     if not test_paths:
         print("\nNo relevant tests found for changed files.")
-        print("Consider running all tests with --all flag.")
+        print("Quick Feedback deferred to the full suite jobs for exhaustive coverage.")
         sys.exit(0)
 
     sys.exit(

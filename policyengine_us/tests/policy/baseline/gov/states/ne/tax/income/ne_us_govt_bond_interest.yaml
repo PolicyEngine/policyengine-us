@@ -1,0 +1,7 @@
+- name: NE subtracts US government bond interest from AGI
+  period: 2024
+  input:
+    state_code: NE
+    us_govt_interest: 5_000
+  output:
+    ne_agi_subtractions: 5_000

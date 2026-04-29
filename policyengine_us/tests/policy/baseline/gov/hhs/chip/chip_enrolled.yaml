@@ -1,0 +1,23 @@
+- name: CHIP-eligible and takes up - enrolled
+  period: 2026
+  input:
+    is_chip_eligible: true
+    chip_take_up_seed: 0.5
+  output:
+    chip_enrolled: true
+
+- name: CHIP-eligible but non-enroller - not enrolled
+  period: 2026
+  input:
+    is_chip_eligible: true
+    chip_take_up_seed: 0.99
+  output:
+    chip_enrolled: false
+
+- name: Not CHIP-eligible - not enrolled regardless of seed
+  period: 2026
+  input:
+    is_chip_eligible: false
+    chip_take_up_seed: 0.1
+  output:
+    chip_enrolled: false

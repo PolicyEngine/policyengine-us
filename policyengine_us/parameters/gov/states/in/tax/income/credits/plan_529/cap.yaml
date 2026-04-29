@@ -1,0 +1,28 @@
+description: Indiana caps the 529 plan credit at this amount by filing status.
+metadata:
+  label: Indiana 529 plan credit cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Indiana Code IC 6-3-3-12
+    href: https://law.justia.com/codes/indiana/title-6/article-3/chapter-3/section-6-3-3-12/
+  - title: Indiana Department of Revenue Information Bulletin 98
+    href: https://www.in.gov/dor/files/ib98.pdf
+
+JOINT:
+  2021-01-01: 1_000
+  2023-01-01: 1_500
+SURVIVING_SPOUSE:
+  2021-01-01: 1_000
+  2023-01-01: 1_500
+SINGLE:
+  2021-01-01: 1_000
+  2023-01-01: 1_500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 1_000
+  2023-01-01: 1_500
+SEPARATE:
+  2021-01-01: 500
+  2023-01-01: 750

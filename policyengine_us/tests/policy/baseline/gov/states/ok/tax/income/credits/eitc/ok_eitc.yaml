@@ -1,6 +1,8 @@
-# Oklahoma EITC Tests
-# Oklahoma EITC = 5% of federal EITC * (OK AGI / Federal AGI ratio)
-# Per Form 511-EIC and Schedule 511-G
+# Oklahoma EITC tests
+# Refundability history:
+#   2002-2015: refundable (Laws 2001, c. 383)
+#   2016-2021: non-refundable (Laws 2016, c. 341 sec. 1)
+#   2022-present: refundable (HB 2962, Laws 2021, c. 493 sec. 2)
 
 - name: OK EITC - unit test - part-year resident ratio
   period: 2021
@@ -10,8 +12,65 @@
     ok_federal_eitc: 2_000
     state_code: OK
   output:
-    # OK EITC = $2,000 * 5% * (30,000 / 40,000) = $75
+    # Tentative: $2,000 * 5% * (30,000 / 40,000) = $75. Tax on $30k OK AGI
+    # is well above $75, so the non-refundable cap does not bind.
     ok_eitc: 2_000 * 0.05 * (30_000 / 40_000)
+
+- name: OK EITC - 2021 non-refundable cap binds when tax is zero
+  period: 2021
+  input:
+    ok_income_tax_before_credits: 0
+    ok_child_care_child_tax_credit: 0
+    adjusted_gross_income: 10_000
+    ok_agi: 10_000
+    ok_federal_eitc: 500
+    state_code: OK
+  output:
+    # Tentative: $500 * 5% * 1.0 = $25.
+    # 2021 is non-refundable, and OK tax before credits is $0,
+    # so the credit is capped at $0.
+    ok_eitc: 0
+
+- name: OK EITC - 2021 non-refundable cap binds partially
+  period: 2021
+  input:
+    ok_income_tax_before_credits: 10
+    ok_child_care_child_tax_credit: 0
+    adjusted_gross_income: 25_000
+    ok_agi: 25_000
+    ok_federal_eitc: 3_000
+    state_code: OK
+  output:
+    # Tentative: $3,000 * 5% * 1.0 = $150. Remaining tax: $10.
+    # Non-refundable cap binds at $10.
+    ok_eitc: 10
+
+- name: OK EITC - 2022 refundable, no cap applies
+  period: 2022
+  input:
+    ok_income_tax_before_credits: 10
+    ok_child_care_child_tax_credit: 0
+    adjusted_gross_income: 25_000
+    ok_agi: 25_000
+    ok_federal_eitc: 3_000
+    state_code: OK
+  output:
+    # Tentative: $3,000 * 5% * 1.0 = $150. Refundable from 2022 onward,
+    # so the full tentative amount is returned.
+    ok_eitc: 150
+
+- name: OK EITC - 2022 refundable with zero tax still pays full credit
+  period: 2022
+  input:
+    ok_income_tax_before_credits: 0
+    ok_child_care_child_tax_credit: 0
+    adjusted_gross_income: 10_000
+    ok_agi: 10_000
+    ok_federal_eitc: 500
+    state_code: OK
+  output:
+    # Refundable: full credit regardless of tax.
+    ok_eitc: 25
 
 - name: OK EITC - 2024 - HOH with one child
   absolute_error_margin: 2
@@ -51,8 +110,6 @@
     # OK EITC = $3,480 * 5% = $174
     ok_eitc: 174
     ok_income_tax: -239.7
-
-# 2025 EITC Tests
 
 - name: OK EITC - 2025 - full year resident
   period: 2025

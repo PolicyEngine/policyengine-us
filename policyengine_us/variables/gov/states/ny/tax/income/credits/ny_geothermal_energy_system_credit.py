@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ny_geothermal_energy_system_credit(Variable):
@@ -12,9 +15,14 @@ class ny_geothermal_energy_system_credit(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        qualified_expenditures = tax_unit(
-            "ny_qualified_geothermal_energy_system_expenditures", period
+        ordered_credits = parameters(
+            period
+        ).gov.states.ny.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ny_income_tax_before_credits",
+            "ny_geothermal_energy_system_credit",
+            "ny_geothermal_energy_system_credit_potential",
         )
-        p = parameters(period).gov.states.ny.tax.income.credits.geothermal_energy_system
-        uncapped_credit = qualified_expenditures * p.rate
-        return min_(uncapped_credit, p.cap)

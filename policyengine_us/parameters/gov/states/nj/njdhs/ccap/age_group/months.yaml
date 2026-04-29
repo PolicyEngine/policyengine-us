@@ -1,0 +1,28 @@
+description: New Jersey sets these age group boundaries in months under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: New Jersey CCAP age group by age in months
+  reference:
+    - title: CC-230 Maximum Child Care Payment Rates
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=1
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 18
+    amount:
+      2024-01-01: 1
+  - threshold:
+      2024-01-01: 30
+    amount:
+      2024-01-01: 2
+  - threshold:
+      2024-01-01: 60
+    amount:
+      2024-01-01: 3

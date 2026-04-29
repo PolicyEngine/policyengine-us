@@ -1,0 +1,65 @@
+- name: Case 1, AGI only, no exclusions.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+  output:
+    additional_senior_deduction_magi: 50_000
+
+- name: Case 2, foreign earned income exclusion (section 911) added back.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        foreign_earned_income_exclusion: 30_000
+  output:
+    additional_senior_deduction_magi: 80_000
+
+- name: Case 3, specified possession income (section 931) added back.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        specified_possession_income: 20_000
+  output:
+    additional_senior_deduction_magi: 70_000
+
+- name: Case 4, Puerto Rico excluded income (section 933) added back.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        puerto_rico_income: 10_000
+  output:
+    additional_senior_deduction_magi: 60_000
+
+- name: Case 5, all three add-backs combined.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        foreign_earned_income_exclusion: 30_000
+        specified_possession_income: 20_000
+        puerto_rico_income: 10_000
+  output:
+    additional_senior_deduction_magi: 110_000

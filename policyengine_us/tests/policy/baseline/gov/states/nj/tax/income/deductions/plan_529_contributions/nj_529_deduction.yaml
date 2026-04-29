@@ -1,0 +1,41 @@
+- name: Case 1, filer with contribution below cap and income below limit.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NJ
+    investment_in_529_plan_indv: 5_000
+    employment_income: 100_000
+  output:
+    nj_529_deduction: 5_000
+
+- name: Case 2, filer with contribution above cap and income below limit.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NJ
+    investment_in_529_plan_indv: 15_000
+    employment_income: 100_000
+  output:
+    # Capped at $10,000
+    nj_529_deduction: 10_000
+
+- name: Case 3, filer with income above AGI limit.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NJ
+    investment_in_529_plan_indv: 5_000
+    employment_income: 250_000
+  output:
+    # AGI exceeds $200,000 limit, no deduction
+    nj_529_deduction: 0
+
+- name: Case 4, filer with no contributions.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NJ
+    investment_in_529_plan_indv: 0
+    employment_income: 100_000
+  output:
+    nj_529_deduction: 0

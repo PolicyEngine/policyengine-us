@@ -8,4 +8,4 @@ class wa_income_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.WA
-    adds = ["wa_capital_gains_tax"]
+    adds = ["wa_capital_gains_tax", "wa_millionaires_tax"]

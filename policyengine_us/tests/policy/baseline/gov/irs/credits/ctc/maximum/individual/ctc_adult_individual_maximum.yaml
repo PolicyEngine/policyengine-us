@@ -27,6 +27,15 @@
   output:
     ctc_adult_individual_maximum: 500
 
+- name: Adult dependents must have a TIN to qualify.
+  period: 2018
+  input:
+    is_tax_unit_dependent: true
+    ctc_child_individual_maximum: 0
+    has_itin: false
+  output:
+    ctc_adult_individual_maximum: 0
+
 - name: Extended by OBBB.
   period: 2026
   input:

@@ -13,7 +13,12 @@ class nc_tanf_income_eligible(Variable):
         household_size = spm_unit("nc_tanf_household_size", period)
         reduced_need_standard = spm_unit("nc_tanf_reduced_need_standard", period)
 
-        need_standard_fraction = reduced_need_standard / household_size
+        need_standard_fraction = np.divide(
+            reduced_need_standard,
+            household_size,
+            out=np.zeros_like(reduced_need_standard, dtype=float),
+            where=household_size != 0,
+        )
         difference_threshold = (
             p.average_reduced_need_standard_threshold * MONTHS_IN_YEAR
         )

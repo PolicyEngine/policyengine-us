@@ -1,0 +1,13 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: AZ
+    az_income_tax_before_non_refundable_credits: 100
+    az_charitable_contributions_credit_potential: 80
+    az_dependent_tax_credit_potential: 40
+    az_family_tax_credit_eligible: true
+    az_family_tax_credit_potential: 30
+  output:
+    az_charitable_contributions_credit: 80
+    az_dependent_tax_credit: 20
+    az_family_tax_credit: 0

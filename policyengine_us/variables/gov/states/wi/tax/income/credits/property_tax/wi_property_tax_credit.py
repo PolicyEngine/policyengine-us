@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class wi_property_tax_credit(Variable):
@@ -17,8 +20,14 @@ class wi_property_tax_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        rent = add(tax_unit, period, ["rent"])
-        ptax = add(tax_unit, period, ["real_estate_taxes"])
-        p = parameters(period).gov.states.wi.tax.income.credits.property_tax
-        proptax = ptax + rent * p.rent_fraction
-        return min_(p.max, proptax * p.rate)
+        ordered_credits = parameters(
+            period
+        ).gov.states.wi.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "wi_income_tax_before_credits",
+            "wi_property_tax_credit",
+            "wi_property_tax_credit_potential",
+        )

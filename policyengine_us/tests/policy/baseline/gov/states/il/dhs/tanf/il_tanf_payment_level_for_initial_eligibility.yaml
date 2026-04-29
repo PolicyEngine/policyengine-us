@@ -21,3 +21,76 @@
     state_code: IL
   output:
     il_tanf_payment_level_for_initial_eligibility: 7_357
+
+# Pre-2018 regional flat grant tests (Nov 2008 era)
+# Uses with-adult amounts for initial eligibility
+# Source: SSA POMS SI CHI00830.403
+
+- name: Case 4, pre-2018 Group I size 3.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+      person3:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_initial_eligibility: 432
+
+- name: Case 5, pre-2018 Group II size 2.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+      person2:
+        il_tanf_payment_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_initial_eligibility: 307
+
+- name: Case 6, pre-2018 Group III size 1.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_tanf_payment_eligible_parent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    il_tanf_payment_level_for_initial_eligibility: 198

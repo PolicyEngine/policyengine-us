@@ -1,0 +1,25 @@
+description: Seattle payroll expense tax rates for the lower taxable compensation band.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Seattle payroll expense tax rates for the lower taxable compensation band
+  reference:
+    - title: Seattle payroll expense tax page
+      href: https://www.seattle.gov/city-finance/business-taxes-and-licenses/seattle-taxes/payroll-expense-tax
+    - title: Seattle Municipal Code Chapter 5.38
+      href: https://library.municode.com/wa/seattle/codes/municipal_code?nodeId=TIT5REFITA_SUBTITLE_IITA_CH5.38PAEXTA_5.38.070ADIN
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0.00746
+  - threshold:
+      2026-01-01: 129_634_413
+    amount:
+      2026-01-01: 0.00746
+  - threshold:
+      2026-01-01: 1_296_344_132
+    amount:
+      2026-01-01: 0.01492

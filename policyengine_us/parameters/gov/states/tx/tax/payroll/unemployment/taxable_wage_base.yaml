@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Texas.
+values:
+  0000-01-01: 9_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Texas unemployment taxable wage base
+  reference:
+    - title: Texas Labor Code Section 201.082
+      href: https://statutes.capitol.texas.gov/StatutesByDate.aspx?code=LA&date=9/1/2025&level=SE&value=201.082
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=54

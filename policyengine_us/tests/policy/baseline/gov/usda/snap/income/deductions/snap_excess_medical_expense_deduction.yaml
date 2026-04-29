@@ -14,8 +14,9 @@
   period: 2022
   input:
     is_usda_disabled: true
-    medical_out_of_pocket_expenses: 35 * 12
+    other_medical_expenses: 35 * 12
   output:
+    snap_allowable_medical_expenses: 35 * 12
     snap_excess_medical_expense_deduction: 0
 
 - name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.
@@ -23,7 +24,7 @@
   absolute_error_margin: 1
   input:
     is_usda_disabled: true
-    medical_out_of_pocket_expenses: 35.01 * 12
+    other_medical_expenses: 35.01 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 120 * 12
@@ -34,7 +35,7 @@
   input:
     is_usda_disabled: true
     is_usda_elderly: true
-    medical_out_of_pocket_expenses: 155 * 12
+    other_medical_expenses: 155 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: (155 - 35) * 12
@@ -44,7 +45,7 @@
   absolute_error_margin: 1
   input:
     is_usda_elderly: true
-    medical_out_of_pocket_expenses: 156 * 12
+    other_medical_expenses: 156 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: (156 - 35) * 12
@@ -54,7 +55,7 @@
   absolute_error_margin: 1
   input:
     is_usda_disabled: true
-    medical_out_of_pocket_expenses: 35.01 * 12
+    other_medical_expenses: 35.01 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 150 * 12
@@ -65,7 +66,7 @@
   input:
     is_usda_disabled: true
     is_usda_elderly: true
-    medical_out_of_pocket_expenses: 185 * 12
+    other_medical_expenses: 185 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 150 * 12
@@ -75,7 +76,7 @@
   absolute_error_margin: 1
   input:
     is_usda_elderly: true
-    medical_out_of_pocket_expenses: 186 * 12
+    other_medical_expenses: 186 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 151 * 12  # $151 excess
@@ -87,7 +88,7 @@
       elderly:
         is_usda_elderly: true
       young:
-        medical_out_of_pocket_expenses: 100 * 12
+        other_medical_expenses: 100 * 12
     spm_units:
       spm_unit:
         members: [elderly, young]

@@ -1,0 +1,8 @@
+description: Variables summed into `state_benefit_cost` — the state-government share of benefit expenditures attributed to each person (distinct from `household_state_benefits`, which sums state-agency-paid standalone benefits like state supplements). Extends as programs gain statutory federal/state cost attribution.
+values:
+  2015-01-01:
+    - medicaid_state_cost
+    - chip_state_cost
+metadata:
+  unit: list
+  label: State benefit cost sources

@@ -18,3 +18,27 @@
     snap_assets: 61_200 # $5,100 monthly
   output:
     meets_tanf_non_cash_asset_test: false
+
+- name: MS asset test fails (non-BBCE state, bug fix verification)
+  period: 2024
+  input:
+    state_code_str: MS
+    snap_assets: 0
+  output:
+    meets_tanf_non_cash_asset_test: false
+
+- name: IN asset below $5K limit passes
+  period: 2024
+  input:
+    state_code_str: IN
+    snap_assets: 48_000 # $4,000 monthly
+  output:
+    meets_tanf_non_cash_asset_test: true
+
+- name: IN asset above $5K limit fails
+  period: 2024
+  input:
+    state_code_str: IN
+    snap_assets: 72_000 # $6,000 monthly
+  output:
+    meets_tanf_non_cash_asset_test: false

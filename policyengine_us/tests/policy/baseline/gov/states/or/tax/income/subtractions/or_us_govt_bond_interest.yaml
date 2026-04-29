@@ -1,0 +1,7 @@
+- name: OR includes US government bond interest in income subtractions
+  period: 2024
+  input:
+    state_code: OR
+    us_govt_interest: 5_000
+  output:
+    or_income_subtractions: 5_000

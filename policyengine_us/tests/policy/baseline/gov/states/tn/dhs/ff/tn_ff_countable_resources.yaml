@@ -7,11 +7,12 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 0
   output:
     tn_ff_countable_resources: 0
 
@@ -24,11 +25,12 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 3_000
   output:
     tn_ff_countable_resources: 0
 
@@ -41,11 +43,12 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 4_600
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 4_600
   output:
     tn_ff_countable_resources: 0
 
@@ -58,11 +61,12 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 4_601
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 4_601
   output:
     tn_ff_countable_resources: 1
 
@@ -75,13 +79,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 6_600
+        spm_unit_cash_assets: 2_000
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 4_600
   output:
-    # 6,600 - 4,600 = 2,000
+    # $2,000 liquid assets + ($4,600 - $4,600 vehicle exclusion) = $2,000
     tn_ff_countable_resources: 2_000
 
 - name: Case 6, assets one dollar over resource limit after exemption.
@@ -93,13 +98,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 6_601
+        spm_unit_cash_assets: 2_000
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 4_601
   output:
-    # 6,601 - 4,600 = 2,001
+    # $2,000 liquid assets + ($4,601 - $4,600 vehicle exclusion) = $2,001
     tn_ff_countable_resources: 2_001
 
 - name: Case 7, moderate assets.
@@ -111,13 +117,14 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 8_000
+        spm_unit_cash_assets: 3_000
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 5_000
   output:
-    # 8,000 - 4,600 = 3,400
+    # $3,000 liquid assets + ($5,000 - $4,600 vehicle exclusion) = $3,400
     tn_ff_countable_resources: 3_400
 
 - name: Case 8, high assets.
@@ -129,14 +136,15 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 15_000
+        spm_unit_cash_assets: 8_000
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 7_400
   output:
-    # 15,000 - 4,600 = 10,400
-    tn_ff_countable_resources: 10_400
+    # $8,000 liquid assets + ($7,400 - $4,600 vehicle exclusion) = $10,800
+    tn_ff_countable_resources: 10_800
 
 - name: Case 9, low assets below exemption.
   period: 2024-01
@@ -147,10 +155,11 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
     households:
       household:
         members: [person1]
         state_code: TN
+        household_vehicles_value: 0
   output:
-    tn_ff_countable_resources: 0
+    tn_ff_countable_resources: 1_000

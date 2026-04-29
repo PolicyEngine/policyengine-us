@@ -15,5 +15,5 @@ class ar_tea_resources_eligible(Variable):
         # Per 208.00.13 Ark. Code R. Section 001, Section 3.4
         p = parameters(period).gov.states.ar.dhs.tea.resources
         # Use federal asset calculation for SPM unit
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= p.limit

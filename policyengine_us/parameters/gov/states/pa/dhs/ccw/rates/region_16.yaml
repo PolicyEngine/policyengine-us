@@ -1,0 +1,160 @@
+description: Pennsylvania provides these daily reimbursement rates for region 16 under the Child Care Works program.
+
+metadata:
+  period: day
+  unit: currency-USD
+  label: Pennsylvania CCW MCCA daily rates for region 16
+  breakdown:
+    - pa_ccw_provider_type
+    - pa_ccw_age_group
+    - pa_ccw_time_category
+  reference:
+    - title: PA DHS OCDEL, Maximum Child Care Allowance (MCCA) Daily Rates, effective January 1, 2025
+      href: https://www.pakeys.org/wp-content/uploads/2024/12/2025-1-1_MCCA-Rate-Chart.pdf
+    - title: PA DHS OCDEL, Maximum Child Care Allowance (MCCA) Daily Rates, effective March 1, 2023
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/children/documents/child-care-early-learning/MCCA-Rates-by-Region-effective-3.1.23.pdf
+
+CENTER:
+  INFANT:
+    FULL_TIME:
+      2023-03-01: 67.26
+      2025-01-01: 72.05
+    PART_TIME:
+      2023-03-01: 54.95
+      2025-01-01: 58.83
+  YOUNG_TODDLER:
+    FULL_TIME:
+      2023-03-01: 63.9
+      2025-01-01: 69.52
+    PART_TIME:
+      2023-03-01: 50.11
+      2025-01-01: 54.91
+  OLD_TODDLER:
+    FULL_TIME:
+      2023-03-01: 62.41
+      2025-01-01: 66.85
+    PART_TIME:
+      2023-03-01: 47.29
+      2025-01-01: 51.99
+  PRE_SCHOOL:
+    FULL_TIME:
+      2023-03-01: 58.26
+      2025-01-01: 62.86
+    PART_TIME:
+      2023-03-01: 43.46
+      2025-01-01: 47.67
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-03-01: 50.89
+      2025-01-01: 58.77
+    PART_TIME:
+      2023-03-01: 31.07
+      2025-01-01: 37.56
+GROUP:
+  INFANT:
+    FULL_TIME:
+      2023-03-01: 53.58
+      2025-01-01: 57.86
+    PART_TIME:
+      2023-03-01: 38
+      2025-01-01: 38
+  YOUNG_TODDLER:
+    FULL_TIME:
+      2023-03-01: 48.81
+      2025-01-01: 54.09
+    PART_TIME:
+      2023-03-01: 36
+      2025-01-01: 36
+  OLD_TODDLER:
+    FULL_TIME:
+      2023-03-01: 45.65
+      2025-01-01: 51.26
+    PART_TIME:
+      2023-03-01: 34
+      2025-01-01: 34
+  PRE_SCHOOL:
+    FULL_TIME:
+      2023-03-01: 45.11
+      2025-01-01: 50.07
+    PART_TIME:
+      2023-03-01: 32
+      2025-01-01: 32
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-03-01: 35
+      2025-01-01: 35
+    PART_TIME:
+      2023-03-01: 32
+      2025-01-01: 32
+FAMILY:
+  INFANT:
+    FULL_TIME:
+      2023-03-01: 44.47
+      2025-01-01: 52.29
+    PART_TIME:
+      2023-03-01: 35.25
+      2025-01-01: 38.92
+  YOUNG_TODDLER:
+    FULL_TIME:
+      2023-03-01: 42.76
+      2025-01-01: 50.55
+    PART_TIME:
+      2023-03-01: 35.07
+      2025-01-01: 38.22
+  OLD_TODDLER:
+    FULL_TIME:
+      2023-03-01: 42.18
+      2025-01-01: 50.46
+    PART_TIME:
+      2023-03-01: 36.13
+      2025-01-01: 38.54
+  PRE_SCHOOL:
+    FULL_TIME:
+      2023-03-01: 42.18
+      2025-01-01: 50.46
+    PART_TIME:
+      2023-03-01: 36.13
+      2025-01-01: 38.54
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-03-01: 41.8
+      2025-01-01: 52.79
+    PART_TIME:
+      2023-03-01: 33.6
+      2025-01-01: 36.32
+R_N:
+  INFANT:
+    FULL_TIME:
+      2023-03-01: 16.63
+      2025-01-01: 16.63
+    PART_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+  YOUNG_TODDLER:
+    FULL_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+    PART_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+  OLD_TODDLER:
+    FULL_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+    PART_TIME:
+      2023-03-01: 14.94
+      2025-01-01: 14.94
+  PRE_SCHOOL:
+    FULL_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+    PART_TIME:
+      2023-03-01: 13.24
+      2025-01-01: 13.24
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-03-01: 16.07
+      2025-01-01: 16.07
+    PART_TIME:
+      2023-03-01: 15.68
+      2025-01-01: 15.68

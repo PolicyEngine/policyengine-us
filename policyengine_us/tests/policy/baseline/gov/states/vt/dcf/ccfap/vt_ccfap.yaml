@@ -1,0 +1,337 @@
+- name: Case 1, single child full time licensed center at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 15,650 + 5,500 = 21,150
+    # FPL ratio = 52,875 / 21,150 = 2.50
+    # Weekly family share at 2.50 > 2.2501 = $100/wk
+    # Monthly family share = $100 * 52 / 12 = $433.33
+    # Child: age 3, preschool, full time, licensed center = $439/wk
+    # Monthly rate = $439 * 52 / 12 = $1,902.33
+    # Benefit = max(1,902.33 - 433.33, 0) = $1,469.00
+    vt_ccfap: 1_469.00
+
+- name: Case 2, ineligible family gets zero benefit.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 125_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # 575% FPL = 121,612.50
+    # Income 125,000 > 121,612.50, so ineligible
+    vt_ccfap: 0
+
+- name: Case 3, Reach Up eligible family gets full subsidy with no copay.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled:
+          2025-01: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Reach Up = categorically eligible, $0 family share
+    # Child: age 1, infant, full time, licensed center = $471/wk
+    # Monthly rate = $471 * 52 / 12 = $2,041.00
+    # Benefit = max(2,041.00 - 0, 0) = $2,041.00
+    vt_ccfap: 2_041.00
+
+- name: Case 4, family share exceeds state rate results in zero benefit.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 150_000
+      person2:
+        age: 30
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 150,000 / 26,650 = 5.631
+    # Weekly family share at 5.631 > 5.5001 = $425/wk
+    # Monthly family share = $425 * 52 / 12 = $1,841.67
+    # Child: age 7, school age, part time, registered home = $176/wk
+    # Monthly rate = $176 * 52 / 12 = $762.67
+    # Benefit = max(762.67 - 1,841.67, 0) = $0
+    vt_ccfap: 0
+
+- name: Case 5, zero income family gets full subsidy.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Zero income = 0% FPL, family share = $0/wk
+    # Child: age 2, toddler, full time, registered home = $364/wk
+    # Monthly rate = $364 * 52 / 12 = $1,577.33
+    # Benefit = max(1,577.33 - 0, 0) = $1,577.33
+    vt_ccfap: 1_577.33
+
+- name: Case 6, negative self employment income does not inflate benefit.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        pre_subsidy_childcare_expenses: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Negative income, family share = $0/wk
+    # Child: preschool, full time, licensed center = $439/wk
+    # Monthly rate = $439 * 52 / 12 = $1,902.33
+    # Benefit capped at max(1,902.33 - 0, 0) = $1,902.33, NOT inflated
+    vt_ccfap: 1_902.33
+
+- name: Case 7, enrollment based benefit equals state rate minus family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # FPL ratio = 30,000 / 21,150 = 1.418
+    # Weekly family share at 1.418 < 1.7501 = $0/wk
+    # Monthly family share = $0
+    # Child: infant, full time, licensed center = $471/wk
+    # Monthly rate = $471 * 52 / 12 = $2,041.00
+    # Benefit = max(2,041.00 - 0, 0) = $2,041.00
+    vt_ccfap: 2_041.00
+
+- name: Case 8, two children different age groups and provider types.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 55,000 / 26,650 = 2.064
+    # Weekly family share at 2.064 >= 2.0001 = $75/wk
+    # Monthly family share = $75 * 52 / 12 = $325.00
+    # person2: infant, full time, licensed center = $471/wk
+    # person3: school age, part time, registered home = $176/wk
+    # Total weekly rate = $471 + $176 = $647
+    # Monthly rate = $647 * 52 / 12 = $2,803.67
+    # Benefit = max(2,803.67 - 325.00, 0) = $2,478.67
+    vt_ccfap: 2_478.67
+
+- name: Case 9, three children in extended care at different ages.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    # FPG for family of 4 = 32,150
+    # FPL ratio = 40,000 / 32,150 = 1.244
+    # Weekly family share at 1.244 < 1.7501 = $0/wk
+    # Monthly family share = $0
+    # person2: infant, extended care, licensed center = $640/wk
+    # person3: toddler, extended care, licensed center = $602/wk
+    # person4: preschool, extended care, licensed center = $597/wk
+    # Total weekly rate = $640 + $602 + $597 = $1,839
+    # Monthly rate = $1,839 * 52 / 12 = $7,969.00
+    # Benefit = max(7,969.00 - 0, 0) = $7,969.00
+    vt_ccfap: 7_969.00
+
+- name: Case 10, enrolled child receives enrollment based benefit.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # FPL ratio = 30,000 / 21,150 = 1.418
+    # Weekly family share at 1.418 < 1.7501 = $0/wk
+    # Monthly family share = $0
+    # Child: preschool, full time, licensed center = $439/wk
+    # Monthly rate = $439 * 52 / 12 = $1,902.33
+    # Benefit = max(1,902.33 - 0, 0) = $1,902.33
+    vt_ccfap: 1_902.33

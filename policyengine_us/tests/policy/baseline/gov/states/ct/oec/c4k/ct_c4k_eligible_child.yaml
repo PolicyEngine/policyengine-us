@@ -1,0 +1,145 @@
+- name: Case 1, child age 5, eligible.
+  period: 2025-01
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: true
+
+- name: Case 2, child age 13, not disabled, ineligible.
+  period: 2025-01
+  input:
+    age: 13
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: false
+
+- name: Case 3, child age 13, disabled, eligible.
+  period: 2025-01
+  input:
+    age: 13
+    is_disabled: true
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: true
+
+- name: Case 4, child age 19, disabled, ineligible.
+  period: 2025-01
+  input:
+    age: 19
+    is_disabled: true
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: false
+
+- name: Case 5, child age 12, at boundary, eligible.
+  period: 2025-01
+  input:
+    age: 12
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: true
+
+- name: Case 6, child not a dependent, ineligible.
+  period: 2025-01
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: false
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: false
+
+- name: Case 7, child not immigration eligible, ineligible.
+  period: 2025-01
+  input:
+    age: 5
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: false
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: false
+
+- name: Case 8, adult age 30, ineligible.
+  period: 2025-01
+  input:
+    age: 30
+    is_disabled: false
+    is_tax_unit_dependent: false
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: false
+
+- name: Case 9, disabled child age 18, at boundary, eligible.
+  period: 2025-01
+  input:
+    age: 18
+    is_disabled: true
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: true
+
+- name: Case 10, age zero infant, eligible.
+  period: 2025-01
+  input:
+    age: 0
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    ct_c4k_eligible_child: true
+
+- name: Case 11, disabled child age 15, between regular and special needs thresholds.
+  period: 2025-01
+  input:
+    age: 15
+    is_disabled: true
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    # age 15 < 19 (special needs threshold) => eligible
+    ct_c4k_eligible_child: true
+
+- name: Case 12, disabled child exactly at special needs threshold age 19, ineligible.
+  period: 2025-01
+  input:
+    age: 19
+    is_disabled: true
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    # age 19 < 19 is false => ineligible (at threshold)
+    ct_c4k_eligible_child: false
+
+- name: Case 13, non-disabled child exactly at regular threshold age 13, ineligible.
+  period: 2025-01
+  input:
+    age: 13
+    is_disabled: false
+    is_tax_unit_dependent: true
+    is_ccdf_immigration_eligible_child: true
+    state_code: CT
+  output:
+    # age 13 < 13 is false => ineligible (at threshold)
+    ct_c4k_eligible_child: false

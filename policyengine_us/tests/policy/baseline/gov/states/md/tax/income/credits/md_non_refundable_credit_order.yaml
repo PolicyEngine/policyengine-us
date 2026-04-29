@@ -1,0 +1,15 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2022
+  input:
+    state_code: MD
+    md_income_tax_before_credits: 100
+    md_cdcc_potential: 80
+    md_non_refundable_eitc_potential: 40
+    md_poverty_line_credit_potential: 30
+    md_senior_tax_credit_eligible: true
+    md_senior_tax_credit_potential: 20
+  output:
+    md_cdcc: 80
+    md_non_refundable_eitc: 20
+    md_poverty_line_credit: 0
+    md_senior_tax_credit: 0

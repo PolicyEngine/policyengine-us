@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ga_ctc(Variable):
@@ -13,11 +16,14 @@ class ga_ctc(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ga.tax.income.credits.ctc
-        person = tax_unit.members
-        age = person("age", period)
-        ctc_eligible_child = person("ctc_qualifying_child", period)
-        ga_child_age_eligible = age < p.age_threshold
-        eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
-
-        return eligible_children * p.amount
+        ordered_credits = parameters(
+            period
+        ).gov.states.ga.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ga_income_tax_before_non_refundable_credits",
+            "ga_ctc",
+            "ga_ctc_potential",
+        )

@@ -1,0 +1,125 @@
+- name: Case 1, Capital Area (Arlington).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ARLINGTON_COUNTY_VA
+  output:
+    va_ccsp_ready_region: CAPITAL_AREA
+
+- name: Case 2, Southeastern (Accomack).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ACCOMACK_COUNTY_VA
+  output:
+    va_ccsp_ready_region: SOUTHEASTERN
+
+- name: Case 3, North Central (Loudoun).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: LOUDOUN_COUNTY_VA
+  output:
+    va_ccsp_ready_region: NORTH_CENTRAL
+
+- name: Case 4, Southwest (Bristol).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: BRISTOL_CITY_VA
+  output:
+    va_ccsp_ready_region: SOUTHWEST
+
+- name: Case 5, Blue Ridge (Rockingham).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ROCKINGHAM_COUNTY_VA
+  output:
+    va_ccsp_ready_region: BLUE_RIDGE
+
+- name: Case 6, West (Roanoke County).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ROANOKE_COUNTY_VA
+  output:
+    va_ccsp_ready_region: WEST
+
+- name: Case 7, Central (Henrico).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    va_ccsp_ready_region: CENTRAL
+
+- name: Case 8, Chesapeake Bay (York).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: YORK_COUNTY_VA
+  output:
+    va_ccsp_ready_region: CHESAPEAKE_BAY
+
+- name: Case 9, Southside (Bedford).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: BEDFORD_COUNTY_VA
+  output:
+    va_ccsp_ready_region: SOUTHSIDE

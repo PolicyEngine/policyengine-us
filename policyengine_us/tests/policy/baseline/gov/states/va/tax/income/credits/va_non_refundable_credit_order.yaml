@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2025
+  input:
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 100
+    va_non_refundable_eitc_potential: 80
+  output:
+    va_non_refundable_eitc: 80

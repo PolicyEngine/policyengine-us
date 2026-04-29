@@ -1,0 +1,319 @@
+# SC CCAP overall eligibility tests
+# sc_ccap_eligible is SPMUnit, MONTH
+# Combines: income eligible, asset eligible, activity eligible, has eligible child, residency
+
+- name: Case 1, eligible family in SC.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible: true
+
+- name: Case 2, ineligible due to income above 85 percent SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Family size 2, 85% SMI = $56,743/yr
+    # 90,000 > 56,743 -> ineligible
+    sc_ccap_eligible: false
+
+- name: Case 3, ineligible no eligible child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # No children -> no eligible child -> ineligible
+    sc_ccap_eligible: false
+
+- name: Case 4, non-SC family ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    sc_ccap_eligible: false
+
+- name: Case 5, activity ineligible parent.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 10
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Works 10 hrs/wk < 15 minimum, not a student -> ineligible
+    sc_ccap_eligible: false
+
+- name: Case 6, full time student meets activity requirement.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # FT student -> activity eligible even with 0 work hours
+    sc_ccap_eligible: true
+
+- name: Case 7, protective services family with no work is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Foster child = protective services -> activity waived
+    # Income 30,000 < 85% SMI for size 2 -> income eligible
+    sc_ccap_eligible: true
+
+- name: Case 8, Head Start child with high income and no work is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_enrolled_in_head_start: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Enrolled in Head Start -> Head Start pathway
+    # Income and activity waived for Head Start
+    # 90,000 > 85% SMI but income waived for Head Start
+    sc_ccap_eligible: true
+
+- name: Case 9, protective services but income too high is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Protective services waives activity but NOT income
+    # 90,000 > 85% SMI for size 2 (~56,743) -> income ineligible
+    # Child age 8 not Head Start eligible -> no Head Start bypass
+    sc_ccap_eligible: false
+
+- name: Case 10, Head Start child plus non-Head-Start sibling with no work.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_enrolled_in_head_start: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # Head Start child (person2) is CCDF-eligible and enrolled ->
+    # Head Start path qualifies the unit. Sibling (person3) is not
+    # independently covered (no work, high income) but unit is eligible
+    # for the Head Start child only.
+    sc_ccap_eligible: true
+
+- name: Case 11, Head Start enrolled child is not CCDF-eligible but sibling is.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+        is_enrolled_in_head_start: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # Head Start child (person2) is undocumented -> not CCDF-eligible.
+    # Sibling (person3) is CCDF-eligible but not Head Start enrolled.
+    # No work + high income -> standard path fails for sibling.
+    # Head Start path requires the SAME child to be both enrolled
+    # and CCDF-eligible, so unit is ineligible.
+    sc_ccap_eligible: false

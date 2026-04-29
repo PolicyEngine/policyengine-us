@@ -1,9 +1,12 @@
-description: Whether Rhode Island's high earner tax bracket is in effect.
+description: Rhode Island's additional tax on high-income filers is in effect when this is true.
 
 values:
   0000-01-01: false
 
 metadata:
   unit: bool
-  label: Rhode Island high earner tax in effect
+  label: Rhode Island H7317 high earner tax in effect
   period: year
+  reference:
+    - title: Rhode Island H7317 - Additional tax on high-income filers
+      href: https://webserver.rilegislature.gov/BillText26/HouseText26/H7317.pdf

@@ -1,0 +1,376 @@
+# Parent fee tests use me_ccap_smi and me_ccap_countable_income
+# as direct inputs to isolate the copay calculation from income pipeline.
+
+- name: Case 1, below 30% SMI, zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_410.26
+        me_ccap_countable_income: 1_250
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 19.5% < 30% => 0% fee bracket.
+    me_ccap_parent_fee: 0
+
+- name: Case 2, 30-35% SMI bracket, 1% fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_417.97
+        me_ccap_countable_income: 2_053.75
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 2053.75 * 12/52 = 473.94.
+    # Fee = floor(473.94 * 0.01) = floor(4.74) = 4.
+    # Monthly = 4 * 52/12 = 17.33.
+    me_ccap_parent_fee: 17.33
+
+- name: Case 3, 45-55% SMI bracket, 4% fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_418
+        me_ccap_countable_income: 3_209
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 3209 * 12/52 = 740.54.
+    # Fee = floor(740.54 * 0.04) = floor(29.62) = 29.
+    # Monthly = 29 * 52/12 = 125.67.
+    me_ccap_parent_fee: 125.67
+
+- name: Case 4, 75-90% SMI bracket, 7% fee with 7% cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_418.02
+        me_ccap_countable_income: 5_134.42
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 5134.42 * 12/52 = 1184.87.
+    # Fee = floor(1184.87 * 0.07) = floor(82.94) = 82.
+    # Cap (80% < 85%): floor(1184.87 * 0.07) = floor(82.94) = 82.
+    # Fee = min(82, 82) = 82.
+    # Monthly = 82 * 52/12 = 355.33.
+    me_ccap_parent_fee: 355.33
+
+- name: Case 5, 110-125% SMI bracket, 10% fee with 10% cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_417.97
+        me_ccap_countable_income: 7_380.67
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 7380.67 * 12/52 = 1703.23.
+    # Fee = floor(1703.23 * 0.10) = floor(170.32) = 170.
+    # Cap (115% >= 85%): floor(1703.23 * 0.10) = floor(170.32) = 170.
+    # Monthly = 170 * 52/12 = 736.67.
+    me_ccap_parent_fee: 736.67
+
+# === Edge cases: remaining copay tiers and boundary transitions ===
+
+- name: Case 6, 35-40% SMI bracket, 2% fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.54
+        me_ccap_countable_income: 2_475.50
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 2475.50 * 12/52 = 571.27.
+    # Raw weekly = floor(571.27 * 0.02) = floor(11.43) = 11.
+    # Cap (37% < 85%): floor(571.27 * 0.07) = floor(39.99) = 39.
+    # Fee = min(11, 39) = 11/week.
+    # Monthly = 11 * 52/12 = 47.67.
+    me_ccap_parent_fee: 47.67
+
+- name: Case 7, 40-45% SMI bracket, 3% fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.48
+        me_ccap_countable_income: 2_810
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 2810 * 12/52 = 648.46.
+    # Raw weekly = floor(648.46 * 0.03) = floor(19.45) = 19.
+    # Cap: floor(648.46 * 0.07) = floor(45.39) = 45.
+    # Fee = min(19, 45) = 19/week.
+    # Monthly = 19 * 52/12 = 82.33.
+    me_ccap_parent_fee: 82.33
+
+- name: Case 8, 55-65% SMI bracket, 5% fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.42
+        me_ccap_countable_income: 4_014.25
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 4014.25 * 12/52 = 926.37.
+    # Raw weekly = floor(926.37 * 0.05) = floor(46.32) = 46.
+    # Cap: floor(926.37 * 0.07) = floor(64.85) = 64.
+    # Fee = min(46, 64) = 46/week.
+    # Monthly = 46 * 52/12 = 199.33.
+    me_ccap_parent_fee: 199.33
+
+- name: Case 9, 65-75% SMI bracket, 6% fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.36
+        me_ccap_countable_income: 4_683.25
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Weekly income = 4683.25 * 12/52 = 1080.75.
+    # Raw weekly = floor(1080.75 * 0.06) = floor(64.85) = 64.
+    # Cap: floor(1080.75 * 0.07) = floor(75.65) = 75.
+    # Fee = min(64, 75) = 64/week.
+    # Monthly = 64 * 52/12 = 277.33.
+    me_ccap_parent_fee: 277.33
+
+- name: Case 10, 90-100% SMI bracket, 8% fee with 10% cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.35
+        me_ccap_countable_income: 6_355.83
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 95% >= 85% => 10% cap applies.
+    # Weekly income = 6355.83 * 12/52 = 1466.73.
+    # Raw weekly = floor(1466.73 * 0.08) = floor(117.34) = 117.
+    # Cap: floor(1466.73 * 0.10) = floor(146.67) = 146.
+    # Fee = min(117, 146) = 117/week.
+    # Monthly = 117 * 52/12 = 507.
+    me_ccap_parent_fee: 507
+
+- name: Case 11, 100-110% SMI bracket, 9% fee with 10% cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.35
+        me_ccap_countable_income: 7_024.87
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 105% >= 85% => 10% cap applies.
+    # Weekly income = 7024.87 * 12/52 = 1621.13.
+    # Raw weekly = floor(1621.13 * 0.09) = floor(145.90) = 145.
+    # Cap: floor(1621.13 * 0.10) = floor(162.11) = 162.
+    # Fee = min(145, 162) = 145/week.
+    # Monthly = 145 * 52/12 = 628.33.
+    me_ccap_parent_fee: 628.33
+
+- name: Case 12, exactly at 85% SMI boundary, cap transitions from 7% to 10%.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.39
+        me_ccap_countable_income: 5_687.50
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 85.01% >= 85% => 10% cap applies.
+    # Weekly income = 5687.50 * 12/52 = 1312.50.
+    # Raw weekly = floor(1312.50 * 0.07) = floor(91.88) = 91.
+    # Cap: floor(1312.50 * 0.10) = floor(131.25) = 131.
+    # Fee = min(91, 131) = 91/week.
+    # Monthly = 91 * 52/12 = 394.33.
+    me_ccap_parent_fee: 394.33
+
+- name: Case 13, just below 85% SMI, 7% cap binds at same rate as fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_689.53
+        me_ccap_countable_income: 5_680.08
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 84.91% < 85% => 7% cap applies.
+    # Weekly income = 5680.08 * 12/52 = 1310.79.
+    # Raw weekly = floor(1310.79 * 0.07) = floor(91.76) = 91.
+    # Cap: floor(1310.79 * 0.07) = floor(91.76) = 91.
+    # Fee = min(91, 91) = 91/week.
+    # Monthly = 91 * 52/12 = 394.33.
+    me_ccap_parent_fee: 394.33
+
+- name: Case 14, zero income, zero parent fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 0
+        me_ccap_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Zero income => 0% SMI => 0% fee bracket.
+    me_ccap_parent_fee: 0
+
+- name: Case 15, exactly at 30% SMI boundary, enters 1% tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.54
+        me_ccap_countable_income: 2_007.83
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 30.01% => 30-35% bracket => 1% fee.
+    # Weekly income = 2007.83 * 12/52 = 463.35.
+    # Raw weekly = floor(463.35 * 0.01) = floor(4.63) = 4.
+    # Cap: floor(463.35 * 0.07) = floor(32.43) = 32.
+    # Fee = min(4, 32) = 4/week.
+    # Monthly = 4 * 52/12 = 17.33.
+    me_ccap_parent_fee: 17.33
+
+- name: Case 16, just below 30% SMI boundary, zero copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        me_ccap_smi: 6_690.29
+        me_ccap_countable_income: 2_005.75
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 29.98% < 30% => 0% fee bracket.
+    me_ccap_parent_fee: 0

@@ -1,0 +1,74 @@
+- name: Indiana HIP POWER Account contribution is zero in 2024 because collection is paused.
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 30
+        is_hip_eligible_adult: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+        tax_unit_medicaid_income_level: 0.80
+    households:
+      household:
+        members: [adult]
+        state_code: IN
+  output:
+    in_hip_power_account_contribution: 0
+
+- name: Indiana HIP POWER Account contribution in 2019 single adult at 80 percent FPL pays 15 dollars monthly.
+  period: 2019
+  input:
+    people:
+      adult:
+        age: 30
+        is_hip_eligible_adult: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+        tax_unit_medicaid_income_level: 0.80
+    households:
+      household:
+        members: [adult]
+        state_code: IN
+  output:
+    in_hip_power_account_contribution: 180
+
+- name: Indiana HIP POWER Account contribution in 2019 two adults at 120 percent FPL pays 40 dollars monthly combined.
+  period: 2019
+  input:
+    people:
+      adult1:
+        age: 34
+        is_hip_eligible_adult: true
+      adult2:
+        age: 33
+        is_hip_eligible_adult: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2]
+        tax_unit_medicaid_income_level: 1.20
+    households:
+      household:
+        members: [adult1, adult2]
+        state_code: IN
+  output:
+    in_hip_power_account_contribution: 480
+
+- name: Non-Indiana household owes no HIP contribution.
+  period: 2019
+  input:
+    people:
+      adult:
+        age: 30
+        is_hip_eligible_adult: true
+    tax_units:
+      tax_unit:
+        members: [adult]
+        tax_unit_medicaid_income_level: 0.80
+    households:
+      household:
+        members: [adult]
+        state_code: IL
+  output:
+    in_hip_power_account_contribution: 0

@@ -11,15 +11,19 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         ut_at_home_parent_credit_agi_eligible: true
+        ut_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         state_code: UT
-  output: # 100 * 1
+  output:
     ut_at_home_parent_credit: 100
-
 - name: Earned income eligible but not AGI eligible
   period: 2022
   input:
@@ -36,15 +40,21 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
+        members:
+        - person1
+        - person2
+        - person3
         ut_at_home_parent_credit_agi_eligible: false
+        ut_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2, person3]
+        members:
+        - person1
+        - person2
+        - person3
         state_code: UT
   output:
     ut_at_home_parent_credit: 0
-
 - name: 2 eligible parents with 1 child
   period: 2022
   input:
@@ -61,15 +71,21 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
+        members:
+        - person1
+        - person2
+        - person3
         ut_at_home_parent_credit_agi_eligible: true
+        ut_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2, person3]
+        members:
+        - person1
+        - person2
+        - person3
         state_code: UT
-  output: # 100 * 2
+  output:
     ut_at_home_parent_credit: 200
-
 - name: 2 eligible parents with 2 children
   period: 2022
   input:
@@ -90,12 +106,21 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
-        members: [person1, person2, person3, person4]
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
         ut_at_home_parent_credit_agi_eligible: true
         tax_unit_is_joint: true
+        ut_income_tax_before_non_refundable_credits: 1000000
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
         state_code: UT
-  output: # 100 * 2 * 2
+  output:
     ut_at_home_parent_credit: 400

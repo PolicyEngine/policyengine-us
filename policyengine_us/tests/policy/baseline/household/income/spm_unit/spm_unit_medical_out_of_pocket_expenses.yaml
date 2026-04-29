@@ -1,0 +1,76 @@
+- name: SPM unit medical OOP sums non-premium expenses and tax unit CHIP premium.
+  period: 2024
+  input:
+    people:
+      parent:
+        other_medical_expenses: 500
+      child:
+        other_medical_expenses: 100
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        marketplace_net_premium: 0
+        tax_unit_medicaid_income_level: 1.70
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    spm_unit_non_premium_medical_out_of_pocket_expenses: 600
+    spm_unit_medical_out_of_pocket_expenses: 635
+
+- name: Non-CHIP state SPM unit medical OOP includes OTC expenses.
+  period: 2024
+  input:
+    people:
+      parent:
+        other_medical_expenses: 500
+      child:
+        other_medical_expenses: 100
+        over_the_counter_health_expenses: 50
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        marketplace_net_premium: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    spm_unit_non_premium_medical_out_of_pocket_expenses: 650
+    spm_unit_medical_out_of_pocket_expenses: 650
+
+- name: SPM unit medical OOP includes Marketplace net premium from selected plan.
+  period: 2024
+  input:
+    people:
+      person1:
+        other_medical_expenses: 100
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 10_000
+        selected_marketplace_plan_benchmark_ratio: 0.8
+        takes_up_aca_if_eligible: true
+        used_aca_ptc: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    selected_marketplace_plan_premium_proxy: 8_000
+    marketplace_net_premium: 5_000
+    spm_unit_health_insurance_premiums: 5_000
+    spm_unit_medical_out_of_pocket_expenses: 5_100

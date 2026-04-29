@@ -1,0 +1,7 @@
+- name: RI includes US government bond interest in AGI subtractions
+  period: 2024
+  input:
+    state_code: RI
+    us_govt_interest: 5_000
+  output:
+    ri_subtractions: 5_000

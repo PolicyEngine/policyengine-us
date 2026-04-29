@@ -1,0 +1,52 @@
+description: Hawaii HB 2306 CDCC applicable percentage schedule.
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    amount:
+      2027-01-01: 0.50
+  - threshold:
+      2027-01-01: 80_000
+    amount:
+      2027-01-01: 0.45
+  - threshold:
+      2027-01-01: 90_000
+    amount:
+      2027-01-01: 0.40
+  - threshold:
+      2027-01-01: 100_000
+    amount:
+      2027-01-01: 0.35
+  - threshold:
+      2027-01-01: 110_000
+    amount:
+      2027-01-01: 0.30
+  - threshold:
+      2027-01-01: 120_000
+    amount:
+      2027-01-01: 0.25
+  - threshold:
+      2027-01-01: 130_000
+    amount:
+      2027-01-01: 0.20
+  - threshold:
+      2027-01-01: 140_000
+    amount:
+      2027-01-01: 0.15
+  - threshold:
+      2027-01-01: 150_000
+    amount:
+      2027-01-01: 0.10
+  - threshold:
+      2027-01-01: 160_000
+    amount:
+      2027-01-01: 0.05
+metadata:
+  type: single_amount
+  threshold_period: year
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Hawaii HB 2306 CDCC rate
+  reference:
+    - title: HB 2306 HD1 Section 2 - §235-55.6(a)(2)
+      href: https://www.capitol.hawaii.gov/sessions/session2026/bills/HB2306_HD1_.HTM

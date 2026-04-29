@@ -27,15 +27,15 @@
   output:
     substitution_elasticity: 0  # TODO: Debug why single person isn't getting primary earner elasticity
 
-- name: Negative total earnings should have zero elasticity
+- name: Negative self-employment income uses earnings magnitude for decile
   period: 2023
   input:
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: -60_000  # Net negative earnings
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.2
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.9: 0.2
   output:
-    substitution_elasticity: 0  # max_(earnings, 0) = 0, so elasticity = 0
+    substitution_elasticity: 0.2
 
 - name: Positive net earnings after self-employment loss
   period: 2023
@@ -43,6 +43,28 @@
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: -5_000  # Net positive earnings = 45_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15  # 45k falls in decile 5
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.15  # 55k falls in decile 6
+  output:
+    substitution_elasticity: 0.15
+
+- name: Positive net earnings including SSTB income
+  period: 2023
+  input:
+    employment_income_before_lsr: 45_000
+    self_employment_income_before_lsr: 0
+    sstb_self_employment_income_before_lsr: 5_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15
+  output:
+    substitution_elasticity: 0.15
+
+- name: Negative SSTB self-employment income uses earnings magnitude for decile
+  period: 2023
+  input:
+    employment_income_before_lsr: 30_000
+    self_employment_income_before_lsr: 0
+    sstb_self_employment_income_before_lsr: -20_000
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15
   output:
     substitution_elasticity: 0.15

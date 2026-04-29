@@ -1,0 +1,160 @@
+# South Carolina CCAP activity eligibility tests
+# Per the SC CCAP Policy Manual sec. 2.13, the applicant (head/spouse)
+# must individually satisfy an activity requirement - work hours above
+# the threshold, full-time study, or documented disability.
+#
+# The test also must not vacuously pass for an SPM unit that contains
+# no head/spouse (e.g. unaccompanied minors): activity eligibility
+# requires at least one head/spouse in the unit.
+
+- name: Case 1, working parent meets activity requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: true
+
+- name: Case 2, parent below the work hour threshold fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 10
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: false
+
+- name: Case 3, full-time student parent meets requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: true
+
+- name: Case 4, disabled parent plus working parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: true
+
+- name: Case 5, two parents where one fails activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_ccap_activity_eligible: false
+
+- name: Case 6, SPM unit with only dependents has no activity-eligible parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # No head/spouse in the unit -> must not vacuously pass the test
+    sc_ccap_activity_eligible: false

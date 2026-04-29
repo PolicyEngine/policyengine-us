@@ -1,0 +1,28 @@
+- name: Washington counts liquid assets but does not yet model non-home real property separately.
+  period: 2025
+  input:
+    state_code: WA
+    bank_account_assets: 4_000
+    assessed_property_value: 3_000
+  output:
+    wa_tanf_countable_resources: 4_000
+
+- name: Washington excludes one vehicle and counts the average value of additional vehicles.
+  period: 2025
+  input:
+    state_code: WA
+    bank_account_assets: 1_000
+    household_vehicles_owned: 2
+    household_vehicles_value: 12_000
+  output:
+    wa_tanf_countable_resources: 7_000
+
+- name: Washington excludes a single transportation vehicle.
+  period: 2025
+  input:
+    state_code: WA
+    bank_account_assets: 1_000
+    household_vehicles_owned: 1
+    household_vehicles_value: 12_000
+  output:
+    wa_tanf_countable_resources: 1_000

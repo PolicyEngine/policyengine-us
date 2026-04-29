@@ -1,0 +1,67 @@
+start:
+  description: Phase-out start for the Lifetime Learning Credit on AGI. Before 2021, the LLC used lower thresholds than the American Opportunity Credit; the Consolidated Appropriations Act, 2021 harmonized them (IRC 25A(i)).
+  single:
+    description: Phase-out start for the Lifetime Learning Credit on AGI (single filers).
+    values:
+      2010-01-01: 50_000
+      2011-01-01: 51_000
+      2012-01-01: 52_000
+      2013-01-01: 53_000
+      2014-01-01: 54_000
+      2015-01-01: 55_000
+      2017-01-01: 56_000
+      2018-01-01: 57_000
+      2019-01-01: 58_000
+      2020-01-01: 59_000
+      2021-01-01: 80_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Lifetime Learning Credit phase-out start (single filers)
+  joint:
+    description: Phase-out start for the Lifetime Learning Credit on AGI (joint filers).
+    values:
+      2010-01-01: 100_000
+      2011-01-01: 102_000
+      2012-01-01: 104_000
+      2013-01-01: 107_000
+      2014-01-01: 108_000
+      2015-01-01: 110_000
+      2016-01-01: 111_000
+      2017-01-01: 112_000
+      2018-01-01: 114_000
+      2019-01-01: 116_000
+      2020-01-01: 118_000
+      2021-01-01: 160_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Lifetime Learning Credit phase-out start (joint filers)
+length:
+  description: Length of the phase-out range for the Lifetime Learning Credit on AGI (excess income at which the credit is reduced to zero).
+  single:
+    description: Length of the phase-out range for the Lifetime Learning Credit on AGI (single filers).
+    values:
+      2010-01-01: 10_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Lifetime Learning Credit phase-out length (single filers)
+  joint:
+    description: Length of the phase-out range for the Lifetime Learning Credit on AGI (joint filers).
+    values:
+      2010-01-01: 20_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Lifetime Learning Credit phase-out length (joint filers)
+metadata:
+  reference:
+    - title: 26 U.S. Code § 25A(d)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25A#d_1
+    - title: 2020 IRS Form 8863 (Part II lines 13, 16)
+      href: https://www.irs.gov/pub/irs-prior/f8863--2020.pdf
+    - title: 2015 IRS Form 8863 (Part II lines 13, 16)
+      href: https://www.irs.gov/pub/irs-prior/f8863--2015.pdf
+    - title: IRC 25A(i) (harmonized phase-out from 2021)
+      href: https://www.law.cornell.edu/uscode/text/26/25A#i

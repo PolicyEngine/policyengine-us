@@ -1,0 +1,802 @@
+# SC CCAP copay tests
+# sc_ccap_copay is SPMUnit, MONTH (total monthly copay for the unit)
+#
+# Fee Scale 2025-2026, family size 4 (monthly income brackets):
+#   $0 - $4,019 -> $0/wk
+#   $4,020 - $4,668 -> $6/wk
+#   $4,669 - $5,317 -> $11/wk
+#   $5,318 - $5,966 -> $14/wk
+#   $5,967 - $6,615 -> $17/wk
+#   $6,616 - $7,263 -> $20/wk
+#
+# 2025 FPG family of 4: 15,650 + 5,500 * 3 = 32,150
+# 150% FPG family of 4: 32,150 * 1.50 = 48,225/yr = 4,018.75/mo
+
+- name: Case 1, family size 4 in zero copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Monthly income = 36,000 / 12 = 3,000 < 4,020 -> $0/wk tier
+    # $0/wk * 2 eligible children * (52/12) = $0/mo
+    sc_ccap_copay: 0
+
+- name: Case 2, family size 4 in $6 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_400
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Monthly income = 50,400 / 12 = 4,200
+    # 4,020 <= 4,200 <= 4,668 -> $6/wk per child
+    # $6/wk * 2 children in care * (52/12) = $52.00/mo
+    sc_ccap_copay: 52
+
+- name: Case 3, family size 4 in $11 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Monthly income = 60,000 / 12 = 5,000
+    # 4,669 <= 5,000 <= 5,317 -> $11/wk per child
+    # $11/wk * 2 children in care * (52/12) = $95.33/mo
+    sc_ccap_copay: 95.33
+
+- name: Case 4, family size 4 in $14 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Monthly income = 66,000 / 12 = 5,500
+    # 5,318 <= 5,500 <= 5,966 -> $14/wk per child
+    # Uncapped: $14/wk * 2 children * (52/12) = $121.33/mo
+    # 2% family cap: 5,500 * 0.02 = $110/mo
+    # min($121.33, $110) = $110/mo
+    sc_ccap_copay: 110
+
+- name: Case 5, family size 4 in $17 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_400
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # FPG for 4 (2025): 32,150 -> 150% = 48,225/yr = 4,019/mo
+    # SMI for 4 (SC): 98,172/yr -> 85% = 6,954/mo
+    # Band width: ceil((6954 - 4019) / 5) = 587
+    # Tier 3 ($14): income > 4019+587*2=5193 and <= 4019+587*3=5780
+    # Monthly income = 68,400 / 12 = 5,700 -> tier 2 ($14/wk)
+    # Uncapped: $14/wk * 2 children * (52/12) = $121.33/mo
+    # 2% family cap: 5,700 * 0.02 = $114/mo
+    # min($121.33, $114) = $114/mo
+    sc_ccap_copay: 114
+
+- name: Case 6, family size 4 in $20 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_400
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Monthly income = 80,400 / 12 = 6,700
+    # 6,616 <= 6,700 <= 7,263 -> $20/wk per child
+    # Uncapped: $20/wk * 2 children * (52/12) = $173.33/mo
+    # 2% family cap: 6,700 * 0.02 = $134/mo
+    # min($173.33, $134) = $134/mo
+    sc_ccap_copay: 134
+
+- name: Case 7, TANF enrolled family gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # TANF enrolled -> $0 copay regardless of income
+    sc_ccap_copay: 0
+
+- name: Case 8, foster care family gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Foster care -> $0 copay regardless of income
+    sc_ccap_copay: 0
+
+- name: Case 9, homeless family gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        is_homeless: true
+  output:
+    # Homeless -> $0 copay regardless of income
+    sc_ccap_copay: 0
+
+- name: Case 10, copay capped at 2 percent of family income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Monthly income = 24,000 / 12 = 2,000
+    # Family size 2 fee scale: look up bracket for $2,000/mo
+    # 2% cap: 2,000 * 0.02 = $40/mo -> $40 / 4.33 = ~$9.24/wk cap
+    # If fee from scale > $9.24/wk, cap applies
+    # Fee from scale at this income for family size 2:
+    # Fee scale family size 2: $0-$2,643->$0, $2,644-$3,073->$6
+    # $2,000 < $2,644 -> $0/wk from scale
+    # min($0, cap) = $0
+    # $0/wk * 1 eligible child * (52/12) = $0/mo
+    sc_ccap_copay: 0
+
+- name: Case 11, CPS protective services child gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Protective services -> $0 copay regardless of income
+    sc_ccap_copay: 0
+
+- name: Case 12, Head Start child gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_enrolled_in_head_start: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Head Start category -> $0 copay regardless of income
+    sc_ccap_copay: 0
+
+# Pre-2024 era: no FPL exemption, tiers at SMI ratios (45/55/65/75%)
+- name: Case 13, pre-2024 era family size 2 in lowest SMI tier.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Pre-2024: no FPL exemption, all families pay at least $6/wk.
+    # SMI for FS 2 (SC, 2023-10-01): 89,725 * 0.68 = 61,013/yr = 5,084/mo
+    # 45% SMI = 2,288; income $1,500 < 2,288 -> tier 0 ($6/wk)
+    # $6/wk * 1 child in care * 52/12 = $26/mo
+    sc_ccap_copay: 26
+
+- name: Case 14, pre-2024 era family size 4 in $11 tier.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # SMI for FS 4 (SC, 2023-10-01): 89,725/yr = 7,477/mo
+    # 45% = 3,365; 55% = 4,112
+    # income $4,000 > 3,365 and <= 4,112 -> tier 1 ($11/wk)
+    # Uncapped: $11/wk * 2 children * 52/12 = $95.33/mo
+    # 2% family cap: 4,000 * 0.02 = $80/mo
+    # min($95.33, $80) = $80/mo
+    sc_ccap_copay: 80
+
+# Post-2024 era: FPL exemption + equal FPL-to-SMI bands
+- name: Case 15, post-2024 family size 2 below FPL exempt.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # FPG for FS 2 (2025): 21,150 -> 150% = 31,725/yr = 2,644/mo
+    # Income $2,000 <= $2,644 -> FPL exempt, $0 copay
+    sc_ccap_copay: 0
+
+- name: Case 16, post-2024 family size 2 in $14 tier.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # FPG for FS 2: 150% = 2,644/mo; 85% SMI = 4,729/mo
+    # band_width = ceil((4729-2644)/5) = 417
+    # Thresholds: 3061, 3478, 3895, 4312
+    # Income $3,500 > 3,478 but <= 3,895 -> tier 2 ($14/wk)
+    # $14/wk * 1 child in care * 52/12 = $60.67/mo
+    sc_ccap_copay: 60.67
+
+- name: Case 17, post-2024 family size 10 below FPL exempt.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 28
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+      person6:
+        age: 6
+        is_tax_unit_dependent: true
+      person7:
+        age: 4
+        is_tax_unit_dependent: true
+      person8:
+        age: 3
+        is_tax_unit_dependent: true
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+      person10:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: SC
+  output:
+    # FPG for FS 10 (2025): 65,150 -> 150% = 97,725/yr = 8,144/mo
+    # Income $5,000 <= $8,144 -> FPL exempt, $0 copay
+    sc_ccap_copay: 0
+
+- name: Case 18, post-2024 family size 10 in paid tier.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 108_000
+      person2:
+        age: 28
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person6:
+        age: 6
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person7:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person8:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person10:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: SC
+  output:
+    # FPG for FS 10: 150% = 8,144/mo; 85% SMI = 10,014/mo
+    # band_width = ceil((10014-8144)/5) = ceil(374) = 374
+    # Income $9,000 > 8,144 -> in paid band
+    # $9,000 > 8518? Yes; > 8892? Yes; > 9266? No -> tier 2 ($14/wk)
+    # Uncapped: 8 children * $14/wk * 52/12 = $485.33/mo
+    # 2% family cap: 9,000 * 0.02 = $180/mo
+    # min($485.33, $180) = $180/mo
+    sc_ccap_copay: 180
+
+- name: Case 19, Head Start only family with sibling gets zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_enrolled_in_head_start: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # Family qualifies only through Head Start path (high income, no work).
+    # Head Start child (person2) has $0 copay per Section 2.15.
+    # Sibling (person3) is not covered by the Head Start path and does
+    # not meet standard path requirements, so num_paying = 0.
+    # Total copay = $0.
+    sc_ccap_copay: 0
+
+- name: Case 21, post-2024 family size 15 row is zero only.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 132_000
+      person2:
+        age: 28
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 11
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person5:
+        age: 10
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 8
+        is_tax_unit_dependent: true
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+      person9:
+        age: 6
+        is_tax_unit_dependent: true
+      person10:
+        age: 5
+        is_tax_unit_dependent: true
+      person11:
+        age: 4
+        is_tax_unit_dependent: true
+      person12:
+        age: 3
+        is_tax_unit_dependent: true
+      person13:
+        age: 2
+        is_tax_unit_dependent: true
+      person14:
+        age: 1
+        is_tax_unit_dependent: true
+      person15:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15]
+        state_code: SC
+  output:
+    # Family size 15 row in the 2025-2026 fee scale is $0 only.
+    # Monthly income = 11,000 remains income-eligible but should not inherit
+    # size-14 paid tiers.
+    sc_ccap_copay: 0
+
+- name: Case 22, post-2024 family size 16 row is zero only.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 132_000
+      person2:
+        age: 28
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person4:
+        age: 11
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+      person5:
+        age: 10
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 8
+        is_tax_unit_dependent: true
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+      person9:
+        age: 6
+        is_tax_unit_dependent: true
+      person10:
+        age: 5
+        is_tax_unit_dependent: true
+      person11:
+        age: 4
+        is_tax_unit_dependent: true
+      person12:
+        age: 3
+        is_tax_unit_dependent: true
+      person13:
+        age: 2
+        is_tax_unit_dependent: true
+      person14:
+        age: 1
+        is_tax_unit_dependent: true
+      person15:
+        age: 17
+      person16:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+        state_code: SC
+  output:
+    # Family size 16 row in the 2025-2026 fee scale is $0 only.
+    # Monthly income = 11,000 remains income-eligible but should not inherit
+    # size-14 paid tiers.
+    sc_ccap_copay: 0

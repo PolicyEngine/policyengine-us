@@ -1,0 +1,76 @@
+- name: Case 1, couple income is combined for married MSP applicants.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi_unearned_income: 12_000
+      person2:
+        age: 66
+        ssi_unearned_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+  output:
+    msp_countable_income: [1_980, 1_980]
+  absolute_error_margin: 0.01
+
+- name: Case 2, spouse-to-spouse deeming counts an ineligible spouse's earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_spouse: true
+      person2:
+        age: 60
+        is_tax_unit_head: true
+        ssi_earned_income: 31_080
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: true
+  output:
+    msp_countable_income: [1_252.50, 1_252.50]
+  absolute_error_margin: 0.01
+
+- name: Spouse deeming with moderate income still allows QMB eligibility.
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        is_medicare_eligible: true
+        is_ssi_aged_blind_disabled: true
+        ssi_unearned_income: 0
+        ssi_earned_income: 0
+      person2:
+        age: 60
+        is_medicare_eligible: false
+        is_ssi_aged_blind_disabled: false
+        ssi_earned_income: 12_000
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Spouse earned $12,000/yr deemed to person1. Monthly: $1,000.
+    # SSI exclusions: $20 general shifted to earned (unearned=0),
+    # $65 earned excl => flat $85, remainder $915, 50% excluded => $457.50/mo.
+    # Person2 own income also $12,000 earned, same exclusions => $457.50/mo.
+    # Both under 100% FPL (~$1,255/mo) so person1 still qualifies for QMB.
+    msp_countable_income: [457.50, 457.50]
