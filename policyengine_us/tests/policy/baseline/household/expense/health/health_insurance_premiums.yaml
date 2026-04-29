@@ -1,0 +1,9 @@
+- name: Health insurance premiums include non-Medicare and Medicare Part B premiums.
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    health_insurance_premiums_without_medicare_part_b: 1_200
+    medicare_part_b_premium: 2_400
+  output:
+    health_insurance_premiums: 3_600

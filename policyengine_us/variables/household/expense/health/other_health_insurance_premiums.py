@@ -7,6 +7,7 @@ class other_health_insurance_premiums(Variable):
     label = "Other health insurance premiums"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"
     documentation = (
         "Person-level health insurance premiums not otherwise represented by "
         "modeled Marketplace, CHIP, Medicaid, or Medicare Part B premiums."
