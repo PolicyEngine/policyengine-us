@@ -18,6 +18,46 @@
   output:
     me_affordability_payment_eligible: false
 
+- name: Single filer just above the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 50_001
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Married separate filer below the income threshold is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 49_999
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: true
+
+- name: Married separate filer at the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Married separate filer just above the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 50_001
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
 - name: Head of household filer below the income threshold is eligible.
   period: 2025
   absolute_error_margin: 0.1
@@ -33,6 +73,16 @@
   absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 75_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+    me_affordability_payment_eligible: false
+
+- name: Head of household filer just above the income threshold is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 75_001
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: ME
   output:
@@ -58,22 +108,12 @@
   output:
     me_affordability_payment_eligible: false
 
-- name: Married separate filer below the income threshold is eligible.
+- name: Joint filer just above the income threshold is ineligible.
   period: 2025
   absolute_error_margin: 0.1
   input:
-    adjusted_gross_income: 49_999
-    filing_status: SEPARATE
-    state_code: ME
-  output:
-    me_affordability_payment_eligible: true
-
-- name: Married separate filer at the income threshold is ineligible.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    adjusted_gross_income: 50_000
-    filing_status: SEPARATE
+    adjusted_gross_income: 100_001
+    filing_status: JOINT
     state_code: ME
   output:
     me_affordability_payment_eligible: false
@@ -98,64 +138,12 @@
   output:
     me_affordability_payment_eligible: false
 
-- name: Single filer just above the income threshold is ineligible.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    adjusted_gross_income: 50_001
-    filing_status: SINGLE
-    state_code: ME
-  output:
-    me_affordability_payment_eligible: false
-
-- name: Joint filer just above the income threshold is ineligible.
+- name: Surviving spouse filer just above the income threshold is ineligible.
   period: 2025
   absolute_error_margin: 0.1
   input:
     adjusted_gross_income: 100_001
-    filing_status: JOINT
+    filing_status: SURVIVING_SPOUSE
     state_code: ME
-  output:
-    me_affordability_payment_eligible: false
-
-- name: Filer claimed as a dependent on another return is ineligible.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        claimed_as_dependent_on_another_return: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        adjusted_gross_income: 20_000
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-  output:
-    me_affordability_payment_eligible: false
-
-- name: Spouse claimed as a dependent on another return makes joint tax unit ineligible.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-        claimed_as_dependent_on_another_return: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 50_000
-        filing_status: JOINT
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
   output:
     me_affordability_payment_eligible: false

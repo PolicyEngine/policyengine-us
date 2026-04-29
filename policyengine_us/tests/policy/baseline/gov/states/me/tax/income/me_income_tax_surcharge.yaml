@@ -18,7 +18,9 @@
   output:
     me_income_tax_surcharge: 0
 
-- name: Maine income tax surcharge is zero for single taxable income below $1 million in 2026.
+# SINGLE: ±$1 boundary cases (threshold = $1,000,000).
+
+- name: Maine income tax surcharge is zero for single taxable income $1 below the $1 million threshold in 2026.
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -38,6 +40,16 @@
   output:
     me_income_tax_surcharge: 0
 
+- name: Maine income tax surcharge applies to single taxable income $1 above the $1 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_000_001
+  output:
+    me_income_tax_surcharge: 0.02
+
 - name: Maine income tax surcharge applies to single taxable income above $1 million in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -47,6 +59,18 @@
     me_taxable_income: 1_200_000
   output:
     me_income_tax_surcharge: 4_000
+
+# SEPARATE: ±$1 boundary cases (threshold = $750,000).
+
+- name: Maine income tax surcharge is zero for married separate taxable income $1 below the $750,000 threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SEPARATE
+    me_taxable_income: 749_999
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge is zero for married separate taxable income equal to the $750,000 threshold in 2026.
   period: 2026
@@ -58,6 +82,16 @@
   output:
     me_income_tax_surcharge: 0
 
+- name: Maine income tax surcharge applies to married separate taxable income $1 above the $750,000 threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SEPARATE
+    me_taxable_income: 750_001
+  output:
+    me_income_tax_surcharge: 0.02
+
 - name: Maine income tax surcharge applies to married separate taxable income above $750,000 in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -67,6 +101,18 @@
     me_taxable_income: 800_000
   output:
     me_income_tax_surcharge: 1_000
+
+# HEAD_OF_HOUSEHOLD: ±$1 boundary cases (threshold = $1,500,000).
+
+- name: Maine income tax surcharge is zero for head of household taxable income $1 below the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_taxable_income: 1_499_999
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge is zero for head of household taxable income equal to the $1.5 million threshold in 2026.
   period: 2026
@@ -78,6 +124,16 @@
   output:
     me_income_tax_surcharge: 0
 
+- name: Maine income tax surcharge applies to head of household taxable income $1 above the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_taxable_income: 1_500_001
+  output:
+    me_income_tax_surcharge: 0.02
+
 - name: Maine income tax surcharge applies to head of household taxable income above $1.5 million in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -87,6 +143,18 @@
     me_taxable_income: 1_600_000
   output:
     me_income_tax_surcharge: 2_000
+
+# JOINT: ±$1 boundary cases (threshold = $1,500,000).
+
+- name: Maine income tax surcharge is zero for joint taxable income $1 below the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    me_taxable_income: 1_499_999
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge is zero for joint taxable income equal to the $1.5 million threshold in 2026.
   period: 2026
@@ -98,6 +166,16 @@
   output:
     me_income_tax_surcharge: 0
 
+- name: Maine income tax surcharge applies to joint taxable income $1 above the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    me_taxable_income: 1_500_001
+  output:
+    me_income_tax_surcharge: 0.02
+
 - name: Maine income tax surcharge applies to joint taxable income above $1.5 million in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -107,6 +185,18 @@
     me_taxable_income: 1_750_000
   output:
     me_income_tax_surcharge: 5_000
+
+# SURVIVING_SPOUSE: ±$1 boundary cases (threshold = $1,500,000).
+
+- name: Maine income tax surcharge is zero for surviving spouse taxable income $1 below the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SURVIVING_SPOUSE
+    me_taxable_income: 1_499_999
+  output:
+    me_income_tax_surcharge: 0
 
 - name: Maine income tax surcharge is zero for surviving spouse taxable income equal to the $1.5 million threshold in 2026.
   period: 2026
@@ -118,6 +208,16 @@
   output:
     me_income_tax_surcharge: 0
 
+- name: Maine income tax surcharge applies to surviving spouse taxable income $1 above the $1.5 million threshold in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SURVIVING_SPOUSE
+    me_taxable_income: 1_500_001
+  output:
+    me_income_tax_surcharge: 0.02
+
 - name: Maine income tax surcharge applies to surviving spouse taxable income above $1.5 million in 2026.
   period: 2026
   absolute_error_margin: 0.1
@@ -127,3 +227,30 @@
     me_taxable_income: 1_650_000
   output:
     me_income_tax_surcharge: 3_000
+
+# 2027 uprating verification — locks in that the threshold parameter
+# uprates and rounds via gov.irs.uprating (used as a proxy for Maine
+# §5403, sub-§12 indexing per the PR description). Income at the 2026
+# statutory threshold should produce zero in 2027 because the threshold
+# has uprated upward; income $1M+ above the 2026 threshold should still
+# trigger a positive surcharge.
+
+- name: Maine income tax surcharge in 2027 stays zero at the 2026 single threshold once uprated.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_000_000
+  output:
+    me_income_tax_surcharge: 0
+
+- name: Maine income tax surcharge in 2027 stays zero at the 2026 joint threshold once uprated.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    me_taxable_income: 1_500_000
+  output:
+    me_income_tax_surcharge: 0

@@ -1,29 +1,137 @@
-- name: Ineligible tax unit receives no affordability payment.
+- name: Single filer over the income limit receives no affordability payment.
   period: 2025
   absolute_error_margin: 0.1
   input:
-    me_affordability_payment_eligible: false
-    head_spouse_count: 2
+    adjusted_gross_income: 60_000
+    filing_status: SINGLE
     state_code: ME
   output:
     me_affordability_payment: 0
 
-- name: Single eligible filer receives one Maine affordability payment.
+- name: Single eligible filer receives one affordability payment.
   period: 2025
   absolute_error_margin: 0.1
   input:
-    me_affordability_payment_eligible: true
-    head_spouse_count: 1
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
     state_code: ME
   output:
     me_affordability_payment: 300
 
-- name: Joint eligible filers receive one Maine affordability payment per spouse.
+- name: Joint eligible filers receive one payment per filer (head + spouse).
   period: 2025
   absolute_error_margin: 0.1
   input:
-    me_affordability_payment_eligible: true
-    head_spouse_count: 2
-    state_code: ME
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 50_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
   output:
     me_affordability_payment: 600
+
+- name: Single filer claimed as a dependent on another return receives no payment.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_affordability_payment: 0
+
+- name: Joint filers with only the spouse claimed elsewhere still receive one payment for the head.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 50_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_affordability_payment: 300
+
+- name: Joint filers with only the head claimed elsewhere still receive one payment for the spouse.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 50_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_affordability_payment: 300
+
+- name: Joint filers with both head and spouse claimed elsewhere receive no payment.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      person2:
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 50_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_affordability_payment: 0
+
+- name: Affordability payment amount drops to zero in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_affordability_payment: 0

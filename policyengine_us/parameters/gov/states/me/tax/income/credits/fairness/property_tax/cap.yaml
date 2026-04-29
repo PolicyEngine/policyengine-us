@@ -1,12 +1,11 @@
 description: Maine caps the property tax fairness credit at this amount, based on age.
 metadata:
   threshold_unit: year
-  amount_unit: currency_USD
+  amount_unit: currency-USD
   type: single_amount
   reference:
-    # Income threshold is not specified in the legal code
-    - title: §5219-KK. Property tax fairness credit for tax (2)
-      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: 36 MRS §5219-KK, sub-§2-D — Property tax fairness credit cap by age (2026+)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5219-KK.html
     - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=2
     - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
@@ -20,7 +19,7 @@ metadata:
     - title: H.P. 1491, L.D. 2212, Part CCCC, Sec. CCCC-1, subsection 2-D
       href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=220
   period: year
-  label: Maine property tax fairness credit age threshold
+  label: Maine property tax fairness credit cap by age
 
 brackets:
   - threshold:

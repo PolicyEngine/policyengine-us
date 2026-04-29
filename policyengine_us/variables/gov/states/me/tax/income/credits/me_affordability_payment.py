@@ -9,8 +9,21 @@ class me_affordability_payment(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=157"
+    documentation = (
+        "Sec. T-1, sub-§3 defines the affordability payment as a direct "
+        "payment from a Special Revenue Fund rather than a refundable tax "
+        "credit. PolicyEngine folds the payment into Maine's refundable "
+        "credit aggregation to surface it in tax-unit-level outputs. "
+        "Sec. T-1, sub-§1(C)(3) excludes individuals claimed as a "
+        "dependent on another taxpayer's return, evaluated per recipient."
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.affordability_payment
-        head_spouse_count = tax_unit("head_spouse_count", period)
-        return head_spouse_count * p.amount
+        person = tax_unit.members
+        is_recipient = person("is_tax_unit_head", period) | person(
+            "is_tax_unit_spouse", period
+        )
+        dependent_elsewhere = person("claimed_as_dependent_on_another_return", period)
+        eligible_recipients = tax_unit.sum(is_recipient & ~dependent_elsewhere)
+        return eligible_recipients * p.amount
