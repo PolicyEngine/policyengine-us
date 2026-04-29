@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class wv_low_income_family_tax_credit(Variable):
@@ -10,37 +13,14 @@ class wv_low_income_family_tax_credit(Variable):
     defined_for = "wv_low_income_family_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
-        p = parameters(
+        ordered_credits = parameters(
             period
-        ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit
-
-        wv_agi = tax_unit("wv_low_income_family_tax_credit_agi", period)
-        fpg = tax_unit("wv_low_income_family_tax_credit_fpg", period)
-        # modified agi limit
-        fpg_amount = p.fpg_percent[filing_status] * fpg
-        # condition: wv_agi < = fpg_amount
-        reduced_agi = wv_agi - fpg_amount
-
-        credit_percentage = select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.SURVIVING_SPOUSE,
-            ],
-            [
-                p.amount.single.calc(reduced_agi),
-                p.amount.separate.calc(reduced_agi),
-                p.amount.joint.calc(reduced_agi),
-                p.amount.head_of_household.calc(reduced_agi),
-                p.amount.surviving_spouse.calc(reduced_agi),
-            ],
+        ).gov.states.wv.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "wv_income_tax_before_non_refundable_credits",
+            "wv_low_income_family_tax_credit",
+            "wv_low_income_family_tax_credit_potential",
         )
-
-        tax_before_credits = tax_unit(
-            "wv_income_tax_before_non_refundable_credits", period
-        )
-        return tax_before_credits * credit_percentage

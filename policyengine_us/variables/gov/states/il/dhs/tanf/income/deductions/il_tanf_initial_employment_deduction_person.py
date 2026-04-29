@@ -25,4 +25,4 @@ class il_tanf_initial_employment_deduction_person(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         ied_eligible_person = is_employed & is_head_or_spouse
         uncapped_ied = ied_eligible_person * initial_employment_deduction
-        return min_(gross_earned_income, uncapped_ied)
+        return max_(min_(gross_earned_income, uncapped_ied), 0)

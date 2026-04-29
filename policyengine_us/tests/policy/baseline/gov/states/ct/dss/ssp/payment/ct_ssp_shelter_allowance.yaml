@@ -1,0 +1,148 @@
+- name: Case 1, community alone with rent above max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        rent: 12_000  # $1,000/mo > $400 max
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_shelter_allowance: 400
+
+- name: Case 2, community alone with rent below max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        rent: 3_600  # $300/mo < $400 max
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_shelter_allowance: 300
+
+- name: Case 3, community shared with rent above max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_lives_with_others: true
+        rent: 6_000  # $500/mo > $200 max
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_shelter_allowance: 200
+
+- name: Case 4, boarding home gets zero shelter.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_resides_in_boarding_home: true
+        rent: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_shelter_allowance: 0
+
+- name: Case 5, Medicaid facility gets zero shelter.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        rent: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_shelter_allowance: 0
+
+- name: Case 6, community alone rent exactly at max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        rent: 4_800  # $400/mo exactly = max
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # min(400, 400) = $400
+    ct_ssp_shelter_allowance: 400
+
+- name: Case 7, community shared rent exactly at max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_lives_with_others: true
+        rent: 2_400  # $200/mo exactly = max
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # min(200, 200) = $200
+    ct_ssp_shelter_allowance: 200
+
+- name: Case 8, community alone zero rent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+        rent: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # min(0, 400) = $0
+    ct_ssp_shelter_allowance: 0
+
+- name: Case 9, boarding home with high rent still gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_resides_in_boarding_home: true
+        rent: 24_000  # $2,000/mo
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Facility -> shelter = $0 regardless of rent
+    ct_ssp_shelter_allowance: 0

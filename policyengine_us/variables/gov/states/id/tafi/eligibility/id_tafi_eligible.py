@@ -19,7 +19,7 @@ class id_tafi_eligible(Variable):
 
         # Immigration eligibility - use federal baseline (IDAPA 16.03.08.131)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Resources eligibility (IDAPA 16.03.08.200)

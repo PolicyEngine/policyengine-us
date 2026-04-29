@@ -1,0 +1,118 @@
+- name: Mississippi child uses regular FY2026 FMAP (76.90%)
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+  output:
+    medicaid_federal_share: 0.7690
+
+- name: California aged-disabled enrollee uses 50% FMAP floor
+  period: 2026
+  input:
+    state_code: CA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: SSI_RECIPIENT
+  output:
+    medicaid_federal_share: 0.5000
+
+- name: Iowa optional senior/disabled enrollee uses Iowa FY2026 FMAP (62.70%)
+  period: 2026
+  input:
+    state_code: IA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+  output:
+    medicaid_federal_share: 0.6270
+
+- name: DC young child uses statutory 70% FMAP
+  period: 2026
+  input:
+    state_code: DC
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: YOUNG_CHILD
+  output:
+    medicaid_federal_share: 0.7000
+
+- name: Expansion adult in Texas receives 90% expansion FMAP (not state FMAP)
+  period: 2026
+  input:
+    state_code: TX
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.9000
+
+- name: Expansion adult in Mississippi receives 90%, not MS regular FMAP
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.9000
+
+- name: Parent in non-expansion state Florida uses FL FY2026 FMAP (57.22%)
+  period: 2026
+  input:
+    state_code: FL
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: PARENT
+  output:
+    medicaid_federal_share: 0.5722
+
+- name: 2018 expansion FMAP is 94% per 42 USC 1396d(y) schedule
+  period: 2018
+  input:
+    state_code: CA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    medicaid_federal_share: 0.94
+
+- name: 2020 child picks up FY2020 FMAP (effective 2019-10-01) for pre-FY2023 backfill
+  period: 2020
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+  output:
+    medicaid_federal_share: 0.7698
+
+- name: Non-enrolled person has zero federal share
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: false
+  output:
+    medicaid_federal_share: 0
+
+- name: Pre-FY2018 period returns zero federal share (sentinel prevents backward extrapolation)
+  period: 2016
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+  output:
+    medicaid_federal_share: 0
+
+- name: West Virginia pregnant enrollee (non-expansion category) uses state FY2026 FMAP (74.22%)
+  period: 2026
+  input:
+    state_code: WV
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: PREGNANT
+  output:
+    medicaid_federal_share: 0.7422

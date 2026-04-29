@@ -17,7 +17,7 @@ class nj_wfnj_eligible(Variable):
         resources_eligible = spm_unit("nj_wfnj_resources_eligible", period)
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         has_citizen_or_legal_immigrant = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         return (
             income_eligible

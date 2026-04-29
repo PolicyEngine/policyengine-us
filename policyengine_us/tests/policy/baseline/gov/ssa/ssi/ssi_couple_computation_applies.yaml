@@ -1,0 +1,137 @@
+# 20 CFR 416.414(b)(2)-(3): Couple computation depends on whether
+# either spouse is in a medical treatment facility.
+
+- name: Case 1, eligible couple neither in facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_claim_is_joint: [true, true]
+    ssi_couple_computation_applies: [true, true]
+
+- name: Case 2, one spouse enters Medicaid nursing home.
+  period: 2025-01
+  input:
+    people:
+      # Husband enters Medicaid-funded nursing home
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      # Wife remains at home
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # This test only changes 416.414(b)(3) benefit computation.
+    # Joint-claim status stays true because temporary vs permanent
+    # facility separation is not modeled.
+    ssi_claim_is_joint: [true, true]
+    # Per 416.414(b)(3): one in facility → separate computation
+    ssi_couple_computation_applies: [false, false]
+
+- name: Case 3, both spouses in medical treatment facilities.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 75
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 73
+        is_tax_unit_spouse: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_claim_is_joint: [true, true]
+    # Per 416.414(b)(2): both in facility → couple computation ($60)
+    ssi_couple_computation_applies: [true, true]
+
+- name: Case 4, spouse in facility but privately funded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 67
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: false
+      person2:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    ssi_claim_is_joint: [true, true]
+    # Not Title XIX → living arrangement is OWN_HOUSEHOLD, not facility
+    ssi_couple_computation_applies: [true, true]
+
+- name: Case 5, only one spouse eligible, no facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Not a joint claim → couple computation does not apply
+    ssi_claim_is_joint: [false, false]
+    ssi_couple_computation_applies: [false, false]

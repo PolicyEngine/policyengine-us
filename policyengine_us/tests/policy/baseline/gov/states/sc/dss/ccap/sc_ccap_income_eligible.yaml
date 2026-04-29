@@ -1,0 +1,116 @@
+# SC CCAP income eligibility tests
+# sc_ccap_income_eligible is SPMUnit, MONTH
+# 2025 HHS SMI for SC, family size 4:
+#   85% SMI = $83,446/yr ($6,954/mo) per Income Standards 2024-2025
+
+- name: Case 1, income below 85 percent SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Family size 4, 85% SMI = $83,446/yr
+    # 60,000 <= 83,446 -> eligible
+    sc_ccap_income_eligible: true
+
+- name: Case 2, income above 85 percent SMI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Family size 4, 85% SMI = $83,446/yr
+    # 90,000 > 83,446 -> ineligible
+    sc_ccap_income_eligible: false
+
+- name: Case 3, zero income family eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 0 <= any threshold -> eligible
+    sc_ccap_income_eligible: true
+
+- name: Case 4, single parent family size 2.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Family size 2, 85% SMI = $56,743/yr
+    # 55,000 <= 56,743 -> eligible
+    sc_ccap_income_eligible: true
+
+- name: Case 5, single parent family size 2 above threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 57_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Family size 2, 85% SMI = $56,743/yr
+    # 57,000 > 56,743 -> ineligible
+    sc_ccap_income_eligible: false

@@ -1,0 +1,56 @@
+- name: Total self-employment income includes SSTB income
+  period: 2024
+  input:
+    self_employment_income_before_lsr: 30_000
+    sstb_self_employment_income: 20_000
+  output:
+    total_self_employment_income: 50_000
+
+- name: Self-employed health insurance ALD uses SSTB income
+  period: 2024
+  input:
+    sstb_self_employment_income: 10_000
+    self_employed_health_insurance_premiums: 12_000
+  output:
+    self_employed_health_insurance_ald_person: 10_000
+
+- name: Self-employed pension ALD uses SSTB income
+  period: 2024
+  input:
+    sstb_self_employment_income: 8_000
+    self_employed_pension_contributions: 9_000
+  output:
+    self_employed_pension_contribution_ald_person: 8_000
+
+- name: Loss ALD includes SSTB self-employment losses
+  period: 2024
+  input:
+    sstb_self_employment_income: -20_000
+  output:
+    loss_ald: 20_000
+
+- name: Labor supply response preserves SSTB self-employment category
+  period: 2024
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 0
+    self_employment_income_before_lsr: 0
+    sstb_self_employment_income_before_lsr: 10_000
+  output:
+    self_employment_income_behavioral_response: 0
+    sstb_self_employment_income_behavioral_response: 1_000
+    self_employment_income: 0
+    sstb_self_employment_income: 11_000
+
+- name: Labor supply response preserves SSTB loss category
+  period: 2024
+  input:
+    labor_supply_behavioral_response: 1_000
+    employment_income_before_lsr: 0
+    self_employment_income_before_lsr: 0
+    sstb_self_employment_income_before_lsr: -10_000
+  output:
+    self_employment_income_behavioral_response: 0
+    sstb_self_employment_income_behavioral_response: 1_000
+    self_employment_income: 0
+    sstb_self_employment_income: -9_000

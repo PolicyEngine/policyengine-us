@@ -1,0 +1,338 @@
+- name: Case 1, center, full-time, infant/toddler, Eastern.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 284
+
+- name: Case 2, center, full-time, infant/toddler, Southwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # Jan 2025 center FT Southwest infant/toddler = $468
+    ct_c4k_payment_rate: 468
+
+- name: Case 3, family, half-time, preschool, North Central.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: FAMILY
+    ct_c4k_care_level: HALF_TIME
+    ct_c4k_age_group: PRE_SCHOOL
+    ct_c4k_region: NORTH_CENTRAL
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 149
+
+- name: Case 4, relative, full-time plus, Eastern.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RELATIVE
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 325
+
+- name: Case 5, center, quarter-time, school-age, Northwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: QUARTER_TIME
+    ct_c4k_age_group: SCHOOL_AGE
+    ct_c4k_region: NORTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # Jan 2025 center QT Northwest school-age = $63
+    ct_c4k_payment_rate: 63
+
+- name: Case 6, center, full-time, infant/toddler, special needs supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: NORTH_CENTRAL
+    is_disabled: true
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # 376 * 1.15 = 432.40
+    ct_c4k_payment_rate: 432.40
+
+- name: Case 7, center, full-time, preschool, accreditation bonus.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: PRE_SCHOOL
+    ct_c4k_region: SOUTH_CENTRAL
+    is_disabled: false
+    ct_c4k_provider_accredited: true
+    state_code: CT
+  output:
+    # 259 * 1.05 = 271.95
+    ct_c4k_payment_rate: 271.95
+
+- name: Case 8, center, full-time, infant/toddler, special needs AND accreditation.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: true
+    ct_c4k_provider_accredited: true
+    state_code: CT
+  output:
+    # 284 * (1 + 0.15 + 0.05) = 284 * 1.20 = 340.80
+    ct_c4k_payment_rate: 340.80
+
+- name: Case 9, recreational, full-time, preschool, Southwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RECREATIONAL
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: PRE_SCHOOL
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 301
+
+- name: Case 10, relative, quarter-time, flat rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RELATIVE
+    ct_c4k_care_level: QUARTER_TIME
+    ct_c4k_age_group: SCHOOL_AGE
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 74
+
+- name: Case 11, relative, half-time, flat rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RELATIVE
+    ct_c4k_care_level: HALF_TIME
+    ct_c4k_age_group: PRE_SCHOOL
+    ct_c4k_region: NORTH_CENTRAL
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 148
+
+- name: Case 12, family, quarter-time, infant/toddler, Southwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: FAMILY
+    ct_c4k_care_level: QUARTER_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 114
+
+- name: Case 13, center, full-time plus, school-age, South Central.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: SCHOOL_AGE
+    ct_c4k_region: SOUTH_CENTRAL
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 272
+
+- name: Case 14, family, full-time plus, infant/toddler, Eastern.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: FAMILY
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 335
+
+- name: Case 15, recreational, quarter-time, school-age, Eastern.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RECREATIONAL
+    ct_c4k_care_level: QUARTER_TIME
+    ct_c4k_age_group: SCHOOL_AGE
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 54
+
+- name: Case 16, family, full-time, special needs, accreditation, Northwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: FAMILY
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: NORTHWEST
+    is_disabled: true
+    ct_c4k_provider_accredited: true
+    state_code: CT
+  output:
+    # 291 * (1 + 0.15 + 0.05) = 291 * 1.20 = 349.20
+    ct_c4k_payment_rate: 349.20
+
+- name: Case 17, relative, full-time, special needs only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RELATIVE
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: true
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # 245 * 1.15 = 281.75
+    ct_c4k_payment_rate: 281.75
+
+- name: Case 18, center, half-time, infant/toddler, Southwest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: HALF_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 317
+
+- name: Case 19, center, full-time plus, infant/toddler, Southwest, highest rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: SOUTHWEST
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 627
+
+- name: Case 20, center, quarter-time, school-age, Eastern, lowest center rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: QUARTER_TIME
+    ct_c4k_age_group: SCHOOL_AGE
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 54
+
+- name: Case 21, Jul 2025 rate period, center, full-time plus, infant/toddler, Eastern.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # Jul 2025 center FTP Eastern infant/toddler = $424
+    ct_c4k_payment_rate: 424
+
+- name: Case 22, pre-2025 rate period, center, full-time plus, infant/toddler, Eastern.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: CENTER
+    ct_c4k_care_level: FULL_TIME_PLUS
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    # Jan 2024 center FTP Eastern infant/toddler = $344
+    ct_c4k_payment_rate: 344

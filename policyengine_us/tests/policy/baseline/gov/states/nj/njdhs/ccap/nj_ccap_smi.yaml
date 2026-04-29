@@ -1,0 +1,101 @@
+# nj_ccap_smi: SPMUnit, float, MONTH
+# 85% of NJ State Median Income, annualized / 12 for monthly comparison.
+# Uses federal HHS SMI data with household size adjustments, accessed at
+# Oct 1 fiscal-year instant.
+#
+# For 2026-01 (FY 2026): NJ 4-person base = 160_276 (2025-10-01 HHS data)
+# Size adjustments: first_person=0.52, second_to_sixth=0.16 each
+#   Family of 2: 160_276 * (0.52 + 0.16) * 0.85 / 12 = 7_719.96
+#   Family of 4: 160_276 * (0.52 + 0.16*3) * 0.85 / 12 = 11_352.88
+
+- name: Case 1, basic SMI lookup for family of 4.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # 160_276 * 1.00 * 0.85 / 12 = 11_352.88
+    nj_ccap_smi: 11_352.88
+
+- name: Case 2, SMI for family of 2 used for exit threshold.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 160_276 * 0.68 * 0.85 / 12 = 7_719.96
+    nj_ccap_smi: 7_719.96
+
+- name: Case 3, enrolled family above 250% FPL but below 85% SMI is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Family of 2: 85% SMI annual = 92_640
+    # Enrolled -> uses 85% SMI only (graduated phase-out)
+    # 60_000 <= 92_640 -> eligible
+    nj_ccap_income_eligible: true
+
+- name: Case 4, income below 250% FPL but exceeds 85% SMI so SMI is binding.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_000
+      person2:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Family of 2: 250% FPL = 54_100; 85% SMI annual = 92_640
+    # Income 39_000 < 54_100 (FPL passes) and 39_000 < 92_640 (SMI passes)
+    # Both pass -> eligible (SMI is not binding at this income)
+    nj_ccap_income_eligible: true

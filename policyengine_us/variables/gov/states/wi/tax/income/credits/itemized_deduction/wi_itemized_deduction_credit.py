@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class wi_itemized_deduction_credit(Variable):
@@ -15,8 +18,14 @@ class wi_itemized_deduction_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        wi_itmded = tax_unit("itemized_deductions_less_salt", period)
-        wi_stdded = tax_unit("wi_standard_deduction", period)
-        excess_itmded = max_(0, wi_itmded - wi_stdded)
-        p = parameters(period).gov.states.wi.tax.income
-        return excess_itmded * p.credits.itemized_deduction.rate
+        ordered_credits = parameters(
+            period
+        ).gov.states.wi.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "wi_income_tax_before_credits",
+            "wi_itemized_deduction_credit",
+            "wi_itemized_deduction_credit_potential",
+        )

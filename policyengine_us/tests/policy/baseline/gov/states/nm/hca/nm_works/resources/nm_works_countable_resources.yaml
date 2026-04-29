@@ -1,0 +1,14 @@
+- name: Aggregate countable resources combine liquid and non-liquid concepts.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 1_250
+  output:
+    nm_works_countable_resources: 1_250
+
+- name: Aggregate countable resources stay zero when both components are zero.
+  period: 2024-01
+  input:
+    state_code: NM
+  output:
+    nm_works_countable_resources: 0

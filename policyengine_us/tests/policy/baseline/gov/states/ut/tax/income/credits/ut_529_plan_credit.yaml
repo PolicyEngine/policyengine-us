@@ -1,0 +1,53 @@
+- name: Single filer below cap with one beneficiary
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 1_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # 1_000 * 0.0455 = 45.50
+    ut_529_plan_credit: 45.50
+
+- name: Single filer above cap with one beneficiary
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 5_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # 2_410 * 0.0455 = 109.655
+    ut_529_plan_credit: 109.655
+
+- name: Joint filer below cap with one beneficiary
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: JOINT
+    investment_in_529_plan_indv: 3_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # 3_000 * 0.0455 = 136.50
+    ut_529_plan_credit: 136.50
+
+- name: Joint filer above cap with one beneficiary
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: JOINT
+    investment_in_529_plan_indv: 10_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    # 4_820 * 0.0455 = 219.31
+    ut_529_plan_credit: 219.31
+
+- name: Zero contributions
+  period: 2024
+  input:
+    state_code: UT
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+    count_529_contribution_beneficiaries: 0
+  output:
+    ut_529_plan_credit: 0

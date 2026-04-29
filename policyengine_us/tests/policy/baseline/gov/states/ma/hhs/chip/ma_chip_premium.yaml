@@ -1,0 +1,44 @@
+- name: Massachusetts MassHealth tier 1 tax unit with one child pays 12 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.75
+    households:
+      household:
+        members: [child]
+        state_code: MA
+  output:
+    ma_chip_premium: 144
+
+- name: Massachusetts MassHealth tier 3 tax unit with four children is capped at 84 dollars monthly.
+  period: 2024
+  input:
+    people:
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [c1, c2, c3, c4]
+        tax_unit_medicaid_income_level: 2.75
+    households:
+      household:
+        members: [c1, c2, c3, c4]
+        state_code: MA
+  output:
+    ma_chip_premium: 1008

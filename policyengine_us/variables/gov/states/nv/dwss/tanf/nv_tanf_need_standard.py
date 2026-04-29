@@ -7,7 +7,7 @@ class nv_tanf_need_standard(Variable):
     label = "Nevada TANF need standard"
     unit = USD
     definition_period = MONTH
-    reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/eligibility/Chapter%20C_140.pdf"
+    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/eligibility/chapter-c_140.pdf"
     defined_for = StateCode.NV
 
     def formula(spm_unit, period, parameters):

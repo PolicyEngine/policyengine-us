@@ -1,0 +1,260 @@
+- name: Case 1, SAPN eligible individual in Medicaid facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 360
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Eligibility: age 70 >= 18, SSI recipient, Medicaid enrolled, in Medicaid facility, IN resident
+    in_ssp_sapn_eligible: true
+    in_ssp_rcap_eligible: false
+    in_ssp_eligible: true
+    # Federal SSI is limited to $30/month in a Medicaid facility.
+    ssi: 30
+    # SAPN = $52 PNA - $30 reduced SSI = $22/month
+    in_ssp_sapn: 22
+    in_ssp_rcap: 0
+    # Combined: SAPN + RCAP = 22 + 0 = $22
+    in_ssp: 22
+
+- name: Case 2, SAPN eligible couple both in Medicaid facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 360
+      person2:
+        age: 65
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 360
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Both eligible for SAPN: age >= 18, SSI eligible, SSI recipient, Medicaid eligible, Medicaid facility
+    in_ssp_sapn_eligible: [true, true]
+    in_ssp_rcap_eligible: [false, false]
+    in_ssp_eligible: [true, true]
+    ssi: [30, 30]
+    # SAPN couple: $44/month total = $22 each
+    in_ssp_sapn: [22, 22]
+    in_ssp_rcap: [0, 0]
+    # Combined per person: $22
+    in_ssp: [22, 22]
+
+- name: Case 2b, SAPN phases down when the recipient has other countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi_countable_income: 120
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: true
+    # ssi_amount_if_eligible = $30/mo facility rate = $360/yr
+    # uncapped_ssi = 360 - 120 = 240 -> ssi = 240/yr = $20/mo
+    ssi: 20
+    # SAPN = min($52 - $20 SSI - $10 countable, $22) = $22
+    # When SSI > 0: SSI + countable = FBR, so PNA - SSI - countable = PNA - FBR = $22
+    in_ssp_sapn: 22
+    in_ssp: 22
+
+- name: Case 3b, RCAP deducts both SSI and countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        is_medicaid_eligible: false
+        ssi: 9_000
+        ssi_countable_income: 2_400
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: true
+    ssi: 750
+    # State standard = 49.35 * 365/12 = $1,501.06
+    # Deduction = $750 SSI + $200 countable income = $950
+    in_ssp_rcap: 551.06
+
+- name: Case 3, RCAP eligible individual in licensed facility with partial federal SSI offset.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        is_medicaid_eligible: false
+        ssi_claim_is_joint: false
+        uncapped_ssi: 6_000
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # SAPN: not in federal Medicaid facility -> ineligible
+    in_ssp_sapn_eligible: false
+    # RCAP: ABD, SSI recipient, age >= 18, licensed residential
+    in_ssp_rcap_eligible: true
+    # Normal FBR (not in medical facility): uncapped_ssi/12 = $500/mo
+    ssi: 500
+    in_ssp_eligible: true
+    in_ssp_sapn: 0
+    # RCAP: per diem $49.35/day (licensed, since July 2008)
+    # State standard = 49.35 * 365/12 = $1,501.06
+    # uncapped_ssi monthly = 6,000/12 = $500
+    # federal_ssi = max(500, 0) = $500
+    # supplement = max(1,501.06 - 500, 0) = $1,001.06
+    in_ssp_rcap: 1_001.06
+    in_ssp: 1_001.06
+
+- name: Case 4, RCAP eligible individual in unlicensed facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        is_ssi_aged_blind_disabled: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 0
+        in_resides_in_unlicensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_sapn_eligible: false
+    # RCAP: ABD, Medicaid enrolled, age >= 18, unlicensed residential
+    in_ssp_rcap_eligible: true
+    ssi: 0
+    in_ssp_eligible: true
+    in_ssp_sapn: 0
+    # RCAP: per diem $37/day (unlicensed, since July 2008)
+    # State standard = 37 * 365/12 = $1,125.42
+    # No income offset (uncapped_ssi = 0)
+    # supplement = $1,125.42
+    in_ssp_rcap: 1_125.42
+    in_ssp: 1_125.42
+
+- name: Case 5, child under 18 ineligible for both programs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Age 16 < 18: ineligible for both SAPN and RCAP
+    in_ssp_sapn_eligible: false
+    in_ssp_rcap_eligible: false
+    in_ssp_eligible: false
+    in_ssp_sapn: 0
+    in_ssp_rcap: 0
+    in_ssp: 0
+
+- name: Case 6, SSI-ineligible adult in Medicaid facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_ssi_eligible: false
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Not SSI eligible: SSI = 0, SAPN requires SSI receipt
+    in_ssp_sapn_eligible: false
+    in_ssp_rcap_eligible: false
+    in_ssp_eligible: false
+    in_ssp_sapn: 0
+    in_ssp_rcap: 0
+    in_ssp: 0
+
+- name: Case 7, independent living and non-Indiana combined ineligibility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible: true
+        is_medicaid_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Not in Indiana AND not in any facility: doubly ineligible
+    in_ssp_sapn_eligible: false
+    in_ssp_rcap_eligible: false
+    in_ssp_eligible: false
+    in_ssp_sapn: 0
+    in_ssp_rcap: 0
+    in_ssp: 0

@@ -12,6 +12,7 @@ class md_married_or_has_child_non_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)
+        md_income_tax = tax_unit("md_income_tax_before_credits", period)
 
         p = parameters(
             period
@@ -20,5 +21,7 @@ class md_married_or_has_child_non_refundable_eitc(Variable):
         married_or_has_child = ~tax_unit(
             "md_qualifies_for_unmarried_childless_eitc", period
         )
-        amount = federal_eitc * p.match
+        # Per §10-704(c)(1): the lesser of 50% of federal EITC or state income tax
+        uncapped_amount = federal_eitc * p.match
+        amount = min_(uncapped_amount, md_income_tax)
         return married_or_has_child * amount

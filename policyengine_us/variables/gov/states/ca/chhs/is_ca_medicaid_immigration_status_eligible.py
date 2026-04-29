@@ -45,7 +45,9 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
                 immigration_status_str,
                 p.medi_cal_enrollment_freeze.affected_statuses,
             )
-            receives_medicaid = person("receives_medicaid", period)
+            current_medicaid_coverage = person("receives_medicaid", period) | person(
+                "has_medicaid_health_coverage_at_interview", period
+            )
 
             # Freeze-affected (UNDOCUMENTED): standard age eligibility OR
             #   continuous coverage (already enrolled)
@@ -53,7 +55,7 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
             #   (Health4All covered all ages by 2024, freeze doesn't apply)
             return is_ca_state_funded_status & where(
                 is_freeze_affected,
-                standard_eligible | receives_medicaid,
+                standard_eligible | current_medicaid_coverage,
                 True,
             )
 

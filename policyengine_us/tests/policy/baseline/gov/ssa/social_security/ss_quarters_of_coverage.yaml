@@ -1,0 +1,81 @@
+- name: No earnings yields no quarters
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 0
+
+- name: Below quarter threshold yields no quarters  
+  period: 2024
+  input:
+    employment_income: 1_729
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 0
+
+- name: Exactly one quarter threshold yields one quarter
+  period: 2024
+  input:
+    employment_income: 1_730
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 1
+
+- name: Two quarters of coverage
+  period: 2024
+  input:
+    employment_income: 3_460
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 2
+
+- name: Three quarters of coverage
+  period: 2024
+  input:
+    employment_income: 5_190
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 3
+
+- name: Maximum four quarters per year
+  period: 2024
+  input:
+    employment_income: 6_920
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 4
+
+- name: High earnings still limited to four quarters
+  period: 2024
+  input:
+    employment_income: 100_000
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 4
+
+- name: Self-employment income counts for quarters
+  period: 2024
+  input:
+    employment_income: 0
+    self_employment_income: 6_920
+  output:
+    ss_quarters_of_coverage: 4
+
+- name: Combined employment and self-employment
+  period: 2024
+  input:
+    employment_income: 1_730
+    self_employment_income: 1_730
+  output:
+    ss_quarters_of_coverage: 2
+
+- name: Test with 2023 values
+  period: 2023
+  input:
+    employment_income: 6_560  # 4 * $1,640
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 4
+
+

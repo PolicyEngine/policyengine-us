@@ -1,0 +1,76 @@
+- name: Case 1, citizen child.
+  period: 2024
+  input:
+    immigration_status: CITIZEN
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 2, legal permanent resident child.
+  period: 2024
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 3, refugee child.
+  period: 2024
+  input:
+    immigration_status: REFUGEE
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 4, asylee child.
+  period: 2024
+  input:
+    immigration_status: ASYLEE
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 5, deportation withheld child.
+  period: 2024
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 6, Cuban or Haitian entrant child.
+  period: 2024
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 7, conditional entrant child.
+  period: 2024
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 8, paroled for at least one year child.
+  period: 2024
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+  output:
+    is_ccdf_immigration_eligible_child: true
+
+- name: Case 9, undocumented child.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+  output:
+    is_ccdf_immigration_eligible_child: false
+
+- name: Case 10, DACA child.
+  period: 2024
+  input:
+    immigration_status: DACA
+  output:
+    is_ccdf_immigration_eligible_child: false
+
+- name: Case 11, TPS child.
+  period: 2024
+  input:
+    immigration_status: TPS
+  output:
+    is_ccdf_immigration_eligible_child: false

@@ -18,7 +18,7 @@ class fl_tca_eligible(Variable):
 
         # Use federal immigration eligibility (at least one citizen or qualified immigrant)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Must pass both income tests

@@ -1,0 +1,86 @@
+- name: EITC-eligible non-filer receives zero EITC (none of the filer pathways apply)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 20_000
+        meets_eitc_identification_requirements: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        # Non-filer: not required, not voluntary, not motivated by credits.
+        tax_unit_is_required_to_file: false
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    eitc_eligible: true
+    # Demographically eligible but no filing pathway -> no EITC delivered.
+    eitc: 0
+
+- name: EITC-eligible filer motivated by refundable credits receives nonzero EITC
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 20_000
+        meets_eitc_identification_requirements: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_is_required_to_file: false
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    eitc_eligible: true
+    # Delivered at the 1-child plateau maximum for TY2024 ($4,213).
+    eitc: 4_213
+
+- name: EITC-eligible required filer receives the same EITC as a credits-motivated filer
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 20_000
+        meets_eitc_identification_requirements: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_is_required_to_file: true
+        would_file_taxes_voluntarily: false
+        would_file_if_eligible_for_refundable_credit: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    eitc_eligible: true
+    eitc: 4_213

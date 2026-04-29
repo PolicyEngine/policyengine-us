@@ -1,0 +1,23 @@
+description: North Dakota caps the subtraction for 529 education savings plan contributions at this amount.
+metadata:
+  label: North Dakota 529 plan contribution subtraction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: North Dakota Century Code § 57-38-30.3(2)(p)
+    href: https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/section-57-38-30-3/
+  - title: 2025 North Dakota income tax instructions
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/2025-individual-income-tax-booklet.pdf#page=14
+
+JOINT:
+  2021-01-01: 10_000
+SURVIVING_SPOUSE:
+  2021-01-01: 10_000
+SINGLE:
+  2021-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 5_000
+SEPARATE:
+  2021-01-01: 5_000

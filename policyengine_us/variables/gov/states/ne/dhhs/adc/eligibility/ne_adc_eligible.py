@@ -17,7 +17,7 @@ class ne_adc_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Check immigration eligibility (at least one citizen/legal immigrant)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         # Income eligibility
         income_eligible = spm_unit("ne_adc_income_eligible", period)

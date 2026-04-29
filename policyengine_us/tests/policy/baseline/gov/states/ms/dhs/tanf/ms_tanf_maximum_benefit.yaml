@@ -103,7 +103,37 @@
     # $200 + $36 + ($24 * 9) = $452
     ms_tanf_maximum_benefit: 452
 
-- name: Case 12, not in Mississippi.
+- name: Case 12, family of 1 in 2017 (pre-2021 payment standard).
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 1
+  output:
+    # $110 (first person only, pre-2021 rate)
+    ms_tanf_maximum_benefit: 110
+
+- name: Case 13, family of 3 in 2017 (pre-2021 payment standard).
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 3
+  output:
+    # $110 + $36 + $24 = $170
+    ms_tanf_maximum_benefit: 170
+
+- name: Case 14, family of 5 in 2017 (pre-2021 payment standard).
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    state_code: MS
+    spm_unit_size: 5
+  output:
+    # $110 + $36 + ($24 * 3) = $218
+    ms_tanf_maximum_benefit: 218
+
+- name: Case 15, not in Mississippi.
   period: 2026-01
   input:
     state_code: NY

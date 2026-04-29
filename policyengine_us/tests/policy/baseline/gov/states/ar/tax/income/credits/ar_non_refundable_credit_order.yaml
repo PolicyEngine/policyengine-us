@@ -1,0 +1,12 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2024
+  input:
+    state_code: AR
+    ar_income_tax_before_non_refundable_credits_unit: 100
+    ar_personal_credits_potential: 80
+    ar_cdcc_potential: 40
+    ar_additional_tax_credit_for_qualified_individuals_potential: 30
+  output:
+    ar_personal_credits: 80
+    ar_cdcc: 20
+    ar_additional_tax_credit_for_qualified_individuals: 0

@@ -1,0 +1,59 @@
+- name: Georgia PeachCare tier 1 tax unit with one child pays 11 dollars monthly.
+  period: 2025
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: GA
+  output:
+    ga_chip_premium: 132
+
+- name: Georgia PeachCare tier 1 tax unit with three children is capped at 16 dollars monthly.
+  period: 2025
+  input:
+    people:
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2, child3]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child1, child2, child3]
+        state_code: GA
+  output:
+    ga_chip_premium: 192
+
+- name: Georgia PeachCare below 134 percent FPL owes no premium.
+  period: 2025
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.30
+    households:
+      household:
+        members: [child]
+        state_code: GA
+  output:
+    ga_chip_premium: 0

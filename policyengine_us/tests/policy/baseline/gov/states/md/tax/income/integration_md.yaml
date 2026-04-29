@@ -138,7 +138,8 @@
         state_fips: 24  # MD
   output:  # expected results from patched TAXSIM35 2024-03-08 version
     md_income_tax_before_credits: 280.4
-    md_non_refundable_eitc: 530 # TAXSIM 280.4
+    md_non_refundable_eitc_potential: 530
+    md_non_refundable_eitc: 280.4
     md_refundable_eitc: 249.6
     md_income_tax: -249.60
 

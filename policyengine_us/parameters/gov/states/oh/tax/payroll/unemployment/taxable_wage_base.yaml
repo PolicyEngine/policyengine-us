@@ -1,0 +1,13 @@
+description: Employer-side unemployment insurance taxable wage base for Ohio.
+values:
+  0000-01-01: 9_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Ohio unemployment taxable wage base
+  reference:
+    - title: Ohio Revised Code Section 4141.01
+      href: https://codes.ohio.gov/assets/laws/revised-code/authenticated/4141/4141.01/3-31-2024/4141.01%203-31-2024.pdf#page=1
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=45

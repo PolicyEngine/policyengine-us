@@ -1,0 +1,324 @@
+- name: Case 1, eligible family, benefit is min of expenses minus fee and market rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 216.67
+        spm_unit_pre_subsidy_childcare_expenses: 20_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Market rate (weekly): $300 => monthly = 300 * 52/12 = $1,300.
+    # Parent fee (monthly): $216.67.
+    # Expenses (monthly): 20800/12 = $1,733.33.
+    # Uncapped: max(1733.33 - 216.67, 0) = $1,516.67.
+    # Max reimbursement: $1,300.
+    # Benefit = min(1516.67, 1300) = $1,300.
+    me_ccap: 1_300
+
+- name: Case 2, ineligible family, zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ccap: 0
+
+- name: Case 3, expenses less than market rate, benefit capped at expenses minus fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 216.67
+        spm_unit_pre_subsidy_childcare_expenses: 10_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Market rate (weekly): $300 => monthly = $1,300.
+    # Parent fee (monthly): $216.67.
+    # Expenses (monthly): 10400/12 = $866.67.
+    # Uncapped: max(866.67 - 216.67, 0) = $650.
+    # Max reimbursement: $1,300.
+    # Benefit = min(650, 1300) = $650.
+    me_ccap: 650
+
+- name: Case 4, parent fee exceeds expenses, zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 115.38
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 700
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Expenses (monthly): 6000/12 = $500.
+    # Uncapped: max(500 - 700, 0) = $0.
+    # Benefit = min(0, 500) = $0.
+    me_ccap: 0
+
+# === Edge cases ===
+
+- name: Case 5, parent fee exceeds market rate for child (REQ-024).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 95.51
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 650
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Weekly market rate: $95.51 => monthly = 95.51 * 52/12 = $413.88.
+    # Parent fee (monthly): $650.
+    # Expenses (monthly): 10000/12 = $833.33.
+    # Uncapped: max(833.33 - 650, 0) = $183.33.
+    # Max reimbursement: $413.88.
+    # Benefit = min(183.33, 413.88) = $183.33.
+    me_ccap: 183.33
+
+- name: Case 6, multiple children, different age groups, one fee for family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 330
+      person3:
+        age: 7
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 214
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 216.67
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    # Weekly market rates: infant $330 + school age $214 = $544.
+    # Max reimbursement: 544 * 52/12 = $2,357.33.
+    # Expenses (monthly): 30000/12 = $2,500.
+    # Parent fee (monthly): $216.67.
+    # Uncapped: max(2500 - 216.67, 0) = $2,283.33.
+    # Benefit = min(2283.33, 2357.33) = $2,283.33.
+    me_ccap: 2_283.33
+
+- name: Case 7, multiple children, parent fee exceeds market rate for one child only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 275
+      person3:
+        age: 10
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 95.51
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 520
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    # Weekly market rates: infant $275 + school age $95.51 = $370.51.
+    # Max reimbursement: 370.51 * 52/12 = $1,605.54.
+    # Expenses (monthly): 25000/12 = $2,083.33.
+    # Parent fee (monthly): $520.
+    # Uncapped: max(2083.33 - 520, 0) = $1,563.33.
+    # Benefit = min(1563.33, 1605.54) = $1,563.33.
+    me_ccap: 1_563.33
+
+- name: Case 8, zero childcare expenses, benefit capped at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Expenses = 0.
+    # Uncapped: max(0 - 0, 0) = 0.
+    # Benefit = min(0, 1300) = 0.
+    me_ccap: 0
+
+- name: Case 9, parent fee exactly equals monthly market rate equivalent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        me_ccap_parent_fee: 866.67
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Weekly market rate: $200 => monthly = 200 * 52/12 = $866.67.
+    # Parent fee (monthly): $866.67.
+    # Expenses (monthly): 15000/12 = $1,250.
+    # Uncapped: max(1250 - 866.67, 0) = $383.33.
+    # Max reimbursement: $866.67.
+    # Benefit = min(383.33, 866.67) = $383.33.
+    me_ccap: 383.33
+
+- name: Case 10, negative countable income does not inflate benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+      person2:
+        age: 4
+        me_ccap_eligible_child: true
+        me_ccap_market_rate: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        me_ccap_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Negative income -> parent fee = 0 (floor of negative = 0)
+    # Weekly market rate: $300 => monthly = 300 * 52/12 = $1,300.
+    # Expenses (monthly): 10,000/12 = $833.33.
+    # Uncapped: max(833.33 - 0, 0) = $833.33.
+    # Max reimbursement: $1,300.
+    # Benefit = min(833.33, 1,300) = $833.33.
+    # Benefit capped at expenses, NOT inflated by negative income.
+    me_ccap: 833.33

@@ -1,10 +1,12 @@
 description: Maximum household size for SNAP minimum allotments
 
 values:
-  2021-01-01: 2
+  2015-10-01: 2
 
 metadata:
   unit: persons
+  period: year
+  label: SNAP minimum allotment maximum household size
   reference:
     - title: "7 CFR § 273.10 - Determining household eligibility and benefit levels."
       href: https://www.law.cornell.edu/cfr/text/7/273.10#e_2_ii_C

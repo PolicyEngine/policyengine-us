@@ -4,28 +4,44 @@ values:
     - salt_refund_income
     - disability_benefits #include tax disability benefits
     - sc_net_capital_gain_deduction
-    - investment_in_529_plan  
+    - investment_in_529_plan
     - us_govt_interest
     - taxable_social_security
     - sc_military_deduction
     - sc_retirement_deduction
     - sc_senior_exemption
     - sc_young_child_deduction
-    - sc_dependent_exemption 
+    - sc_dependent_exemption
     # - Out of state income/gain
-    # - Volunteer deductions 
+    # - Volunteer deductions
     # - Active Trade or Business Income deduction
     # - Certain nontaxable National Guard or Reserve pay
     # - Negative amount of federal taxable income
-    # - Subsistence allowance 
+    # - Subsistence allowance
     # - Consumer Protection Services
-    # - Other subtractions 
+    # - Other subtractions
+  # H.4216 adds the SCIAD starting 2026
+  2026-01-01:
+    - salt_refund_income
+    - disability_benefits
+    - sc_net_capital_gain_deduction
+    - investment_in_529_plan
+    - us_govt_interest
+    - taxable_social_security
+    - sc_military_deduction
+    - sc_retirement_deduction
+    - sc_senior_exemption
+    - sc_young_child_deduction
+    - sc_dependent_exemption
+    - sc_sciad 
 
 metadata:
   unit: list
   period: year
-  label: South Carolina federal taxable income subtractions 
+  label: South Carolina federal taxable income subtractions
   reference:
+    - title: SC H.4216 Section 3 - Section 12-6-1140(15) (2026+)
+      href: https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm
     - title: SC 1040 tax form instructions (2025)
       href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=8
     - title: SC 1040 tax form (2021)

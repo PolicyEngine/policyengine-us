@@ -43,4 +43,54 @@
         members: [person1, person2, person3]
         state_code: DE
   output:
-    de_agi_joint: [1_200, 0, 0]
+    de_agi_joint: [1_100, 0, 0]
+
+- name: Joint AGI floors after summing across spouses
+  period: 2024
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: 100_000
+        de_elderly_or_disabled_income_exclusion_joint: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        de_pre_exclusions_agi: -75_000
+        de_elderly_or_disabled_income_exclusion_joint: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_agi_joint: [25_000, 0]
+
+- name: Joint AGI floors to zero after combined spouse net income is negative
+  period: 2024
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: -100_000
+        de_elderly_or_disabled_income_exclusion_joint: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        de_pre_exclusions_agi: 75_000
+        de_elderly_or_disabled_income_exclusion_joint: 0
+        is_tax_unit_dependent: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_agi_joint: [0, 0]
