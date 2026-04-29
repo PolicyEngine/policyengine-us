@@ -1,0 +1,20 @@
+- name: Default WIC countable income is zero.
+  period: 2022
+  output:
+    wic_countable_income: 0
+
+- name: WIC countable income includes school-meal income sources.
+  period: 2022
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+        alimony_income: 1_000
+      p2:
+        dividend_income: 20_000
+        child_support_received: 500
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    wic_countable_income: 31_500
