@@ -37,7 +37,9 @@ class mo_qualified_health_insurance_premiums(Variable):
             med_expense_deduction[mask] / tax_unit_health_expenses[mask]
         )
 
-        person_premiums = person("health_insurance_premiums", period)
+        person_premiums = person(
+            "medical_expense_health_insurance_premiums", period
+        )
         tax_unit_premiums = tax_unit.sum(person_premiums)
 
         # Line 13 of MO Form 5695, represents the portion of

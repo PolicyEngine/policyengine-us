@@ -44,7 +44,9 @@ class mi_household_resources(Variable):
                 # Other sources are added as-is without flooring
                 total += add(tax_unit, period, [source])
 
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        health_insurance_premiums = add(
+            tax_unit, period, ["medical_expense_health_insurance_premiums"]
+        )
         above_the_line_deductions = tax_unit("above_the_line_deductions", period)
         return max_(
             0,

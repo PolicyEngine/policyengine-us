@@ -11,6 +11,6 @@ class hud_medical_expenses(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 
     adds = [
-        "health_insurance_premiums",
+        "medical_expense_health_insurance_premiums",
         "other_medical_expenses",
     ]

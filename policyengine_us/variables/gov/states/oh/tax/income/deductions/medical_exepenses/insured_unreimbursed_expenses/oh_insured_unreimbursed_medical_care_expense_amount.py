@@ -23,7 +23,8 @@ class oh_insured_unreimbursed_medical_care_expense_amount(Variable):
         medicare_eligible = person("is_medicare_eligible", period)
         # Line 3
         eligible_premiums = (
-            person("health_insurance_premiums", period) * medicare_eligible
+            person("medical_expense_health_insurance_premiums", period)
+            * medicare_eligible
         ) * (employer_premium_contribution == status.NONE)
         # Premiums only count if the employer paid none.
         # Line 4

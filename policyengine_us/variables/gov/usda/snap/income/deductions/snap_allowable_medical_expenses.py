@@ -25,6 +25,6 @@ class snap_allowable_medical_expenses(Variable):
     )
 
     adds = [
-        "health_insurance_premiums",
+        "medical_expense_health_insurance_premiums",
         "other_medical_expenses",
     ]

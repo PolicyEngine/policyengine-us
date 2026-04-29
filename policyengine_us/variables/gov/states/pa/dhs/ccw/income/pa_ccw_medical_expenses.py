@@ -12,6 +12,6 @@ class pa_ccw_medical_expenses(Variable):
     reference = "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter3042/055_3042.pdf#page=18"
 
     adds = [
-        "health_insurance_premiums",
+        "medical_expense_health_insurance_premiums",
         "other_medical_expenses",
     ]

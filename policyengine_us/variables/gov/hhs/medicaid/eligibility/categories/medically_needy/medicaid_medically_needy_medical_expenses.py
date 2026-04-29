@@ -11,6 +11,6 @@ class medicaid_medically_needy_medical_expenses(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D"
 
     adds = [
-        "health_insurance_premiums",
+        "medical_expense_health_insurance_premiums",
         "other_medical_expenses",
     ]
