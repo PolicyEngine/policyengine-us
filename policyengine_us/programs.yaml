@@ -651,6 +651,12 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MI
+        status: complete
+        name: Michigan SSP
+        full_name: Michigan State Supplementary Payment
+        variable: mi_ssp
+        parameter_prefix: gov.states.mi.mdhhs.ssp
       - state: KS
         status: complete
         name: Kansas SSPP
