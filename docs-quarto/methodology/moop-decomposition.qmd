@@ -64,7 +64,7 @@ where `baseline_computed_premium_sum` is evaluated under the CPS reference year'
 | CHIP premium | `chip_premium` | TaxUnit | 17 states encoded (see [CHIP](../programs/chip.qmd)) |
 | Medicare Part B | `medicare_part_b_premium` | Person | Rules-based (base + IRMAA tiers) |
 | Marketplace net premium | `marketplace_net_premium` | TaxUnit | `SLCSP × benchmark_ratio − used_PTC`; benchmark ratio imputed per-household via CPS back-out |
-| Medicaid expansion premium | `medicaid_premium` | TaxUnit | IN HIP POWER Account (suspended since 2020, schedule reform-ready) |
+| Medicaid expansion premium | `medicaid_premium` | TaxUnit | IN HIP POWER Account, Michigan Healthy Michigan contributions, and Montana HELP premiums; historical MI/MT schedules end when those programs eliminated premiums |
 
 ## Why Marketplace net premium is layered differently
 
@@ -74,7 +74,6 @@ CPS private-premium reports conflate Marketplace, employer, and direct-purchase 
 
 - **Copays** — the federal 5 % of income CHIP cost-sharing cap (42 CFR 457.560) binds on premiums + copays combined. Without copay modeling, the cap never bites on premium alone in realistic cases.
 - **Employer plan employee share** — stays in `other_health_insurance_premiums`; employer plans aren't statutory and can't be computed from rules without a separate employer-plan model.
-- **Michigan and Montana historical Medicaid expansion premiums** — eliminated 2024-01-01 and 2023-01-01 respectively; historical schedules not yet encoded for reform analysis.
 
 ## See also
 
