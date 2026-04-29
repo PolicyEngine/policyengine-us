@@ -1,0 +1,8 @@
+- name: Medical expense deduction applies the AGI floor to itemized medical expenses.
+  period: 2025
+  input:
+    medical_out_of_pocket_expenses: 10_000
+    positive_agi: 100_000
+  output:
+    itemized_medical_expenses: 10_000
+    medical_expense_deduction: 2_500

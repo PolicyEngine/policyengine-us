@@ -16,6 +16,7 @@
     is_usda_disabled: true
     medical_out_of_pocket_expenses: 35 * 12
   output:
+    snap_allowable_medical_expenses: 35 * 12
     snap_excess_medical_expense_deduction: 0
 
 - name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.

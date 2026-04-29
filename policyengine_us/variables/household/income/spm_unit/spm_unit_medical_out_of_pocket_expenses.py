@@ -16,12 +16,7 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
         "and over-the-counter health expenses."
     )
 
-    def formula(spm_unit, period, parameters):
-        return add(
-            spm_unit,
-            period,
-            [
-                "spm_unit_health_insurance_premiums",
-                "spm_unit_non_premium_medical_out_of_pocket_expenses",
-            ],
-        )
+    adds = [
+        "spm_unit_health_insurance_premiums",
+        "spm_unit_non_premium_medical_out_of_pocket_expenses",
+    ]

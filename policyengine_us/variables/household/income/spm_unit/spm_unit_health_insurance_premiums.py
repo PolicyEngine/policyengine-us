@@ -13,15 +13,10 @@ class spm_unit_health_insurance_premiums(Variable):
         "components that can respond to policy reforms."
     )
 
-    def formula(spm_unit, period, parameters):
-        return add(
-            spm_unit,
-            period,
-            [
-                "health_insurance_premium_residual",
-                "chip_premium",
-                "medicaid_premium",
-                "marketplace_net_premium",
-                "income_adjusted_part_b_premium",
-            ],
-        )
+    adds = [
+        "health_insurance_premium_residual",
+        "chip_premium",
+        "medicaid_premium",
+        "marketplace_net_premium",
+        "income_adjusted_part_b_premium",
+    ]
