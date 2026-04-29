@@ -21,7 +21,7 @@
     # provider_rate(875) + PNA(106) - countable(0) = 981
     md_paa: 981
 
-- name: Case 2, eligible REHAB_RESIDENCE receives cost of care up to $54/day plus PNA.
+- name: Case 2, eligible REHAB_RESIDENCE receives only the PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -37,11 +37,12 @@
         members: [person1]
         state_code: MD
   output:
-    # Per AT 23-02 page 3, REHAB allowable need = cost of rehab residence
-    # (capped at $54/day = 54 * 365 / 12 = $1,642.50/mo) + PNA ($106).
-    # countable_income = max(0 - 1642.50, 0) = 0 (cost-of-care disregard).
-    # provider_rate(1642.50) + PNA(106) - countable(0) = 1,748.50.
-    md_paa: 1_748.50
+    # Per PAA Manual §400 and §900.3, MDH Rehabilitative Residence cases
+    # receive only the personal needs allowance from PAA — MDH pays the
+    # cost of care from other sources. Per COMAR 07.03.07.08(B), a
+    # cost-of-care disregard absorbs any countable income.
+    # provider_rate(0) + PNA(106) - countable(0) = 106.
+    md_paa: 106
 
 - name: Case 3, ineligible (NONE living arrangement).
   period: 2026-01

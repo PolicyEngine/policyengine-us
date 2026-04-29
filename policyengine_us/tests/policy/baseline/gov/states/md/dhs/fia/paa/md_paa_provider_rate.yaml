@@ -78,7 +78,7 @@
   output:
     md_paa_provider_rate: 894
 
-- name: Case 6, REHAB_RESIDENCE provider rate is monthly equivalent of $54/day cap.
+- name: Case 6, REHAB_RESIDENCE provider rate is zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -91,9 +91,10 @@
         members: [person1]
         state_code: MD
   output:
-    # Per AT 23-02 page 3, REHAB allowable need is the cost of care, not to
-    # exceed $54/day. Monthly equivalent = 54 * 365 / 12 = 1642.50.
-    md_paa_provider_rate: 1_642.50
+    # Per PAA Manual §400 and §900.3, MDH pays the provider directly for
+    # Rehabilitative Residence cases, so PAA's provider rate is zero. PAA
+    # contributes only the personal needs allowance.
+    md_paa_provider_rate: 0
 
 - name: Case 7, NONE living arrangement returns zero.
   period: 2025-01

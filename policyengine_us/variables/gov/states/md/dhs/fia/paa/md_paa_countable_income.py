@@ -14,13 +14,14 @@ class md_paa_countable_income(Variable):
     )
 
     def formula(person, period, parameters):
+        # Per COMAR 07.03.07.08(B), residents of MDH Rehabilitative Residences
+        # have a cost-of-care disregard. MDH pays the cost of care directly, so
+        # PAA contributes only the personal needs allowance — countable income
+        # is fully disregarded.
         living_arrangement = person("md_paa_living_arrangement", period)
         is_rehab = (
             living_arrangement == living_arrangement.possible_values.REHAB_RESIDENCE
         )
         countable_earned = person("md_paa_countable_earned_income", period)
         countable_unearned = person("md_paa_countable_unearned_income", period)
-        gross_countable = countable_earned + countable_unearned
-        cost_of_care = person("md_paa_provider_rate", period)
-        rehab_disregard = where(is_rehab, cost_of_care, 0)
-        return max_(gross_countable - rehab_disregard, 0)
+        return where(is_rehab, 0, countable_earned + countable_unearned)
