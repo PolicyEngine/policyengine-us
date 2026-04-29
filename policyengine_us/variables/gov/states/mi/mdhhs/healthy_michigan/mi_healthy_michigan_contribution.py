@@ -22,8 +22,12 @@ class mi_healthy_michigan_contribution(Variable):
         in_income_range = (income_level > p.income_threshold.lower) & (
             income_level <= p.income_threshold.upper
         )
-        has_hmp_adult = (
-            tax_unit.sum(tax_unit.members("is_mi_healthy_michigan_adult", period)) > 0
+        has_healthy_michigan_adult = tax_unit.any(
+            tax_unit.members("is_mi_healthy_michigan_adult", period)
         )
-        income = tax_unit("medicaid_magi", period)
-        return where(in_income_range & has_hmp_adult, income * p.rate, 0)
+        medicaid_magi = tax_unit("medicaid_magi", period)
+        return where(
+            in_income_range & has_healthy_michigan_adult,
+            medicaid_magi * p.rate,
+            0,
+        )

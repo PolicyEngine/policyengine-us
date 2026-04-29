@@ -22,6 +22,6 @@ class mt_help_premium(Variable):
         in_income_range = (income_level >= p.income_threshold.lower) & (
             income_level <= p.income_threshold.upper
         )
-        has_help_adult = tax_unit.sum(tax_unit.members("is_mt_help_adult", period)) > 0
-        income = tax_unit("medicaid_magi", period)
-        return where(in_income_range & has_help_adult, income * p.rate, 0)
+        has_help_adult = tax_unit.any(tax_unit.members("is_mt_help_adult", period))
+        medicaid_magi = tax_unit("medicaid_magi", period)
+        return where(in_income_range & has_help_adult, medicaid_magi * p.rate, 0)
