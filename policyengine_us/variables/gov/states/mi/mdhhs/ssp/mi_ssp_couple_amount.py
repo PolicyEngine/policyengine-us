@@ -9,6 +9,7 @@ class mi_ssp_couple_amount(Variable):
     definition_period = MONTH
     defined_for = "mi_ssp_eligible"
     reference = (
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=2",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2",
     )

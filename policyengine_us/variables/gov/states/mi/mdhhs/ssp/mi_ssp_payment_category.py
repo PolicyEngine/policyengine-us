@@ -13,8 +13,10 @@ class mi_ssp_payment_category(Variable):
     possible_values = MISSPLivingArrangement
     default_value = MISSPLivingArrangement.INDEPENDENT_LIVING
     reference = (
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=1",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2",
+        "https://www.ecfr.gov/current/title-20/section-416.1131",
     )
 
     def formula(person, period, parameters):

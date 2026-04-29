@@ -13,6 +13,8 @@ metadata:
       href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4
     - title: MCL 400.10, Social Welfare Act, supplementary payments
       href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-400-10
+    - title: SSA 2011 State Assistance Programs, Michigan baseline
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mi.html
     - title: MDHHS RFT 248, SSI Payment Levels (RFB 2016-001 archive)
       href: https://web.archive.org/web/20161223122049id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
     - title: MDHHS RFT 248, SSI Payment Levels (RFB 2020-001 archive)
@@ -22,6 +24,9 @@ metadata:
     - title: MDHHS RFT 248, SSI Payment Levels (RFB 2024-001 archive)
       href: https://web.archive.org/web/20240112012718id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
 
+# Couple rates start at 2016-01-01. SSA 2011 baseline shows MI couple
+# rates were restructured between 2011 and 2016 (e.g. IL couple was $28
+# in 2011, $21 from 2016 onward); pre-2016 history is not modeled.
 INDEPENDENT_LIVING:
   2016-01-01: 21
 HOUSEHOLD_OF_ANOTHER:
