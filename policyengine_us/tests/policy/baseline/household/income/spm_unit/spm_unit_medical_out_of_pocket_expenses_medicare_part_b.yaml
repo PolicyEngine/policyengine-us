@@ -1,12 +1,12 @@
-- name: SPM unit MOOP includes residual premiums and rules-based Medicare Part B.
+- name: SPM unit MOOP includes other health insurance premiums and Medicare Part B.
   period: 2024
   input:
     people:
       retiree:
         age: 70
         is_medicare_eligible: true
-        health_insurance_premium_residual: 500
-        income_adjusted_part_b_premium: 2_220
+        other_health_insurance_premiums: 500
+        medicare_part_b_premium: 2_220
     tax_units:
       tax_unit:
         members: [retiree]
@@ -28,8 +28,8 @@
       retiree:
         age: 70
         is_medicare_eligible: true
-        health_insurance_premium_residual: 500
-        income_adjusted_part_b_premium: 5_028
+        other_health_insurance_premiums: 500
+        medicare_part_b_premium: 5_028
     tax_units:
       tax_unit:
         members: [retiree]

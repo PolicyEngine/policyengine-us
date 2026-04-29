@@ -102,8 +102,8 @@ INPUT_VARIABLES = [
     "strike_benefits",
     "other_medical_expenses",
     "over_the_counter_health_expenses",
-    "medicare_part_b_premiums",
     "health_insurance_premiums_without_medicare_part_b",
+    "other_health_insurance_premiums",
 ]
 
 

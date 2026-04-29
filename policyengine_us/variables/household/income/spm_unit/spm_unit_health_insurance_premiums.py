@@ -9,14 +9,14 @@ class spm_unit_health_insurance_premiums(Variable):
     definition_period = YEAR
     documentation = (
         "Health insurance premium expenses for an SPM unit, combining a "
-        "data-imputed residual premium component with modeled premium "
-        "components that can respond to policy reforms."
+        "data-imputed other premium component with modeled premium components "
+        "that can respond to policy reforms."
     )
 
     adds = [
-        "health_insurance_premium_residual",
+        "other_health_insurance_premiums",
         "chip_premium",
         "medicaid_premium",
         "marketplace_net_premium",
-        "income_adjusted_part_b_premium",
+        "medicare_part_b_premium",
     ]

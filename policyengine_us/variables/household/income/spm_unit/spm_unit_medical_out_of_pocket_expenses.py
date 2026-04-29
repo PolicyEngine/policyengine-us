@@ -10,10 +10,10 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
     documentation = (
         "Total medical out-of-pocket expenses at the SPM unit level, "
         "combining health insurance premiums with non-premium medical "
-        "expenses. Health insurance premiums include data-imputed residual "
-        "premiums plus modeled Marketplace, CHIP, Medicaid, and Medicare "
-        "Part B premiums. Non-premium expenses include other medical expenses "
-        "and over-the-counter health expenses."
+        "expenses. Health insurance premiums include other health insurance "
+        "premiums plus modeled Marketplace, CHIP, Medicaid, and Medicare Part "
+        "B premiums. Non-premium expenses include other medical expenses and "
+        "over-the-counter health expenses."
     )
 
     adds = [
