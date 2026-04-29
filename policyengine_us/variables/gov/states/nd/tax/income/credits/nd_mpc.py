@@ -28,7 +28,7 @@ class nd_mpc(Variable):
         # determine minimum qualified income between head and spouse
         qinc_sources = [
             "irs_employment_income",
-            "self_employment_income",
+            "total_self_employment_income",
             "taxable_pension_income",
         ]
         person = tax_unit.members

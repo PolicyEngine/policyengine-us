@@ -23,11 +23,7 @@ class nm_medical_care_expense_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         agi = tax_unit("adjusted_gross_income", period)
-        expenses = add(
-            tax_unit,
-            period,
-            ["medical_out_of_pocket_expenses"],
-        )
+        expenses = tax_unit("itemized_medical_expenses", period)
         # Use `right=True` to reflect "over ... but not over ...".
         rate = select(
             [

@@ -1,0 +1,48 @@
+description: South Carolina provides these maximum weekly payment rates for family, friend, and neighbor care under the Child Care Scholarship Program.
+# All 4 FFN subtypes (FRI, FNI, FRO, FNO) have identical rates.
+# Urban and rural rates are also identical for FFN providers.
+# Rates use a simplified 2-tier age structure: under 3 and 3+.
+metadata:
+  period: week
+  unit: currency-USD
+  label: South Carolina CCAP FFN weekly rates
+  breakdown:
+    - sc_ccap_time_category
+    - sc_ccap_age_group
+  reference:
+    - title: SC CCAP Maximum Payments Allowed FFY2023
+      href: https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=15
+    - title: SC CCAP Policy Manual Vol. 038 Appendix 3 - Maximum Payments Allowed
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=183
+
+FULL_TIME:
+  UNDER_1:
+    2022-10-01: 50
+  AGE_1:
+    2022-10-01: 50
+  AGE_2:
+    2022-10-01: 50
+  AGE_3:
+    2022-10-01: 46
+  AGE_4:
+    2022-10-01: 46
+  AGE_5_NOT_IN_K:
+    2022-10-01: 46
+  AGE_5_12_IN_SCHOOL:
+    2022-10-01: 46
+
+HALF_TIME:
+  UNDER_1:
+    2022-10-01: 30
+  AGE_1:
+    2022-10-01: 30
+  AGE_2:
+    2022-10-01: 30
+  AGE_3:
+    2022-10-01: 30
+  AGE_4:
+    2022-10-01: 30
+  AGE_5_NOT_IN_K:
+    2022-10-01: 30
+  AGE_5_12_IN_SCHOOL:
+    2022-10-01: 24

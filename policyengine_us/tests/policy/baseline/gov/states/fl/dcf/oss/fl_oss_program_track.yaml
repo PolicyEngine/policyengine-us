@@ -1,0 +1,50 @@
+# Tests for fl_oss_program_track variable.
+# Input enum: REDESIGN, PROTECTED, NONE.
+# REDESIGN = ALF, AFCH, RTF enrolled for ACS.
+# PROTECTED = RTF not enrolled for ACS + 2001 "Gap" Group.
+# NONE = no facility / not in program.
+
+- name: Case 1, Redesign track (ALF).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_program_track: REDESIGN
+
+- name: Case 2, Protected track (RTF not enrolled for ACS).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_program_track: PROTECTED
+
+- name: Case 3, NONE (no facility).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: NONE
+        fl_oss_program_track: NONE
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_program_track: NONE

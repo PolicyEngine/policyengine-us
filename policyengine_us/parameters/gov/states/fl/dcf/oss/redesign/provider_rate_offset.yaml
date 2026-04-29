@@ -1,0 +1,15 @@
+description: Florida sets this amount as the offset added to the federal SSI benefit rate to determine the Redesign provider rate under the Optional State Supplementation program.
+values:
+  2011-01-01: 24.4
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Florida OSS Redesign provider rate offset
+  reference:
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Florida, Table 1 (Redesign base rate $698.40 - FBR $674 = $24.40 offset)
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/fl.html
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2024-07-01 — Redesign provider rate $938.40(I) at Jan 2023 / FBR $914 = $24.40 offset; $967.40 at Jan 2024 / Jul 2024 / FBR $943 = $24.40 offset)
+      href: https://www.myflfamilies.com/sites/default/files/2024-06/Appendix%20A-12.pdf
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2025-01-01 — Redesign provider rate $991.40(I) at Jan 2025 / FBR $967 = $24.40 offset)
+      href: https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf

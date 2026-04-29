@@ -1,0 +1,23 @@
+description: South Carolina determines care schedule from weekly childcare hours under the Child Care Scholarship Program.
+# 0 = HALF_TIME, 1 = FULL_TIME
+# Per SC program rules, 25+ hours = Full Time, under 25 = Half Time.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: South Carolina CCAP time category by hours
+  reference:
+    - title: SC CCAP Maximum Payments Allowed FFY2023
+      href: https://www.scchildcare.org/media/vwybydmg/child-care-scholarship-maximum-payments-allowed-ffy2023-pdf.pdf#page=1
+
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 0
+  - threshold:
+      2022-10-01: 30
+      2024-10-01: 25
+    amount:
+      2022-10-01: 1

@@ -1,0 +1,140 @@
+- name: Minnesota HF4890 single filer reaches fifth bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SINGLE
+    mn_taxable_income: 700_000
+    state_code: MN
+  output:
+    mn_basic_tax: 63_554.99
+
+- name: Minnesota HF4890 joint filer reaches fifth bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: JOINT
+    mn_taxable_income: 1_200_000
+    state_code: MN
+  output:
+    mn_basic_tax: 109_303.71
+
+- name: Minnesota HF4890 separate filer uses half of joint brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SEPARATE
+    mn_taxable_income: 600_000
+    state_code: MN
+  output:
+    mn_basic_tax: 54_651.86
+
+- name: Minnesota HF4890 head of household filer reaches fifth bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    mn_taxable_income: 900_000
+    state_code: MN
+  output:
+    mn_basic_tax: 81_223.76
+
+- name: Minnesota HF4890 surviving spouse filer uses joint brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SURVIVING_SPOUSE
+    mn_taxable_income: 1_100_000
+    state_code: MN
+  output:
+    mn_basic_tax: 99_153.71
+
+# Test in_effect: false - baseline path
+- name: Minnesota HF4890 single filer with reform disabled uses baseline rates
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: false
+    filing_status: SINGLE
+    mn_taxable_income: 700_000
+    state_code: MN
+  output:
+    mn_basic_tax: 63_255.60
+
+# Zero income test
+- name: Minnesota HF4890 zero income produces zero tax
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SINGLE
+    mn_taxable_income: 0
+    state_code: MN
+  output:
+    mn_basic_tax: 0
+
+# First bracket only test
+- name: Minnesota HF4890 income in first bracket only
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SINGLE
+    mn_taxable_income: 20_000
+    state_code: MN
+  output:
+    # 20,000 * 0.0535 = 1,070.00
+    mn_basic_tax: 1_070.00
+
+# Exact bracket threshold test
+- name: Minnesota HF4890 income at exact first threshold
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SINGLE
+    mn_taxable_income: 33_310
+    state_code: MN
+  output:
+    # 33,310 * 0.0535 = 1,782.085
+    mn_basic_tax: 1_782.09
+
+# Joint/surviving spouse equivalence test
+- name: Minnesota HF4890 joint filer matches surviving spouse at same income
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: JOINT
+    mn_taxable_income: 1_100_000
+    state_code: MN
+  output:
+    # Same as surviving spouse test above
+    mn_basic_tax: 99_153.71
+
+# Non-MN state test
+- name: Minnesota HF4890 non-MN resident has zero MN tax
+  absolute_error_margin: 0.01
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.hf4890.mn_hf4890.mn_hf4890
+  input:
+    gov.contrib.states.mn.hf4890.in_effect: true
+    filing_status: SINGLE
+    mn_taxable_income: 700_000
+    state_code: CA
+  output:
+    mn_basic_tax: 0

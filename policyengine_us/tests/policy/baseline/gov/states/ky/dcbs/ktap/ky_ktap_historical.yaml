@@ -294,7 +294,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 2_000
+        spm_unit_cash_assets: 2_000
     households:
       household:
         members: [person1]
@@ -311,7 +311,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        spm_unit_assets: 2_001
+        spm_unit_cash_assets: 2_001
     households:
       household:
         members: [person1]
@@ -803,7 +803,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2, person3]
@@ -838,7 +838,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [person1, person2]
@@ -885,7 +885,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2, person3]
@@ -922,7 +922,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [person1, person2]
@@ -1070,7 +1070,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2]

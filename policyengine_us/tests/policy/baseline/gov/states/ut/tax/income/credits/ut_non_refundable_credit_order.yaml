@@ -1,0 +1,21 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2024
+  input:
+    state_code: UT
+    ut_income_tax_before_non_refundable_credits: 100
+    ut_eitc_potential: 80
+    ut_claims_retirement_credit: true
+    ut_retirement_credit_potential: 40
+    ut_ss_benefits_credit_potential: 30
+    ut_at_home_parent_credit_agi_eligible: true
+    ut_at_home_parent_credit_potential: 20
+    ut_ctc_potential: 10
+    ut_military_retirement_credit_eligible: true
+    ut_military_retirement_credit_potential: 5
+  output:
+    ut_eitc: 80
+    ut_retirement_credit: 20
+    ut_ss_benefits_credit: 0
+    ut_at_home_parent_credit: 0
+    ut_ctc: 0
+    ut_military_retirement_credit: 0

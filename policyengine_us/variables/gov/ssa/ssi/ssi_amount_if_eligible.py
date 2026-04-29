@@ -16,20 +16,18 @@ class ssi_amount_if_eligible(Variable):
         p = parameters(period).gov.ssa.ssi.amount
         arrangement = person("ssi_federal_living_arrangement", period)
 
-        # Three scenarios for adults:
-        # 1. Both spouses eligible (joint claim) → couple rate / 2
-        # 2. One eligible, no deeming → individual rate
-        # 3. One eligible, deeming applies → couple rate (capped in ssi)
+        # 20 CFR 416.414(b): Benefit rate depends on couple computation:
+        # 1. Couple computation applies → couple rate / 2 per person
+        # 2. No couple computation, deeming → couple rate (capped in ssi)
+        # 3. No couple computation, no deeming → individual rate
         #
-        # Note: In scenario 3, deeming applies when spouse's GROSS income > $483.
-        # Income exclusions are applied to the COMBINED income afterwards.
-        # This means countable income can be much lower than $483, and the
-        # benefit can exceed individual FBR, requiring the cap in ssi.
+        # ssi_couple_computation_applies is false when only one spouse
+        # is in a medical facility (416.414(b)(3)), even if both are
+        # SSI-eligible. ssi_claim_is_joint remains true for state SSPs.
 
-        is_joint_claim = person("ssi_claim_is_joint", period)
+        couple_computation = person("ssi_couple_computation_applies", period)
         deeming_applies = person("is_ssi_spousal_deeming_applies", period)
 
-        # Determine FBR to use based on scenario
         individual_or_deeming_amount = where(
             deeming_applies,
             p.couple,
@@ -37,7 +35,7 @@ class ssi_amount_if_eligible(Variable):
         )
 
         base_amount = where(
-            is_joint_claim,
+            couple_computation,
             p.couple / 2,
             individual_or_deeming_amount,
         )
@@ -48,17 +46,9 @@ class ssi_amount_if_eligible(Variable):
         # couple/deeming logic since they may be married.
         base_amount = where(person("is_child", period), p.individual, base_amount)
 
-        # 20 CFR § 416.414: When one spouse enters a medical facility,
-        # the couple is no longer treated as a couple. The community
-        # spouse receives the individual FBR instead of couple/2.
         is_medical_facility = (
             arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        partner_in_facility = person.marital_unit.sum(is_medical_facility) > 0
-        is_community_spouse = (
-            is_joint_claim & ~is_medical_facility & partner_in_facility
-        )
-        base_amount = where(is_community_spouse, p.individual, base_amount)
 
         # 20 CFR § 416.1131: One-third reduction for another person's
         # household. Applies to the applicable FBR (individual or couple

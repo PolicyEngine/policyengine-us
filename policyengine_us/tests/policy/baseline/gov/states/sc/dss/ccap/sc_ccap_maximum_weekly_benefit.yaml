@@ -1,0 +1,403 @@
+# SC CCAP maximum weekly benefit tests
+# sc_ccap_maximum_weekly_benefit is Person, MONTH
+# Sample rates from Maximum Payments FFY2023:
+#   Level C Center, Urban, FT: Under 1=$213, Age 3=$195, 5-12 in school=$165
+#   FFN (any location, FT): Under 1-2=$50, Age 3-12=$46
+#   FFN HT: Under 3=$30, School age=$24
+# Special needs surcharge: $20/wk
+# Foster care surcharge: $30/wk
+
+- name: Case 1, level C center urban full time infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # Center, Level C, Urban, FT, Under 1 = $213/wk
+    sc_ccap_maximum_weekly_benefit: [0, 213]
+
+- name: Case 2, level C center urban full time age 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # Center, Level C, Urban, FT, Age 3 = $195/wk
+    sc_ccap_maximum_weekly_benefit: [0, 195]
+
+- name: Case 3, level C center urban full time school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # Center, Level C, Urban, FT, 5-12 in school = $165/wk
+    sc_ccap_maximum_weekly_benefit: [0, 165]
+
+- name: Case 4, FFN full time infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # FFN, any location, FT, Under 1-2 = $50/wk
+    sc_ccap_maximum_weekly_benefit: [0, 50]
+
+- name: Case 5, FFN full time school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # FFN, any location, FT, Age 3-12 = $46/wk
+    sc_ccap_maximum_weekly_benefit: [0, 46]
+
+- name: Case 6, FFN half time infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: RURAL
+  output:
+    # FFN, any location, HT, Under 3 = $30/wk
+    sc_ccap_maximum_weekly_benefit: [0, 30]
+
+- name: Case 7, FFN half time school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: RURAL
+  output:
+    # FFN, any location, HT, School age = $24/wk
+    sc_ccap_maximum_weekly_benefit: [0, 24]
+
+- name: Case 8, special needs surcharge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # Age 5 defaults to in school (is_in_k12_school imputed True for ages 5-17)
+    # Center C, Urban, FT, Age 5-12 in school = $165 + $20 special needs = $185/wk
+    sc_ccap_maximum_weekly_benefit: [0, 185]
+
+- name: Case 9, foster care surcharge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # Center C, Urban, FT, Age 3 = $195 + $30 foster surcharge = $225/wk
+    sc_ccap_maximum_weekly_benefit: [0, 225]
+
+# Second child discount tests
+# Per Policy Manual 5.11, the discount is provider-determined and applies
+# to all children except the youngest.
+
+- name: Case 10, second child discount with two children.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.10
+      person3:
+        age: 0
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # person2 (age 3) = child_index 2 (older) -> discount applies
+    # Base rate: Center C, Urban, FT, Age 3 = $195
+    # Discounted: $195 * (1 - 0.10) = $175.50
+    # person3 (age 0) = child_index 1 (youngest) -> no discount
+    # Base rate: Center C, Urban, FT, Under 1 = $213
+    sc_ccap_maximum_weekly_benefit: [0, 175.50, 213]
+
+- name: Case 11, no discount when only one child.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # child_index 1 (youngest and only) -> no discount despite rate being set
+    # Base rate: Center C, Urban, FT, Age 3 = $195
+    sc_ccap_maximum_weekly_benefit: [0, 195]
+
+- name: Case 12, no discount when provider does not offer one.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+      person3:
+        age: 0
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # No sc_ccap_second_child_discount_rate set -> defaults to 0 -> no discount
+    # person2 (age 3): Center C, Urban, FT, Age 3 = $195
+    # person3 (age 0): Center C, Urban, FT, Under 1 = $213
+    sc_ccap_maximum_weekly_benefit: [0, 195, 213]
+
+- name: Case 13, three children with discount on oldest two.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.15
+      person3:
+        age: 2
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.15
+      person4:
+        age: 0
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+        sc_ccap_second_child_discount_rate: 0.15
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+        sc_ccap_geography: URBAN
+  output:
+    # person2 (age 4) = child_index 3 -> discount: $191 * (1 - 0.15) = $162.35
+    # person3 (age 2) = child_index 2 -> discount: $205 * (1 - 0.15) = $174.25
+    # person4 (age 0) = child_index 1 (youngest) -> no discount: $213
+    sc_ccap_maximum_weekly_benefit: [0, 162.35, 174.25, 213]

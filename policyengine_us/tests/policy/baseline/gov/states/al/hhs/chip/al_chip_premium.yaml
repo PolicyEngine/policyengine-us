@@ -1,0 +1,62 @@
+- name: Alabama ALL Kids low fee tier tax unit with one child pays 52 dollars annually.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.50
+    households:
+      household:
+        members: [child]
+        state_code: AL
+  output:
+    al_chip_premium: 52
+
+- name: Alabama ALL Kids fee tier tax unit with four children is capped at 312 dollars annually.
+  period: 2024
+  input:
+    people:
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [c1, c2, c3, c4]
+        tax_unit_medicaid_income_level: 2.50
+    households:
+      household:
+        members: [c1, c2, c3, c4]
+        state_code: AL
+  output:
+    al_chip_premium: 312
+
+- name: Alabama ALL Kids below 147 percent FPL owes no fee.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: AL
+  output:
+    al_chip_premium: 0

@@ -9,6 +9,7 @@
         is_ssi_eligible: true
         meets_ssi_resource_test: true
         ssi_countable_income: 0
+        ak_ssp_living_arrangement: INDEPENDENT
     marital_units:
       marital_unit:
         members: [person1]
@@ -19,7 +20,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     # Eligibility: aged_blind_disabled=true, age=67>=18, resource_test=true
     ak_ssp_eligible: [true]
@@ -57,7 +57,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: MEDICAID_FACILITY
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -89,7 +88,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     # age 16 < 18 => not eligible
     ak_ssp_eligible: [false]
@@ -125,7 +123,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -147,6 +144,7 @@
         is_ssi_eligible: true
         meets_ssi_resource_test: true
         ssi_countable_income: 0
+        ak_resides_in_assisted_living_home: true
     marital_units:
       marital_unit:
         members: [person1]
@@ -157,7 +155,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: ASSISTED_LIVING
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -188,7 +185,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -222,7 +218,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     ak_ssp_eligible: [false]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -250,7 +245,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -275,6 +269,7 @@
         is_tax_unit_head_or_spouse: true
         ssi_countable_income: 0
         is_ssi_spousal_deeming_applies: true
+        ak_resides_in_assisted_living_home: true
       person2:
         age: 68
         is_ssi_aged_blind_disabled: false
@@ -282,6 +277,7 @@
         meets_ssi_resource_test: true
         is_tax_unit_head_or_spouse: true
         ssi_countable_income: 0
+        ak_resides_in_assisted_living_home: true
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -292,7 +288,6 @@
       household:
         members: [person1, person2]
         state_code: AK
-        ak_ssp_living_arrangement: ASSISTED_LIVING
   output:
     # person1: ssi_eligible=true, age=70>=18 => eligible
     # person2: ssi_eligible=false => not eligible
@@ -332,7 +327,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     ak_ssp_eligible: [true]
     ak_ssp_claim_type: [INDIVIDUAL]
@@ -366,7 +360,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     # age 17 < 18 => not eligible despite meeting all other criteria
     ak_ssp_eligible: [false]
@@ -397,7 +390,6 @@
       household:
         members: [person1]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     # age 18 >= 18 => eligible
     ak_ssp_eligible: [true]
@@ -438,7 +430,6 @@
       household:
         members: [person1, person2]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
   output:
     ak_ssp_eligible: [true, true]
     ak_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE]
@@ -449,3 +440,47 @@
     # marital_unit.sum = 3_168 + 3_168 = 6_336
     # Each gets 6_336 / 2 = 3_168
     ak_ssp: [3_168, 3_168]
+
+- name: Case 14, mixed-arrangement joint claim falls back to individual treatment.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+        ak_resides_in_assisted_living_home: true
+      person2:
+        age: 66
+        is_ssi_aged_blind_disabled: true
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ssp_eligible: [true, true]
+    # Joint SSI claim is no longer enough for a couple claim when spouses
+    # have different Alaska arrangements.
+    ak_ssp_claim_type: [INDIVIDUAL, INDIVIDUAL]
+    # person1: ASSISTED_LIVING.INDIVIDUAL = $100/mo * 12 = $1,200/yr
+    # person2: INDEPENDENT.INDIVIDUAL = $362/mo * 12 = $4,344/yr
+    ak_ssp_payment_standard: [1_200, 4_344]
+    # Mixed arrangements are paid individually rather than averaged together.
+    ak_ssp: [1_200, 4_344]

@@ -25,7 +25,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2, person3]
@@ -62,7 +62,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2]
@@ -94,7 +94,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [parent, child]
@@ -138,7 +138,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [parent, child1, child2]

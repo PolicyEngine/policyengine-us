@@ -68,7 +68,8 @@
     ri_refundable_ctc: 1_000  # min(1_500 total credit, 1_000 cap) = 1_000
     ri_non_refundable_ctc: 500  # 1_500 - 1_000 = 500
     ri_refundable_credits: 1_522.45  # 1_000 (CTC refundable) + 522.45 (EITC)
-    ri_non_refundable_credits: 500  # 500 (CTC non-refundable)
+    ri_income_tax_before_non_refundable_credits: 333.75
+    ri_non_refundable_credits: 333.75  # applied amount capped by remaining tax liability
 
 - name: RI CTC - nonrefundable with no phaseout
   absolute_error_margin: 0.1

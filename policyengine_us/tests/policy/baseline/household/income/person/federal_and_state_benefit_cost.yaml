@@ -1,0 +1,58 @@
+- name: Federal and state benefit cost sum to total Medicaid cost for a Medicaid enrollee (MS child, FY2026)
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+    is_chip_eligible: false
+    medicaid_cost: 10_000
+  output:
+    federal_benefit_cost: 7_690
+    state_benefit_cost: 2_310
+
+- name: Federal and state benefit cost for CHIP enrollee in CA (65% eFMAP)
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_chip_eligible: true
+    is_medicaid_eligible: false
+    chip: 5_000
+  output:
+    federal_benefit_cost: 3_250
+    state_benefit_cost: 1_750
+
+- name: Zero when not enrolled in any federal/state-shared program
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: false
+    is_chip_eligible: false
+  output:
+    federal_benefit_cost: 0
+    state_benefit_cost: 0
+
+- name: Aggregates sum Medicaid + CHIP when a household has both an expansion adult and a CHIP child
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+        medicaid_category: ADULT
+        medicaid_cost: 10_000
+        is_chip_eligible: false
+      child:
+        is_medicaid_eligible: false
+        is_chip_eligible: true
+        chip: 4_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    federal_benefit_cost: [9_000, 2_600]
+    state_benefit_cost: [1_000, 1_400]

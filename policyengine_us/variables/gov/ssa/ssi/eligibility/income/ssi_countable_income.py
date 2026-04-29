@@ -63,8 +63,9 @@ class ssi_countable_income(Variable):
             period,
         )
 
-        # Check if both spouses are eligible
-        both_eligible = person("ssi_marital_both_eligible", period)
+        # Check if couple computation applies (both eligible AND not
+        # separated by a medical facility per 20 CFR 416.414(b)(3))
+        both_eligible = person("ssi_couple_computation_applies", period)
 
         # Add spousal deemed income (only relevant when one spouse is ineligible)
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)

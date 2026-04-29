@@ -19,7 +19,7 @@ class ms_tanf_eligible(Variable):
 
         # Use federal immigration eligibility baseline
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         income_eligible = spm_unit("ms_tanf_income_eligible", period)

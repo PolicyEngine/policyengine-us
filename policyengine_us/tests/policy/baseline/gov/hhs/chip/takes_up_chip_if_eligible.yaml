@@ -1,0 +1,13 @@
+- name: Seed above takeup rate does not enroll
+  period: 2026
+  input:
+    chip_take_up_seed: 0.95
+  output:
+    takes_up_chip_if_eligible: false
+
+- name: Seed below takeup rate enrolls
+  period: 2026
+  input:
+    chip_take_up_seed: 0.90
+  output:
+    takes_up_chip_if_eligible: true

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class md_senior_tax_credit(Variable):
@@ -12,32 +15,15 @@ class md_senior_tax_credit(Variable):
     )
     defined_for = "md_senior_tax_credit_eligible"
 
-    def formula_2022(tax_unit, period, parameters):
-        p = parameters(period).gov.states.md.tax.income.credits.senior_tax
-
-        age_head = tax_unit("age_head", period)
-        spouse_age = tax_unit("age_spouse", period)
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-
-        head_eligible = (age_head >= p.age_eligibility).astype(int)
-        spouse_eligible = (spouse_age >= p.age_eligibility).astype(int)
-        eligible_count = head_eligible + spouse_eligible
-
-        credit_amount = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SURVIVING_SPOUSE,
-                filing_status == status.SEPARATE,
-            ],
-            [
-                p.amount.single,
-                p.amount.joint[eligible_count],
-                p.amount.head_of_household,
-                p.amount.surviving_spouse,
-                p.amount.separate,
-            ],
+    def formula(tax_unit, period, parameters):
+        ordered_credits = parameters(
+            period
+        ).gov.states.md.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "md_income_tax_before_credits",
+            "md_senior_tax_credit",
+            "md_senior_tax_credit_potential",
         )
-        return (eligible_count > 0) * credit_amount

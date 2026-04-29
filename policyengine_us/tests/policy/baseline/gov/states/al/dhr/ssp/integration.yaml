@@ -7,7 +7,9 @@
         age: 70
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -18,7 +20,6 @@
   output:
     al_ssp_eligible: [true]
     al_ssp: [60]
-    spm_unit_benefits: 353.58334
 
 - name: Case 2, SSI eligible couple in Foster Care.
   period: 2025-01
@@ -29,12 +30,16 @@
         age: 68
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
       person2:
         age: 65
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -54,7 +59,7 @@
       person1:
         age: 45
         is_ssi_eligible: false
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
     spm_units:
       spm_unit:
         members: [person1]
@@ -74,7 +79,7 @@
       person1:
         age: 55
         is_ssi_eligible: true
-        al_ssp_living_arrangement: NONE
+        al_ssp_payment_category: NONE
     spm_units:
       spm_unit:
         members: [person1]
@@ -95,7 +100,7 @@
         age: 60
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: CEREBRAL_PALSY
+        al_ssp_payment_category: CEREBRAL_PALSY
     spm_units:
       spm_unit:
         members: [person1]
@@ -115,7 +120,7 @@
       person1:
         age: 60
         al_ssp_grandfathered: true
-        al_ssp_living_arrangement: CEREBRAL_PALSY
+        al_ssp_payment_category: CEREBRAL_PALSY
     spm_units:
       spm_unit:
         members: [person1]
@@ -136,11 +141,13 @@
         age: 70
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
       person2:
         age: 65
         is_ssi_eligible: false
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -163,12 +170,16 @@
         age: 70
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
       person2:
         age: 68
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: IHC_LEVEL_B
+        al_ssp_payment_category: IHC_LEVEL_B
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -191,7 +202,7 @@
         age: 70
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: FCMP_NURSING_CARE
+        al_ssp_payment_category: FCMP_NURSING_CARE
     spm_units:
       spm_unit:
         members: [person1]
@@ -212,7 +223,7 @@
         age: 70
         is_ssi_eligible: true
         uncapped_ssi: 1
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
     spm_units:
       spm_unit:
         members: [person1]
@@ -224,12 +235,12 @@
     al_ssp_eligible: [false]
     al_ssp: [0]
 
-# Combined Federal SSI + State SSP verification against WorkWorld 2010 data.
-# Source: https://help.workworldapp.com/wwwebhelp/ssi_state_supplement_alabama.htm
+# Combined Federal SSI + Alabama SSP verification using official 2010
+# federal SSI amounts and Alabama supplement amounts.
 # 2010 FBR: Individual = $674/month, Couple = $1,011/month.
 # ssi is a YEAR variable; at monthly period it auto-divides by 12.
 
-- name: Case 9, WorkWorld 2010 IHC Level A individual combined $734/month.
+- name: Case 9, 2010 IHC Level A individual combined $734/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -237,7 +248,9 @@
       person1:
         age: 70
         employment_income: 0
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -256,9 +269,9 @@
     ssi: [674]
     # State SSP: $60/month (Level A)
     al_ssp: [60]
-    # Combined: $674 + $60 = $734/month (matches WorkWorld)
+    # Combined: $674 + $60 = $734/month
 
-- name: Case 10, WorkWorld 2010 IHC Level B individual combined $730/month.
+- name: Case 10, 2010 IHC Level B individual combined $730/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -266,7 +279,9 @@
       person1:
         age: 70
         employment_income: 0
-        al_ssp_living_arrangement: IHC_LEVEL_B
+        al_ssp_payment_category: IHC_LEVEL_B
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -285,9 +300,9 @@
     ssi: [674]
     # State SSP: $56/month (Level B)
     al_ssp: [56]
-    # Combined: $674 + $56 = $730/month (matches WorkWorld)
+    # Combined: $674 + $56 = $730/month
 
-- name: Case 11, WorkWorld 2010 Foster Care individual combined $784/month.
+- name: Case 11, 2010 Foster Care individual combined $784/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -295,7 +310,9 @@
       person1:
         age: 70
         employment_income: 0
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -314,9 +331,9 @@
     ssi: [674]
     # State SSP: $110/month (Foster Care)
     al_ssp: [110]
-    # Combined: $674 + $110 = $784/month (matches WorkWorld)
+    # Combined: $674 + $110 = $784/month
 
-- name: Case 12, WorkWorld 2010 Cerebral Palsy individual combined $870/month.
+- name: Case 12, 2010 Cerebral Palsy individual combined $870/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -325,7 +342,7 @@
         age: 70
         employment_income: 0
         al_ssp_grandfathered: true
-        al_ssp_living_arrangement: CEREBRAL_PALSY
+        al_ssp_payment_category: CEREBRAL_PALSY
     tax_units:
       tax_unit:
         members: [person1]
@@ -344,9 +361,9 @@
     ssi: [674]
     # State SSP: $196/month (Cerebral Palsy)
     al_ssp: [196]
-    # Combined: $674 + $196 = $870/month (matches WorkWorld)
+    # Combined: $674 + $196 = $870/month
 
-- name: Case 13, WorkWorld 2010 IHC Level A couple combined $1,131/month.
+- name: Case 13, 2010 IHC Level A couple combined $1,131/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -354,11 +371,15 @@
       person1:
         age: 70
         employment_income: 0
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
       person2:
         age: 68
         employment_income: 0
-        al_ssp_living_arrangement: IHC_LEVEL_A
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -377,9 +398,9 @@
     ssi: [505.50, 505.50]
     # State SSP: $60/month each (Level A)
     al_ssp: [60, 60]
-    # Combined: ($505.50 + $60) x 2 = $1,131/month (matches WorkWorld)
+    # Combined: ($505.50 + $60) x 2 = $1,131/month
 
-- name: Case 14, WorkWorld 2010 Foster Care couple combined $1,231/month.
+- name: Case 14, 2010 Foster Care couple combined $1,231/month.
   period: 2010-01
   absolute_error_margin: 0.01
   input:
@@ -387,11 +408,15 @@
       person1:
         age: 70
         employment_income: 0
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
       person2:
         age: 68
         employment_income: 0
-        al_ssp_living_arrangement: FOSTER_CARE
+        al_ssp_payment_category: FOSTER_CARE
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -410,4 +435,81 @@
     ssi: [505.50, 505.50]
     # State SSP: $110/month each (Foster Care)
     al_ssp: [110, 110]
-    # Combined: ($505.50 + $110) x 2 = $1,231/month (matches WorkWorld)
+    # Combined: ($505.50 + $110) x 2 = $1,231/month
+
+# Verify the full derivation chain: al_ssp_care_setting (plus waiver/SNF
+# and al_level_b_care) -> al_ssp_payment_category -> al_ssp.
+
+- name: Case 15, care_setting PRIVATE_HOME_IHC without level_b derives IHC_LEVEL_A.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        uncapped_ssi: 1
+        al_ssp_care_setting: PRIVATE_HOME_IHC
+        al_level_b_care: false
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_ssp_payment_category: IHC_LEVEL_A
+    al_ssp_eligible: [true]
+    al_ssp: [60]
+
+- name: Case 16, care_setting PRIVATE_HOME_IHC with level_b derives IHC_LEVEL_B.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        uncapped_ssi: 1
+        al_ssp_care_setting: PRIVATE_HOME_IHC
+        al_level_b_care: true
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_ssp_payment_category: IHC_LEVEL_B
+    al_ssp_eligible: [true]
+    al_ssp: [56]
+
+- name: Case 17, care_setting FOSTER_HOME derives FOSTER_CARE.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_eligible: true
+        uncapped_ssi: 1
+        al_ssp_care_setting: FOSTER_HOME
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_ssp_payment_category: FOSTER_CARE
+    al_ssp_eligible: [true]
+    al_ssp: [110]

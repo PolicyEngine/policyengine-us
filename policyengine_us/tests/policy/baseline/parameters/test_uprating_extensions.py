@@ -144,3 +144,25 @@ def test_cpi_relationships():
         # Just verify both exist and are positive
         assert cpi_u > 0, f"CPI-U should be positive in {year}"
         assert c_cpi_u > 0, f"Chained CPI-U should be positive in {year}"
+
+
+def test_retirement_contribution_limits_include_latest_explicit_irs_values():
+    """Retirement contribution parameters should reflect the latest published IRS anchors."""
+    from policyengine_us import Microsimulation
+
+    sim = Microsimulation()
+
+    p2025 = sim.tax_benefit_system.parameters("2025-01-01")
+    p2026 = sim.tax_benefit_system.parameters("2026-01-01")
+    p2027 = sim.tax_benefit_system.parameters("2027-01-01")
+
+    limits2025 = p2025.gov.irs.gross_income.retirement_contributions.limit
+    limits2026 = p2026.gov.irs.gross_income.retirement_contributions.limit
+    limits2027 = p2027.gov.irs.gross_income.retirement_contributions.limit
+
+    assert limits2025["401k"] == 23_500
+    assert limits2026["401k"] == 24_500
+    assert limits2026.annual_additions == 72_000
+
+    assert limits2027["401k"] >= limits2026["401k"]
+    assert limits2027.annual_additions >= limits2026.annual_additions

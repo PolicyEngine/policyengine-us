@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    ordered_capped_state_non_refundable_credits,
+)
 
 
 class dc_non_refundable_credits(Variable):
@@ -12,4 +15,11 @@ class dc_non_refundable_credits(Variable):
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55"
     )
     defined_for = StateCode.DC
-    adds = "gov.states.dc.tax.income.credits.non_refundable"
+
+    def formula(tax_unit, period, parameters):
+        ordered_credits = parameters(
+            period
+        ).gov.states.dc.tax.income.credits.non_refundable
+        return ordered_capped_state_non_refundable_credits(
+            tax_unit, period, ordered_credits, "dc_income_tax_before_credits"
+        )

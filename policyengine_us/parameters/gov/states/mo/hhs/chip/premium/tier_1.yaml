@@ -1,0 +1,66 @@
+description: Missouri charges this MO HealthNet for Kids monthly CHIP premium to tax units above 150 up to 185 percent FPL, by family size.
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  label: Missouri CHIP premium tier 1 (above 150 through 185 percent FPL)
+  reference:
+    - title: Missouri DSS Appendix E IM-4(PRM) - CHIP Premium Schedule
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: Missouri DSS CHIP Premium Chart
+      href: https://mydss.mo.gov/childrens-health-insurance-program-chip-premium-chart
+    - title: Appendix E (04-20), effective April 1, 2020
+      href: https://web.archive.org/web/20210226122055/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: IM-4(PRM) (07-24), effective July 1, 2024
+      href: https://web.archive.org/web/20250202220119/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: IM-4(PRM) (07-25), effective July 1, 2025
+      href: https://web.archive.org/web/20250623210133/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+brackets:
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 15
+      2024-07-01: 18
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 20
+      2024-07-01: 24
+      2025-07-01: 25
+  - threshold:
+      2020-01-01: 3
+    amount:
+      2020-01-01: 25
+      2024-07-01: 30
+      2025-07-01: 31
+  - threshold:
+      2020-01-01: 4
+    amount:
+      2020-01-01: 30
+      2024-07-01: 36
+      2025-07-01: 38
+  - threshold:
+      2020-01-01: 5
+    amount:
+      2020-01-01: 35
+      2024-07-01: 43
+      2025-07-01: 44
+  - threshold:
+      2020-01-01: 6
+    amount:
+      2020-01-01: 40
+      2024-07-01: 49
+      2025-07-01: 50
+  - threshold:
+      2020-01-01: 7
+    amount:
+      2020-01-01: 46
+      2024-07-01: 55
+      2025-07-01: 57
+  - threshold:
+      2020-01-01: 8
+    amount:
+      2020-01-01: 51
+      2024-07-01: 62
+      2025-07-01: 63

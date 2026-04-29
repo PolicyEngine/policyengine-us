@@ -18,9 +18,10 @@
         salt_deduction: 0
         standard_deduction: 0
   output:
-    additional_senior_deduction: 9_000
-    taxable_income_deductions_if_itemizing: 9_000
-    taxable_income_deductions_if_not_itemizing: 9_000
+    # Per-senior: max($6,000 - 6% * ($200k - $150k), 0) = $3,000; x2 = $6,000
+    additional_senior_deduction: 6_000
+    taxable_income_deductions_if_itemizing: 6_000
+    taxable_income_deductions_if_not_itemizing: 6_000
 
 - name: Single senior, income above the phase-out, 2025
   period: 2025
@@ -40,6 +41,27 @@
     additional_senior_deduction: 5_100
     taxable_income_deductions_if_itemizing: 5_100
     taxable_income_deductions_if_not_itemizing: 5_100
+
+- name: Married filing separately does not qualify for senior deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 90_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    additional_senior_deduction_eligible_person: [false]
+    additional_senior_deduction: 0
+    taxable_income_deductions_if_itemizing: 0
+    taxable_income_deductions_if_not_itemizing: 0
 
 - name: Single non-senior, income above the phase-out
   period: 2025
@@ -84,10 +106,186 @@
     taxable_income_deductions_if_itemizing: 8_100
     taxable_income_deductions_if_not_itemizing: 8_100
 
+- name: Issue 8110 - per-senior phase-out at AGI $246,188
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 246_188
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Excess MAGI: $246,188 - $150,000 = $96,188
+    # Phase-out: 6% * $96,188 = $5,771.28
+    # Per senior: max($6,000 - $5,771.28, 0) = $228.72
+    # Total: $228.72 * 2 = $457.44
+    additional_senior_deduction: 457.44
+
+- name: Puerto Rico excluded income is added back for senior deduction MAGI
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 84_000
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 74_000
+        puerto_rico_income: 10_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # MAGI = AGI + excluded Puerto Rico income = $84,000
+    # Phase-out: 6% * ($84,000 - $75,000) = $540
+    additional_senior_deduction_magi: 84_000
+    additional_senior_deduction: 5_460
+
+- name: Joint filers, only one senior eligible (spouse age 60)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 60
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Only 1 eligible senior (person2 is under 65)
+    # Per-senior: max($6,000 - 6% * ($200k - $150k), 0) = $3,000; x1 = $3,000
+    additional_senior_deduction_eligible_person: [true, false]
+    additional_senior_deduction: 3_000
+
+- name: Joint filers, one senior has ineligible SSN type
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # person2 has ineligible SSN → only 1 eligible senior
+    # Per-senior: max($6,000 - 6% * ($200k - $150k), 0) = $3,000; x1 = $3,000
+    additional_senior_deduction_eligible_person: [true, false]
+    additional_senior_deduction: 3_000
+
+- name: Joint filers with dependent senior (not head or spouse)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person3:
+        age: 70
+        is_tax_unit_head_or_spouse: false
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Dependent seniors don't qualify — must be head or spouse
+    additional_senior_deduction_eligible_person: [false, false, false]
+    additional_senior_deduction: 0
+
+- name: Two seniors, AGI fully phases out deduction
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 260_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Excess MAGI: $260k - $150k = $110k
+    # Phase-out: 6% * $110k = $6,600 > $6,000
+    # Per senior: max($6,000 - $6,600, 0) = $0
+    # Total: $0 * 2 = $0
+    additional_senior_deduction: 0
+
+- name: Two seniors, AGI exactly at threshold (no phase-out)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 150_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # At threshold — no phase-out
+    # Per senior: $6,000; x2 = $12,000
+    additional_senior_deduction: 12_000
+
 - name: Testing when reforms are initialized in another order
   period: 2025
   input:
-    people: 
+    people:
       person1:
         age: 65
         is_tax_unit_head_or_spouse: true
@@ -107,3 +305,88 @@
     tip_income_deduction: 1_000
     taxable_income_deductions_if_itemizing: 8_100
     taxable_income_deductions_if_not_itemizing: 8_100
+
+- name: Single senior at the phase-out threshold (no phase-out)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 75_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # At the $75,000 threshold — no phase-out applies
+    additional_senior_deduction: 6_000
+
+- name: Single senior one dollar above the phase-out threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 75_001
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Excess MAGI: $1
+    # Phase-out: 6% * $1 = $0.06
+    # Per senior: max($6,000 - $0.06, 0) = $5,999.94
+    additional_senior_deduction: 5_999.94
+
+- name: Single senior fully phased out at $175,000
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 175_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Excess MAGI: $100,000
+    # Phase-out: 6% * $100,000 = $6,000
+    # Per senior: max($6,000 - $6,000, 0) = $0
+    additional_senior_deduction: 0
+
+- name: Joint filers fully phased out at $250,000
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 250_000
+        salt_deduction: 0
+        standard_deduction: 0
+  output:
+    # Excess MAGI: $250,000 - $150,000 = $100,000
+    # Phase-out: 6% * $100,000 = $6,000
+    # Per senior: max($6,000 - $6,000, 0) = $0
+    # Total: $0 x 2 = $0
+    additional_senior_deduction: 0
+

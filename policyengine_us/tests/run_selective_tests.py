@@ -449,7 +449,9 @@ class SelectiveTestRunner:
             )
         else:
             pytest_args = [
-                "policyengine-core",
+                sys.executable,
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
                 "test",
                 "-c",
                 "policyengine_us",
@@ -468,7 +470,9 @@ class SelectiveTestRunner:
     def run_all_tests(self) -> int:
         """Run all tests (fallback option)."""
         print("Running all tests...")
-        result = subprocess.run(["pytest", "policyengine_us/tests"])
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "policyengine_us/tests"]
+        )
         return result.returncode
 
     def generate_test_plan(self, changed_files: Set[str]) -> Dict[str, List[str]]:

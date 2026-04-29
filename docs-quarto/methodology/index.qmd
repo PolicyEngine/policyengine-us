@@ -1,0 +1,9 @@
+---
+title: "Methodology"
+---
+
+How PolicyEngine US is built and how to read its outputs.
+
+- [Medical out-of-pocket expense decomposition](moop-decomposition.qmd) — the architecture for layering rules-based premium computations on top of CPS-imputed medical costs.
+
+Planned sections (not yet written): microdata construction (enhanced CPS), calibration to administrative totals, behavioral responses, uprating, and validation against NBER TAXSIM and IRS SOI.

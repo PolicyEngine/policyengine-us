@@ -335,3 +335,33 @@
         state_code: CA
   output:
     ca_eitc: 39
+
+- name: taxsim_741_ca_single_2024_eitc_federal_agi_over_limit
+  # Per FTB 3514 (2024), single filer with 0 qualifying children is ineligible
+  # for CalEITC if federal AGI exceeds $31,950. Here federal AGI ~= $36,972.
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 11847.05
+        taxable_interest_income: 111.15
+        taxable_private_pension_income: 16756.77
+        social_security_retirement: 19409.18
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 6
+  output:
+    ca_eitc: 0

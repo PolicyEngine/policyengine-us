@@ -15,7 +15,7 @@ class mi_fip_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("mi_fip_income_eligible", period)
         resources_eligible = spm_unit("mi_fip_resources_eligible", period)

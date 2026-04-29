@@ -19,12 +19,14 @@ class ak_ssp(Variable):
         # federal SSI benefit. The negative portion reduces the state supplement.
         uncapped_ssi = person("uncapped_ssi", period)
         payment_standard = person("ak_ssp_payment_standard", period)
+        claim_type = person("ak_ssp_claim_type", period)
         income_excess = max_(0, -uncapped_ssi)
         state_supplement = max_(0, payment_standard - income_excess) * person(
             "ak_ssp_eligible", period
         )
+        claim_type_values = claim_type.possible_values
         return where(
-            person("ssi_claim_is_joint", period),
+            claim_type == claim_type_values.COUPLE_BOTH_ELIGIBLE,
             person.marital_unit.sum(state_supplement) / 2,
             state_supplement,
         )

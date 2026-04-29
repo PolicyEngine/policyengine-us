@@ -15,7 +15,7 @@ class ssi_pmv_amount(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ssa.ssi
-        is_joint = person("ssi_claim_is_joint", period)
+        couple_computation = person("ssi_couple_computation_applies", period)
         deeming_applies = person("is_ssi_spousal_deeming_applies", period)
 
         # Per POMS SI 00835.300 and SI 00835.901:
@@ -27,7 +27,7 @@ class ssi_pmv_amount(Variable):
         # is halved to 1/6 × couple FBR + $10, because the deeming path
         # in ssi_countable_income does NOT do a /2 split.
         applicable_fbr = where(
-            is_joint | deeming_applies,
+            couple_computation | deeming_applies,
             p.amount.couple,
             p.amount.individual,
         )

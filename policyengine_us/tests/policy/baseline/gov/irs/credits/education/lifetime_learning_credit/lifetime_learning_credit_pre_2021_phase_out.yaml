@@ -1,0 +1,54 @@
+# Regression tests for issue #1324.
+# Before 2021, the Lifetime Learning Credit used separate AGI phase-out
+# parameters from the American Opportunity Credit (see IRS Form 8863 Part II
+# lines 13/16). The LLC phase-out began at lower AGI than the AOC until the
+# Consolidated Appropriations Act, 2021 harmonized them at $80k single /
+# $160k joint (IRC 25A(i)).
+#
+# Prior to the fix, both credits shared the AOC phase-out, so LLC was
+# computed as nonzero for filers who in fact had AGI above the LLC phase-out.
+
+- name: 2020 joint filer with AGI $146k is above the $138k LLC phase-out end (issue #1324)
+  period: 2020
+  input:
+    adjusted_gross_income: 146_000
+    qualified_tuition_expenses: 4_000
+    filing_status: JOINT
+    tax_unit_is_joint: true
+    is_eligible_for_american_opportunity_credit: false
+  output:
+    # Joint LLC phase-out in 2020: starts $118k, ends $138k.
+    # AGI $146k is above phase-out end, so LLC potential is $0.
+    # Before the fix, code used AOC joint params ($160k/$180k), so LLC
+    # potential was computed as $800 - 800 * (146000 - 160000)/20000 clamped
+    # = $800 (since AGI was below the AOC phase-out start).
+    lifetime_learning_credit_potential: 0
+
+- name: 2020 single filer with AGI $65k is partly phased out for the LLC (issue #1324)
+  period: 2020
+  input:
+    adjusted_gross_income: 65_000
+    qualified_tuition_expenses: 5_000
+    filing_status: SINGLE
+    tax_unit_is_joint: false
+    is_eligible_for_american_opportunity_credit: false
+  output:
+    # Single LLC phase-out in 2020: starts $59k, ends $69k.
+    # Potential (pre-phase-out) = 0.2 * min(5000, 10000) = $1,000.
+    # Phase-out fraction = (65000 - 59000) / 10000 = 0.6.
+    # Potential = 1000 * (1 - 0.6) = $400.
+    lifetime_learning_credit_potential: 400
+
+- name: 2021 joint filer uses harmonized $160k/$180k phase-out
+  period: 2021
+  input:
+    adjusted_gross_income: 146_000
+    qualified_tuition_expenses: 4_000
+    filing_status: JOINT
+    tax_unit_is_joint: true
+    is_eligible_for_american_opportunity_credit: false
+  output:
+    # Starting 2021, LLC and AOC share phase-out ($160k/$180k joint).
+    # AGI $146k is below the $160k start: no phase-out applied.
+    # Potential = 0.2 * min(4000, 10000) = $800.
+    lifetime_learning_credit_potential: 800

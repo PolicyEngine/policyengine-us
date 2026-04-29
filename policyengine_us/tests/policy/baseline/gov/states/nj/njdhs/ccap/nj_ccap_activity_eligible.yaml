@@ -1,0 +1,133 @@
+# New Jersey CCAP activity eligibility tests
+# Per N.J.A.C. 10:15-5.2, each head/spouse in the CCAP unit must
+# independently qualify (work hours above the weekly threshold or
+# full-time study) unless the family is otherwise covered by a
+# CCDF-recognized fallback activity (TANF, CP&P, etc.).
+#
+# The test also must not vacuously pass for an SPM unit that contains
+# no head/spouse (e.g. an unaccompanied-minor unit): activity eligibility
+# requires at least one head/spouse in the unit.
+
+- name: Case 1, working parent meets activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ccap_activity_eligible: true
+
+- name: Case 2, parent below hour threshold fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Default fallback CCDF activity test is false, no exemption path
+    nj_ccap_activity_eligible: false
+
+- name: Case 3, full-time student parent meets requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ccap_activity_eligible: true
+
+- name: Case 4, two parents where one fails hour threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 10
+        is_full_time_student: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # Every head/spouse must independently qualify; default fallback false
+    nj_ccap_activity_eligible: false
+
+- name: Case 5, SPM unit with only dependents has no activity-eligible parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # No head/spouse in the unit -> must not vacuously pass the test
+    nj_ccap_activity_eligible: false
