@@ -5,16 +5,17 @@
       parent:
         is_chip_eligible: false
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
       child:
         is_chip_eligible: true
         is_chip_eligible_child: true
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
     tax_units:
       tax_unit:
         members: [parent, child]
         medicaid_magi: 100_000
+        marketplace_net_premium: 0
         tax_unit_medicaid_income_level: 1.70
     spm_units:
       spm_unit:
@@ -35,10 +36,11 @@
         is_chip_eligible: true
         is_chip_eligible_child: true
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
     tax_units:
       tax_unit:
         members: [child]
+        marketplace_net_premium: 0
         tax_unit_medicaid_income_level: 1.70
     spm_units:
       spm_unit:
