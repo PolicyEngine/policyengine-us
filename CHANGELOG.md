@@ -1,3 +1,10 @@
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
 ## [1.675.0] - 2026-04-29
 
 ### Added
