@@ -1,3 +1,10 @@
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
 ## [1.674.1] - 2026-04-29
 
 ### Fixed

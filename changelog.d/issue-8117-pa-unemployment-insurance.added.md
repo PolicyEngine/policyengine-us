@@ -1,1 +1,0 @@
-Pennsylvania Unemployment Compensation.
