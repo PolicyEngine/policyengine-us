@@ -43,5 +43,5 @@ class chip_premium(Variable):
     def formula(tax_unit, period, parameters):
         uncapped_premium = add(tax_unit, period, STATE_CHIP_PREMIUM_VARIABLES)
         p = parameters(period).gov.hhs.chip.cost_sharing.cap
-        family_income = max_(0, tax_unit("medicaid_magi", period))
-        return min_(uncapped_premium, family_income * p.rate)
+        annual_family_income = max_(0, tax_unit("medicaid_magi", period))
+        return min_(uncapped_premium, annual_family_income * p.rate)
