@@ -1,4 +1,3 @@
-from policyengine_core.periods import instant
 from policyengine_core.periods import period as period_
 from policyengine_us.model_api import *
 
@@ -48,29 +47,9 @@ def create_il_sb3567() -> Reform:
                 actual_credit,
             )
 
-    def modify_parameters(parameters):
-        parameters.gov.states.il.tax.income.credits.refundable.update(
-            start=instant("2025-01-01"),
-            value=[
-                "il_pass_through_withholding",
-                "il_pass_through_entity_tax_credit",
-                "il_eitc",
-            ],
-        )
-        parameters.gov.states.il.tax.income.credits.non_refundable.update(
-            start=instant("2025-01-01"),
-            value=[
-                "il_property_tax_credit",
-                "il_k12_education_expense_credit",
-                "il_ctc",
-            ],
-        )
-        return parameters
-
     class reform(Reform):
         def apply(self):
             self.update_variable(il_ctc)
-            self.modify_parameters(modify_parameters)
 
     return reform
 

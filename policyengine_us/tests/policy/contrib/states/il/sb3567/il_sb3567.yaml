@@ -132,7 +132,7 @@
   output:
     il_ctc: 0
 
-- name: SB3567 makes the Illinois CTC nonrefundable
+- name: SB3567 keeps the Illinois CTC refundable when EITC is zero
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
@@ -150,7 +150,7 @@
         members: [filer, child]
         adjusted_gross_income: 10_000
         il_eitc: 0
-        il_income_tax_before_non_refundable_credits: 100
+        il_income_tax_before_non_refundable_credits: 0
         il_property_tax_credit: 0
         il_k12_education_expense_credit: 0
         il_pass_through_withholding: 0
@@ -160,12 +160,13 @@
       household:
         members: [filer, child]
         state_code: IL
+  # AGI below 1-child phase-in threshold so boost applies; il_ctc stays
+  # refundable per existing 35 ILCS 5/244(b), so it flows through to
+  # il_refundable_credits even with no tax liability.
   output:
     il_ctc: 346.24
-    il_non_refundable_credits: 346.24
-    il_refundable_credits: 0
-    il_income_tax_before_refundable_credits: 0
-    il_income_tax: 0
+    il_refundable_credits: 346.24
+    il_income_tax: -346.24
 
 - name: Non-Illinois filers do not receive the reform CTC
   period: 2025
