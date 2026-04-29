@@ -8,7 +8,7 @@ class medical_expense_deduction(Variable):
     label = "Medical expense deduction"
     reference = "https://www.law.cornell.edu/uscode/text/26/213#a"
     unit = USD
-    documentation = "Medical expenses deducted from taxable income."
+    documentation = "Itemized medical expenses deducted from taxable income."
 
     def formula(tax_unit, period, parameters):
         expense = tax_unit("itemized_medical_expenses", period)

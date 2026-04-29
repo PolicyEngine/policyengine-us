@@ -1,7 +1,7 @@
 # TODOs:
 # - Tests involving is_hud_elderly_disabled_family
 # - Tests involving childcare_expenses
-# - Tests involving medical_out_of_pocket_expenses (which only applies to elderly/disabled families)
+# - Tests involving other_medical_expenses (which only applies to elderly/disabled families)
 
 - name: Default value is zero.
   period: 2022
@@ -95,7 +95,7 @@
   input:
     hud_annual_income: 10_000
     age: 70
-    medical_out_of_pocket_expenses: 300
+    other_medical_expenses: 300
   output:
     hud_adjusted_income: 9_600 # $10,000 - $400 elderly/disabled - $300 medical expense deduction
 
@@ -104,7 +104,7 @@
   input:
     hud_annual_income: 10_000
     is_disabled: true
-    medical_out_of_pocket_expenses: 301
+    other_medical_expenses: 301
   output:
     hud_adjusted_income: 9_599
 
@@ -113,7 +113,7 @@
   input:
     hud_annual_income: 10_000
     is_disabled: true
-    medical_out_of_pocket_expenses: 20_000
+    other_medical_expenses: 20_000
   output:
     hud_adjusted_income: 0
 
@@ -121,6 +121,6 @@
   period: 2022
   input:
     hud_annual_income: 10_000
-    medical_out_of_pocket_expenses: 20_000
+    other_medical_expenses: 20_000
   output:
     hud_adjusted_income: 10_000

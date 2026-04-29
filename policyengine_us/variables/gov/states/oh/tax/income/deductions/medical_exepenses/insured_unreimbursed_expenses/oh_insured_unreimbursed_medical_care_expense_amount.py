@@ -27,7 +27,5 @@ class oh_insured_unreimbursed_medical_care_expense_amount(Variable):
         ) * (employer_premium_contribution == status.NONE)
         # Premiums only count if the employer paid none.
         # Line 4
-        medical_out_of_pocket_expenses = person(
-            "medical_out_of_pocket_expenses", period
-        )
-        return eligible_premiums + medical_out_of_pocket_expenses
+        other_medical_expenses = person("other_medical_expenses", period)
+        return eligible_premiums + other_medical_expenses

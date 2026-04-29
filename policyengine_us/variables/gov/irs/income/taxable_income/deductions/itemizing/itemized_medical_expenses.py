@@ -17,8 +17,12 @@ class itemized_medical_expenses(Variable):
         "to include amounts paid for diagnosis, cure, mitigation, treatment, "
         "or prevention of disease; transportation primarily for essential "
         "medical care; qualified long-term care services; and insurance "
-        "premiums covering medical care. Current modeling uses the available "
-        "medical_out_of_pocket_expenses base."
+        "premiums covering medical care. Current modeling uses health "
+        "insurance premiums and other medical expenses, excluding general "
+        "over-the-counter health expenses."
     )
 
-    adds = ["medical_out_of_pocket_expenses"]
+    adds = [
+        "health_insurance_premiums",
+        "other_medical_expenses",
+    ]

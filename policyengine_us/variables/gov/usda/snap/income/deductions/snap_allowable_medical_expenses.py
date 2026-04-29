@@ -20,7 +20,11 @@ class snap_allowable_medical_expenses(Variable):
         "drugs, practitioner-approved over-the-counter medication, health "
         "insurance premiums, Medicare premiums, cost sharing, medical "
         "supplies, transportation, and related services. Current modeling "
-        "uses the available medical_out_of_pocket_expenses base."
+        "uses health insurance premiums and other medical expenses, excluding "
+        "general over-the-counter health expenses."
     )
 
-    adds = ["medical_out_of_pocket_expenses"]
+    adds = [
+        "health_insurance_premiums",
+        "other_medical_expenses",
+    ]

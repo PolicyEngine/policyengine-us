@@ -14,7 +14,6 @@ INPUT_VARIABLES = [
     "social_security_disability",
     "health_savings_account_ald",
     "investment_income_elected_form_4952",
-    "medical_out_of_pocket_expenses",
     "unemployment_compensation",
     "self_employment_income",
     "interest_deduction",

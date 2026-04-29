@@ -5,12 +5,12 @@
       parent:
         is_chip_eligible: false
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
       child:
         is_chip_eligible: true
         is_chip_eligible_child: true
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -35,7 +35,7 @@
         is_chip_eligible: true
         is_chip_eligible_child: true
         child_support_expense: 0
-        medical_out_of_pocket_expenses: 0
+        other_medical_expenses: 0
     tax_units:
       tax_unit:
         members: [child]
