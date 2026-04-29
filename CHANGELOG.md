@@ -1,3 +1,10 @@
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
 ## [1.673.1] - 2026-04-29
 
 ### Fixed
