@@ -11,7 +11,7 @@ class pr_medical_expense_deduction(Variable):
     defined_for = StateCode.PR
 
     def formula(tax_unit, period, parameters):
-        expense = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
+        expense = tax_unit("itemized_medical_expenses", period)
         p = parameters(
             period
         ).gov.territories.pr.tax.income.taxable_income.deductions.medical
