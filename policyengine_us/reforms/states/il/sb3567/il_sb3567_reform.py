@@ -10,7 +10,10 @@ def create_il_sb3567() -> Reform:
         label = "Illinois Child Tax Credit"
         unit = USD
         definition_period = YEAR
-        reference = "https://ilga.gov/Legislation/BillStatus/FullText?DocNum=3567&DocTypeID=SB&GAID=18&LegId=166617&Print=1&SessionID=114"
+        reference = (
+            "https://ilga.gov/Legislation/BillStatus/FullText?DocNum=3567&DocTypeID=SB&GAID=18&LegId=166617&Print=1&SessionID=114",
+            "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244",
+        )
         defined_for = StateCode.IL
 
         def formula(tax_unit, period, parameters):
@@ -25,26 +28,25 @@ def create_il_sb3567() -> Reform:
 
             actual_credit = tax_unit("il_eitc", period) * ctc.rate
 
-            # SB3567 keys the maximum credit amount to the Section 152
-            # dependent count, while the federal EITC schedule tops out at 3+.
+            # SB3567 keys the maximum credit amount to the dependent count.
+            # The bill cites IRC § 152, but here we use the tax unit's child
+            # dependent count, capped at 3 to match the federal EITC schedule.
             dependent_count = min_(tax_unit("tax_unit_child_dependents", period), 3)
             federal_eitc = parameters(period).gov.irs.credits.eitc
             federal_maximum = federal_eitc.max.calc(dependent_count)
             phase_in_rate = federal_eitc.phase_in_rate.calc(dependent_count)
 
-            # The bill compares AGI to the threshold for the maximum federal
-            # EITC, which corresponds to the end of the phase-in range.
+            # The bill's "income threshold to qualify for the maximum federal
+            # EITC" is the end of the phase-in range (start of the plateau).
             max_federal_eitc_threshold = federal_maximum / phase_in_rate
-            max_il_eitc = federal_maximum * p.eitc.match
-            max_credit = max_il_eitc * ctc.rate
+            max_credit = federal_maximum * p.eitc.match * ctc.rate
 
-            adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-            boosted_credit = where(
-                adjusted_gross_income <= max_federal_eitc_threshold,
+            agi = tax_unit("adjusted_gross_income", period)
+            return eligible_child_present * where(
+                agi <= max_federal_eitc_threshold,
                 max_credit,
                 actual_credit,
             )
-            return eligible_child_present * boosted_credit
 
     def modify_parameters(parameters):
         parameters.gov.states.il.tax.income.credits.refundable.update(

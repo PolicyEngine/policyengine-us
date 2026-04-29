@@ -191,3 +191,65 @@
         state_code: CA
   output:
     il_ctc: 0
+
+- name: SB3567 boosts a two-child phase-in filer to the two-child maximum
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 31
+      child1:
+        age: 7
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        adjusted_gross_income: 14_000
+        il_eitc: 250
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  # 2025 federal EITC max for 2 children = 7,152; IL match = 0.20; CTC rate = 0.4
+  # Boosted credit = 7,152 * 0.20 * 0.4 = 572.16
+  output:
+    il_ctc: 572.16
+
+- name: SB3567 applies the boost at the two-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 32
+      child1:
+        age: 6
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        # Phase-in threshold for 2 children = 7,152 / 0.40 = 17,880
+        adjusted_gross_income: 17_880
+        il_eitc: 1_430.4
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  # AGI <= threshold so boost applies; max credit = 572.16
+  output:
+    il_ctc: 572.16
