@@ -1,7 +1,12 @@
 # Tests for md_paa_countable_earned_income variable.
-# Formula: max(earned - $85, 0) * 0.5 (per PAA Manual §500.3, AT 23-02).
-# Note: PAA earned disregard is $85 (NOT $65 like federal SSI).
-# ssi_earned_income is YEAR-defined; inputs are annual (= 12 * monthly).
+# Implements the COMAR 07.03.07.08(A) cascade:
+#   leftover_general = max($20 - unearned, 0)
+#   effective_earned_disregard = $65 + leftover_general
+#   earned_after_disregard = max(earned - effective_earned_disregard, 0)
+#   countable_earned = earned_after_disregard * 0.5
+# When unearned = 0:    effective disregard = $85 (matches (A)(1))
+# When unearned >= $20: effective disregard = $65 (matches (A)(3))
+# ssi_earned_income / ssi_unearned_income are YEAR-defined; inputs are annual.
 
 - name: Case 1, zero earned income.
   period: 2025-01
@@ -15,11 +20,9 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 0/12 = 0.
-    # max(0 - 85, 0) * 0.5 = 0
     md_paa_countable_earned_income: 0
 
-- name: Case 2, earned exactly at $85/mo disregard.
+- name: Case 2, earned exactly at $85/mo disregard with no unearned.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -32,11 +35,11 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 1020/12 = 85.
+    # Monthly earned = 85, unearned = 0 → effective disregard = $85.
     # max(85 - 85, 0) * 0.5 = 0
     md_paa_countable_earned_income: 0
 
-- name: Case 3, earned $185/mo (above disregard).
+- name: Case 3, earned $185/mo with no unearned (matches COMAR 07.03.07.08(A)(1)).
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -51,7 +54,7 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 2220/12 = 185.
+    # No unearned → leftover_general = $20, effective disregard = $85.
     # max(185 - 85, 0) * 0.5 = 100 * 0.5 = 50
     md_paa_countable_earned_income: 50
 
@@ -68,11 +71,10 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 600/12 = 50.
-    # max(50 - 85, 0) * 0.5 = 0 (floored at 0)
+    # No unearned → effective disregard = $85.
+    # max(50 - 85, 0) * 0.5 = 0
     md_paa_countable_earned_income: 0
 
-# Boundary cases around the $85 initial disregard.
 - name: Case 5, earned $84/mo just below initial disregard.
   period: 2025-01
   absolute_error_margin: 0.01
@@ -88,8 +90,6 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 1008/12 = 84.
-    # max(84 - 85, 0) * 0.5 = 0 (max_ floors at 0)
     md_paa_countable_earned_income: 0
 
 - name: Case 6, earned $86/mo just above initial disregard.
@@ -107,6 +107,68 @@
         members: [person1]
         state_code: MD
   output:
-    # Monthly earned = 1032/12 = 86.
-    # max(86 - 85, 0) * 0.5 = 1 * 0.5 = 0.5
+    # max(86 - 85, 0) * 0.5 = 0.5
     md_paa_countable_earned_income: 0.5
+
+- name: Case 7, earned $185/mo with $300/mo unearned (matches COMAR 07.03.07.08(A)(3)).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $185/mo * 12 = $2,220/yr.
+        ssi_earned_income: 2_220
+        # $300/mo * 12 = $3,600/yr.
+        ssi_unearned_income: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Unearned >= $20 → leftover_general = 0, effective disregard = $65.
+    # max(185 - 65, 0) * 0.5 = 120 * 0.5 = 60
+    md_paa_countable_earned_income: 60
+
+- name: Case 8, earned $185/mo with partial $10/mo unearned (gradual transition).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $185/mo * 12 = $2,220/yr.
+        ssi_earned_income: 2_220
+        # $10/mo * 12 = $120/yr.
+        ssi_unearned_income: 120
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Unearned = $10 → leftover_general = $10, effective disregard = $75.
+    # max(185 - 75, 0) * 0.5 = 110 * 0.5 = 55
+    md_paa_countable_earned_income: 55
+
+- name: Case 9, earned $185/mo with unearned exactly at $20 (cascade boundary).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        # $185/mo * 12 = $2,220/yr.
+        ssi_earned_income: 2_220
+        # $20/mo * 12 = $240/yr.
+        ssi_unearned_income: 240
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Unearned = $20 → leftover_general = 0, effective disregard = $65.
+    # max(185 - 65, 0) * 0.5 = 120 * 0.5 = 60
+    md_paa_countable_earned_income: 60

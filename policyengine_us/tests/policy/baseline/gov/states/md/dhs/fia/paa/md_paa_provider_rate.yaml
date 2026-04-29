@@ -78,19 +78,22 @@
   output:
     md_paa_provider_rate: 894
 
-- name: Case 6, REHAB_RESIDENCE pays no provider rate (MDH covers cost).
+- name: Case 6, REHAB_RESIDENCE provider rate is monthly equivalent of $54/day cap.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
         md_paa_living_arrangement: REHAB_RESIDENCE
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_paa_provider_rate: 0
+    # Per AT 23-02 page 3, REHAB allowable need is the cost of care, not to
+    # exceed $54/day. Monthly equivalent = 54 * 365 / 12 = 1642.50.
+    md_paa_provider_rate: 1_642.50
 
 - name: Case 7, NONE living arrangement returns zero.
   period: 2025-01

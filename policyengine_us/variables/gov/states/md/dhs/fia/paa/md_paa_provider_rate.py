@@ -14,7 +14,11 @@ class md_paa_provider_rate(Variable):
     )
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.md.dhs.fia.paa
         living_arrangement = person("md_paa_living_arrangement", period)
-        return parameters(period).gov.states.md.dhs.fia.paa.provider_rate[
-            living_arrangement
-        ]
+        is_rehab = (
+            living_arrangement == living_arrangement.possible_values.REHAB_RESIDENCE
+        )
+        standard_rate = p.provider_rate[living_arrangement]
+        monthly_rehab_cap = p.provider_rate_rehab_daily_cap * 365 / MONTHS_IN_YEAR
+        return standard_rate + where(is_rehab, monthly_rehab_cap, 0)

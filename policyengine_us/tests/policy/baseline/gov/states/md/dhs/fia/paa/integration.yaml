@@ -87,7 +87,7 @@
     # --- PAA eligibility ---
     md_paa_eligible: [true]
 
-    # --- PAA income (uses $85 earned disregard, NOT $65) ---
+    # --- PAA income (COMAR 07.03.07.08(A)(1): no unearned → $85 effective disregard) ---
     # countable_earned = max(200 - 85, 0) * 0.5 = 115 * 0.5 = 57.50.
     # countable_unearned = 0 (PAA excludes SSI).
     md_paa_countable_earned_income: [57.50]
@@ -151,7 +151,7 @@
     md_paa_total_cost_of_care: [1_000]
     md_paa: [620]
 
-- name: Case 4, REHAB_RESIDENCE recipient receives PNA only.
+- name: Case 4, REHAB_RESIDENCE recipient receives cost of care plus PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -183,12 +183,15 @@
     ssi: [994]
 
     # --- PAA benefit ---
-    # MDH pays provider cost; PAA pays only the PNA.
-    # provider_rate(0) + PNA(106) = 106. countable = 0. PAA = 106.
+    # Per AT 23-02 page 3, REHAB allowable need = cost of rehab residence
+    # (capped at $54/day = $1,642.50/mo) + PNA ($106).
+    # Per COMAR 07.03.07.08(B), a cost-of-care disregard reduces income.
+    # countable_income = max(0 - 1642.50, 0) = 0.
+    # PAA = max(1642.50 + 106 - 0, 0) = 1,748.50.
     md_paa_eligible: [true]
-    md_paa_provider_rate: [0]
+    md_paa_provider_rate: [1_642.50]
     md_paa_personal_needs_allowance: [106]
-    md_paa: [106]
+    md_paa: [1_748.50]
 
 - name: Case 5, married couple both eligible in CARE_HOME_LEVEL_A treated as two individuals.
   period: 2026-01
@@ -309,3 +312,86 @@
     md_paa_countable_unearned_income: [981]
     md_paa_total_cost_of_care: [981]
     md_paa: [0]
+
+- name: Case 8, COMAR 07.03.07.08(A)(3) cascade with both earned and unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        # $185/mo earned ($2,220/yr) and $300/mo unearned ($3,600/yr).
+        ssi_earned_income: 2_220
+        ssi_unearned_income: 3_600
+        ssi: 9_600  # gates md_paa_eligible
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: [true]
+    # Per COMAR 07.03.07.08(A)(3): unearned >= $20 → leftover_general = 0,
+    # effective earned disregard = $65 (NOT $85).
+    # countable_earned = max(185 - 65, 0) * 0.5 = 120 * 0.5 = 60.
+    # countable_unearned = max(300 - 20, 0) = 280.
+    md_paa_countable_earned_income: [60]
+    md_paa_countable_unearned_income: [280]
+    md_paa_countable_income: [340]
+    # provider_rate(875) + PNA(106) = 981 total cost of care.
+    # PAA = max(981 - 340, 0) = 641.
+    md_paa: [641]
+
+- name: Case 9, COMAR 07.03.07.08(A)(1) earned-only with no unearned ($85 disregard).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        # $185/mo earned with zero unearned income.
+        ssi_earned_income: 2_220
+        ssi_unearned_income: 0
+        ssi: 9_600  # gates md_paa_eligible
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: [true]
+    # Per COMAR 07.03.07.08(A)(1): no unearned → leftover_general = $20,
+    # effective earned disregard = $85.
+    # countable_earned = max(185 - 85, 0) * 0.5 = 100 * 0.5 = 50.
+    md_paa_countable_earned_income: [50]
+    md_paa_countable_unearned_income: [0]
+    md_paa_countable_income: [50]
+    # provider_rate(875) + PNA(106) = 981 total cost of care.
+    # PAA = max(981 - 50, 0) = 931.
+    md_paa: [931]

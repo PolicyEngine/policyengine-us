@@ -10,7 +10,7 @@ class md_paa_countable_unearned_income(Variable):
     defined_for = "md_paa_eligible"
     reference = (
         "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20500%20Financial%20Eligibility%20rev%2011.22.docx",
-        "https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-09",
+        "https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-08",
     )
 
     def formula(person, period, parameters):
