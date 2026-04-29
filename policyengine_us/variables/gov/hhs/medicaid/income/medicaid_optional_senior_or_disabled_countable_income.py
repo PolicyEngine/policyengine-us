@@ -25,12 +25,14 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             0,
         )
 
-        unearned_income = person("ssi_marital_unearned_income", period)
-        parent_deemed = person(
-            "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
+        total_unearned_income = add(
+            person,
             period,
+            [
+                "ssi_marital_unearned_income",
+                "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
+            ],
         )
-        total_unearned = unearned_income + parent_deemed
 
         both_eligible = person("ssi_marital_both_eligible", period)
         state = person.household("state_code_str", period)
@@ -44,7 +46,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         )
         personal_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             earned_income,
-            total_unearned,
+            total_unearned_income,
             state,
             income_disregard,
             parameters,
