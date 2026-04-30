@@ -1,0 +1,18 @@
+description: Washington assigns these counties to Region 3 for child care subsidy rate purposes under the Working Connections Child Care program.
+values:
+  2023-07-01:
+    - ISLAND_COUNTY_WA
+    - SAN_JUAN_COUNTY_WA
+    - SKAGIT_COUNTY_WA
+    - SNOHOMISH_COUNTY_WA
+    - WHATCOM_COUNTY_WA
+
+metadata:
+  unit: list
+  period: year
+  label: Washington WCCC Region 3 counties
+  reference:
+    - title: WAC 110-15-0200(1)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200
+    - title: WAC 110-15-0205(2)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0205

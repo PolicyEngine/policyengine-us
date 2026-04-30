@@ -1,0 +1,217 @@
+- name: Case 1, single working parent, activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: true
+
+- name: Case 2, single non-working parent, activity ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: false
+
+- name: Case 3, two-parent household both working, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        employment_income: 25_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: true
+
+- name: Case 4, two-parent household one not working, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: false
+
+- name: Case 5, two-parent household with disabled spouse exempt from activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: true
+
+- name: Case 6, full-time student parent with no earnings, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: true
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_wccc_activity_eligible: true
+
+- name: Case 7, two-parent household with disabled head and working spouse, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: true
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # Disabled head exempt from activity test; working spouse passes via earnings.
+    wa_wccc_activity_eligible: true

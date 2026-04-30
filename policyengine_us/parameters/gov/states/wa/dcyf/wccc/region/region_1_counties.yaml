@@ -1,0 +1,25 @@
+description: Washington assigns these counties to Region 1 for child care subsidy rate purposes under the Working Connections Child Care program.
+values:
+  2023-07-01:
+    - ADAMS_COUNTY_WA
+    - ASOTIN_COUNTY_WA
+    - CHELAN_COUNTY_WA
+    - DOUGLAS_COUNTY_WA
+    - FERRY_COUNTY_WA
+    - GARFIELD_COUNTY_WA
+    - GRANT_COUNTY_WA
+    - LINCOLN_COUNTY_WA
+    - OKANOGAN_COUNTY_WA
+    - PEND_OREILLE_COUNTY_WA
+    - STEVENS_COUNTY_WA
+    - WHITMAN_COUNTY_WA
+
+metadata:
+  unit: list
+  period: year
+  label: Washington WCCC Region 1 counties
+  reference:
+    - title: WAC 110-15-0200(1)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200
+    - title: WAC 110-15-0205(2)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0205

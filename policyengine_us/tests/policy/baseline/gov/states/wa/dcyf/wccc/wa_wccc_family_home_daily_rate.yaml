@@ -1,0 +1,67 @@
+- name: Case 1, Region 1 infant full day at family home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_family_home_time_category: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_region: REGION_1
+  output:
+    wa_wccc_family_home_daily_rate: [49.23]
+
+- name: Case 2, Region 2 enhanced toddler full day at family home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_family_home_age_group: ENHANCED_TODDLER
+        wa_wccc_family_home_time_category: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_region: REGION_2
+  output:
+    wa_wccc_family_home_daily_rate: [66.00]
+
+- name: Case 3, Region 4 (King) toddler half day at family home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_family_home_age_group: TODDLER
+        wa_wccc_family_home_time_category: HALF_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_region: REGION_4
+  output:
+    wa_wccc_family_home_daily_rate: [37.50]
+
+- name: Case 4, Region 6 preschool partial day at family home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_family_home_age_group: PRESCHOOL
+        wa_wccc_family_home_time_category: PARTIAL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_region: REGION_6
+  output:
+    wa_wccc_family_home_daily_rate: [39.75]

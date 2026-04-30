@@ -1,0 +1,97 @@
+- name: Case 1, child age 5, dependent, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [true]
+
+- name: Case 2, child age 12, boundary eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [true]
+
+- name: Case 3, child age 13, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [false]
+
+- name: Case 4, newborn, dependent, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [true]
+
+- name: Case 5, child age 5 but not a dependent, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [false]
+
+- name: Case 6, adult age 30, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [false]
+
+- name: Case 7, child outside Washington, defined_for filters output.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    wa_wccc_eligible_child: [false]

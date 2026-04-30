@@ -1,0 +1,27 @@
+- name: Case 1, in-home relative rate $4.00/hour effective 2024-07-01.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_in_home_relative_hourly_rate: [4.00]
+
+- name: Case 2, in-home relative rate $3.85/hour before 2024-07-01.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_in_home_relative_hourly_rate: [3.85]

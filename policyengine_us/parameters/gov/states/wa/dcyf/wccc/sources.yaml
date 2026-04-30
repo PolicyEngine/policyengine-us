@@ -1,0 +1,38 @@
+description: Washington uses these income sources to determine countable income under the Working Connections Child Care program.
+values:
+  2024-11-01:
+    # Earned income (WAC 110-15-0060)
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    - rental_income
+    # Unearned income (WAC 110-15-0060)
+    - social_security
+    - pension_income
+    - retirement_distributions
+    - disability_benefits
+    - ssi
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - interest_income
+    - dividend_income
+    - child_support_received
+    - alimony_income
+    - capital_gains
+    # TANF is countable per WAC 110-15-0060 but is excluded here to avoid
+    # circular dependency: tanf -> childcare_expenses -> wa_wccc ->
+    # wa_wccc_countable_income -> tanf.
+
+metadata:
+  unit: list
+  period: year
+  label: Washington WCCC countable income sources
+  reference:
+    - title: WAC 110-15-0060
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0060
+    - title: WAC 110-15-0065
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0065
+    - title: WAC 110-15-0070
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0070

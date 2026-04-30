@@ -1,0 +1,65 @@
+- name: Case 1, center provider for Region 1 infant full day, $62.05 * 23.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: CENTER
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_center_time_category: FULL_DAY
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_family_home_time_category: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # Center: 62.05/day * 23 days = 1,427.15.
+    wa_wccc_max_monthly_reimbursement: [1_427.15]
+
+- name: Case 2, family home provider for Region 1 infant full day, $49.23 * 22.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: FAMILY_HOME
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_center_time_category: FULL_DAY
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_family_home_time_category: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # Family home: 49.23/day * 22 days = 1,083.06.
+    wa_wccc_max_monthly_reimbursement: [1_083.06]
+
+- name: Case 3, in-home relative provider, $4.00 * 230.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: IN_HOME_RELATIVE
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_center_time_category: FULL_DAY
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_family_home_time_category: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # In-home: 4.00/hour * 230 hours = 920.
+    wa_wccc_max_monthly_reimbursement: [920]

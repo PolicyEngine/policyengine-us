@@ -32,6 +32,8 @@ class spm_unit_benefits(Variable):
             "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
+            # Washington programs.
+            "wa_wccc",
             # New Mexico programs.
             "nm_ssi_state_supplement",
             # South Carolina programs.
