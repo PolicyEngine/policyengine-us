@@ -1,3 +1,10 @@
+## [1.676.4] - 2026-04-30
+
+### Changed
+
+- Improve WIC benefit valuation by assigning detailed federal food packages, updating cash-value benefit amounts, and using WIC-specific countable income.
+
+
 ## [1.676.3] - 2026-04-30
 
 ### Fixed
