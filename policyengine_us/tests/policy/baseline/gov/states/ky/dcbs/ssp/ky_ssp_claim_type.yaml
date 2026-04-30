@@ -1,0 +1,170 @@
+- name: Case 1, single SSI-eligible individual in qualifying category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: PCH
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1]
+  output:
+    # Solo marital unit => INDIVIDUAL.
+    ky_ssp_claim_type: [INDIVIDUAL]
+
+- name: Case 2, couple with both SSP-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Both SSI-eligible, both adults, both in qualifying category
+    # => COUPLE_BOTH_ELIGIBLE for each.
+    ky_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE]
+
+- name: Case 3, eligible spouse with ABD but resource-ineligible spouse uses individual rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        # Spouse is ABD but fails resource test => not SSI-eligible.
+        meets_ssi_resource_test: false
+        ky_ssp_category: CARETAKER
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # §9(1)(c)1 — couple rates require both SSP-eligible. With only one
+    # SSI-eligible spouse, eligible spouse uses COUPLE_ONE_ELIGIBLE (individual
+    # rate); ineligible spouse falls through to default INDIVIDUAL.
+    ky_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
+
+- name: Case 4, eligible individual with non-ABD spouse uses one-eligible-couple.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # person1 eligible, person2 non-ABD ineligible => COUPLE_ONE_ELIGIBLE / INDIVIDUAL.
+    ky_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
+
+- name: Case 5, unmarried solo person is INDIVIDUAL.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: PCH
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1]
+  output:
+    ky_ssp_claim_type: [INDIVIDUAL]
+
+- name: Case 6, SSI-eligible couple where only one spouse is in an SSP-qualifying category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+      person2:
+        age: 68
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        # Not in any qualifying SSP category (defaults to NONE).
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # §9(1)(c) couple rates require both spouses to be SSP-eligible. person2
+    # is SSI-eligible but in NONE category, so not SSP-eligible. person1 is
+    # treated as an eligible individual with an ineligible-for-SSP spouse
+    # (COUPLE_ONE_ELIGIBLE). person2 defaults to INDIVIDUAL and receives no
+    # SSP payment standard.
+    ky_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
+
+- name: Case 7, SSI-eligible minor with SSI-eligible adult spouse — minor fails §4(1)(c) age test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+      person2:
+        age: 17
+        is_ssi_aged_blind_disabled: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # §4(1)(c) requires age ≥ 18 for SSP. Minor spouse fails SSP age test
+    # even though SSI-eligible, so couple pair is not "both SSP-eligible".
+    ky_ssp_claim_type: [COUPLE_ONE_ELIGIBLE, INDIVIDUAL]
