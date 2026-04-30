@@ -31,6 +31,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             [
                 "ssi_marital_unearned_income",
                 "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
+                "ssi_in_kind_support_and_maintenance",
             ],
         )
 

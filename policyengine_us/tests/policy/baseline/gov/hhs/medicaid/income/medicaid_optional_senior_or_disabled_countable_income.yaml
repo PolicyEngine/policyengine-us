@@ -62,3 +62,14 @@
   output:
     ssi_couple_computation_applies: [false, false]
     medicaid_optional_senior_or_disabled_countable_income: [24_760, 0]
+
+- name: In-kind support and maintenance counts as unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_receives_outside_shelter_support: true
+    state_code: NC
+  output:
+    ssi_in_kind_support_and_maintenance: 4_108
+    medicaid_optional_senior_or_disabled_countable_income: 3_868
