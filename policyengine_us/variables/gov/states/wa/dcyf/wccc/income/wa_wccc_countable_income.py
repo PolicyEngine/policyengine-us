@@ -8,6 +8,10 @@ class wa_wccc_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.WA
-    reference = "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0060"
+    reference = (
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0060",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0065",
+    )
 
     adds = "gov.states.wa.dcyf.wccc.sources"
+    subtracts = ["child_support_expense"]

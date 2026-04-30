@@ -15,8 +15,5 @@ class wa_wccc_time_category(Variable):
     defined_for = StateCode.WA
     label = "Washington WCCC authorization time category"
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0190"
-
-    def formula(person, period, parameters):
-        # We don't track approved-activity hours at the moment; default to
-        # full-time care, matching the categorical full-time authorization rule.
-        return WAWCCCTimeCategory.FULL_TIME
+    # We don't track approved-activity hours at the moment; defaults to
+    # FULL_TIME but accepts user override for partial-time scenarios.

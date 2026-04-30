@@ -17,6 +17,13 @@ class wa_wccc_eligible(Variable):
         income_eligible = spm_unit("wa_wccc_income_eligible", period)
         resources_eligible = spm_unit("wa_wccc_resources_eligible", period)
         activity_eligible = spm_unit("wa_wccc_activity_eligible", period)
-        categorical_eligible = spm_unit("wa_wccc_categorical_eligible", period)
-        standard_path = income_eligible & resources_eligible & activity_eligible
-        return has_eligible_child & (standard_path | categorical_eligible)
+        standard_path = income_eligible & resources_eligible
+        # WAC 110-15-0023(2)(a): HGP families bypass the asset limit and
+        # standard income tier. WAC 110-15-0023(2)(b) restricts HGP to
+        # income strictly under 85% SMI (the smi_limit returns 85% SMI
+        # when the household is homeless).
+        is_hgp_eligible = spm_unit("wa_wccc_hgp_eligible", period)
+        countable_income = spm_unit("wa_wccc_countable_income", period)
+        income_limit = spm_unit("wa_wccc_smi_limit", period)
+        hgp_path = is_hgp_eligible & (countable_income < income_limit)
+        return has_eligible_child & activity_eligible & (standard_path | hgp_path)

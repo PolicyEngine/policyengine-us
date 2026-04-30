@@ -12,27 +12,27 @@ metadata:
 brackets:
   # At or below 20% SMI: waived
   - threshold:
-      2024-11-01: 0
+      2018-07-01: 0
     amount:
-      2024-11-01: 0
+      2018-07-01: 0
   # Above 20% and at or below 36% SMI
   - threshold:
-      2024-11-01: 0.2001
+      2018-07-01: 0.2001
     amount:
-      2024-11-01: 65
+      2018-07-01: 65
   # Above 36% and at or below 50% SMI
   - threshold:
-      2024-11-01: 0.3601
+      2018-07-01: 0.3601
     amount:
-      2024-11-01: 90
+      2018-07-01: 90
   # Above 50% and at or below 60% SMI
   - threshold:
-      2024-11-01: 0.5001
+      2018-07-01: 0.5001
     amount:
-      2024-11-01: 165
+      2018-07-01: 165
   # Above 60% and at or below 65% SMI (reapplication)
   # or above 60% and at or below 75% SMI (state-registered apprenticeship)
   - threshold:
-      2024-11-01: 0.6001
+      2018-07-01: 0.6001
     amount:
-      2024-11-01: 215
+      2018-07-01: 215

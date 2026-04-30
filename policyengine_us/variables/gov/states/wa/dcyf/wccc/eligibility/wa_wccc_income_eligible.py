@@ -18,6 +18,10 @@ class wa_wccc_income_eligible(Variable):
         countable_income = spm_unit("wa_wccc_countable_income", period)
         income_limit = spm_unit("wa_wccc_smi_limit", period)
         under_smi_limit = countable_income <= income_limit
-        receives_snap = spm_unit("snap", period) > 0
-        is_homeless = spm_unit.household("is_homeless", period.this_year)
-        return under_smi_limit | receives_snap | is_homeless
+        # RCW 43.216.802(5): families "eligible for or receiving" SNAP are
+        # deemed income-eligible. SFAP (State Food Assistance Program) is
+        # also covered by the statute but is not modeled at the moment.
+        snap_categorical = (spm_unit("snap", period) > 0) | spm_unit(
+            "is_snap_eligible", period
+        )
+        return under_smi_limit | snap_categorical

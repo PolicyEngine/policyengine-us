@@ -48,7 +48,7 @@
   output:
     wa_wccc_copay_waived: true
 
-- name: Case 3, parent age 22 not under threshold, no copay waiver.
+- name: Case 3, parent age 22 in K-12, copay waived (no age cap).
   period: 2025-01
   input:
     people:
@@ -71,16 +71,16 @@
         state_code: WA
         is_homeless: false
   output:
-    wa_wccc_copay_waived: false
+    wa_wccc_copay_waived: true
 
-- name: Case 4, parent age 23 in K-12 over teen-parent age, no waiver.
+- name: Case 4, parent not in K-12, no waiver.
   period: 2025-01
   input:
     people:
       person1:
-        age: 23
+        age: 25
         is_tax_unit_head_or_spouse: true
-        is_in_k12_school: true
+        is_in_k12_school: false
       person2:
         age: 2
         is_tax_unit_dependent: true

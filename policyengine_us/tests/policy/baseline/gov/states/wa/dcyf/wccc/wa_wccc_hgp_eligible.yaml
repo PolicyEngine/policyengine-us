@@ -1,4 +1,4 @@
-- name: Case 1, homeless household, categorically eligible (HGP pathway).
+- name: Case 1, homeless household, HGP eligible.
   period: 2025-01
   input:
     people:
@@ -15,9 +15,9 @@
         state_code: WA
         is_homeless: true
   output:
-    wa_wccc_categorical_eligible: true
+    wa_wccc_hgp_eligible: true
 
-- name: Case 2, non-homeless household, not categorically eligible.
+- name: Case 2, non-homeless household, not HGP eligible.
   period: 2025-01
   input:
     people:
@@ -34,4 +34,4 @@
         state_code: WA
         is_homeless: false
   output:
-    wa_wccc_categorical_eligible: false
+    wa_wccc_hgp_eligible: false

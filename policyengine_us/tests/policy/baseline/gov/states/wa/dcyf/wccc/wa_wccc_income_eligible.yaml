@@ -87,7 +87,7 @@
     # SNAP > 0 triggers automatic income eligibility per RCW 43.216.802(5).
     wa_wccc_income_eligible: true
 
-- name: Case 4, homeless household, automatically income eligible.
+- name: Case 4, homeless household above standard income tier, not income eligible (HGP path is in wa_wccc_eligible).
   period: 2025-01
   input:
     people:
@@ -113,8 +113,10 @@
         state_code: WA
         is_homeless: true
   output:
-    # Homeless families qualify under HGP regardless of typical income limit.
-    wa_wccc_income_eligible: true
+    # Homeless override is enforced in wa_wccc_eligible (HGP path bypasses
+    # this variable). wa_wccc_income_eligible only checks the standard tier.
+    # Income $80,000/yr = $6,667/mo > 85% SMI ($6,312/mo size 2).
+    wa_wccc_income_eligible: false
 
 - name: Case 5, applicant income just under 60% SMI limit, eligible.
   period: 2025-01

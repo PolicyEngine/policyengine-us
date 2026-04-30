@@ -14,7 +14,7 @@
         wa_wccc_income_eligible: true
         wa_wccc_resources_eligible: true
         wa_wccc_activity_eligible: true
-        wa_wccc_categorical_eligible: false
+        wa_wccc_hgp_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -41,7 +41,7 @@
         wa_wccc_income_eligible: false
         wa_wccc_resources_eligible: true
         wa_wccc_activity_eligible: true
-        wa_wccc_categorical_eligible: false
+        wa_wccc_hgp_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -68,7 +68,7 @@
         wa_wccc_income_eligible: true
         wa_wccc_resources_eligible: true
         wa_wccc_activity_eligible: true
-        wa_wccc_categorical_eligible: false
+        wa_wccc_hgp_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -95,7 +95,7 @@
         wa_wccc_income_eligible: true
         wa_wccc_resources_eligible: false
         wa_wccc_activity_eligible: true
-        wa_wccc_categorical_eligible: false
+        wa_wccc_hgp_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -122,7 +122,7 @@
         wa_wccc_income_eligible: true
         wa_wccc_resources_eligible: true
         wa_wccc_activity_eligible: false
-        wa_wccc_categorical_eligible: false
+        wa_wccc_hgp_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -133,7 +133,37 @@
   output:
     wa_wccc_eligible: false
 
-- name: Case 6, categorically eligible (HGP) bypasses standard path failures.
+- name: Case 6, HGP path bypasses standard income and asset tests.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_wccc_income_eligible: false
+        wa_wccc_resources_eligible: false
+        wa_wccc_activity_eligible: true
+        wa_wccc_hgp_eligible: true
+        wa_wccc_countable_income: 1_000
+        wa_wccc_smi_limit: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # HGP bypasses income and resources tests; activity still required.
+    wa_wccc_eligible: true
+
+- name: Case 7, HGP requires activity test still passes.
   period: 2025-01
   input:
     people:
@@ -149,7 +179,9 @@
         wa_wccc_income_eligible: false
         wa_wccc_resources_eligible: false
         wa_wccc_activity_eligible: false
-        wa_wccc_categorical_eligible: true
+        wa_wccc_hgp_eligible: true
+        wa_wccc_countable_income: 1_000
+        wa_wccc_smi_limit: 6_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -158,5 +190,34 @@
         members: [person1, person2]
         state_code: WA
   output:
-    # HGP categorical bypasses income, asset, and activity tests.
-    wa_wccc_eligible: true
+    wa_wccc_eligible: false
+
+- name: Case 8, HGP boundary, income exactly at 85% SMI limit, ineligible (strict less-than).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_wccc_income_eligible: false
+        wa_wccc_resources_eligible: false
+        wa_wccc_activity_eligible: true
+        wa_wccc_hgp_eligible: true
+        wa_wccc_countable_income: 6_000
+        wa_wccc_smi_limit: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # WAC 110-15-0023(2)(b): "under" 85% SMI is strict less-than.
+    wa_wccc_eligible: false
