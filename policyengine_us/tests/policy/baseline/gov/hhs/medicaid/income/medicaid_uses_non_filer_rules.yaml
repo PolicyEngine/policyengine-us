@@ -97,6 +97,8 @@
   output:
     medicaid_is_tax_dependent: [true, false]
     medicaid_uses_non_filer_rules: [true, false]
+    medicaid_household_income_member: [5_000, 40_000]
+    medicaid_household_income: [5_000, 40_000]
 
 - name: Case 4, a 20-year-old full-time student is not treated as child-age eligible unless the state adopts the under-21 option.
   period: 2024

@@ -10,9 +10,8 @@ class medicaid_household_income_member(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/42/435.603#d"
 
     def formula(person, period, parameters):
-        excluded = (
-            person("medicaid_non_filer_child_age_eligible", period)
-            | person("medicaid_is_tax_dependent", period)
-        ) & ~person("medicaid_person_is_required_to_file", period)
+        excluded = person("medicaid_non_filer_child_age_eligible", period) & ~person(
+            "medicaid_person_is_required_to_file", period
+        )
 
         return where(excluded, 0, person("medicaid_magi_person", period))

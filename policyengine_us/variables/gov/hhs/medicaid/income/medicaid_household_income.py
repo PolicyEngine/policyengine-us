@@ -13,6 +13,15 @@ class medicaid_household_income(Variable):
         child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
         non_filer_rules = person("medicaid_uses_non_filer_rules", period)
         member_income = person("medicaid_household_income_member", period)
+        required_to_file = person("medicaid_person_is_required_to_file", period)
+        non_filing_dependent = person("medicaid_is_tax_dependent", period) & (
+            ~required_to_file
+        )
+        tax_member_income = where(
+            non_filing_dependent,
+            0,
+            person("medicaid_magi_person", period),
+        )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         head_or_spouse_count = head_or_spouse.astype(int)
         head_spouse_income = person.tax_unit.sum(head_or_spouse_count * member_income)
@@ -41,7 +50,7 @@ class medicaid_household_income(Variable):
             member_income + spouse_income + family_child_income,
         )
         tax_household_income = (
-            person.tax_unit.sum(member_income) + separate_spouse_income
+            person.tax_unit.sum(tax_member_income) + separate_spouse_income
         )
 
         return where(non_filer_rules, non_filer_household_income, tax_household_income)
