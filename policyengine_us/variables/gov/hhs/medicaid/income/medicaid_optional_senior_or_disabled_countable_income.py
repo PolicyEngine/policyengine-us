@@ -34,13 +34,13 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             ],
         )
 
-        both_eligible = person("ssi_marital_both_eligible", period)
+        couple_computation = person("ssi_couple_computation_applies", period)
         state = person.household("state_code_str", period)
         p = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         income_disregard = where(
-            both_eligible,
+            couple_computation,
             p.couple[state],
             p.individual[state],
         )
@@ -65,7 +65,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             ~is_eligible,
             0,
             where(
-                both_eligible,
+                couple_computation,
                 personal_countable / 2,
                 personal_countable + spousal_deemed,
             ),
