@@ -168,3 +168,57 @@
   output:
    # .0715*(100,000-53,150)+3374 = 6723.775
     me_income_tax_before_credits: 6_723.775
+
+- name: Single filer with 2026 taxable income above $1 million includes Maine income tax surcharge.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    me_taxable_income: 1_200_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 89_291.6
+
+- name: Joint filer 2026 me_income_tax_before_credits includes the surcharge.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    me_taxable_income: 0
+    me_income_tax_surcharge: 5_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 5_000
+
+- name: Married separate filer 2026 me_income_tax_before_credits includes the surcharge.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    me_taxable_income: 0
+    me_income_tax_surcharge: 1_500
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 1_500
+
+- name: Head of household filer 2026 me_income_tax_before_credits includes the surcharge.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    me_taxable_income: 0
+    me_income_tax_surcharge: 2_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 2_000
+
+- name: Surviving spouse filer 2026 me_income_tax_before_credits includes the surcharge.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    me_taxable_income: 0
+    me_income_tax_surcharge: 3_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: ME
+  output:
+    me_income_tax_before_credits: 3_000
