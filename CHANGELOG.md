@@ -1,3 +1,10 @@
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
 ## [1.676.4] - 2026-04-30
 
 ### Changed
