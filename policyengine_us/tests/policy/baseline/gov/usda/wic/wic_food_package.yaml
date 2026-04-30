@@ -97,16 +97,14 @@
 - name: Infant defaults to the average infant package when feeding detail is unknown.
   period: 2024-01
   input:
-    age: 0
-    monthly_age: 7
+    age: 0.5833333333
   output:
     wic_food_package: INFANT_AVERAGE
 
 - name: Formula-fed infant under four months receives package I-FF-A.
   period: 2024-01
   input:
-    age: 0
-    monthly_age: 2
+    age: 0.1666666667
     wic_infant_feeding_category: FULLY_FORMULA_FED
   output:
     wic_food_package: INFANT_0_3_FULLY_FORMULA_FED
@@ -114,8 +112,7 @@
 - name: Partially breastfed infant aged six months or older receives package II-BF/FF.
   period: 2024-01
   input:
-    age: 0
-    monthly_age: 6
+    age: 0.5
     wic_infant_feeding_category: PARTIALLY_BREASTFED
   output:
     wic_food_package: INFANT_6_11_PARTIALLY_BREASTFED
@@ -123,8 +120,7 @@
 - name: Fully breastfed infant aged six months or older receives package II-BF.
   period: 2024-01
   input:
-    age: 0
-    monthly_age: 8
+    age: 0.6666666667
     wic_infant_feeding_category: FULLY_BREASTFED
   output:
     wic_food_package: INFANT_6_11_FULLY_BREASTFED
@@ -142,3 +138,11 @@
     age: 3
   output:
     wic_food_package: CHILD_24_59_MONTHS
+
+- name: Formula-fed infant aged six months or older receives package II-FF.
+  period: 2024-01
+  input:
+    age: 0.5
+    wic_infant_feeding_category: FULLY_FORMULA_FED
+  output:
+    wic_food_package: INFANT_6_11_FULLY_FORMULA_FED

@@ -37,8 +37,8 @@ class wic_food_package(Variable):
         category = wic_category.possible_values
         feeding_category = person("wic_infant_feeding_category", period)
         feeding = feeding_category.possible_values
-        age_months = person("monthly_age", period)
         age = person("age", period.this_year)
+        age_months = age * MONTHS_IN_YEAR
         current_pregnancies = person("current_pregnancies", period.this_year)
         is_breastfeeding = person("is_breastfeeding", period.this_year)
         fully_breastfeeding = person("is_wic_fully_breastfeeding", period)
