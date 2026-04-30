@@ -1,0 +1,53 @@
+- name: Case 1, age 18 secondary student - not in pathway (TANF covers them).
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 18
+    is_in_secondary_school: true
+  output:
+    wa_sfa_student_pathway_eligible: false
+
+- name: Case 2, age 19 secondary student - eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 19
+    is_in_secondary_school: true
+  output:
+    wa_sfa_student_pathway_eligible: true
+
+- name: Case 3, age 20 vocational student - eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 20
+    technical_institution_student: true
+  output:
+    wa_sfa_student_pathway_eligible: true
+
+- name: Case 4, age 21 secondary student - not in pathway (over age cap).
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 21
+    is_in_secondary_school: true
+  output:
+    wa_sfa_student_pathway_eligible: false
+
+- name: Case 5, age 19 non-student - not in pathway.
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 19
+  output:
+    wa_sfa_student_pathway_eligible: false
+
+- name: Case 6, age 20 secondary and vocational - eligible (either qualifies).
+  period: 2024-01
+  input:
+    state_code: WA
+    age: 20
+    is_in_secondary_school: true
+    technical_institution_student: true
+  output:
+    wa_sfa_student_pathway_eligible: true

@@ -45,6 +45,12 @@ class spm_unit_benefits(Variable):
             "spm_unit_broadband_subsidy",
             "spm_unit_energy_subsidy",
             "tanf",
+            # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
+            # sit alongside the federal TANF aggregator entry; under default
+            # rules these three are mutually exclusive at the SPM-unit level
+            # so summing them does not double-count.
+            "wa_sfa",
+            "wa_rca",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
             "unemployment_compensation",
