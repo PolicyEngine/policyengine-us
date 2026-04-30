@@ -1,3 +1,11 @@
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
 ## [1.676.1] - 2026-04-30
 
 ### Fixed
