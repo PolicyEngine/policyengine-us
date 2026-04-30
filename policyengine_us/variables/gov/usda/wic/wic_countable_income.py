@@ -14,7 +14,5 @@ class wic_countable_income(Variable):
         sources = parameters(period).gov.usda.wic.income.sources
         person = spm_unit.members
         cash_income = add(spm_unit, period, sources)
-        positive_capital_gains = spm_unit.sum(
-            max_(0, person("capital_gains", period))
-        )
+        positive_capital_gains = spm_unit.sum(max_(0, person("capital_gains", period)))
         return cash_income + positive_capital_gains
