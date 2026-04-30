@@ -1,3 +1,14 @@
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
 ## [1.676.5] - 2026-04-30
 
 ### Fixed
