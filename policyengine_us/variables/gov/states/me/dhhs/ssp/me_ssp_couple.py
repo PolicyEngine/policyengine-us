@@ -27,7 +27,7 @@ class me_ssp_couple(Variable):
             | (category == categories.RESIDENTIAL_CARE_FACILITY)
         )
         # SS-only path: apply Maine's couple disregard ($80 for A/C/H/I,
-        # $0 elsewhere) per Part 7 §4.1, also split 50/50 per person.
+        # $0 for D/E/F/G) per Part 7 §4.1, split 50/50 per person.
         federal_excess = max_(0, -person("uncapped_ssi", period))
         per_person_disregard = p.disregard.couple[category] / 2
         adjusted_excess = max_(0, federal_excess - per_person_disregard)
