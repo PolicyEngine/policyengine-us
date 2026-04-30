@@ -26,8 +26,9 @@ class ky_ssp_eligible(Variable):
         is_adult = person("is_adult", period)
         category = person("ky_ssp_category", period)
         in_qualifying_category = category != category.possible_values.NONE
-        # §4(1)(b): insufficient income to meet the standard in §9.
-        countable_income = person("ssi_countable_income", period)
+        # §4(1)(b): insufficient income to meet the standard in §9. Uses
+        # ky_ssp_countable_income (no $20 general exclusion per §8(8)).
+        countable_income = person("ky_ssp_countable_income", period)
         payment_standard = person("ky_ssp_payment_standard", period)
         income_below_standard = countable_income < payment_standard
         return (

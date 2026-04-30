@@ -3,8 +3,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # ssi_countable_income is YEAR-period → annual input; auto-divided to monthly.
-    ssi_countable_income: 0
+    # ky_ssp_countable_income is MONTH-period → monthly input.
+    ky_ssp_countable_income: 0
     # ky_ssp_payment_standard is MONTH-period → monthly input.
     ky_ssp_payment_standard: 1_610
   output:
@@ -16,8 +16,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $500/mo countable = $6,000/yr annual input.
-    ssi_countable_income: 6_000
+    # $500/mo countable (MONTH-defined input).
+    ky_ssp_countable_income: 500
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 500) = 1_110/mo.
@@ -28,8 +28,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $1,000/mo countable = $12,000/yr annual input.
-    ssi_countable_income: 12_000
+    # $1,000/mo countable.
+    ky_ssp_countable_income: 1_000
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 1_000) = 610/mo.
@@ -40,8 +40,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $2,000/mo countable = $24,000/yr annual input.
-    ssi_countable_income: 24_000
+    # $2,000/mo countable.
+    ky_ssp_countable_income: 2_000
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 2_000) = 0.
@@ -52,7 +52,7 @@
   input:
     state_code: KY
     ky_ssp_eligible: false
-    ssi_countable_income: 0
+    ky_ssp_countable_income: 0
     ky_ssp_payment_standard: 1_610
   output:
     # Not eligible => supplement * 0 = 0.
@@ -63,8 +63,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $5M/mo countable = $60M/yr annual input.
-    ssi_countable_income: 60_000_000
+    # $5M/mo countable.
+    ky_ssp_countable_income: 5_000_000
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 5_000_000) = 0.
@@ -75,8 +75,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $1,610/mo countable = $19,320/yr annual input.
-    ssi_countable_income: 19_320
+    # $1,610/mo countable.
+    ky_ssp_countable_income: 1_610
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 1_610) = 0.
@@ -88,7 +88,7 @@
     people:
       person1:
         ky_ssp_eligible: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         # CARETAKER.COUPLE_BOTH_ELIGIBLE.BOTH stored per-person at $803/mo.
         # §9(2) combined income is already equally split into each spouse's
         # ssi_countable_income, so the per-person formula reproduces the
@@ -96,7 +96,7 @@
         ky_ssp_payment_standard: 803
       person2:
         ky_ssp_eligible: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_payment_standard: 803
     marital_units:
       marital_unit:
@@ -116,12 +116,12 @@
     people:
       person1:
         ky_ssp_eligible: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         # CARETAKER.COUPLE_BOTH_ELIGIBLE.ONE stored per-person at $776/mo.
         ky_ssp_payment_standard: 776
       person2:
         ky_ssp_eligible: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_payment_standard: 776
     marital_units:
       marital_unit:
@@ -140,8 +140,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $1,609/mo countable = $19,308/yr annual input.
-    ssi_countable_income: 19_308
+    # $1,609/mo countable.
+    ky_ssp_countable_income: 1_609
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 1_609) = 1/mo.
@@ -152,8 +152,8 @@
   input:
     state_code: KY
     ky_ssp_eligible: true
-    # $1,611/mo countable = $19,332/yr annual input.
-    ssi_countable_income: 19_332
+    # $1,611/mo countable.
+    ky_ssp_countable_income: 1_611
     ky_ssp_payment_standard: 1_610
   output:
     # supplement = max(0, 1_610 - 1_611) = 0.
@@ -165,13 +165,13 @@
     people:
       person1:
         ky_ssp_eligible: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_payment_standard: 1_610
       person2:
         # Spouse is not SSP-eligible (e.g., fails resource test or not in
         # qualifying category).
         ky_ssp_eligible: false
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_payment_standard: 1_610
     marital_units:
       marital_unit:

@@ -17,6 +17,9 @@ class ky_ssp(Variable):
 
     def formula(person, period, parameters):
         # §8(2): supplement = max(0, standard_of_need − countable_income).
+        # ky_ssp_countable_income mirrors federal SSI countable income but
+        # omits the $20 general exclusion per §8(8).
+        #
         # For eligible joint couples (§9(2)), SSI already attributes combined
         # income equally to each spouse via ssi_marital_{earned,unearned}_income,
         # and per-person standards stored in payment_standard (half of couple
@@ -30,6 +33,6 @@ class ky_ssp(Variable):
         # total matches the regulation exactly; only the per-spouse split
         # differs.
         payment_standard = person("ky_ssp_payment_standard", period)
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ky_ssp_countable_income", period)
         eligible = person("ky_ssp_eligible", period)
         return max_(0, payment_standard - countable_income) * eligible

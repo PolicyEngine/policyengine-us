@@ -7,7 +7,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: PCH
     households:
       household:
@@ -25,7 +25,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: NONE
     households:
       household:
@@ -44,7 +44,7 @@
         is_ssi_aged_blind_disabled: false
         is_ssi_eligible: false
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: PCH
     households:
       household:
@@ -63,7 +63,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: CARETAKER
     households:
       household:
@@ -82,7 +82,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: FCH
     households:
       household:
@@ -100,7 +100,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: CIS
     households:
       household:
@@ -118,7 +118,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: false
         meets_ssi_resource_test: false
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: PCH
     households:
       household:
@@ -137,8 +137,8 @@
         is_ssi_eligible: true
         meets_ssi_resource_test: true
         # Countable income ($994/mo) is below the PCH monthly standard
-        # ($1,610) so §4(1)(b) is satisfied. Annual input = $11,928.
-        ssi_countable_income: 11_928
+        # ($1,610) so §4(1)(b) is satisfied.
+        ky_ssp_countable_income: 994
         ky_ssp_category: PCH
     households:
       household:
@@ -157,8 +157,7 @@
         is_ssi_eligible: true
         meets_ssi_resource_test: true
         # Countable income ($4,167/mo) exceeds PCH standard ($1,610) — not eligible.
-        # Annual input = $50,000.
-        ssi_countable_income: 50_000
+        ky_ssp_countable_income: 4_167
         ky_ssp_category: PCH
     households:
       household:
@@ -176,7 +175,7 @@
         is_ssi_aged_blind_disabled: true
         is_ssi_eligible: true
         meets_ssi_resource_test: true
-        ssi_countable_income: 0
+        ky_ssp_countable_income: 0
         ky_ssp_category: PCH
     households:
       household:
