@@ -1,3 +1,10 @@
+## [1.676.3] - 2026-04-30
+
+### Fixed
+
+- Removed the one-time Rhode Island child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023 onward.
+
+
 ## [1.676.2] - 2026-04-30
 
 ### Fixed
