@@ -61,7 +61,7 @@ where `baseline_computed_premium_sum` is evaluated under the CPS reference year'
 
 | Component | Variable | Entity | Status |
 |---|---|---|---|
-| CHIP premium | `chip_premium` | TaxUnit | 17 states encoded (see [CHIP](../programs/chip.qmd)) |
+| CHIP premium | `chip_premium` | TaxUnit | 17 states encoded with the federal 5 % income cap applied to modeled premiums (see [CHIP](../programs/chip.qmd)) |
 | Medicare Part B | `medicare_part_b_premium` | Person | Rules-based (base + IRMAA tiers) |
 | Marketplace net premium | `marketplace_net_premium` | TaxUnit | `SLCSP × benchmark_ratio − used_PTC`; benchmark ratio imputed per-household via CPS back-out |
 | Medicaid expansion premium | `medicaid_premium` | TaxUnit | IN HIP POWER Account, Michigan Healthy Michigan contributions, and Montana HELP premiums; historical MI/MT schedules end when those programs eliminated premiums |
@@ -72,7 +72,7 @@ CPS private-premium reports conflate Marketplace, employer, and direct-purchase 
 
 ## Gaps
 
-- **Copays** — the federal 5 % of income CHIP cost-sharing cap (42 CFR 457.560) binds on premiums + copays combined. Without copay modeling, the cap never bites on premium alone in realistic cases.
+- **Copays** — the federal 5 % of income CHIP cost-sharing cap (42 CFR 457.560) binds on premiums + copays combined. `chip_premium` applies the cap to modeled premiums and enrollment fees, but CHIP copayments remain unmodeled.
 - **Employer plan employee share** — stays in `other_health_insurance_premiums`; employer plans aren't statutory and can't be computed from rules without a separate employer-plan model.
 
 ## See also
