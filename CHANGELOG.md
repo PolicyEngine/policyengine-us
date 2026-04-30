@@ -1,3 +1,46 @@
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
+## [1.674.1] - 2026-04-29
+
+### Fixed
+
+- Fix state benchmark tests affected by modeled Medicare enrollment inputs.
+
+
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
 ## [1.673.1] - 2026-04-29
 
 ### Fixed
