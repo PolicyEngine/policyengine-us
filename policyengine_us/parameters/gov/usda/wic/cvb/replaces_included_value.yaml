@@ -1,0 +1,15 @@
+description: Whether current WIC cash-value benefits replace the cash-value benefit amount embedded in the 2018 average package values.
+
+values:
+  2018-01-01: false
+  2023-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: WIC current CVB replaces embedded CVB
+  reference:
+    - title: WIC Cash-Value Voucher/Benefit Amounts for FY 2024
+      href: https://www.fns.usda.gov/wic/2024-cash-value-voucher-benefit-amounts
+    - title: WIC Cash-Value Voucher/Benefit Amounts for FY 2026
+      href: https://www.fns.usda.gov/wic/agency/cvvb-fy26

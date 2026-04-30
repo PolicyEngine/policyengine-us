@@ -10,11 +10,27 @@
       p1:
         employment_income: 10_000
         alimony_income: 1_000
+        military_service_income: 2_000
       p2:
         dividend_income: 20_000
         child_support_received: 500
+        workers_compensation: 3_000
+        short_term_capital_gains: 4_000
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
-    wic_countable_income: 31_500
+    wic_countable_income: 40_500
+
+- name: WIC countable income does not subtract capital losses.
+  period: 2022
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+        short_term_capital_gains: -1_000
+    spm_units:
+      spm_unit:
+        members: [p1]
+  output:
+    wic_countable_income: 10_000

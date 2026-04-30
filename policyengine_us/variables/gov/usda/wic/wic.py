@@ -23,7 +23,9 @@ class wic(Variable):
         base_value = p.value[food_package]
         current_cvb = p.cvb.current[food_package]
         included_cvb = p.cvb.included_in_value[food_package]
-        cvb_adjustment = (current_cvb > 0) * (current_cvb - included_cvb)
+        cvb_adjustment = p.cvb.replaces_included_value * (
+            current_cvb - included_cvb
+        )
         value_if_eligible = max_(0, base_value + cvb_adjustment)
         would_takeup = person("would_claim_wic", period)
         if p.abolish_wic:

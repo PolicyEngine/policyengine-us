@@ -52,6 +52,16 @@
     # 2018 package value less the uprated embedded $8 CVB, plus the FY 2024 $26 CVB.
     wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867 + 26
 
+- name: A zero current cash-value benefit replaces the embedded cash-value benefit.
+  period: 2024-01
+  input:
+    gov.usda.wic.cvb.current.CHILD_24_59_MONTHS: 0
+    wic_food_package_str: CHILD_24_59_MONTHS
+    is_wic_eligible: true
+    would_claim_wic: true
+  output:
+    wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867
+
 - name: Multiple-fetus pregnancy package uses the package V-B cash-value benefit amount.
   period: 2024-01
   input:
