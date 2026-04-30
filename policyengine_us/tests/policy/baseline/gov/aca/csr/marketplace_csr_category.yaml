@@ -1,0 +1,53 @@
+- name: Case 1, silver enrollee at 125 percent FPL receives 94 percent AV CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 1.25
+    selected_marketplace_plan_category: SILVER
+  output:
+    person_receives_aca: true
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_94
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_csr_actuarial_value: 0.94
+    marketplace_effective_actuarial_value: 0.94
+
+- name: Case 2, silver enrollee at 175 percent FPL receives 87 percent AV CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 1.75
+    selected_marketplace_plan_category: SILVER
+  output:
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_87
+    marketplace_csr_actuarial_value: 0.87
+    marketplace_effective_actuarial_value: 0.87
+
+- name: Case 3, silver enrollee at 225 percent FPL receives 73 percent AV CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 2.25
+    selected_marketplace_plan_category: SILVER
+  output:
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_73
+    marketplace_csr_actuarial_value: 0.73
+    marketplace_effective_actuarial_value: 0.73
+
+- name: Case 4, silver enrollee at 275 percent FPL receives no CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 2.75
+    selected_marketplace_plan_category: SILVER
+  output:
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
+    marketplace_csr_actuarial_value: 0
+    marketplace_effective_actuarial_value: 0.7

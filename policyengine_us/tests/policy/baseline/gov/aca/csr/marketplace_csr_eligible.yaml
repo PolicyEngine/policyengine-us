@@ -1,0 +1,28 @@
+- name: Case 1, bronze enrollee is ineligible for ordinary CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 1.25
+    selected_marketplace_plan_category: BRONZE
+  output:
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
+    selected_marketplace_plan_actuarial_value: 0.6
+    marketplace_csr_actuarial_value: 0
+    marketplace_effective_actuarial_value: 0.6
+
+- name: Case 2, silver enrollee without PTC eligibility is ineligible for CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: false
+    aca_magi_fraction: 1.25
+    selected_marketplace_plan_category: SILVER
+  output:
+    person_receives_aca: false
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_csr_actuarial_value: 0
+    marketplace_effective_actuarial_value: 0.7
