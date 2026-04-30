@@ -1,15 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class income_adjusted_part_b_premium(Variable):
+class medicare_part_b_premium(Variable):
     value_type = float
     entity = Person
-    label = "Medicare Part B premium (income-adjusted)"
+    label = "Medicare Part B premium"
     unit = USD
     definition_period = YEAR
     defined_for = "is_medicare_eligible"
     reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
-    documentation = "Medicare Part B premium adjusted for income (IRMAA). Based on modified adjusted gross income from 2 years prior."
+    documentation = "Annual Medicare Part B premium, including any income-related monthly adjustment amount. Based on modified adjusted gross income from 2 years prior."
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit

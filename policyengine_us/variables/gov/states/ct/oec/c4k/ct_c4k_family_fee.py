@@ -29,7 +29,7 @@ class ct_c4k_family_fee(Variable):
         earned_income = add(
             spm_unit,
             period,
-            ["employment_income", "self_employment_income", "farm_income"],
+            ["employment_income", "self_employment_income", "farm_operations_income"],
         )
         has_earned_income = earned_income > 0
         return where(has_earned_income, countable_income * fee_rate, 0)

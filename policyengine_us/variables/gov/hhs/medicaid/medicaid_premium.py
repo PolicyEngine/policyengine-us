@@ -18,4 +18,8 @@ class medicaid_premium(Variable):
     )
     definition_period = YEAR
     reference = "https://www.medicaid.gov/medicaid/section-1115-demonstrations/"
-    adds = ["in_hip_power_account_contribution"]
+    adds = [
+        "in_hip_power_account_contribution",
+        "mi_healthy_michigan_contribution",
+        "mt_help_premium",
+    ]

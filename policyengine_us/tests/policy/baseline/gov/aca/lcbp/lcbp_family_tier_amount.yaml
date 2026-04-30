@@ -1,0 +1,49 @@
+- name: NY family bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 507
+    slcsp_family_tier_applies: true
+    lcbp_family_tier_multiplier: 2.85
+  output:
+    lcbp_family_tier_amount: 1_444.95
+
+- name: VT single parent with child bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 824
+    slcsp_family_tier_applies: true
+    lcbp_family_tier_multiplier: 1.93
+  output:
+    lcbp_family_tier_amount: 1_590.32
+
+- name: NY high-income family bronze tier uses premium payers
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        monthly_age: 40
+        pays_aca_premium: true
+        is_aca_ptc_eligible: false
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code_str: NY
+        state_fips: 36
+        lcbp_age_0: 507
+  output:
+    lcbp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    lcbp_family_tier_multiplier: 1.7
+    lcbp_family_tier_amount: 861.9
+    lcbp: 861.9

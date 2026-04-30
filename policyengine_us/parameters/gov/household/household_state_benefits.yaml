@@ -12,6 +12,8 @@ values:
     - ga_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Michigan benefits
+    - mi_ssp
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -57,6 +59,8 @@ values:
     - hi_oss
     # Washington benefits
     - wa_ssp
+    # Louisiana benefits
+    - la_oss
   2024-01-01:
     # Delaware benefits
     - de_ssp
@@ -69,6 +73,8 @@ values:
     - ga_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Michigan benefits
+    - mi_ssp
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -116,6 +122,8 @@ values:
     - hi_oss
     # Washington benefits
     - wa_ssp
+    # Louisiana benefits
+    - la_oss
 metadata:
   unit: list
   period: year

@@ -1,0 +1,242 @@
+# Tests for Pennsylvania UC weekly dependent allowance (REQ-007).
+# Schedule (§ 404(e)(3)):
+#   - $5 for a dependent spouse OR first dependent child if no spouse
+#   - plus $3 for one other dependent child
+#   - capped at $8 per week
+# "Dependent spouse" = legally married, living with the claimant, wholly or
+# chiefly supported by the claimant (proxied by spouse employment_income == 0).
+# "Dependent child" = child/stepchild of the claimant, wholly or chiefly
+# supported, and under 18 (or 18+ if unable to work due to infirmity).
+# Reference: § 404(e)(3), 43 P.S. § 804(e)(3).
+
+- name: Case 1, single adult with no dependents gets $0 allowance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # No spouse, no children -> $0.
+        pa_uc_dependent_allowance: 0
+
+- name: Case 2, married with unemployed spouse, no children, gets $5 for spouse.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Dependent spouse (employment_income == 0) -> $5.
+        pa_uc_dependent_allowance: 5
+
+- name: Case 3, unmarried with one dependent child gets $5 (first-slot no-spouse).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # No spouse, 1 dependent child < 18 -> first-child-no-spouse $5.
+        pa_uc_dependent_allowance: 5
+
+- name: Case 4, married with unemployed spouse and one dependent child gets $8.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Spouse $5 + second dependent child $3 = $8.
+        pa_uc_dependent_allowance: 8
+
+- name: Case 5, married with unemployed spouse and two dependent children caps at $8.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 38
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Spouse $5 + one additional dep $3 = $8 (max cap).
+        pa_uc_dependent_allowance: 8
+
+- name: Case 6, unmarried with two dependent children gets $8.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # First child (no spouse) $5 + second child $3 = $8.
+        pa_uc_dependent_allowance: 8
+
+- name: Case 7, unmarried with three dependent children caps at $8.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # First child $5 + second child $3 = $8 (max cap; third child ignored).
+        pa_uc_dependent_allowance: 8
+
+- name: Case 8, married with employed spouse (not a dependent) and no children gets $0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 40_000
+        is_tax_unit_dependent: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Spouse has employment_income > 0 -> not "wholly or chiefly supported".
+        # No children -> $0.
+        pa_uc_dependent_allowance: 0
