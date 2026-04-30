@@ -1,3 +1,10 @@
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
 ## [1.676.0] - 2026-04-29
 
 ### Added
