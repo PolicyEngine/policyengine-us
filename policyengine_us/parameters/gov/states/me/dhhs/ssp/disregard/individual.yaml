@@ -1,4 +1,4 @@
-description: Maine disregards this additional amount per individual on top of federal SSI exclusions for State Supplement codes A (living alone or with others) and C (household of another) under the State Supplemental Income Program.
+description: Maine disregards this additional amount per individual on top of federal SSI exclusions under the State Supplemental Income Program.
 metadata:
   unit: currency-USD
   period: month
@@ -6,8 +6,10 @@ metadata:
   breakdown:
     - me_ssp_payment_category
   reference:
+    - title: 10-144 C.M.R. ch. 332, Part 7, § 3.1 SSI-Related Budgets for an Individual
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-332-SS-7-3
     - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Maine, Table 1
-      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/me.html
+      href: https://web.archive.org/web/2024/https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/me.html
 
 LIVING_ALONE_OR_WITH_OTHERS:
   2011-01-01: 55
@@ -24,6 +26,6 @@ COST_REIMBURSED_BOARDING_HOME:
 MEDICAID_FACILITY:
   2011-01-01: 0
 RESIDENTIAL_CARE_FACILITY:
-  2011-01-01: 0
+  2011-01-01: 55
 NONE:
   2011-01-01: 0

@@ -26,8 +26,8 @@ class me_ssp_individual(Variable):
             | (category == categories.RESIDENTIAL_CARE_FACILITY)
         )
         # SS-only path: uncapped_ssi < 0 means income exceeds the federal
-        # SSI standard. Apply Maine's state disregard ($55 for A/C, $0
-        # elsewhere) on top of federal exclusions per SSA 2011 Table 1.
+        # SSI standard. Apply Maine's state disregard ($55 for A/C/H,
+        # $0 elsewhere) on top of federal exclusions per Part 7 §3.1.
         federal_excess = max_(0, -person("uncapped_ssi", period))
         state_disregard = p.disregard.individual[category]
         adjusted_excess = max_(0, federal_excess - state_disregard)
