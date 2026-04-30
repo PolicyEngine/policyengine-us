@@ -150,6 +150,58 @@ def test_historical_msp_asset_eligibility_uses_federal_default():
     assert sim.calculate("msp_asset_eligible", "2014-01")[0]
 
 
+def test_historical_msp_asset_limits_before_2013():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "below_limit": {"ssi_countable_resources": {"2012": 6_940}},
+                "above_limit": {"ssi_countable_resources": {"2012": 7_000}},
+                "spouse_1": {"ssi_countable_resources": {"2012": 5_000}},
+                "spouse_2": {"ssi_countable_resources": {"2012": 5_500}},
+            },
+            "households": {
+                "household": {
+                    "members": [
+                        "below_limit",
+                        "above_limit",
+                        "spouse_1",
+                        "spouse_2",
+                    ],
+                    "state_code": "AR",
+                }
+            },
+            "tax_units": {
+                "tax_unit_1": {"members": ["below_limit"]},
+                "tax_unit_2": {"members": ["above_limit"]},
+                "tax_unit_3": {"members": ["spouse_1", "spouse_2"]},
+            },
+            "spm_units": {
+                "spm_unit_1": {"members": ["below_limit"]},
+                "spm_unit_2": {"members": ["above_limit"]},
+                "spm_unit_3": {"members": ["spouse_1", "spouse_2"]},
+            },
+            "families": {
+                "family_1": {"members": ["below_limit"]},
+                "family_2": {"members": ["above_limit"]},
+                "family_3": {"members": ["spouse_1", "spouse_2"]},
+            },
+            "marital_units": {
+                "marital_unit_1": {"members": ["below_limit"]},
+                "marital_unit_2": {"members": ["above_limit"]},
+                "marital_unit_3": {"members": ["spouse_1", "spouse_2"]},
+            },
+        },
+    )
+
+    assert sim.calculate("msp_asset_eligible", "2012-01").tolist() == [
+        True,
+        False,
+        False,
+        False,
+    ]
+
+
 def test_medicare_part_b_premium_does_not_depend_on_calculation_order():
     no_msp_eligibility = {
         f"{year}-{month:02d}": False
