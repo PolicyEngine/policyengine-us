@@ -1,0 +1,30 @@
+description: Income sources that count as income for WIC direct income eligibility.
+
+values:
+  2009-01-01:
+    - employment_income
+    - self_employment_income
+    - military_service_income
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - social_security
+    - ssi
+    - tanf
+    - pension_income
+    - miscellaneous_income
+    - veterans_benefits
+    - unemployment_compensation
+    - strike_benefits
+    - rental_income
+    - retirement_distributions
+    - alimony_income
+    - child_support_received
+    - disability_benefits
+    - workers_compensation
+    - railroad_benefits
+
+metadata:
+  reference:
+    - title: 7 CFR 246.7(d)(2)(ii)(A)
+      href: https://www.law.cornell.edu/cfr/text/7/246.7#d_2_ii_A

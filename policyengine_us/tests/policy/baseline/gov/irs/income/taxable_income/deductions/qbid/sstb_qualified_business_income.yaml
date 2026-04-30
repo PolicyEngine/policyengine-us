@@ -43,6 +43,19 @@
     # SSTB QBI = 70_000 - 0.7 * 1_000 = 69_300
     sstb_qualified_business_income: 69_300
 
+- name: Farm operations income pro-rates deductions against SSTB QBI
+  period: 2026
+  input:
+    farm_operations_income: 30_000
+    sstb_self_employment_income: 70_000
+    self_employment_tax_ald_person: 1_000
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+  output:
+    # SSTB share = 70_000 / 100_000 = 0.7
+    # SSTB QBI = 70_000 - 0.7 * 1_000 = 69_300
+    sstb_qualified_business_income: 69_300
+
 - name: No SSTB SE income returns zero
   period: 2026
   input:

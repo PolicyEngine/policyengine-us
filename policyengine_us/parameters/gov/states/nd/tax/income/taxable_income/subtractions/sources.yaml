@@ -7,6 +7,16 @@ values:
     - taxable_social_security
     - military_retirement_pay
     - nd_529_deduction
+    - nd_stillborn_subtraction
+
+  2022-01-01:
+    - us_govt_interest
+    - nd_ltcg_subtraction  # long-term capital gains
+    - nd_qdiv_subtraction  # qualified dividends
+    - taxable_social_security
+    - military_retirement_pay
+    - nd_529_deduction
+    - nd_stillborn_subtraction
 
   2023-01-01:
     - us_govt_interest
@@ -14,13 +24,14 @@ values:
     - nd_qdiv_subtraction  # qualified dividends
     - taxable_social_security
     - military_retirement_pay
-    - military_service_income # military pay exculsion
+    - military_service_income  # military pay exclusion
     - nd_529_deduction
+    - nd_stillborn_subtraction
 
 metadata:
-  unit: list  
-  period: year  
-  label: North Dakota subtractions from federal taxable income  
+  unit: list
+  period: year
+  label: North Dakota subtractions from federal taxable income
   reference:
   - title: 2021 North Dakota income tax form
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=1
@@ -38,5 +49,5 @@ metadata:
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2024-iit/2024-individual-income-tax-booklet.pdf#page=14
   - title: 2025 North Dakota income tax instructions
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/2025-individual-income-tax-booklet.pdf#page=14
-  - title: North Dakota Century Code Title 57 - Taxation Chapter 57-38 - Income Tax, 57-38-30.3 (2) 
+  - title: North Dakota Century Code Title 57 - Taxation Chapter 57-38 - Income Tax, 57-38-30.3 (2)
     href: https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/

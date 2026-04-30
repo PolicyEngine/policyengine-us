@@ -1,0 +1,124 @@
+- name: Case 1, single eligible person uses individual amount.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Individual rate for IL = $14
+    mi_ssp_person: 14
+
+- name: Case 2, ineligible person gets zero regardless of arrangement.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_person: 0
+
+- name: Case 3, joint SSI couple in same arrangement gets couple amount.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Couple rate $21 / 2 = $10.50 per person
+    mi_ssp_person: [10.50, 10.50]
+
+- name: Case 4, joint SSI couple in mismatched arrangements falls back to individual.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        # $707/mo SSI = $8,484/yr couple half
+        ssi: 8_484
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Different arrangements → each person gets their individual rate
+    # person1: IL individual = $14, person2: HoA individual = $9.33
+    mi_ssp_person: [14, 9.33]
+
+- name: Case 5, only one spouse SSI-eligible falls back to individual amounts.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $943/mo SSI = $11,316/yr individual FBR
+        ssi: 11_316
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+      person2:
+        ssi: 0
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head_or_spouse: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # person1 eligible → individual rate $14
+    # person2 not SSI receiving → not eligible → $0
+    mi_ssp_person: [14, 0]

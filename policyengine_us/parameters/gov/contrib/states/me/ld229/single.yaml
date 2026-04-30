@@ -1,0 +1,32 @@
+description: Maine LD 229 income tax brackets for single filers (§5111 sub-§1-G).
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Maine LD 229 single filer brackets
+  reference:
+    - title: Maine LD 229 Committee Amendment C-A (H-649)
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0152&item=2&snum=132
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.055
+  - threshold:
+      2026-01-01: 27_450
+    rate:
+      2026-01-01: 0.0675
+  - threshold:
+      2026-01-01: 64_950
+    rate:
+      2026-01-01: 0.0715
+  - threshold:
+      2026-01-01: 144_500
+    rate:
+      2026-01-01: 0.0775
+  - threshold:
+      2026-01-01: 500_000
+    rate:
+      2026-01-01: 0.0895

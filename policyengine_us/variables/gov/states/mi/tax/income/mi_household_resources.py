@@ -26,7 +26,7 @@ class mi_household_resources(Variable):
         # "Net business income (including net farm income). If negative, enter 0"
         # "Net royalty or rent income. If negative, enter 0"
         floored_sources = {
-            "farm_income",
+            "farm_operations_income",
             "total_self_employment_income",
             "partnership_s_corp_income",
             "rental_income",
