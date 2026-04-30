@@ -1,6 +1,6 @@
 description: Average monthly pre-rebate value of WIC packages.
 
-# High level categories currently in implementation.
+# Legacy high-level category keys retained for compatibility.
 PREGNANT:
   2018-01-01: 37.33
 BREASTFEEDING:
@@ -11,7 +11,7 @@ INFANT:
   2018-01-01: 138.64
 CHILD:
   2018-01-01: 31.78
-# More detailed categories - currently unused.
+# Legacy federal package-code keys retained for compatibility.
 I-FF-A:
   2018-01-01: 175.27
 I-FF-B:
@@ -42,6 +42,41 @@ VI:
   2018-01-01: 32.27
 VII:
   2018-01-01: 48.92
+# Detailed federal package keys used by wic_food_package.
+PREGNANT_SINGLETON:
+  2018-01-01: 39.12
+PREGNANT_MULTIPLE_FETUSES:
+  2018-01-01: 39.12
+PARTIALLY_BREASTFEEDING:
+  2018-01-01: 39.12
+POSTPARTUM_NON_BREASTFEEDING:
+  2018-01-01: 32.27
+FULLY_BREASTFEEDING:
+  2018-01-01: 48.92
+FULLY_BREASTFEEDING_MULTIPLES:
+  2018-01-01: 73.38
+INFANT_AVERAGE:
+  2018-01-01: 138.64
+INFANT_0_3_FULLY_FORMULA_FED:
+  2018-01-01: 175.27
+INFANT_4_5_FULLY_FORMULA_FED:
+  2018-01-01: 188.54
+INFANT_0_3_PARTIALLY_BREASTFED:
+  2018-01-01: 81.88
+INFANT_4_5_PARTIALLY_BREASTFED:
+  2018-01-01: 119.73
+INFANT_6_11_PARTIALLY_BREASTFED:
+  2018-01-01: 135.79
+INFANT_0_5_FULLY_BREASTFED:
+  2018-01-01: 0.00
+INFANT_6_11_FULLY_FORMULA_FED:
+  2018-01-01: 157.16
+INFANT_6_11_FULLY_BREASTFED:
+  2018-01-01: 44.00
+CHILD_12_23_MONTHS:
+  2018-01-01: 33.64
+CHILD_24_59_MONTHS:
+  2018-01-01: 33.65
 # Ineligible people get nothing.
 NONE:
   2018-01-01: 0
