@@ -651,6 +651,12 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MI
+        status: complete
+        name: Michigan SSP
+        full_name: Michigan State Supplementary Payment
+        variable: mi_ssp
+        parameter_prefix: gov.states.mi.mdhhs.ssp
       - state: ME
         status: complete
         name: Maine SSP
@@ -661,6 +667,11 @@ programs:
         name: Kansas SSPP
         full_name: Kansas State Supplemental Payment Program
         variable: ks_sspp
+      - state: LA
+        status: complete
+        name: Louisiana OSS
+        full_name: Louisiana Optional State Supplement
+        variable: la_oss
       - state: IL
         status: complete
         name: Illinois AABD
@@ -1058,6 +1069,17 @@ programs:
     coverage: TX
     variable: tx_fpp_benefit
     parameter_prefix: gov.states.tx.fpp
+
+  - id: pa_uc
+    name: Pennsylvania Unemployment Compensation
+    full_name: Pennsylvania Unemployment Compensation
+    category: Benefits
+    agency: PA Department of Labor & Industry
+    status: complete
+    coverage: PA
+    variable: pa_uc
+    parameter_prefix: gov.states.pa.dli.unemployment_compensation
+    verified_years: "2025"
 
   - id: tx_dart_benefit
     name: Texas DART

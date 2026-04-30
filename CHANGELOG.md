@@ -1,3 +1,107 @@
+## [1.678.0] - 2026-04-30
+
+### Added
+
+- Washington State Family Assistance and Refugee Cash Assistance programs.
+  Fix Washington TANF immigration eligibility, add `years_since_us_entry` and `wa_show_all_cash_assistance_programs` variables.
+
+
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
+## [1.676.4] - 2026-04-30
+
+### Changed
+
+- Improve WIC benefit valuation by assigning detailed federal food packages, updating cash-value benefit amounts, and using WIC-specific countable income.
+
+
+## [1.676.3] - 2026-04-30
+
+### Fixed
+
+- Removed the one-time Rhode Island child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023 onward.
+
+
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
+## [1.674.1] - 2026-04-29
+
+### Fixed
+
+- Fix state benchmark tests affected by modeled Medicare enrollment inputs.
+
+
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
+## [1.673.1] - 2026-04-29
+
+### Fixed
+
+- Split medical expenses into program-specific variables and remove the generic medical out-of-pocket expense aggregate.
+
+
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
 ## [1.670.2] - 2026-04-27
 
 ### Fixed

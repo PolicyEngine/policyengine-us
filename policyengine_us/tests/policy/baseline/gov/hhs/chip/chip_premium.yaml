@@ -26,6 +26,7 @@
     tax_units:
       tax_unit:
         members: [child]
+        medicaid_magi: 100_000
         tax_unit_medicaid_income_level: 1.70
     households:
       household:
@@ -44,6 +45,7 @@
     tax_units:
       tax_unit:
         members: [child]
+        medicaid_magi: 100_000
         tax_unit_medicaid_income_level: 2.40
     households:
       household:
@@ -67,6 +69,7 @@
     tax_units:
       tax_unit:
         members: [p, c1, c2]
+        medicaid_magi: 100_000
         tax_unit_medicaid_income_level: 1.70
     households:
       household:
@@ -74,3 +77,95 @@
         state_code: MO
   output:
     chip_premium: 300
+
+- name: Federal chip_premium caps Missouri tier 3 premium at 5 percent of income.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_chip_eligible: false
+      person2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person5:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person6:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person7:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person8:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        medicaid_magi: 80_000
+        tax_unit_medicaid_income_level: 2.80
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        state_code: MO
+  output:
+    chip_premium: 4_000
+  absolute_error_margin: 0.01
+
+- name: Federal chip_premium caps Wisconsin top-tier per-child premiums at 5 percent of income.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person5:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        medicaid_magi: 50_000
+        tax_unit_medicaid_income_level: 3.05
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+  output:
+    chip_premium: 2_500
+  absolute_error_margin: 0.01

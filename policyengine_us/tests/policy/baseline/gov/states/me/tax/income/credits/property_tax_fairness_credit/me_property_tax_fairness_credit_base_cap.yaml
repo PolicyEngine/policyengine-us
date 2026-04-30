@@ -49,3 +49,45 @@
     age_spouse: 65
   output:
     me_property_tax_fairness_credit_base_cap: 1_960
+
+- name: Under-65 filer property tax fairness credit remains capped at $1,000 before 2026
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 2_000
+    age_head: 64
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_000
+
+- name: Under-65 filer property tax fairness credit is capped at $1,500 starting in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 2_000
+    age_head: 64
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_500
+
+- name: Age 65+ filer property tax fairness credit cap unchanged at $2,000 in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 3_000
+    age_head: 65
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 2_000
