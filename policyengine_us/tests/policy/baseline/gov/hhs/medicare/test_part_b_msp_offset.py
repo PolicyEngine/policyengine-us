@@ -134,6 +134,22 @@ def test_msp_part_b_premium_coverage_scales_with_eligible_months():
     )
 
 
+def test_historical_msp_asset_eligibility_uses_federal_default():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {"person": {"ssi_countable_resources": {"2014": 0}}},
+            "households": {"household": {"members": ["person"], "state_code": "AR"}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("msp_asset_eligible", "2014-01")[0]
+
+
 def test_medicare_part_b_premium_does_not_depend_on_calculation_order():
     no_msp_eligibility = {
         f"{year}-{month:02d}": False
