@@ -8,7 +8,9 @@ class wa_sfa_student_pathway_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.WA
     reference = (
+        # WAC 388-400-0010(2)(c): SFA pathway for 19-20 year old students.
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0010",
+        # WAC 388-404-0005(3): student definition for the SFA pathway.
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-404-0005",
     )
     # WAC 388-404-0005(3)(a) extends SFA to 19-20 year olds with disabilities

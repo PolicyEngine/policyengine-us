@@ -51,6 +51,15 @@
   output:
     wa_tanf_immigration_status_eligible: true
 
+- name: Case 6b, LPR at 4 years is ineligible (just inside 5-year bar).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+  output:
+    wa_tanf_immigration_status_eligible: false
+
 - name: Case 7, LPR past 5-year bar is eligible.
   period: 2024-01
   input:
@@ -117,5 +126,15 @@
     state_code: WA
     immigration_status: PAROLED_ONE_YEAR
     years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 15, citizen with default years_since_us_entry is eligible (locks citizen short-circuit).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CITIZEN
+    # years_since_us_entry intentionally omitted to rely on the default; the
+    # is_citizen short-circuit must keep citizens eligible regardless.
   output:
     wa_tanf_immigration_status_eligible: true

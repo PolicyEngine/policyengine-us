@@ -8,8 +8,8 @@ class wa_sfa_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.WA
     reference = (
+        # WAC 388-400-0010(1)-(2): umbrella SFA eligibility subsections.
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0010",
-        "https://app.leg.wa.gov/rcw/default.aspx?cite=74.08A.010",
     )
 
     def formula(spm_unit, period, parameters):

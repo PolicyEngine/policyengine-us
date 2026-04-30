@@ -93,3 +93,50 @@
     wa_tanf_resources_eligible: true
   output:
     wa_rca_eligible: false
+
+- name: Case 10, refugee at exactly 1.0 year - ineligible (strict less-than window).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    years_since_us_entry: 1.0
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_rca_eligible: false
+
+- name: Case 11, refugee at 0.99 year - eligible (just inside ORR window).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    years_since_us_entry: 0.99
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_rca_eligible: true
+
+- name: Case 12, override flag forces RCA-eligible for a TANF-eligible citizen household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_show_all_cash_assistance_programs: true
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Override bypasses the RCA immigration gate and TANF/SFA mutex so all
+    # 3 cash-assistance programs can be displayed alongside each other.
+    wa_rca_eligible: true

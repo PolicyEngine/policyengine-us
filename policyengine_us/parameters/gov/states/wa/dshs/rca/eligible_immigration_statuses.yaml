@@ -3,14 +3,22 @@ description: Washington considers these immigration statuses eligible for the Re
 # PAROLED_ONE_YEAR is treated as RCA-eligible starting 2021-09-30 to cover
 # Afghan (P.L. 117-43 § 2502, enacted 2021-09-30) and Ukrainian (P.L. 117-128
 # and P.L. 118-42 Div. G § 209(f)) humanitarian parolees, who are statutorily
-# treated as refugees for federal benefit purposes per 8 USC 1641(b)(8). We
-# do not distinguish those populations from other INA 212(d)(5) parolees at
-# the moment, so this over-grants RCA to the small population of
-# non-humanitarian parolees. PAROLED_ONE_YEAR is also bar-exempt for federal
-# TANF (see parameters/gov/hhs/tanf/bar_exempt_immigration_statuses.yaml), so
-# a humanitarian-parolee family with a child receives TANF rather than RCA;
-# RCA picks up adults without children and pre-TANF cases via the 12-month
-# ORR window.
+# treated as refugees for federal benefit purposes. The qualified-alien hook
+# for parolees is 8 USC 1641(b)(4) (NOT 1641(b)(8), which covers Compact-of-
+# Free-Association residents). The refugee-equivalence treatment itself
+# comes from P.L. 117-43 § 2502(b)(1) (Afghan) and P.L. 117-128 § 401
+# (Ukrainian). PolicyEngine does not distinguish these populations from
+# other INA 212(d)(5) parolees, so this over-grants RCA to the small
+# population of non-humanitarian parolees. PAROLED_ONE_YEAR is also
+# bar-exempt for federal TANF (see
+# parameters/gov/hhs/tanf/bar_exempt_immigration_statuses.yaml), so a
+# humanitarian-parolee family with a child receives TANF rather than RCA;
+# RCA picks up adults without children and pre-TANF cases via the
+# 12-month ORR window.
+#
+# CONDITIONAL_ENTRANT corroboration: qualified-alien status flows from
+# 8 USC 1641(b)(6); ORR refugee-program eligibility flows from
+# 45 CFR 401.2's definition of an eligible refugee.
 values:
   1996-08-22:
     - REFUGEE
@@ -33,7 +41,17 @@ metadata:
   reference:
     - title: 8 USC 1522 - Authorization for Refugee Assistance
       href: https://www.law.cornell.edu/uscode/text/8/1522
+    - title: 45 CFR 401.2 - Definitions (eligible refugee for ORR purposes)
+      href: https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-401/section-401.2
     - title: 45 CFR 400.43 - Requirements for Documentation of Immigration Status
       href: https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-D/section-400.43
+    - title: 8 USC 1641(b)(4) - "Qualified alien" includes aliens paroled into the United States under INA 212(d)(5) for at least one year
+      href: https://www.law.cornell.edu/uscode/text/8/1641
+    - title: 8 USC 1641(b)(6) - "Qualified alien" includes conditional entrants under former INA 203(a)(7)
+      href: https://www.law.cornell.edu/uscode/text/8/1641
+    - title: P.L. 117-43 § 2502(b)(1) (135 Stat. 377) — Afghan humanitarian parolee benefit eligibility
+      href: https://www.congress.gov/117/plaws/publ43/PLAW-117publ43.pdf#page=35
+    - title: P.L. 117-128 § 401 — Additional Ukraine Supplemental Appropriations Act, 2022 (Ukrainian humanitarian parolees treated as refugees for federal benefits)
+      href: https://www.congress.gov/117/plaws/publ128/PLAW-117publ128.pdf
     - title: WAC 388-466-0120 - Refugee assistance
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-466-0120

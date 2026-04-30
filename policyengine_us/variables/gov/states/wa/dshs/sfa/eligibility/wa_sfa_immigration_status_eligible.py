@@ -8,9 +8,9 @@ class wa_sfa_immigration_status_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.WA
     reference = (
+        # WAC 388-400-0010(2)(a): qualified-alien-in-5-year-bar SFA pathway.
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0010",
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-424-0015",
-        "https://app.leg.wa.gov/rcw/default.aspx?cite=74.08A.010",
     )
     # The qualified-alien-in-5-year-bar pathway (WAC 388-424-0015(1)(a)) is
     # modeled here. The 19-20 year old student pathway (WAC 388-400-0010(2)(c))

@@ -9,6 +9,7 @@ class wa_rca_immigration_status_eligible(Variable):
     defined_for = StateCode.WA
     reference = (
         "https://www.law.cornell.edu/uscode/text/8/1522",
+        # WAC 388-466-0120(1)-(2): RCA-eligible immigration statuses.
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-466-0120",
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-400-0030",
     )

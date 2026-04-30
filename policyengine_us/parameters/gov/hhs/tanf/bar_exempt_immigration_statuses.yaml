@@ -3,11 +3,33 @@ description: The United States exempts these immigration statuses from the five-
 # PAROLED_ONE_YEAR is treated as bar-exempt starting 2021-09-30 to cover
 # Afghan (P.L. 117-43 § 2502, enacted 2021-09-30) and Ukrainian (P.L. 117-128
 # and P.L. 118-42 Div. G § 209(f)) humanitarian parolees, who are statutorily
-# treated as refugees for federal benefit purposes per 8 USC 1641(b)(8). We
-# do not distinguish those populations from other INA 212(d)(5) parolees at
-# the moment, so this over-grants the bar exemption to the small population
-# of non-humanitarian parolees. Kept consistent with the RCA eligible-status
-# list at parameters/gov/states/wa/dshs/rca/eligible_immigration_statuses.yaml.
+# treated as refugees for federal benefit purposes. The qualified-alien hook
+# for parolees is 8 USC 1641(b)(4) (NOT 1641(b)(8), which covers Compact-of-
+# Free-Association residents — Palau, Marshall Islands, Micronesia). The
+# refugee-equivalence treatment itself comes from P.L. 117-43 § 2502(b)(1)
+# (Afghan) and P.L. 117-128 § 401 (Ukrainian).
+#
+# NOTE: This list under-represents 8 USC 1613(b) exemptions because
+# PolicyEngine's upstream ImmigrationStatus enum does not represent these
+# populations. Statutory exemptions NOT modeled here:
+#   - 8 USC 1613(b)(1)(E): Amerasian immigrants
+#   - 8 USC 1613(b)(2): veterans, active-duty military, and their
+#     spouses/dependents (cuts across qualified-alien types)
+#   - 8 USC 1613(b)(3): Compact-of-Free-Association citizens
+#     (Marshall Islands, FSM, Palau)
+#   - TVPA-certified trafficking victims (TVPA § 107(b)(1) / 22 USC 7105)
+#
+# NOTE: PAROLED_ONE_YEAR is treated as bar-exempt indefinitely from
+# 2021-09-30, but the underlying statutes are BOTH time-bounded and
+# population-bounded. P.L. 117-43 § 2502 covers Afghan parolees paroled
+# 7/31/2021–9/30/2022 plus narrow family follow-ons, with refugee-equivalent
+# benefits available "until March 31, 2023, or term of parole, whichever is
+# later" — that floor has been further extended by P.L. 117-128 and
+# P.L. 118-42 Div. G § 209(f). PolicyEngine does not distinguish these
+# populations from other INA 212(d)(5) parolees, so this over-grants the
+# bar exemption to non-humanitarian parolees and ignores the statutory
+# sunset. Kept consistent with the RCA eligible-status list at
+# parameters/gov/states/wa/dshs/rca/eligible_immigration_statuses.yaml.
 values:
   1996-08-22:
     - REFUGEE
@@ -28,7 +50,9 @@ metadata:
   reference:
     - title: 8 USC 1613(b)(1) - Exceptions to five-year limited eligibility
       href: https://www.law.cornell.edu/uscode/text/8/1613
-    - title: 8 USC 1641(b)(8) - "Qualified alien" includes humanitarian parolees treated as refugees
+    - title: 8 USC 1641(b)(4) - "Qualified alien" includes aliens paroled into the United States under INA 212(d)(5) for at least one year
       href: https://www.law.cornell.edu/uscode/text/8/1641
-    - title: P.L. 117-43 § 2502 - Afghan humanitarian parolees treated as refugees for benefit purposes
-      href: https://www.congress.gov/117/plaws/publ43/PLAW-117publ43.pdf
+    - title: P.L. 117-43 § 2502(b)(1) (135 Stat. 377) — Afghan humanitarian parolee benefit eligibility
+      href: https://www.congress.gov/117/plaws/publ43/PLAW-117publ43.pdf#page=35
+    - title: P.L. 117-128 § 401 — Additional Ukraine Supplemental Appropriations Act, 2022 (Ukrainian humanitarian parolees treated as refugees for federal benefits)
+      href: https://www.congress.gov/117/plaws/publ128/PLAW-117publ128.pdf

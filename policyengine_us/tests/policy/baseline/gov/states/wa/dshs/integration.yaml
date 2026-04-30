@@ -359,6 +359,66 @@
     wa_sfa: 0
     wa_rca: 0
 
+- name: Case 13a, single PAROLED_ONE_YEAR adult within ORR window receives RCA only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 0.5
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Headline Afghan-parolee use case: no child means TANF/SFA demographic
+    # fails, but the parolee is bar-exempt for RCA and within the 12-month
+    # ORR window, so RCA fires.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: true
+    wa_tanf: 0
+    wa_sfa: 0
+    # Family size 1 payment standard Jan 2024: $450
+    wa_rca: 450
+
+- name: Case 13b, mixed-status citizen child + LPR-in-bar parent receives TANF only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # The citizen child is TANF-immigration-eligible, which lifts the whole
+    # SPM unit into TANF; the SFA mutex then blocks SFA. This is the
+    # correct PRWORA "citizen child saves the unit" outcome.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 570
+    wa_sfa: 0
+    wa_rca: 0
+
 - name: Case 13, single mom + 19-year-old high school senior receives SFA only via 19-20 student pathway.
   period: 2024-01
   absolute_error_margin: 0.1
@@ -389,3 +449,57 @@
     wa_tanf: 0
     wa_sfa: 570
     wa_rca: 0
+
+- name: Case 14, spm_unit_benefits aggregator includes wa_sfa.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    # Direct-input wa_sfa; zero out the other benefit components in the
+    # aggregator so we can pin spm_unit_benefits to wa_sfa exactly. This
+    # locks in that wa_sfa is part of the aggregator (added in this PR).
+    wa_sfa: 1_200
+    wa_rca: 0
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_broadband_subsidy: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+  output:
+    # spm_unit_benefits must include wa_sfa (and wa_rca) so the household
+    # actually sees this income flow into household_net_income.
+    spm_unit_benefits: 1_200
+
+- name: Case 15, spm_unit_benefits aggregator includes wa_rca.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa: 0
+    wa_rca: 3_600
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_broadband_subsidy: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+  output:
+    # Locks in that wa_rca is part of the aggregator (added in this PR).
+    spm_unit_benefits: 3_600

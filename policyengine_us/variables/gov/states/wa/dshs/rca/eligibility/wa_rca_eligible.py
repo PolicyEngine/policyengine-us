@@ -17,16 +17,18 @@ class wa_rca_eligible(Variable):
     # (2)(b) applicants denied/terminated from TANF for noncompliance
     # (requires TANF sanction history) and (2)(c) full-time students in
     # higher education.
+    #
+    # NOTE on years_since_us_entry semantics: per 45 CFR 400.211(b), for
+    # asylees and Cuban-Haitian entrants the ORR clock runs from the date
+    # the qualifying status was granted, not from physical US entry. The
+    # variable's own label ("Years since US entry or qualified immigration
+    # status grant") acknowledges this — callers building inputs for those
+    # populations should encode years-since-status-grant rather than
+    # years-since-physical-entry.
 
     def formula(spm_unit, period, parameters):
-        members_rca_imm_eligible = spm_unit.members(
-            "wa_rca_immigration_status_eligible", period
-        )
-        within_orr_window = (
-            spm_unit.members("years_since_us_entry", period.this_year) < 1
-        )
-        has_rca_eligible_member = spm_unit.any(
-            members_rca_imm_eligible & within_orr_window
+        has_rca_eligible_member = (
+            add(spm_unit, period, ["wa_rca_immigration_window_eligible"]) > 0
         )
 
         tanf_eligible = spm_unit("wa_tanf_eligible", period)

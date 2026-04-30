@@ -65,3 +65,16 @@
     wa_tanf_countable_income: -500
   output:
     wa_rca: 450
+
+- name: Case 7, eligible refugee in 2023.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 417
+    wa_tanf_countable_income: 0
+  output:
+    # Confirms 2023 coverage (household_state_benefits.yaml lists wa_rca
+    # starting 2023-01-01).
+    wa_rca: 417
