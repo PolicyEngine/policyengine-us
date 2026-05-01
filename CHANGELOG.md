@@ -1,3 +1,18 @@
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
 ## [1.678.0] - 2026-04-30
 
 ### Added

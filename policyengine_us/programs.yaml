@@ -657,6 +657,11 @@ programs:
         full_name: Michigan State Supplementary Payment
         variable: mi_ssp
         parameter_prefix: gov.states.mi.mdhhs.ssp
+      - state: ME
+        status: complete
+        name: Maine SSP
+        full_name: Maine State Supplemental Income Program
+        variable: me_ssp
       - state: MN
         status: complete
         name: Minnesota MSA
@@ -673,6 +678,11 @@ programs:
         name: Louisiana OSS
         full_name: Louisiana Optional State Supplement
         variable: la_oss
+      - state: KY
+        status: complete
+        name: Kentucky SSP
+        full_name: Kentucky State Supplementary Payment
+        variable: ky_ssp
       - state: IL
         status: complete
         name: Illinois AABD
