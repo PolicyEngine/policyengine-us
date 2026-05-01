@@ -3,6 +3,9 @@ from policyengine_us.model_api import *
 
 class WAStateSupplementaryPaymentCategory(Enum):
     STANDARD = "Standard rate (aged, blind, disabled, or with ineligible spouse)"
+    # MEDICAL_INSTITUTION rate is pegged to the WA Apple Health institutional
+    # PNA (WAC 182-513-1105(5)) minus the $30 federal SSI institutional PNA;
+    # see wa_ssp.py and the amount.yaml note for the uprating mechanism.
     MEDICAL_INSTITUTION = "Resident of medical (Title XIX) institution"
     NONE = "Not in a qualifying category"
 

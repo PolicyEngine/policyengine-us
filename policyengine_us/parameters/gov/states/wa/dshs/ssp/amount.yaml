@@ -1,4 +1,12 @@
-description: Washington provides this amount as the monthly supplement under the State Supplementary Payment program.
+description: Washington provides this amount as the supplement under the State Supplementary Payment program.
+
+# NOTE: After 2023-07-01, the MEDICAL_INSTITUTION rate is computed as the
+# Washington Apple Health institutional personal needs allowance (PNA) minus
+# the $30 federal SSI institutional PNA. Annual updates follow the Apple Health
+# PNA tables (WAC 182-513-1105(5)) and are adopted under WAC 388-478-0057.
+# Do NOT apply mechanical SSA COLA factors to the prior $70 base — that yields
+# $72.24 for 2024, which is incorrect (the correct value is $73.20, derived
+# from the 2024 institutional PNA of $103.20 minus $30).
 
 metadata:
   unit: currency-USD
@@ -7,8 +15,12 @@ metadata:
   breakdown:
     - wa_ssp_payment_category
   reference:
-    - title: WAC 388-478-0055 Monthly state supplemental payment standards
+    - title: WAC 388-478-0055(2)(a) Monthly state supplemental payment standards — STANDARD rates
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0055
+    - title: WAC 388-478-0055(2)(c) Monthly state supplemental payment standards — MEDICAL_INSTITUTION rates
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0055
+    - title: WAC 388-478-0057 — End-of-year SSP rate adjustment authority
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-478-0057
     - title: WSR 06-16-071 (eff. 2006-08-28)
       href: https://lawfilesext.leg.wa.gov/law/wsr/2006/16/06-16-071.htm
     - title: WSR 07-22-022 (eff. 2007-11-26)
@@ -29,11 +41,11 @@ metadata:
       href: https://lawfilesext.leg.wa.gov/law/wsr/2024/02/24-02EMER.pdf
     - title: WSR 24-06-025 (eff. 2024-04-01)
       href: https://lawfilesext.leg.wa.gov/law/wsr/2024/06/24-06-025.htm
-    - title: Washington Apple Health Income and Resource Standards (eff. 2024-01-01)
+    - title: Washington Apple Health Income and Resource Standards (eff. 2024-01-01) (see institutional PNA table)
       href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20240101.pdf
-    - title: Washington Apple Health Income and Resource Standards (eff. 2025-01-01)
+    - title: Washington Apple Health Income and Resource Standards (eff. 2025-01-01) (see institutional PNA table)
       href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20250101.pdf
-    - title: Washington Apple Health Income and Resource Standards (eff. 2026-01-01)
+    - title: Washington Apple Health Income and Resource Standards (eff. 2026-01-01) (see institutional PNA table)
       href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf
 
 STANDARD:

@@ -78,3 +78,23 @@
     state_code: WA
   output:
     wa_ssp: 0
+
+- name: Standard rate of 40 in 2017 (between 2013-12-01 reduction and 2021-01-01 reduction)
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    # 2017-01 falls within the 2013-12-01 -> 2021-01-01 window -> STANDARD = 40.
+    wa_ssp: 40
+
+- name: Standard rate of 35.50 still in effect in 2026 (no 2026 STANDARD entry, forward extrapolation from 2024-04-01)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    # amount.yaml has no 2026 STANDARD entry -> most recent value (2024-04-01: 35.50) carries forward.
+    wa_ssp: 35.50

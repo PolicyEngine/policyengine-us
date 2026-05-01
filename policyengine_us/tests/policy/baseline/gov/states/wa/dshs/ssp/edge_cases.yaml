@@ -345,3 +345,65 @@
   output:
     # 2009-01 is after WSR 08-16-067 (eff. 2008-09-01) -> medical rate = 27.28.
     wa_ssp: [27.28]
+
+- name: Case 16, couple both SSI-eligible and both in medical institution each receive MED_INST rate (no couple reduction, no ineligible-spouse path).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Both SSI-eligible (ssi_recipient_count == 2) -> has_ineligible_spouse is FALSE
+    # for both. Both in MEDICAL_TREATMENT_FACILITY -> MEDICAL_INSTITUTION category.
+    # 2024-01 medical institution rate = 73.20 (post-2024-01-01 COLA, WA Apple
+    # Health institutional PNA $103.20 minus $30 federal SSI institutional PNA).
+    # No couple reduction in WAC 388-478-0055 -- each spouse gets the per-person rate.
+    wa_ssp_payment_category: [MEDICAL_INSTITUTION, MEDICAL_INSTITUTION]
+    wa_ssp: [73.20, 73.20]
+
+- name: Case 17, disabled-only person in medical institution at 2024-01 maps to MEDICAL_INSTITUTION (priority over STANDARD).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2024-01 is post-2023-07-01 disabled-flip AND post-2023-07-01 MED rate raise to $70
+    # AND post-2024-01-01 COLA -> medical rate = 73.20.
+    # MEDICAL_INSTITUTION wins over STANDARD via select() priority order.
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    wa_ssp: [73.20]
