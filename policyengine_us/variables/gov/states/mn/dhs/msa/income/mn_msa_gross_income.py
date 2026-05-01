@@ -27,5 +27,6 @@ class mn_msa_gross_income(Variable):
                 "ssi",
                 "ssi_earned_income_deemed_from_ineligible_spouse",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_parent",
             ],
         )

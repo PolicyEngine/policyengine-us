@@ -25,7 +25,17 @@ class mn_msa_countable_unearned_income(Variable):
             [
                 "ssi_unearned_income",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_parent",
             ],
         )
         general = parameters(period).gov.states.mn.dhs.msa.disregard.general
-        return max_(gross_unearned - general, 0)
+        # The COUPLE_* assistance standards are couple totals split 50/50
+        # onto each spouse, so the $20 general disregard is also applied
+        # once per couple — half to each spouse.
+        arrangement = person("mn_msa_payment_category", period)
+        LA = arrangement.possible_values
+        is_couple_arrangement = (arrangement == LA.COUPLE_LIVING_ALONE) | (
+            arrangement == LA.COUPLE_LIVING_WITH_OTHERS
+        )
+        per_person_general = where(is_couple_arrangement, general / 2, general)
+        return max_(gross_unearned - per_person_general, 0)

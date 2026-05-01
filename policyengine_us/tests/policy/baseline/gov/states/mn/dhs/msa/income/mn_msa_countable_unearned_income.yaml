@@ -83,6 +83,46 @@
     # $10 - $20 floored at $0 (the leftover rolls into earned income).
     mn_msa_countable_unearned_income: 0
 
+- name: Case 5, P2.2 couple living alone splits the $20 general disregard 50/50 across spouses.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi: 0
+        ssi_unearned_income: 9_660  # $805/mo each
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi: 0
+        ssi_unearned_income: 9_660  # $805/mo each
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Per spouse: $805 unearned - $20/2 = $795 countable. Sums to combined
+    # $1,590 (= $1,610 gross - $20 once-per-couple disregard).
+    mn_msa_countable_unearned_income: [795, 795]
+
 - name: Case 4, deemed-from-ineligible-spouse unearned income aggregates with own unearned.
   period: 2026-01
   input:

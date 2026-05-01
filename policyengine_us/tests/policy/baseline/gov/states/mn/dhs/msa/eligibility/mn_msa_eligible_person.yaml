@@ -83,6 +83,38 @@
   output:
     mn_msa_eligible_person: false
 
+- name: Case 5, P2.3 child applicant with high parent-deemed income fails gross income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 0
+        ssi_unearned_income: 0
+        ssi_unearned_income_deemed_from_ineligible_parent: 60_000  # $5,000/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Parent-deemed $5,000/mo > 300% individual FBR (~$2,982/mo in 2026)
+    # -> gross income test fails. (P2.3: parent-deemed unearned now flows
+    # into MSA gross/countable income for child applicants.)
+    mn_msa_eligible_person: false
+
 - name: Case 4, income above MSA standard is ineligible.
   period: 2026-01
   input:

@@ -45,6 +45,7 @@ class mn_msa_person(Variable):
             [
                 "ssi_unearned_income",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_parent",
             ],
         )
         # The $20 disregard applies to FLA-A (living alone) and FLA-B (with
@@ -54,7 +55,11 @@ class mn_msa_person(Variable):
         # $30 with no $20 added back.
         is_medicaid_facility = arrangement == LA.MEDICAID_FACILITY
         disregard = where(is_medicaid_facility, 0, p.general)
-        ssi_track_countable = max_(federal_ssi + raw_unearned - disregard, 0)
+        # For couples, the $20 disregard is applied once to combined couple
+        # income; allocate half to each spouse so the per-person formulas sum
+        # to the correct couple total.
+        per_person_disregard = where(is_couple_arrangement, disregard / 2, disregard)
+        ssi_track_countable = max_(federal_ssi + raw_unearned - per_person_disregard, 0)
         ssi_track = max_(0, per_person_standard - ssi_track_countable)
         countable_income = person("mn_msa_countable_income", period)
         non_ssi_track = max_(0, per_person_standard - countable_income)

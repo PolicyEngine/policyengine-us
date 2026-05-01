@@ -27,6 +27,7 @@ class mn_msa_earned_income_disregard(Variable):
             [
                 "ssi_unearned_income",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_parent",
             ],
         )
         gross_earned = add(
@@ -37,8 +38,22 @@ class mn_msa_earned_income_disregard(Variable):
                 "ssi_earned_income_deemed_from_ineligible_spouse",
             ],
         )
-        leftover_general = max_(p.general - gross_unearned, 0)
-        flat = p.earned.initial + leftover_general
+        # The COUPLE_* assistance standards are couple totals split 50/50
+        # onto each spouse, so the $20 general and $65 earned-initial
+        # disregards are also applied once per couple — half to each
+        # spouse. The 1/2 leftover-earned rate applies to per-spouse gross
+        # earned and is unchanged.
+        arrangement = person("mn_msa_payment_category", period)
+        LA = arrangement.possible_values
+        is_couple_arrangement = (arrangement == LA.COUPLE_LIVING_ALONE) | (
+            arrangement == LA.COUPLE_LIVING_WITH_OTHERS
+        )
+        per_person_general = where(is_couple_arrangement, p.general / 2, p.general)
+        per_person_earned_initial = where(
+            is_couple_arrangement, p.earned.initial / 2, p.earned.initial
+        )
+        leftover_general = max_(per_person_general - gross_unearned, 0)
+        flat = per_person_earned_initial + leftover_general
         flat_disregard = min_(gross_earned, flat)
         remainder = max_(gross_earned - flat, 0)
         return flat_disregard + remainder * p.earned.rate
