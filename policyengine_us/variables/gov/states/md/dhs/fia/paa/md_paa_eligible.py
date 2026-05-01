@@ -17,9 +17,8 @@ class md_paa_eligible(Variable):
         # blind, or disabled and receive SSI, SSDI, or other federal cash
         # benefit on the basis of those criteria. SSI and SSDI receipt
         # already implies categorical qualification, so the aged/blind/
-        # disabled gate only applies to the broader OASI / survivor path.
-        # Pending-application and "no fault" pathways under §300.5 are not
-        # modeled.
+        # disabled gate only applies to the broader OASI / survivor and
+        # the §300.5 pending-application / no-fault-denial pathways.
         receives_ssi = person("ssi", period) > 0
         receives_ssdi = person("social_security_disability", period) > 0
         is_categorically_qualifying = person(
@@ -28,8 +27,15 @@ class md_paa_eligible(Variable):
         receives_other_oasdi_qualifying = (
             person("social_security", period) > 0
         ) & is_categorically_qualifying
+        pending_federal_benefit = (
+            person("md_paa_pending_federal_benefit", period)
+            & is_categorically_qualifying
+        )
         receives_federal_cash = (
-            receives_ssi | receives_ssdi | receives_other_oasdi_qualifying
+            receives_ssi
+            | receives_ssdi
+            | receives_other_oasdi_qualifying
+            | pending_federal_benefit
         )
         # PAA Manual §500.2.B: $2,000 resource limit (parity with federal SSI
         # individual limit). Couple cases are evaluated per-person. PAA's

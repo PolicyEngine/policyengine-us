@@ -1,10 +1,10 @@
 # Tests for md_paa_personal_needs_allowance variable.
 # Tests parameter values across the timeline:
-# 2023-01-01: $93 (AT 23-02)
+# 2022-01-01: $84 (pre-AT 22-28)
+# 2022-07-01: $93 (AT 22-28)
+# 2023-07-01: $98 (IM 24-05)
+# 2024-07-01: $102 (placeholder effective date)
 # 2025-07-01: $106 (IM 26-04)
-# The interim $102 value is omitted from the YAML pending verification of
-# its issuing transmittal — the manifest's IM 26-04 confirms $102 was the
-# prior PNA but does not name the originating transmittal.
 
 - name: Case 1, 2023 PNA.
   period: 2023-01
@@ -55,7 +55,7 @@
   output:
     md_paa_personal_needs_allowance: 106
 
-- name: Case 4, January 2024 PNA still 93.
+- name: Case 4, January 2024 PNA reflects $98 (effective 2023-07-01 per IM 24-05).
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -69,11 +69,9 @@
         members: [person1]
         state_code: MD
   output:
-    md_paa_personal_needs_allowance: 93
+    md_paa_personal_needs_allowance: 98
 
-# Pre-2023 dates use forward-fill: parameter starts 2023-01-01 with $93,
-# so any earlier period also returns $93.
-- name: Case 5, pre-2023 PNA uses forward-filled value.
+- name: Case 5, January 2022 PNA is $84 (pre-AT 22-28).
   period: 2022-01
   absolute_error_margin: 0.01
   input:
@@ -87,4 +85,4 @@
         members: [person1]
         state_code: MD
   output:
-    md_paa_personal_needs_allowance: 93
+    md_paa_personal_needs_allowance: 84

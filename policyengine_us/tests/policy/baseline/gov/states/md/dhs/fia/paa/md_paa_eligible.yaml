@@ -141,3 +141,51 @@
         state_code: MD
   output:
     md_paa_eligible: false
+
+# Per PAA Manual §300.5 / COMAR 07.03.07.03, applicants in protected living
+# arrangements remain eligible while a federal cash benefit application is
+# pending or while a no-fault denial is being appealed, provided they meet
+# the categorical aged/blind/disabled requirement.
+- name: Case 8, pending SSI applicant who is aged is PAA-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_pending_federal_benefit: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+- name: Case 9, pending applicant not categorically aged/blind/disabled is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40  # Not aged, not blind, not disabled.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_pending_federal_benefit: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
