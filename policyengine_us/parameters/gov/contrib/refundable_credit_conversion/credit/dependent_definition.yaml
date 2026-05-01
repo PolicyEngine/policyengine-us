@@ -1,0 +1,12 @@
+description: |
+  Definition of "dependent" used to count dependents for the per-dependent
+  flat credit. Encoded as an integer:
+    0 = EITC-qualifying children (most generous; default)
+    1 = CTC-qualifying children
+    2 = all claimed tax-unit dependents (children plus other dependents)
+metadata:
+  unit: /1
+  period: year
+  label: Dependent definition for flat credit (0=EITC child, 1=CTC child, 2=all)
+values:
+  0000-01-01: 0

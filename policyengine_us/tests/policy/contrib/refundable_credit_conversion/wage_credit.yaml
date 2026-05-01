@@ -1,0 +1,44 @@
+- name: Wage credit applies per wage earner up to the per-worker cap
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 0
+    gov.contrib.refundable_credit_conversion.credit.per_dependent: 0
+    gov.contrib.refundable_credit_conversion.credit.per_household: 0
+    gov.contrib.refundable_credit_conversion.wage_credit.rate: 0.20
+    gov.contrib.refundable_credit_conversion.wage_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 3_000
+      spouse:
+        age: 33
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 1_600  # 0.20 * (3_000 + 5_000) = 1_600
+
+- name: Wage credit with zero rate produces no credit
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 0
+    gov.contrib.refundable_credit_conversion.credit.per_dependent: 0
+    gov.contrib.refundable_credit_conversion.credit.per_household: 0
+    gov.contrib.refundable_credit_conversion.wage_credit.rate: 0
+    gov.contrib.refundable_credit_conversion.wage_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0

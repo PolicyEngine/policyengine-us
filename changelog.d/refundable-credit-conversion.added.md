@@ -1,0 +1,1 @@
+Added `gov.contrib.refundable_credit_conversion` reform: a configurable refundable per-taxpayer / per-dependent / per-household / wage credit that swaps out federal CTC, CDCC, EITC, standard deduction, itemized deductions, above-the-line deductions, and Head of Household filing status while preserving the underlying variables for state programs to read.
