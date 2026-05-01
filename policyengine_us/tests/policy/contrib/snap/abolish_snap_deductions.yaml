@@ -1,6 +1,7 @@
 - name: Reform not in effect
   period: 2024
   input:
+    state_code: TX
     snap_standard_deduction: 3_000
     snap_child_support_deduction: 1_000
   output:
@@ -11,6 +12,7 @@
   reforms: policyengine_us.reforms.snap.abolish_snap_deductions.abolish_snap_deductions
   input:
     gov.contrib.snap.abolish_deductions.in_effect: true
+    state_code: TX
     snap_standard_deduction: 3_000
     snap_child_support_deduction: 1_000
   output:
