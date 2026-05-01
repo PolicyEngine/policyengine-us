@@ -1,0 +1,98 @@
+# Tests for Pennsylvania UC total base-year qualifying-wages test (REQ-004).
+# Total base-year wages must be at least the Part C qualifying amount from the
+# Table Specified by Law, indexed by high-quarter wages.
+# Reference: § 401(a)(2) / § 404(e)(1) Part C; 54 Pa.B. 1863.
+
+- name: Case 1, $5,000 high-quarter with $7,000 base-year wages fail Part C.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 5_000
+        pa_uc_base_year_wages: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $5,000 in bracket $4,988-$5,012 -> Part C qualifying = $7,956.
+        # $7,000 < $7,956 -> fails.
+        pa_uc_meets_qualifying_wages_test: false
+
+- name: Case 2, $5,000 high-quarter with $8,000 base-year wages pass Part C.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 5_000
+        pa_uc_base_year_wages: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $5,000 in bracket $4,988-$5,012 -> Part C qualifying = $7,956.
+        # $8,000 >= $7,956 -> passes.
+        pa_uc_meets_qualifying_wages_test: true
+
+- name: Case 3, $2,000 high-quarter with $3,500 base-year wages pass Part C.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 2_000
+        pa_uc_base_year_wages: 3_500
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $2,000 in bracket $1,988-$2,012 -> Part C qualifying = $3,194.
+        # $3,500 >= $3,194 -> passes.
+        pa_uc_meets_qualifying_wages_test: true
+
+- name: Case 4, $12,000 high-quarter with $19,067 base-year wages pass Part C exactly.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        pa_uc_highest_quarter_wages: 12_000
+        pa_uc_base_year_wages: 19_067
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $12,000 in bracket $11,988-$12,012 -> Part C qualifying = $19,067.
+        # $19,067 >= $19,067 -> passes at exact threshold.
+        pa_uc_meets_qualifying_wages_test: true
+
+- name: Case 5, high earner with ample total base-year wages passes Part C.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 15_388
+        pa_uc_base_year_wages: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Max high quarter; $70,000 far exceeds any Part C requirement.
+        pa_uc_meets_qualifying_wages_test: true

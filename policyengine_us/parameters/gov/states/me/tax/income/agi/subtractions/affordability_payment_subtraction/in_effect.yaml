@@ -1,0 +1,14 @@
+description: Maine uses this indicator to apply the affordability payment subtraction for Maine individual income tax calculations.
+values:
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Maine affordability payment subtraction in effect
+  reference:
+    - title: 36 MRS §5122, sub-§2 — Modifications to FAGI (subtractions)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5122.html
+    - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1, sub-§4
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=158

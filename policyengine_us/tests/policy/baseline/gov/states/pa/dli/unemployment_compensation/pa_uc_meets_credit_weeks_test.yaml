@@ -1,0 +1,89 @@
+# Tests for Pennsylvania UC credit-weeks minimum test (REQ-003).
+# Claimant must have at least 18 credit weeks in the base year.
+# A "credit week" is a calendar week with >= $116 earnings (2025 = 16 x $7.25 PA minimum wage).
+# Reference: § 404(c), 43 P.S. § 804(c); § 4(g.1) for credit week definition.
+
+- name: Case 1, 17 credit weeks (one below threshold) fail the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 17
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # 17 < 18 minimum -> fails.
+        pa_uc_meets_credit_weeks_test: false
+
+- name: Case 2, exactly 18 credit weeks pass the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 18
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # 18 >= 18 minimum -> passes.
+        pa_uc_meets_credit_weeks_test: true
+
+- name: Case 3, 40 credit weeks (full year) pass the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_credit_weeks: 40
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # 40 >> 18 minimum -> passes.
+        pa_uc_meets_credit_weeks_test: true
+
+- name: Case 4, zero credit weeks fail the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        pa_uc_credit_weeks: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # 0 < 18 minimum -> fails.
+        pa_uc_meets_credit_weeks_test: false
+
+- name: Case 5, 26 credit weeks (half-year) pass the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 32
+        pa_uc_credit_weeks: 26
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # 26 >= 18 minimum -> passes.
+        pa_uc_meets_credit_weeks_test: true

@@ -7,7 +7,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -31,7 +31,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -55,7 +55,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -79,7 +79,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -103,7 +103,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -127,7 +127,7 @@
         long_term_capital_gains: 1_000
         short_term_capital_gains: 500
         health_insurance_premiums: 12_000
-        medical_out_of_pocket_expenses: 12_000
+        other_medical_expenses: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -151,12 +151,12 @@
         long_term_capital_gains: 6_000
         short_term_capital_gains: 0
         health_insurance_premiums: 6_000
-        medical_out_of_pocket_expenses: 6_000
+        other_medical_expenses: 6_000
       person2:
         long_term_capital_gains: 4_000
         short_term_capital_gains: 0
         health_insurance_premiums: 6_000
-        medical_out_of_pocket_expenses: 6_000
+        other_medical_expenses: 6_000
     tax_units:
       tax_unit1:
         members: [person1, person2]

@@ -1,0 +1,82 @@
+- name: Case 1, family leave is limited to 12 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        wa_pfml_leave_type: FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 12
+
+- name: Case 2, medical leave is limited to 12 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        wa_pfml_leave_type: MEDICAL
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 12
+
+- name: Case 3, combined leave is limited to 16 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        wa_pfml_leave_type: COMBINED
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 16
+
+- name: Case 4, pregnancy-related medical leave is limited to 14 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        wa_pfml_leave_type: MEDICAL_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 14
+
+- name: Case 5, combined leave with pregnancy incapacity is limited to 18 weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        wa_pfml_leave_type: COMBINED_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 18
+
+- name: Case 6, no selected leave type returns zero maximum leave weeks.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 0
