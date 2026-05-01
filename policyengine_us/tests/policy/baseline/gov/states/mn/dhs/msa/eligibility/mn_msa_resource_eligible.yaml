@@ -1,0 +1,231 @@
+- name: Case 1, SSI recipient with low resources is resource eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_500
+        ssi: 11_928
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # SSI track: federal $2,000 limit already enforced via is_ssi_eligible.
+    mn_msa_resource_eligible: true
+
+- name: Case 2, non-SSI track at $10,000 boundary is resource eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 10_000
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Non-SSI track: $10,000 cap, exact boundary passes.
+    mn_msa_resource_eligible: true
+
+- name: Case 3, non-SSI track above $10,000 is not resource eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 10_500
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_resource_eligible: false
+
+- name: Case 4, non-SSI track at $9,999 is resource eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 9_999
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Non-SSI track: $9,999 <= $10,000 cap -> eligible.
+    mn_msa_resource_eligible: true
+
+- name: Case 5, non-SSI track at $10,001 is not resource eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 10_001
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Non-SSI track: $10,001 > $10,000 cap -> not eligible.
+    mn_msa_resource_eligible: false
+
+- name: Case 6, single SSI recipient with resources just below SSI $2,000 cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_999
+        ssi: 11_928
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # SSI track: $1,999 < $2,000 federal cap, is_ssi_eligible passes.
+    mn_msa_resource_eligible: true
+
+- name: Case 7, SSI couple with combined resources just below $3,000 cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_499
+        ssi_claim_is_joint: true
+        ssi: 8_946
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_499
+        ssi_claim_is_joint: true
+        ssi: 8_946
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # SSI track for both: federal $3,000 couple cap enforced via is_ssi_eligible.
+    mn_msa_resource_eligible: [true, true]
+
+- name: Case 8, person with high resources but ssi=0 falls back to non-SSI track.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 9_500  # > $2k SSI cap, < $10k non-SSI cap
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # ssi=0 -> non-SSI track applies; $9,500 <= $10,000 -> eligible.
+    mn_msa_resource_eligible: true

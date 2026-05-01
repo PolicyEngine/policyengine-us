@@ -1,0 +1,92 @@
+- name: Case 1, countable income exactly at MSA standard is net-income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 0
+        ssi_unearned_income: 12_660  # $1,055/mo, exactly at INDIVIDUAL_LIVING_ALONE standard
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Countable $1,055 <= $1,055 standard -> eligible.
+    mn_msa_net_income_eligible: true
+
+- name: Case 2, countable income $1 above MSA standard is not net-income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 0
+        ssi_unearned_income: 12_672  # $1,056/mo, $1 above the $1,055 standard
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Countable $1,056 > $1,055 standard -> not eligible.
+    mn_msa_net_income_eligible: false
+
+- name: Case 3, countable income $1 below MSA standard is net-income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 0
+        ssi_unearned_income: 12_648  # $1,054/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Countable $1,054 <= $1,055 standard -> eligible.
+    mn_msa_net_income_eligible: true

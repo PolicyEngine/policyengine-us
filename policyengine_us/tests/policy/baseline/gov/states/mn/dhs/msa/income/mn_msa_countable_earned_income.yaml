@@ -1,0 +1,170 @@
+- name: Case 1, earnings below the $65 initial disregard yield zero countable earned.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 600  # $50/mo (annual = $50 * 12)
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Earned $50, after $65 disregard = max(0, 50 - 65) = $0; no remainder to halve.
+    mn_msa_countable_earned_income: 0
+
+- name: Case 2, earnings above $65 disregard apply $65 plus half remainder.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 3_000  # $250/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Earned $250, less $65 = $185, halved = $92.50 countable.
+    mn_msa_countable_earned_income: 92.50
+
+- name: Case 3, earnings exactly at $65 boundary yield zero countable.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 780  # $65/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Earned $65 - $65 = $0, half of $0 = $0.
+    mn_msa_countable_earned_income: 0
+
+- name: Case 4, zero earnings yield zero countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # No earnings -> no countable earned income.
+    mn_msa_countable_earned_income: 0
+
+- name: Case 5, earnings $1 above the $65 disregard yield half-of-remainder countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 792  # $66/mo, $1 above the $65 disregard
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Earned $66 - $65 = $1; half = $0.50 countable.
+    mn_msa_countable_earned_income: 0.50
+
+- name: Case 6, large earnings apply $65 plus half remainder.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_earned_income: 12_000  # $1,000/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Earned $1,000 - $65 = $935; halved = $467.50 countable.
+    mn_msa_countable_earned_income: 467.50

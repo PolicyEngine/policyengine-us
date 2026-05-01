@@ -1,0 +1,47 @@
+description: Minnesota provides this combined federal-plus-state assistance standard by living arrangement under the Minnesota Supplemental Aid program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Minnesota Supplemental Aid assistance standard amount
+  breakdown:
+    - mn_msa_living_arrangement
+  reference:
+    - title: Minn. Stat. § 256D.44 Subd. 2 (Standards of assistance for basic needs)
+      href: https://www.revisor.mn.gov/statutes/cite/256D.44
+    - title: Minn. Stat. § 256D.44 Subd. 3 (Standards of assistance for shelter needs)
+      href: https://www.revisor.mn.gov/statutes/cite/256D.44
+    - title: MN DHS Combined Manual 0020.21 - MSA Assistance Standards (01/2026)
+      href: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=4
+    - title: MN House Research Department - Minnesota Supplemental Aid (October 2024), MSA Assistance Standards table
+      href: https://www.house.mn.gov/hrd/pubs/pap_MSA.pdf#page=6
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Minnesota, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mn.html
+
+INDIVIDUAL_LIVING_ALONE:
+  2011-01-01: 735
+  2024-01-01: 1_004
+  2026-01-01: 1_055
+
+INDIVIDUAL_LIVING_WITH_OTHERS:
+  2011-01-01: 542
+  2024-01-01: 721
+  2026-01-01: 755.33
+
+COUPLE_LIVING_ALONE:
+  2011-01-01: 1_102
+  2024-01-01: 1_506
+  2026-01-01: 1_582
+
+COUPLE_LIVING_WITH_OTHERS:
+  2011-01-01: 738
+  2024-01-01: 1_007
+  2026-01-01: 1_058
+
+MEDICAID_FACILITY:
+  2011-01-01: 89
+  2024-01-01: 155
+  2026-01-01: 162
+
+NONE:
+  2011-01-01: 0

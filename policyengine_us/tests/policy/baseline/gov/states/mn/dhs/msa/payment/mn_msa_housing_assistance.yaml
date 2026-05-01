@@ -1,0 +1,56 @@
+- name: Case 1, housing-assistance eligible person receives half of SSI individual FBR in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_housing_assistance_eligible: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 0.5 * $994 (2026 individual FBR) = $497.
+    mn_msa_housing_assistance: 497
+
+- name: Case 2, person not flagged as housing-assistance-eligible receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_housing_assistance_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_housing_assistance: 0

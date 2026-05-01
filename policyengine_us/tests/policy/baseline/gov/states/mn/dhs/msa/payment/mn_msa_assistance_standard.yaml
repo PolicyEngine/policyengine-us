@@ -1,0 +1,226 @@
+- name: Case 1, individual living alone in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 11_928
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 1_055
+
+- name: Case 2, individual living with others in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_lives_with_others: true
+        mn_msa_treated_as_living_alone: false
+        ssi: 11_928
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 755.33
+
+- name: Case 3, couple living alone joint claim in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi_claim_is_joint: true
+        ssi: 8_946
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi_claim_is_joint: true
+        ssi: 8_946
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: [1_582, 1_582]
+
+- name: Case 4, couple living with others joint claim in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_lives_with_others: true
+        mn_msa_treated_as_living_alone: false
+        ssi_claim_is_joint: true
+        ssi: 8_946
+      person2:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_lives_with_others: true
+        mn_msa_treated_as_living_alone: false
+        ssi_claim_is_joint: true
+        ssi: 8_946
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: [1_058, 1_058]
+
+- name: Case 5, person in Medicaid facility in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 360
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 162
+
+- name: Case 6, NONE arrangement returns zero standard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 0
+
+- name: Case 7, individual living alone in 2024 uses 2024 rate.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_lives_with_others: false
+        mn_msa_treated_as_living_alone: false
+        ssi: 11_316  # $943/mo for 2024
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 1_004
