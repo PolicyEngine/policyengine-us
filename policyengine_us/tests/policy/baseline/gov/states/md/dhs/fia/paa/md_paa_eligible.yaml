@@ -1,6 +1,9 @@
 # Tests for md_paa_eligible variable.
-# Eligibility requires: ssi > 0 AND md_paa_living_arrangement != NONE
-# AND state_code = MD (defined_for filter).
+# Eligibility requires:
+#   - state_code = MD (defined_for filter)
+#   - ssi > 0 OR social_security_disability > 0 (federal cash benefit per §300.1.B)
+#   - ssi_countable_resources <= $2,000 (parity with federal SSI per §500.2.B)
+#   - md_paa_living_arrangement != NONE (§300.3, §300.4)
 
 - name: Case 1, SSI recipient in CARE_HOME_LEVEL_B in Maryland is eligible.
   period: 2025-01
@@ -9,6 +12,7 @@
       person1:
         age: 70
         ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
@@ -23,7 +27,8 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: NONE
     households:
       household:
@@ -32,13 +37,15 @@
   output:
     md_paa_eligible: false
 
-- name: Case 3, no SSI receipt is ineligible.
+- name: Case 3, no SSI or SSDI receipt is ineligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 70
         ssi: 0
+        social_security_disability: 0
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
@@ -53,11 +60,84 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
         members: [person1]
         state_code: CA
+  output:
+    md_paa_eligible: false
+
+# Per PAA Manual §300.1.B, applicants who receive SSDI (without SSI) on the
+# basis of disability are also PAA-eligible.
+- name: Case 5, SSDI-only recipient is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        ssi: 0
+        social_security_disability: 12_000  # $1,000/mo SSDI
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+# Per PAA Manual §500.2.B, the $2,000 SSI resource limit applies. Verify
+# the resource gate is enforced independently of SSI receipt.
+- name: Case 6, resources above $2,000 limit are ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 3_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+# A person with only earned income (no SSI, SSDI, or OASI receipt) cannot
+# qualify for PAA, even if otherwise in a PAA facility — PAA requires
+# receipt of a federal cash benefit on the basis of age/blindness/
+# disability per §300.1.B.
+- name: Case 7, no federal cash benefit receipt is PAA-ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        employment_income: 36_000  # $3,000/mo earned income
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
   output:
     md_paa_eligible: false

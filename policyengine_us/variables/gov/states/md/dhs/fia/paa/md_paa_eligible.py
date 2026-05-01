@@ -13,8 +13,34 @@ class md_paa_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # PAA Manual §300.2 requires actual SSI receipt, not just SSI eligibility.
+        # PAA Manual §300.1.B / COMAR 07.03.07.03: applicants must be aged,
+        # blind, or disabled and receive SSI, SSDI, or other federal cash
+        # benefit on the basis of those criteria. SSI and SSDI receipt
+        # already implies categorical qualification, so the aged/blind/
+        # disabled gate only applies to the broader OASI / survivor path.
+        # Pending-application and "no fault" pathways under §300.5 are not
+        # modeled.
         receives_ssi = person("ssi", period) > 0
+        receives_ssdi = person("social_security_disability", period) > 0
+        is_categorically_qualifying = person(
+            "is_ssi_aged_blind_disabled", period.this_year
+        )
+        receives_other_oasdi_qualifying = (
+            person("social_security", period) > 0
+        ) & is_categorically_qualifying
+        receives_federal_cash = (
+            receives_ssi | receives_ssdi | receives_other_oasdi_qualifying
+        )
+        # PAA Manual §500.2.B: $2,000 resource limit (parity with federal SSI
+        # individual limit). Couple cases are evaluated per-person. PAA's
+        # resource base also includes real property, money on hand, trusts,
+        # transfer-of-asset penalties (§500.4) — those refinements are not
+        # tracked at the moment, so we approximate via ssi_countable_resources.
+        ssi_resource_limit = parameters(
+            period
+        ).gov.ssa.ssi.eligibility.resources.limit.individual
+        ssi_resources = person("ssi_countable_resources", period.this_year)
+        resource_eligible = ssi_resources <= ssi_resource_limit
         living_arrangement = person("md_paa_living_arrangement", period)
         in_facility = living_arrangement != living_arrangement.possible_values.NONE
-        return receives_ssi & in_facility
+        return receives_federal_cash & resource_eligible & in_facility

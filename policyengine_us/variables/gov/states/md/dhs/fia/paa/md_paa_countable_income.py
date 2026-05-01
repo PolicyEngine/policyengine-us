@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
 
+DAYS_IN_MONTH = 30
+
 
 class md_paa_countable_income(Variable):
     value_type = float
@@ -14,14 +16,21 @@ class md_paa_countable_income(Variable):
     )
 
     def formula(person, period, parameters):
-        # Per COMAR 07.03.07.08(B), residents of MDH Rehabilitative Residences
-        # have a cost-of-care disregard. MDH pays the cost of care directly, so
-        # PAA contributes only the personal needs allowance — countable income
-        # is fully disregarded.
+        # PAA Manual §900.3 / COMAR 07.03.07.08(B): MDH Rehabilitative
+        # Residence customers receive a cost-of-care disregard up to the
+        # per-diem ceiling ($54/day × ~30 days). Post-disregard income above
+        # that ceiling counts against the personal needs allowance; income
+        # below the ceiling produces zero countable income.
+        countable_earned = person("md_paa_countable_earned_income", period)
+        countable_unearned = person("md_paa_countable_unearned_income", period)
+        post_disregard_income = countable_earned + countable_unearned
         living_arrangement = person("md_paa_living_arrangement", period)
         is_rehab = (
             living_arrangement == living_arrangement.possible_values.REHAB_RESIDENCE
         )
-        countable_earned = person("md_paa_countable_earned_income", period)
-        countable_unearned = person("md_paa_countable_unearned_income", period)
-        return where(is_rehab, 0, countable_earned + countable_unearned)
+        per_diem = parameters(
+            period
+        ).gov.states.md.dhs.fia.paa.rehab_residence.cost_of_need_per_diem
+        cost_of_need_ceiling = per_diem * DAYS_IN_MONTH
+        rehab_countable = max_(post_disregard_income - cost_of_need_ceiling, 0)
+        return where(is_rehab, rehab_countable, post_disregard_income)

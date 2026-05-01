@@ -1,11 +1,17 @@
-description: Maryland provides this amount as the personal needs allowance per recipient under the Public Assistance to Adults program.
+description: Maryland provides this amount as the personal needs allowance under the Public Assistance to Adults program.
 
 values:
   2023-01-01: 93
-  # Effective date unverified: confirmed only by IM 26-04 stating PNA "increased
-  # from $102 to $106" effective Jul 1, 2025. The transmittal that raised PNA
-  # from $93 to $102 has not been located; 2024-07-01 is a placeholder.
-  2024-07-01: 102
+  # 2025-01-01: 102 is a researched placeholder. The DHS FY24 and FY25
+  # AT/IM archives contain no PAA/PNA transmittal, and the DLS FY26 DHS-FIA
+  # budget analysis (published in early 2025) still cites $93. IM 26-04
+  # (Oct 2025) is the first public document mentioning $102 and only
+  # references "Updates: AT#23-02"; the originating transmittal could not
+  # be located. The 2025-01-01 effective date matches Maryland's pattern
+  # of January COLA-aligned PNA updates and brackets the period directly
+  # preceding the verified 2025-07-01 → $106 transition. Reach out to
+  # fia.policy@maryland.gov to confirm.
+  2025-01-01: 102
   2025-07-01: 106
 
 metadata:

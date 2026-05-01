@@ -14,6 +14,10 @@ class md_paa_countable_earned_income(Variable):
     )
 
     def formula(person, period, parameters):
+        # PAA Manual §500.11.B.1: the earned-income disregard applies only
+        # to CARE Home and MDH Rehabilitative Residence customers — Assisted
+        # Living residents are presumed not gainfully employed, so any
+        # earned income is fully countable for them.
         p = parameters(period).gov.states.md.dhs.fia.paa.income
         earned = add(
             person,
@@ -27,13 +31,27 @@ class md_paa_countable_earned_income(Variable):
             person,
             period,
             [
+                "ssi",
                 "ssi_unearned_income",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
             ],
         )
+        # When unearned < $20, the unused portion of the $20 general
+        # disregard rolls into the earned disregard ($65 → up to $85).
         leftover_general = max_(p.unearned_income_disregard - unearned, 0)
         effective_earned_disregard = (
             p.earned_income_disregard.initial + leftover_general
         )
         earned_after_disregard = max_(earned - effective_earned_disregard, 0)
-        return earned_after_disregard * (1 - p.earned_income_disregard.rate)
+        countable_earned_with_disregard = earned_after_disregard * (
+            1 - p.earned_income_disregard.rate
+        )
+        living_arrangement = person("md_paa_living_arrangement", period)
+        is_assisted_living = (
+            living_arrangement == living_arrangement.possible_values.ASSISTED_LIVING
+        )
+        return where(
+            is_assisted_living,
+            earned,
+            countable_earned_with_disregard,
+        )

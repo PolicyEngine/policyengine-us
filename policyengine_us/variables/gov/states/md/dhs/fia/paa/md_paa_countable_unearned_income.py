@@ -14,11 +14,24 @@ class md_paa_countable_unearned_income(Variable):
     )
 
     def formula(person, period, parameters):
+        # PAA Manual §500.8 / §500.11 / AT 23-02: federally funded
+        # assistance, Social Security, and SSI/RSDI-type benefits all count
+        # as unearned income for PAA, with a $20 disregard. We add `ssi`
+        # explicitly because the federal `ssi_unearned_income` source list
+        # does not include the SSI cash payment itself. The following PAA
+        # countable-income refinements are not tracked at the moment and
+        # should be treated as residual modeling gaps:
+        #   - Lump sums (§500.7) and infrequent / irregular income (§500.9).
+        #   - Parent / adult-child financial contributions (§500.8).
+        #   - "Actually available" first-month income treatment (§500.8.A.5).
+        #   - State-funded assistance categories outside the federal SSI
+        #     source list.
         p = parameters(period).gov.states.md.dhs.fia.paa.income
         unearned = add(
             person,
             period,
             [
+                "ssi",
                 "ssi_unearned_income",
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
             ],

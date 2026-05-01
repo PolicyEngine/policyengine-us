@@ -1,8 +1,10 @@
 # Tests for md_paa main benefit variable.
 # Formula: max(provider_rate + PNA - countable_income, 0) when eligible.
-# Period: 2026-01 used so PNA = $106 (after 2025-07-01 effective date).
+# Per PAA Manual §500.8 and AT 23-02, the SSI cash payment counts as
+# unearned income for PAA. Period: 2026-01 used so PNA = $106 (after
+# 2025-07-01 effective date).
 
-- name: Case 1, eligible CARE_HOME_LEVEL_B with no other income.
+- name: Case 1, eligible CARE_HOME_LEVEL_B with only SSI income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -12,35 +14,36 @@
         ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
         ssi_earned_income: 0
         ssi_unearned_income: 0
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # provider_rate(875) + PNA(106) - countable(0) = 981
-    md_paa: 981
+    # countable_unearned = max(800 - 20, 0) = 780.
+    # provider_rate(875) + PNA(106) - countable(780) = 201.
+    md_paa: 201
 
-- name: Case 2, eligible REHAB_RESIDENCE receives only the PNA.
+- name: Case 2, eligible REHAB_RESIDENCE with only SSI receives only the PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
         ssi_earned_income: 0
         ssi_unearned_income: 0
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: REHAB_RESIDENCE
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # Per PAA Manual §400 and §900.3, MDH Rehabilitative Residence cases
-    # receive only the personal needs allowance from PAA — MDH pays the
-    # cost of care from other sources. Per COMAR 07.03.07.08(B), a
-    # cost-of-care disregard absorbs any countable income.
+    # post_disregard_income = 780 < cost_of_need_ceiling ($54 * 30 = 1620)
+    # → rehab_countable = 0.
     # provider_rate(0) + PNA(106) - countable(0) = 106.
     md_paa: 106
 
@@ -51,7 +54,8 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: NONE
     households:
       household:
@@ -60,47 +64,48 @@
   output:
     md_paa: 0
 
-- name: Case 4, eligible CARE_HOME_LEVEL_A with $300/mo unearned income.
+- name: Case 4, eligible CARE_HOME_LEVEL_A with $300/mo additional unearned income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
         ssi_earned_income: 0
         # $300/mo * 12 = $3,600/yr.
         ssi_unearned_income: 3_600
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_A
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # Monthly unearned = 3600/12 = 300.
-    # countable_unearned: max(300 - 20, 0) = 280.
-    # provider_rate(776) + PNA(106) - countable(280) = 602.
-    md_paa: 602
+    # unearned = 800 + 300 = 1100. countable_unearned = max(1100 - 20, 0) = 1080.
+    # provider_rate(776) + PNA(106) - countable(1080) = max(-198, 0) = 0.
+    md_paa: 0
 
-- name: Case 5, negative countable income does not inflate benefit.
+- name: Case 5, negative earned income does not inflate benefit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
         # Self-employment loss should not reduce countable income below zero.
         self_employment_income: -60_000_000
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # Negative earned income is floored at 0 by max_(earned - 85, 0) * 0.5.
-    # provider_rate(875) + PNA(106) - 0 = 981.
-    md_paa: 981
+    # countable_earned floored at 0 by max_(earned - 65, 0) * 0.5.
+    # countable_unearned = 780. PAA = 981 - 780 = 201.
+    md_paa: 201
 
 # Out-of-state SSI recipient in a PAA-style facility is filtered out by
 # md_paa_eligible's `defined_for = StateCode.MD`.
@@ -111,7 +116,8 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 9_600
+        ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
       household:
@@ -119,3 +125,47 @@
         state_code: CA
   output:
     md_paa: 0
+
+# High-income REHAB_RESIDENCE recipient — income above $54/day cost-of-need
+# ceiling reduces the PAA benefit (corrects prior "always pay PNA" behavior).
+- name: Case 7, high-income REHAB_RESIDENCE recipient gets reduced PAA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        # $1,000/mo additional unearned * 12 = $12,000/yr.
+        ssi_unearned_income: 12_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # unearned = 800 + 1000 = 1800. countable_unearned = max(1800 - 20, 0) = 1780.
+    # post_disregard_income = 1780. cost_of_need_ceiling = $54 * 30 = 1620.
+    # rehab_countable = max(1780 - 1620, 0) = 160.
+    # provider_rate(0) + PNA(106) - 160 = max(-54, 0) = 0.
+    md_paa: 0
+
+# CARE_HOME_LEVEL_D missing from earlier coverage; verify highest tier.
+- name: Case 8, eligible CARE_HOME_LEVEL_D recipient.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # provider_rate(1376) + PNA(106) - countable(780) = 702.
+    md_paa: 702

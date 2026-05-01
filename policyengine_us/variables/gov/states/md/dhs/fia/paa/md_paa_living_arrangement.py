@@ -21,6 +21,5 @@ class md_paa_living_arrangement(Variable):
     default_value = MDPAALivingArrangement.NONE
     reference = (
         "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20300%20Technical%20Eligibility%20rev%2011.22.docx",
-        "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20400%20Allowable%20Needs%20rev%2011.22.docx",
         "https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2023/23-02%20AT%20-%20COLA%20Mass%20Mod%20FFY23.pdf#page=3",
     )
