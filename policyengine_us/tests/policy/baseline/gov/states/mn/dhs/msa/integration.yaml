@@ -122,11 +122,11 @@
   output:
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
     mn_msa_assistance_standard: 1_055
-    mn_msa_countable_income: 1_000
+    mn_msa_countable_income: 980
     mn_msa_eligible_person: true
-    # Need $1,055 - countable $1,000 (no federal SSI to subtract) = $55.
-    mn_msa_person: 55
-    mn_msa: 55
+    # Standard $1,055 - countable ($1,000 - $20 general) = $1,055 - $980 = $75.
+    mn_msa_person: 75
+    mn_msa: 75
 
 - name: Case 4, Medicaid facility recipient receives PNA-only state portion.
   period: 2026-01

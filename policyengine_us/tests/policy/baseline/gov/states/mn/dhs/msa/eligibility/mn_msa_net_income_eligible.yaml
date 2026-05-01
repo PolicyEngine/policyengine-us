@@ -11,7 +11,7 @@
         mn_msa_lives_with_others: false
         mn_msa_treated_as_living_alone: false
         ssi: 0
-        ssi_unearned_income: 12_660  # $1,055/mo, exactly at INDIVIDUAL_LIVING_ALONE standard
+        ssi_unearned_income: 12_900  # $1,075/mo; minus $20 general = $1,055 countable
     marital_units:
       marital_unit:
         members: [person1]
@@ -42,7 +42,7 @@
         mn_msa_lives_with_others: false
         mn_msa_treated_as_living_alone: false
         ssi: 0
-        ssi_unearned_income: 12_672  # $1,056/mo, $1 above the $1,055 standard
+        ssi_unearned_income: 12_912  # $1,076/mo; minus $20 general = $1,056 countable
     marital_units:
       marital_unit:
         members: [person1]
@@ -73,7 +73,7 @@
         mn_msa_lives_with_others: false
         mn_msa_treated_as_living_alone: false
         ssi: 0
-        ssi_unearned_income: 12_648  # $1,054/mo
+        ssi_unearned_income: 12_888  # $1,074/mo; minus $20 general = $1,054 countable
     marital_units:
       marital_unit:
         members: [person1]

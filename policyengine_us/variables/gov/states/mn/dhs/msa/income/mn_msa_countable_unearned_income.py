@@ -11,16 +11,15 @@ class mn_msa_countable_unearned_income(Variable):
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/256D.44",
         "https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=2",
+        "https://www.house.mn.gov/hrd/pubs/pap_MSA.pdf#page=3",
     )
 
     def formula(person, period, parameters):
-        # Per MN DHS Combined Manual 0018.18, MSA does not apply a
-        # general unearned-income disregard separate from federal SSI's
-        # $20 general disregard; the federal disregard is consumed
-        # inside ssi_countable_income for the SSI track. MSA simply
-        # treats unearned income (including the deemed-spouse amount)
-        # as fully countable.
-        return add(
+        # MSA inherits the federal SSI $20 general income disregard. The
+        # disregard applies first to unearned income; any unused remainder
+        # rolls over to earned income (handled in
+        # mn_msa_countable_earned_income).
+        gross_unearned = add(
             person,
             period,
             [
@@ -28,3 +27,5 @@ class mn_msa_countable_unearned_income(Variable):
                 "ssi_unearned_income_deemed_from_ineligible_spouse",
             ],
         )
+        general = parameters(period).gov.states.mn.dhs.msa.disregard.general
+        return max_(gross_unearned - general, 0)

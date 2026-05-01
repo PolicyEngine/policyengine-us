@@ -1,32 +1,4 @@
-- name: Case 1, earnings below the $65 initial disregard yield zero countable earned.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        ssi_earned_income: 600  # $50/mo (annual = $50 * 12)
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    # Earned $50, after $65 disregard = max(0, 50 - 65) = $0; no remainder to halve.
-    mn_msa_countable_earned_income: 0
-
-- name: Case 2, earnings above $65 disregard apply $65 plus half remainder.
+- name: Case 1, SSI-track recipient with earnings has zero MSA countable earned (federal SSI already disregards).
   period: 2026-01
   input:
     people:
@@ -51,11 +23,12 @@
         members: [person1]
         state_code: MN
   output:
-    # Earned $250, less $65 = $185, halved = $92.50 countable.
-    mn_msa_countable_earned_income: 92.50
+    # SSI > 0; federal $20 + $65 + 1/2 disregards already in ssi_countable_income.
+    mn_msa_countable_earned_income: 0
 
-- name: Case 3, earnings exactly at $65 boundary yield zero countable.
+- name: Case 2, non-SSI track earnings above $20 + $65 disregard apply remaining and half.
   period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -63,8 +36,10 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        ssi_earned_income: 780  # $65/mo
+        ssi_countable_resources: 5_000  # above $2k SSI cap, not on SSI track
+        ssi: 0
+        ssi_earned_income: 3_000  # $250/mo
+        ssi_unearned_income: 0
     marital_units:
       marital_unit:
         members: [person1]
@@ -79,7 +54,38 @@
         members: [person1]
         state_code: MN
   output:
-    # Earned $65 - $65 = $0, half of $0 = $0.
+    # Non-SSI track, no unearned: leftover $20 + $65 = $85 flat; ($250 - $85)/2 = $82.50.
+    mn_msa_countable_earned_income: 82.50
+
+- name: Case 3, non-SSI track earnings exactly at $20 + $65 boundary yield zero countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_earned_income: 1_020  # $85/mo
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Non-SSI track: $85 - $85 = $0; half of $0 = $0.
     mn_msa_countable_earned_income: 0
 
 - name: Case 4, zero earnings yield zero countable.
@@ -111,7 +117,7 @@
     # No earnings -> no countable earned income.
     mn_msa_countable_earned_income: 0
 
-- name: Case 5, earnings $1 above the $65 disregard yield half-of-remainder countable.
+- name: Case 5, non-SSI track unearned income consumes the $20 general so only $65 disregards earned.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -121,8 +127,10 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        ssi_earned_income: 792  # $66/mo, $1 above the $65 disregard
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_earned_income: 792  # $66/mo
+        ssi_unearned_income: 600  # $50/mo, exceeds $20 general
     marital_units:
       marital_unit:
         members: [person1]
@@ -137,10 +145,10 @@
         members: [person1]
         state_code: MN
   output:
-    # Earned $66 - $65 = $1; half = $0.50 countable.
+    # $20 fully consumed by unearned; only $65 applies to earned: ($66 - $65)/2 = $0.50.
     mn_msa_countable_earned_income: 0.50
 
-- name: Case 6, large earnings apply $65 plus half remainder.
+- name: Case 6, non-SSI track large earnings apply $20 + $65 plus half remainder.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -150,8 +158,10 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi_countable_resources: 500
+        ssi_countable_resources: 5_000
+        ssi: 0
         ssi_earned_income: 12_000  # $1,000/mo
+        ssi_unearned_income: 0
     marital_units:
       marital_unit:
         members: [person1]
@@ -166,5 +176,5 @@
         members: [person1]
         state_code: MN
   output:
-    # Earned $1,000 - $65 = $935; halved = $467.50 countable.
-    mn_msa_countable_earned_income: 467.50
+    # Non-SSI track, no unearned: ($1,000 - $85)/2 = $457.50.
+    mn_msa_countable_earned_income: 457.50
