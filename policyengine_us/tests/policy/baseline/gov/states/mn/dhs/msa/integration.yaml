@@ -347,7 +347,7 @@
     mn_msa_person: [81, 0]
     mn_msa: 81
 
-- name: Case 10, recipient with shelter-need allowance add-on.
+- name: Case 10, recipient with housing allowance add-on via Subd. 5(g)(1) pathway.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -358,7 +358,7 @@
         is_disabled: false
         immigration_status: CITIZEN
         ssi_countable_resources: 500
-        mn_msa_shelter_need_eligible: true
+        mn_msa_housing_assistance_eligible: true
         ssi: 11_928
         ssi_earned_income: 0
         ssi_unearned_income: 0
@@ -377,9 +377,9 @@
         state_code: MN
   output:
     mn_msa_assistance_standard: 1_055
-    mn_msa_shelter_need_allowance: 497  # 0.5 * $994
+    mn_msa_housing_assistance: 497  # 0.5 * $994
     mn_msa_eligible_person: true
-    # Base: $1,055 - max($994 SSI - $20, 0) = $81; plus $497 shelter-need add-on = $578.
+    # Base: $1,055 - max($994 SSI - $20, 0) = $81; plus $497 housing add-on = $578.
     mn_msa_person: 578
     mn_msa: 578
 

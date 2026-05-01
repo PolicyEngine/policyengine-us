@@ -1,4 +1,4 @@
-description: Minnesota provides housing assistance at this multiple of the federal Supplemental Security Income individual benefit rate under the Minnesota Supplemental Aid program.
+description: Minnesota provides this multiple of the federal Supplemental Security Income individual benefit rate as the housing allowance under the Minnesota Supplemental Aid program. Per Minn. Stat. § 256D.44 Subd. 5(g)(1), the allowance equals one-half of the maximum federal SSI payment amount for a single individual in effect on July 1 each year. The same amount is paid regardless of which Subd. 5(g) eligibility pathway qualifies the recipient (institution-relocation / HCBS-waiver / shelter > 40% income, or chronic homelessness / housing stabilization).
 
 values:
   1989-01-01: 0.5
@@ -6,9 +6,9 @@ values:
 metadata:
   unit: /1
   period: month
-  label: Minnesota Supplemental Aid housing assistance FBR multiplier
+  label: Minnesota Supplemental Aid housing allowance FBR multiplier
   reference:
-    - title: Minn. Stat. § 256D.44 Subd. 5 (Special needs)
+    - title: Minn. Stat. § 256D.44 Subd. 5(g)(1) (Shelter needs special allowance)
       href: https://www.revisor.mn.gov/statutes/cite/256D.44
     - title: MN DHS Combined Manual 0023.24 - MSA Housing Assistance
       href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&dDocName=cm_002324&RevisionSelectionMethod=LatestReleased
