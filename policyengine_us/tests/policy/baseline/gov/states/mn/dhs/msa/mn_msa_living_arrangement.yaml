@@ -1,26 +1,9 @@
-- name: Case 1, single SSI-eligible person living alone.
+- name: Case 1, default value is INDIVIDUAL_LIVING_ALONE.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 1_000
-        mn_msa_lives_with_others: false
-        mn_msa_treated_as_living_alone: false
-        ssi: 11_928  # $994/mo
-        employment_income: 0
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
     households:
       household:
         members: [person1]
@@ -28,29 +11,13 @@
   output:
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
 
-- name: Case 2, single SSI-eligible person living with others.
+- name: Case 2, user-provided INDIVIDUAL_LIVING_WITH_OTHERS passes through.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 1_000
-        mn_msa_lives_with_others: true
-        mn_msa_treated_as_living_alone: false
-        ssi: 11_928
-        employment_income: 0
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
     households:
       household:
         members: [person1]
@@ -58,173 +25,30 @@
   output:
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
 
-- name: Case 3, married SSI-eligible couple living alone joint claim.
+- name: Case 3, user-provided COUPLE_LIVING_ALONE passes through.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 800
-        mn_msa_lives_with_others: false
-        mn_msa_treated_as_living_alone: false
-        ssi_claim_is_joint: true
-        ssi: 8_946  # half of couple FBR $1,491
-      person2:
-        age: 68
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 800
-        mn_msa_lives_with_others: false
-        mn_msa_treated_as_living_alone: false
-        ssi_claim_is_joint: true
-        ssi: 8_946
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: MN
   output:
-    mn_msa_living_arrangement: [COUPLE_LIVING_ALONE, COUPLE_LIVING_ALONE]
+    mn_msa_living_arrangement: COUPLE_LIVING_ALONE
 
-- name: Case 4, married SSI-eligible couple living with others joint claim.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 72
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 800
-        mn_msa_lives_with_others: true
-        mn_msa_treated_as_living_alone: false
-        ssi_claim_is_joint: true
-        ssi: 8_946
-      person2:
-        age: 70
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 800
-        mn_msa_lives_with_others: true
-        mn_msa_treated_as_living_alone: false
-        ssi_claim_is_joint: true
-        ssi: 8_946
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MN
-  output:
-    mn_msa_living_arrangement: [COUPLE_LIVING_WITH_OTHERS, COUPLE_LIVING_WITH_OTHERS]
-
-- name: Case 5, person in Medicaid facility.
+- name: Case 4, user-provided MEDICAID_FACILITY passes through.
   period: 2026-01
   input:
     people:
       person1:
         age: 80
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 200
-        ssi_lives_in_medical_treatment_facility: true
-        ssi_medicaid_pays_majority_of_care: true
-        mn_msa_lives_with_others: false
-        mn_msa_treated_as_living_alone: false
-        ssi: 360  # $30/mo FLA-D
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
+        mn_msa_living_arrangement: MEDICAID_FACILITY
     households:
       household:
         members: [person1]
         state_code: MN
   output:
     mn_msa_living_arrangement: MEDICAID_FACILITY
-
-- name: Case 6, HCBS treated-as-living-alone overrides cohabitation.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 60
-        is_blind: false
-        is_disabled: true
-        immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        mn_msa_lives_with_others: true
-        mn_msa_treated_as_living_alone: true
-        ssi: 11_928
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    # Treated-as-living-alone forces INDIVIDUAL_LIVING_ALONE despite cohabitation.
-    mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
-
-- name: Case 7, non-categorically-eligible person defaults to NONE.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 40
-        is_blind: false
-        is_disabled: false
-        immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        mn_msa_lives_with_others: false
-        mn_msa_treated_as_living_alone: false
-        ssi: 0
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    # Not aged/blind/disabled -> not categorically eligible -> NONE.
-    mn_msa_living_arrangement: NONE

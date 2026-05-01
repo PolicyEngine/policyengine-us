@@ -17,8 +17,9 @@ class mn_msa_housing_assistance(Variable):
         # Per Combined Manual 0023.24: MSA Housing Assistance equals
         # one half of the federal SSI individual benefit rate. Recipients
         # are also treated as living alone for assistance-standard
-        # selection — set mn_msa_treated_as_living_alone alongside this
-        # eligibility input to capture the joint effect.
+        # selection — set mn_msa_living_arrangement to
+        # INDIVIDUAL_LIVING_ALONE alongside this eligibility input to
+        # capture the joint effect.
         p = parameters(period).gov.states.mn.dhs.msa.housing_assistance
         ssi_fbr = parameters(period).gov.ssa.ssi.amount.individual
         eligible = person("mn_msa_housing_assistance_eligible", period)

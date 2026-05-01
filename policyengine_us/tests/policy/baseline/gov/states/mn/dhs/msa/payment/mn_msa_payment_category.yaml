@@ -1,0 +1,42 @@
+- name: Case 1, default category mirrors the bare-input default.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: INDIVIDUAL_LIVING_ALONE
+
+- name: Case 2, user-provided arrangement passes through when not in a Medicaid facility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: INDIVIDUAL_LIVING_WITH_OTHERS
+
+- name: Case 3, federal Medicaid-facility status overrides the input arrangement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: MEDICAID_FACILITY
