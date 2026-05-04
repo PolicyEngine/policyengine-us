@@ -29,7 +29,6 @@
   output:
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
     mn_msa_assistance_standard: 1_055
-    mn_msa_countable_income: 0
     mn_msa_eligible_person: true
     # Need $1,055 - max($994 SSI - $20 general, 0) - countable $0 = $81.
     mn_msa_person: 81
@@ -78,10 +77,10 @@
   output:
     mn_msa_living_arrangement: [COUPLE_LIVING_WITH_OTHERS, COUPLE_LIVING_WITH_OTHERS]
     mn_msa_assistance_standard: [1_058, 1_058]
-    mn_msa_eligible_person: [true, true]
-    # COUPLE_LIVING_WITH_OTHERS $1,058 is the couple total; per person =
-    # $529. Per spouse: max(0, $529 - $745.50 - $0) = $0 (couple SSI
-    # exceeds the couple supplement standard for this living arrangement).
+    # Couple SSI track countable = $1,491 FBR + $0 unearned - $20 = $1,471.
+    # Standard $1,058 < $1,471, so the net-income test fails -> not eligible
+    # and no state supplement (couple FBR exceeds the CLWO standard).
+    mn_msa_eligible_person: [false, false]
     mn_msa_person: [0, 0]
     mn_msa: 0
 
@@ -116,7 +115,6 @@
   output:
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
     mn_msa_assistance_standard: 1_055
-    mn_msa_countable_income: 980
     mn_msa_eligible_person: true
     # Standard $1,055 - countable ($1,000 - $20 general) = $1,055 - $980 = $75.
     mn_msa_person: 75
@@ -156,12 +154,11 @@
     # the federal medical-facility status is detected by mn_msa_payment_category,
     # which the assistance_standard formula reads.
     mn_msa_payment_category: MEDICAID_FACILITY
-    mn_msa_assistance_standard: 162
-    mn_msa_countable_income: 0
+    mn_msa_assistance_standard: 132
     mn_msa_eligible_person: true
-    # Need $162 - federal SSI $30 - countable $0 = $132 (PNA only as state portion).
-    mn_msa_person: 132
-    mn_msa: 132
+    # Combined PNA standard $132 - federal SSI FBR $30 = $102 state supplement.
+    mn_msa_person: 102
+    mn_msa: 102
 
 - name: Case 5, recipient with MSA Housing Assistance add-on.
   period: 2026-01
@@ -231,7 +228,6 @@
     # Countable income components are floored at 0; benefit cannot exceed need - SSI.
     # $1,055 - max($994 SSI - $20 general, 0) = $1,055 - $974 = $81.
     mn_msa_assistance_standard: 1_055
-    mn_msa_countable_income: 0
     mn_msa_person: 81
     mn_msa: 81
 
@@ -384,7 +380,7 @@
     mn_msa_person: 578
     mn_msa: 578
 
-- name: Case 11, recipient with representative payee fee and guardian fee combined.
+- name: Case 11, non-SSI track recipient with earned income, rep payee, and guardian fee.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -394,12 +390,14 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi_countable_resources: 500
+        ssi_countable_resources: 500  # under $10k non-SSI track cap
         mn_msa_uses_representative_payee: true
         mn_msa_has_guardian: true
-        ssi: 11_928  # $994/mo federal SSI
-        ssi_earned_income: 0
-        ssi_unearned_income: 12_000  # $1,000/mo gross unearned
+        # $2,000/mo earned exceeds the federal SSI cap, so the recipient
+        # qualifies for MSA via the non-SSI track. Force ssi: 0 explicitly
+        # to make the test deterministic.
+        ssi: 0
+        employment_income: 24_000
     marital_units:
       marital_unit:
         members: [person1]
@@ -416,12 +414,14 @@
   output:
     mn_msa_assistance_standard: 1_055
     mn_msa_representative_payee_fee: 57
-    # Gross = SSI $994 + unearned $1,000 = $1,994; 5% = $99.70 < $100 cap.
-    mn_msa_guardian_fee: 99.70
-    # Base: max(0, $1,055 - $994 - $1,000 countable) = $0;
-    # plus $57 payee fee + $99.70 guardian fee = $156.70.
-    mn_msa_person: 156.70
-    mn_msa: 156.70
+    # Guardian fee: 5% of $2,000 gross monthly income = $100 (at cap).
+    mn_msa_guardian_fee: 100
+    # Non-SSI track countable: $20 disregard hits unearned ($0), so all
+    # $20 + $65 = $85 plus 1/2 remainder applies to earned. Countable
+    # earned = ($2,000 - $85) * 0.5 = $957.50. Base supp = $1,055 - $957.50
+    # = $97.50; plus $57 payee fee + $100 guardian fee = $254.50.
+    mn_msa_person: 254.50
+    mn_msa: 254.50
 
 - name: Case 12, person not lawfully present is ineligible regardless of resources or income.
   period: 2026-01

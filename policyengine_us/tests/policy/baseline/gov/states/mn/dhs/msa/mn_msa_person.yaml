@@ -89,8 +89,8 @@
         members: [person1]
         state_code: MN
   output:
-    # Standard $162 - federal SSI $30 - countable $0 = $132 (PNA only, state portion).
-    mn_msa_person: 132
+    # Combined PNA standard $132 - federal SSI FBR $30 = $102 state supplement.
+    mn_msa_person: 102
 
 - name: Case 4, SSI couple living alone splits the couple-rate 50/50 across spouses.
   period: 2026-01

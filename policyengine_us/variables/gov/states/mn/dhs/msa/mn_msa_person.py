@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
+    _apply_ssi_exclusions,
+)
 
 
 class mn_msa_person(Variable):
@@ -15,11 +18,12 @@ class mn_msa_person(Variable):
     )
 
     def formula(person, period, parameters):
-        # SSI track counts federal SSI FBR as gross unearned, then applies
-        # the $20 general disregard. FLA-D (Medicaid facility) is exempt
-        # from the $20 disregard. Non-SSI track uses mn_msa_countable_income
-        # (already aggregates $20 + $65 + 1/2 federally).
-        # Couples are computed at the marital unit then split 50/50.
+        # MSA inherits federal SSI's $20 / $65 / 1/2 disregards (CM 0018.18).
+        # The SSI track substitutes the federal SSI FBR for the recipient's
+        # post-disregard SSI payment so MSA tops up against the FBR rather
+        # than the federal payment. FLA-D recipients are exempt from the $20
+        # general disregard. Couples are computed at the marital unit then
+        # split 50/50 to avoid wasting disregards on asymmetric income.
         arrangement = person("mn_msa_payment_category", period)
         LA = arrangement.possible_values
         is_couple = (arrangement == LA.COUPLE_LIVING_ALONE) | (
@@ -30,7 +34,7 @@ class mn_msa_person(Variable):
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
         ssi_fbr = person("ssi_amount_if_eligible", period)
-        p = parameters(period).gov.states.mn.dhs.msa.disregard
+        p = parameters(period).gov.ssa.ssi.income.exclusions
         raw_unearned = add(
             person,
             period,
@@ -55,13 +59,40 @@ class mn_msa_person(Variable):
         individual_ssi_supplement = max_(standard - individual_ssi_countable, 0)
         ssi_track = where(is_couple, couple_ssi_supplement, individual_ssi_supplement)
 
-        # Non-SSI track: countable_income is already per-spouse share for
-        # couples; sum across the marital unit gives the couple total.
-        countable_income = person("mn_msa_countable_income", period)
-        couple_non_ssi_supplement = (
-            max_(standard - person.marital_unit.sum(countable_income), 0) / 2
+        # Non-SSI track: applies federal SSI exclusions ($20 + $65 + 1/2)
+        # to raw earned and unearned income. Helper accepts annual amounts
+        # and returns annual countable; convert to monthly to match MSA.
+        annual_earned = add(
+            person,
+            period.this_year,
+            [
+                "ssi_earned_income",
+                "ssi_earned_income_deemed_from_ineligible_spouse",
+            ],
         )
-        individual_non_ssi_supplement = max_(standard - countable_income, 0)
+        annual_unearned = add(
+            person,
+            period.this_year,
+            [
+                "ssi_unearned_income",
+                "ssi_unearned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_parent",
+            ],
+        )
+        couple_earned = person.marital_unit.sum(annual_earned)
+        couple_unearned = person.marital_unit.sum(annual_unearned)
+        couple_non_ssi_countable_annual = _apply_ssi_exclusions(
+            couple_earned, couple_unearned, parameters, period
+        )
+        individual_non_ssi_countable_annual = _apply_ssi_exclusions(
+            annual_earned, annual_unearned, parameters, period
+        )
+        couple_non_ssi_countable = couple_non_ssi_countable_annual / MONTHS_IN_YEAR
+        individual_non_ssi_countable = (
+            individual_non_ssi_countable_annual / MONTHS_IN_YEAR
+        )
+        couple_non_ssi_supplement = max_(standard - couple_non_ssi_countable, 0) / 2
+        individual_non_ssi_supplement = max_(standard - individual_non_ssi_countable, 0)
         non_ssi_track = where(
             is_couple, couple_non_ssi_supplement, individual_non_ssi_supplement
         )
