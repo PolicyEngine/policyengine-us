@@ -17,6 +17,10 @@ class mn_msa_living_arrangement(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     possible_values = MNMSALivingArrangement
+    # Defaults to INDIVIDUAL_LIVING_ALONE; users modeling persons in shared
+    # housing, congregate care, or Medicaid facilities should set this
+    # explicitly. The default is reasonable for single-person households but
+    # may overstate benefits for elderly persons living with relatives.
     default_value = MNMSALivingArrangement.INDIVIDUAL_LIVING_ALONE
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/256D.44",

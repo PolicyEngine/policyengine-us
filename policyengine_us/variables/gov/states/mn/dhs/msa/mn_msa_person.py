@@ -18,6 +18,11 @@ class mn_msa_person(Variable):
     )
 
     def formula(person, period, parameters):
+        # Countable-income logic intentionally duplicates
+        # mn_msa_net_income_eligible to avoid a defined_for cycle (this
+        # variable is gated on mn_msa_eligible_person, which depends on
+        # mn_msa_net_income_eligible). Keep the two formulas in sync when
+        # changing income treatment.
         # MSA inherits federal SSI's $20 / $65 / 1/2 disregards (CM 0018.18).
         # The SSI track substitutes the federal SSI FBR for the recipient's
         # post-disregard SSI payment so MSA tops up against the FBR rather

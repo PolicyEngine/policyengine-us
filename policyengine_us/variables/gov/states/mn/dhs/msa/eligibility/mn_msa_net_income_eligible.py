@@ -16,6 +16,10 @@ class mn_msa_net_income_eligible(Variable):
     )
 
     def formula(person, period, parameters):
+        # Countable-income logic intentionally duplicates mn_msa_person to
+        # avoid a defined_for cycle (mn_msa_person is gated on
+        # mn_msa_eligible_person, which depends on this variable). Keep the
+        # two formulas in sync when changing income treatment.
         # Per House Research Oct 2024 p.3 and CM 0018.18: for SSI recipients,
         # MSA's net-income calc counts the full federal SSI FBR as gross
         # unearned income and applies only the $20 general disregard
