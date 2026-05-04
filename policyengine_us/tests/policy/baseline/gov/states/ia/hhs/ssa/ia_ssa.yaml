@@ -241,10 +241,12 @@
 # DP (Dependent Person) supplement tests (IAC 441—52.1(2): 5 configurations).
 # ============================================================================
 # IAC 441—52.1(2): DP is federally-administered per POMS SI 01415.050.F.
-# Federally-administered SSP formula:
-#   supplement = min(max(0, (FBR + state_supplement) - max(countable, FBR)),
-#                    max_per_person_cap)
-# max_per_person_cap = $503 in 2025, $518 in 2026.
+# Iowa GL 6-B-46 p. 22 publishes a per-configuration assistance standard.
+# Per the manual ("Only the income of the eligible person or eligible couple
+# is subtracted from the applicable assistance standard"), the supplement is:
+#   supplement = max(0, assistance_standard - max(countable, applicable_FBR))
+# where applicable_FBR is the couple FBR for configurations that include an
+# eligible spouse, and the individual FBR otherwise.
 # Also requires dependent's countable income < dependent_income_limit
 # (enforced in ia_ssa_living_arrangement).
 
@@ -300,60 +302,87 @@
     ia_ssa_eligible: [false]
     ia_ssa: [0]
 
-- name: Case 3, DP supplement capped at per-person maximum 503 dollars.
+- name: Case 3, blind client with aged spouse and dependent child receives DP at couple-FBR-based standard.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
+        is_blind: true
         employment_income: 0
-        ia_ssa_dp_configuration: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_configuration: BLIND_WITH_AGED_OR_DISABLED_SPOUSE_AND_DEPENDENT
         ia_ssa_dp_has_eligible_dependent: true
         ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        age: 68
+        is_blind: false
+        employment_income: 0
+        ia_ssa_dp_configuration: NONE
+      person3:
+        age: 10
+        employment_income: 0
     marital_units:
-      marital_unit:
-        members: [person1]
+      first_marital_unit:
+        members: [person1, person2]
+      second_marital_unit:
+        members: [person3]
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members: [person1]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [person1]
+        members: [person1, person2, person3]
         state_code: IA
   output:
-    # Standard $1,997 minus federal SSI and income; well above $503 cap
-    ia_ssa: [503]
+    # person1: DP standard $1,975 minus couple FBR $1,450 = $525.
+    # person2: aged spouse with no DP/BLIND/SMME qualification -> NONE.
+    # person3: child -> NONE.
+    ia_ssa_living_arrangement: [DP, NONE, NONE]
+    ia_ssa: [525, 0, 0]
 
-- name: Case 4, DP supplement cap rises to 518 dollars in 2026.
+- name: Case 4, blind client with aged spouse and dependent child at 2026 rates.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
+        is_blind: true
         employment_income: 0
-        ia_ssa_dp_configuration: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_configuration: BLIND_WITH_AGED_OR_DISABLED_SPOUSE_AND_DEPENDENT
         ia_ssa_dp_has_eligible_dependent: true
         ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        age: 68
+        is_blind: false
+        employment_income: 0
+        ia_ssa_dp_configuration: NONE
+      person3:
+        age: 10
+        employment_income: 0
     marital_units:
-      marital_unit:
-        members: [person1]
+      first_marital_unit:
+        members: [person1, person2]
+      second_marital_unit:
+        members: [person3]
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2, person3]
     spm_units:
       spm_unit:
-        members: [person1]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [person1]
+        members: [person1, person2, person3]
         state_code: IA
   output:
-    ia_ssa: [518]
+    # 2026 DP standard $2,031 minus 2026 couple FBR $1,491 = $540.
+    ia_ssa_living_arrangement: [DP, NONE, NONE]
+    ia_ssa: [540, 0, 0]
 
 - name: Case 5, aged client with aged spouse and dependent child integration.
   period: 2025-01
@@ -389,10 +418,11 @@
         members: [person1, person2, person3]
         state_code: IA
   output:
-    # person1: DP capped at $503.
-    # person2: income above 120% FPL for household of 3 would be required
-    # for SMME ($26,650 × 1.2 / 12 = $2,665/mo); but income is $0, so not
-    # SMME-eligible -> NONE.
+    # person1: aged + aged-spouse + dependent. Standard $1,953, couple FBR
+    # $1,450: max(0, 1953 - max(0, 1450)) = $503.
+    # person2: aged with no DP configuration; for SMME income must exceed
+    # 120% FPL for one person ($1,565/mo with the new 1-person/2-person
+    # FPG sizing); income is $0, so not SMME-eligible -> NONE.
     # person3: child -> NONE.
     ia_ssa_living_arrangement: [DP, NONE, NONE]
     ia_ssa: [503, 0, 0]
@@ -451,21 +481,21 @@
         members: [person1]
         state_code: IA
   output:
-    # 2017 AGED_OR_DISABLED_WITH_DEPENDENT payment standard $1,114; FBR $735;
-    # max_per_person_cap $379. Federally-administered formula:
-    # max(0, 1114 - max(0, 735)) = $379 -> capped at $379.
+    # 2017 AGED_OR_DISABLED_WITH_DEPENDENT standard $1,114; individual FBR $735.
+    # Single eligible person -> applicable FBR is individual.
+    # max(0, 1114 - max(0, 735)) = $379.
     ia_ssa_living_arrangement: [DP]
     ia_ssa: [379]
 
-- name: Case 8, DP supplement phases down when countable income exceeds FBR.
+- name: Case 8, DP supplement phases down when single client's countable income exceeds FBR.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
-        social_security_retirement: 20_640  # $1,720/mo
-        ia_ssa_dp_configuration: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+        social_security_retirement: 15_600  # $1,300/mo
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
         ia_ssa_dp_has_eligible_dependent: true
         ia_ssa_dp_dependent_countable_income: 0
     marital_units:
@@ -482,10 +512,11 @@
         members: [person1]
         state_code: IA
   output:
-    # $1,720/mo SS gross -> $1,700/mo countable. Payment standard $1,997,
-    # FBR $967. Federally-administered formula:
-    # max(0, 1997 - max(1700, 967)) = $297 (under the $503 cap).
-    ia_ssa: [297]
+    # $1,300/mo SS gross -> $1,280/mo countable (after SSI $20 disregard,
+    # which DP retains because DP is federally administered). Standard
+    # $1,470, individual FBR $967 (single eligible client):
+    # max(0, 1470 - max(1280, 967)) = $190.
+    ia_ssa: [190]
 
 # ============================================================================
 # FLH (Family-Life Home) supplement tests (IAC 441—52.1(1)).
@@ -944,8 +975,9 @@
         members: [person1]
         state_code: IA
   output:
-    # Countable $1,647/mo minus individual FBR disregard $967 = $680, which
-    # exceeds the single cap $480.55 -> not in IHHRC category -> no supplement.
+    # Countable for IHHRC (no SSI $20 disregard) $1,667/mo minus individual
+    # FBR disregard $967 = $700, which exceeds the single cap $480.55 -> not
+    # in IHHRC category -> no supplement.
     ia_ssa: [0]
 
 - name: Case 9, single person with countable income below FBR gets full supplement.
@@ -972,9 +1004,9 @@
         members: [person1]
         state_code: IA
   output:
-    # $800/mo SS gross, countable $780/mo. Individual FBR disregard $967 makes
-    # income after disregard 0 -> passes single cap. Client participation is
-    # 0 -> supplement equals cost $400.
+    # $800/mo SS unearned. IHHRC countable (no $20 disregard) $800/mo.
+    # Individual FBR disregard $967 makes income after disregard 0 -> passes
+    # single cap. Client participation is 0 -> supplement equals cost $400.
     ia_ssa: [400]
 
 - name: Case 10, couple both needing IHHRC with combined countable below couple FBR.
@@ -1006,10 +1038,10 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # Each spouse's countable unearned is about $580/mo after the $20 general
-    # disregard, combined ~$1,160. Couple FBR disregard $1,450 leaves 0 after
-    # disregard -> passes couple cap $961.10. Client participation is 0 ->
-    # each person's supplement equals cost $400.
+    # Each spouse's IHHRC countable (no $20 disregard) is $600/mo, combined
+    # $1,200. Couple FBR disregard $1,450 leaves 0 after disregard -> passes
+    # couple cap $961.10. Client participation is 0 -> each person's
+    # supplement equals cost $400.
     ia_ssa_ihhrc_both_need_care: [true, true]
     ia_ssa: [400, 400]
 
@@ -1042,9 +1074,9 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # Each spouse's countable ~$1,300/mo; combined ~$2,600. After couple FBR
-    # disregard $1,450 -> $1,150 countable, which exceeds the couple cap
-    # $961.10 -> both ineligible.
+    # Each spouse's IHHRC countable (no $20 disregard) is $1,320/mo; combined
+    # $2,640. After couple FBR disregard $1,450 -> $1,190 countable, which
+    # exceeds the couple cap $961.10 -> both ineligible.
     ia_ssa_ihhrc_both_need_care: [true, true]
     ia_ssa: [0, 0]
 
@@ -1079,13 +1111,13 @@
         members: [person1, person2]
         state_code: IA
   output:
-    # person1 is the sole IHHRC recipient. Per IAC 441-177.10(2)(a) all of
-    # the household's remaining income after the FBR disregard is client
-    # participation for the one set of services, so person1 shoulders the
-    # full $130. Supplement = min($400, $480.55) − $130 = $270. person2 is
-    # not in the IHHRC category and receives $0.
+    # person1 is the sole IHHRC recipient. Each spouse has $800/mo IHHRC
+    # countable (no $20 disregard); combined $1,600 minus couple FBR $1,450
+    # = $150. Per IAC 441-177.10(2)(a) all of that participation is charged
+    # to the one recipient. Supplement = min($400, $480.55) − $150 = $250.
+    # person2 is not in the IHHRC category and receives $0.
     ia_ssa_ihhrc_both_need_care: [false, false]
-    ia_ssa: [270, 0]
+    ia_ssa: [250, 0]
 
 # ============================================================================
 # RCF (Residential Care Facility) supplement tests (IAC 441—52.1(3)).
@@ -1260,10 +1292,12 @@
         members: [person1]
         state_code: IA
   output:
-    # $1,000/mo SS, countable $980; no SSI (countable > FBR minus $0 state
-    # standard); total monthly income $980; client participation
-    # $980 - $126 = $854; supplement = $1,165.60 - $854 = $311.60.
-    ia_ssa: [311.60]
+    # $1,000/mo SS unearned. RCF does not allow the SSI $20 disregard
+    # (GL 6-B-46 p. 54), so countable for RCF is $1,000 (not $980). No SSI
+    # (SSI's calc treats countable as $980 > FBR $967 -> $0). Total monthly
+    # income $1,000; client participation $1,000 - $126 = $874; supplement
+    # = $1,165.60 - $874 = $291.60.
+    ia_ssa: [291.60]
 
 - name: Case 7, RCF resident with income above 31 times max per diem is ineligible.
   period: 2025-01

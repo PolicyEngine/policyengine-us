@@ -1,7 +1,7 @@
 # Verifies ia_ssa_living_arrangement priority ordering:
 # RCF > IHHRC > FLH > DP > BLIND > SMME > NONE
 #
-# Note: SMME requires income > 120% FPL (IAC 441—51.6(6)). 2025 FPL 1-person
+# Note: SMME requires income > 120% FPL (IAC 441—51.7(6)). 2025 FPL 1-person
 # (contiguous US) = $15,650; 120% = $18,780/year or $1,565/month.
 
 - name: Case 1, RCF resident who is also blind gets RCF category not BLIND.

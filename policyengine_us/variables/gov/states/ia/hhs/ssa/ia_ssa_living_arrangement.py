@@ -24,26 +24,23 @@ class ia_ssa_living_arrangement(Variable):
     def formula(person, period, parameters):
         eligible = person("ia_ssa_eligible", period)
         p = parameters(period).gov.states.ia.hhs.ssa
-        # Monthly SSI countable income and federal SSI payment; both source
-        # variables are annual, so divide by 12 for use in monthly formulas.
         countable_monthly = (
             person("ssi_countable_income", period.this_year) / MONTHS_IN_YEAR
         )
         ssi_monthly = person("ssi", period.this_year) / MONTHS_IN_YEAR
-        total_rcf_income = countable_monthly + ssi_monthly
-        # Federal SSI parameters used below for the FBR-based disregard.
-        individual_fbr = parameters(period).gov.ssa.ssi.amount.individual
-        couple_fbr = parameters(period).gov.ssa.ssi.amount.couple
+        countable_no_disregard = person("ia_ssa_countable_income_no_disregard", period)
+        p_ssi = parameters(period).gov.ssa.ssi.amount
+        individual_fbr = p_ssi.individual
+        couple_fbr = p_ssi.couple
         joint_claim = person("ssi_claim_is_joint", period.this_year)
         basic_ssi_disregard = where(joint_claim, couple_fbr, individual_fbr)
-        # IAC 441—51.3(3) cross-refs 52.1(3)"a": RCF income eligibility
-        # compares client participation (total monthly income minus the
-        # personal needs allowance) against 31 × the maximum per diem. The
-        # 2025 Iowa HHS manual states the rule as: a person meets income
-        # eligibility when client participation is less than the cost of care
-        # for a 31-day month.
+        # IAC 441—51.4(3) cross-refs 52.1(3)"a": RCF income eligibility compares
+        # client participation (total monthly income minus the personal needs
+        # allowance) against 31 × the maximum per diem. GL 6-B-46 p. 54 omits
+        # the SSI $20 disregard, so use countable_no_disregard.
+        rcf_total_income = countable_no_disregard + ssi_monthly
         rcf_client_participation = max_(
-            0, total_rcf_income - p.rcf.personal_needs_allowance
+            0, rcf_total_income - p.rcf.personal_needs_allowance
         )
         in_rcf = person("ia_ssa_resides_in_residential_care_facility", period)
         rcf_income_threshold = p.rcf.days_multiplier * p.rcf.max_per_diem
@@ -52,11 +49,9 @@ class ia_ssa_living_arrangement(Variable):
         both_need_care = person("ia_ssa_ihhrc_both_need_care", period)
         # IAC 441—177.4(1)(f) caps combined marital-unit countable income at
         # $480.55 (one spouse needs care) or $961.10 (both need care) after
-        # the basic SSI standard disregard (the applicable FBR for a single
-        # or joint claim). Compare combined marital-unit income against the
-        # applicable cap for both configurations so the rule is enforced
-        # symmetrically.
-        combined_countable = person.marital_unit.sum(countable_monthly)
+        # the basic SSI standard disregard. GL 6-B-46 p. 36 omits the $20
+        # disregard, so use countable_no_disregard.
+        combined_countable = person.marital_unit.sum(countable_no_disregard)
         ihhrc_countable_after_disregard = max_(
             0, combined_countable - basic_ssi_disregard
         )
@@ -71,17 +66,17 @@ class ia_ssa_living_arrangement(Variable):
         has_dependent = person("ia_ssa_dp_has_eligible_dependent", period)
         dp_configuration = person("ia_ssa_dp_configuration", period)
         in_dp = dp_configuration != dp_configuration.possible_values.NONE
-        # IAC 441—52.1(2): DP requires the dependent's countable income to be
-        # below the dependent income limit. Gate DP at the living-arrangement
-        # level so people who qualify for DP but fail the dependent-income
-        # test fall through to Blind / SMME rather than receiving a zero DP
-        # supplement.
+        # IAC 441—52.1(2): DP requires the dependent's countable income below
+        # the dependent income limit (per IAC 441—51.5(1)). Gate at the
+        # living-arrangement level so people who qualify for DP but fail the
+        # dependent-income test fall through to Blind / SMME rather than
+        # receiving a zero DP supplement.
         dependent_income = person("ia_ssa_dp_dependent_countable_income", period)
         dependent_income_eligible = dependent_income < p.dp.dependent_income_limit
         is_blind = person("is_blind", period.this_year)
         # IAC 441—52.1(4) blind standard is a federally-administered SSP;
-        # supplement phases to zero when countable income reaches FBR +
-        # state standard. Mirror that ceiling in the category gate so blind
+        # supplement phases to zero when countable income reaches FBR + state
+        # standard. Mirror that ceiling in the category gate so blind
         # recipients with excess income fall through to the next category.
         blind_income_eligible = countable_monthly < individual_fbr + p.blind
         smme_eligible = person("ia_ssa_smme_eligible", period)
