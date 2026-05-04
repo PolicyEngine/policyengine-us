@@ -191,14 +191,12 @@
         state_code: MD
   output:
     # Federal SSI uses couple_FBR/2 = $1,491 / 2 = $745.50 per spouse, but
-    # per SSA 2011 MD Table 1 footnote a ("the state supplementation rate
-    # for individuals applies to each member of a couple") the PAA cascade
+    # per COMAR 07.03.07.04 (rate schedule per recipient) the PAA cascade
     # uses the individual FBR ($994) per spouse — never couple_FBR/2.
     # combined per person = 776 + 106 = 882; state_supp_max = max(882 -
     # 994, 0) = 0 per spouse. The couple is left at federal $745.50 + state
-    # $0 = $745.50 per spouse, which matches the SSA-published state-supp
-    # treatment of couples (Maryland does not top up to fill the federal
-    # couple-FBR reduction).
+    # $0 = $745.50 per spouse — Maryland does not top up to fill the
+    # federal couple-FBR reduction.
     ssi_amount_if_eligible: [745.50, 745.50]
     ssi_countable_income: [0, 0]
     md_paa_eligible: [true, true]
@@ -267,7 +265,7 @@
         state_code: MD
   output:
     # No federal cash benefit (SSI / SSDI / OASI) → PAA-ineligible per
-    # PAA Manual §300.1.B.
+    # COMAR 07.03.07.03(A)(2).
     md_paa_eligible: [false]
     md_paa: [0]
 
@@ -395,9 +393,9 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Federal SSI uses couple_FBR/2 = $745.50 per spouse, but per SSA 2011
-    # MD Table 1 footnote a the PAA cascade uses the individual FBR ($994)
-    # per spouse. Per-person cascade:
+    # Federal SSI uses couple_FBR/2 = $745.50 per spouse, but per COMAR
+    # 07.03.07.04 (rate schedule per recipient) the PAA cascade uses the
+    # individual FBR ($994) per spouse. Per-person cascade:
     #   person1 (CARE_HOME_LEVEL_A): combined = 776 + 106 = 882;
     #     state_supp_max = max(882 - 994, 0) = 0.
     #   person2 (CARE_HOME_LEVEL_C): combined = 1173 + 106 = 1279;
@@ -439,11 +437,11 @@
         members: [person1]
         state_code: MD
   output:
-    # PAA Manual §300.1.B: OASI receipt qualifies a person ONLY if they
-    # also meet aged/blind/disabled. A 50-year-old surviving spouse is
-    # not categorically qualifying, so PAA must reject — exercises the
-    # `(social_security > 0) & is_categorically_qualifying` branch of
-    # md_paa_eligible separately from Case 7's no-federal-benefit case.
+    # COMAR 07.03.07.03(A)(2): OASI receipt qualifies a person ONLY if
+    # they also meet aged/blind/disabled. A 50-year-old surviving spouse
+    # is not categorically qualifying, so PAA must reject — exercises
+    # the `(social_security > 0) & is_categorically_qualifying` branch
+    # of md_paa_eligible separately from Case 7's no-federal-benefit case.
     md_paa_eligible: [false]
     md_paa: [0]
 

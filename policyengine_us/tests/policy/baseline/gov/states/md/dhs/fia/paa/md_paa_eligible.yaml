@@ -1,9 +1,13 @@
 # Tests for md_paa_eligible variable.
 # Eligibility requires:
 #   - state_code = MD (defined_for filter)
-#   - ssi > 0 OR social_security_disability > 0 (federal cash benefit per §300.1.B)
-#   - ssi_countable_resources <= $2,000 (parity with federal SSI per §500.2.B)
-#   - md_paa_living_arrangement != NONE (§300.3, §300.4)
+#   - ssi > 0 OR social_security_disability > 0 OR (oasi > 0 AND aged/blind/
+#     disabled) OR pending §300.5 application (federal cash benefit per
+#     COMAR 07.03.07.03(A)(2))
+#   - ssi_countable_resources <= $2,000 (parity with federal SSI per
+#     PAA Manual §500)
+#   - md_paa_living_arrangement != NONE (PAA Manual §300.3, §300.4)
+#   - REHAB ⇄ ssi_lives_in_medical_treatment_facility consistency
 
 - name: Case 1, SSI recipient in CARE_HOME_LEVEL_B in Maryland is eligible.
   period: 2025-01
@@ -70,8 +74,8 @@
   output:
     md_paa_eligible: false
 
-# Per PAA Manual §300.1.B, applicants who receive SSDI (without SSI) on the
-# basis of disability are also PAA-eligible.
+# Per COMAR 07.03.07.03(A)(2), applicants who receive SSDI (without SSI)
+# on the basis of disability are also PAA-eligible.
 - name: Case 5, SSDI-only recipient is eligible.
   period: 2025-01
   input:
@@ -89,7 +93,7 @@
   output:
     md_paa_eligible: true
 
-# Per PAA Manual §500.2.B, the $2,000 SSI resource limit applies. Verify
+# Per PAA Manual §500, the $2,000 SSI resource limit applies. Verify
 # the resource gate is enforced independently of SSI receipt.
 - name: Case 6, resources above $2,000 limit are ineligible.
   period: 2025-01
@@ -110,7 +114,7 @@
 # A person with only earned income (no SSI, SSDI, or OASI receipt) cannot
 # qualify for PAA, even if otherwise in a PAA facility — PAA requires
 # receipt of a federal cash benefit on the basis of age/blindness/
-# disability per §300.1.B.
+# disability per COMAR 07.03.07.03(A)(2).
 - name: Case 7, no federal cash benefit receipt is PAA-ineligible.
   period: 2025-01
   input:
@@ -190,7 +194,7 @@
   output:
     md_paa_eligible: false
 
-# Resource limit boundary: PAA Manual §500.2.B caps at $2,000 (federal SSI
+# Resource limit boundary: PAA Manual §500 caps at $2,000 (federal SSI
 # individual limit). Confirm the boundary applies inclusively at $2,000
 # and excludes $2,001 — guards against off-by-one regressions if the
 # parameter or comparison operator ever changes.
@@ -273,10 +277,10 @@
   output:
     md_paa_eligible: true
 
-# Per PAA Manual §300.1.B, OASI receipt qualifies a person ONLY if they
-# are also aged/blind/disabled. A 50-year-old surviving spouse drawing
-# Social Security survivor benefits is not categorically qualifying and
-# must be rejected, even though `social_security > 0`.
+# Per COMAR 07.03.07.03(A)(2), OASI receipt qualifies a person ONLY if
+# they are also aged/blind/disabled. A 50-year-old surviving spouse
+# drawing Social Security survivor benefits is not categorically
+# qualifying and must be rejected, even though `social_security > 0`.
 - name: Case 14, OASI recipient who is not aged/blind/disabled is ineligible.
   period: 2025-01
   input:
