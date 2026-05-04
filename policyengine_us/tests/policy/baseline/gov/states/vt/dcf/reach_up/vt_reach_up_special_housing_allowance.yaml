@@ -1,0 +1,36 @@
+# Vermont Reach Up special housing allowance
+# Per Vermont DCF Reach Up Procedure P-2230A, households with a shelter
+# obligation receive an additional special housing allowance of up to $90
+# on top of the regular housing allowance, before the ratable reduction.
+
+- name: Case 1, household with rent receives the full special housing allowance.
+  period: 2024-01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 800
+  output:
+    vt_reach_up_special_housing_allowance: 90
+
+- name: Case 2, household without rent receives no special housing allowance.
+  period: 2024-01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 0
+  output:
+    vt_reach_up_special_housing_allowance: 0
+
+- name: Case 3, non-VT state returns zero.
+  period: 2024-01
+  input:
+    state_code: CA
+    pre_subsidy_rent: 800
+  output:
+    vt_reach_up_special_housing_allowance: 0
+
+- name: Case 4, household with mortgage receives the special housing allowance.
+  period: 2024-01
+  input:
+    state_code: VT
+    mortgage_payments: 1200
+  output:
+    vt_reach_up_special_housing_allowance: 90
