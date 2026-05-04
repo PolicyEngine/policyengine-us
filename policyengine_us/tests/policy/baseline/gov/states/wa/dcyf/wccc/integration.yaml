@@ -35,7 +35,7 @@
     # Size 2 SMI 2024-10-01: 131,054 * 0.68 / 12 = $7,426.39/mo.
     # Limit = 7,426.39 * 0.65 = $4,827.16/mo. Income $2,000/mo <= limit.
     wa_wccc_income_eligible: true
-    wa_wccc_resources_eligible: true
+    is_ccdf_asset_eligible: true
     wa_wccc_activity_eligible: true
     wa_wccc_eligible: true
     # SMI fraction: 2,000 / 7,426.39 = 0.2693 (above 20%, <= 36% -> $65 tier).
@@ -275,7 +275,7 @@
         county_str: ADAMS_COUNTY_WA
         is_homeless: false
   output:
-    wa_wccc_resources_eligible: false
+    is_ccdf_asset_eligible: false
     wa_wccc_eligible: false
     wa_wccc: 0
 

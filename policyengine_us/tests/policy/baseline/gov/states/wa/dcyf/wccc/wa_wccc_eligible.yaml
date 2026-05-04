@@ -12,7 +12,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: true
-        wa_wccc_resources_eligible: true
+        is_ccdf_asset_eligible: true
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: false
     tax_units:
@@ -39,7 +39,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: false
-        wa_wccc_resources_eligible: true
+        is_ccdf_asset_eligible: true
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: false
     tax_units:
@@ -66,7 +66,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: true
-        wa_wccc_resources_eligible: true
+        is_ccdf_asset_eligible: true
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: false
     tax_units:
@@ -93,7 +93,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: true
-        wa_wccc_resources_eligible: false
+        is_ccdf_asset_eligible: false
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: false
     tax_units:
@@ -120,7 +120,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: true
-        wa_wccc_resources_eligible: true
+        is_ccdf_asset_eligible: true
         wa_wccc_activity_eligible: false
         wa_wccc_hgp_eligible: false
     tax_units:
@@ -147,7 +147,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: false
-        wa_wccc_resources_eligible: false
+        is_ccdf_asset_eligible: false
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: true
         wa_wccc_countable_income: 1_000
@@ -177,7 +177,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: false
-        wa_wccc_resources_eligible: false
+        is_ccdf_asset_eligible: false
         wa_wccc_activity_eligible: false
         wa_wccc_hgp_eligible: true
         wa_wccc_countable_income: 1_000
@@ -206,7 +206,7 @@
       spm_unit:
         members: [person1, person2]
         wa_wccc_income_eligible: false
-        wa_wccc_resources_eligible: false
+        is_ccdf_asset_eligible: false
         wa_wccc_activity_eligible: true
         wa_wccc_hgp_eligible: true
         wa_wccc_countable_income: 6_000

@@ -15,6 +15,11 @@ class wa_wccc_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.dcyf.wccc.eligibility.age_threshold
         age = person("monthly_age", period)
-        age_eligible = age < p.child
+        # WAC 110-15-0220(1)(b): children with a verified physical, mental,
+        # emotional, or behavioral condition qualify up to age 19. The court
+        # supervision path under RCW 43.216.802(2)(a)(ii) is not modeled at
+        # the moment.
+        is_disabled = person("is_disabled", period.this_year)
+        age_eligible = (age < p.child) | (is_disabled & (age < p.special_needs_child))
         is_dependent = person("is_tax_unit_dependent", period.this_year)
         return age_eligible & is_dependent

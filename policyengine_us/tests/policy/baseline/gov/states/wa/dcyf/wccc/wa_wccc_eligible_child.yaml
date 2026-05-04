@@ -95,3 +95,48 @@
         state_code: NY
   output:
     wa_wccc_eligible_child: [false]
+
+- name: Case 8, age 15 with verified special need, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [true]
+
+- name: Case 9, age 18 with verified special need, eligible at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [true]
+
+- name: Case 10, age 19 with verified special need, ineligible above boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_wccc_eligible_child: [false]
