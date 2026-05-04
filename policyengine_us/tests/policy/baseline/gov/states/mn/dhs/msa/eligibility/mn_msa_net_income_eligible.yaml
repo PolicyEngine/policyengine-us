@@ -97,7 +97,7 @@
         mn_msa_living_arrangement: COUPLE_LIVING_ALONE
         ssi_countable_resources: 5_000
         ssi: 0
-        ssi_unearned_income: 9_618  # $801.50/mo; minus $10 half-disregard = $791.50
+        ssi_unearned_income: 9_618  # $801.50/mo
       person2:
         age: 70
         is_blind: false
@@ -106,7 +106,7 @@
         mn_msa_living_arrangement: COUPLE_LIVING_ALONE
         ssi_countable_resources: 5_000
         ssi: 0
-        ssi_unearned_income: 9_618  # $801.50/mo; minus $10 half-disregard = $791.50
+        ssi_unearned_income: 9_618  # $801.50/mo
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -121,5 +121,116 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # Couple countable income $1,583 > $1,582 couple standard.
+    # Non-SSI couple: AU-aggregate raw unearned $1,603/mo - $20 general
+    # disregard = $1,603 countable. $1,603 > $1,582 couple standard ->
+    # ineligible for both spouses.
     mn_msa_net_income_eligible: [false, false]
+
+- name: Case 5, non-SSI couple at exact-equal couple standard is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_unearned_income: 9_612  # $801/mo each = AU $1,602
+      person2:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_unearned_income: 9_612
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # AU unearned $1,602/mo - $20 = $1,582 = couple standard -> eligible.
+    mn_msa_net_income_eligible: [true, true]
+
+- name: Case 6, non-SSI couple $1 below couple standard is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_unearned_income: 9_606  # $800.50/mo each = AU $1,601
+      person2:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_countable_resources: 5_000
+        ssi: 0
+        ssi_unearned_income: 9_606
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # AU unearned $1,601/mo - $20 = $1,581 < $1,582 couple standard -> eligible.
+    mn_msa_net_income_eligible: [true, true]
+
+- name: Case 7, Medicaid facility recipient with $30 FBR and $0 unearned passes net-income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi: 360  # $30/mo FLA-D
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # FLA-D carve-out: disregard = 0. SSI track countable = $30 FBR + 0 unearned
+    # = $30. Standard $132 PNA -> $30 <= $132 -> eligible.
+    mn_msa_net_income_eligible: true

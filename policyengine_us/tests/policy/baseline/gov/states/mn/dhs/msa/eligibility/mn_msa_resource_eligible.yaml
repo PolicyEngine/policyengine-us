@@ -23,7 +23,8 @@
         members: [person1]
         state_code: MN
   output:
-    # SSI track: federal $2,000 limit already enforced via is_ssi_eligible.
+    # SSI recipients pass MSA's resource test by virtue of receiving SSI
+    # (federal $2,000/$3,000 caps are enforced upstream in the SSI calc).
     mn_msa_resource_eligible: true
 
 - name: Case 2, non-SSI track at $10,000 boundary is resource eligible.
@@ -162,7 +163,8 @@
         members: [person1]
         state_code: MN
   output:
-    # SSI track: $1,999 < $2,000 federal cap, is_ssi_eligible passes.
+    # SSI recipient: passes MSA resource test by virtue of receiving SSI.
+    # The federal $2,000 cap is enforced upstream and is not exercised here.
     mn_msa_resource_eligible: true
 
 - name: Case 7, SSI couple with combined resources just below $3,000 cap.
@@ -199,7 +201,8 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # SSI track for both: federal $3,000 couple cap enforced via is_ssi_eligible.
+    # Both spouses are SSI recipients so they pass MSA's resource test.
+    # The federal $3,000 couple cap is enforced upstream and not exercised.
     mn_msa_resource_eligible: [true, true]
 
 - name: Case 8, person with high resources but ssi=0 falls back to non-SSI track.
@@ -262,8 +265,9 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # § 256D.37 Subd. 1: $10,000 cap applies to the assistance unit.
-    # Combined $12,000 > $10,000 -> both spouses ineligible.
+    # § 256P.02 Subd. 2 (applied via § 256D.425 Subd. 2(b)): $10,000 cap
+    # applies to the assistance unit. Combined $12,000 > $10,000 -> both
+    # spouses ineligible.
     mn_msa_resource_eligible: [false, false]
 
 - name: Case 10, non-SSI couple with combined resources at the $10,000 boundary is eligible.

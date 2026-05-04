@@ -18,6 +18,10 @@ class mn_msa_resource_eligible(Variable):
         # resource test. Per § 256P.02 Subd. 2 (applied to MSA via
         # § 256D.425 Subd. 2(b)), the non-SSI $10,000 cap applies to the
         # assistance unit (married couple combined), not per person.
+        # We use ssi_countable_resources here as a proxy; § 256P.02 Subd. 2(b)
+        # has a narrower personal-property definition (cash, bank accounts,
+        # liquid stocks/bonds, non-excluded vehicles, business accounts) but
+        # we don't track that breakdown at the moment.
         p = parameters(period).gov.states.mn.dhs.msa.eligibility
         receives_ssi = person("ssi", period) > 0
         countable_resources = person("ssi_countable_resources", period.this_year)

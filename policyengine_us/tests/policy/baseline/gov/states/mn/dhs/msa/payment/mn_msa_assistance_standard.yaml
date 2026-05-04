@@ -143,3 +143,65 @@
         state_code: MN
   output:
     mn_msa_assistance_standard: 1_004
+
+- name: Case 8, individual living alone in 2011 uses 2011 rate.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 500
+        ssi: 8_088  # $674/mo 2011 federal individual FBR
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 735
+
+- name: Case 9, couple living alone in 2011 uses 2011 rate.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: [1_102, 1_102]
+
+- name: Case 10, Medicaid facility in 2011 uses 2011 PNA convention.
+  period: 2011-01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_countable_resources: 200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi: 360  # $30/mo FLA-D
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 89
