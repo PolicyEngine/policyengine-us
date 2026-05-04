@@ -75,7 +75,11 @@ def test_reform_extends_soi_income_upraters_from_trustees_2025_nawi_path():
     assert "social_security" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
 
     nawi = reformed.gov.ssa.nawi
-    for parameter_name in ["employment_income", "self_employment_income", "social_security"]:
+    for parameter_name in [
+        "employment_income",
+        "self_employment_income",
+        "social_security",
+    ]:
         baseline_parameter = getattr(baseline.calibration.gov.irs.soi, parameter_name)
         reformed_parameter = getattr(reformed.calibration.gov.irs.soi, parameter_name)
 
