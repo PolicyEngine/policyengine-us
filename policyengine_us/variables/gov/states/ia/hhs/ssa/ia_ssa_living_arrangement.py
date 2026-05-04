@@ -42,10 +42,12 @@ class ia_ssa_living_arrangement(Variable):
         rcf_client_participation = max_(
             0, rcf_total_income - p.rcf.personal_needs_allowance
         )
-        in_rcf = person("ia_ssa_resides_in_residential_care_facility", period)
+        arrangement_input = person("ia_ssa_living_arrangement_input", period)
+        arr_input_values = arrangement_input.possible_values
+        in_rcf = arrangement_input == arr_input_values.RESIDENTIAL_CARE_FACILITY
         rcf_income_threshold = p.rcf.days_multiplier * p.rcf.max_per_diem
         rcf_income_eligible = rcf_client_participation < rcf_income_threshold
-        needs_ihhrc = person("ia_ssa_needs_in_home_health_related_care", period)
+        needs_ihhrc = arrangement_input == arr_input_values.IN_HOME_HEALTH_RELATED_CARE
         both_need_care = person("ia_ssa_ihhrc_both_need_care", period)
         # IAC 441—177.4(1)(f) caps combined marital-unit countable income at
         # $480.55 (one spouse needs care) or $961.10 (both need care) after
@@ -59,7 +61,7 @@ class ia_ssa_living_arrangement(Variable):
             both_need_care, p.ihhrc.max_cost_couple, p.ihhrc.max_cost_single
         )
         ihhrc_income_eligible = ihhrc_countable_after_disregard <= ihhrc_cap
-        in_flh = person("ia_ssa_resides_in_family_life_home", period)
+        in_flh = arrangement_input == arr_input_values.FAMILY_LIFE_HOME
         # IAC 441—177.4(1)(c): IHHRC recipients must live in their own home,
         # so exclude those residing in an RCF or family-life home.
         in_own_home = ~in_rcf & ~in_flh

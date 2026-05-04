@@ -12,5 +12,9 @@ class ia_ssa_ihhrc_both_need_care(Variable):
     )
 
     def formula(person, period, parameters):
-        needs_care = person("ia_ssa_needs_in_home_health_related_care", period)
+        arrangement_input = person("ia_ssa_living_arrangement_input", period)
+        needs_care = (
+            arrangement_input
+            == arrangement_input.possible_values.IN_HOME_HEALTH_RELATED_CARE
+        )
         return person.marital_unit.sum(needs_care) == 2

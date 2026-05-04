@@ -62,23 +62,19 @@ class ia_ssa(Variable):
         # The $142 SSA cap caps the federally-administered piece; for SSI-only
         # recipients (no unearned income to absorb the $20 disregard), the
         # Department pays the (state_supplement − cap) gap so total income
-        # reaches the standard. The blind increment ($22) replaces this gap
-        # payment for blind recipients.
+        # reaches the standard (GL 6-B-46 p.30). 441—52.1(4) excludes the $22
+        # blind allowance for recipients of any other SSP, so blind FLH
+        # recipients receive the FLH benefit only — no $22 stack.
         flh_v_shape = max_(
             0,
             (individual_fbr + p.flh.state_supplement)
             - max_(countable_monthly, individual_fbr),
         )
         flh_base = min_(flh_v_shape, p.flh.max_supplement)
-        is_blind = person("is_blind", period.this_year)
         flh_extra = where(
-            is_blind,
-            p.blind,
-            where(
-                countable_monthly == 0,
-                max_(0, p.flh.state_supplement - p.flh.max_supplement),
-                0,
-            ),
+            countable_monthly < 0.01,
+            max_(0, p.flh.state_supplement - p.flh.max_supplement),
+            0,
         )
         flh_amt = flh_base + flh_extra
         # RCF — IAC 441—52.1(3): cost-of-care minus client participation.

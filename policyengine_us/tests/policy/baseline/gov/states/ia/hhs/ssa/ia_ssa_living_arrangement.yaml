@@ -13,7 +13,7 @@
         age: 70
         is_blind: true
         employment_income: 0
-        ia_ssa_resides_in_residential_care_facility: true
+        ia_ssa_living_arrangement_input: RESIDENTIAL_CARE_FACILITY
         ia_ssa_rcf_cost_per_diem: 37.60
     marital_units:
       marital_unit:
@@ -40,7 +40,7 @@
         age: 40
         is_blind: true
         employment_income: 0
-        ia_ssa_resides_in_family_life_home: true
+        ia_ssa_living_arrangement_input: FAMILY_LIFE_HOME
     marital_units:
       marital_unit:
         members: [person1]
@@ -111,34 +111,6 @@
   output:
     ia_ssa_living_arrangement: [NONE]
 
-- name: Case 5, FLH resident who also needs IHHRC gets FLH (IAC 441-177.4(1)(c) own-home rule).
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 70
-        employment_income: 0
-        ia_ssa_resides_in_family_life_home: true
-        ia_ssa_needs_in_home_health_related_care: true
-        ia_ssa_ihhrc_cost_of_care: 400
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: IA
-  output:
-    # IHHRC requires living in own home; FLH resident fails that check -> FLH wins
-    ia_ssa_living_arrangement: [FLH]
-
 - name: Case 6, person needing IHHRC who is also blind gets IHHRC not BLIND.
   period: 2025-01
   absolute_error_margin: 0.01
@@ -148,7 +120,7 @@
         age: 40
         is_blind: true
         employment_income: 0
-        ia_ssa_needs_in_home_health_related_care: true
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
         ia_ssa_ihhrc_cost_of_care: 400
     marital_units:
       marital_unit:
@@ -175,7 +147,7 @@
       person1:
         age: 70
         employment_income: 0
-        ia_ssa_needs_in_home_health_related_care: true
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
         ia_ssa_ihhrc_cost_of_care: 400
         ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
         ia_ssa_dp_has_eligible_dependent: true
@@ -295,7 +267,7 @@
         # Part B to test that IHHRC still wins over SMME. Use zero income
         # so IHHRC wins even though SMME condition could apply.
         employment_income: 0
-        ia_ssa_needs_in_home_health_related_care: true
+        ia_ssa_living_arrangement_input: IN_HOME_HEALTH_RELATED_CARE
         ia_ssa_ihhrc_cost_of_care: 400
         ia_ssa_has_full_medicaid: true
         ia_ssa_has_medicare_part_b: true
