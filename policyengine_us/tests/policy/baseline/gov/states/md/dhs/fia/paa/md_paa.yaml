@@ -38,12 +38,16 @@
         ssi_unearned_income: 0
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: REHAB_RESIDENCE
+        # MDH rehab residents are SSI medical-treatment-facility recipients
+        # (federal SSI capped at $30/mo). md_paa_eligible requires both flags.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 0 + 106 = 106. effective_federal = $30 (medical fac).
+    # combined_need = 0 + 106 = 106. federal_max = $30 (medical fac).
     # state_supp_max = max(106 - 30, 0) = 76. countable = 0. PAA = 76.
     md_paa: 76
 
@@ -135,12 +139,14 @@
         social_security: 30_000
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: REHAB_RESIDENCE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # combined = 106. effective_federal = 30. state_supp_max = 76.
+    # combined = 106. federal_max = 30. state_supp_max = 76.
     # countable = 2500 - 20 = 2480. income_excess = max(2480-30, 0) = 2450.
     # PAA = max(76 - 2450, 0) = 0.
     md_paa: 0

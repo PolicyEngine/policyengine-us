@@ -49,4 +49,22 @@ class md_paa_eligible(Variable):
         resource_eligible = ssi_resources <= ssi_resource_limit
         living_arrangement = person("md_paa_living_arrangement", period)
         in_facility = living_arrangement != living_arrangement.possible_values.NONE
-        return receives_federal_cash & resource_eligible & in_facility
+        # MDH Rehabilitative Residence customers are SSI medical-treatment-
+        # facility residents (federal SSI capped at $30/mo per 42 USC §
+        # 1382(e)(1)(A); SSA 2011 MD Table 1). The caller must set
+        # `ssi_lives_in_medical_treatment_facility` and
+        # `ssi_medicaid_pays_majority_of_care` upstream so federal SSI is
+        # computed correctly. If they don't, treat the person as not in a
+        # PAA facility — preventing inconsistent state in which federal
+        # SSI overstates by ~$960/mo.
+        is_rehab = (
+            living_arrangement == living_arrangement.possible_values.REHAB_RESIDENCE
+        )
+        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        is_medical_facility = (
+            federal_la == federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
+        )
+        rehab_consistent = ~is_rehab | is_medical_facility
+        return (
+            receives_federal_cash & resource_eligible & in_facility & rehab_consistent
+        )

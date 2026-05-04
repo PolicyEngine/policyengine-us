@@ -127,6 +127,10 @@
         ssi_countable_resources: 500
         employment_income: 0
         md_paa_living_arrangement: REHAB_RESIDENCE
+        # MDH rehab is a Title XIX medical treatment facility for SSI;
+        # federal SSI is capped at $30/mo. md_paa_eligible requires both.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
     marital_units:
       marital_unit:
         members: [person1]
@@ -142,10 +146,11 @@
         state_code: MD
   output:
     is_ssi_eligible: [true]
+    # Federal SSI = $30/mo medical-facility rate (annualized $360).
+    ssi: [30]
     md_paa_eligible: [true]
-    # combined = 0 + 106 = 106. effective_federal = $30 (medical facility).
-    # state_supp_max = max(106 - 30, 0) = 76. countable = 0; income_excess = 0.
-    # PAA = 76. (Resident also receives federal SSI separately.)
+    # combined = 0 + 106 = 106. federal_max = $30. state_supp_max = 76.
+    # countable = 0; income_excess = 0. PAA = 76.
     md_paa_provider_rate: [0]
     md_paa_personal_needs_allowance: [106]
     md_paa: [76]
