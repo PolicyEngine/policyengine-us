@@ -8,7 +8,7 @@ class wa_birth_to_three_eceap_age_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.WA
     reference = (
-        "https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505",
+        "https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.578",
         "https://www.startearly.org/app/uploads/2021/06/Final-Summary-of-Fair-Start-for-Kids-Act.pdf#page=9",
     )
 
