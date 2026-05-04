@@ -15,11 +15,12 @@ class ks_tanf_maximum_benefit(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per K.A.R. 30-4-100 and K.A.R. 30-4-101:
-        # Payment standard = Basic allowance + Shelter allowance
-        # Using High Population Counties (Group III) rates for Non-shared Living
-        # Group III shelter = $109/month
-        # Counties: Butler, Jefferson, Leavenworth, McPherson, Miami, Osage,
-        #           Reno, Rice, Riley, Sedgwick, Shawnee, Wyandotte
+        # Payment standard = Basic allowance + Shelter allowance.
+        # Uses Group IV rates for Non-shared Living (basic + $135 shelter)
+        # because Group IV covers Douglas, Harvey, and Johnson counties —
+        # Johnson County is the most populous in Kansas, making this the
+        # cross-state research convention used by CBPP and the Urban
+        # Welfare Rules Database.
         p = parameters(period).gov.states.ks.dcf.tanf.payment_standard
         max_size_in_table = parameters(
             period
