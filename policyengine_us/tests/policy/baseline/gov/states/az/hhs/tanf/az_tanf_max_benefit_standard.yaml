@@ -1,0 +1,81 @@
+# Tests for Arizona TANF maximum benefit standard (CBPP convention)
+# Returns the with-shelter (A1) tier for cross-state comparison
+
+- name: Family of 2 - returns with-shelter tier regardless of actual shelter costs
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Family of 2, A1 tier (with-shelter)
+    # Base: 36% of 1992 FPG for family of 2
+    az_tanf_max_benefit_standard: 276
+
+- name: Family of 3 - returns with-shelter tier (matches CBPP $347)
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        own_children_in_household: 2
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Family of 3, A1 tier (with-shelter) - this matches CBPP convention
+    az_tanf_max_benefit_standard: 347
+
+- name: Single person - returns with-shelter tier
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Single person, A1 tier
+    az_tanf_max_benefit_standard: 206
