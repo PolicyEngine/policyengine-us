@@ -110,10 +110,10 @@
   output:
     md_paa_provider_rate: 0
 
-# Pre-2021 dates use the 2011 cost-of-care derivation (SSA 2011 combined
-# need minus the $82 PNA inferred from REHAB combined). Values forward-fill
-# from 2011 until the 2021 update from AT 23-02.
-- name: Case 8, pre-2021 period uses 2011-derived CARE_HOME_LEVEL_C rate.
+# Pre-2021 dates use the COMAR 07.03.07.04(B)(2)/(C)(2) "Effective
+# January 1, 2009" schedule. Values forward-fill from 2009 until the
+# 2021 update reflected in AT 23-02 page 3.
+- name: Case 8, pre-2021 period uses COMAR 2009 CARE_HOME_LEVEL_C rate.
   period: 2020-01
   absolute_error_margin: 0.01
   input:
@@ -126,9 +126,9 @@
         members: [person1]
         state_code: MD
   output:
-    md_paa_provider_rate: 1_055
+    md_paa_provider_rate: 1_137
 
-- name: Case 9, pre-2021 period uses 2011-derived ASSISTED_LIVING rate.
+- name: Case 9, pre-2021 period uses COMAR 2009 ASSISTED_LIVING rate.
   period: 2018-01
   absolute_error_margin: 0.01
   input:
@@ -141,7 +141,7 @@
         members: [person1]
         state_code: MD
   output:
-    md_paa_provider_rate: 776
+    md_paa_provider_rate: 858
 
 # Pre/post 2021-01-01 transition: the test runner only supports January
 # (or whole-year) periods, so the rate jump from AT 23-02 is verified by

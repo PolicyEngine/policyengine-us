@@ -13,12 +13,15 @@ class md_paa_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # PAA Manual §300.1.B / COMAR 07.03.07.03: applicants must be aged,
-        # blind, or disabled and receive SSI, SSDI, or other federal cash
-        # benefit on the basis of those criteria. SSI and SSDI receipt
-        # already implies categorical qualification, so the aged/blind/
-        # disabled gate only applies to the broader OASI / survivor and
-        # the §300.5 pending-application / no-fault-denial pathways.
+        # COMAR 07.03.07.03(A)(2): applicants must be aged, blind, or
+        # disabled and receive SSI, SSDI, or other federal cash benefit
+        # on the basis of those criteria. SSI and SSDI receipt already
+        # implies categorical qualification, so the aged/blind/disabled
+        # gate only applies to the broader OASI / survivor and the
+        # §300.5 / COMAR 07.03.07.03(G)(1) pending-application pathway,
+        # which under COMAR additionally requires DHS to verify ABD
+        # status before granting interim PAA — narrower than §300.5
+        # standing alone.
         receives_ssi = person("ssi", period) > 0
         receives_ssdi = person("social_security_disability", period) > 0
         is_categorically_qualifying = person(
@@ -37,10 +40,10 @@ class md_paa_eligible(Variable):
             | receives_other_oasdi_qualifying
             | pending_federal_benefit
         )
-        # PAA Manual §500.2.B: $2,000 resource limit (parity with federal SSI
+        # PAA Manual §500: $2,000 resource limit (parity with federal SSI
         # individual limit). Couple cases are evaluated per-person. PAA's
         # resource base also includes real property, money on hand, trusts,
-        # transfer-of-asset penalties (§500.4) — those refinements are not
+        # and transfer-of-asset penalties — those refinements are not
         # tracked at the moment, so we approximate via ssi_countable_resources.
         ssi_resource_limit = parameters(
             period
@@ -64,7 +67,16 @@ class md_paa_eligible(Variable):
         is_medical_facility = (
             federal_la == federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
         )
-        rehab_consistent = ~is_rehab | is_medical_facility
+        # Bidirectional: REHAB iff SSI medical-facility. A CARE Home recipient
+        # with the SSI medical-facility flag set would have federal SSI capped
+        # at $30/mo and produce a wrong PAA cascade; conversely, REHAB without
+        # the flag set would skip the cap. Either inconsistency makes the
+        # person ineligible so the inputs are surfaced rather than silently
+        # producing the wrong amount.
+        facility_consistent = is_rehab == is_medical_facility
         return (
-            receives_federal_cash & resource_eligible & in_facility & rehab_consistent
+            receives_federal_cash
+            & resource_eligible
+            & in_facility
+            & facility_consistent
         )

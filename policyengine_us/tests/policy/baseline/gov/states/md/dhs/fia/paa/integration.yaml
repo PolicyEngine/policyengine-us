@@ -446,3 +446,118 @@
     # md_paa_eligible separately from Case 7's no-federal-benefit case.
     md_paa_eligible: [false]
     md_paa: [0]
+
+- name: Case 12, aged OASI recipient with $1,000/mo OASI in CARE_HOME_LEVEL_C — positive PAA via OASI pathway.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged → OASI receipt qualifies for PAA.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000  # $1,000/mo OASI
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: [true]
+    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
+    # countable = 1000 - 20 = 980. income_excess = max(980 - 994, 0) = 0.
+    # PAA = 285.
+    md_paa: [285]
+
+- name: Case 13, married couple both SSI-eligible in CARE_HOME_LEVEL_C — symmetric positive output.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Per-person cascade uses individual FBR ($994), not couple_FBR/2.
+    # combined per spouse = 1173 + 106 = 1279; state_supp_max = 285 each.
+    # Both spouses receive a positive PAA — verifies the symmetric path
+    # (Case 5 covers symmetric zero-output, Case 10 covers asymmetric).
+    md_paa_eligible: [true, true]
+    md_paa: [285, 285]
+
+- name: Case 14, pending §300.5 applicant with no income in CARE_HOME_LEVEL_C — positive PAA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+        md_paa_pending_federal_benefit: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Pending pathway gates eligibility; cascade then runs normally.
+    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
+    # countable = 0. PAA = 285.
+    md_paa_eligible: [true]
+    md_paa: [285]

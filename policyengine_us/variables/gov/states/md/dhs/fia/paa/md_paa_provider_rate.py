@@ -9,8 +9,9 @@ class md_paa_provider_rate(Variable):
     definition_period = MONTH
     defined_for = "md_paa_eligible"
     reference = (
+        "https://regs.maryland.gov/us/md/exec/comar/07.03.07.04",
+        "https://regs.maryland.gov/us/md/exec/comar/07.03.07.09",
         "https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2023/23-02%20AT%20-%20COLA%20Mass%20Mod%20FFY23.pdf#page=3",
-        "https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-09",
     )
 
     def formula(person, period, parameters):

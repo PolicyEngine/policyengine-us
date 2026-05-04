@@ -322,3 +322,45 @@
         state_code: MD
   output:
     md_paa_eligible: false
+
+# Bidirectional REHAB / SSI medical-facility consistency gate: REHAB
+# without the SSI flags set is ineligible (federal SSI would not be
+# capped at $30/mo upstream, producing a wrong cascade).
+- name: Case 16, REHAB recipient without SSI medical-facility flags is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        # ssi_lives_in_medical_treatment_facility intentionally NOT set.
+        # ssi_medicaid_pays_majority_of_care intentionally NOT set.
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+# Bidirectional gate (other direction): CARE Home recipient with the
+# SSI medical-facility flag accidentally set is ineligible — federal
+# SSI would be capped at $30/mo upstream, producing a wrong cascade.
+- name: Case 17, CARE Home recipient with SSI medical-facility flag set is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false

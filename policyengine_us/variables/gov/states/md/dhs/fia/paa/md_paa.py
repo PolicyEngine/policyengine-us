@@ -9,21 +9,22 @@ class md_paa(Variable):
     definition_period = MONTH
     defined_for = "md_paa_eligible"
     reference = (
-        "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/md.html",
-        "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20900%20Calculation%20of%20Benefits%20rev%2011.22.docx",
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.09",
+        "https://regs.maryland.gov/us/md/exec/comar/07.03.07.04",
+        "https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20900%20Calculation%20of%20Benefits%20rev%2011.22.docx",
+        "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/md.html",
     )
 
     def formula(person, period, parameters):
-        # SSA state-supplementation cascade (SSA 2011 MD Table 1; COMAR
-        # 07.03.07.09): Maryland PAA equals the gap between combined
-        # federal+state need and federal SSI plus residual countable
-        # income. Per SSA 2011 MD Table 1 footnote a, the individual
-        # state-supp rate applies to each member of a couple, so the
-        # cascade always uses the federal individual FBR — never
-        # couple_FBR/2 — with the $30/mo medical-facility cap for REHAB
-        # residents per 42 USC § 1382(e)(1)(A). Federal SSI is its own
-        # variable; this formula only computes the state contribution.
+        # SSA state-supplementation cascade per COMAR 07.03.07.09(A):
+        # Maryland PAA equals the amount by which allowable needs exceed
+        # net countable income, with federal SSI absorbing income first.
+        # COMAR §07.03.07.04(A)(1)/(B)/(C) establishes the rate schedule
+        # per recipient — couples are evaluated per-individual, so the
+        # cascade uses the federal individual FBR for each spouse rather
+        # than couple_FBR/2. The $30/mo medical-facility cap applies to
+        # REHAB residents per 42 USC § 1382(e)(1)(A). Federal SSI remains
+        # its own variable; this formula computes only the state share.
         p_ssi = parameters(period).gov.ssa.ssi.amount
         arrangement = person("ssi_federal_living_arrangement", period.this_year)
         is_medical_facility = (

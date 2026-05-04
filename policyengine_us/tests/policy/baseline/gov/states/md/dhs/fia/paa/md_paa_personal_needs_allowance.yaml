@@ -2,12 +2,12 @@
 # Tests parameter values across the timeline (test runner only supports
 # January or whole-year periods, so mid-year transitions are checked via
 # year-over-year January tests):
-# 2022-01-01: $84  (pre-AT 22-28)
-# 2022-07-01: $93  (AT 22-28; appears in 2023-01)
-# 2023-07-01: $98  (IM 24-05; appears in 2024-01)
-# 2024-07-01: $102 (effective date is a placeholder — originating transmittal
-#                   not located; value confirmed by IM 26-04; appears in 2025-01)
-# 2025-07-01: $106 (IM 26-04; appears in 2026-01)
+# 2009-01-01: $82  (COMAR 07.03.07.04(A)(1); forward-fills until 2022-07-01)
+# 2022-07-01: $93  (AT 22-28; transmittal not located, $93 confirmed by AT 23-02)
+# 2023-07-01: $98  (IM 24-05; transmittal not located, $98 implied by IM 26-04)
+# 2024-07-01: $102 (originating transmittal not located; value confirmed
+#                   by IM 26-04 saying "$102 → $106"; appears in 2025-01)
+# 2025-07-01: $106 (IM 26-04 page 2; appears in 2026-01)
 
 - name: Case 1, 2023 PNA reflects $93 (post AT 22-28).
   period: 2023-01
@@ -75,7 +75,23 @@
   output:
     md_paa_personal_needs_allowance: 98
 
-- name: Case 5, 2022 January PNA is $84 (pre-AT 22-28).
+- name: Case 6, 2011 January PNA is $82 (codified in COMAR 07.03.07.04(A)(1)).
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_personal_needs_allowance: 82
+
+- name: Case 5, 2022 January PNA is $82 (forward-filled from COMAR 2009).
   period: 2022-01
   absolute_error_margin: 0.01
   input:
@@ -89,4 +105,6 @@
         members: [person1]
         state_code: MD
   output:
-    md_paa_personal_needs_allowance: 84
+    # Forward-fills from COMAR 07.03.07.04(A)(1) ($82, effective 2009-01-01)
+    # until AT 22-28 raises it to $93 on 2022-07-01.
+    md_paa_personal_needs_allowance: 82
