@@ -14,8 +14,11 @@ class mn_msa_resource_eligible(Variable):
 
     def formula(person, period, parameters):
         # SSI recipients have already passed the federal $2,000/$3,000
-        # resource test. Non-SSI excess-income track uses MN's $10,000 cap.
+        # resource test. Per § 256D.37 Subd. 1, the non-SSI $10,000 cap
+        # applies to the assistance unit (married couple combined), not
+        # per person.
         p = parameters(period).gov.states.mn.dhs.msa.eligibility
         receives_ssi = person("ssi", period) > 0
         countable_resources = person("ssi_countable_resources", period.this_year)
-        return receives_ssi | (countable_resources <= p.asset_limit.non_ssi_track)
+        unit_resources = person.marital_unit.sum(countable_resources)
+        return receives_ssi | (unit_resources <= p.asset_limit.non_ssi_track)

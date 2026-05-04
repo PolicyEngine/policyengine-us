@@ -229,3 +229,74 @@
   output:
     # ssi=0 -> non-SSI track applies; $9,500 <= $10,000 -> eligible.
     mn_msa_resource_eligible: true
+
+- name: Case 9, non-SSI couple with combined resources above $10,000 cap is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 6_000  # individually under $10k
+        ssi: 0
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 6_000  # individually under $10k
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # § 256D.37 Subd. 1: $10,000 cap applies to the assistance unit.
+    # Combined $12,000 > $10,000 -> both spouses ineligible.
+    mn_msa_resource_eligible: [false, false]
+
+- name: Case 10, non-SSI couple with combined resources at the $10,000 boundary is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        ssi: 0
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Combined $10,000 == cap -> eligible.
+    mn_msa_resource_eligible: [true, true]

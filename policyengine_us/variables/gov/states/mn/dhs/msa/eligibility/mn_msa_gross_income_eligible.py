@@ -15,20 +15,16 @@ class mn_msa_gross_income_eligible(Variable):
     def formula(person, period, parameters):
         # Per Minn. Stat. § 256D.44 Subd. 1, gross income may not exceed
         # 300% of the federal SSI individual benefit rate for an
-        # individual or 600% for a couple.
+        # individual or 600% for a couple. The couple cap applies to
+        # any married pair where both spouses are MSA-categorically
+        # eligible — not just SSI joint filers.
         p = parameters(period).gov.states.mn.dhs.msa.eligibility.income_limit
         ssi_fbr = parameters(period).gov.ssa.ssi.amount.individual
-        joint_claim = person("ssi_claim_is_joint", period.this_year)
         categorically_eligible = person("is_ssi_aged_blind_disabled", period.this_year)
-        both_eligible = (
-            person.marital_unit.sum(categorically_eligible) == 2
-        ) & joint_claim
+        both_eligible = person.marital_unit.sum(categorically_eligible) == 2
         gross = person("mn_msa_gross_income", period)
-        couple_gross = person.marital_unit.sum(gross)
-        income = where(both_eligible, couple_gross, gross)
-        cap = where(
-            both_eligible,
-            ssi_fbr * p.couple_fbr_multiplier,
-            ssi_fbr * p.individual_fbr_multiplier,
+        income = where(both_eligible, person.marital_unit.sum(gross), gross)
+        cap = ssi_fbr * where(
+            both_eligible, p.couple_fbr_multiplier, p.individual_fbr_multiplier
         )
         return income <= cap
