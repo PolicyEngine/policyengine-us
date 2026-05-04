@@ -154,6 +154,32 @@
     # IEP is NOT a BT3 categorical path; income too high; no SNAP.
     wa_birth_to_three_eceap_eligible: [false, false]
 
+- name: High-income 2-year-old with reported SNAP receipt, BT3 eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap_reported: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # RCW 43.216.578 covers assistance units eligible for or receiving Basic Food.
+    wa_birth_to_three_eceap_eligible: [false, true]
+
 - name: Oregon family with 2-year-old at low income, not eligible due to residency.
   period: 2025
   input:
