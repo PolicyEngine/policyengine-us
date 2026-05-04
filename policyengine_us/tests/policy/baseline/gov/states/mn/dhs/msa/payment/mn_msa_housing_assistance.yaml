@@ -9,7 +9,9 @@
         is_disabled: true
         immigration_status: CITIZEN
         ssi_countable_resources: 500
-        mn_msa_housing_assistance_eligible: true
+        mn_msa_housing_assistance_pathway_eligible: true
+        pre_subsidy_rent: 6_000
+        ssi: 11_928
     marital_units:
       marital_unit:
         members: [person1]
@@ -27,7 +29,7 @@
     # 0.5 * $994 (2026 individual FBR) = $497.
     mn_msa_housing_assistance: 497
 
-- name: Case 2, person not flagged as housing-assistance-eligible receives nothing.
+- name: Case 2, person not pathway-eligible receives nothing.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -38,7 +40,9 @@
         is_disabled: true
         immigration_status: CITIZEN
         ssi_countable_resources: 500
-        mn_msa_housing_assistance_eligible: false
+        mn_msa_housing_assistance_pathway_eligible: false
+        pre_subsidy_rent: 6_000
+        ssi: 11_928
     marital_units:
       marital_unit:
         members: [person1]
