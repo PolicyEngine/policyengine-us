@@ -15,8 +15,8 @@ metadata:
       href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/md.html
 
 # 2011 cost-of-care values derived from SSA 2011 Maryland Table 1
-# (combined federal+state payment level) minus the 2011 PNA of .
-# REHAB combined need = PNA = , confirming the  PNA inference.
+# (combined federal+state payment level) minus the 2011 PNA of $82.
+# REHAB combined need = PNA = $82, confirming the $82 PNA inference.
 # 2021 values are from AT 23-02. Inter-year values forward-fill.
 CARE_HOME_LEVEL_A:
   2011-01-01: 658

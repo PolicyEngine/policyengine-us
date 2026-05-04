@@ -335,6 +335,12 @@
         state_code: MD
   output:
     # person2 not in PAA facility → ineligible. person1 eligible via SSI.
+    # person1 cascade: combined = 1173 + 106 = 1279. ssi_amount_if_eligible
+    # for an aged spouse paired with a non-ABD spouse falls back to the
+    # individual FBR ($994). state_supp_max = 1279 - 994 = 285. Forced
+    # `ssi: 9_600` doesn't show up in ssi_countable_income, so countable = 0
+    # and income_excess = 0. PAA = 285.
     md_paa_eligible: [true, false]
     md_paa_provider_rate: [1_173, 0]
     md_paa_personal_needs_allowance: [106, 0]
+    md_paa: [285, 0]
