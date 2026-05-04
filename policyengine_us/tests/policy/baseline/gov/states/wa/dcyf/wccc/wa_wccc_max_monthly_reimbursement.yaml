@@ -7,9 +7,8 @@
         wa_wccc_eligible_child: true
         wa_wccc_provider_type: CENTER
         wa_wccc_center_age_group: INFANT
-        wa_wccc_center_time_category: FULL_DAY
         wa_wccc_family_home_age_group: INFANT
-        wa_wccc_family_home_time_category: FULL_DAY
+        wa_wccc_day_type: FULL_DAY
     households:
       household:
         members: [person1]
@@ -29,9 +28,8 @@
         wa_wccc_eligible_child: true
         wa_wccc_provider_type: FAMILY_HOME
         wa_wccc_center_age_group: INFANT
-        wa_wccc_center_time_category: FULL_DAY
         wa_wccc_family_home_age_group: INFANT
-        wa_wccc_family_home_time_category: FULL_DAY
+        wa_wccc_day_type: FULL_DAY
     households:
       household:
         members: [person1]
@@ -51,9 +49,8 @@
         wa_wccc_eligible_child: true
         wa_wccc_provider_type: IN_HOME_RELATIVE
         wa_wccc_center_age_group: INFANT
-        wa_wccc_center_time_category: FULL_DAY
         wa_wccc_family_home_age_group: INFANT
-        wa_wccc_family_home_time_category: FULL_DAY
+        wa_wccc_day_type: FULL_DAY
     households:
       household:
         members: [person1]
@@ -63,3 +60,45 @@
   output:
     # In-home: 4.00/hour * 230 hours = 920.
     wa_wccc_max_monthly_reimbursement: [920]
+
+- name: Case 4, family home partial day for Region 1 infant, $36.92 * 22.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: FAMILY_HOME
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: PARTIAL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # Family home PARTIAL_DAY: 36.92/day * 22 days = 812.24.
+    wa_wccc_max_monthly_reimbursement: [812.24]
+
+- name: Case 5, center partial day falls back to half day rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: CENTER
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: PARTIAL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # Center PARTIAL_DAY mirrors HALF_DAY: 31.03/day * 23 days = 713.69.
+    wa_wccc_max_monthly_reimbursement: [713.69]

@@ -74,7 +74,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap: 200
+        snap_reported: 2_400
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -84,7 +84,8 @@
         state_code: WA
         is_homeless: false
   output:
-    # SNAP > 0 triggers automatic income eligibility per RCW 43.216.802(5).
+    # snap_reported > 0 triggers automatic income eligibility per
+    # RCW 43.216.802(5).
     wa_wccc_income_eligible: true
 
 - name: Case 4, homeless household above standard income tier, not income eligible (HGP path is in wa_wccc_eligible).

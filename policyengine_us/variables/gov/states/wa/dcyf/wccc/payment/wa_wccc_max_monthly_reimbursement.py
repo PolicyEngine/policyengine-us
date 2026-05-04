@@ -11,21 +11,33 @@ class wa_wccc_max_monthly_reimbursement(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "wa_wccc_eligible_child"
-    reference = "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0190"
+    reference = (
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0190",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0205",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0240",
+    )
 
     def formula(person, period, parameters):
-        units = parameters(period).gov.states.wa.dcyf.wccc.rates.monthly_units
+        rates = parameters(period).gov.states.wa.dcyf.wccc.rates
+        units = rates.monthly_units
+        day_type = person("wa_wccc_day_type", period)
+
+        center_region = person.household("wa_wccc_center_region", period)
+        center_age = person("wa_wccc_center_age_group", period)
         center_monthly = (
-            person("wa_wccc_center_daily_rate", period) * units.center_full_days
+            rates.center[center_region][center_age][day_type] * units.center_full_days
         )
+
+        family_home_region = person.household("wa_wccc_region", period)
+        family_home_age = person("wa_wccc_family_home_age_group", period)
         family_home_monthly = (
-            person("wa_wccc_family_home_daily_rate", period)
+            rates.family_home[family_home_region][family_home_age][day_type]
             * units.family_home_full_days
         )
-        in_home_monthly = (
-            person("wa_wccc_in_home_relative_hourly_rate", period)
-            * units.in_home_relative_full_hours
-        )
+
+        in_home_monthly = rates.in_home_relative * units.in_home_relative_full_hours
+
         provider_type = person("wa_wccc_provider_type", period)
         return select(
             [
@@ -34,5 +46,4 @@ class wa_wccc_max_monthly_reimbursement(Variable):
                 provider_type == WAWCCCProviderType.IN_HOME_RELATIVE,
             ],
             [center_monthly, family_home_monthly, in_home_monthly],
-            default=center_monthly,
         )
