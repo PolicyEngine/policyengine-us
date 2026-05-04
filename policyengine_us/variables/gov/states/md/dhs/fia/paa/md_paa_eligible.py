@@ -23,12 +23,18 @@ class md_paa_eligible(Variable):
         # status before granting interim PAA — narrower than §300.5
         # standing alone.
         receives_ssi = person("ssi", period) > 0
-        receives_ssdi = person("social_security_disability", period) > 0
+        ssdi = person("social_security_disability", period)
+        receives_ssdi = ssdi > 0
         is_categorically_qualifying = person(
             "is_ssi_aged_blind_disabled", period.this_year
         )
+        # `social_security` is the OASDI sum (retirement + survivors +
+        # disability + dependents). Subtract SSDI so the OASI branch only
+        # fires for non-SSDI Social Security receipt — SSDI already covers
+        # itself via `receives_ssdi`.
+        non_ssdi_oasi = person("social_security", period) - ssdi
         receives_other_oasdi_qualifying = (
-            person("social_security", period) > 0
+            non_ssdi_oasi > 0
         ) & is_categorically_qualifying
         pending_federal_benefit = (
             person("md_paa_pending_federal_benefit", period)
@@ -40,11 +46,14 @@ class md_paa_eligible(Variable):
             | receives_other_oasdi_qualifying
             | pending_federal_benefit
         )
-        # PAA Manual §500: $2,000 resource limit (parity with federal SSI
-        # individual limit). Couple cases are evaluated per-person. PAA's
-        # resource base also includes real property, money on hand, trusts,
-        # and transfer-of-asset penalties — those refinements are not
-        # tracked at the moment, so we approximate via ssi_countable_resources.
+        # PAA Manual §500: $2,000 resource limit. Each person's resources
+        # are evaluated against the individual limit independently — the
+        # couple limit ($3,000) is not used because PAA scopes eligibility
+        # per recipient (one assistance unit per person), not per couple.
+        # PAA's resource base also includes real property, money on hand,
+        # trusts, and transfer-of-asset penalties — those refinements are
+        # not tracked at the moment, so we approximate via
+        # ssi_countable_resources.
         ssi_resource_limit = parameters(
             period
         ).gov.ssa.ssi.eligibility.resources.limit.individual
