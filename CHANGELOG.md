@@ -1,3 +1,14 @@
+## [1.681.0] - 2026-05-04
+
+### Added
+
+- Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
+
+### Fixed
+
+- Fixed Hawaii TANF maximum benefit to apply the steady-state mandatory-work 20% Standard of Assistance reduction, updated Kansas TANF to the Group IV non-shared living standard (the most-populous-county convention) so headline benefit values align with cross-state research reporting, and corrected the Vermont Reach Up special housing allowance to pay only the lesser of (housing expenses in excess of the maximum housing allowance) or $90 per Rule 2244.3, replacing the previous flat $90 payout.
+
+
 ## [1.680.0] - 2026-05-01
 
 ### Added

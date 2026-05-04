@@ -1,1 +1,0 @@
-Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
