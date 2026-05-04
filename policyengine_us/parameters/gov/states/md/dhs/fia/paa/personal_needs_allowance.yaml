@@ -1,6 +1,9 @@
 description: Maryland provides this amount as the personal needs allowance under the Public Assistance to Adults program.
 
 values:
+  # 2011 PNA derived from SSA 2011 Maryland Table 1: REHAB combined need
+  # = $82, and REHAB cost-of-care = $0, so combined need = PNA.
+  2011-01-01: 82
   2022-01-01: 84
   2022-07-01: 93
   2023-07-01: 98
@@ -12,6 +15,8 @@ metadata:
   period: month
   label: Maryland PAA personal needs allowance
   reference:
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 — Maryland Table 1 (REHAB combined = $82 PNA)
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/md.html
     - title: Maryland DHS-FIA Action Transmittal 22-28, 2022 COLA Mass Mod (PNA $84 → $93 effective 2022-07-01)
       href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2022/22-28%20AT%20-%20COLA%20Mass%20Mod%20FFY22.pdf
     - title: Maryland DHS-FIA Action Transmittal 23-02, 2023 COLA Mass Mod, PAA Rates and Per Diems

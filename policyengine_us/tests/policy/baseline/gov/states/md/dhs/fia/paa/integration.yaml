@@ -1,10 +1,9 @@
 # Integration tests for Maryland Public Assistance to Adults (PAA).
-# Verifies the full federal SSI → state PAA chain. Per PAA Manual §500.8
-# and AT 23-02, the SSI cash payment counts as unearned income for PAA
-# (with the $20 disregard). All scenarios use 2026-01 (PNA = $106).
-# 2026 SSI individual FBR = $994/mo.
+# Verifies the SSA cascade method (state SSP = combined need - federal SSI -
+# residual countable income). Period 2026-01: federal individual FBR = $994,
+# couple FBR = $1,491, medical-facility rate = $30, PNA = $106.
 
-- name: Case 1, single SSI recipient in CARE_HOME_LEVEL_B with no other income.
+- name: Case 1, single SSI in CARE_HOME_LEVEL_B — federal SSI exceeds combined need.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -31,22 +30,15 @@
         members: [person1]
         state_code: MD
   output:
-    # --- Federal SSI ---
     is_ssi_eligible: [true]
     ssi: [994]
-
-    # --- PAA ---
     md_paa_eligible: [true]
-    # countable_unearned = max(994 - 20, 0) = 974 (SSI counts as income).
-    md_paa_countable_unearned_income: [974]
-    md_paa_countable_earned_income: [0]
-    md_paa_countable_income: [974]
-    # provider_rate(875) + PNA(106) = 981 total cost of care.
-    # PAA = max(981 - 974, 0) = 7.
+    # combined_need = 875 + 106 = 981. federal_max = 994.
+    # state_supp_max = max(981 - 994, 0) = 0. PAA = 0.
     md_paa_provider_rate: [875]
     md_paa_personal_needs_allowance: [106]
     md_paa_total_cost_of_care: [981]
-    md_paa: [7]
+    md_paa: [0]
 
 - name: Case 2, SSI recipient with $200/mo earned income in CARE_HOME_LEVEL_C.
   period: 2026-01
@@ -75,27 +67,17 @@
         members: [person1]
         state_code: MD
   output:
-    # --- Federal SSI ---
-    # Federal countable = max(0, 200 - 65 - 20) * 0.5 = 115 * 0.5 = 57.50.
-    # SSI = 994 - 57.50 = 936.50/mo.
+    # Federal countable = max(0, 200 - 65 - 20) * 0.5 = 57.50.
+    # SSI = 994 - 57.50 = 936.50.
     is_ssi_eligible: [true]
     ssi: [936.50]
-
-    # --- PAA ---
     md_paa_eligible: [true]
-    # unearned = 936.50 (SSI) → countable_unearned = max(936.50 - 20, 0) = 916.50.
-    # leftover_general = 0. effective earned disregard = $65.
-    # countable_earned = max(200 - 65, 0) * 0.5 = 67.50.
-    md_paa_countable_unearned_income: [916.50]
-    md_paa_countable_earned_income: [67.50]
-    md_paa_countable_income: [984]
-    # provider_rate(1173) + PNA(106) = 1279.
-    # PAA = max(1279 - 984, 0) = 295.
-    md_paa_provider_rate: [1_173]
+    # combined_need = 1173 + 106 = 1279. state_supp_max = 1279 - 994 = 285.
+    # countable = 57.50; income_excess = max(57.50 - 994, 0) = 0. PAA = 285.
     md_paa_total_cost_of_care: [1_279]
-    md_paa: [295]
+    md_paa: [285]
 
-- name: Case 3, SSI recipient with $400/mo non-SSI unearned income in ASSISTED_LIVING.
+- name: Case 3, SSI recipient with $400/mo OASI in ASSISTED_LIVING.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -123,27 +105,16 @@
         members: [person1]
         state_code: MD
   output:
-    # --- Federal SSI ---
-    # Federal countable unearned = 400 - 20 = 380/mo.
-    # SSI = max(994 - 380, 0) = 614/mo.
+    # Federal countable unearned = 400 - 20 = 380. SSI = 994 - 380 = 614.
     is_ssi_eligible: [true]
     ssi: [614]
-
-    # --- PAA ---
     md_paa_eligible: [true]
-    # unearned for PAA = ssi(614) + ssi_unearned_income(400 from social_security) = 1014.
-    # countable_unearned = max(1014 - 20, 0) = 994.
-    # Assisted Living → no earned disregard, but earned = 0 here.
-    md_paa_countable_unearned_income: [994]
-    md_paa_countable_earned_income: [0]
-    md_paa_countable_income: [994]
-    # provider_rate(894) + PNA(106) = 1000.
-    # PAA = max(1000 - 994, 0) = 6.
-    md_paa_provider_rate: [894]
+    # combined = 894 + 106 = 1000. state_supp_max = 1000 - 994 = 6.
+    # countable = 380; income_excess = max(380 - 994, 0) = 0. PAA = 6.
     md_paa_total_cost_of_care: [1_000]
     md_paa: [6]
 
-- name: Case 4, REHAB_RESIDENCE recipient with only SSI receives only the PNA.
+- name: Case 4, REHAB_RESIDENCE recipient — state fills gap from $30 medical SSI to PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -170,22 +141,16 @@
         members: [person1]
         state_code: MD
   output:
-    # --- Federal SSI ---
     is_ssi_eligible: [true]
-    ssi: [994]
-
-    # --- PAA ---
-    # post_disregard_income = max(994 - 20, 0) = 974.
-    # cost_of_need_ceiling = $54 * 30 = 1620.
-    # rehab_countable = max(974 - 1620, 0) = 0.
-    # PAA = provider_rate(0) + PNA(106) - countable(0) = 106.
     md_paa_eligible: [true]
-    md_paa_countable_income: [0]
+    # combined = 0 + 106 = 106. effective_federal = $30 (medical facility).
+    # state_supp_max = max(106 - 30, 0) = 76. countable = 0; income_excess = 0.
+    # PAA = 76. (Resident also receives federal SSI separately.)
     md_paa_provider_rate: [0]
     md_paa_personal_needs_allowance: [106]
-    md_paa: [106]
+    md_paa: [76]
 
-- name: Case 5, married couple both SSI-eligible in CARE_HOME_LEVEL_A treated as two individuals.
+- name: Case 5, married couple both SSI-eligible in CARE_HOME_LEVEL_A.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -195,7 +160,6 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi: 8_946  # $745.50/mo (couple FBR $1,491 / 2) as input
         ssi_countable_resources: 1_000
         employment_income: 0
         md_paa_living_arrangement: CARE_HOME_LEVEL_A
@@ -204,7 +168,6 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi: 8_946
         ssi_countable_resources: 1_000
         employment_income: 0
         md_paa_living_arrangement: CARE_HOME_LEVEL_A
@@ -222,14 +185,10 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Per SSA 2011: Maryland treats couples as two individuals.
-    # Each spouse: countable_unearned = max(745.50 - 20, 0) = 725.50.
-    # PAA per spouse = max(776 + 106 - 725.50, 0) = 156.50.
+    # Couple computation: federal SSI per person = $1,491 / 2 = $745.50.
+    # combined per person = 776 + 106 = 882. state_supp_max = 882 - 745.50 = 136.50.
     md_paa_eligible: [true, true]
-    md_paa_provider_rate: [776, 776]
-    md_paa_personal_needs_allowance: [106, 106]
-    md_paa_countable_unearned_income: [725.50, 725.50]
-    md_paa: [156.50, 156.50]
+    md_paa: [136.50, 136.50]
 
 - name: Case 6, person not in PAA facility (NONE) is ineligible.
   period: 2026-01
@@ -298,7 +257,7 @@
     md_paa_eligible: [false]
     md_paa: [0]
 
-- name: Case 8, SSDI-only recipient in CARE_HOME_LEVEL_B is PAA-eligible.
+- name: Case 8, SSDI recipient with $1,000/mo SSDI in CARE_HOME_LEVEL_C.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -308,11 +267,11 @@
         is_blind: false
         is_disabled: true
         immigration_status: CITIZEN
-        ssi: 0  # Set explicitly to disable federal SSI calc and isolate SSDI path.
+        ssi: 0  # Force off; SSDI alone gates eligibility.
         ssi_countable_resources: 500
-        social_security_disability: 12_000  # $1,000/mo SSDI
+        social_security_disability: 12_000  # $1,000/mo
         employment_income: 0
-        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
     marital_units:
       marital_unit:
         members: [person1]
@@ -328,11 +287,10 @@
         state_code: MD
   output:
     md_paa_eligible: [true]
-    # ssi=0; unearned for PAA = 0 + ssi_unearned_income(1000 from SSDI) = 1000.
-    # countable_unearned = max(1000 - 20, 0) = 980.
-    md_paa_countable_unearned_income: [980]
-    # provider_rate(875) + PNA(106) - 980 = 1.
-    md_paa: [1]
+    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
+    # countable = 1000 - 20 = 980. income_excess = max(980 - 994, 0) = 0.
+    # PAA = 285 - 0 = 285.
+    md_paa: [285]
 
 - name: Case 9, asymmetric married couple — only one spouse PAA-eligible.
   period: 2026-01
@@ -344,10 +302,10 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi: 8_400  # $700/mo SSI input
+        ssi: 9_600  # gates eligibility
         ssi_countable_resources: 1_000
         employment_income: 0
-        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
       person2:
         age: 60
         is_blind: false
@@ -371,13 +329,7 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Only person1 is PAA-eligible (in CARE_HOME and receiving SSI). person2
-    # is not in a PAA facility and does not receive SSI/SSDI. Verifies the
-    # asymmetric-eligibility code path through md_paa_eligible.
+    # person2 not in PAA facility → ineligible. person1 eligible via SSI.
     md_paa_eligible: [true, false]
+    md_paa_provider_rate: [1_173, 0]
     md_paa_personal_needs_allowance: [106, 0]
-    md_paa_provider_rate: [875, 0]
-    # person1: countable_unearned = max(700 - 20, 0) = 680.
-    # PAA = max(875 + 106 - 680, 0) = 301.
-    # person2's PAA fields are zero (defined_for filters out).
-    md_paa: [301, 0]
