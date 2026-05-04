@@ -121,3 +121,34 @@
         state_code: MN
   output:
     mn_msa_gross_income: 0
+
+- name: Case 5, reduced SSI payment still counts the applicable federal benefit rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 6_000  # $500/mo actual payment after federal reductions
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # MSA counts the applicable $994 SSI FBR, not the reduced $500 SSI payment.
+    mn_msa_gross_income: 994

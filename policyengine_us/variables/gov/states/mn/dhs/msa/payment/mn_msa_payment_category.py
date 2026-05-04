@@ -28,8 +28,39 @@ class mn_msa_payment_category(Variable):
             federal_arrangement == federal_values.MEDICAL_TREATMENT_FACILITY
         )
         living_arrangement = person("mn_msa_living_arrangement", period)
+        LA = MNMSALivingArrangement
+        housing_assistance_eligible = person(
+            "mn_msa_housing_assistance_eligible", period
+        )
+        is_couple_arrangement = (living_arrangement == LA.COUPLE_LIVING_ALONE) | (
+            living_arrangement == LA.COUPLE_LIVING_WITH_OTHERS
+        )
+        couple_housing_assistance_eligible = (
+            person.marital_unit.sum(housing_assistance_eligible) > 0
+        )
+        apply_housing_standard = where(
+            is_couple_arrangement,
+            couple_housing_assistance_eligible,
+            housing_assistance_eligible,
+        )
+        housing_standard_arrangement = select(
+            [
+                living_arrangement == LA.INDIVIDUAL_LIVING_WITH_OTHERS,
+                living_arrangement == LA.COUPLE_LIVING_WITH_OTHERS,
+            ],
+            [
+                LA.INDIVIDUAL_LIVING_ALONE,
+                LA.COUPLE_LIVING_ALONE,
+            ],
+            default=living_arrangement,
+        )
+        community_arrangement = where(
+            apply_housing_standard,
+            housing_standard_arrangement,
+            living_arrangement,
+        )
         return where(
             in_medicaid_facility,
-            MNMSALivingArrangement.MEDICAID_FACILITY,
-            living_arrangement,
+            LA.MEDICAID_FACILITY,
+            community_arrangement,
         )

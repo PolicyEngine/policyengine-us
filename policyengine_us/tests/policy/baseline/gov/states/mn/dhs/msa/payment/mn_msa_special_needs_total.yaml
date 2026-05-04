@@ -1,0 +1,67 @@
+- name: Case 1, facility resident receives only representative payee special need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        mn_msa_uses_representative_payee: true
+        mn_msa_has_guardian: true
+        mn_msa_housing_assistance_eligible: true
+        ssi: 360
+        ssi_unearned_income: 24_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Guardian and housing special needs are unavailable in facilities;
+    # representative payee services remain allowed.
+    mn_msa_special_needs_total: 57
+
+- name: Case 2, community resident receives all modeled ongoing special needs.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_uses_representative_payee: true
+        mn_msa_has_guardian: true
+        mn_msa_housing_assistance_eligible: true
+        ssi_unearned_income: 24_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Representative payee $57 + guardian $100 + housing $497.
+    mn_msa_special_needs_total: 654

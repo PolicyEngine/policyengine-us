@@ -243,3 +243,69 @@
     # $1,055 - max($994 SSI - $20, 0) = $1,055 - $974 = $81.
     mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
     mn_msa_person: 81
+
+- name: Case 8, SSI-track amount uses the federal benefit rate when actual SSI is reduced.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 6_000  # $500/mo actual payment after federal reductions
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # MSA counts the $994 FBR: $1,055 - max($994 - $20, 0) = $81.
+    mn_msa_person: 81
+
+- name: Case 9, housing-assistance eligibility applies the living-alone standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: true
+        ssi_countable_resources: 500
+        ssi: 11_928
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Housing assistance switches the base standard from $755.33 to $1,055.
+    # Base $81 plus housing allowance $497 = $578.
+    mn_msa_payment_category: INDIVIDUAL_LIVING_ALONE
+    mn_msa_person: 578

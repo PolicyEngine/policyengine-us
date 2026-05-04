@@ -36,8 +36,9 @@ class mn_msa_person(Variable):
         )
         standard = person("mn_msa_assistance_standard", period)
         per_person_standard = where(is_couple_arrangement, standard / 2, standard)
-        federal_ssi = person("ssi", period)
-        receives_ssi = federal_ssi > 0
+        ssi = person("ssi", period)
+        receives_ssi = ssi > 0
+        ssi_fbr = person("ssi_amount_if_eligible", period)
         p = parameters(period).gov.states.mn.dhs.msa.disregard
         raw_unearned = add(
             person,
@@ -59,7 +60,7 @@ class mn_msa_person(Variable):
         # income; allocate half to each spouse so the per-person formulas sum
         # to the correct couple total.
         per_person_disregard = where(is_couple_arrangement, disregard / 2, disregard)
-        ssi_track_countable = max_(federal_ssi + raw_unearned - per_person_disregard, 0)
+        ssi_track_countable = max_(ssi_fbr + raw_unearned - per_person_disregard, 0)
         ssi_track = max_(0, per_person_standard - ssi_track_countable)
         countable_income = person("mn_msa_countable_income", period)
         non_ssi_track = max_(0, per_person_standard - countable_income)

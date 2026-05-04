@@ -9,5 +9,5 @@ class mn_msa_uses_representative_payee(Variable):
     defined_for = StateCode.MN
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/256D.44",
-        "https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=6",
+        "https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=7",
     )

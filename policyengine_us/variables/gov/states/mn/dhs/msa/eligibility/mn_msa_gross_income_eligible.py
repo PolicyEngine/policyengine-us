@@ -19,7 +19,7 @@ class mn_msa_gross_income_eligible(Variable):
         p = parameters(period).gov.states.mn.dhs.msa.eligibility.income_limit
         ssi_fbr = parameters(period).gov.ssa.ssi.amount.individual
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        categorically_eligible = person("mn_msa_categorically_eligible", period)
+        categorically_eligible = person("is_ssi_aged_blind_disabled", period.this_year)
         both_eligible = (
             person.marital_unit.sum(categorically_eligible) == 2
         ) & joint_claim
