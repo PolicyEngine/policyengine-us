@@ -65,8 +65,8 @@
         state_code: VT
   output:
     # spm_unit1 (min): ($644 + $0 + $0) × 0.496 = $319.424
-    # spm_unit2 (high): ($2,458 + $450 + $90) × 0.496 = $1,486.992
-    vt_reach_up_payment_standard: [319.424, 1_486.992]
+    # spm_unit2 (high): ($2,458 + $450 + $90) × 0.496 = $1,487.008
+    vt_reach_up_payment_standard: [319.424, 1_487.008]
 
 - name: Case 3, family of 3 outside Chittenden with full shelter matches CBPP figure.
   period: 2024-01
@@ -76,6 +76,6 @@
     vt_reach_up_housing_allowance: 400
     vt_reach_up_special_housing_allowance: 90
   output:
-    # ($1,236 + $400 + $90) × 0.496 = $855.90, matching CBPP/WRD's
+    # ($1,236 + $400 + $90) × 0.496 = $856.10, matching CBPP/WRD's
     # reported max for a non-Chittenden family of 3.
-    vt_reach_up_payment_standard: 855.896
+    vt_reach_up_payment_standard: 856.096

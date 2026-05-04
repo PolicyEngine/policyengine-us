@@ -17,6 +17,5 @@ class ny_tanf_home_energy_allowance(Variable):
         capped_size = min_(size, max_size)
         additional_size = size - capped_size
         return (
-            p.home_energy.main[capped_size]
-            + p.home_energy.additional * additional_size
+            p.home_energy.main[capped_size] + p.home_energy.additional * additional_size
         )

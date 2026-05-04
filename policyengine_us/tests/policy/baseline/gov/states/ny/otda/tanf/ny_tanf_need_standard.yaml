@@ -31,10 +31,11 @@
   input:
     state_code: NY
     spm_unit_size: 3
-    pre_subsidy_rent: 1500
+    pre_subsidy_rent: 18_000
   output:
     # Basic ($336) + home energy ($30) + supplemental energy ($23)
     # + shelter (capped at NYC family-of-3 max $400) = $789
+    # pre_subsidy_rent is annual ($18,000 = $1,500/month, well above cap)
     ny_tanf_need_standard: 789
 
 - name: Case 5, three person household with rent below the cap.
@@ -42,10 +43,11 @@
   input:
     state_code: NY
     spm_unit_size: 3
-    pre_subsidy_rent: 250
+    pre_subsidy_rent: 3_000
   output:
     # Basic ($336) + home energy ($30) + supplemental energy ($23)
-    # + shelter (actual rent $250) = $639
+    # + shelter (actual rent $250/month) = $639
+    # pre_subsidy_rent is annual ($3,000 = $250/month)
     ny_tanf_need_standard: 639
 
 - name: Case 6, ten person household with no shelter cost.
