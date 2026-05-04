@@ -19,11 +19,15 @@ class wa_wccc_income_eligible(Variable):
         income_limit = spm_unit("wa_wccc_smi_limit", period)
         under_smi_limit = countable_income <= income_limit
         # RCW 43.216.802(5): when an applicant or consumer is a member of an
-        # assistance unit that is "eligible for or receiving" basic food
-        # benefits under SNAP or the State Food Assistance Program, the
+        # assistance unit "receiving" basic food benefits under SNAP, the
         # department must determine that the income eligibility requirements
-        # are met. SFAP is not modeled at the moment.
-        snap_categorical = spm_unit("is_snap_eligible", period) | (
-            spm_unit("snap_reported", period) > 0
-        )
+        # are met. We use snap_reported (an input variable) rather than
+        # is_snap_eligible to avoid a circular dependency through
+        # snap_dependent_care_deduction -> child_care_subsidies -> wa_wccc.
+        # The "eligible for" branch of the statute and SFAP are not modeled
+        # at the moment.
+        p = parameters(
+            period
+        ).gov.states.wa.dcyf.wccc.eligibility.income.snap_categorical
+        snap_categorical = p.in_effect & (spm_unit("snap_reported", period) > 0)
         return under_smi_limit | snap_categorical

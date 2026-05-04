@@ -14,7 +14,7 @@ class wa_wccc_provider_type(Variable):
     default_value = WAWCCCProviderType.CENTER
     definition_period = MONTH
     label = "Washington WCCC child care provider type"
-    defined_for = StateCode.WA
+    defined_for = "wa_wccc_eligible_child"
     reference = (
         "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200",
         "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0205",

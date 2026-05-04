@@ -18,8 +18,7 @@ class wa_wccc_day_type(Variable):
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0190"
     # Per WAC 110-15-0190(7): FULL_DAY = at least 5 hours of care, HALF_DAY
     # = under 5 hours, PARTIAL_DAY = under 5 hours with care before AND
-    # after school. We don't track per-day care hours or the
-    # before-and-after-school flag at the moment; defaults to FULL_DAY but
+    # after school. We assume full-day care at the moment; the variable
     # accepts user override. Centers do not have a PARTIAL_DAY rate per
     # WAC 110-15-0200; PARTIAL_DAY for centers is treated as HALF_DAY in
     # the reimbursement calculation.

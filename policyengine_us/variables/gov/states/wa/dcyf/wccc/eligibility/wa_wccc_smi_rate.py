@@ -29,8 +29,8 @@ class wa_wccc_smi_rate(Variable):
 
         any_enrolled = spm_unit.sum(person("is_wccc_enrolled", period)) > 0
 
+        is_applicant = ~is_homeless & ~any_teen_parent & ~any_enrolled
         return select(
-            [is_homeless, any_teen_parent, any_enrolled],
-            [p.homeless, p.teen_parent, p.recipient],
-            default=p.applicant,
+            [is_homeless, any_teen_parent, any_enrolled, is_applicant],
+            [p.homeless, p.teen_parent, p.recipient, p.applicant],
         )
