@@ -294,3 +294,40 @@
         state_code: WA
   output:
     wa_eceap_eligible: [false, true]
+
+- name: 2026 married kinship caregiver family in 36-50% SMI band, foster preschooler ECEAP eligible via risk pathway.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 34
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    # $50,000 is above the standard 36% SMI path and within the 36-50% SMI
+    # risk-factor band. Only the foster child is also age-eligible.
+    wa_eceap_eligible: [false, false, true]

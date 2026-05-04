@@ -14,7 +14,9 @@ class wa_eceap_categorically_eligible(Variable):
 
     def formula(person, period, parameters):
         # Homeless and IEP are the two modelable categorical paths under
-        # RCW 43.216.505(4).
+        # RCW 43.216.505(4). Foster care is NOT a categorical path here —
+        # it appears in the priority/preference language for slot allocation
+        # among eligible children, and as a risk factor under RCW 43.216.512.
         is_homeless = person.household("is_homeless", period)
         has_iep = person("has_individualized_education_program", period)
         return is_homeless | has_iep

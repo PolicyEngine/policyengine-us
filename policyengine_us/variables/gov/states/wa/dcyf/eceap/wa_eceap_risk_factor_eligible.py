@@ -46,13 +46,21 @@ class wa_eceap_risk_factor_eligible(Variable):
         migrant = person("is_migratory_child", period)
         developmental_delay = person("has_developmental_delay", period)
         has_iep = person("has_individualized_education_program", period)
+        child_welfare_involvement = person("is_in_foster_care", period) | person(
+            "was_in_foster_care", period
+        )
         # is_single_parent_household is only True on the unmarried tax-unit
         # head; project from the parent to the child via the SPM unit.
         single_parent_in_unit = person.spm_unit.any(
             person("is_single_parent_household", period)
         )
         has_risk_factor = (
-            esl | migrant | developmental_delay | has_iep | single_parent_in_unit
+            esl
+            | migrant
+            | developmental_delay
+            | has_iep
+            | child_welfare_involvement
+            | single_parent_in_unit
         )
 
         return in_income_band & has_risk_factor

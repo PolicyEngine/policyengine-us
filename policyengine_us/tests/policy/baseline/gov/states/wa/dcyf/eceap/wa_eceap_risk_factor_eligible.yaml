@@ -700,3 +700,76 @@
         state_code: WA
   output:
     wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026 married kinship caregiver family in 36-50% SMI band, foster child eligible via child welfare risk factor.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 34
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # Child welfare involvement is person-specific, so only the foster child has
+    # this risk factor.
+    wa_eceap_risk_factor_eligible: [false, false, true]
+
+- name: 2026 married family in 36-50% SMI band, child formerly in foster care eligible via child welfare risk factor.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 35
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        was_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    wa_eceap_risk_factor_eligible: [false, false, true]
