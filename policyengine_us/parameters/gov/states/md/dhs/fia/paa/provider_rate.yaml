@@ -10,14 +10,13 @@ metadata:
     - title: Maryland DHS-FIA Action Transmittal 23-02, 2023 COLA Mass Mod, Master PAA Rates and Per Diems Chart
       href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2023/23-02%20AT%20-%20COLA%20Mass%20Mod%20FFY23.pdf#page=3
     - title: COMAR 07.03.07.09 Amount of Grant and Payee
-      href: https://www.law.cornell.edu/regulations/maryland/COMAR-07-03-07-09
+      href: https://regs.maryland.gov/us/md/exec/comar/07.03.07.09
     - title: SSA State Assistance Programs for SSI Recipients, January 2011 — Maryland Table 1
       href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/md.html
 
 # 2011 cost-of-care values derived from SSA 2011 Maryland Table 1
 # (combined federal+state payment level) minus the 2011 PNA of $82.
 # REHAB combined need = PNA = $82, confirming the $82 PNA inference.
-# 2021 values are from AT 23-02. Inter-year values forward-fill.
 CARE_HOME_LEVEL_A:
   2011-01-01: 658
   2021-01-01: 776

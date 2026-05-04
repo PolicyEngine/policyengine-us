@@ -190,15 +190,19 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Couple computation: federal SSI per person = $1,491 / 2 = $745.50.
-    # combined per person = 776 + 106 = 882. state_supp_max = 882 - 745.50 = 136.50.
-    # Lock intermediate cascade values so a regression in SSI couple-FBR
-    # splitting (or in countable-income attribution) fails this test loudly
-    # rather than silently changing the meaning of the assertion.
+    # Federal SSI uses couple_FBR/2 = $1,491 / 2 = $745.50 per spouse, but
+    # per SSA 2011 MD Table 1 footnote a ("the state supplementation rate
+    # for individuals applies to each member of a couple") the PAA cascade
+    # uses the individual FBR ($994) per spouse — never couple_FBR/2.
+    # combined per person = 776 + 106 = 882; state_supp_max = max(882 -
+    # 994, 0) = 0 per spouse. The couple is left at federal $745.50 + state
+    # $0 = $745.50 per spouse, which matches the SSA-published state-supp
+    # treatment of couples (Maryland does not top up to fill the federal
+    # couple-FBR reduction).
     ssi_amount_if_eligible: [745.50, 745.50]
     ssi_countable_income: [0, 0]
     md_paa_eligible: [true, true]
-    md_paa: [136.50, 136.50]
+    md_paa: [0, 0]
 
 - name: Case 6, person not in PAA facility (NONE) is ineligible.
   period: 2026-01
@@ -391,18 +395,19 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Both spouses SSI-eligible — couple FBR splits as $1,491 / 2 = $745.50
+    # Federal SSI uses couple_FBR/2 = $745.50 per spouse, but per SSA 2011
+    # MD Table 1 footnote a the PAA cascade uses the individual FBR ($994)
     # per spouse. Per-person cascade:
     #   person1 (CARE_HOME_LEVEL_A): combined = 776 + 106 = 882;
-    #     state_supp_max = 882 - 745.50 = 136.50.
+    #     state_supp_max = max(882 - 994, 0) = 0.
     #   person2 (CARE_HOME_LEVEL_C): combined = 1173 + 106 = 1279;
-    #     state_supp_max = 1279 - 745.50 = 533.50.
+    #     state_supp_max = 1279 - 994 = 285.
     # Verifies per-person evaluation produces different PAA amounts within
-    # one marital unit despite identical income.
+    # one marital unit and that the cascade does not use couple_FBR/2.
     ssi_amount_if_eligible: [745.50, 745.50]
     ssi_countable_income: [0, 0]
     md_paa_eligible: [true, true]
-    md_paa: [136.50, 533.50]
+    md_paa: [0, 285]
 
 - name: Case 11, OASI recipient who is not aged/blind/disabled is PAA-ineligible.
   period: 2026-01
