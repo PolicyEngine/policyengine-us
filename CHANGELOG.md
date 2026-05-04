@@ -1,3 +1,44 @@
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
+## [1.678.0] - 2026-04-30
+
+### Added
+
+- Washington State Family Assistance and Refugee Cash Assistance programs.
+  Fix Washington TANF immigration eligibility, add `years_since_us_entry` and `wa_show_all_cash_assistance_programs` variables.
+
+
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
 ## [1.676.4] - 2026-04-30
 
 ### Changed
