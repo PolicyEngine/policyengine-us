@@ -17,6 +17,7 @@ class marketplace_csr_eligible(Variable):
         category = tax_unit("selected_marketplace_plan_category", period)
         silver_selected = category == MarketplacePlanCategory.SILVER
         magi_fraction = tax_unit("aca_magi_fraction", period)
-        p = parameters(period).gov.aca.csr.income_threshold
-        income_eligible = (magi_fraction >= p.minimum) & (magi_fraction <= p.maximum)
+        income_eligible = (
+            magi_fraction <= parameters(period).gov.aca.csr.income_threshold.maximum
+        )
         return receives_aca & silver_selected & income_eligible

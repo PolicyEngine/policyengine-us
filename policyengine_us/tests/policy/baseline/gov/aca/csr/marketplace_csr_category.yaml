@@ -51,3 +51,17 @@
     marketplace_csr_category: NONE
     marketplace_csr_actuarial_value: 0
     marketplace_effective_actuarial_value: 0.7
+
+- name: Case 5, APTC-eligible silver enrollee below 100 percent FPL receives 94 percent AV CSR.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 0.75
+    selected_marketplace_plan_category: SILVER
+  output:
+    person_receives_aca: true
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_94
+    marketplace_csr_actuarial_value: 0.94
+    marketplace_effective_actuarial_value: 0.94
