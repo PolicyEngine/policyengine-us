@@ -1,14 +1,14 @@
-description: Minnesota disregards this amount of general (unearned-first, then earned) income under the Minnesota Supplemental Aid program, mirroring the federal SSI $20 general income disregard.
+description: Minnesota excludes this amount of general income under the Minnesota Supplemental Aid program.
 
 values:
-  1989-01-01: 20
+  1974-04-01: 20
 
 metadata:
   unit: currency-USD
   period: month
   label: Minnesota Supplemental Aid general income disregard
   reference:
-    - title: MN DHS Combined Manual 0018.18 - Earned Income Disregards (01/2026)
-      href: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=2
-    - title: MN House Research Department - Minnesota Supplemental Aid (October 2024)
+    - title: 20 CFR § 416.1124(c)(12)
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-K/section-416.1124#p-416.1124(c)(12)
+    - title: MN House Research Department - Minnesota Supplemental Aid (October 2024), Income standards and treatment of income
       href: https://www.house.mn.gov/hrd/pubs/pap_MSA.pdf#page=3

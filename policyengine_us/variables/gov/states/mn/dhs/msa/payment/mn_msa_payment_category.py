@@ -18,10 +18,9 @@ class mn_msa_payment_category(Variable):
     )
 
     def formula(person, period, parameters):
-        # Per Minn. Stat. § 256D.44 Subd. 2 and Combined Manual 0020.21,
-        # recipients receiving Medicaid-financed institutional care are paid
-        # under the FLA-D personal-needs cap regardless of their otherwise
-        # reported MSA living arrangement.
+        # Recipients in Medicaid-financed institutional care are paid under
+        # the FLA-D personal-needs cap regardless of reported arrangement.
+        # Housing-allowance recipients receive the higher living-alone rate.
         federal_arrangement = person("ssi_federal_living_arrangement", period.this_year)
         federal_values = federal_arrangement.possible_values
         in_medicaid_facility = person("is_in_medicaid_facility", period.this_year) | (
@@ -32,15 +31,12 @@ class mn_msa_payment_category(Variable):
         housing_assistance_eligible = person(
             "mn_msa_housing_assistance_eligible", period
         )
-        is_couple_arrangement = (living_arrangement == LA.COUPLE_LIVING_ALONE) | (
+        is_couple = (living_arrangement == LA.COUPLE_LIVING_ALONE) | (
             living_arrangement == LA.COUPLE_LIVING_WITH_OTHERS
         )
-        couple_housing_assistance_eligible = (
-            person.marital_unit.sum(housing_assistance_eligible) > 0
-        )
         apply_housing_standard = where(
-            is_couple_arrangement,
-            couple_housing_assistance_eligible,
+            is_couple,
+            person.marital_unit.any(housing_assistance_eligible),
             housing_assistance_eligible,
         )
         housing_standard_arrangement = select(

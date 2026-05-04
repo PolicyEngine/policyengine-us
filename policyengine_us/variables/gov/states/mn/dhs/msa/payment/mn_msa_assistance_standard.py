@@ -15,5 +15,4 @@ class mn_msa_assistance_standard(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mn.dhs.msa.assistance_standard
-        arrangement = person("mn_msa_payment_category", period)
-        return p.amount[arrangement]
+        return p.amount[person("mn_msa_payment_category", period)]

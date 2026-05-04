@@ -14,9 +14,6 @@ class mn_msa_guardian_fee(Variable):
     )
 
     def formula(person, period, parameters):
-        # Per SSA 2011 Minnesota Section 9.5: MSA pays the lesser of
-        # 5% of gross monthly income or $100 to recipients with a
-        # court-appointed guardian or conservator.
         p = parameters(period).gov.states.mn.dhs.msa.special_needs.guardian_fee
         has_guardian = person("mn_msa_has_guardian", period)
         gross = person("mn_msa_gross_income", period)

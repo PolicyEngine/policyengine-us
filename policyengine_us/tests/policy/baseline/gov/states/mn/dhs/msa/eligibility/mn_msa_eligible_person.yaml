@@ -1,4 +1,4 @@
-- name: Case 1, aged SSI recipient is eligible (SSI-receipt path).
+- name: Case 1, aged SSI recipient is eligible.
   period: 2026-01
   input:
     people:
@@ -26,7 +26,7 @@
   output:
     mn_msa_eligible_person: true
 
-- name: Case 2, SSI-eligible-except-for-income at MSA standard is eligible (non-SSI path).
+- name: Case 2, SSI-eligible-except-for-income is eligible on the non-SSI track.
   period: 2026-01
   input:
     people:
@@ -83,38 +83,6 @@
   output:
     mn_msa_eligible_person: false
 
-- name: Case 5, P2.3 child applicant with high parent-deemed income fails gross income test.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 10
-        is_blind: false
-        is_disabled: true
-        immigration_status: CITIZEN
-        ssi_countable_resources: 500
-        ssi: 0
-        ssi_unearned_income: 0
-        ssi_unearned_income_deemed_from_ineligible_parent: 60_000  # $5,000/mo
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    # Parent-deemed $5,000/mo > 300% individual FBR (~$2,982/mo in 2026)
-    # -> gross income test fails. (P2.3: parent-deemed unearned now flows
-    # into MSA gross/countable income for child applicants.)
-    mn_msa_eligible_person: false
-
 - name: Case 4, income above MSA standard is ineligible.
   period: 2026-01
   input:
@@ -142,6 +110,37 @@
         state_code: MN
   output:
     # Countable $2,000 > $1,055 standard -> not income eligible.
+    mn_msa_eligible_person: false
+
+- name: Case 5, child applicant with high parent-deemed income fails gross income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 0
+        ssi_unearned_income: 0
+        ssi_unearned_income_deemed_from_ineligible_parent: 60_000  # $5,000/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Parent-deemed $5,000/mo > 300% individual FBR (~$2,982/mo in 2026)
+    # -> gross income test fails.
     mn_msa_eligible_person: false
 
 - name: Case 6, non-qualifying living arrangement is ineligible.
@@ -184,6 +183,61 @@
         is_blind: false
         is_disabled: true
         immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_eligible_person: false
+
+- name: Case 8, legal permanent resident aged senior is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_countable_resources: 1_000
+        ssi: 11_928  # $994/mo
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_eligible_person: true
+
+- name: Case 9, undocumented immigrant fails the immigration check.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: UNDOCUMENTED
         ssi_countable_resources: 500
         ssi: 0
         ssi_unearned_income: 0

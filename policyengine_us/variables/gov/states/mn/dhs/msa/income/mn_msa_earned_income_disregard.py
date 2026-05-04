@@ -14,12 +14,6 @@ class mn_msa_earned_income_disregard(Variable):
     )
 
     def formula(person, period, parameters):
-        # Per MN DHS Combined Manual 0018.18, MSA's non-SSI track
-        # disregards the first $65 of earned income plus half the
-        # remainder. The federal $20 general disregard also applies on
-        # the non-SSI track (per House Research and CM 0018.18); it
-        # consumes unearned income first and any leftover rolls into
-        # this earned-income calculation.
         p = parameters(period).gov.states.mn.dhs.msa.disregard
         gross_unearned = add(
             person,
@@ -38,22 +32,27 @@ class mn_msa_earned_income_disregard(Variable):
                 "ssi_earned_income_deemed_from_ineligible_spouse",
             ],
         )
-        # The COUPLE_* assistance standards are couple totals split 50/50
-        # onto each spouse, so the $20 general and $65 earned-initial
-        # disregards are also applied once per couple — half to each
-        # spouse. The 1/2 leftover-earned rate applies to per-spouse gross
-        # earned and is unchanged.
         arrangement = person("mn_msa_payment_category", period)
         LA = arrangement.possible_values
-        is_couple_arrangement = (arrangement == LA.COUPLE_LIVING_ALONE) | (
+        is_couple = (arrangement == LA.COUPLE_LIVING_ALONE) | (
             arrangement == LA.COUPLE_LIVING_WITH_OTHERS
         )
-        per_person_general = where(is_couple_arrangement, p.general / 2, p.general)
-        per_person_earned_initial = where(
-            is_couple_arrangement, p.earned.initial / 2, p.earned.initial
+        # Couples: aggregate to marital unit, apply $20 + $65 + 1/2 once,
+        # then split 50/50 across spouses.
+        couple_unearned = person.marital_unit.sum(gross_unearned)
+        couple_earned = person.marital_unit.sum(gross_earned)
+        couple_leftover = max_(p.general - couple_unearned, 0)
+        couple_flat = p.earned.initial + couple_leftover
+        couple_flat_disregard = min_(couple_earned, couple_flat)
+        couple_remainder = max_(couple_earned - couple_flat, 0)
+        couple_per_spouse = (
+            couple_flat_disregard + couple_remainder * p.earned.rate
+        ) / 2
+        individual_leftover = max_(p.general - gross_unearned, 0)
+        individual_flat = p.earned.initial + individual_leftover
+        individual_flat_disregard = min_(gross_earned, individual_flat)
+        individual_remainder = max_(gross_earned - individual_flat, 0)
+        individual_disregard = (
+            individual_flat_disregard + individual_remainder * p.earned.rate
         )
-        leftover_general = max_(per_person_general - gross_unearned, 0)
-        flat = per_person_earned_initial + leftover_general
-        flat_disregard = min_(gross_earned, flat)
-        remainder = max_(gross_earned - flat, 0)
-        return flat_disregard + remainder * p.earned.rate
+        return where(is_couple, couple_per_spouse, individual_disregard)

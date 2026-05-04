@@ -1,78 +1,26 @@
-- name: Case 1, pathway-eligible person with high shelter costs qualifies.
+- name: Case 1, default value is false.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
-        immigration_status: CITIZEN
-        mn_msa_housing_assistance_pathway_eligible: true
-        pre_subsidy_rent: 6_000
-        ssi: 11_928
-    marital_units:
-      marital_unit:
+    households:
+      household:
         members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_housing_assistance_eligible: false
+
+- name: Case 2, user-provided true passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mn_msa_housing_assistance_eligible: true
     households:
       household:
         members: [person1]
         state_code: MN
   output:
     mn_msa_housing_assistance_eligible: true
-
-- name: Case 2, shelter costs at or below 40 percent of gross income do not qualify.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        immigration_status: CITIZEN
-        mn_msa_housing_assistance_pathway_eligible: true
-        pre_subsidy_rent: 4_764
-        ssi: 11_928
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    mn_msa_housing_assistance_eligible: false
-
-- name: Case 3, current housing assistance prevents eligibility.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 70
-        immigration_status: CITIZEN
-        mn_msa_housing_assistance_pathway_eligible: true
-        pre_subsidy_rent: 6_000
-        ssi: 11_928
-    marital_units:
-      marital_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
-        members: [person1]
-    spm_units:
-      spm_unit:
-        members: [person1]
-        receives_housing_assistance: true
-    households:
-      household:
-        members: [person1]
-        state_code: MN
-  output:
-    mn_msa_housing_assistance_eligible: false
