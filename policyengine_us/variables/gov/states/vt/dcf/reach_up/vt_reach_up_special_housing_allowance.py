@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
+    County,
+)
 
 
 class vt_reach_up_special_housing_allowance(Variable):
@@ -14,13 +17,11 @@ class vt_reach_up_special_housing_allowance(Variable):
     defined_for = StateCode.VT
 
     def formula(spm_unit, period, parameters):
-        # Per Vermont DCF Reach Up Procedure P-2230A: when computing the
-        # household maximum benefit, add up to the special housing allowance
-        # (maximum of $90) on top of the basic need standard and housing
-        # standard, then multiply by the ratable reduction.
-        # The special housing allowance is available to households with a
-        # shelter obligation; households with no housing costs do not
-        # receive it.
+        # Per Reach Up Rule 2244.3: SHA is paid only to households whose
+        # actual housing expenses exceed the maximum monthly housing
+        # allowance (Rule 2246). Amount = min(housing_expenses -
+        # max_housing_allowance, $90). SHA is then added to total needs
+        # and reduced by the ratable reduction (Rule 2238 / P-2230A).
         # Uses pre-subsidy rent to avoid circular dependency:
         # tanf -> vt_reach_up -> housing_cost -> rent -> housing_assistance
         # -> hud_annual_income -> tanf
@@ -37,5 +38,13 @@ class vt_reach_up_special_housing_allowance(Variable):
                 "homeowners_insurance",
             ],
         )
-        has_shelter_costs = (pre_subsidy_rent + other_housing) > 0
-        return where(has_shelter_costs, p.special_housing, 0)
+        housing_cost = pre_subsidy_rent + other_housing
+
+        county = spm_unit.household("county", period.this_year)
+        in_chittenden = county == County.CHITTENDEN_COUNTY_VT
+        housing_max = where(
+            in_chittenden, p.housing.chittenden, p.housing.non_chittenden
+        )
+
+        excess = max_(housing_cost - housing_max, 0)
+        return min_(excess, p.special_housing)

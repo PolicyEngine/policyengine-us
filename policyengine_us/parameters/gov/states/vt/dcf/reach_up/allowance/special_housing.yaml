@@ -1,5 +1,9 @@
 description: Vermont provides up to this monthly special housing allowance under the Reach Up program.
 
+# The 2001-07-01 effective date is inferred from Act 147 of 2001
+# (Reach Up program creation, replacing ANFC). The current rule
+# revision (Rule 2244.3, 08/01/2024 bulletin 23-28) does not
+# document the original establishment date of the $90 amount.
 values:
   2001-07-01: 90
 
@@ -9,8 +13,8 @@ metadata:
   label: Vermont Reach Up special housing allowance maximum
   reference:
     - title: Vermont DCF Reach Up Procedure P-2230A - Calculating Net Income and Benefits
-      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2230A.pdf
-    - title: Code Vt. R. 13-170-220-X Section 2247 - Special Housing Allowance
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2230A.pdf#page=1
+    - title: Code Vt. R. 13-170-220 Rule 2244.3 - Special Housing Needs
       href: https://www.law.cornell.edu/regulations/vermont/13-220-Code-Vt-R-13-170-220-X
-    - title: Vermont TANF State Plan 2024-2027, Attachment C
+    - title: Vermont TANF State Plan 2024-2027, Attachment C (corroborates ratable reduction; SHA amount sourced from P-2230A and Rule 2244.3)
       href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/Benefits/VT-TANF-State-Plan-2024-2027.pdf#page=23

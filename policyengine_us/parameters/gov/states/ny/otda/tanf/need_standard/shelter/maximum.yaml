@@ -1,4 +1,4 @@
-description: New York provides up to this monthly shelter allowance under the Temporary Assistance for Needy Families program. Values shown reflect the New York City schedule, the most populous local agency district and the cross-state research convention used by CBPP and the Urban Welfare Rules Database.
+description: New York provides up to this amount as the maximum monthly shelter allowance under the Temporary Assistance for Needy Families program.
 
 metadata:
   unit: currency-USD
@@ -13,7 +13,10 @@ metadata:
       href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.3
 
 # NYC shelter allowance with children, 18 NYCRR 352.3(a) Schedule SA-2.
-# This implementation uses the NYC schedule as the model default since:
+# Values reflect the New York City schedule, the most populous local agency
+# district and the cross-state research convention used by CBPP and the
+# Urban Welfare Rules Database. This implementation uses the NYC schedule
+# as the model default since:
 #   (1) NYC accounts for the majority of New York's TANF caseload
 #   (2) CBPP and Urban WRD report the NYC figure as the NY benchmark
 # County-specific shelter allowances ($259-$447 range outside NYC) can be
