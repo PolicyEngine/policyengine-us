@@ -12,4 +12,4 @@ class social_security_retirement_reported(Variable):
         "the reported_social_security_retirement parameter is true."
     )
     unit = USD
-    uprating = "gov.ssa.uprating"
+    uprating = "calibration.gov.irs.soi.social_security"

@@ -28,6 +28,7 @@ TRUSTEES_CORE_THRESHOLD_ASSUMPTION: dict[str, Any] = {
         "amt_thresholds",
     ],
     "economic_assumption": TRUSTEES_2025_NAWI_ASSUMPTION["name"],
+    "income_uprating_assumption": "trustees-2025-soi-income-nawi-v1",
     "not_default_current_law": True,
 }
 

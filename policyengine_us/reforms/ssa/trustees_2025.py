@@ -21,6 +21,26 @@ TRUSTEES_2025_NAWI_ASSUMPTION: dict[str, Any] = {
     "not_default_current_law": True,
 }
 
+TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS: tuple[str, ...] = (
+    "alimony_income",
+    "employment_income",
+    "farm_income",
+    "farm_rent_income",
+    "long_term_capital_gains",
+    "non_qualified_dividend_income",
+    "partnership_s_corp_income",
+    "qualified_dividend_income",
+    "rental_income",
+    "self_employment_income",
+    "short_term_capital_gains",
+    "social_security",
+    "tax_exempt_interest_income",
+    "tax_exempt_pension_income",
+    "taxable_interest_income",
+    "taxable_pension_income",
+    "unemployment_compensation",
+)
+
 # SSA 2025 Trustees Report, table V.B1, intermediate assumptions. Values are
 # annual percentage changes in the nominal average annual wage in covered
 # employment for the listed calendar year.
@@ -125,12 +145,47 @@ def apply_trustees_2025_nawi_projection(
         )
 
 
+def apply_trustees_2025_soi_income_projection(
+    parameters,
+    *,
+    last_projected_year: int = 2036,
+    end_year: int = 2100,
+) -> None:
+    """Extend SOI income uprating aggregates using the Trustees NAWI path.
+
+    PolicyEngine input variables such as employment income and Social Security
+    benefits use these calibration totals as uprating factors. If they flatten
+    after the CBO projection window, nominal incomes freeze in long-run
+    microsimulations even when NAWI and tax parameters keep growing.
+    """
+
+    nawi = parameters.gov.ssa.nawi
+    soi = parameters.calibration.gov.irs.soi
+
+    for parameter_name in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS:
+        parameter = getattr(soi, parameter_name)
+
+        for year in range(last_projected_year + 1, end_year + 1):
+            previous_value = float(parameter(f"{year - 1}-01-01"))
+            wage_growth = float(nawi(f"{year}-01-01")) / float(
+                nawi(f"{year - 1}-01-01")
+            )
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=previous_value * wage_growth,
+            )
+
+        final_value = float(parameter(f"{end_year}-01-01"))
+        parameter.update(start=instant(f"{end_year}-01-01"), value=final_value)
+
+
 def apply_trustees_2025_economic_assumptions(
     parameters,
     *,
     end_year: int = 2100,
 ) -> None:
     apply_trustees_2025_nawi_projection(parameters, end_year=end_year)
+    apply_trustees_2025_soi_income_projection(parameters, end_year=end_year)
     extend_social_security_payroll_cap(
         parameters,
         last_projected_year=2035,

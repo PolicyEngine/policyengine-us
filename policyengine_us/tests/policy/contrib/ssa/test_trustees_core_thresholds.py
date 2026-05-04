@@ -9,6 +9,7 @@ from policyengine_us.parameters.uprating_extensions import (
 from policyengine_us.reforms.ssa.trustees_2025 import (
     TRUSTEES_2025_AVERAGE_WAGE_GROWTH_PCT,
     TRUSTEES_2025_NAWI_ASSUMPTION,
+    TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS,
 )
 from policyengine_us.reforms.ssa.trustees_core_thresholds import (
     TRUSTEES_CORE_THRESHOLD_ASSUMPTION,
@@ -29,6 +30,10 @@ def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
     assert (
         TRUSTEES_CORE_THRESHOLD_ASSUMPTION["economic_assumption"]
         == TRUSTEES_2025_NAWI_ASSUMPTION["name"]
+    )
+    assert (
+        TRUSTEES_CORE_THRESHOLD_ASSUMPTION["income_uprating_assumption"]
+        == "trustees-2025-soi-income-nawi-v1"
     )
     assert "amt_thresholds" in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["parameter_groups"]
 
@@ -60,6 +65,53 @@ def test_reform_recomputes_payroll_cap_from_trustees_2025_nawi_path():
             current_cap * nawi(f"{year - 2}-01-01") / nawi(f"{year - 3}-01-01")
         )
         assert payroll_cap(f"{year}-01-01") == expected_cap
+
+
+def test_reform_extends_soi_income_upraters_from_trustees_2025_nawi_path():
+    baseline = _parameters()
+    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+
+    assert "employment_income" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
+    assert "social_security" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
+
+    nawi = reformed.gov.ssa.nawi
+    for parameter_name in ["employment_income", "self_employment_income", "social_security"]:
+        baseline_parameter = getattr(baseline.calibration.gov.irs.soi, parameter_name)
+        reformed_parameter = getattr(reformed.calibration.gov.irs.soi, parameter_name)
+
+        assert reformed_parameter("2036-01-01") == baseline_parameter("2036-01-01")
+        assert reformed_parameter("2075-01-01") > baseline_parameter("2075-01-01")
+
+        growth = float(reformed_parameter("2075-01-01")) / float(
+            reformed_parameter("2074-01-01")
+        )
+        expected_growth = float(nawi("2075-01-01")) / float(nawi("2074-01-01"))
+        assert growth == pytest.approx(expected_growth)
+
+
+def test_reported_social_security_components_use_aggregate_ss_uprater():
+    from policyengine_us.variables.gov.ssa.social_security.social_security_retirement_reported import (
+        social_security_retirement_reported,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_dependents import (
+        social_security_dependents,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_disability import (
+        social_security_disability,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_retirement import (
+        social_security_retirement,
+    )
+    from policyengine_us.variables.gov.ssa.ss.social_security_survivors import (
+        social_security_survivors,
+    )
+
+    expected_uprater = "calibration.gov.irs.soi.social_security"
+    assert social_security_retirement.uprating == expected_uprater
+    assert social_security_retirement_reported.uprating == expected_uprater
+    assert social_security_disability.uprating == expected_uprater
+    assert social_security_dependents.uprating == expected_uprater
+    assert social_security_survivors.uprating == expected_uprater
 
 
 def test_reform_wage_indexes_core_tax_threshold_from_2035():
