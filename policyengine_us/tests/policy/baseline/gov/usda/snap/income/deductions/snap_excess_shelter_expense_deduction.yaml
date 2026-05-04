@@ -1,5 +1,7 @@
 - name: Default is zero because zero housing costs.
   period: 2022
+  input:
+    state_code: TX
   output:
     snap_excess_shelter_expense_deduction: 0
 
@@ -32,6 +34,7 @@
 - name: Uncapped if includes elderly or disabled people.
   period: 2022
   input:
+    state_code: TX
     housing_cost: 600 * 12
     has_usda_elderly_disabled: true
   output:
@@ -40,6 +43,7 @@
 - name: Homeless households get a flat benefit.
   period: 2022-01
   input:
+    state_code: TX
     is_homeless: true
     housing_cost: 1
   output:

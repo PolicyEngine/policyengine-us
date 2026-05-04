@@ -1,0 +1,83 @@
+- name: NC CDCC with 30% default match
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: NC
+    cdcc_potential: 1_000
+  output:
+    nc_cdcc: 300
+    nc_refundable_credits: 300
+
+- name: NC CDCC with custom 50% match
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.match: 0.5
+    state_code: NC
+    cdcc_potential: 2_000
+  output:
+    nc_cdcc: 1_000
+    nc_refundable_credits: 1_000
+
+- name: NC income tax reduced by CDCC refundable credit
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: NC
+    cdcc_potential: 1_000
+    nc_income_tax_before_credits: 500
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+  output:
+    nc_cdcc: 300
+    nc_refundable_credits: 300
+    nc_income_tax: 200
+
+- name: NC CDCC creates refund when credit exceeds tax liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.match: 0.5
+    state_code: NC
+    cdcc_potential: 6_000
+    nc_income_tax_before_credits: 1_000
+    nc_use_tax: 0
+    nc_non_refundable_credits: 500
+  output:
+    nc_cdcc: 3_000
+    nc_refundable_credits: 3_000
+    nc_income_tax: -2_500
+
+- name: NC CDCC stacks with NC EITC contrib when both are active
+  period: 2026
+  reforms:
+    - policyengine_us.reforms.states.nc.eitc.nc_eitc
+    - policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: NC
+    eitc: 2_000
+    cdcc_potential: 1_000
+    nc_income_tax_before_credits: 1_000
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+  output:
+    nc_eitc: 200
+    nc_cdcc: 300
+    nc_refundable_credits: 500
+    nc_income_tax: 500
+
+- name: Non-NC filer receives no NC CDCC
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: CA
+    cdcc_potential: 1_000
+  output:
+    nc_cdcc: 0

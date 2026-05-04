@@ -1,0 +1,45 @@
+description: The Department of Health and Human Services treats these states as offering Basic Health Program coverage under this model.
+
+values:
+  # MinnesotaCare was reclassified as BHP effective 2015-01-01
+  # (pre-existing program since 1992).
+  2015-01-01:
+    - MN
+  # NY Essential Plan launched 2015-04-01; first full coverage year is 2016.
+  2016-01-01:
+    - MN
+    - NY
+  # OR OHP Bridge launched 2024-07-01; first full coverage year is 2025.
+  # NY's Essential Plan moved to a section 1332 waiver path on
+  # 2024-04-01 but we keep it in this modeled BHP-like coverage path for
+  # continuity (CMS reinstated NY BHP effective 2026-07-01).
+  2025-01-01:
+    - MN
+    - NY
+    - OR
+  # DC Healthy DC Plan launches 2026-01-01.
+  2026-01-01:
+    - MN
+    - NY
+    - OR
+    - DC
+
+metadata:
+  unit: list
+  period: year
+  label: Basic Health Program active states
+  reference:
+    - title: Basic Health Program | Medicaid
+      href: https://www.medicaid.gov/basic-health-program
+    - title: MinnesotaCare | Minnesota Department of Human Services
+      href: https://mn.gov/dhs/people-we-serve/adults/health-care/health-care-programs/programs-and-services/minnesotacare.jsp
+    - title: Essential Plan Information | NY State of Health
+      href: https://info.nystateofhealth.ny.gov/EssentialPlan
+    - title: New York BHP suspension approval letter | CMS
+      href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-suspension-appvl-ltr-mar-2024.pdf
+    - title: New York BHP Blueprint revision | CMS
+      href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-blueprint-revision-feb2026.pdf
+    - title: Oregon Health Plan (OHP) Bridge | Oregon Health Authority
+      href: https://www.oregon.gov/oha/ohp/pages/bridge.aspx
+    - title: Basic Health Plan | DC Health Benefit Exchange Authority
+      href: https://hbx.dc.gov/page/basic-health-plan

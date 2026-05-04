@@ -1,3 +1,193 @@
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
+## [1.678.0] - 2026-04-30
+
+### Added
+
+- Washington State Family Assistance and Refugee Cash Assistance programs.
+  Fix Washington TANF immigration eligibility, add `years_since_us_entry` and `wa_show_all_cash_assistance_programs` variables.
+
+
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
+## [1.676.4] - 2026-04-30
+
+### Changed
+
+- Improve WIC benefit valuation by assigning detailed federal food packages, updating cash-value benefit amounts, and using WIC-specific countable income.
+
+
+## [1.676.3] - 2026-04-30
+
+### Fixed
+
+- Removed the one-time Rhode Island child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023 onward.
+
+
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
+## [1.674.1] - 2026-04-29
+
+### Fixed
+
+- Fix state benchmark tests affected by modeled Medicare enrollment inputs.
+
+
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
+## [1.673.1] - 2026-04-29
+
+### Fixed
+
+- Split medical expenses into program-specific variables and remove the generic medical out-of-pocket expense aggregate.
+
+
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
+## [1.670.2] - 2026-04-27
+
+### Fixed
+
+- Fix Marketplace selected-plan and net premiums for unsubsidized households.
+
+
+## [1.670.1] - 2026-04-27
+
+### Fixed
+
+- Exclude children with employer-sponsored insurance from CHIP eligibility.
+
+
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
+## [1.669.0] - 2026-04-27
+
+### Added
+
+- Added Basic Health Program (ACA §1331) coverage modeling. Creates a shared `gov/hhs/basic_health_program` coverage path covering MN MinnesotaCare, NY Essential Plan, OR OHP Bridge (2025+), and DC Healthy DC Plan (2026+). BHP-eligible people are excluded from ACA Premium Tax Credit eligibility, so per-state PTC projections now zero out for BHP enrollees. Eligibility enforces the statutory 133–200% FPL band (250% FPL in NY from 2025). Moves the state adult/parent Medicaid income ceilings back to Medicaid-only levels in BHP states so people above the Medicaid line fall through to BHP rather than silently losing coverage. Refs #8112.
+
+
+## [1.668.0] - 2026-04-26
+
+### Added
+
+- - Added 2026 ACA lowest-cost bronze plan (`lcbp`) rating-area premiums and bronze companion variables.
+
+
+## [1.667.1] - 2026-04-25
+
+### Fixed
+
+- Fix farm operations income, business self-employment tax, and labor supply response inputs.
+
+
+## [1.667.0] - 2026-04-25
+
+### Added
+
+- Add shared CPS tax-unit construction helper rules.
+
+
+## [1.666.2] - 2026-04-24
+
+### Fixed
+
+- Backfilled Medicaid and CHIP income limit parameters to 2018 using official CMS sources, including thresholds stored with the 5 percentage-point MAGI disregard.
+
+
+## [1.666.1] - 2026-04-23
+
+### Fixed
+
+- Removed the one-time Connecticut child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023-2026.
+
+
+## [1.666.0] - 2026-04-23
+
+### Added
+
+- North Carolina Child and Dependent Care Credit contrib reform (refundable, 30% match of federal credit, 2026+).
+
+
 ## [1.665.0] - 2026-04-22
 
 ### Added

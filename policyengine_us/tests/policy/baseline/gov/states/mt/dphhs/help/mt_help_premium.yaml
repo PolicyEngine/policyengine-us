@@ -1,0 +1,95 @@
+- name: Case 1, Montana HELP premium is zero after premiums cease.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 25_000
+        tax_unit_medicaid_income_level: 1.25
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_help_premium: 0
+
+- name: Case 2, Montana HELP adult at 125 percent FPL pays two percent of income in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 25_000
+        tax_unit_medicaid_income_level: 1.25
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_help_premium: 500
+
+- name: Case 3, Montana HELP adult at 50 percent FPL owes premium.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 8_000
+        tax_unit_medicaid_income_level: 0.50
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_help_premium: 160
+
+- name: Case 4, non-adult Montana HELP enrollee owes no premium.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 25_000
+        tax_unit_medicaid_income_level: 1.25
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_help_premium: 0
+
+- name: Case 5, pregnant Montana adult owes no HELP premium.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        medicaid_magi: 25_000
+        tax_unit_medicaid_income_level: 1.25
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_help_premium: 0

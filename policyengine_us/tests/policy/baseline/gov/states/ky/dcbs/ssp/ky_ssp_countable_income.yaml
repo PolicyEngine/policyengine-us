@@ -1,0 +1,73 @@
+- name: Case 1, single person with unearned income — no $20 deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000  # $1,000/mo unearned.
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # §8(8): no $20 general exclusion → full $1,000 counted.
+    ky_ssp_countable_income: [1_000]
+
+- name: Case 2, single person with earned income — $65 + 50% still apply.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 6_000  # $500/mo earned.
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # max(0, $500 − $65) × 0.5 = $217.50.
+    ky_ssp_countable_income: [217.50]
+
+- name: Case 3, no income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_countable_income: [0]
+
+- name: Case 4, ineligible person — countable income is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12_000
+        # Not aged/blind/disabled → not SSI-eligible.
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_countable_income: [0]

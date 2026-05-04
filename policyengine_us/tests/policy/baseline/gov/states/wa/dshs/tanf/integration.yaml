@@ -98,7 +98,8 @@
     # Monthly income: $22,944 / 12 = $1,912 (at income limit)
     # Countable earned = max($1,912 - $500, 0) × 0.5 = $706
     wa_tanf_countable_income: 706
-    wa_tanf_eligible: true
+    # Countable income ($706) not less than payment standard ($706) per WAC 388-450-0162
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 - name: Case 4, two parents with 3 children, one parent working.
@@ -397,7 +398,8 @@
     wa_tanf_payment_standard: 959
     # Monthly unearned income: $12,000 / 12 = $1,000
     wa_tanf_countable_income: 1_000
-    wa_tanf_eligible: true
+    # Countable income ($1,000) not less than payment standard ($959) per WAC 388-450-0162
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 - name: Case 12, single parent with 4 children, self-employment income.
@@ -540,7 +542,8 @@
     # Monthly income: $15,696 / 12 = $1,308 (at income limit)
     # Countable earned = $1,308 × 0.5 = $654
     wa_tanf_countable_income: 654
-    wa_tanf_eligible: true
+    # Countable income ($654) not less than payment standard ($654) per WAC 388-450-0162
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 # Historical integration tests for 2018-01 period
@@ -643,7 +646,8 @@
     # Monthly income: $12,504 / 12 = $1,042 (at income limit)
     # Countable earned = $1,042 × 0.5 = $521
     wa_tanf_countable_income: 521
-    wa_tanf_eligible: true
+    # Countable income ($521) not less than payment standard ($521) per WAC 388-450-0162
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 # Historical integration tests for 2024-01 period
@@ -746,7 +750,8 @@
     # Monthly income: $16,944 / 12 = $1,412 (at income limit)
     # Countable earned = $1,412 × 0.5 = $706
     wa_tanf_countable_income: 706
-    wa_tanf_eligible: true
+    # Countable income ($706) not less than payment standard ($706) per WAC 388-450-0162
+    wa_tanf_eligible: false
     wa_tanf: 0
 
 # Mixed earned + unearned income tests (post-Aug-2024)

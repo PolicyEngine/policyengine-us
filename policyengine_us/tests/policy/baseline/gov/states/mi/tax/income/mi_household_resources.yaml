@@ -54,6 +54,15 @@
   output:
     mi_household_resources: 50_000
 
+- name: Farm operations income counted as household resources
+  period: 2024
+  input:
+    farm_operations_income: 50_000
+    above_the_line_deductions: 0
+    state_code: MI
+  output:
+    mi_household_resources: 50_000
+
 - name: Negative rental income floored at 0
   period: 2024
   input:

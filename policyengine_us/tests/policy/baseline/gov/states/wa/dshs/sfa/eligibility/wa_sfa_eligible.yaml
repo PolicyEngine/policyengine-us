@@ -1,0 +1,287 @@
+- name: Case 1, LPR in bar with child meets all requirements - eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: true
+
+- name: Case 2, LPR past bar - ineligible (qualifies for TANF instead).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 6
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 3, refugee - ineligible (qualifies for TANF instead).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 4, LPR in bar without demographic eligibility - ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: false
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 5, LPR in bar with income ineligible - ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: false
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 6, LPR in bar with resources ineligible - ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: false
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 7, undocumented - ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: UNDOCUMENTED
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 8, non-WA state - ineligible.
+  period: 2024-01
+  input:
+    state_code: OR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 9, single 19-year-old citizen high school senior - eligible via student pathway.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_sfa_eligible: true
+
+- name: Case 10, single 20-year-old citizen vocational student - eligible via student pathway.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: CITIZEN
+        technical_institution_student: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_sfa_eligible: true
+
+- name: Case 11, single 21-year-old citizen student - ineligible (over age cap).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 21
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 12, single 19-year-old citizen non-student - ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 19
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_sfa_eligible: false
+
+- name: Case 13, parent + 19-year-old citizen student (no younger child) - eligible via caretaker pathway.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Caretaker (parent) is covered automatically because the 19-year-old
+    # student in the SPM unit makes the unit demographically SFA-eligible.
+    wa_sfa_eligible: true
+
+- name: Case 14, parent + 19-year-old student + 5-year-old child - ineligible (TANF wins).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # 5-year-old triggers TANF demographic; TANF/SFA mutex blocks SFA.
+    wa_sfa_eligible: false
+
+- name: Case 15a, override flag forces SFA-eligible for a TANF-eligible household.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_show_all_cash_assistance_programs: true
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Citizen TANF-eligible household; override bypasses the SFA mutex so
+    # API consumers can display all 3 cash-assistance amounts. Locks the
+    # override at the unit-test level.
+    wa_sfa_eligible: true
+
+- name: Case 15, LPR-in-bar parent + 19-year-old citizen student - eligible via student pathway.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_tanf_income_eligible: true
+        wa_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Citizen 19-year-old student blocks the immigration pathway (mutex
+    # excludes units with TANF-immigration-eligible members), but the
+    # student pathway fires independently.
+    wa_sfa_eligible: true

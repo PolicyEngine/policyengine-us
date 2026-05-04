@@ -43,11 +43,11 @@ class slcsp_family_tier_category(Variable):
         member_ages = person("monthly_age", period)
 
         # Define adult status using the parameter instead of hardcoded value
-        is_aca_ptc_eligible = person("is_aca_ptc_eligible", period)
-        is_eligible_adult = (member_ages > max_child_age) & is_aca_ptc_eligible
-        eligible_adult_count = tax_unit.sum(is_eligible_adult)
+        pays_premium = person("pays_aca_premium", period)
+        is_premium_paying_adult = (member_ages > max_child_age) & pays_premium
+        eligible_adult_count = tax_unit.sum(is_premium_paying_adult)
         # More efficient than recounting: total - adults = children
-        eligible_people = tax_unit.sum(is_aca_ptc_eligible)
+        eligible_people = tax_unit.sum(pays_premium)
         eligible_child_count = eligible_people - eligible_adult_count
 
         # Common conditions for both states
