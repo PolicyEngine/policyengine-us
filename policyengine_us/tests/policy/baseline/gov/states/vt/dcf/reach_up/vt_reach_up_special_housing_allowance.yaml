@@ -34,3 +34,19 @@
     mortgage_payments: 1200
   output:
     vt_reach_up_special_housing_allowance: 90
+
+- name: Case 5, household with only real estate taxes receives the allowance.
+  period: 2024-01
+  input:
+    state_code: VT
+    real_estate_taxes: 600
+  output:
+    vt_reach_up_special_housing_allowance: 90
+
+- name: Case 6, household with only homeowners insurance receives the allowance.
+  period: 2024-01
+  input:
+    state_code: VT
+    homeowners_insurance: 480
+  output:
+    vt_reach_up_special_housing_allowance: 90

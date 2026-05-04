@@ -18,8 +18,7 @@ class ny_tanf_shelter_allowance(Variable):
         # -> hud_annual_income -> tanf
         p = parameters(period).gov.states.ny.otda.tanf.need_standard.shelter
         size = spm_unit("spm_unit_size", period.this_year)
-        max_table_size = 8
-        capped_size = min_(size, max_table_size)
+        capped_size = min_(size, p.max_table_size)
         shelter_max = p.maximum[capped_size]
 
         pre_subsidy_rent = add(spm_unit, period, ["pre_subsidy_rent"])

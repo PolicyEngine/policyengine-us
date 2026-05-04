@@ -18,19 +18,22 @@ metadata:
 #   (2) CBPP and Urban WRD report the NYC figure as the NY benchmark
 # County-specific shelter allowances ($259-$447 range outside NYC) can be
 # layered on as a future enhancement when county data is available.
+# Effective date reflects the latest confirmed amendment to the NYC
+# schedule; historical values pre-2003 may have been lower and would
+# need to be added separately to support pre-2003 microsimulation.
 1:
-  1990-01-01: 277
+  2003-01-01: 277
 2:
-  1990-01-01: 283
+  2003-01-01: 283
 3:
-  1990-01-01: 400
+  2003-01-01: 400
 4:
-  1990-01-01: 450
+  2003-01-01: 450
 5:
-  1990-01-01: 501
+  2003-01-01: 501
 6:
-  1990-01-01: 524
+  2003-01-01: 524
 7:
-  1990-01-01: 546
+  2003-01-01: 546
 8:
-  1990-01-01: 546
+  2003-01-01: 546

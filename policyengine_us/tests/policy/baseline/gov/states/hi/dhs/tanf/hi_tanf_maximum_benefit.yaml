@@ -4,6 +4,14 @@
 # Urban Welfare Rules Database (CBPP "Continued Increases in TANF
 # Benefit Levels", May 2024 / Feb 2025) and Hawaii TANF State Plan
 # 11.1, footnote 4.
+#
+# Modeling note: PolicyEngine cannot track cumulative months of TANF
+# receipt or work-eligibility status, so the steady-state mandatory-work
+# rate (SON × 0.48 × 0.80) is applied unconditionally. Households exempt
+# from work requirements (per HRS § 346-71) and households in their
+# first two months of receipt are under-reported relative to the State
+# Plan; a future enhancement could branch on a `hi_tanf_work_exempt` or
+# `hi_tanf_initial_two_months` input.
 
 - name: Case 1, single person household.
   period: 2024-01

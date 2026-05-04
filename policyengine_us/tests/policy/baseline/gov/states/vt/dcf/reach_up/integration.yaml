@@ -1,6 +1,9 @@
-# Vermont TANF (Reach Up) Integration Tests
-# Tests complete benefit calculation pipeline
-# Source: 33 V.S.A. Chapter 11, Code Vt. R. 13-170-220-X
+# Vermont TANF (Reach Up) Integration Tests.
+# Tests the complete benefit calculation pipeline.
+# Payment standard formula per Procedure P-2230A:
+#   (basic needs + housing + special housing allowance) x 0.496 ratable.
+# Special housing allowance is $90/month for households with shelter costs.
+# Source: 33 V.S.A. Chapter 11; Code Vt. R. 13-170-220-X; Procedure P-2230A.
 
 - name: Case 1, family of 3 non-Chittenden with earnings.
   # Example from documentation
@@ -43,7 +46,8 @@
     # Housing: min($500, $400) = $400 (non-Chittenden max)
     vt_reach_up_housing_allowance: 400
 
-    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    # Payment standard: ($1,236 + $400 + $90) x 0.496 = $856.10
+    # (special housing allowance $90 added per Procedure P-2230A)
     vt_reach_up_payment_standard: 856
 
     # Earned income disregard: $350 + ($1,000 - $350) x 0.25 = $512.50
@@ -449,7 +453,8 @@
     # Housing: min($500, $400) = $400 (non-Chittenden max)
     vt_reach_up_housing_allowance: 400
 
-    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    # Payment standard: ($1,236 + $400 + $90) x 0.496 = $856.10
+    # (special housing allowance $90 added per Procedure P-2230A)
     vt_reach_up_payment_standard: 856
 
     # Person 1: max_($800 - $350, 0) * 0.75 = $337.50
@@ -604,7 +609,8 @@
     # Housing: min($500, $400) = $400 (non-Chittenden max)
     vt_reach_up_housing_allowance: 400
 
-    # Payment standard: ($1,236 + $400) x 0.496 = $811.456
+    # Payment standard: ($1,236 + $400 + $90) x 0.496 = $856.10
+    # (special housing allowance $90 added per Procedure P-2230A)
     vt_reach_up_payment_standard: 856
 
     # Per-person earned income disregard:
