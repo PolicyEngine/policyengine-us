@@ -192,6 +192,11 @@
   output:
     # Couple computation: federal SSI per person = $1,491 / 2 = $745.50.
     # combined per person = 776 + 106 = 882. state_supp_max = 882 - 745.50 = 136.50.
+    # Lock intermediate cascade values so a regression in SSI couple-FBR
+    # splitting (or in countable-income attribution) fails this test loudly
+    # rather than silently changing the meaning of the assertion.
+    ssi_amount_if_eligible: [745.50, 745.50]
+    ssi_countable_income: [0, 0]
     md_paa_eligible: [true, true]
     md_paa: [136.50, 136.50]
 
@@ -337,10 +342,102 @@
     # person2 not in PAA facility → ineligible. person1 eligible via SSI.
     # person1 cascade: combined = 1173 + 106 = 1279. ssi_amount_if_eligible
     # for an aged spouse paired with a non-ABD spouse falls back to the
-    # individual FBR ($994). state_supp_max = 1279 - 994 = 285. Forced
-    # `ssi: 9_600` doesn't show up in ssi_countable_income, so countable = 0
-    # and income_excess = 0. PAA = 285.
+    # individual FBR ($994). state_supp_max = 1279 - 994 = 285. Own SSI
+    # receipt is excluded from ssi_countable_income by design, so countable
+    # = 0 and income_excess = 0. PAA = 285. Locked intermediates below
+    # guard against regressions in either assumption. Note:
+    # ssi_amount_if_eligible returns the maximum federal SSI amount a
+    # person *would* receive if categorically eligible; it does not gate
+    # on receipt, so person2 also returns $994.
+    ssi_amount_if_eligible: [994, 994]
+    ssi_countable_income: [0, 0]
     md_paa_eligible: [true, false]
     md_paa_provider_rate: [1_173, 0]
     md_paa_personal_needs_allowance: [106, 0]
     md_paa: [285, 0]
+
+- name: Case 10, married couple with asymmetric living arrangements (CARE Home A vs C).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Both spouses SSI-eligible — couple FBR splits as $1,491 / 2 = $745.50
+    # per spouse. Per-person cascade:
+    #   person1 (CARE_HOME_LEVEL_A): combined = 776 + 106 = 882;
+    #     state_supp_max = 882 - 745.50 = 136.50.
+    #   person2 (CARE_HOME_LEVEL_C): combined = 1173 + 106 = 1279;
+    #     state_supp_max = 1279 - 745.50 = 533.50.
+    # Verifies per-person evaluation produces different PAA amounts within
+    # one marital unit despite identical income.
+    ssi_amount_if_eligible: [745.50, 745.50]
+    ssi_countable_income: [0, 0]
+    md_paa_eligible: [true, true]
+    md_paa: [136.50, 533.50]
+
+- name: Case 11, OASI recipient who is not aged/blind/disabled is PAA-ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50  # Not aged, not blind, not disabled.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000  # $1,000/mo OASI (e.g., survivor benefits)
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # PAA Manual §300.1.B: OASI receipt qualifies a person ONLY if they
+    # also meet aged/blind/disabled. A 50-year-old surviving spouse is
+    # not categorically qualifying, so PAA must reject — exercises the
+    # `(social_security > 0) & is_categorically_qualifying` branch of
+    # md_paa_eligible separately from Case 7's no-federal-benefit case.
+    md_paa_eligible: [false]
+    md_paa: [0]

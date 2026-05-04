@@ -142,3 +142,37 @@
         state_code: MD
   output:
     md_paa_provider_rate: 776
+
+# Pre/post 2021-01-01 transition: the test runner only supports January
+# (or whole-year) periods, so the rate jump from AT 23-02 is verified by
+# pairing 2020-01 (Case 8 above) with 2021-01 below for CARE_HOME_LEVEL_C,
+# and 2018-01 (Case 9) with 2021-01 below for ASSISTED_LIVING.
+- name: Case 10, 2021-01 CARE_HOME_LEVEL_C jumps to $1,173 (AT 23-02 effective).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 1_173
+
+- name: Case 11, 2021-01 ASSISTED_LIVING jumps to $894 (AT 23-02 effective).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 9_600  # gates md_paa_eligible (defined_for on this variable)
+        md_paa_living_arrangement: ASSISTED_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_provider_rate: 894

@@ -168,3 +168,33 @@
   output:
     # combined_need = 1376 + 106 = 1482. state_supp_max = 1482 - 994 = 488.
     md_paa: 488
+
+# Income-excess waterfall: covers the partial-erosion branch where
+# `state_supp_max - income_excess > 0` — i.e., countable income exceeds
+# the federal max but does not fully exhaust the state supplement. Cases
+# 1-8 only exercise full erosion (PAA = 0) or no erosion (income_excess
+# = 0); without this case the partial branch is silently untested.
+- name: Case 9, REHAB recipient with $80/mo unearned — partial state erosion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600  # gates eligibility
+        social_security: 960  # $80/mo unearned (in addition to medical SSI)
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined_need = 0 + 106 = 106. federal_max = $30 (medical fac).
+    # state_supp_max = max(106 - 30, 0) = 76.
+    # countable monthly = 80 - 20 (general exclusion) = 60.
+    # income_excess = max(60 - 30, 0) = 30.
+    # PAA = max(76 - 30, 0) = 46. Partial reduction (not zero).
+    md_paa: 46

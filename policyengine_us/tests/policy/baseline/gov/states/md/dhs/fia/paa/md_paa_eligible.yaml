@@ -189,3 +189,136 @@
         state_code: MD
   output:
     md_paa_eligible: false
+
+# Resource limit boundary: PAA Manual §500.2.B caps at $2,000 (federal SSI
+# individual limit). Confirm the boundary applies inclusively at $2,000
+# and excludes $2,001 — guards against off-by-one regressions if the
+# parameter or comparison operator ever changes.
+- name: Case 10, resources exactly at $2,000 limit are eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 2_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+- name: Case 11, resources at $2,001 (one dollar over limit) are ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 9_600
+        ssi_countable_resources: 2_001
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+# §300.5 pending pathway: confirms all three categorical gates (aged,
+# blind, disabled) admit a pending applicant. Case 8 covers aged; these
+# cover the other two so a regression in one branch isn't masked.
+- name: Case 12, pending applicant who is blind is PAA-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50  # Not aged.
+        is_blind: true  # Categorically qualifying via blindness.
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_pending_federal_benefit: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+- name: Case 13, pending applicant who is disabled is PAA-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50  # Not aged.
+        is_blind: false
+        is_disabled: true  # Categorically qualifying via disability.
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_pending_federal_benefit: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+
+# Per PAA Manual §300.1.B, OASI receipt qualifies a person ONLY if they
+# are also aged/blind/disabled. A 50-year-old surviving spouse drawing
+# Social Security survivor benefits is not categorically qualifying and
+# must be rejected, even though `social_security > 0`.
+- name: Case 14, OASI recipient who is not aged/blind/disabled is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50  # Not aged.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000  # $1,000/mo OASI (e.g., survivor benefits)
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+
+# Confirm the $2,000 resource gate still applies on the §300.5 pending
+# pathway — eligibility short-circuits regardless of which qualification
+# route the applicant uses.
+- name: Case 15, pending applicant with resources above $2,000 limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 5_000  # Over the $2,000 SSI limit.
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+        md_paa_pending_federal_benefit: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false

@@ -1,12 +1,15 @@
 # Tests for md_paa_personal_needs_allowance variable.
-# Tests parameter values across the timeline:
-# 2022-01-01: $84 (pre-AT 22-28)
-# 2022-07-01: $93 (AT 22-28)
-# 2023-07-01: $98 (IM 24-05)
-# 2024-07-01: $102 (placeholder effective date)
-# 2025-07-01: $106 (IM 26-04)
+# Tests parameter values across the timeline (test runner only supports
+# January or whole-year periods, so mid-year transitions are checked via
+# year-over-year January tests):
+# 2022-01-01: $84  (pre-AT 22-28)
+# 2022-07-01: $93  (AT 22-28; appears in 2023-01)
+# 2023-07-01: $98  (IM 24-05; appears in 2024-01)
+# 2024-07-01: $102 (effective date is a placeholder — originating transmittal
+#                   not located; value confirmed by IM 26-04; appears in 2025-01)
+# 2025-07-01: $106 (IM 26-04; appears in 2026-01)
 
-- name: Case 1, 2023 PNA.
+- name: Case 1, 2023 PNA reflects $93 (post AT 22-28).
   period: 2023-01
   absolute_error_margin: 0.01
   input:
@@ -22,7 +25,7 @@
   output:
     md_paa_personal_needs_allowance: 93
 
-- name: Case 2, 2025 January PNA reflects $102 (placeholder effective date).
+- name: Case 2, 2025 January PNA reflects $102 (effective 2024-07-01 placeholder).
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -36,10 +39,11 @@
         members: [person1]
         state_code: MD
   output:
-    # 2025-01-01: 102 is a placeholder effective date — see parameter file.
+    # Parameter sets $102 effective 2024-07-01; the originating transmittal
+    # has not been located, so the date is a placeholder.
     md_paa_personal_needs_allowance: 102
 
-- name: Case 3, 2026 January PNA (after 2025-07-01 effective date).
+- name: Case 3, 2026 January PNA reflects $106 (post IM 26-04).
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -55,7 +59,7 @@
   output:
     md_paa_personal_needs_allowance: 106
 
-- name: Case 4, January 2024 PNA reflects $98 (effective 2023-07-01 per IM 24-05).
+- name: Case 4, 2024 January PNA reflects $98 (effective 2023-07-01 per IM 24-05).
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -71,7 +75,7 @@
   output:
     md_paa_personal_needs_allowance: 98
 
-- name: Case 5, January 2022 PNA is $84 (pre-AT 22-28).
+- name: Case 5, 2022 January PNA is $84 (pre-AT 22-28).
   period: 2022-01
   absolute_error_margin: 0.01
   input:
