@@ -1598,3 +1598,78 @@
   output:
     ia_ssa_living_arrangement: [SMME]
     ia_ssa: [1]
+
+# ============================================================================
+# Pre-2017 historical and earned-income SSI-disregard regression tests.
+# ============================================================================
+
+- name: Case 8 historical, 2011 RCF resident with no other income.
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ia_ssa_resides_in_residential_care_facility: true
+        ia_ssa_rcf_cost_per_diem: 20.00
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 2011 individual FBR $674, RCF max_per_diem $28.14, PNA $93. SSI fills
+    # to FBR -> total_rcf_income $674; client participation $674 - $93 =
+    # $581. Cost-of-care 31 * min($20, $28.14) = $620. Supplement $620 -
+    # $581 = $39. Verifies 2011 lookups succeed (dependent_income_limit and
+    # SMME parameters now have 2011 historical values to prevent
+    # ParameterNotFoundError).
+    ssi: [674]
+    ia_ssa_living_arrangement: [RCF]
+    ia_ssa: [39]
+
+- name: Case 13 RCF earned-income, no-disregard add-back applies the leftover-20 dollars to earnings at half rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 6_000  # $500/mo earned, no unearned
+        ia_ssa_resides_in_residential_care_facility: true
+        ia_ssa_rcf_cost_per_diem: 37.60
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # $500/mo earned, $0 unearned. SSI exclusions: $20 general falls into
+    # the earned flat ($65 + $20 = $85), then 50% of remainder. SSI
+    # countable_earned = ($500 - $85) * 0.5 = $207.50. SSI fills to
+    # $967 - $207.50 = $759.50. For RCF (no $20 disregard): add back
+    # $20 * 0.5 = $10 (the leftover applied to earned, halved by the 50%
+    # earned-share rule). Iowa countable = $217.50 (matches GL 6-B-46 p.
+    # 55: "an SSI recipient ... with earned income of more than $85 per
+    # month will commonly have countable income ... equal to the SSI
+    # payment standard plus $10 ($977)"). Total RCF income $977; client
+    # participation $977 - $126 = $851. Cost-of-care 31 * $37.60 =
+    # $1,165.60. Supplement = $1,165.60 - $851 = $314.60.
+    ia_ssa: [314.60]

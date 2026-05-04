@@ -1,7 +1,10 @@
 description: Iowa uses this share of the federal poverty level as the minimum income threshold for supplement for Medicare and Medicaid eligibles under the State Supplementary Assistance program.
 
 values:
-  2017-01-01: 1.2
+  # Iowa Code 249.3(4)(g): "income of at least one hundred twenty percent of
+  # the federal poverty level". This 120% FPL test has been in statute since
+  # 2004 Iowa Acts ch. 1085 (§4) when SMME was created.
+  2011-01-01: 1.2
 
 metadata:
   unit: /1
@@ -12,3 +15,5 @@ metadata:
       href: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.51.pdf#page=2
     - title: Iowa Administrative Code 441—51.6(6), January 4, 2017 supplement
       href: https://www.legis.iowa.gov/docs/aco/supplement/01-04-2017.pdf#page=114
+    - title: Iowa Code 249.3(4)(g)
+      href: https://www.legis.iowa.gov/docs/code/249.3.pdf

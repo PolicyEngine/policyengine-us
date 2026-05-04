@@ -1,6 +1,11 @@
 description: Iowa limits a dependent relative's countable income to this amount for dependent person eligibility under the State Supplementary Assistance program.
 
 values:
+  # IAC 441—51.5(1): the dependent income limit equals the state portion of
+  # the AGED_OR_DISABLED_WITH_DEPENDENT assistance standard (total minus
+  # individual FBR). 2011 SSA report Table 1 (Code C aged/disabled) confirms
+  # state portion $344 ($1,018 total - $674 individual FBR).
+  2011-01-01: 344
   2017-01-01: 379
   2018-01-01: 387
   2025-01-01: 503
