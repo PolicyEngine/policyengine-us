@@ -533,13 +533,13 @@ programs:
         status: complete
         name: ECEAP
         full_name: Early Childhood Education and Assistance Program (Washington)
-        variable: wa_eceap_eligible
+        variable: wa_eceap
         parameter_prefix: gov.states.wa.dcyf.eceap
       - state: WA
         status: complete
         name: Birth to Three ECEAP
         full_name: Washington Birth to Three Early Childhood Education and Assistance Program
-        variable: wa_birth_to_three_eceap_eligible
+        variable: wa_birth_to_three_eceap
         parameter_prefix: gov.states.wa.dcyf.eceap.birth_to_three_eceap
 
   - id: liheap
