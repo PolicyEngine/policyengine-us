@@ -1,3 +1,10 @@
+## [1.686.0] - 2026-05-05
+
+### Added
+
+- Implement Washington State Supplementary Payment for SSI recipients.
+
+
 ## [1.685.0] - 2026-05-05
 
 ### Added
