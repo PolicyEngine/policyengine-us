@@ -1,3 +1,10 @@
+## [1.682.0] - 2026-05-05
+
+### Added
+
+- Add CBO-style household income concepts and equivalized variants, including employer-sponsored insurance premiums in market income.
+
+
 ## [1.681.0] - 2026-05-04
 
 ### Added
