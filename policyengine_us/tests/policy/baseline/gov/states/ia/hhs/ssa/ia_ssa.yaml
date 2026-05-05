@@ -518,6 +518,247 @@
     # max(0, 1470 - max(1280, 967)) = $190.
     ia_ssa: [190]
 
+- name: Case 9, blind client with dependent uses single-client BLIND_WITH_DEPENDENT standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: BLIND_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1]
+      second_marital_unit:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # BLIND_WITH_DEPENDENT 2025 standard $1,492 - individual FBR $967 = $525.
+    ia_ssa_living_arrangement: [DP, NONE]
+    ia_ssa: [525, 0]
+
+- name: Case 10, blind client with blind spouse and dependent uses BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        age: 68
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: NONE
+      person3:
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1, person2]
+      second_marital_unit:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # person1: BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT 2025 standard $1,997 -
+    # couple FBR $1,450 = $547 DP supplement. Only person1 sets the
+    # couple-FBR config (repo convention), marital-unit guard divides by 1.
+    # person2 has no DP/RCF/IHHRC/FLH but is_blind=true with $0 income, so
+    # the SELECT cascade routes her to BLIND ($22 federally-administered).
+    # person3: child, no SSP category.
+    ia_ssa_living_arrangement: [DP, BLIND, NONE]
+    ia_ssa: [547, 22, 0]
+
+- name: Case 11, both spouses set the same couple-FBR DP config — marital-unit guard prevents double-attribution.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        age: 68
+        employment_income: 0
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person3:
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1, person2]
+      second_marital_unit:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT 2025 standard $1,953 -
+    # couple FBR $1,450 = $503. Both spouses claim the couple config; the
+    # marital-unit guard splits the supplement so the SPM-unit total stays
+    # at $503 (each spouse gets $251.50), not $1,006.
+    ia_ssa: [251.5, 251.5, 0]
+
+- name: Case 12, joint-claim couple DP phases to zero when combined income exceeds couple FBR.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 14_400  # $1,200/mo each
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        social_security_retirement: 14_400
+        ia_ssa_dp_configuration: NONE
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: true
+      person3:
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1, person2]
+      second_marital_unit:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Combined SS $28,800/yr - $240 disregard = $28,560/yr countable couple.
+    # Combined monthly = $2,380 > couple FBR $1,450, so the supplement
+    # phases out: max(0, $1,953 standard - max($2,380, $1,450)) = $0.
+    # Without the marital-unit aggregation, the formula would compare the
+    # per-spouse half ($1,190) against the couple-level threshold and
+    # incorrectly pay the full $503.
+    ia_ssa: [0, 0, 0]
+
+- name: Case 13, 2011 aged-or-disabled-with-dependent — state portion matches SSA Table 1 ($344).
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        # Dependent relative present in the household (per IAC 441—51.5(1)).
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1]
+      second_marital_unit:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Iowa 2011 combined standard $1,018 - 2011 individual FBR $674 = $344
+    # state portion (matches SSA 2011 Iowa report Table 1, Code C aged).
+    ia_ssa_living_arrangement: [DP, NONE]
+    ia_ssa: [344, 0]
+
+- name: Case 14, 2011 blind-with-dependent — state portion matches SSA Table 1 ($366).
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        employment_income: 0
+        ia_ssa_dp_configuration: BLIND_WITH_DEPENDENT
+        ia_ssa_dp_has_eligible_dependent: true
+        ia_ssa_dp_dependent_countable_income: 0
+      person2:
+        # Dependent relative present in the household (per IAC 441—51.5(1)).
+        age: 10
+        employment_income: 0
+    marital_units:
+      first_marital_unit:
+        members: [person1]
+      second_marital_unit:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Iowa 2011 combined standard $1,040 - 2011 individual FBR $674 = $366
+    # state portion (matches SSA 2011 Iowa report Table 1, Code C blind).
+    ia_ssa_living_arrangement: [DP, NONE]
+    ia_ssa: [366, 0]
+
 # ============================================================================
 # FLH (Family-Life Home) supplement tests (IAC 441—52.1(1)).
 # ============================================================================
@@ -1593,6 +1834,47 @@
   output:
     ia_ssa_living_arrangement: [SMME]
     ia_ssa: [1]
+
+- name: Case 8, aged married couple with joint SSI claim — SMME uses 2-person 120% FPL threshold.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 14_400  # $1,200/mo each
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        social_security_retirement: 14_400
+        ia_ssa_has_full_medicaid: true
+        ia_ssa_has_medicare_part_b: true
+        is_ssi_aged_blind_disabled: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 2025 2-person FPL (contiguous) = $20,440/yr; 120% = $24,528/yr =
+    # $2,044/mo. Combined SS $28,800/yr - $20/mo couple disregard = ~$2,380/mo
+    # countable per spouse (joint claim). Above the 2-person 120% FPL gate.
+    # No federal SSI (countable > couple FBR $1,450). Each spouse gets $1
+    # SMME so the SPM-unit total ia_ssa = $2.
+    ia_ssa_living_arrangement: [SMME, SMME]
+    ia_ssa: [1, 1]
 
 # ============================================================================
 # Pre-2017 historical and earned-income SSI-disregard regression tests.

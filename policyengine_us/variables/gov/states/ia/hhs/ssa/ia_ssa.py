@@ -19,10 +19,10 @@ class ia_ssa(Variable):
         arrangement = person("ia_ssa_living_arrangement", period)
         arr_values = arrangement.possible_values
         p = parameters(period).gov.states.ia.hhs.ssa
-        countable_monthly = (
-            person("ssi_countable_income", period.this_year) / MONTHS_IN_YEAR
-        )
-        ssi_monthly = person("ssi", period.this_year) / MONTHS_IN_YEAR
+        # YEAR-defined FLOW variables auto-divide to monthly when requested
+        # at a MONTH period (policyengine-core simulation.calculate_divide).
+        countable_monthly = person("ssi_countable_income", period)
+        ssi_monthly = person("ssi", period)
         # Iowa RCF, FLH-eligibility, and IHHRC do not allow the SSI $20 general
         # income disregard (GL 6-B-46 pp. 30, 36–38, 54–58). RCF and IHHRC are
         # state-administered, so this helper restores the $20 the SSI exclusion
@@ -53,10 +53,24 @@ class ia_ssa(Variable):
             | (dp_config == dp_config_values.BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT)
         )
         dp_applicable_fbr = where(dp_has_spouse, couple_fbr, individual_fbr)
-        dp_amt = max_(
+        # Couple-config DP compares income against couple_fbr, which is a
+        # marital-unit-level threshold. countable_monthly is per-spouse
+        # (combined / 2 for joint SSI claims), so aggregate across the
+        # marital unit when the comparison threshold is couple-level.
+        marital_countable = person.marital_unit.sum(countable_monthly)
+        dp_compare_income = where(dp_has_spouse, marital_countable, countable_monthly)
+        dp_amt_full = max_(
             0,
-            dp_assistance_standard - max_(countable_monthly, dp_applicable_fbr),
+            dp_assistance_standard - max_(dp_compare_income, dp_applicable_fbr),
         )
+        # Per-marital-unit guard: couple-FBR DP configurations describe the
+        # whole marital unit, not each spouse. Split the supplement equally
+        # among spouses in the marital unit who claim a couple-FBR config so
+        # the SPM-unit aggregation does not double-count when both spouses
+        # set the same couple configuration.
+        dp_couple_count = person.marital_unit.sum(dp_has_spouse)
+        dp_divisor = where(dp_has_spouse, max_(dp_couple_count, 1), 1)
+        dp_amt = dp_amt_full / dp_divisor
         # FLH — IAC 441—52.1(1): SSA-administered, so the V-shape uses
         # ssi_countable_income (with the $20 disregard SSA actually applies).
         # The $142 SSA cap caps the federally-administered piece; for SSI-only

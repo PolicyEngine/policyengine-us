@@ -24,10 +24,9 @@ class ia_ssa_living_arrangement(Variable):
     def formula(person, period, parameters):
         eligible = person("ia_ssa_eligible", period)
         p = parameters(period).gov.states.ia.hhs.ssa
-        countable_monthly = (
-            person("ssi_countable_income", period.this_year) / MONTHS_IN_YEAR
-        )
-        ssi_monthly = person("ssi", period.this_year) / MONTHS_IN_YEAR
+        # YEAR-defined FLOW variables auto-divide to monthly at MONTH period.
+        countable_monthly = person("ssi_countable_income", period)
+        ssi_monthly = person("ssi", period)
         countable_no_disregard = person("ia_ssa_countable_income_no_disregard", period)
         p_ssi = parameters(period).gov.ssa.ssi.amount
         individual_fbr = p_ssi.individual
