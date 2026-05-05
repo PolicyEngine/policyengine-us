@@ -31,6 +31,25 @@ jobs:
             echo "Types: added, changed, fixed, removed, breaking"
             exit 1
           fi
+  BundleMetadataContract:
+    name: Validate bundle metadata contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install package
+        run: uv pip install --system .
+      - name: Install bundle validation tooling
+        # Pin the test-only bundle contract dependency until policyengine-bundles
+        # has published releases suitable for ordinary dependency specifiers.
+        run: uv pip install --system "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
+      - name: Validate runtime metadata contract
+        run: python -m pytest policyengine_us/tests/test_build_metadata.py
   Python-Compat:
     name: Install + smoke-import (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
