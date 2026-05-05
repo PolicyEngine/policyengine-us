@@ -144,9 +144,16 @@ class ia_ssa(Variable):
         # are not modeled.
         ihhrc_cost = person("ia_ssa_ihhrc_cost_of_care", period)
         both_need_care = person("ia_ssa_ihhrc_both_need_care", period)
-        basic_ssi_disregard = where(joint_claim, couple_fbr, individual_fbr)
+        # IAC 441—177.4(1)(f)(1) and Iowa HHS GL 6-B-46: deduct the basic SSI
+        # standard "for an individual or a couple, as applicable." The couple
+        # allowance applies whenever a spouse lives in the home, not only
+        # when both spouses are SSI-categorically eligible.
+        has_spouse_in_home = person.marital_unit.nb_persons() > 1
+        ihhrc_basic_ssi_disregard = where(
+            has_spouse_in_home, couple_fbr, individual_fbr
+        )
         combined_countable = person.marital_unit.sum(countable_no_disregard)
-        combined_participation = max_(0, combined_countable - basic_ssi_disregard)
+        combined_participation = max_(0, combined_countable - ihhrc_basic_ssi_disregard)
         ihhrc_client_participation = where(
             both_need_care,
             combined_participation / person.marital_unit.nb_persons(),

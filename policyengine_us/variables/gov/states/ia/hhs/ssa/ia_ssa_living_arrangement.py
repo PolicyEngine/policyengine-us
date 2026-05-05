@@ -32,7 +32,16 @@ class ia_ssa_living_arrangement(Variable):
         individual_fbr = p_ssi.individual
         couple_fbr = p_ssi.couple
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        basic_ssi_disregard = where(joint_claim, couple_fbr, individual_fbr)
+        marital_countable = person.marital_unit.sum(countable_monthly)
+        # IAC 441—177.4(1)(f)(1) and Iowa HHS GL 6-B-46: the IHHRC home
+        # maintenance allowance deducts the basic SSI standard "for an
+        # individual or a couple, as applicable." The couple allowance applies
+        # whenever a spouse lives in the home, not only when both spouses are
+        # SSI-categorically eligible.
+        has_spouse_in_home = person.marital_unit.nb_persons() > 1
+        ihhrc_basic_ssi_disregard = where(
+            has_spouse_in_home, couple_fbr, individual_fbr
+        )
         # IAC 441—51.4(3) cross-refs 52.1(3)"a": RCF income eligibility compares
         # client participation (total monthly income minus the personal needs
         # allowance) against 31 × the maximum per diem. GL 6-B-46 p. 54 omits
@@ -54,19 +63,27 @@ class ia_ssa_living_arrangement(Variable):
         # disregard, so use countable_no_disregard.
         combined_countable = person.marital_unit.sum(countable_no_disregard)
         ihhrc_countable_after_disregard = max_(
-            0, combined_countable - basic_ssi_disregard
+            0, combined_countable - ihhrc_basic_ssi_disregard
         )
         ihhrc_cap = where(
             both_need_care, p.ihhrc.max_cost_couple, p.ihhrc.max_cost_single
         )
         ihhrc_income_eligible = ihhrc_countable_after_disregard <= ihhrc_cap
         in_flh = arrangement_input == arr_input_values.FAMILY_LIFE_HOME
+        # IAC 441—50.2(1) and 52.1(1): the FLH supplement phases to zero when
+        # countable income reaches the FLH standard (FBR + state supplement).
+        # Gate at the living-arrangement level so FLH-living recipients with
+        # excess income fall through rather than blocking the SMME fallback.
+        flh_income_eligible = countable_monthly < (
+            individual_fbr + p.flh.state_supplement
+        )
         # IAC 441—177.4(1)(c): IHHRC recipients must live in their own home,
         # so exclude those residing in an RCF or family-life home.
         in_own_home = ~in_rcf & ~in_flh
         has_dependent = person("ia_ssa_dp_has_eligible_dependent", period)
         dp_configuration = person("ia_ssa_dp_configuration", period)
-        in_dp = dp_configuration != dp_configuration.possible_values.NONE
+        dp_config_values = dp_configuration.possible_values
+        in_dp = dp_configuration != dp_config_values.NONE
         # IAC 441—52.1(2): DP requires the dependent's countable income below
         # the dependent income limit (per IAC 441—51.5(1)). Gate at the
         # living-arrangement level so people who qualify for DP but fail the
@@ -74,6 +91,28 @@ class ia_ssa_living_arrangement(Variable):
         # receiving a zero DP supplement.
         dependent_income = person("ia_ssa_dp_dependent_countable_income", period)
         dependent_income_eligible = dependent_income < p.dp.dependent_income_limit
+        # IAC 441—50.2(1) and 52.1(2): the DP supplement phases to zero when
+        # the recipient/marital countable income reaches the configuration's
+        # assistance standard. Couple configurations describe the whole
+        # marital unit, so use marital countable income to match the
+        # marital-unit-level standard.
+        dp_assistance_standard = p.dp.assistance_standard[dp_configuration]
+        dp_has_spouse = (
+            (
+                dp_configuration
+                == dp_config_values.AGED_OR_DISABLED_WITH_SPOUSE_AND_DEPENDENT
+            )
+            | (
+                dp_configuration
+                == dp_config_values.BLIND_WITH_AGED_OR_DISABLED_SPOUSE_AND_DEPENDENT
+            )
+            | (
+                dp_configuration
+                == dp_config_values.BLIND_WITH_BLIND_SPOUSE_AND_DEPENDENT
+            )
+        )
+        dp_compare_income = where(dp_has_spouse, marital_countable, countable_monthly)
+        dp_recipient_income_eligible = dp_compare_income < dp_assistance_standard
         is_blind = person("is_blind", period.this_year)
         # IAC 441—52.1(4) blind standard is a federally-administered SSP;
         # supplement phases to zero when countable income reaches FBR + state
@@ -84,7 +123,6 @@ class ia_ssa_living_arrangement(Variable):
         # and compare against (couple_fbr + N × $22) where N is the number
         # of blind people in the marital unit.
         blind_count_in_unit = person.marital_unit.sum(is_blind)
-        marital_countable = person.marital_unit.sum(countable_monthly)
         blind_applicable_fbr = where(joint_claim, couple_fbr, individual_fbr)
         blind_supplement = where(joint_claim, blind_count_in_unit * p.blind, p.blind)
         blind_compare_income = where(joint_claim, marital_countable, countable_monthly)
@@ -96,8 +134,12 @@ class ia_ssa_living_arrangement(Variable):
             [
                 eligible & in_rcf & rcf_income_eligible,
                 eligible & needs_ihhrc & in_own_home & ihhrc_income_eligible,
-                eligible & in_flh,
-                eligible & has_dependent & in_dp & dependent_income_eligible,
+                eligible & in_flh & flh_income_eligible,
+                eligible
+                & has_dependent
+                & in_dp
+                & dependent_income_eligible
+                & dp_recipient_income_eligible,
                 eligible & is_blind & blind_income_eligible,
                 eligible & smme_eligible,
             ],
