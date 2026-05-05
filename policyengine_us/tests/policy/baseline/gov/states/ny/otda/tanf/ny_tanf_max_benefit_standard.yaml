@@ -1,68 +1,4 @@
-- name: Case 1, family of 3 matches CBPP $347 figure (A1 with-shelter tier).
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-      person3:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: AZ
-  output:
-    # A1 with-shelter tier: 36% of 1992 FPG monthly baseline for family of 3
-    az_tanf_max_benefit_standard: 347.10
-
-- name: Case 2, family of 2 (A1 with-shelter tier).
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AZ
-  output:
-    az_tanf_max_benefit_standard: 275.70
-
-- name: Case 3, household with rent still returns the A1 headline tier.
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        pre_subsidy_rent: 800
-      person2:
-        age: 5
-      person3:
-        age: 3
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: AZ
-  output:
-    # Variable does not depend on shelter — returns A1 regardless.
-    az_tanf_max_benefit_standard: 347.10
-
-- name: Case 4, non-AZ household returns zero.
+- name: Case 1, family of 3 matches CBPP NYC $789 figure.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -81,4 +17,53 @@
         members: [person1, person2, person3]
         state_code: NY
   output:
-    az_tanf_max_benefit_standard: 0
+    # Basic monthly allowance (size 3): 336
+    # Home energy (size 3): 30
+    # Supplemental home energy (size 3): 23
+    # NYC max shelter (size 3): 400
+    # Total: 789
+    ny_tanf_max_benefit_standard: 789
+
+- name: Case 2, household with rent still returns full max shelter (789).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 800
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Variable returns max NYC shelter regardless of actual rent.
+    ny_tanf_max_benefit_standard: 789
+
+- name: Case 3, non-NY household returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    ny_tanf_max_benefit_standard: 0

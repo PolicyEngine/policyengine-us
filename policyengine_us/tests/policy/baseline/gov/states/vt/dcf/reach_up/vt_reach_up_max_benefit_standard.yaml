@@ -1,44 +1,33 @@
-# Tests for Vermont Reach Up maximum benefit standard (CBPP convention)
-# Returns basic needs + maximum housing allowance with ratable reduction
-
-- name: Family of 2 in Chittenden County - returns full standard with max housing
+- name: Case 1, family of 2 returns CBPP-convention max standard.
   period: 2024-01
-  absolute_error_margin: 5
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: VT
-        county: 50007  # Chittenden County
   output:
-    # Basic needs (family of 2): $942
-    # Max housing (Chittenden): $450
-    # Total: $1392
-    # With ratable reduction (0.496): $690.43
-    vt_reach_up_max_benefit_standard: 690
+    # Basic needs (size 2): 942
+    # Non-Chittenden housing max: 400
+    # Special housing allowance: 90
+    # (942 + 400 + 90) * 0.496 = 710.27
+    vt_reach_up_max_benefit_standard: 710.27
 
-- name: Family of 3 in Chittenden County - returns full standard with max housing
+- name: Case 2, family of 3 matches CBPP $856 figure.
   period: 2024-01
-  absolute_error_margin: 5
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 2
       person2:
         age: 5
       person3:
@@ -46,46 +35,54 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # Basic needs (size 3): 1236
+    # Non-Chittenden housing max: 400
+    # Special housing allowance: 90
+    # (1236 + 400 + 90) * 0.496 = 856.10
+    vt_reach_up_max_benefit_standard: 856.10
+
+- name: Case 3, county does not affect the headline standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
         members: [person1, person2, person3]
     households:
       household:
         members: [person1, person2, person3]
         state_code: VT
-        county: 50007  # Chittenden County
+        county: CHITTENDEN_COUNTY_VT  # Should not change the result
   output:
-    # Basic needs (family of 3): $1236
-    # Max housing (Chittenden): $450
-    # Total: $1686
-    # With ratable reduction (0.496): $836.26
-    vt_reach_up_max_benefit_standard: 836
+    vt_reach_up_max_benefit_standard: 856.10
 
-- name: Family of 2 in non-Chittenden County - returns full standard with different max
+- name: Case 4, non-Vermont household returns zero.
   period: 2024-01
-  absolute_error_margin: 5
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 1
       person2:
         age: 5
     spm_units:
       spm_unit:
         members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
-        state_code: VT
-        county: 50001  # Addison County (non-Chittenden)
+        state_code: NY
   output:
-    # Basic needs (family of 2): $942
-    # Max housing (non-Chittenden): value from parameter
-    # Note: actual value depends on non_chittenden parameter
-    # Using approximate value for test
-    vt_reach_up_max_benefit_standard: 690
+    vt_reach_up_max_benefit_standard: 0

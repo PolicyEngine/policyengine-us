@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
-    County,
-)
 
 
 class vt_reach_up_max_benefit_standard(Variable):
@@ -16,27 +13,21 @@ class vt_reach_up_max_benefit_standard(Variable):
     )
     defined_for = StateCode.VT
     documentation = """
-    Returns the maximum benefit amount including the full housing allowance,
-    following CBPP and WRD conventions for cross-state comparison. This is
-    calculated as (basic needs allowance + maximum housing allowance for county)
-    × ratable reduction.
+    Returns the maximum benefit amount following CBPP and WRD conventions for
+    cross-state comparison: basic needs + non-Chittenden housing maximum +
+    special housing allowance, multiplied by the ratable reduction.
+
+    Non-Chittenden is used because 13 of Vermont's 14 counties fall in that
+    tier, matching WRD's most-counties methodology. The special housing
+    allowance is included because CBPP reports it as part of the headline
+    standard.
 
     For actual benefit calculation based on household housing costs, use
     vt_reach_up_payment_standard instead.
     """
 
     def formula(spm_unit, period, parameters):
-        # CBPP/WRD convention: report basic needs + maximum housing allowance
         p = parameters(period).gov.states.vt.dcf.reach_up.allowance
-
-        # Get basic needs allowance
         basic_needs = spm_unit("vt_reach_up_basic_needs_allowance", period)
-
-        # Get maximum housing allowance based on county
-        county = spm_unit.household("county", period.this_year)
-        in_chittenden = county == County.CHITTENDEN_COUNTY_VT
-        housing_max = where(in_chittenden, p.housing.chittenden, p.housing.non_chittenden)
-
-        # Apply ratable reduction to total
-        total_needs = basic_needs + housing_max
+        total_needs = basic_needs + p.housing.non_chittenden + p.special_housing
         return total_needs * p.ratable_reduction

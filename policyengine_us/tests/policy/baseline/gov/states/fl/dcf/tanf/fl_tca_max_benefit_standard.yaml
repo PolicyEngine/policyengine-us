@@ -1,40 +1,10 @@
-# Tests for Florida TCA maximum benefit standard (CBPP convention)
-# Returns the high-shelter tier for cross-state comparison
-
-- name: Family of 2 - returns high-shelter tier (matches CBPP $303)
+- name: Case 1, family of 3 matches CBPP $303 figure (high-shelter tier).
   period: 2024-01
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 1
-      person2:
-        age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: FL
-  output:
-    # Family of 2, high-shelter tier (>$50/month shelter)
-    fl_tca_max_benefit_standard: 303
-
-- name: Family of 3 - returns high-shelter tier
-  period: 2024-01
-  absolute_error_margin: 1
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 2
       person2:
         age: 5
       person3:
@@ -42,39 +12,70 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
     households:
       household:
         members: [person1, person2, person3]
         state_code: FL
   output:
-    # Family of 3, high-shelter tier
-    fl_tca_max_benefit_standard: 364
+    fl_tca_max_benefit_standard: 303
 
-- name: Single person - returns high-shelter tier
+- name: Case 2, family of 2 (high-shelter tier).
   period: 2024-01
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        is_tax_unit_head: true
-        own_children_in_household: 1
       person2:
         age: 5
-        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
-        members: [person1]
-    tax_units:
-      tax_unit:
         members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: FL
   output:
-    # Single person, high-shelter tier
-    fl_tca_max_benefit_standard: 180
+    fl_tca_max_benefit_standard: 241
+
+- name: Case 3, household with rent still returns the high-shelter tier.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 800
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Variable does not depend on shelter — returns high-shelter regardless.
+    fl_tca_max_benefit_standard: 303
+
+- name: Case 4, non-FL household returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    fl_tca_max_benefit_standard: 0
