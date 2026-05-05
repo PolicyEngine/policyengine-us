@@ -1,0 +1,164 @@
+- name: Aged SSI recipient maps to STANDARD
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Blind SSI recipient maps to STANDARD
+  period: 2024-01
+  input:
+    age: 40
+    is_blind: true
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Disabled SSI recipient on or after 2023-07-01 maps to STANDARD
+  period: 2024-01
+  input:
+    age: 40
+    is_ssi_disabled: true
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Disabled-only SSI recipient before 2023-07-01 maps to NONE
+  period: 2020-01
+  input:
+    age: 40
+    is_ssi_disabled: true
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: NONE
+
+- name: SSI recipient with ineligible spouse maps to STANDARD
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+      person2:
+        age: 60
+        is_ssi_eligible: false
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # person1 is the SSI recipient with an ineligible spouse -> STANDARD
+    # person2 is not SSI-eligible -> NONE
+    wa_ssp_payment_category: [STANDARD, NONE]
+
+- name: SSI recipient in medical institution maps to MEDICAL_INSTITUTION
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 12
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: WA
+  output:
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+
+- name: Not a Washington resident maps to NONE
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: OR
+  output:
+    wa_ssp_payment_category: NONE
+
+- name: SSI eligible but not actually receiving SSI maps to NONE
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 0
+    state_code: WA
+  output:
+    wa_ssp_payment_category: NONE
+
+- name: Not SSI eligible maps to NONE
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: false
+    ssi: 0
+    state_code: WA
+  output:
+    wa_ssp_payment_category: NONE
+
+- name: Age 64 disabled SSI recipient post-2023-07-01 maps to STANDARD via disabled route (not aged)
+  period: 2024-01
+  input:
+    # Age 64 -> NOT is_ssi_aged (which requires age >= 65).
+    # is_ssi_disabled=true and post-2023-07-01 -> qualifies via disabled branch.
+    age: 64
+    is_ssi_disabled: true
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Age 65 only-aged SSI recipient maps to STANDARD via aged route
+  period: 2024-01
+  input:
+    # Age 65 -> is_ssi_aged TRUE; not disabled, not blind.
+    # Locks aged-65 boundary behavior of is_ssi_aged.
+    age: 65
+    is_ssi_disabled: false
+    is_blind: false
+    is_ssi_eligible: true
+    ssi: 12
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Living arrangement codes A/B/C (community living) all route to STANDARD when categorically eligible
+  period: 2024-01
+  input:
+    # Default ssi_federal_living_arrangement (no MTF flag set) corresponds to
+    # community-living SDX codes A (own household), B (another person's household),
+    # or C (child in parental household). All three route identically through the
+    # `in_medical_institution = false` branch of wa_ssp_payment_category.
+    age: 70
+    is_ssi_eligible: true
+    ssi: 12
+    ssi_lives_in_medical_treatment_facility: false
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD
+
+- name: Living arrangement code D (medical treatment facility) routes to MEDICAL_INSTITUTION
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 12
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: WA
+  output:
+    # Code D triggers ssi_federal_living_arrangement = MEDICAL_TREATMENT_FACILITY.
+    # MEDICAL_INSTITUTION wins over STANDARD via select() priority order.
+    wa_ssp_payment_category: MEDICAL_INSTITUTION

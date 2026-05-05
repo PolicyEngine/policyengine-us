@@ -747,6 +747,17 @@ programs:
         name: Texas SSI supplement
         full_name: Texas SSI state supplement
         variable: tx_ssi_state_supplement
+      - state: WA
+        status: partial
+        name: Washington SSP
+        full_name: Washington State Supplementary Payment
+        variable: wa_ssp
+        parameter_prefix: gov.states.wa.dshs.ssp
+        notes: >-
+          Models WAC 388-478-0055(2)(a) STANDARD and (2)(c) MEDICAL_INSTITUTION
+          tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
+          institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
+          PVL track per (2)(f); and foster child in BRS per (2)(g).
 
   - id: social_security
     name: Social Security
