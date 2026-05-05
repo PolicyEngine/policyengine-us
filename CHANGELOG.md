@@ -1,3 +1,10 @@
+## [1.686.1] - 2026-05-05
+
+### Fixed
+
+- Aligned CHIP spending and enrollment calibration to FY2024 for 2024 simulations.
+
+
 ## [1.686.0] - 2026-05-05
 
 ### Added
