@@ -1,0 +1,25 @@
+description: Montana provides this amount as the individual state supplement payment under the State Supplementation program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Montana SSP individual payment amount
+  breakdown:
+    - mt_ssp_payment_category
+  reference:
+    - title: ARM 37.43.104(1), Payment Standards
+      href: https://www.law.cornell.edu/regulations/montana/ARM-37-43-104
+    - title: SSA POMS SI DEN01415.010, Montana State Supplementary Payments
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415010DEN
+    - title: SSA State Assistance Programs for SSI Recipients (January 2011), Montana, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mt.html
+
+# Rates frozen since January 1989 per SSA POMS SI DEN01415.010.
+ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME:
+  1989-01-01: 94
+FOSTER_CARE:
+  1989-01-01: 52.75
+TRANSITIONAL_LIVING:
+  1989-01-01: 26
+NONE:
+  1989-01-01: 0

@@ -1,0 +1,386 @@
+- name: Case 1, single eligible person in personal care facility receives $94.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Individual rate G/H/I tier = $94 - $0 income offset = $94.
+    mt_ssp_eligible: true
+    mt_ssp: 94
+
+- name: Case 2, single eligible person in foster care receives $52.75.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: FOSTER_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Individual rate J tier = $52.75 - $0 income offset = $52.75.
+    mt_ssp_eligible: true
+    mt_ssp: 52.75
+
+- name: Case 3, single eligible person in transitional living receives $26.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Individual rate K tier = $26 - $0 income offset = $26.
+    mt_ssp_eligible: true
+    mt_ssp: 26
+
+- name: Case 4, joint couple both in ASSISTED_LIVING get $193 total ($96.50 each).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Couple split federal SSI: $11,316 individual FBR -> use joint
+        # total $1,415/mo = $16,980/yr -> half is $8,490 each.
+        ssi: 8_490
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        ssi: 8_490
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Couple gate met -> each spouse $193 / 2 = $96.50; SPM total $193.
+    mt_ssp_eligible: [true, true]
+    mt_ssp: 193
+
+- name: Case 5, joint couple in different categories fall back to individual rates.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 8_490
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        ssi: 8_490
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Asymmetric categories -> couple gate fails.
+    # person1: G/H/I individual = $94; person2: J individual = $52.75.
+    # SPM total = $94 + $52.75 = $146.75.
+    mt_ssp_eligible: [true, true]
+    mt_ssp: 146.75
+
+- name: Case 6, joint couple with only one eligible falls back to individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+      person2:
+        # Spouse not aged/blind/disabled -> not SSI-eligible.
+        is_ssi_eligible: false
+        is_tax_unit_head_or_spouse: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Only person1 is MT-SSP-eligible -> couple gate fails.
+    # person1 gets J individual = $52.75; person2 gets $0.
+    mt_ssp_eligible: [true, false]
+    mt_ssp: 52.75
+
+- name: Case 7, NONE living arrangement gets zero supplement.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: NONE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # NONE category fails the qualifying-arrangement gate.
+    mt_ssp_eligible: false
+    mt_ssp: 0
+
+- name: Case 8, non-Montana resident gets zero supplement.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # defined_for=StateCode.MT zeros mt_ssp outside Montana.
+        state_code: WY
+  output:
+    mt_ssp: 0
+
+- name: Case 9, disabled child SSI recipient in foster care receives $52.75 (no age gate).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_disabled: true
+        # Disabled minor receives federal SSI at 2024 individual FBR
+        # ($943/mo = $11,316/yr).
+        ssi: 11_316
+        mt_ssp_payment_category: FOSTER_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Children covered (309 of 968 recipients per SSA 2011 report);
+    # individual J tier = $52.75.
+    mt_ssp_eligible: true
+    mt_ssp: 52.75
+
+- name: Case 10, Group 2 person with income just above FBR (ssi=0, uncapped_ssi>0).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Categorically eligible but model takeup zeros the actual ssi
+        # payment. uncapped_ssi remains positive (Group 2 path).
+        ssi: 0
+        mt_ssp_payment_category: FOSTER_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Group 2 (ARM 37.43.102(2)(a)): uncapped_ssi > 0 with ssi == 0
+    # still passes mt_ssp_eligible. Individual J = $52.75.
+    mt_ssp_eligible: true
+    mt_ssp: 52.75
+
+- name: Case 11, eligible recipient at full SSI receives full supplement (no spillover).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # 2024 individual FBR = $11,316/yr -> uncapped_ssi positive,
+        # spillover deduction = max_(0, -uncapped_ssi) = 0.
+        ssi: 11_316
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Full G/H/I individual rate $94 with no spillover reduction.
+    mt_ssp_eligible: true
+    mt_ssp: 94
+
+- name: Case 12, historical 2010 individual in foster care still receives $52.75 (rates frozen since 1989).
+  absolute_error_margin: 0.01
+  period: 2010-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # 2010 federal SSI individual FBR = $674/mo = $8,088/yr.
+        ssi: 8_088
+        mt_ssp_payment_category: FOSTER_CARE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Rates frozen at 1989 levels per ARM 37.43.104; J tier still $52.75.
+    mt_ssp_eligible: true
+    mt_ssp: 52.75
+
+- name: Case 13, single person with ssi_claim_is_joint=true cannot reach couple rate (marital_unit size 1).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Degenerate: single person with stale joint flag.
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # marital_unit.nb_persons() == 1 means couple gate is unreachable;
+    # falls back to individual rate $94.
+    mt_ssp_eligible: true
+    mt_ssp: 94
+
+- name: Case 14, large business loss does not inflate the supplement.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Large business loss; max_(0, -uncapped_ssi) clamps the spillover
+        # at 0 so a negative reduction cannot inflate the supplement.
+        self_employment_income: -50_000
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Negative income does NOT inflate the supplement; max_(0, -uncapped_ssi)
+    # clamps spillover at 0. K tier individual rate = $26.
+    mt_ssp_eligible: true
+    mt_ssp: 26
+
+- name: Case 15, multi-person SPM unit with parent + adult child both eligible sums correctly.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Aged parent in personal care facility.
+        age: 70
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        # Adult disabled child in transitional living.
+        age: 30
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Two separate marital units -> each gets individual rate.
+    # person1: G/H/I = $94; person2: K = $26. SPM total = $120.
+    mt_ssp_eligible: [true, true]
+    mt_ssp: 120

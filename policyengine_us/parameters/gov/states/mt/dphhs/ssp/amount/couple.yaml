@@ -1,0 +1,25 @@
+description: Montana provides this amount as the couple state supplement payment under the State Supplementation program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Montana SSP couple payment amount
+  breakdown:
+    - mt_ssp_payment_category
+  reference:
+    - title: SSA POMS SI DEN01415.010, Montana State Supplementary Payments
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415010DEN
+    - title: SSA State Assistance Programs for SSI Recipients (January 2011), Montana, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mt.html
+
+# Couple totals (not per-spouse). ARM 37.43.104 lists individual rates
+# only; couple rates are published only in SSA POMS and the SSA 2011
+# report (couple = 2x individual + $5). Frozen since January 1989.
+ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME:
+  1989-01-01: 193
+FOSTER_CARE:
+  1989-01-01: 110.50
+TRANSITIONAL_LIVING:
+  1989-01-01: 57
+NONE:
+  1989-01-01: 0

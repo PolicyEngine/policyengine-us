@@ -707,6 +707,12 @@ programs:
         full_name: Michigan State Supplementary Payment
         variable: mi_ssp
         parameter_prefix: gov.states.mi.mdhhs.ssp
+      - state: MT
+        status: complete
+        name: Montana SSP
+        full_name: Montana State Supplementation
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
       - state: ME
         status: complete
         name: Maine SSP
