@@ -1,3 +1,10 @@
+## [1.683.0] - 2026-05-05
+
+### Added
+
+- Added an explicit Trustees core threshold reform for long-run TOB analysis scenarios.
+
+
 ## [1.682.1] - 2026-05-05
 
 ### Changed
