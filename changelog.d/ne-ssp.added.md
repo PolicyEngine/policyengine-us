@@ -1,1 +1,1 @@
-Added Nebraska State Supplementary Payment (SSP) program.
+Added Nebraska Aid to the Aged, Blind, or Disabled - Payment Maintenance (AABD-PMT) program, the state's SSI supplement, including standard-of-need and shelter allowance parameters, eligibility rules, and living arrangement logic.
