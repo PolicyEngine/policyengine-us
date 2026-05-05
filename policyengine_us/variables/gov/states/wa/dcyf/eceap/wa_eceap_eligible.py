@@ -19,6 +19,16 @@ class wa_eceap_eligible(Variable):
         # because we don't track tribal enrollment at the moment. is_on_tribal_land
         # is a geographic household flag, not enrollment in a federally recognized
         # tribe, so it is not an acceptable proxy.
+        #
+        # Head Start coordination: RCW 43.216.505(4) and DCYF ECEAP Performance
+        # Standards PAO-37(5) prohibit simultaneous enrollment in ECEAP and
+        # Head Start, but we do not subtract head_start receipt here because
+        # head_start in PolicyEngine is an imputed state-average value rather
+        # than a per-child enrollment signal — subtracting it would understate
+        # ECEAP for kids the model probabilistically imputes as taking up
+        # Head Start. To avoid double-counting at the aggregate level, wa_eceap
+        # is intentionally omitted from household_benefits and
+        # household_state_benefits.
         age_eligible = person("wa_eceap_age_eligible", period)
         income_eligible = person("wa_eceap_income_eligible", period)
         categorically_eligible = person("wa_eceap_categorically_eligible", period)
