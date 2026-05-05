@@ -1,3 +1,10 @@
+## [1.685.0] - 2026-05-05
+
+### Added
+
+- State universal free school meal programs in CA, CO, MA, ME, MI, MN, NM, NY, and VT.
+
+
 ## [1.684.0] - 2026-05-05
 
 ### Added
