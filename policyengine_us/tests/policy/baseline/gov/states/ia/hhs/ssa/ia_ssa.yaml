@@ -1950,3 +1950,87 @@
     # participation $977 - $126 = $851. Cost-of-care 31 * $37.60 =
     # $1,165.60. Supplement = $1,165.60 - $851 = $314.60.
     ia_ssa: [314.60]
+
+- name: Case 15 BLIND one-blind joint couple uses couple-FBR basis (regression for one-blind joint bug).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_ssi_aged_blind_disabled: true
+        social_security_retirement: 8_940  # $745/mo each, $1,490/mo combined
+        ssi_claim_is_joint: true
+      person2:
+        age: 70
+        is_blind: false
+        is_ssi_aged_blind_disabled: true
+        social_security_retirement: 8_940
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 2025: individual FBR $967, couple FBR $1,450. Combined gross unearned
+    # $1,490/mo. After SSI $20 GIE, combined countable = $1,470/mo
+    # ($735/mo per spouse via joint-claim attribution).
+    # Pre-fix bug: per-spouse comparison $735 < $967 + $22 → person1 receives
+    # full $22 even though combined > couple FBR.
+    # Post-fix: marital comparison $1,470 vs $1,450 + 1×$22 = $1,472.
+    # supplement = $1,472 - max($1,470, $1,450) = $2 → person1 ia_ssa = $2.
+    # person2 (not blind, no other category) routes to NONE.
+    ia_ssa_living_arrangement: [BLIND, NONE]
+    ia_ssa: [2, 0]
+
+- name: Case 16 Iowa $3,000 marital resource limit reachable for non-joint married claimant (regression for federal $2,000 over-gating).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources: 2_500
+        ssi_claim_is_joint: false
+      person2:
+        age: 50
+        is_ssi_aged_blind_disabled: false
+        ssi_countable_resources: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # IAC 441—51.5(2): Iowa allows $3,000 marital-unit resources when the
+    # claimant lives with a (potentially ineligible) spouse. Federal SSI
+    # applies $2,000 individual when not in a joint claim; person1's $2,500
+    # alone fails federal resource test (ssi = 0) but Iowa's $3,000 limit
+    # is satisfied ($2,500 ≤ $3,000), so ia_ssa_eligible holds and the
+    # blind branch pays the $22 state supplement.
+    # Pre-fix bug: ia_ssa_eligible AND'd with is_ssi_eligible (federal
+    # individual $2,000 test) → False → no Iowa SSP.
+    # Post-fix: ABD + immigration + Iowa resource test → True.
+    ia_ssa_eligible: [true, false]
+    ia_ssa_living_arrangement: [BLIND, NONE]
+    ia_ssa: [22, 0]

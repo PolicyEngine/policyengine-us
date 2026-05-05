@@ -36,21 +36,27 @@ class ia_ssa(Variable):
         marital_countable = person.marital_unit.sum(countable_monthly)
         # BLIND — IAC 441—52.1(4): flat $22 state supplement (frozen since 2011)
         # per blind person. Federally administered, so SSA's $20 disregard
-        # applies via ssi_countable_income. For joint SSI claims where both
-        # spouses are blind, ssi_countable_income returns combined / 2 per
-        # spouse, so aggregate marital countable and compare against
-        # (couple_fbr + 2 × $22), then split the result equally so the
-        # SPM-unit aggregation does not double-count.
-        blind_couple = joint_claim & (person.marital_unit.sum(is_blind) == 2)
-        blind_applicable_fbr = where(blind_couple, couple_fbr, individual_fbr)
-        blind_supplement_total = where(blind_couple, 2 * p.blind, p.blind)
-        blind_compare_income = where(blind_couple, marital_countable, countable_monthly)
+        # applies via ssi_countable_income. For any joint SSI claim
+        # ssi_countable_income returns combined / 2 per spouse and the
+        # federal piece is paid against couple_fbr, so aggregate marital
+        # countable and compare against (couple_fbr + N × $22) where N is
+        # the number of blind people in the unit. Split the supplement only
+        # when both spouses are blind (both route to BLIND); when only one
+        # spouse is blind, the non-blind spouse routes elsewhere and the
+        # blind spouse keeps the full per-blind allowance.
+        blind_count_in_unit = person.marital_unit.sum(is_blind)
+        blind_applicable_fbr = where(joint_claim, couple_fbr, individual_fbr)
+        blind_supplement_total = where(
+            joint_claim, blind_count_in_unit * p.blind, p.blind
+        )
+        blind_compare_income = where(joint_claim, marital_countable, countable_monthly)
         blind_amt_full = max_(
             0,
             (blind_applicable_fbr + blind_supplement_total)
             - max_(blind_compare_income, blind_applicable_fbr),
         )
-        blind_amt = blind_amt_full / where(blind_couple, 2, 1)
+        joint_blind_couple = joint_claim & (blind_count_in_unit == 2)
+        blind_amt = blind_amt_full / where(joint_blind_couple, 2, 1)
         # DP — IAC 441—52.1(2): per-configuration assistance standard. Pick the
         # applicable Federal Benefit Rate (couple FBR for configurations that
         # include an eligible spouse, individual FBR otherwise) so the
