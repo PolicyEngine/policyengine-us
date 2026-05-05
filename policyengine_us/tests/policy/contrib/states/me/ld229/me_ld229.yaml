@@ -1,0 +1,89 @@
+# Test Maine LD 229 Income Tax Bracket Expansion Reform
+# Expands from 3 brackets to 5 brackets for 2026+
+
+- name: ME LD 229 - single filer, income in 4th bracket
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_taxable_income: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # .055*27450 + .0675*(64950-27450) + .0715*(144500-64950) + .0775*(200000-144500)
+    # = 1509.75 + 2531.25 + 5687.825 + 4301.25 = 14030.075
+    me_income_tax_before_credits: 14_030.075
+
+- name: ME LD 229 - single filer, all 5 brackets
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_taxable_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # .055*27450 + .0675*(64950-27450) + .0715*(144500-64950) + .0775*(500000-144500) + .0895*(600000-500000)
+    # = 1509.75 + 2531.25 + 5687.825 + 27551.25 + 8950 = 46230.075
+    me_income_tax_before_credits: 46_230.075
+
+- name: ME LD 229 - joint filer, 4th bracket
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        me_taxable_income: 400_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # .055*54900 + .0675*(129900-54900) + .0715*(289000-129900) + .0775*(400000-289000)
+    # = 3019.5 + 5062.5 + 11375.65 + 8602.5 = 28060.15
+    me_income_tax_before_credits: 28_060.15
+
+- name: ME LD 229 - HOH filer, 4th bracket
+  period: 2026
+  reforms: policyengine_us.reforms.states.me.ld229.me_ld229_reform.me_ld229
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_taxable_income: 300_000
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # .055*41150 + .0675*(97450-41150) + .0715*(216750-97450) + .0775*(300000-216750)
+    # = 2263.25 + 3800.25 + 8529.95 + 6451.875 = 21045.325
+    me_income_tax_before_credits: 21_045.325
+

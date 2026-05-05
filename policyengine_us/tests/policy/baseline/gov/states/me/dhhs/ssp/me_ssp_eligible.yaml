@@ -1,0 +1,114 @@
+- name: Case 1, Maine resident SSI-eligible in default arrangement is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 2, Maine resident in Medicaid facility SSI-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 3, Maine resident not SSI-eligible is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: false
+
+- name: Case 4, non-Maine resident SSI-eligible is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    me_ssp_eligible: false
+
+- name: Case 5, Maine resident in Medicaid facility but not SSI-eligible is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: false
+
+- name: Case 6, Maine resident in adult foster home SSI-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_ssp_eligible: true
+
+- name: Case 7, Maine resident SSI-eligible in NONE arrangement is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        me_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # NONE arrangement is excluded even if SSI-eligible.
+    me_ssp_eligible: false
+
+- name: Case 8, SS-only path -- categorically eligible but income above federal SSI break-even.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Income exceeds the federal SSI standard, so the person does
+        # not actually receive SSI but is still categorically eligible.
+        uncapped_ssi: -2_400
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Maine Part 11 + Chart 3.6 covers the State Supplement-only path.
+    me_ssp_eligible: true

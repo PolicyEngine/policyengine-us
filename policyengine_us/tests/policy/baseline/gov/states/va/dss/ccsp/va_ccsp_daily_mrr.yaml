@@ -102,3 +102,93 @@
         va_ccsp_ready_region: NORTH_CENTRAL
   output:
     va_ccsp_daily_mrr: 55
+
+# Cases 7-11 lock in the researched behavior that Virginia's FDH rates vary
+# by Ready Region only and do NOT vary by age group. Per the VDOE FY 2024
+# MRR table, Capital Area FDH Full Day is $62 for every age (Infant through
+# School-Age). Running five cases across the age-group enum in the same
+# region asserts the flat-per-region structure is preserved.
+- name: Case 7, family day home infant in Capital Area matches flat regional rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        va_ccsp_provider_type: FAMILY_DAY_HOME
+        va_ccsp_is_full_day: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_daily_mrr: 62
+
+- name: Case 8, family day home toddler in Capital Area matches flat regional rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        va_ccsp_provider_type: FAMILY_DAY_HOME
+        va_ccsp_is_full_day: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_daily_mrr: 62
+
+- name: Case 9, family day home two-year-old in Capital Area matches flat regional rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        va_ccsp_provider_type: FAMILY_DAY_HOME
+        va_ccsp_is_full_day: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_daily_mrr: 62
+
+- name: Case 10, family day home preschooler in Capital Area matches flat regional rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        va_ccsp_provider_type: FAMILY_DAY_HOME
+        va_ccsp_is_full_day: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_daily_mrr: 62
+
+- name: Case 11, family day home school-age in Capital Area matches flat regional rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        va_ccsp_provider_type: FAMILY_DAY_HOME
+        va_ccsp_is_full_day: true
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_daily_mrr: 62

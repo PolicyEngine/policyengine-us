@@ -1,0 +1,65 @@
+description: Missouri charges this MO HealthNet for Kids monthly CHIP premium to tax units above 225 up to 300 percent FPL, by family size.
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  label: Missouri CHIP premium tier 3 (above 225 through 300 percent FPL)
+  reference:
+    - title: Missouri DSS Appendix E IM-4(PRM) - CHIP Premium Schedule
+      href: https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: Appendix E (04-20), effective April 1, 2020
+      href: https://web.archive.org/web/20210226122055/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: IM-4(PRM) (07-24), effective July 1, 2024
+      href: https://web.archive.org/web/20250202220119/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+    - title: IM-4(PRM) (07-25), effective July 1, 2025
+      href: https://web.archive.org/web/20250623210133/https://dssmanuals.mo.gov/wp-content/uploads/2019/05/appendix-e.pdf
+brackets:
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 117
+      2024-07-01: 141
+      2025-07-01: 147
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 159
+      2024-07-01: 192
+      2025-07-01: 198
+  - threshold:
+      2020-01-01: 3
+    amount:
+      2020-01-01: 200
+      2024-07-01: 242
+      2025-07-01: 250
+  - threshold:
+      2020-01-01: 4
+    amount:
+      2020-01-01: 241
+      2024-07-01: 293
+      2025-07-01: 301
+  - threshold:
+      2020-01-01: 5
+    amount:
+      2020-01-01: 283
+      2024-07-01: 343
+      2025-07-01: 353
+  - threshold:
+      2020-01-01: 6
+    amount:
+      2020-01-01: 324
+      2024-07-01: 393
+      2025-07-01: 405
+  - threshold:
+      2020-01-01: 7
+    amount:
+      2020-01-01: 366
+      2024-07-01: 444
+      2025-07-01: 456
+  - threshold:
+      2020-01-01: 8
+    amount:
+      2020-01-01: 407
+      2024-07-01: 494
+      2025-07-01: 508

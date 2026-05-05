@@ -1,0 +1,115 @@
+- name: No military retirement income, no subtraction
+  period: 2023
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 0
+  output:
+    md_military_retirement_subtraction: 0
+
+- name: Under age 55 in 2022, capped at $5,000 (pre-Keep Our Heroes Home Act)
+  period: 2022
+  input:
+    state_code: MD
+    age: 50
+    military_retirement_pay: 30_000
+  output:
+    md_military_retirement_subtraction: 5_000
+
+- name: Age 55+ in 2022, capped at $15,000 (pre-Keep Our Heroes Home Act)
+  period: 2022
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 30_000
+  output:
+    md_military_retirement_subtraction: 15_000
+
+- name: Under age 55 in 2023, capped at $12,500 (Keep Our Heroes Home Act)
+  period: 2023
+  input:
+    state_code: MD
+    age: 50
+    military_retirement_pay: 30_000
+  output:
+    md_military_retirement_subtraction: 12_500
+
+- name: Age 55+ in 2023, capped at $20,000 (Keep Our Heroes Home Act)
+  period: 2023
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 30_000
+  output:
+    md_military_retirement_subtraction: 20_000
+
+- name: Age 55+ with only $10,000 of military retirement (below cap), subtracts full amount
+  period: 2023
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 10_000
+  output:
+    md_military_retirement_subtraction: 10_000
+
+- name: Age exactly 55 in 2023 treated as at-or-above-threshold, $20,000 cap
+  period: 2023
+  input:
+    state_code: MD
+    age: 55
+    military_retirement_pay: 30_000
+  output:
+    md_military_retirement_subtraction: 20_000
+
+- name: Married couple both receiving military retirement, each capped separately at $20,000 age 55+
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 60
+        military_retirement_pay: 30_000
+      person2:
+        age: 58
+        military_retirement_pay: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_military_retirement_subtraction: 40_000
+
+- name: Surviving spouse age 55+ receiving only Survivor Benefit Plan payments, capped at $20,000
+  period: 2023
+  input:
+    state_code: MD
+    age: 60
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 25_000
+  output:
+    md_military_retirement_subtraction: 20_000
+
+- name: Surviving spouse under 55 receiving only Survivor Benefit Plan payments, capped at $12,500
+  period: 2023
+  input:
+    state_code: MD
+    age: 45
+    military_retirement_pay: 0
+    military_retirement_pay_survivors: 15_000
+  output:
+    md_military_retirement_subtraction: 12_500
+
+- name: Person receiving both own military retirement and survivor benefits, combined amount capped
+  period: 2023
+  input:
+    state_code: MD
+    age: 50
+    military_retirement_pay: 5_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    md_military_retirement_subtraction: 12_500

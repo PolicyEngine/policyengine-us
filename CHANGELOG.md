@@ -1,3 +1,399 @@
+## [1.681.0] - 2026-05-04
+
+### Added
+
+- Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
+
+### Fixed
+
+- Fixed Hawaii TANF maximum benefit to apply the steady-state mandatory-work 20% Standard of Assistance reduction, updated Kansas TANF to the Group IV non-shared living standard (the most-populous-county convention) so headline benefit values align with cross-state research reporting, and corrected the Vermont Reach Up special housing allowance to pay only the lesser of (housing expenses in excess of the maximum housing allowance) or $90 per Rule 2244.3, replacing the previous flat $90 payout.
+
+
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
+## [1.678.0] - 2026-04-30
+
+### Added
+
+- Washington State Family Assistance and Refugee Cash Assistance programs.
+  Fix Washington TANF immigration eligibility, add `years_since_us_entry` and `wa_show_all_cash_assistance_programs` variables.
+
+
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
+## [1.676.4] - 2026-04-30
+
+### Changed
+
+- Improve WIC benefit valuation by assigning detailed federal food packages, updating cash-value benefit amounts, and using WIC-specific countable income.
+
+
+## [1.676.3] - 2026-04-30
+
+### Fixed
+
+- Removed the one-time Rhode Island child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023 onward.
+
+
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
+## [1.674.1] - 2026-04-29
+
+### Fixed
+
+- Fix state benchmark tests affected by modeled Medicare enrollment inputs.
+
+
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
+## [1.673.1] - 2026-04-29
+
+### Fixed
+
+- Split medical expenses into program-specific variables and remove the generic medical out-of-pocket expense aggregate.
+
+
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
+## [1.670.2] - 2026-04-27
+
+### Fixed
+
+- Fix Marketplace selected-plan and net premiums for unsubsidized households.
+
+
+## [1.670.1] - 2026-04-27
+
+### Fixed
+
+- Exclude children with employer-sponsored insurance from CHIP eligibility.
+
+
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
+## [1.669.0] - 2026-04-27
+
+### Added
+
+- Added Basic Health Program (ACA §1331) coverage modeling. Creates a shared `gov/hhs/basic_health_program` coverage path covering MN MinnesotaCare, NY Essential Plan, OR OHP Bridge (2025+), and DC Healthy DC Plan (2026+). BHP-eligible people are excluded from ACA Premium Tax Credit eligibility, so per-state PTC projections now zero out for BHP enrollees. Eligibility enforces the statutory 133–200% FPL band (250% FPL in NY from 2025). Moves the state adult/parent Medicaid income ceilings back to Medicaid-only levels in BHP states so people above the Medicaid line fall through to BHP rather than silently losing coverage. Refs #8112.
+
+
+## [1.668.0] - 2026-04-26
+
+### Added
+
+- - Added 2026 ACA lowest-cost bronze plan (`lcbp`) rating-area premiums and bronze companion variables.
+
+
+## [1.667.1] - 2026-04-25
+
+### Fixed
+
+- Fix farm operations income, business self-employment tax, and labor supply response inputs.
+
+
+## [1.667.0] - 2026-04-25
+
+### Added
+
+- Add shared CPS tax-unit construction helper rules.
+
+
+## [1.666.2] - 2026-04-24
+
+### Fixed
+
+- Backfilled Medicaid and CHIP income limit parameters to 2018 using official CMS sources, including thresholds stored with the 5 percentage-point MAGI disregard.
+
+
+## [1.666.1] - 2026-04-23
+
+### Fixed
+
+- Removed the one-time Connecticut child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023-2026.
+
+
+## [1.666.0] - 2026-04-23
+
+### Added
+
+- North Carolina Child and Dependent Care Credit contrib reform (refundable, 30% match of federal credit, 2026+).
+
+
+## [1.665.0] - 2026-04-22
+
+### Added
+
+- Add Florida Optional State Supplementation (OSS).
+
+
+## [1.664.0] - 2026-04-22
+
+### Added
+
+- Add Washington millionaires tax (9.9% on income above $1M) and WFTC age expansion (18+) per ESSB 6346. Removes contributed reform since bill is now law.
+
+
+## [1.663.0] - 2026-04-22
+
+### Added
+
+- Maryland military retirement income subtraction (Md. Code Tax-General § 10-207(q)) from 2021 onward, including the Keep Our Heroes Home Act increase to $12,500 / $20,000 effective 2023.
+
+
+## [1.662.1] - 2026-04-22
+
+### Fixed
+
+- Cap the Oklahoma earned income tax credit at remaining tax liability in years where it is non-refundable (2016-2021).
+
+
+## [1.662.0] - 2026-04-22
+
+### Added
+
+- Add California AB 2591 contributed reform: standard deduction at the federal poverty line.
+
+
+## [1.661.0] - 2026-04-21
+
+### Added
+
+- Added Kansas State Supplemental Payment Program (SSPP) for SSI recipients in Medicaid-approved institutions.
+
+
+## [1.660.1] - 2026-04-21
+
+### Fixed
+
+- Update SSI state supplement program registry to mark CT, DC, ID, IN, NM, SC, and TX as complete.
+
+
+## [1.660.0] - 2026-04-21
+
+### Added
+
+- Add DC Optional State Supplemental Payment (OSSP) program.
+
+
+## [1.659.6] - 2026-04-21
+
+### Fixed
+
+- Fix test_batched.py silently dropping `--batches N` and `--exclude` for folders without subdirectories, which caused duplicated and under-parallelized CI test runs.
+
+
+## [1.659.5] - 2026-04-21
+
+### Fixed
+
+- Fixed MT state_income_tax returning $0 for 2024+ by replacing min_(indiv, joint) with where(filing_separately, indiv, joint) in mt_income_tax_before_refundable_credits_unit.
+- Fixed OH senior citizen credit to check both head and spouse age per ORC 5747.055.
+
+
+## [1.659.4] - 2026-04-20
+
+### Fixed
+
+- Split heavy CI test jobs into parallel matrix runners with 60-min timeouts to avoid memory exhaustion on 16 GB GitHub Actions runners.
+
+
+## [1.659.3] - 2026-04-20
+
+### Fixed
+
+- Rewrite `federal_eitc_without_age_minimum` to compose the federal EITC without mutating the shared tax-benefit system, eliminating an order-dependent test pollution bug in Maryland EITC calculations.
+
+
+## [1.659.2] - 2026-04-20
+
+### Fixed
+
+- Reverted the 2029 sunset from `senior_deduction/amount.yaml` and removed its corresponding test — the sunset is handled at the deduction aggregator level, and zeroing the amount parameter broke the CRFB `senior_deduction_extension` tests.
+
+
+## [1.659.1] - 2026-04-20
+
+### Fixed
+
+- Fixed the federal senior deduction phase-out to apply per-senior rather than to the combined total, matching IRS Schedule 1-A Part V.
+
+
+## [1.659.0] - 2026-04-19
+
+### Added
+
+- Added `medicaid_premium` federal aggregator variable plus Indiana HIP POWER Account contribution (`in_hip_power_account_contribution`), and wired `medicaid_premium` into `spm_unit_medical_out_of_pocket_expenses`. Collection is currently paused in Indiana; the encoded schedule is reform-ready.
+
+
+## [1.658.0] - 2026-04-19
+
+### Added
+
+- Added `marketplace_net_premium` variable — annual Marketplace plan premium net of applied PTC.
+
+### Changed
+
+- SPM unit medical out-of-pocket expenses now uses rules-based `income_adjusted_part_b_premium` (base + IRMAA) in place of the imputed `medicare_part_b_premiums`, so reforms to the Medicare Part B base premium or IRMAA thresholds propagate through SPM resources.
+
+
+## [1.657.1] - 2026-04-19
+
+### Changed
+
+- Added `spm_unit_medical_out_of_pocket_expenses` that combines person-level imputed MOOP with rules-based tax-unit-level premiums (currently `chip_premium`). `spm_unit_spm_expenses` now reads the wrapper instead of listing MOOP and each premium separately.
+
+
+## [1.657.0] - 2026-04-19
+
+### Added
+
+- Added `per_capita_chip_gross` and `chip_gross` variables that reconstruct gross CHIP service value by adding CMS-21 state cost-sharing offsets to the net-of-premium MACPAC spending.
+
+
+## [1.656.2] - 2026-04-19
+
+### Fixed
+
+- Split the Full Suite YAML batch grouping in `tests/test_batched.py` so each heavy folder runs in its own isolated subprocess. Previous grouping (3 folders per contrib batch, paired gov/ folders in the baseline-other job) pushed peak memory to ~8-9 GB per subprocess, which OOMed the 16 GB ubuntu-latest runner once the policyengine-core 3.24+ overhead landed and surfaced as `The runner has received a shutdown signal` mid-batch. Each batch now targets ≤5 GB peak, eliminating the intermittent Full Suite failures without changing test coverage.
+
+
+## [1.656.1] - 2026-04-19
+
+### Changed
+
+- Include `chip_premium` in `spm_unit_spm_expenses` so CHIP premium reforms propagate to SPM resources.
+
+
+## [1.656.0] - 2026-04-19
+
+### Added
+
+- Added `household_health_costs` aggregate; `chip_premium` now reduces `household_net_income` when health benefits are counted as income.
+
+### Fixed
+
+- Added historical effective-date brackets for MO and NY CHIP premium schedules so `chip_premium` returns accurate 2020-2026 values for the 2024 data-imputation baseline anchor.
+
+
+## [1.655.1] - 2026-04-19
+
+### Fixed
+
+- Bump `policyengine-core` minimum to `>=3.25.0` to pick up the `set_input` preservation fix from PolicyEngine/policyengine-core#475. Addresses the `state_fips` / `tax_unit_itemizes` / household-dataset regression (PolicyEngine/policyengine-us#8058) where `apply_reform` wiped user-provided dataset inputs during structural reforms.
+
+
+## [1.655.0] - 2026-04-19
+
+### Added
+
+- Added `chip_premium` variable with CHIP premium and enrollment-fee implementations for 17 states (AL, CT, DE, FL, GA, IA, ID, IL, IN, KS, LA, MA, MI, MO, NY, TX, WI).
+
+
+## [1.654.0] - 2026-04-18
+
+### Added
+
+- Model CHIP enrollment separately from eligibility via `chip_enrolled`, `takes_up_chip_if_eligible`, `chip_take_up_seed`, and `gov.hhs.chip.takeup_rate` (default 0.93), matching the Medicaid takeup pattern. `chip`, `chip_federal_share`, `chip_federal_cost`, and `chip_state_cost` now gate on enrollment rather than raw eligibility.
+- Federal/state cost attribution for Medicaid (FMAP per 42 USC 1396d) and CHIP (enhanced FMAP per 42 USC 1397ee), plus cross-program `federal_benefit_cost` and `state_benefit_cost` aggregates.
+
+
+## [1.653.5] - 2026-04-18
+
+### Fixed
+
+- Excluded earnings of CT Care 4 Kids family members under 18 who are not parents of the applicant child from countable income, per RCSA 17b-749-05(b)(2)(E).
+- Excluded minor children's earnings from NJ CCAP countable income, per the CCAP application form (CC-1) which collects earnings only from applicant/co-applicant.
+- Excluded earnings of VA CCSP household members under 18 from countable income, per 8VAC20-790-40(H).
+- Documented that VA CCSP family day home rates vary by region only, not by age group, with new regression tests.
+
+
+## [1.653.4] - 2026-04-18
+
+### Changed
+
+- Bump policyengine-core floor to 3.24.4 (closes #8066).
+
+
 ## [1.653.3] - 2026-04-18
 
 ### Fixed

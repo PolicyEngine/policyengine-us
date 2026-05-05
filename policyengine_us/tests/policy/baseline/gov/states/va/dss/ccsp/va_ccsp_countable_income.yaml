@@ -112,3 +112,80 @@
   output:
     # (30,000 + 24,000) / 12 = 4,500
     va_ccsp_countable_income: 4_500
+
+# Cases 6-8 exercise 8VAC20-790-40(H): "earnings of a child younger than
+# 18 years of age" are excluded from countable income. The exclusion
+# covers earned income only (wages and self-employment); unearned income
+# for household members under 18 (e.g. a child's SSA survivor benefit)
+# remains countable.
+- name: Case 6, working teen's employment income is excluded.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 36_000
+      teen:
+        age: 16
+        employment_income: 6_000
+      young_child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, teen, young_child]
+    households:
+      household:
+        members: [parent, teen, young_child]
+        state_code: VA
+  output:
+    # Parent earnings count: 36,000 / 12 = 3,000/month
+    # Teen's $6,000 employment_income is excluded (age 16 < 18)
+    va_ccsp_countable_income: 3_000
+
+- name: Case 7, minor child's self-employment income is excluded.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child_entrepreneur:
+        age: 15
+        self_employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, child_entrepreneur]
+    households:
+      household:
+        members: [parent, child_entrepreneur]
+        state_code: VA
+  output:
+    # Only parent's earned income counts: 24,000 / 12 = 2,000/month
+    va_ccsp_countable_income: 2_000
+
+- name: Case 8, minor child's unearned income is still countable.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child:
+        age: 10
+        social_security: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # Parent earnings 24,000 + child SSA survivor benefit 6,000 = 30,000
+    # Monthly: 30,000 / 12 = 2,500
+    # Only earnings (wages/self-employment) of children <18 are excluded;
+    # unearned income (e.g. social_security) of minors is still countable.
+    va_ccsp_countable_income: 2_500

@@ -1,0 +1,15 @@
+description: Virginia counts these earned income sources as countable income under the Child Care Subsidy Program. Per 8VAC20-790-40(H), earnings of a family member younger than 18 years of age are excluded, so these sources are summed only for household members aged 18 or older.
+values:
+  2023-01-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP countable earned income sources (subject to child-under-18 exclusion)
+  reference:
+    - title: 8VAC20-790-40(H) Excluded income
+      href: https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section40/
+    - title: Virginia Child Care Subsidy Program Guidance Manual Section 3.4 E
+      href: https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=63

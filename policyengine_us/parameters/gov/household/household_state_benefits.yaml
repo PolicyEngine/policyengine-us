@@ -10,8 +10,12 @@ values:
     - ct_ssp
     # Georgia benefits
     - ga_ssp
+    # Maine benefits
+    - me_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Michigan benefits
+    - mi_ssp
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -30,8 +34,12 @@ values:
     - al_ssp
     # Alaska benefits
     - ak_ssp
+    # Florida benefits
+    - fl_oss
     # Idaho benefits
     - id_aabd
+    # Kentucky benefits
+    - ky_ssp
     # Nebraska benefits
     - ne_child_care_subsidies
     # South Carolina benefits
@@ -47,8 +55,17 @@ values:
     # Massachusetts benefits
     - ma_eaedc
     - ma_tafdc
+    # DC benefits
+    - dc_ossp
+    # Kansas benefits
+    - ks_sspp
     # Hawaii benefits
     - hi_oss
+    # Washington benefits
+    - wa_sfa
+    - wa_rca
+    # Louisiana benefits
+    - la_oss
   2024-01-01:
     # Delaware benefits
     - de_ssp
@@ -59,8 +76,12 @@ values:
     - ct_ssp
     # Georgia benefits
     - ga_ssp
+    # Maine benefits
+    - me_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Michigan benefits
+    - mi_ssp
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -79,8 +100,12 @@ values:
     - al_ssp
     # Alaska benefits
     - ak_ssp
+    # Florida benefits
+    - fl_oss
     # Idaho benefits
     - id_aabd
+    # Kentucky benefits
+    - ky_ssp
     # Nebraska benefits
     - ne_child_care_subsidies
     # New Mexico benefits
@@ -98,8 +123,17 @@ values:
     # Massachusetts benefits
     - ma_eaedc
     - ma_tafdc
+    # DC benefits
+    - dc_ossp
+    # Kansas benefits
+    - ks_sspp
     # Hawaii benefits
     - hi_oss
+    # Washington benefits
+    - wa_sfa
+    - wa_rca
+    # Louisiana benefits
+    - la_oss
 metadata:
   unit: list
   period: year
