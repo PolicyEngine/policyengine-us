@@ -1,0 +1,45 @@
+description: Nebraska provides this amount as the monthly standard of need for individuals in alternate living arrangements under the Aid to the Aged, Blind, or Disabled program.
+
+LONG_TERM_CARE:
+  2015-01-01: 50
+  2017-01-01: 60
+BOARD_AND_ROOM:
+  2015-01-01: 737
+  2017-01-01: 739
+  2021-01-01: 798
+ADULT_FAMILY_HOME:
+  2015-01-01: 865
+  2017-01-01: 867
+  2021-01-01: 926
+ASSISTED_LIVING_FACILITY:
+  2015-01-01: 1_175
+  2017-01-01: 1_177
+  2021-01-01: 1_236
+ASSISTED_LIVING_WAIVER:
+  2015-01-01: 733
+  2017-01-01: 735
+  2021-01-01: 794
+GROUP_HOME_DISABLED:
+  2015-01-01: 801
+  2017-01-01: 803
+  2021-01-01: 862
+INDEPENDENT:
+  2015-01-01: 0
+NONE:
+  2015-01-01: 0
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Nebraska AABD alternate living standard
+  breakdown:
+    - ne_aabd_living_arrangement
+  reference:
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2021-01-01)
+      href: https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2017-01-01, Manual Letter #01-2017)
+      href: https://web.archive.org/web/20161221055507/https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2015-01-01, Manual Letter #74-2014)
+      href: https://web.archive.org/web/20150907223322/https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Nebraska, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ne.pdf#page=2

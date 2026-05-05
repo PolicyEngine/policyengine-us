@@ -1,0 +1,653 @@
+- name: Case 1, single SSI recipient living independently in Nebraska.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Federal SSI (2025) individual = $967/month with no other income.
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2025) individual FBR = $967.
+    ssi: 967
+    # Categorically eligible and receives SSI in NE => eligible.
+    ne_aabd_eligible: true
+    ne_aabd_living_arrangement: INDEPENDENT
+    # Independent budget (2021 rates frozen through 2025):
+    # standard size 1 ($564) + single shelter ($281) = $845.
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $967) = $0 because federal FBR exceeds NE budget.
+    ne_aabd: 0
+
+- name: Case 2, independent couple in Nebraska both receiving SSI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Couple FBR (2025) = $1,450, split evenly between both SSI-eligible spouses.
+    ssi: [725, 725]
+    ne_aabd_eligible: [true, true]
+    # Independent budget for size 2 (2021 rates):
+    # standard size 2 ($887) + multiple shelter ($349) = $1,236.
+    # Per-spouse share: $1,236 / 2 = $618.
+    ne_aabd_standard_of_need: [618, 618]
+    # Fill-the-gap: max(0, $618 - $725) = $0 because couple FBR exceeds NE budget.
+    ne_aabd: [0, 0]
+
+- name: Case 3, single SSI recipient in an Assisted Living Facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2025) individual FBR = $967 (ALF is not a Medicaid facility).
+    ssi: 967
+    ne_aabd_eligible: true
+    ne_aabd_living_arrangement: ASSISTED_LIVING_FACILITY
+    # Alternate living standard for ASSISTED_LIVING_FACILITY (2021 rates) = $1,236.
+    ne_aabd_standard_of_need: 1_236
+    # Fill-the-gap: max(0, $1,236 - $967) = $269.
+    ne_aabd: 269
+
+- name: Case 4, single SSI recipient in an Adult Family Home using 2017 rates.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        ne_aabd_alternate_living_arrangement: ADULT_FAMILY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2017) individual FBR = $735.
+    ssi: 735
+    ne_aabd_eligible: true
+    ne_aabd_living_arrangement: ADULT_FAMILY_HOME
+    # Alternate living standard for ADULT_FAMILY_HOME (2017) = $867.
+    ne_aabd_standard_of_need: 867
+    # Fill-the-gap: max(0, $867 - $735) = $132.
+    ne_aabd: 132
+
+- name: Case 5, SSI recipient in a Long-Term Care Medicaid facility (Code D).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        # Federal Code D: medical treatment facility with Medicaid paying majority of care.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI for a Medicaid facility resident is reduced to $30/month (PNA).
+    ssi: 30
+    ne_aabd_eligible: true
+    # Federal Code D forces NE living arrangement to LONG_TERM_CARE.
+    ne_aabd_living_arrangement: LONG_TERM_CARE
+    # Alternate living standard for LONG_TERM_CARE (2021 rates frozen) = $60.
+    ne_aabd_standard_of_need: 60
+    # Fill-the-gap: max(0, $60 - $30) = $30.
+    ne_aabd: 30
+
+- name: Case 6, large negative self-employment income does not inflate the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # SSI countable income floors earned income at zero, so ssi receipt is unchanged.
+        self_employment_income: -60_000_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2025) individual = $967, unaffected by negative earnings.
+    ssi: 967
+    ne_aabd_eligible: true
+    ne_aabd_living_arrangement: INDEPENDENT
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap is bounded by the standard of need: max(0, $845 - $967) = $0.
+    # The formula must NOT add the negative income excess back into the supplement.
+    ne_aabd: 0
+
+- name: Case 7, mixed-arrangement spouses derive distinct living arrangements.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Per SSA 2011 Table 1 footnote a, alternate-living couples are
+        # treated as two individuals; ssi_claim_is_joint: false reflects
+        # the Title XIX separation that gives each spouse the individual FBR.
+        ssi_claim_is_joint: false
+        ssi_countable_income: 0
+        ne_aabd_alternate_living_arrangement: ADULT_FAMILY_HOME
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Each spouse receives the individual federal SSI FBR (2021) = $794
+    # because Title XIX separation prevents the joint computation.
+    ssi: [794, 794]
+    ne_aabd_eligible: [true, true]
+    # Person-level living arrangement is derived independently for each spouse:
+    # Spouse 1 from the alternate input (AFH); spouse 2 defaults to INDEPENDENT.
+    ne_aabd_living_arrangement: [ADULT_FAMILY_HOME, INDEPENDENT]
+
+- name: Case 8a, boundary period 2016-01 uses 2015 standard of need rates.
+  period: 2016-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2016) individual FBR = $733.
+    ssi: 733
+    ne_aabd_eligible: true
+    # 2016 falls under 2015 rates: standard size 1 ($491) + single shelter ($281) = $772.
+    ne_aabd_standard_of_need: 772
+    # Fill-the-gap: max(0, $772 - $733) = $39.
+    ne_aabd: 39
+
+- name: Case 8b, boundary period 2017-01 uses 2017 standard of need rates.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2017) individual FBR = $735.
+    ssi: 735
+    ne_aabd_eligible: true
+    # 2017 rates: standard size 1 ($505) + single shelter ($281) = $786.
+    ne_aabd_standard_of_need: 786
+    # Fill-the-gap: max(0, $786 - $735) = $51.
+    ne_aabd: 51
+
+- name: Case 9, post-2021 rates remain frozen so 2025-01 matches 2021 values.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # 2025 rates equal 2021 rates: standard size 1 ($564) + single shelter ($281) = $845.
+    ne_aabd_standard_of_need: 845
+
+- name: Case 11, non-Nebraska resident with otherwise eligible facts gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        # Non-Nebraska residency excludes the household via defined_for=StateCode.NE.
+        state_code: CA
+  output:
+    ne_aabd_eligible: false
+    ne_aabd_living_arrangement: NONE
+    ne_aabd: 0
+
+- name: Case 12, independent couple where the federal couple FBR exceeds NE budget.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Couple FBR (2025) = $1,450; couple budget (2021 frozen) = $887 + $349 = $1,236.
+    # Per spouse: standard_of_need = $1,236/2 = $618; federal_ssi = $725.
+    # Fill-the-gap: max(0, $618 - $725) = $0 each.
+    ne_aabd_couple_rate_applies: [true, true]
+    ne_aabd: [0, 0]
+
+- name: Case 13, asymmetric eligibility - only one spouse is SSI-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+      person2:
+        age: 60
+        is_ssi_aged: false
+        is_ssi_disabled: false
+        is_ssi_aged_blind_disabled: false
+        is_ssi_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Only one spouse is SSI-eligible -> couple_rate_applies must be false.
+    # The eligible spouse uses the individual independent budget, not the couple budget.
+    ne_aabd_couple_rate_applies: [false, false]
+    ne_aabd_eligible: [true, false]
+
+- name: Case 14, NE resident with non-NE spouse couple_rate_applies is false.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        # Non-NE state means defined_for filters BOTH spouses' living arrangements
+        # to NONE; couple_rate_applies requires both INDEPENDENT, so it is false.
+        state_code: IA
+  output:
+    ne_aabd_eligible: [false, false]
+    ne_aabd_couple_rate_applies: [false, false]
+    ne_aabd: [0, 0]
+
+- name: Case 15, countable income exactly at the $20 SSI general exclusion boundary.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # $20/month unearned income exactly matches the SSI general exclusion,
+        # so countable income remains $0 and the federal SSI = full FBR ($967).
+        social_security_retirement: 240
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # $20 is fully excluded -> ssi = FBR = $967.
+    ssi: 967
+    ne_aabd_eligible: true
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $967) = $0.
+    ne_aabd: 0
+
+- name: Case 16a, boundary period 2020-01 still uses 2017 standard of need rates.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2020) individual FBR = $783.
+    ssi: 783
+    # 2020 falls under 2017 NE rates: $505 + $281 = $786.
+    ne_aabd_standard_of_need: 786
+    # Fill-the-gap: max(0, $786 - $783) = $3.
+    ne_aabd: 3
+
+- name: Case 16b, boundary period 2021-01 uses 2021 standard of need rates.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2021) individual FBR = $794.
+    ssi: 794
+    # 2021 rates: $564 + $281 = $845.
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $794) = $51.
+    ne_aabd: 51
+
+- name: Case 17, negative employment income does not inflate the supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Large negative self-employment loss; SSI countable income floors at zero
+        # so federal SSI is unaffected.
+        self_employment_income: -1_200_000_000
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2025) individual FBR = $967, unaffected by negative earnings.
+    ssi: 967
+    ne_aabd_eligible: true
+    ne_aabd_living_arrangement: ASSISTED_LIVING_FACILITY
+    ne_aabd_standard_of_need: 1_236
+    # Fill-the-gap: max(0, $1,236 - $967 - max(0,-uncapped_ssi)).
+    # The income_excess clause prevents the formula from adding negative income to the
+    # supplement (which would otherwise produce a 1.2B benefit).
+    ne_aabd: 269
+
+- name: Case 19, single SSI recipient with $20 unearned income and additional excess.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # $50 unearned/month: first $20 excluded, remaining $30 reduces SSI.
+        social_security_retirement: 600
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI: $967 - ($50 - $20) = $937.
+    ssi: 937
+    ne_aabd_eligible: true
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $937 - 0) = $0.
+    ne_aabd: 0

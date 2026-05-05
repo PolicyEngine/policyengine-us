@@ -712,6 +712,12 @@ programs:
         name: Maine SSP
         full_name: Maine State Supplemental Income Program
         variable: me_ssp
+      - state: NE
+        status: complete
+        name: Nebraska AABD
+        full_name: Nebraska Aid to the Aged, Blind, or Disabled
+        variable: ne_aabd
+        parameter_prefix: gov.states.ne.dhhs.aabd
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -1084,6 +1090,17 @@ programs:
     coverage: Chicago
     variable: il_cta_benefit
     parameter_prefix: gov.states.il.rta.cta
+
+  - id: ne_aabd
+    name: Nebraska AABD
+    full_name: Nebraska Aid to the Aged, Blind, or Disabled
+    category: Benefits
+    agency: DHHS
+    status: complete
+    coverage: NE
+    variable: ne_aabd
+    parameter_prefix: gov.states.ne.dhhs.aabd
+    verified_years: "2015-2025"
 
   - id: ne_childcare
     name: Nebraska child care subsidy
