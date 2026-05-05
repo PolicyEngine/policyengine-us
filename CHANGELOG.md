@@ -1,3 +1,14 @@
+## [1.687.0] - 2026-05-05
+
+### Added
+
+- Add TANF max benefit standard variables for AZ, CA, CT, FL, HI, KS, NY, and VT following CBPP/WRD research conventions for cross-state comparison.
+
+### Changed
+
+- Updated GitHub Actions workflows for Node 24-compatible action runtimes.
+
+
 ## [1.686.1] - 2026-05-05
 
 ### Fixed
