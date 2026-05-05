@@ -7,6 +7,9 @@ class MOSSPLivingArrangement(Enum):
     RCF_LEVEL_II_OR_ALF = (
         "Residential Care Facility Level II or Assisted Living Facility"
     )
+    INTERMEDIATE_OR_SKILLED_NO_LOC = (
+        "Intermediate or skilled care facility without level-of-care determination"
+    )
     SNF_OR_ICF_NON_MEDICAID = (
         "Skilled Nursing or Intermediate Care Facility, non-Medicaid"
     )

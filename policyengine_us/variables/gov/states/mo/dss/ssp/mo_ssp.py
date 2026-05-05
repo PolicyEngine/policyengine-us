@@ -10,8 +10,7 @@ class mo_ssp(Variable):
     defined_for = "mo_ssp_eligible"
     reference = (
         "https://revisor.mo.gov/main/OneSection.aspx?section=208.030",
-        "https://revisor.mo.gov/main/OneSection.aspx?section=209.040",
-        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=4",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
     )
 
@@ -33,7 +32,8 @@ class mo_ssp(Variable):
             [
                 living_arrangement == categories.SAB,
                 living_arrangement == categories.RCF_LEVEL_I,
-                living_arrangement == categories.RCF_LEVEL_II_OR_ALF,
+                (living_arrangement == categories.RCF_LEVEL_II_OR_ALF)
+                | (living_arrangement == categories.INTERMEDIATE_OR_SKILLED_NO_LOC),
                 living_arrangement == categories.SNF_OR_ICF_NON_MEDICAID,
             ],
             [

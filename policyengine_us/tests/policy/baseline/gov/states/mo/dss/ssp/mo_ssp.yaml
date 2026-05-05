@@ -376,3 +376,21 @@
     # facilities; residents of those facilities are recorded as NONE and
     # excluded from category eligibility, so SNC pays nothing.
     mo_ssp: 0
+
+- name: Case 22, intermediate care without LOC determination receives $292 (same as RCF II).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: INTERMEDIATE_OR_SKILLED_NO_LOC
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Intermediate or skilled facility without level-of-care determination
+    # is paid the same SNC rate as RCF Level II / ALF = $292.
+    mo_ssp: 292

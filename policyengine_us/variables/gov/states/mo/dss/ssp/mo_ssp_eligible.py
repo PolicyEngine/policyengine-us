@@ -9,7 +9,6 @@ class mo_ssp_eligible(Variable):
     defined_for = StateCode.MO
     reference = (
         "https://revisor.mo.gov/main/OneSection.aspx?section=208.030",
-        "https://revisor.mo.gov/main/OneSection.aspx?section=209.040",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
     )
 
@@ -28,10 +27,6 @@ class mo_ssp_eligible(Variable):
         living_arrangement = person("mo_ssp_living_arrangement", period)
         is_sab = living_arrangement == living_arrangement.possible_values.SAB
         p = parameters(period).gov.states.mo.dss.ssp
-        non_ssi_income = (
-            person("ssi_earned_income", period)
-            + person("ssi_unearned_income", period)
-            - person("ssi", period)
-        )
+        non_ssi_income = person("ssi_countable_income", period)
         income_gate = ~is_sab | (non_ssi_income <= p.sab.income_limit)
         return receives_ssi & in_category & age_eligible & income_gate

@@ -245,7 +245,7 @@
     # defined_for = StateCode.MO filters non-MO residents to false.
     mo_ssp_eligible: false
 
-- name: Case 16, SAB applicant with non-SSI income above the monthly limit is not eligible.
+- name: Case 16, SAB applicant with countable income above the monthly limit is not eligible.
   period: 2026-01
   input:
     people:
@@ -253,15 +253,16 @@
         age: 50
         is_blind: true
         ssi: 200
-        employment_income: 15_000
+        employment_income: 30_000
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # FY2026 SAB monthly income limit $1,073; non-SSI income = (ssi_earned +
-    # ssi_unearned - ssi)/12 ≈ $1,233 exceeds limit so SAB pathway fails.
+    # FY2026 SAB monthly income limit $1,073; ssi_countable_income for blind
+    # earner with $30,000 annual employment income exceeds the limit after
+    # federal SSI exclusions, so SAB pathway fails.
     mo_ssp_eligible: false
 
 - name: Case 17, SAB applicant with non-SSI income at or below the monthly limit is eligible.
