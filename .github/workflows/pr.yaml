@@ -10,9 +10,9 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Check formatting
@@ -21,7 +21,7 @@ jobs:
     name: Check changelog fragment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check for changelog fragment
         run: |
           FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
@@ -58,13 +58,13 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install package
         run: uv pip install --system .
       - name: Smoke-import
@@ -78,17 +78,17 @@ jobs:
       SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 10
       - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }} --depth=1
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
@@ -133,9 +133,9 @@ jobs:
           fi
       - name: Upload coverage to Codecov
         if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           fail_ci_if_error: false
           flags: unittests
           name: codecov-umbrella
@@ -167,13 +167,13 @@ jobs:
             cmd: make test-yaml-no-structural-other-contrib
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
@@ -203,13 +203,13 @@ jobs:
             target: test-yaml-structural-congress
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
@@ -225,13 +225,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
