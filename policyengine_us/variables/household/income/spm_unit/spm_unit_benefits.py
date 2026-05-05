@@ -28,6 +28,7 @@ class spm_unit_benefits(Variable):
             "ma_state_supplement",  # Massachusetts benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
+            "mo_ssp",  # Missouri benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.

@@ -675,6 +675,13 @@ programs:
         name: Maine SSP
         full_name: Maine State Supplemental Income Program
         variable: me_ssp
+      - state: MO
+        status: complete
+        name: Missouri SSP
+        full_name: Missouri State Supplementary Payment
+        variable: mo_ssp
+        parameter_prefix: gov.states.mo.dss.ssp
+        verified_years: "2023-2026"
       - state: KS
         status: complete
         name: Kansas SSPP

@@ -1,0 +1,151 @@
+- name: Case 1, SNF non-Medicaid resident receiving SSI in MO gets PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_personal_needs_allowance: 50
+
+- name: Case 2, RCF Level I resident does not get PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA only paid for SNF/ICF non-Medicaid arrangements.
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 3, RCF Level II or ALF resident does not get PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 4, ineligible person in SNF arrangement gets zero PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # defined_for = mo_ssp_eligible filters output to zero when ssi == 0.
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 5, SNF resident at PNA effective date gets PNA.
+  period: 2015-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA effective 2015-01-01 at $50.
+    mo_ssp_personal_needs_allowance: 50
+
+- name: Case 6, SNF resident before PNA effective date gets zero.
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA effective 2015-01-01; pre-effective period returns 0.
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 7, SAB arrangement returns zero PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA only paid for SNF/ICF non-Medicaid arrangements; SAB returns 0.
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 8, RCF Level I arrangement returns zero PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA only paid for SNF/ICF non-Medicaid arrangements; RCF I returns 0.
+    mo_ssp_personal_needs_allowance: 0
+
+- name: Case 9, SNF non-Medicaid arrangement returns PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA $50 paid for SNF/ICF non-Medicaid arrangement.
+    mo_ssp_personal_needs_allowance: 50

@@ -1,0 +1,378 @@
+- name: Case 1, SAB recipient with low SSI receives BP rate minus SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 2_400  # $200/month annualized; SSI is YEAR-defined
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 BP rate $917, cap $762.
+    # max(917 - 200, 0) = 717; min(717, 762) = 717.
+    mo_ssp: 717
+
+- name: Case 2, SAB recipient with full federal SSI gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 11_604  # $967/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 BP rate $917; max(917 - 967, 0) = 0; min(0, 762) = 0.
+    mo_ssp: 0
+
+- name: Case 3, SAB recipient with $1 SSI exceeds cap so cap binds.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 1
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # max(917 - 1, 0) = 916; min(916, 762) = 762 (cap binds).
+    mo_ssp: 762
+
+- name: Case 4, SNC RCF Level I recipient receives flat amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Flat SNC RCF Level I = $156; no PNA (not SNF).
+    mo_ssp: 156
+
+- name: Case 5, SNC RCF Level II or ALF recipient receives flat amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Flat SNC RCF Level II or ALF = $292; no PNA.
+    mo_ssp: 292
+
+- name: Case 6, SNC SNF non-Medicaid resident receives base plus PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC SNF/ICF base $390 plus PNA $50 = $440.
+    mo_ssp: 440
+
+- name: Case 7, person not in Missouri receives zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # defined_for = StateCode.MO filters output to zero.
+    mo_ssp: 0
+
+- name: Case 8, person not actually receiving SSI gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # mo_ssp_eligible requires ssi > 0; ssi == 0 => not eligible.
+    mo_ssp: 0
+
+- name: Case 9, FY2024 SAB recipient with $0.50 SSI hits FY2024 cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0.5
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2024 BP rate $789, cap $654.
+    # max(789 - 0.5, 0) = 788.5; min(788.5, 654) = 654 (cap binds).
+    mo_ssp: 654
+
+- name: Case 10, child under 18 in SAB arrangement is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Age below SAB threshold (18) => mo_ssp_age_eligible false.
+    mo_ssp: 0
+
+- name: Case 11, person in NONE arrangement receives zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # NONE arrangement is not category-eligible.
+    mo_ssp: 0
+
+- name: Case 12, FY2025 SAB recipient with low SSI uses FY2025 BP rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 2_400  # $200/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828, cap $698.
+    # max(828 - 200, 0) = 628; min(628, 698) = 628.
+    mo_ssp: 628
+
+- name: Case 13, FY2025 SAB grant with nominal SSI hits cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828, cap $698.
+    # max(828 - 1, 0) = 827; min(827, 698) = 698 (cap binds).
+    mo_ssp: 698
+
+- name: Case 14, FY2025 SAB grant with SSI 200 formula binds not cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 2_400  # $200/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828, cap $698.
+    # max(828 - 200, 0) = 628; min(628, 698) = 628 (formula binds).
+    mo_ssp: 628
+
+- name: Case 15, FY2025 SAB grant with SSI exactly equal to BP rate is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 9_936  # $828/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828; max(828 - 828, 0) = 0; min(0, 698) = 0.
+    mo_ssp: 0
+
+- name: Case 16, FY2025 SAB grant with SSI exceeding BP rate is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 12_000  # $1,000/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828; max(828 - 1000, 0) = 0; min(0, 698) = 0.
+    mo_ssp: 0
+
+- name: Case 17, negative self-employment income does not inflate SAB benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        self_employment_income: -60_000_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # mo_ssp formula reads ssi only. Negative SE income cannot inflate output;
+    # benefit is bounded by min(max(BP - ssi, 0), cap) = min(827, 698) = 698.
+    mo_ssp: 698
+
+- name: Case 18, FY2024 SAB grant with nominal SSI uses FY2024 cap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2024 BP rate $789, cap $654.
+    # max(789 - 1, 0) = 788; min(788, 654) = 654 (cap binds).
+    mo_ssp: 654
+
+- name: Case 19, SNF resident before PNA effective date receives base only.
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA effective 2015-01-01; pre-effective period gives SNF base $390 + $0 PNA.
+    mo_ssp: 390
+
+- name: Case 20, SNF resident at PNA effective date receives base plus PNA.
+  period: 2015-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC SNF/ICF base $390 + PNA $50 effective 2015-01-01 = $440.
+    mo_ssp: 440
+
+- name: Case 21, resident in a Medicaid facility receives zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # MOSSPLivingArrangement has no enum value for Title XIX Medicaid
+    # facilities; residents of those facilities are recorded as NONE and
+    # excluded from category eligibility, so SNC pays nothing.
+    mo_ssp: 0

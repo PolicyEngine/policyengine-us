@@ -1,0 +1,256 @@
+- name: Case 1, blind Missouri adult with low SSI receives SAB grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_ssi_disabled: true
+        ssi: 2_400  # $200/month annualized
+        mo_ssp_living_arrangement: SAB
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 BP rate $917 - $200 SSI = $717; below cap $762.
+    mo_ssp_eligible: true
+    mo_ssp: 717
+    # SAB pathway: no PNA add-on.
+    mo_ssp_personal_needs_allowance: 0
+    # spm_unit and household aggregation passes mo_ssp through.
+    household_state_benefits: 717
+
+- name: Case 2, aged Missouri resident in SNF non-Medicaid receives SNC plus PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        is_ssi_aged: true
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC SNF base $390 + $50 PNA = $440.
+    mo_ssp_eligible: true
+    mo_ssp_personal_needs_allowance: 50
+    mo_ssp: 440
+    household_state_benefits: 440
+
+- name: Case 3, disabled Missouri resident in RCF Level II receives flat SNC amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_ssi_disabled: true
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: true
+    # SNC RCF Level II/ALF flat $292; no PNA.
+    mo_ssp: 292
+    mo_ssp_personal_needs_allowance: 0
+    household_state_benefits: 292
+
+- name: Case 4, non-Missouri resident with same SAB inputs receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_ssi_disabled: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # defined_for = StateCode.MO zeroes out non-MO output.
+    mo_ssp_eligible: false
+    mo_ssp: 0
+    household_state_benefits: 0
+
+- name: Case 5, FY2025 Missouri couple with one blind spouse receiving SSI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: true
+        is_ssi_aged: true
+        ssi: 2_400  # $200/month annualized
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 63
+        is_ssi_aged: true
+        ssi: 0
+        mo_ssp_living_arrangement: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # FY2025 BP rate $828 - $200 = $628 (below $698 cap) for blind spouse.
+    # Other spouse: ssi == 0 and arrangement NONE => not eligible => $0.
+    mo_ssp_eligible: [true, false]
+    mo_ssp: [628, 0]
+    # household_state_benefits is YEAR; in 2025 there's a FY transition at
+    # 2025-07-01 (FY2025 -> FY2026). Jan-Jun: $628/mo; Jul-Dec: $717/mo.
+    # Annual = 6*628 + 6*717 = 8,070; monthly average = 672.5.
+    household_state_benefits: 672.5
+
+- name: Case 6, FY2024 SNF non-Medicaid resident.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        is_ssi_aged: true
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC values frozen since 2000-07-01: $390 base + $50 PNA = $440.
+    mo_ssp_eligible: true
+    mo_ssp: 440
+    mo_ssp_personal_needs_allowance: 50
+    household_state_benefits: 440
+
+- name: Case 7, Missouri adult age 22 disabled in RCF Level I receives flat amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        is_ssi_disabled: true
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Flat SNC RCF Level I = $156; no PNA.
+    mo_ssp_eligible: true
+    mo_ssp: 156
+    mo_ssp_personal_needs_allowance: 0
+    household_state_benefits: 156
+
+- name: Case 8, Missouri couple both eligible in RCF Level II each receive the per-person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_aged: true
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+      person2:
+        age: 65
+        is_ssi_aged: true
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # SNC formula is per-person; both spouses eligible so each gets $292
+    # and the spm_unit total is 2 x $292 = $584.
+    mo_ssp_eligible: [true, true]
+    mo_ssp: [292, 292]
+    household_state_benefits: 584
