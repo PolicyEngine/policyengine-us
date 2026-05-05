@@ -4,11 +4,19 @@ from policyengine_us.model_api import *
 class NEAABDLivingArrangement(Enum):
     INDEPENDENT = "Living independently"
     LONG_TERM_CARE = "Long-term care (Medicaid facility)"
-    BOARD_AND_ROOM = "Board and room facility"
+    BOARD_AND_ROOM = (
+        "Board and room facility (also covers Drug Treatment Center, "
+        "Licensed/Non-Licensed Boarding Home, and Licensed Center for "
+        "the Developmentally Disabled — all share the same rate per "
+        "469-000-211)"
+    )
     ADULT_FAMILY_HOME = "Certified Adult Family Home"
-    ASSISTED_LIVING_FACILITY = "Licensed Assisted Living Facility"
+    ASSISTED_LIVING_FACILITY = (
+        "Licensed Assisted Living Facility (also covers Licensed Mental "
+        "Health Center — both share the same rate per 469-000-211)"
+    )
     ASSISTED_LIVING_WAIVER = "Assisted Living Waiver (AD/TBI)"
-    GROUP_HOME_DISABLED = "Licensed Group Home for the disabled"
+    GROUP_HOME_CHILDREN = "Licensed Group Home for Children or Child Caring Agency"
     NONE = "None"
 
 

@@ -103,7 +103,7 @@
   output:
     ne_aabd_living_arrangement: ASSISTED_LIVING_WAIVER
 
-- name: Case 7, GROUP_HOME_DISABLED input passes through to living arrangement.
+- name: Case 7, GROUP_HOME_CHILDREN input passes through to living arrangement.
   period: 2025-01
   input:
     people:
@@ -112,13 +112,13 @@
         is_ssi_disabled: true
         is_ssi_eligible: true
         uncapped_ssi: 11_604
-        ne_aabd_alternate_living_arrangement: GROUP_HOME_DISABLED
+        ne_aabd_alternate_living_arrangement: GROUP_HOME_CHILDREN
     households:
       household:
         members: [person1]
         state_code: NE
   output:
-    ne_aabd_living_arrangement: GROUP_HOME_DISABLED
+    ne_aabd_living_arrangement: GROUP_HOME_CHILDREN
 
 - name: Case 8, two-spouse household with mixed alternate-living inputs in NE.
   period: 2025-01

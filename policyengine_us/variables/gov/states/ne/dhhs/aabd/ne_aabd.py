@@ -9,7 +9,7 @@ class ne_aabd(Variable):
     definition_period = MONTH
     defined_for = "ne_aabd_eligible"
     reference = (
-        "https://dhhs.ne.gov/Documents/Title-469-Complete.pdf",
+        "https://dhhs.ne.gov/Documents/Title-469-Complete.pdf#page=126",
         "https://dhhs.ne.gov/Documents/469-000-211.pdf",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ne.pdf#page=1",
     )
