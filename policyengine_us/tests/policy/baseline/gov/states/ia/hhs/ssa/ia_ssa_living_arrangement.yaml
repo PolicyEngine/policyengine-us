@@ -226,14 +226,14 @@
     # priority ordering between them is academic.
     ia_ssa_living_arrangement: [SMME]
 
-- name: Case 10, DP-configured person with SMME-eligible income gets DP not SMME.
+- name: Case 10, DP-configured person with over-DP-standard income falls through to SMME.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 70
-        social_security_retirement: 24_000
+        social_security_retirement: 24_000  # $2,000/mo -> countable $1,980
         ia_ssa_dp_configuration: AGED_OR_DISABLED_WITH_DEPENDENT
         ia_ssa_dp_has_eligible_dependent: true
         ia_ssa_has_full_medicaid: true
@@ -252,8 +252,12 @@
         members: [person1]
         state_code: IA
   output:
-    # DP outranks SMME
-    ia_ssa_living_arrangement: [DP]
+    # The 2025 AGED_OR_DISABLED_WITH_DEPENDENT DP standard is $1,470. Countable
+    # $1,980 > $1,470, so the DP recipient-income gate fails and the person
+    # falls through to SMME (income > 120% FPL of $1,565). DP and SMME income
+    # ranges are disjoint by construction — the priority cascade between them
+    # is academic.
+    ia_ssa_living_arrangement: [SMME]
 
 - name: Case 11, IHHRC person with SMME-eligible income gets IHHRC not SMME.
   period: 2025-01
