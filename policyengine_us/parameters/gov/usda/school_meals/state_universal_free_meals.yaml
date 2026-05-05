@@ -30,14 +30,20 @@ CA:
       reference:
         - title: "California AB 130 (2021) — Universal Meals Program"
           href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202120220AB130
+        - title: "Cal. Educ. Code § 49501.5"
+          href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=EDC&sectionNum=49501.5
 CO:
   0000-01-01: false
   2023-07-01:
     value: true
     metadata:
       reference:
-        - title: "Colorado Proposition FF (2022) — Healthy School Meals for All"
-          href: https://leg.colorado.gov/bills/hb23-1008
+        - title: "Colorado HB 22-1414 (2022) — Healthy School Meals for All Program"
+          href: https://leg.colorado.gov/bills/hb22-1414
+        - title: "Colorado Proposition FF (2022) — Healthy School Meals for All funding"
+          href: https://ballotpedia.org/Colorado_Proposition_FF,_Reduce_Income_Tax_Deduction_Amounts_to_Fund_School_Meals_Program_Measure_(2022)
+        - title: "C.R.S. § 22-82.9-101 et seq. — Healthy School Meals for All"
+          href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-22.pdf
 CT:
   0000-01-01: false
 DC:
@@ -72,26 +78,34 @@ MA:
     value: true
     metadata:
       reference:
-        - title: "Massachusetts FY24 Budget — Universal School Meals Program"
-          href: https://malegislature.gov/Bills/193/H4040
+        - title: "Massachusetts FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections (universal school meals)"
+          href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
 MD:
   0000-01-01: false
 ME:
   0000-01-01: false
-  2021-07-01:
+  # Note: SY 2021-22 universal meals were funded via federal pandemic waivers
+  # plus a state backstop (LD 221), not the standing state law modeled here.
+  # The standing state statute (20-A M.R.S. § 6602) flows from LD 1679 and
+  # applies from SY 2022-23.
+  2022-07-01:
     value: true
     metadata:
       reference:
-        - title: "Maine LD 1679 (2021) — School Meals for All"
+        - title: "Maine LD 1679 (130th Legislature) — PL 2021 c.719, enacted May 2022; effective for SY 2022-23"
           href: https://legislature.maine.gov/legis/bills/display_ps.asp?ld=1679&PID=1456&snum=130
+        - title: "20-A M.R.S. § 6602 — School meal programs"
+          href: https://legislature.maine.gov/statutes/20-A/title20-Asec6602.html
 MI:
   0000-01-01: false
   2023-07-01:
     value: true
     metadata:
       reference:
-        - title: "Michigan School Aid Budget FY24 — Michigan School Meals"
-          href: https://www.legislature.mi.gov/Bills/Bill?ObjectName=2023-SB-0173
+        - title: "Michigan PA 103 of 2023 (SB 0173) — School Aid Act § 31aa (MCL 388.1631aa)"
+          href: https://www.legislature.mi.gov/documents/2023-2024/publicact/htm/2023-PA-0103.htm
+        - title: "MCL 388.1631aa — Michigan School Meals"
+          href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-388-1631aa
 MN:
   0000-01-01: false
   2023-07-01:
@@ -100,6 +114,8 @@ MN:
       reference:
         - title: "Minnesota HF 5 (2023) — Free School Meals for Kids Act"
           href: https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/5/
+        - title: "Minn. Stat. § 124D.111 — School lunch and breakfast programs"
+          href: https://www.revisor.mn.gov/statutes/cite/124D.111
 MO:
   0000-01-01: false
 MP:
@@ -124,8 +140,10 @@ NM:
     value: true
     metadata:
       reference:
-        - title: "New Mexico SB 4 (2023) — Healthy Universal School Meals Act"
-          href: https://www.governor.state.nm.us/2023/03/28/governor-signs-senate-bill-4-making-universal-free-and-healthy-school-meals-the-law-of-the-land/
+        - title: "New Mexico SB 4 (2023), Chapter 30 — Healthy Universal School Meals Act"
+          href: https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0004.pdf
+        - title: "N.M. Stat. § 22-13D-3 — School meals"
+          href: https://law.justia.com/codes/new-mexico/chapter-22/article-13d/section-22-13d-3/
 NV:
   0000-01-01: false
 NY:
@@ -134,8 +152,8 @@ NY:
     value: true
     metadata:
       reference:
-        - title: "New York State FY26 Enacted Budget — Universal School Meals"
-          href: https://www.nysenate.gov/newsroom/press-releases/2025/michelle-hinchey/hinchey-announces-historic-completion-universal
+        - title: "New York FY2026 Enacted Budget — Education, Labor and Family Assistance Article VII (Chapter 56 or 57 of the Laws of 2025; cite the enacted version when found)"
+          href: https://www.nysenate.gov/legislation/bills/2025/S3006
 OH:
   0000-01-01: false
 OK:
@@ -170,8 +188,10 @@ VT:
     value: true
     metadata:
       reference:
-        - title: "Vermont Act 80 (2023) — Universal School Meals"
-          href: https://legislature.vermont.gov/Documents/2024/Docs/ACTS/ACT064/ACT064%20As%20Enacted.pdf
+        - title: "Vermont Act 64 (2023) / H.165 — Universal School Meals"
+          href: https://legislature.vermont.gov/Documents/2024/Docs/ACTS/ACT064/ACT064%20As%20Enacted.pdf#page=1
+        - title: "16 V.S.A. § 4017 — Universal school meals supplement"
+          href: https://legislature.vermont.gov/statutes/section/16/051/04017
 WA:
   0000-01-01: false
 WI:
