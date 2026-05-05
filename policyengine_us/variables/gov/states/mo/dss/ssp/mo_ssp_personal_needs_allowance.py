@@ -17,10 +17,15 @@ class mo_ssp_personal_needs_allowance(Variable):
     )
 
     def formula(person, period, parameters):
-        # RSMo 208.030.5 excludes the PNA when the recipient is already
-        # receiving a personal needs allowance from another state or federal
-        # program; we don't track that intake at the moment.
+        # Per MO DSS MHABD Appendix J page 4, the PNA is paid to all SNC
+        # participants regardless of facility tier. RSMo 208.030.5 excludes the
+        # PNA when the recipient is already receiving a personal needs
+        # allowance from another state or federal program; we don't track that
+        # intake at the moment.
         p = parameters(period).gov.states.mo.dss.ssp.snc
         living_arrangement = person("mo_ssp_living_arrangement", period)
-        in_snf = living_arrangement == MOSSPLivingArrangement.SNF_OR_ICF_NON_MEDICAID
-        return in_snf * p.personal_needs_allowance
+        categories = MOSSPLivingArrangement
+        is_snc = (living_arrangement != categories.SAB) & (
+            living_arrangement != categories.NONE
+        )
+        return is_snc * p.personal_needs_allowance

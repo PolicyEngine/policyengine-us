@@ -27,6 +27,6 @@ class mo_ssp_eligible(Variable):
         living_arrangement = person("mo_ssp_living_arrangement", period)
         is_sab = living_arrangement == living_arrangement.possible_values.SAB
         p = parameters(period).gov.states.mo.dss.ssp
-        non_ssi_income = person("ssi_countable_income", period)
-        income_gate = ~is_sab | (non_ssi_income <= p.sab.income_limit)
+        countable_income = person("ssi_countable_income", period)
+        income_gate = ~is_sab | (countable_income <= p.sab.income_limit)
         return receives_ssi & in_category & age_eligible & income_gate

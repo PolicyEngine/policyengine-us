@@ -53,7 +53,7 @@
     # max(917 - 1, 0) = 916; min(916, 762) = 762 (cap binds).
     mo_ssp: 762
 
-- name: Case 4, SNC RCF Level I recipient receives flat amount.
+- name: Case 4, SNC RCF Level I recipient receives flat amount plus PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -67,10 +67,10 @@
         members: [person1]
         state_code: MO
   output:
-    # Flat SNC RCF Level I = $156; no PNA (not SNF).
-    mo_ssp: 156
+    # SNC RCF Level I $156 + PNA $50 = $206.
+    mo_ssp: 206
 
-- name: Case 5, SNC RCF Level II or ALF recipient receives flat amount.
+- name: Case 5, SNC RCF Level II or ALF recipient receives flat amount plus PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -84,8 +84,8 @@
         members: [person1]
         state_code: MO
   output:
-    # Flat SNC RCF Level II or ALF = $292; no PNA.
-    mo_ssp: 292
+    # SNC RCF Level II or ALF $292 + PNA $50 = $342.
+    mo_ssp: 342
 
 - name: Case 6, SNC SNF non-Medicaid resident receives base plus PNA.
   period: 2026-01
@@ -377,7 +377,7 @@
     # excluded from category eligibility, so SNC pays nothing.
     mo_ssp: 0
 
-- name: Case 22, intermediate care without LOC determination receives $292 (same as RCF II).
+- name: Case 22, intermediate care without LOC determination receives $342 (RCF II rate plus PNA).
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -392,5 +392,5 @@
         state_code: MO
   output:
     # Intermediate or skilled facility without level-of-care determination
-    # is paid the same SNC rate as RCF Level II / ALF = $292.
-    mo_ssp: 292
+    # is paid the same SNC rate as RCF Level II / ALF = $292, plus PNA $50.
+    mo_ssp: 342

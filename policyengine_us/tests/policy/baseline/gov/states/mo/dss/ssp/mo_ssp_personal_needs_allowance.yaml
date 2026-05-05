@@ -14,7 +14,7 @@
   output:
     mo_ssp_personal_needs_allowance: 50
 
-- name: Case 2, RCF Level I resident does not get PNA.
+- name: Case 2, RCF Level I resident gets PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -28,10 +28,10 @@
         members: [person1]
         state_code: MO
   output:
-    # PNA only paid for SNF/ICF non-Medicaid arrangements.
-    mo_ssp_personal_needs_allowance: 0
+    # Per Appendix J page 4, PNA is paid to all SNC participants.
+    mo_ssp_personal_needs_allowance: 50
 
-- name: Case 3, RCF Level II or ALF resident does not get PNA.
+- name: Case 3, RCF Level II or ALF resident gets PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -45,7 +45,8 @@
         members: [person1]
         state_code: MO
   output:
-    mo_ssp_personal_needs_allowance: 0
+    # Per Appendix J page 4, PNA is paid to all SNC participants.
+    mo_ssp_personal_needs_allowance: 50
 
 - name: Case 4, ineligible person in SNF arrangement gets zero PNA.
   period: 2026-01
@@ -116,7 +117,7 @@
     # PNA only paid for SNF/ICF non-Medicaid arrangements; SAB returns 0.
     mo_ssp_personal_needs_allowance: 0
 
-- name: Case 8, RCF Level I arrangement returns zero PNA.
+- name: Case 8, RCF Level I arrangement returns PNA.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -130,8 +131,8 @@
         members: [person1]
         state_code: MO
   output:
-    # PNA only paid for SNF/ICF non-Medicaid arrangements; RCF I returns 0.
-    mo_ssp_personal_needs_allowance: 0
+    # Per Appendix J page 4, PNA is paid to all SNC participants.
+    mo_ssp_personal_needs_allowance: 50
 
 - name: Case 9, SNF non-Medicaid arrangement returns PNA.
   period: 2026-01
@@ -148,4 +149,36 @@
         state_code: MO
   output:
     # PNA $50 paid for SNF/ICF non-Medicaid arrangement.
+    mo_ssp_personal_needs_allowance: 50
+
+- name: Case 10, RCF II/ALF resident gets PNA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_personal_needs_allowance: 50
+
+- name: Case 11, INTERMEDIATE_OR_SKILLED_NO_LOC resident gets PNA.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: INTERMEDIATE_OR_SKILLED_NO_LOC
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
     mo_ssp_personal_needs_allowance: 50

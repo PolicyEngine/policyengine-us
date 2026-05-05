@@ -1,4 +1,4 @@
-description: Missouri provides this amount as the maximum monthly cash grant payable to a participant under the Supplemental Aid to the Blind program, set annually by state appropriations.
+description: Missouri provides this amount as the maximum monthly cash grant payable to a participant under the Supplemental Aid to the Blind program, set annually by state appropriations (FY appropriations bills).
 values:
   1900-01-01: 0
   2023-07-01: 654
@@ -9,7 +9,8 @@ metadata:
   period: month
   label: Missouri SAB maximum grant
   reference:
-    - title: MO DSS MHABD Appendix J — SAB maximum grant
-      href: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2
     - title: RSMo § 208.030(4) — Aid to the blind supplemental payments
       href: https://revisor.mo.gov/main/OneSection.aspx?section=208.030
+    # TODO: Verify the exact appropriations bill URL for the SAB maximum grant.
+    - title: Missouri FY2024-FY2026 Appropriations Bills (HB 11 series)
+      href: https://house.mo.gov/billtracking/bills241/biltxt/intro/HB0011I.HTM

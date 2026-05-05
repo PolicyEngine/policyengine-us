@@ -86,10 +86,10 @@
         state_code: MO
   output:
     mo_ssp_eligible: true
-    # SNC RCF Level II/ALF flat $292; no PNA.
-    mo_ssp: 292
-    mo_ssp_personal_needs_allowance: 0
-    household_state_benefits: 292
+    # SNC RCF Level II/ALF $292 + PNA $50 = $342.
+    mo_ssp: 342
+    mo_ssp_personal_needs_allowance: 50
+    household_state_benefits: 342
 
 - name: Case 4, non-Missouri resident with same SAB inputs receives nothing.
   period: 2026-01
@@ -214,11 +214,11 @@
         members: [person1]
         state_code: MO
   output:
-    # Flat SNC RCF Level I = $156; no PNA.
+    # SNC RCF Level I $156 + PNA $50 = $206.
     mo_ssp_eligible: true
-    mo_ssp: 156
-    mo_ssp_personal_needs_allowance: 0
-    household_state_benefits: 156
+    mo_ssp: 206
+    mo_ssp_personal_needs_allowance: 50
+    household_state_benefits: 206
 
 - name: Case 8, Missouri couple both eligible in RCF Level II each receive the per-person amount.
   period: 2025-01
@@ -249,8 +249,8 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # SNC formula is per-person; both spouses eligible so each gets $292
-    # and the spm_unit total is 2 x $292 = $584.
+    # SNC formula is per-person; both spouses eligible so each gets
+    # $292 base + $50 PNA = $342, and the spm_unit total is 2 x $342 = $684.
     mo_ssp_eligible: [true, true]
-    mo_ssp: [292, 292]
-    household_state_benefits: 584
+    mo_ssp: [342, 342]
+    household_state_benefits: 684
