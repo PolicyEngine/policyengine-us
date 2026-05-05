@@ -1,3 +1,42 @@
+## [1.684.0] - 2026-05-05
+
+### Added
+
+- Implement Washington's Early Childhood Education and Assistance Program (ECEAP), including the standard ECEAP eligibility for ages 3-5, Birth to Three ECEAP eligibility for children below age 3, and per-slot benefit values.
+
+
+## [1.683.0] - 2026-05-05
+
+### Added
+
+- Added an explicit Trustees core threshold reform for long-run TOB analysis scenarios.
+
+
+## [1.682.1] - 2026-05-05
+
+### Changed
+
+- Added runtime metadata with installed policyengine-core identity for bundle validation.
+
+
+## [1.682.0] - 2026-05-05
+
+### Added
+
+- Add CBO-style household income concepts and equivalized variants, including employer-sponsored insurance premiums in market income.
+
+
+## [1.681.0] - 2026-05-04
+
+### Added
+
+- Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
+
+### Fixed
+
+- Fixed Hawaii TANF maximum benefit to apply the steady-state mandatory-work 20% Standard of Assistance reduction, updated Kansas TANF to the Group IV non-shared living standard (the most-populous-county convention) so headline benefit values align with cross-state research reporting, and corrected the Vermont Reach Up special housing allowance to pay only the lesser of (housing expenses in excess of the maximum housing allowance) or $90 per Rule 2244.3, replacing the previous flat $90 payout.
+
+
 ## [1.680.0] - 2026-05-01
 
 ### Added

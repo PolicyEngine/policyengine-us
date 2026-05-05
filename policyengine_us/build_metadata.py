@@ -6,6 +6,8 @@ from importlib import metadata
 from pathlib import Path
 import subprocess
 
+from policyengine_core import get_runtime_metadata as get_core_runtime_metadata
+
 PACKAGE_NAME = "policyengine-us"
 PACKAGE_ROOT = Path(__file__).resolve().parent
 DATA_BUILD_SURFACE = (
@@ -35,11 +37,8 @@ def _iter_surface_files() -> list[Path]:
     return files
 
 
-def _get_package_version() -> str | None:
-    try:
-        return metadata.version(PACKAGE_NAME)
-    except metadata.PackageNotFoundError:
-        return None
+def _get_package_version() -> str:
+    return metadata.version(PACKAGE_NAME)
 
 
 def _get_git_sha() -> str | None:
@@ -69,10 +68,15 @@ def get_data_build_fingerprint() -> str:
     return f"sha256:{digest.hexdigest()}"
 
 
-def get_data_build_metadata() -> dict[str, str | None]:
+def get_runtime_metadata() -> dict[str, object]:
     return {
         "name": PACKAGE_NAME,
         "version": _get_package_version(),
         "git_sha": _get_git_sha(),
         "data_build_fingerprint": get_data_build_fingerprint(),
+        "core": get_core_runtime_metadata(),
     }
+
+
+def get_data_build_metadata() -> dict[str, object]:
+    return get_runtime_metadata()

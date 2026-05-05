@@ -24,6 +24,12 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
+    {
+        "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/reform",
+    }
+)
 
 
 class SelectiveTestRunner:
@@ -333,6 +339,15 @@ class SelectiveTestRunner:
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
+        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        if deferred_paths:
+            deferred_list = ", ".join(sorted(deferred_paths))
+            print(
+                "\nQuick Feedback is deferring slow directory target(s) "
+                f"to the full suite jobs: {deferred_list}."
+            )
+            test_paths = test_paths - deferred_paths
+
         total_test_files = self.count_test_files(test_paths)
         if (
             len(test_paths) <= self.max_test_targets
