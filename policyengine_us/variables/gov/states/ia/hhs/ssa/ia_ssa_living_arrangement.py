@@ -79,7 +79,17 @@ class ia_ssa_living_arrangement(Variable):
         # supplement phases to zero when countable income reaches FBR + state
         # standard. Mirror that ceiling in the category gate so blind
         # recipients with excess income fall through to the next category.
-        blind_income_eligible = countable_monthly < individual_fbr + p.blind
+        # For joint SSI claims where both spouses are blind,
+        # ssi_countable_income returns combined / 2 per spouse, so aggregate
+        # marital countable and compare against (couple_fbr + 2 × $22).
+        blind_couple = joint_claim & (person.marital_unit.sum(is_blind) == 2)
+        marital_countable = person.marital_unit.sum(countable_monthly)
+        blind_applicable_fbr = where(blind_couple, couple_fbr, individual_fbr)
+        blind_supplement = where(blind_couple, 2 * p.blind, p.blind)
+        blind_compare_income = where(blind_couple, marital_countable, countable_monthly)
+        blind_income_eligible = (
+            blind_compare_income < blind_applicable_fbr + blind_supplement
+        )
         smme_eligible = person("ia_ssa_smme_eligible", period)
         return select(
             [

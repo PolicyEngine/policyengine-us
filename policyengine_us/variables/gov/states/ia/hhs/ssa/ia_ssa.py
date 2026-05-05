@@ -31,12 +31,26 @@ class ia_ssa(Variable):
         p_ssi = parameters(period).gov.ssa.ssi.amount
         individual_fbr = p_ssi.individual
         couple_fbr = p_ssi.couple
-        # BLIND — IAC 441—52.1(4): flat $22 state supplement (frozen since 2011).
-        # Federally administered, so SSA's $20 disregard applies via
-        # ssi_countable_income.
-        blind_amt = max_(
-            0, (individual_fbr + p.blind) - max_(countable_monthly, individual_fbr)
+        joint_claim = person("ssi_claim_is_joint", period.this_year)
+        is_blind = person("is_blind", period.this_year)
+        marital_countable = person.marital_unit.sum(countable_monthly)
+        # BLIND — IAC 441—52.1(4): flat $22 state supplement (frozen since 2011)
+        # per blind person. Federally administered, so SSA's $20 disregard
+        # applies via ssi_countable_income. For joint SSI claims where both
+        # spouses are blind, ssi_countable_income returns combined / 2 per
+        # spouse, so aggregate marital countable and compare against
+        # (couple_fbr + 2 × $22), then split the result equally so the
+        # SPM-unit aggregation does not double-count.
+        blind_couple = joint_claim & (person.marital_unit.sum(is_blind) == 2)
+        blind_applicable_fbr = where(blind_couple, couple_fbr, individual_fbr)
+        blind_supplement_total = where(blind_couple, 2 * p.blind, p.blind)
+        blind_compare_income = where(blind_couple, marital_countable, countable_monthly)
+        blind_amt_full = max_(
+            0,
+            (blind_applicable_fbr + blind_supplement_total)
+            - max_(blind_compare_income, blind_applicable_fbr),
         )
+        blind_amt = blind_amt_full / where(blind_couple, 2, 1)
         # DP — IAC 441—52.1(2): per-configuration assistance standard. Pick the
         # applicable Federal Benefit Rate (couple FBR for configurations that
         # include an eligible spouse, individual FBR otherwise) so the
@@ -57,7 +71,6 @@ class ia_ssa(Variable):
         # marital-unit-level threshold. countable_monthly is per-spouse
         # (combined / 2 for joint SSI claims), so aggregate across the
         # marital unit when the comparison threshold is couple-level.
-        marital_countable = person.marital_unit.sum(countable_monthly)
         dp_compare_income = where(dp_has_spouse, marital_countable, countable_monthly)
         dp_amt_full = max_(
             0,
@@ -73,22 +86,32 @@ class ia_ssa(Variable):
         dp_amt = dp_amt_full / dp_divisor
         # FLH — IAC 441—52.1(1): SSA-administered, so the V-shape uses
         # ssi_countable_income (with the $20 disregard SSA actually applies).
-        # The $142 SSA cap caps the federally-administered piece; for SSI-only
-        # recipients (no unearned income to absorb the $20 disregard), the
-        # Department pays the (state_supplement − cap) gap so total income
-        # reaches the standard (GL 6-B-46 p.30). 441—52.1(4) excludes the $22
-        # blind allowance for recipients of any other SSP, so blind FLH
-        # recipients receive the FLH benefit only — no $22 stack.
+        # The $142 SSA cap caps the federally-administered piece; the
+        # Department fills the gap from total income to the FLH standard
+        # (GL 6-B-46 p.30) — so an SSI-only recipient gets the full
+        # (state_supplement − cap) top-up, while a recipient with $10/mo of
+        # other unearned income needs only a $10 top-up to reach the
+        # standard. 441—52.1(4) excludes the $22 blind allowance for
+        # recipients of any other SSP, so blind FLH recipients receive the
+        # FLH benefit only.
         flh_v_shape = max_(
             0,
             (individual_fbr + p.flh.state_supplement)
             - max_(countable_monthly, individual_fbr),
         )
         flh_base = min_(flh_v_shape, p.flh.max_supplement)
-        flh_extra = where(
-            countable_monthly < 0.01,
+        # non_ssi_income proxies gross other income via post-SSI-exclusion
+        # countable; pre-exclusion gross would be more accurate for cases
+        # with earned income (where the $65 + 50% earned exclusions hide
+        # gross from countable_no_disregard) — flag for follow-up.
+        non_ssi_income = max_(0, countable_no_disregard)
+        flh_total_income_after_base = ssi_monthly + non_ssi_income + flh_base
+        flh_standard = individual_fbr + p.flh.state_supplement
+        # Defensive cap at the published gap so artificially low ssi_monthly
+        # (non-takeup, mid-month transitions) cannot explode the supplement.
+        flh_extra = min_(
+            max_(0, flh_standard - flh_total_income_after_base),
             max_(0, p.flh.state_supplement - p.flh.max_supplement),
-            0,
         )
         flh_amt = flh_base + flh_extra
         # RCF — IAC 441—52.1(3): cost-of-care minus client participation.
@@ -115,7 +138,6 @@ class ia_ssa(Variable):
         # are not modeled.
         ihhrc_cost = person("ia_ssa_ihhrc_cost_of_care", period)
         both_need_care = person("ia_ssa_ihhrc_both_need_care", period)
-        joint_claim = person("ssi_claim_is_joint", period.this_year)
         basic_ssi_disregard = where(joint_claim, couple_fbr, individual_fbr)
         combined_countable = person.marital_unit.sum(countable_no_disregard)
         combined_participation = max_(0, combined_countable - basic_ssi_disregard)
