@@ -1,3 +1,10 @@
+## [1.682.1] - 2026-05-05
+
+### Changed
+
+- Added runtime metadata with installed policyengine-core identity for bundle validation.
+
+
 ## [1.682.0] - 2026-05-05
 
 ### Added
