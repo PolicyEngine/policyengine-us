@@ -1,3 +1,10 @@
+## [1.684.0] - 2026-05-05
+
+### Added
+
+- Implement Washington's Early Childhood Education and Assistance Program (ECEAP), including the standard ECEAP eligibility for ages 3-5, Birth to Three ECEAP eligibility for children below age 3, and per-slot benefit values.
+
+
 ## [1.683.0] - 2026-05-05
 
 ### Added
