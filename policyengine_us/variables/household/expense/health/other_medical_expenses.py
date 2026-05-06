@@ -8,3 +8,4 @@ class other_medical_expenses(Variable):
     unit = USD
     definition_period = YEAR
     uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    adds = ["medical_out_of_pocket_expenses"]

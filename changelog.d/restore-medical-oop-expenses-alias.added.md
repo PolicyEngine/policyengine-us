@@ -1,0 +1,1 @@
+Restore `medical_out_of_pocket_expenses` as a deprecation alias that forwards into `other_medical_expenses`, easing migration from the variable removed in 1.673.0. The alias is documented as deprecated and will be removed in a future release.

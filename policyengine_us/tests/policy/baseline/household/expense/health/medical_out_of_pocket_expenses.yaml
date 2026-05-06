@@ -1,0 +1,22 @@
+- name: Legacy medical_out_of_pocket_expenses input flows into other_medical_expenses.
+  period: 2025
+  input:
+    medical_out_of_pocket_expenses: 1_000
+  output:
+    other_medical_expenses: 1_000
+
+- name: Direct other_medical_expenses input overrides the legacy alias.
+  period: 2025
+  input:
+    medical_out_of_pocket_expenses: 1_000
+    other_medical_expenses: 250
+  output:
+    other_medical_expenses: 250
+
+- name: Legacy alias defaults to zero when not supplied.
+  period: 2025
+  input:
+    age: 30
+  output:
+    medical_out_of_pocket_expenses: 0
+    other_medical_expenses: 0
