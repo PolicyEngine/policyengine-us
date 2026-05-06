@@ -1,4 +1,5 @@
 import math
+from functools import lru_cache
 
 import pytest
 
@@ -17,8 +18,14 @@ from policyengine_us.reforms.ssa.trustees_core_thresholds import (
 )
 
 
+@lru_cache
 def _parameters(reform=None):
     return CountryTaxBenefitSystem(reform=reform).parameters
+
+
+@lru_cache
+def _trustees_parameters():
+    return _parameters((create_trustees_core_thresholds_reform(),))
 
 
 def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
@@ -35,12 +42,19 @@ def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
         TRUSTEES_CORE_THRESHOLD_ASSUMPTION["income_uprating_assumption"]
         == "trustees-2025-soi-income-nawi-v1"
     )
-    assert "amt_thresholds" in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["parameter_groups"]
+    assert (
+        "all_gov_irs_uprating_parameters"
+        in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["parameter_groups"]
+    )
+    assert (
+        TRUSTEES_CORE_THRESHOLD_ASSUMPTION["uprating_parameter"] == "gov.irs.uprating"
+    )
+    assert "OACT email clarification" in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["source"]
 
 
 def test_reform_applies_trustees_2025_nawi_path():
     baseline = _parameters()
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
 
     baseline_nawi = baseline.gov.ssa.nawi
     reformed_nawi = reformed.gov.ssa.nawi
@@ -55,7 +69,7 @@ def test_reform_applies_trustees_2025_nawi_path():
 
 
 def test_reform_recomputes_payroll_cap_from_trustees_2025_nawi_path():
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
     nawi = reformed.gov.ssa.nawi
     payroll_cap = reformed.gov.irs.payroll.social_security.cap
 
@@ -69,7 +83,7 @@ def test_reform_recomputes_payroll_cap_from_trustees_2025_nawi_path():
 
 def test_reform_extends_soi_income_upraters_from_trustees_2025_nawi_path():
     baseline = _parameters()
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
 
     assert "employment_income" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
     assert "social_security" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
@@ -120,7 +134,7 @@ def test_reported_social_security_components_use_aggregate_ss_uprater():
 
 def test_reform_wage_indexes_core_tax_threshold_from_2035():
     baseline = _parameters()
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
 
     baseline_threshold = baseline.gov.irs.income.bracket.thresholds.children["1"].SINGLE
     reformed_threshold = reformed.gov.irs.income.bracket.thresholds.children["1"].SINGLE
@@ -137,7 +151,7 @@ def test_reform_wage_indexes_core_tax_threshold_from_2035():
 
 def test_reform_updates_standard_deduction_and_amt_thresholds():
     baseline = _parameters()
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
 
     standard_deduction = reformed.gov.irs.deductions.standard.amount.SINGLE
     amt_bracket = reformed.gov.irs.income.amt.brackets[1].threshold
@@ -156,9 +170,49 @@ def test_reform_updates_standard_deduction_and_amt_thresholds():
     ].threshold("2035-01-01")
 
 
+def test_reform_wage_indexes_indexed_credit_parameters():
+    baseline = _parameters()
+    reformed = _trustees_parameters()
+    nawi = reformed.gov.ssa.nawi
+
+    eitc_max = reformed.gov.irs.credits.eitc.max.brackets[3].amount
+    baseline_eitc_max = baseline.gov.irs.credits.eitc.max.brackets[3].amount
+
+    assert eitc_max("2034-01-01") == baseline_eitc_max("2034-01-01")
+    nawi_growth = float(nawi("2034-01-01")) / float(nawi("2033-01-01"))
+    expected_eitc_2035 = math.floor(float(eitc_max("2034-01-01")) * nawi_growth + 0.5)
+    assert eitc_max("2035-01-01") == expected_eitc_2035
+    assert eitc_max("2035-01-01") != baseline_eitc_max("2035-01-01")
+
+    ctc_base = reformed.gov.irs.credits.ctc.amount.base.brackets[0].amount
+    baseline_ctc_base = baseline.gov.irs.credits.ctc.amount.base.brackets[0].amount
+    ctc_ratio_2040 = float(nawi("2039-01-01")) / float(nawi("2033-01-01"))
+    expected_ctc_2040 = (
+        math.floor(float(ctc_base("2034-01-01")) * ctc_ratio_2040 / 100) * 100
+    )
+
+    assert ctc_base("2034-01-01") == baseline_ctc_base("2034-01-01")
+    assert ctc_base("2040-01-01") == expected_ctc_2040
+    assert ctc_base("2040-01-01") != baseline_ctc_base("2040-01-01")
+
+    ctc_refundable_max = reformed.gov.irs.credits.ctc.refundable.individual_max
+    baseline_ctc_refundable_max = baseline.gov.irs.credits.ctc.refundable.individual_max
+    ctc_refundable_ratio_2040 = float(nawi("2039-01-01")) / float(nawi("2033-01-01"))
+    expected_ctc_refundable_2040 = (
+        math.floor(
+            float(ctc_refundable_max("2034-01-01")) * ctc_refundable_ratio_2040 / 100
+        )
+        * 100
+    )
+
+    assert ctc_refundable_max("2034-01-01") == baseline_ctc_refundable_max("2034-01-01")
+    assert ctc_refundable_max("2040-01-01") == expected_ctc_refundable_2040
+    assert ctc_refundable_max("2040-01-01") != baseline_ctc_refundable_max("2040-01-01")
+
+
 def test_reform_does_not_change_social_security_benefit_tax_thresholds():
     baseline = _parameters()
-    reformed = _parameters((create_trustees_core_thresholds_reform(),))
+    reformed = _trustees_parameters()
 
     baseline_threshold = (
         baseline.gov.irs.social_security.taxability.threshold.base.main.SINGLE
@@ -170,3 +224,21 @@ def test_reform_does_not_change_social_security_benefit_tax_thresholds():
     for year in [2034, 2035, 2100]:
         instant = f"{year}-01-01"
         assert reformed_threshold(instant) == baseline_threshold(instant)
+
+
+def test_reform_does_not_change_state_parameters_using_irs_uprating():
+    baseline = _parameters()
+    reformed = _trustees_parameters()
+
+    baseline_state_ctc = baseline.gov.states.dc.tax.income.credits.ctc.amount
+    reformed_state_ctc = reformed.gov.states.dc.tax.income.credits.ctc.amount
+
+    uprating = baseline_state_ctc.metadata["uprating"]
+    uprating_parameter = (
+        uprating["parameter"] if isinstance(uprating, dict) else uprating
+    )
+    assert uprating_parameter == "gov.irs.uprating"
+
+    for year in [2034, 2035, 2040, 2100]:
+        instant = f"{year}-01-01"
+        assert reformed_state_ctc(instant) == baseline_state_ctc(instant)
