@@ -1,3 +1,10 @@
+## [1.688.0] - 2026-05-06
+
+### Added
+
+- Added an explicit Trustees federal income tax parameter reform for long-run TOB analysis scenarios.
+
+
 ## [1.687.0] - 2026-05-05
 
 ### Added
