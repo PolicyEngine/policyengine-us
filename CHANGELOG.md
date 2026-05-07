@@ -1,3 +1,10 @@
+## [1.690.0] - 2026-05-07
+
+### Added
+
+- Add Census SPM weekly work-expense parameters and formulas for work and childcare expense caps.
+
+
 ## [1.689.0] - 2026-05-07
 
 ### Added
