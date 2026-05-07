@@ -1,3 +1,10 @@
+## [1.689.0] - 2026-05-07
+
+### Added
+
+- Add an SPM unit geographic adjustment input and use it to calculate SPM thresholds.
+
+
 ## [1.688.1] - 2026-05-07
 
 ### Fixed
