@@ -32,3 +32,17 @@
     employment_income: 19_500
   output:
     in_eitc: 0.09 * 5_980
+
+- name: in_eitc unit test 4
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: IN
+    eitc: 0
+    in_eitc_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    filer_adjusted_earnings: 10_000
+    adjusted_gross_income: 10_000
+  output:
+    in_eitc: 340

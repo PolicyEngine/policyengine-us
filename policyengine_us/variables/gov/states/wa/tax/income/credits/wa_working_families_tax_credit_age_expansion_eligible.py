@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+    calculate_eitc_amount_from_parameters,
+)
 
 
 class wa_working_families_tax_credit_age_expansion_eligible(Variable):
@@ -21,31 +24,25 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         filer_meets_min_age = (age_head >= p.min_age) | (age_spouse >= p.min_age)
-        investment_income_eligible = tax_unit("eitc_investment_income_eligible", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_tin = person("has_tin", period)
         filers_have_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
         child_count = tax_unit.sum(
             person("is_qualifying_child_dependent", period) & has_tin
         )
-        eitc = parameters(period).gov.irs.credits.eitc
-        earnings = tax_unit("filer_adjusted_earnings", period)
-        agi = tax_unit("adjusted_gross_income", period)
-        maximum = eitc.max.calc(child_count)
-        phased_in = min_(maximum, earnings * eitc.phase_in_rate.calc(child_count))
-        phase_out_start = eitc.phase_out.start.calc(child_count)
-        phase_out_start += tax_unit("tax_unit_is_joint", period) * eitc.phase_out.joint_bonus.calc(
-            child_count
+        frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
+        frozen_investment_income_eligible = (
+            tax_unit("eitc_relevant_investment_income", period)
+            <= frozen_eitc.phase_out.max_investment_income
         )
-        reduction = max_(0, max_(earnings, agi) - phase_out_start) * eitc.phase_out.rate.calc(
-            child_count
+        eitc_amount_before_take_up = calculate_eitc_amount_from_parameters(
+            tax_unit, period, frozen_eitc, child_count
         )
-        eitc_amount_before_take_up = min_(phased_in, max_(0, maximum - reduction))
 
         return (
             expansion_in_effect
             & filer_meets_min_age
-            & investment_income_eligible
+            & frozen_investment_income_eligible
             & filers_have_tin
             & (eitc_amount_before_take_up > 0)
         )

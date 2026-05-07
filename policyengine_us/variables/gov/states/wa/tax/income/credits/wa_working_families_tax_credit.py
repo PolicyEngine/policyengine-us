@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
-    calculate_eitc_like_amount,
+    calculate_eitc_demographic_eligibility,
+    calculate_eitc_max_agi_limit,
+    eitc_filing_requirement_met,
+    eitc_filing_status_eligible,
 )
 
 
@@ -17,6 +20,7 @@ class wa_working_families_tax_credit(Variable):
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
+        frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
@@ -32,35 +36,65 @@ class wa_working_families_tax_credit(Variable):
         federal_child_count = tax_unit("eitc_child_count", period)
         age = person("age", period)
         student = person("is_full_time_student", period)
-        min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
-        min_age_student = parameters.gov.irs.credits.eitc.eligibility.age.min_student(
-            period
-        )
-        max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
+        min_age = frozen_eitc.eligibility.age.min
+        min_age_student = frozen_eitc.eligibility.age.min_student
+        max_age = frozen_eitc.eligibility.age.max
         age_floor = where(student, min_age_student, min_age)
         demographic_eligible = (child_count > 0) | tax_unit.any(
             is_head_or_spouse & (age >= age_floor) & (age <= max_age)
         )
+        federal_demographic_eligible = calculate_eitc_demographic_eligibility(
+            tax_unit, period, frozen_eitc, federal_child_count
+        )
+        frozen_investment_income_eligible = (
+            tax_unit("eitc_relevant_investment_income", period)
+            <= frozen_eitc.phase_out.max_investment_income
+        )
+        earnings = tax_unit("filer_adjusted_earnings", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        higher_income = max_(earnings, agi)
+        is_filer = eitc_filing_requirement_met(tax_unit, period)
+        takes_up_eitc = tax_unit("takes_up_eitc", period)
+        baseline_income_eligible = (earnings > 0) & (
+            higher_income
+            <= calculate_eitc_max_agi_limit(
+                tax_unit, period, frozen_eitc, federal_child_count
+            )
+        )
 
-        # Baseline eligibility: filers who claim EITC
-        eitc = tax_unit("eitc", period)
-        eitc_eligible = eitc > 0
+        # Baseline eligibility: filers who qualify under the frozen 2022 IRC.
+        eitc_eligible = (
+            baseline_income_eligible
+            & federal_demographic_eligible
+            & federal_identification_eligible
+            & frozen_investment_income_eligible
+            & eitc_filing_status_eligible(
+                tax_unit,
+                period,
+                parameters,
+                frozen_eitc.eligibility.separate_filer,
+            )
+            & is_filer
+            & takes_up_eitc
+        )
         needs_state_only_path = (
             (~federal_identification_eligible & filer_has_tin)
             | separate
             | (child_count > federal_child_count)
         )
-        state_only_eitc_eligible = needs_state_only_path & (
-            calculate_eitc_like_amount(
-                tax_unit,
-                period,
-                parameters,
-                child_count,
-                demographic_eligible,
-                filer_has_tin,
-                separate_filer_eligible=True,
+        state_only_income_eligible = (earnings > 0) & (
+            higher_income
+            <= calculate_eitc_max_agi_limit(
+                tax_unit, period, frozen_eitc, child_count
             )
-            > 0
+        )
+        state_only_eitc_eligible = needs_state_only_path & (
+            state_only_income_eligible
+            & demographic_eligible
+            & filer_has_tin
+            & frozen_investment_income_eligible
+            & is_filer
+            & takes_up_eitc
         )
 
         # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
@@ -81,22 +115,15 @@ class wa_working_families_tax_credit(Variable):
         # "below the federal phase-out income"
         # The legislative analysis clarifies that this refers to "federal maximum AGI"
         # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
-        eitc_parameters = parameters(period).gov.irs.credits.eitc
-        phase_out_start = eitc_parameters.phase_out.start.calc(eitc_child_count)
-        phase_out_start += tax_unit("tax_unit_is_joint", period) * eitc_parameters.phase_out.joint_bonus.calc(
-            eitc_child_count
+        eitc_agi_limit = calculate_eitc_max_agi_limit(
+            tax_unit, period, frozen_eitc, eitc_child_count
         )
-        eitc_agi_limit = phase_out_start + eitc_parameters.max.calc(
-            eitc_child_count
-        ) / eitc_parameters.phase_out.rate.calc(eitc_child_count)
-        eitc_agi_limit = max_(tax_unit("eitc_agi_limit", period), eitc_agi_limit)
         phase_out_start_reduction = p.phase_out.start_below_eitc.calc(eitc_child_count)
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
         # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
         # instructs DOR to revise it to get to the minimum amount by the EITC AGI limit.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
         phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
-        earnings = tax_unit("filer_adjusted_earnings", period)
         excess = max_(0, earnings - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)
         phased_out_amount = max_amount - reduction

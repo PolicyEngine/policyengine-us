@@ -9,3 +9,13 @@ class oh_educator_expense_deduction_person(Variable):
     definition_period = YEAR
     default_value = 0
     defined_for = StateCode.OH
+    documentation = (
+        "Ohio-specific educator deduction allowed in excess of the federal "
+        "educator deduction for a qualifying Ohio educator. This remains an "
+        "explicit input because the baseline data do not identify Ohio "
+        "licensure/teaching status or expenses above the federal deduction."
+    )
+    reference = (
+        "https://codes.ohio.gov/ohio-revised-code/section-5747.01",
+        "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf",
+    )

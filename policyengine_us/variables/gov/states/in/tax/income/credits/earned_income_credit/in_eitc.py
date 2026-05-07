@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+    calculate_eitc_demographic_eligibility,
+    calculate_eitc_like_amount,
+)
 
 
 class in_eitc(Variable):
@@ -15,6 +19,31 @@ class in_eitc(Variable):
         if not ip.earned_income.decoupled:
             federal_eitc = tax_unit("eitc", period)
             return federal_eitc * ip.earned_income.match_rate
+        if period.start.year >= 2023:
+            frozen_eitc = parameters.gov.irs.credits.eitc("2023-01-01")
+            child_count = tax_unit("eitc_child_count", period)
+            demographic_eligible = calculate_eitc_demographic_eligibility(
+                tax_unit, period, frozen_eitc, child_count
+            )
+            filer_identification_eligible = tax_unit(
+                "filer_meets_eitc_identification_requirements", period
+            )
+            investment_income_eligible = (
+                tax_unit("eitc_relevant_investment_income", period)
+                <= frozen_eitc.phase_out.max_investment_income
+            )
+            frozen_federal_eitc = calculate_eitc_like_amount(
+                tax_unit,
+                period,
+                parameters,
+                child_count,
+                demographic_eligible,
+                filer_identification_eligible,
+                separate_filer_eligible=frozen_eitc.eligibility.separate_filer,
+                eitc_parameters=frozen_eitc,
+                investment_income_eligible=investment_income_eligible,
+            )
+            return frozen_federal_eitc * ip.earned_income.match_rate
         # if Indiana EITC is decoupled from federal EITC
         fp = parameters(period).gov.irs.credits
         # ... cap child count

@@ -1,17 +1,50 @@
-- name: Hawaii can add back student loan interest when the Hawaii allowance is smaller than federal
+- name: Hawaii adds back part of the federal student loan deduction when Hawaii's deduction is smaller
   period: 2025
+  absolute_error_margin: 0.1
   input:
-    state_code: HI
-    adjusted_gross_income: 1_000
-    hi_student_loan_interest_adjustment: -100
+    people:
+      head:
+        age: 30
+        employment_income: 60_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
   output:
-    hi_agi: 1_100
+    hi_student_loan_interest_adjustment: -1250
+    hi_agi: 58_750
 
-- name: Hawaii can subtract more student loan interest when the Hawaii allowance is larger than federal
+- name: Hawaii subtracts more than federal when Hawaii AGI excludes pension income
   period: 2025
+  absolute_error_margin: 0.2
   input:
-    state_code: HI
-    adjusted_gross_income: 1_000
-    hi_student_loan_interest_adjustment: 75
+    people:
+      head:
+        age: 30
+        employment_income: 60_000
+        taxable_pension_income: 40_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
   output:
-    hi_agi: 925
+    hi_student_loan_interest_adjustment: 833.33
+    hi_agi: 19_166.67
