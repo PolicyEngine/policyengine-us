@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+    eitc_filing_requirement_met,
+    eitc_filing_status_eligible,
+)
 
 
 class dc_eitc_without_qualifying_child(Variable):
@@ -13,8 +17,26 @@ class dc_eitc_without_qualifying_child(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        # calculate US EITC amount before phase-out
-        us_eligible = tax_unit("eitc_eligible", period)
+        person = tax_unit.members
+        age = person("age", period)
+        has_tin = person("has_tin", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
+        min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
+        max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
+        age_eligible = is_head_or_spouse & (age >= min_age) & (age <= max_age)
+        no_qualifying_child = tax_unit.sum(
+            person("is_qualifying_child_dependent", period) & has_tin
+        ) == 0
+        us_eligible = (
+            filer_has_tin
+            & no_qualifying_child
+            & tax_unit.any(age_eligible)
+            & tax_unit("eitc_investment_income_eligible", period)
+            & eitc_filing_status_eligible(tax_unit, period, parameters)
+            & eitc_filing_requirement_met(tax_unit, period)
+            & tax_unit("takes_up_eitc", period)
+        )
         us_eitc = us_eligible * tax_unit("eitc_phased_in", period)
         # phase out us_eitc for income above DC phase-out start threshold
         earnings = tax_unit("tax_unit_earned_income", period)

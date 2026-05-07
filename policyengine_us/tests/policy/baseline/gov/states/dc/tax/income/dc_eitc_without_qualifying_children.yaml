@@ -41,3 +41,28 @@
     state_code: DC
   output:
     dc_eitc_without_qualifying_child: 823.60  # 1502 - (27743 - 19743) * 0.0848
+
+- name: DC childless EITC allows ITIN filers
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: DC
+  output:
+    dc_eitc_without_qualifying_child: 612

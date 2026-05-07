@@ -1,0 +1,17 @@
+- name: Hawaii can add back student loan interest when the Hawaii allowance is smaller than federal
+  period: 2025
+  input:
+    state_code: HI
+    adjusted_gross_income: 1_000
+    hi_student_loan_interest_adjustment: -100
+  output:
+    hi_agi: 1_100
+
+- name: Hawaii can subtract more student loan interest when the Hawaii allowance is larger than federal
+  period: 2025
+  input:
+    state_code: HI
+    adjusted_gross_income: 1_000
+    hi_student_loan_interest_adjustment: 75
+  output:
+    hi_agi: 925

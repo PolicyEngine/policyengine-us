@@ -190,3 +190,33 @@
   output:
     # Either head or spouse meeting age 18 is sufficient.
     wa_working_families_tax_credit: 367
+
+- name: Case 14, ITIN filer with qualifying child can receive WFTC without a federal EITC amount.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_head: true
+      child:
+        age: 5
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 660

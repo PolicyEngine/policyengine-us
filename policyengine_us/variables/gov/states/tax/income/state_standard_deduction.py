@@ -12,12 +12,10 @@ class state_standard_deduction(Variable):
         # States that adopt the federal standard deduction
         # Based on comments in state_standard_deductions.yaml
         FEDERAL_STANDARD_DEDUCTION_STATES = [
-            "CT",  # Connecticut
             "ID",  # Idaho
             "MO",  # Missouri
             "ND",  # North Dakota
             "NM",  # New Mexico
-            "SC",  # South Carolina
             "UT",  # Utah
             "CO",  # Colorado
         ]

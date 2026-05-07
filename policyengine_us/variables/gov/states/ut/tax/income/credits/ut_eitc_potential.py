@@ -14,4 +14,5 @@ class ut_eitc_potential(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ut.tax.income.credits.earned_income
         federal_eitc = tax_unit("eitc", period)
-        return p.rate * federal_eitc
+        wages = add(tax_unit, period, ["employment_income"])
+        return min_(p.rate * federal_eitc, wages)

@@ -74,3 +74,54 @@
     # Federal EITC for 1 child at $20k income (head of household) is approximately $4,328
     # CO EITC = 50% * federal EITC = $2,164
     co_eitc: 2_164
+
+- name: Colorado EITC includes ITIN qualifying children
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: CO
+  output:
+    co_eitc: 1_700
+
+- name: Colorado EITC includes certain childless filers under 25
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 19
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_eitc: 324.5

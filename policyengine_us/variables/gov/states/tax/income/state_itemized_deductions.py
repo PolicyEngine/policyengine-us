@@ -13,10 +13,8 @@ class state_itemized_deductions(Variable):
         # States that adopt the federal itemized deductions
         # Based on comments in state_itemized_deductions.yaml
         FEDERAL_ITEMIZED_DEDUCTION_STATES = [
-            "CT",  # Connecticut
             "GA",  # Georgia
             "ND",  # North Dakota
-            "SC",  # South Carolina
             "UT",  # Utah
         ]
 
@@ -61,12 +59,7 @@ class state_itemized_deductions(Variable):
         # Check if the state adopts federal itemized deductions
         uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES)
 
-        # Get federal itemized deductions (sum of all federal itemized deduction components)
-        federal_itemized = add(
-            tax_unit,
-            period,
-            parameters(period).gov.irs.deductions.itemized_deductions,
-        )
+        federal_itemized = tax_unit("itemized_taxable_income_deductions", period)
 
         # Return federal itemized deductions for states that adopt them, otherwise state-specific
         return where(uses_federal, federal_itemized, state_specific_base)

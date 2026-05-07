@@ -1,0 +1,10 @@
+- name: Alabama AGI includes modeled federal deductions the state still allows
+  period: 2025
+  input:
+    state_code: AL
+    irs_employment_income: 1_000
+    early_withdrawal_penalty: 50
+    health_savings_account_ald: 150
+    self_employed_pension_contribution_ald: 100
+  output:
+    al_agi: 700

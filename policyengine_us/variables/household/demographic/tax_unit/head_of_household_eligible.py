@@ -11,6 +11,7 @@ class head_of_household_eligible(Variable):
     def formula(tax_unit, period, parameters):
         married = tax_unit("tax_unit_married", period)
         person = tax_unit.members
+        is_separated = tax_unit.any(person("is_separated", period))
         # Qualifying children and permanently disabled always count
         is_qualifying_child = person("is_qualifying_child_dependent", period)
         is_disabled_dependent = person(
@@ -25,8 +26,10 @@ class head_of_household_eligible(Variable):
             | (is_qualifying_relative & is_related)
         )
         has_qualifying_person = tax_unit.sum(is_hoh_qualifying) > 0
-        return (
-            has_qualifying_person
-            & ~married
-            & ~tax_unit("surviving_spouse_eligible", period)
-        )
+        # IRC 7703(b) treated-unmarried status supports HoH only through the
+        # child-abode path, not the broader qualifying-relative route.
+        treated_unmarried_qualifies = tax_unit.sum(is_qualifying_child) > 0
+        surviving_spouse = tax_unit("surviving_spouse_eligible", period)
+        unmarried_qualifies = has_qualifying_person & ~married & ~is_separated
+        separated_qualifies = treated_unmarried_qualifies & is_separated
+        return (unmarried_qualifies | separated_qualifies) & ~surviving_spouse

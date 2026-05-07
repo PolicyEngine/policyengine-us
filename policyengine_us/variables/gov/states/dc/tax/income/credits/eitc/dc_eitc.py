@@ -13,8 +13,12 @@ class dc_eitc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        dc_qualifying_child = person("is_qualifying_child_dependent", period) & person(
+            "has_tin", period
+        )
         return where(
-            tax_unit("eitc_child_count", period) > 0,
+            tax_unit.sum(dc_qualifying_child) > 0,
             tax_unit("dc_eitc_with_qualifying_child", period),
             tax_unit("dc_eitc_without_qualifying_child", period),
         )

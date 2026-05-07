@@ -18,4 +18,5 @@ class id_itemized_deductions(Variable):
         # by the amount of the SALT deduction
         id_salt_ded = tax_unit("id_salt_deduction", period)
         itemized_ded = tax_unit("itemized_taxable_income_deductions", period)
-        return max_(itemized_ded - id_salt_ded, 0)
+        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
+        return max_(itemized_ded - id_salt_ded + foreign_tax_credit, 0)
