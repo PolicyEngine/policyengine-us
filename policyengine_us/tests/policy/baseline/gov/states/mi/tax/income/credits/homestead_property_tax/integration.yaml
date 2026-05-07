@@ -321,3 +321,82 @@
     mi_allowable_homestead_property_tax_credit: 1_600
     mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600
     mi_homestead_property_tax_credit: 1_600
+
+# 2025 test cases
+# Property value limit: $165,400
+# Credit cap: $1,900
+# Reduction start: $62,500
+- name: 2025 property value exceeds limit, ineligible
+  period: 2025
+  input:
+    employment_income: 30_000
+    assessed_property_value: 165_401
+    real_estate_taxes: 2_000
+    state_code: MI
+  output:
+    # Property value > $165,400 limit = ineligible
+    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit: 0
+
+- name: 2025 income below reduction threshold, 100% credit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    employment_income: 20_000
+    ssi: 0
+    real_estate_taxes: 1_500
+    age: 66
+    state_code: MI
+  output:
+    # Senior with income $20,000 (below $62,500 reduction start)
+    # Exemption: $1,500 - $20,000 * 0.032 = $1,500 - $640 = $860
+    # Credit cap for 2025: $1,900
+    # 100% credit rate (income below threshold)
+    mi_homestead_property_tax_credit_countable_property_tax: 1_500
+    mi_homestead_property_tax_credit_household_resource_exemption: 860
+    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_property_tax_credit: 860
+
+- name: 2025 income above reduction start threshold, 50% credit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    employment_income: 67_000
+    ssi: 0
+    real_estate_taxes: 4_000
+    mi_is_senior_for_tax: false
+    state_code: MI
+  output:
+    # Income $67,000 = $62,500 + 4.5 * $1,000 = 50% credit rate (5 increments above start)
+    # Countable property tax: $4,000
+    # Non-refundable: $67,000 * 0.032 = $2,144
+    # Exemption: $4,000 - $2,144 = $1,856
+    # Allowable: $1,856 * 0.6 = $1,113.6
+    # Credit at 50%: $1,113.6 * 0.5 = $556.8
+    mi_homestead_property_tax_credit_countable_property_tax: 4_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_856
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_113.6
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 556.8
+    mi_homestead_property_tax_credit: 556.8
+
+- name: 2025 credit hits cap at $1,900
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    employment_income: 20_000
+    ssi: 0
+    real_estate_taxes: 5_000
+    age: 66
+    state_code: MI
+  output:
+    # Senior with low income, high property taxes
+    # Countable property tax: $5,000
+    # Non-refundable: $20,000 * 0.032 = $640
+    # Exemption: $5,000 - $640 = $4,360
+    # 2025 credit cap: $1,900
+    mi_homestead_property_tax_credit_countable_property_tax: 5_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 4_360
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_900
+    mi_homestead_property_tax_credit: 1_900

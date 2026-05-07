@@ -1,0 +1,148 @@
+- name: Case 1, community individual.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_personal_needs_allowance: 197.35
+
+- name: Case 2, community married.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+
+      person2:
+        age: 68
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_ssp_personal_needs_allowance: [198.55, 198.55]
+
+- name: Case 3, boarding home resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_resides_in_boarding_home: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_personal_needs_allowance: 34.75
+
+- name: Case 4, Medicaid facility resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_personal_needs_allowance: 75
+
+- name: Case 5, community shared individual.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_lives_with_others: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_personal_needs_allowance: 197.35
+
+- name: Case 6, community shared married couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_lives_with_others: true
+      person2:
+        age: 68
+        ct_ssp_lives_with_others: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Married shared -> community married PNA $198.55 each
+    ct_ssp_personal_needs_allowance: [198.55, 198.55]
+
+- name: Case 7, Medicaid facility married couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 78
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Medicaid facility PNA is $75 regardless of marital status
+    ct_ssp_personal_needs_allowance: [75, 75]

@@ -37,3 +37,40 @@
     state_code: CO
   output:
     co_eitc: 0
+
+# 2025 Tests - EITC match rate confirmed at 50% per Tax Policy Updates April 2025
+- name: Colorado matches 50% of EITC in 2025.
+  period: 2025
+  input:
+    eitc: 100
+    state_code: CO
+  output:
+    # 50% match rate per HB24-1134 with economic growth trigger met
+    co_eitc: 50
+
+- name: Colorado EITC 2025 - realistic earned income scenario
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: CO
+  output:
+    # Federal EITC for 1 child at $20k income (head of household) is approximately $4,328
+    # CO EITC = 50% * federal EITC = $2,164
+    co_eitc: 2_164

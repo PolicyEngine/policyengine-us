@@ -1,0 +1,38 @@
+- name: Case 1, zero assets is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 0
+  output:
+    nm_works_resources_eligible: true
+
+- name: Case 2, one dollar below limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 1_499
+  output:
+    # Liquid resources are below the $1,500 limit, and the current state-specific
+    # non-liquid concept remains zero until countable non-exempt property signals
+    # are modeled explicitly.
+    nm_works_resources_eligible: true
+
+- name: Case 3, at limit is eligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 1_500
+  output:
+    # The liquid side is exactly at the statutory boundary, with no modeled
+    # countable non-liquid resources yet.
+    nm_works_resources_eligible: true
+
+- name: Case 4, one dollar above limit is ineligible.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 1_501
+  output:
+    # Liquid resources alone can fail the NM Works test even before adding any
+    # future modeled non-liquid countable resources.
+    nm_works_resources_eligible: false

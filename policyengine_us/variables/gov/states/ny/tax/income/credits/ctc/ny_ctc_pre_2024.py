@@ -6,7 +6,9 @@ class ny_ctc_pre_2024(Variable):
     value_type = float
     entity = TaxUnit
     label = "NY CTC pre-2024 rules"
-    documentation = "New York's Empire State Child Credit under pre-2024 rules (original system)"
+    documentation = (
+        "New York's Empire State Child Credit under pre-2024 rules (original system)"
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
@@ -27,9 +29,7 @@ class ny_ctc_pre_2024(Variable):
             # Initialize pre-TCJA CTC branch and parameters.
             simulation = tax_unit.simulation
             pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
-            pre_tcja_ctc.tax_benefit_system = (
-                simulation.tax_benefit_system.clone()
-            )
+            pre_tcja_ctc.tax_benefit_system = simulation.tax_benefit_system.clone()
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
             # Update parameters to pre-TCJA values.
             for (
@@ -46,9 +46,7 @@ class ny_ctc_pre_2024(Variable):
                 if "ctc" in variable:
                     pre_tcja_ctc.delete_arrays(variable)
             # Calculate pre-TCJA CTC.
-            maximum_ctc = pre_tcja_ctc.calculate(
-                "ctc_child_individual_maximum", period
-            )
+            maximum_ctc = pre_tcja_ctc.calculate("ctc_child_individual_maximum", period)
             meets_ny_minimum_age = age >= p.minimum_age
             pre_tcja_ctc.set_input(
                 "ctc_individual_maximum",
@@ -59,9 +57,7 @@ class ny_ctc_pre_2024(Variable):
             max_federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
 
             # Limit by actual tax liability (for non-refundable portion)
-            limiting_tax = pre_tcja_ctc.tax_unit(
-                "ctc_limiting_tax_liability", period
-            )
+            limiting_tax = pre_tcja_ctc.tax_unit("ctc_limiting_tax_liability", period)
             non_refundable_ctc = min_(max_federal_ctc, limiting_tax)
 
             # Get refundable portion (requires earned income)

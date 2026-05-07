@@ -7,9 +7,7 @@ class ny_additional_ctc(Variable):
     label = "New York additional Empire State Child Credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)(4)(A)
-    )
+    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)(4)(A)
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):

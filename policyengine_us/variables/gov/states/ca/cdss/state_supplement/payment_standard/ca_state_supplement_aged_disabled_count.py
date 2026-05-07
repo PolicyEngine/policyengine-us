@@ -10,9 +10,7 @@ class ca_state_supplement_aged_disabled_count(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ca.cdss.state_supplement.payment_standard
+        p = parameters(period).gov.states.ca.cdss.state_supplement.payment_standard
         person = spm_unit.members
         # Aged or disabled amount
         is_disabled = person("is_disabled", period)

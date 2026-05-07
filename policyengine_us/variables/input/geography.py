@@ -166,3 +166,161 @@ class congressional_district_geoid(Variable):
     Note: Leading zeros are not preserved in the integer storage (e.g., 0101 becomes 101),
     but the value remains unique and unambiguous since the format is always interpreted as SSDD."""
     default_value = 0
+
+
+class sldu(Variable):
+    value_type = str
+    label = "State Legislative District Upper"
+    entity = Household
+    definition_period = YEAR
+    documentation = """State Legislative District Upper (State Senate district).
+
+    This is a 3-character code from the Census Bureau's Block Assignment Files.
+    Examples: "001", "002", "030".
+
+    Empty string indicates the district is not assigned or unknown.
+
+    Used for state-level policy analysis by state senate district."""
+    default_value = ""
+
+
+class sldl(Variable):
+    value_type = str
+    label = "State Legislative District Lower"
+    entity = Household
+    definition_period = YEAR
+    documentation = """State Legislative District Lower (State Assembly/House district).
+
+    This is a 3-character code from the Census Bureau's Block Assignment Files.
+    Examples: "001", "002", "105".
+
+    Empty string indicates the district is not assigned or unknown.
+    Some states (e.g., Nebraska) have unicameral legislatures and lack SLDL.
+
+    Used for state-level policy analysis by state assembly/house district."""
+    default_value = ""
+
+
+class block_geoid(Variable):
+    value_type = str
+    label = "Census Block GEOID"
+    entity = Household
+    definition_period = YEAR
+    documentation = """15-digit Census Block Geographic Identifier.
+
+    Format: SSCCCTTTTTTBBBB where:
+    - SS = State FIPS (2 digits)
+    - CCC = County FIPS (3 digits)
+    - TTTTTT = Tract (6 digits)
+    - BBBB = Block (4 digits)
+
+    Example: "360610001001000" is a block in New York County (Manhattan), NY.
+
+    All other geographic variables can be derived from block_geoid:
+    - State FIPS: block_geoid[:2]
+    - County FIPS: block_geoid[:5]
+    - Tract GEOID: block_geoid[:11]
+
+    Empty string indicates the block is not assigned."""
+    default_value = ""
+
+
+class tract_geoid(Variable):
+    value_type = str
+    label = "Census Tract GEOID"
+    entity = Household
+    definition_period = YEAR
+    documentation = """11-digit Census Tract Geographic Identifier.
+
+    Format: SSCCCTTTTTT where:
+    - SS = State FIPS (2 digits)
+    - CCC = County FIPS (3 digits)
+    - TTTTTT = Tract (6 digits)
+
+    Example: "36061000100" is a tract in New York County, NY.
+
+    Empty string indicates the tract is not assigned."""
+    default_value = ""
+
+
+class cbsa_code(Variable):
+    value_type = str
+    label = "Core-Based Statistical Area (CBSA) Code"
+    entity = Household
+    definition_period = YEAR
+    documentation = """5-digit CBSA code identifying the metropolitan or micropolitan area.
+
+    CBSAs are defined by the Office of Management and Budget (OMB) and include:
+    - Metropolitan Statistical Areas (population >= 50,000)
+    - Micropolitan Statistical Areas (population 10,000-49,999)
+
+    Example: "35620" is the New York-Newark-Jersey City metro area.
+
+    Empty string indicates rural area (not in any CBSA)."""
+    default_value = ""
+
+
+class place_fips(Variable):
+    value_type = str
+    label = "Place FIPS Code"
+    entity = Household
+    definition_period = YEAR
+    documentation = """5-digit Place FIPS code from Census Bureau.
+
+    Places include incorporated places (cities, towns, villages) and
+    Census Designated Places (CDPs) for unincorporated communities.
+
+    Example: "51000" is New York City.
+
+    Empty string indicates not in any Census place (unincorporated area)."""
+    default_value = ""
+
+
+class vtd(Variable):
+    value_type = str
+    label = "Voting Tabulation District"
+    entity = Household
+    definition_period = YEAR
+    documentation = """Voting Tabulation District (VTD) code from Census Bureau.
+
+    VTDs are election precincts or similar voting districts used for
+    tabulating Census data on voting-age population.
+
+    Empty string indicates VTD is not assigned or unknown."""
+    default_value = ""
+
+
+class puma(Variable):
+    value_type = str
+    label = "Public Use Microdata Area (PUMA)"
+    entity = Household
+    definition_period = YEAR
+    documentation = """5-digit Public Use Microdata Area code from Census Bureau.
+
+    PUMAs are the smallest geographic unit for which the Census Bureau
+    releases individual records in the American Community Survey (ACS)
+    and decennial census public use microdata samples (PUMS).
+
+    Each PUMA contains at least 100,000 people.
+
+    Example: "03201" is a PUMA in New York State.
+
+    Empty string indicates PUMA is not assigned."""
+    default_value = ""
+
+
+class zcta(Variable):
+    value_type = str
+    label = "ZCTA (ZIP Code Tabulation Area)"
+    entity = Household
+    definition_period = YEAR
+    documentation = """5-digit ZIP Code Tabulation Area from Census Bureau.
+
+    ZCTAs are generalized areal representations of USPS ZIP Code service areas.
+    They are built from Census blocks and do not precisely align with ZIP Codes,
+    which are defined by mail delivery routes rather than geographic boundaries.
+
+    Example: "10001" is a ZCTA in Manhattan, NY.
+
+    Empty string indicates ZCTA is not assigned."""
+    default_value = ""

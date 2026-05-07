@@ -1,0 +1,14 @@
+description: Washington taxes capital gains at a flat rate when true and at marginal rates when false.
+values:
+  2022-01-01: true
+  2025-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Washington flat capital gains tax rate applies
+  reference:
+    - title: RCW 82.87.040(1) Tax imposed—Long-term capital assets
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.040
+    - title: ESSB 5813, Chapter 421, Laws of 2025, Sec. 101
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Htm/Bills/Session%20Laws/Senate/5813-S.SL.htm

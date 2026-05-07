@@ -1,0 +1,35 @@
+description: Hawaii provides this amount as the monthly couple payment under the Optional State Supplementation program.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Hawaii OSS monthly payment amount for couples
+  breakdown:
+    - hi_oss_living_arrangement
+  reference:
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Hawaii Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/hi.pdf#page=1
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplemental Payment Programs for January 2023
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#e
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#e
+    - title: SSA POMS SI 01415.057 - Federally Administered Optional Supplementary Payment Programs for January 2025
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415057#e
+    - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#e
+COMMUNITY_CARE:
+  2011-01-01: 1_640.8
+  2024-10-01: 1_905
+  2025-10-01: 1_995
+DOMICILIARY_CARE_I:
+  2011-01-01: 1_640.8
+  2024-10-01: 1_905
+  2025-10-01: 1_995
+DOMICILIARY_CARE_II:
+  2011-01-01: 1_856.8
+  2024-10-01: 2_121
+  2025-10-01: 2_211
+MEDICAID_INSTITUTION:
+  2011-01-01: 40
+  2025-01-01: 90
+NONE:
+  2011-01-01: 0

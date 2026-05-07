@@ -1,0 +1,7 @@
+- name: NY subtracts US government bond interest from AGI
+  period: 2024
+  input:
+    state_code: NY
+    us_govt_interest: 5_000
+  output:
+    ny_agi_subtractions: 5_000

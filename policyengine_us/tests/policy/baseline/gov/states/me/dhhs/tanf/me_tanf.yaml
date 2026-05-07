@@ -1,0 +1,64 @@
+# Maine TANF Benefit Tests
+# Tests benefit calculation: min(Maximum Benefit, Standard of Need - Countable Income)
+# Source: 22 M.R.S. Section 3762(3)(B)(8)
+# Note: General scenarios covered in integration.yaml; these test boundary conditions
+
+- name: Case 1, income exactly at standard of need receives zero benefit.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 1_030
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $1,030) = min($895, $0) = $0
+    me_tanf: 0
+
+- name: Case 2, income one dollar below standard of need.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 1_029
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $1,029) = min($895, $1) = $1
+    me_tanf: 1
+
+- name: Case 3, benefit exactly equals maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 135
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $135) = min($895, $895) = $895
+    me_tanf: 895
+
+- name: Case 4, benefit one dollar below maximum.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 136
+    me_tanf_standard_of_need: 1_030
+    me_tanf_maximum_benefit: 895
+  output:
+    # min($895, $1,030 - $136) = min($895, $894) = $894
+    me_tanf: 894
+
+- name: Case 5, fractional benefit calculation.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_eligible: true
+    me_tanf_countable_income: 488.5
+    me_tanf_standard_of_need: 489
+    me_tanf_maximum_benefit: 425
+  output:
+    # min($425, $489 - $488.5) = min($425, $0.5) = $0.5
+    me_tanf: 0.5

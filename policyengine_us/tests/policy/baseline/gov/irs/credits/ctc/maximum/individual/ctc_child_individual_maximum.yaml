@@ -32,3 +32,31 @@
     age: 12
   output:
     ctc_child_individual_maximum: 2_000
+
+- name: Dependent child without the required SSN does not get the child amount.
+  period: 2024
+  input:
+    age: 10
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    ctc_child_individual_maximum: 0
+
+- name: A dependent child gets ODC instead of child CTC when the filer lacks the required SSN in 2026.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    ctc_child_individual_maximum: [0, 0]

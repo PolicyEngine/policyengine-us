@@ -1,0 +1,34 @@
+- name: Case 1, CAPP payment uses RMR structure.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Child (person2) receives payment based on RMR ceiling
+    # RMR for 3-year-old at child care center, full-time monthly: ~1,253
+    # pre_subsidy_childcare_expenses: 24,000 annual / 12 = 2,000/month
+    # Payment = min(1,253, 2,000) = 1,253
+    # Adult (person1) does not receive child care payment
+    ca_capp_payment: [0, 1_253.26]

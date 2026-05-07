@@ -1,0 +1,131 @@
+# North Dakota TANF Benefit Amount Unit Tests
+#
+# Benefit = max(Standard of Need - Countable Income, 0)
+#
+# NOTE: Tests must include people and proper entity structure for
+# defined_for = StateCode.ND to work correctly.
+
+- name: Case 1, not eligible receives zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: false
+        nd_tanf_standard_of_need: 1_000
+        nd_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_tanf: 0
+
+- name: Case 2, eligible with zero income receives full benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: true
+        nd_tanf_standard_of_need: 1_035.83
+        nd_tanf_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Benefit = $1,035.83 - $0 = $1,035.83
+    nd_tanf: 1_035.83
+
+- name: Case 3, eligible with partial income receives reduced benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: true
+        nd_tanf_standard_of_need: 850
+        nd_tanf_countable_income: 400
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Benefit = $850 - $400 = $450
+    nd_tanf: 450
+
+- name: Case 4, eligible with income at standard receives zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: true
+        nd_tanf_standard_of_need: 850
+        nd_tanf_countable_income: 850
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Benefit = $850 - $850 = $0
+    nd_tanf: 0
+
+- name: Case 5, eligible with income above standard receives zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: true
+        nd_tanf_standard_of_need: 850
+        nd_tanf_countable_income: 900
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Benefit = max($850 - $900, 0) = $0
+    nd_tanf: 0
+
+- name: Case 6, small benefit is issued.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_eligible: true
+        nd_tanf_standard_of_need: 850
+        nd_tanf_countable_income: 845
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Benefit = $850 - $845 = $5
+    nd_tanf: 5

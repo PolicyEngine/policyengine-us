@@ -1,0 +1,160 @@
+# Unit tests for Arizona TANF payment standard
+# A1 (with shelter): 36% of 1992 FPG monthly baseline per A.R.S. § 46-207.01
+# A2 (without shelter): A1 reduced by 37% per A.R.S. § 46-207 = 36% × 63% = 22.68%
+# Reference: https://www.azleg.gov/ars/46/00207-01.htm, https://www.azleg.gov/ars/46/00207.htm
+
+- name: Case 1, family of 2 with shelter costs (A1).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 1992 FPG for 2: $9,190 annual
+    # Monthly: $9,190 / 12 = $765.83
+    # A1 rate: 36%
+    # Payment standard: $765.83 * 0.36 = $275.70
+    az_tanf_payment_standard: 276
+
+- name: Case 2, family of 2 without shelter costs (A2).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # 1992 FPG for 2: $9,190 annual
+    # Monthly: $9,190 / 12 = $765.83
+    # A2: A1 reduced by 37% = 36% × 63% = 22.68%
+    # Payment standard: $765.83 * 0.36 * 0.63 = $173.68
+    az_tanf_payment_standard: 174
+
+- name: Case 3, family of 3 with shelter costs (A1).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 7_200
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 1992 FPG for 3: $11,570 annual
+    # Monthly: $11,570 / 12 = $964.17
+    # A1 rate: 36%
+    # Payment standard: $964.17 * 0.36 = $347.10
+    az_tanf_payment_standard: 347
+
+- name: Case 4, family of 3 without shelter costs (A2).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 1992 FPG for 3: $11,570 annual
+    # Monthly: $11,570 / 12 = $964.17
+    # A2: A1 reduced by 37% = 36% × 63% = 22.68%
+    # Payment standard: $964.17 * 0.36 * 0.63 = $218.67
+    az_tanf_payment_standard: 219
+
+- name: Case 5, family of 4 with shelter costs (A1).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 8_400
+      person2:
+        age: 5
+      person3:
+        age: 3
+      person4:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    # 1992 FPG for 4: $13,950 annual
+    # Monthly: $13,950 / 12 = $1,162.50
+    # A1 rate: 36%
+    # Payment standard: $1,162.50 * 0.36 = $418.50
+    az_tanf_payment_standard: 419
+
+- name: Case 6, family of 5 with shelter costs (A1).
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 9_600
+      person2:
+        age: 28
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AZ
+  output:
+    # 1992 FPG for 5: $16,330 annual
+    # Monthly: $16,330 / 12 = $1,360.83
+    # A1 rate: 36%
+    # Payment standard: $1,360.83 * 0.36 = $489.90
+    az_tanf_payment_standard: 490

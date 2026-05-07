@@ -6,12 +6,21 @@ class nj_gross_income(Variable):
     entity = Person
     label = "New Jersey gross income"
     unit = USD
-    documentation = "Gross income calculated from specific income categories per NJ statute, before additions and subtractions. This is built from gross income sources, not federal AGI."
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/",
-        "https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf",  # Lines 15-27
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf",
     )
     defined_for = StateCode.NJ
 
-    adds = "gov.states.nj.tax.income.gross_income_sources"
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.nj.tax.income.gross_income
+        total = add(person, period, p.non_negative_sources)
+        # Loss-eligible categories per N.J.S. 54A:5-1: each is
+        # summed within the category then clamped to $0.
+        cats = p.loss_eligible_categories
+        total += max_(add(person, period, cats.category_b), 0)
+        total += max_(add(person, period, cats.category_c), 0)
+        total += max_(add(person, period, cats.category_d), 0)
+        total += max_(add(person, period, cats.category_k_p), 0)
+        return total

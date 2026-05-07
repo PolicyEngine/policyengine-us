@@ -7,7 +7,9 @@ class pr_is_tax_unit_dependent(Variable):
     label = "Puerto Rico tax unit dependent"
     definition_period = YEAR
     defined_for = StateCode.PR
-    reference = "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
+    reference = (
+        "https://hacienda.pr.gov/sites/default/files/inst_individuals_2023.pdf#page=28"
+    )
 
     def formula(person, period, parameters):
         # dependent definition in Puerto Rico:
@@ -23,9 +25,7 @@ class pr_is_tax_unit_dependent(Variable):
         parent_eligible = person("is_parent_of_filer_or_spouse", period)
 
         # OR a person over 21 that is incapable of self-support because of a physical or mental condition
-        incapable_of_self_support_eligible = person(
-            "is_incapable_of_self_care", period
-        )
+        incapable_of_self_support_eligible = person("is_incapable_of_self_care", period)
 
         is_blind = person("is_blind", period)
 

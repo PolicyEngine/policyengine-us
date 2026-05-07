@@ -1,0 +1,107 @@
+# Hawaii TANF countable earned income per person tests
+# Deductions applied in order:
+# 1. 20% standard deduction
+# 2. $200 flat rate deduction
+# 3. 55% earned income disregard
+# Per HAR 17-676 and Hawaii TANF State Plan
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_countable_earned_income_person: 0
+
+- name: Case 2, low income below flat deduction threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        # $200/month gross, after 20% = $160, less than $200 flat
+        tanf_gross_earned_income: 200
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Step 1: 200 * 0.80 = 160
+    # Step 2: max(160 - 200, 0) = 0
+    # Step 3: 0 * 0.45 = 0
+    hi_tanf_countable_earned_income_person: 0
+
+- name: Case 3, moderate income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Step 1: 500 * 0.80 = 400
+    # Step 2: max(400 - 200, 0) = 200
+    # Step 3: 200 * 0.45 = 90
+    hi_tanf_countable_earned_income_person: 90
+
+- name: Case 4, higher income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Step 1: 1000 * 0.80 = 800
+    # Step 2: max(800 - 200, 0) = 600
+    # Step 3: 600 * 0.45 = 270
+    hi_tanf_countable_earned_income_person: 270
+
+- name: Case 5, income at flat deduction breakeven.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        # $250/month gross, after 20% = $200, exactly equals flat deduction
+        tanf_gross_earned_income: 250
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Step 1: 250 * 0.80 = 200
+    # Step 2: max(200 - 200, 0) = 0
+    # Step 3: 0 * 0.45 = 0
+    hi_tanf_countable_earned_income_person: 0
+
+- name: Case 6, typical working income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Step 1: 1500 * 0.80 = 1200
+    # Step 2: max(1200 - 200, 0) = 1000
+    # Step 3: 1000 * 0.45 = 450
+    hi_tanf_countable_earned_income_person: 450

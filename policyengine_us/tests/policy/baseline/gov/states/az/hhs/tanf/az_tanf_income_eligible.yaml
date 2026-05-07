@@ -1,0 +1,148 @@
+# Unit tests for Arizona TANF income eligibility
+# Must pass both: (1) needy family test (income <= FPG rate * current FPG)
+#                 (2) payment standard test (income <= payment standard)
+# Reference: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+
+- name: Case 1, no income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Zero income passes both tests
+    az_tanf_income_eligible: true
+
+- name: Case 2, low income eligible with shelter.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $300 - $90 = $210, * 0.70 = $147
+    # Payment standard (A1 for family of 2): ~$276
+    # 2024 annual FPG for 2: ~$20,440 (100% FPG for parent)
+    # $147 < $276 (payment standard test passes)
+    # $147 < $20,440 (needy family test passes)
+    az_tanf_income_eligible: true
+
+- name: Case 3, income exceeds payment standard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_600  # $800/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $800 - $90 = $710, * 0.70 = $497
+    # Payment standard (A1 for family of 2): ~$276
+    # $497 > $276 (payment standard test FAILS)
+    az_tanf_income_eligible: false
+
+- name: Case 4, low income without shelter eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 1_800  # $150/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Countable earned: $150 - $90 = $60, * 0.70 = $42
+    # Payment standard (A2 for family of 2): ~$176
+    # $42 < $176 (passes both tests)
+    az_tanf_income_eligible: true
+
+- name: Case 5, larger family with unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month annual
+        child_support_received: 600  # $50/month annual
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        pre_subsidy_rent: 7_200
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Countable earned: $300 - $90 = $210, * 0.70 = $147
+    # Unearned: $50
+    # Total countable: $197
+    # Payment standard (A1 for family of 3): ~$347
+    # $197 < $347 (passes)
+    az_tanf_income_eligible: true

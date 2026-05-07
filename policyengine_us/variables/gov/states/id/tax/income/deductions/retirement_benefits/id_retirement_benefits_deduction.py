@@ -14,9 +14,7 @@ class id_retirement_benefits_deduction(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.deductions.retirement_benefits
+        p = parameters(period).gov.states.id.tax.income.deductions.retirement_benefits
         filing_status = tax_unit("filing_status", period)
         # Line 8a
         # Max retirement benefits deduction amount

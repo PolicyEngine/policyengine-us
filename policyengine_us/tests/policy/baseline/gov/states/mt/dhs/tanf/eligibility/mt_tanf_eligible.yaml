@@ -1,0 +1,119 @@
+- name: Case 1, demographic, income, and resource eligible.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        mt_tanf_demographic_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_assistance_unit_size: 1
+        mt_tanf_income_eligible: true
+        mt_tanf_resources_eligible: true
+        mt_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_eligible: true
+
+- name: Case 2, demographic and income eligible but not resource eligible.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        mt_tanf_demographic_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_assistance_unit_size: 1
+        mt_tanf_income_eligible: true
+        mt_tanf_resources_eligible: false
+        mt_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_eligible: false
+
+- name: Case 3, demographic and resource eligible but not income eligible.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        mt_tanf_demographic_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_assistance_unit_size: 1
+        mt_tanf_income_eligible: false
+        mt_tanf_resources_eligible: true
+        mt_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_eligible: false
+
+- name: Case 4, resource and income eligible but not demographic eligible.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        mt_tanf_demographic_eligible_person: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_assistance_unit_size: 1
+        mt_tanf_income_eligible: true
+        mt_tanf_resources_eligible: true
+        mt_tanf_meets_work_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_eligible: false
+
+- name: Case 5, does not meet work requirement.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        mt_tanf_demographic_eligible_person: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mt_tanf_assistance_unit_size: 1
+        mt_tanf_income_eligible: true
+        mt_tanf_resources_eligible: true
+        mt_tanf_meets_work_requirements: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_tanf_eligible: false

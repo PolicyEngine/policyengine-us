@@ -11,9 +11,7 @@ class ca_calworks_child_care_meets_work_requirement(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        welfare_to_work = person(
-            "ca_calworks_child_care_welfare_to_work", period
-        )
+        welfare_to_work = person("ca_calworks_child_care_welfare_to_work", period)
         earned = person("earned_income", period)
         eligible_person = (welfare_to_work + earned) > 0
         return spm_unit.any(eligible_person)

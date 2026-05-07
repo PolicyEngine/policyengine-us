@@ -13,7 +13,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 5_000  # Exactly at limit
+        spm_unit_cash_assets: 5_000  # Exactly at limit
     households:
       household:
         members: [person1, person2]
@@ -33,7 +33,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 5_001  # $1 over limit
+        spm_unit_cash_assets: 5_001  # $1 over limit
     households:
       household:
         members: [person1, person2]
@@ -53,7 +53,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 4_999  # $1 under limit
+        spm_unit_cash_assets: 4_999  # $1 under limit
     households:
       household:
         members: [person1, person2]
@@ -73,7 +73,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2]
@@ -93,7 +93,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 100_000  # Well over limit
+        spm_unit_cash_assets: 100_000  # Well over limit
     households:
       household:
         members: [person1, person2]

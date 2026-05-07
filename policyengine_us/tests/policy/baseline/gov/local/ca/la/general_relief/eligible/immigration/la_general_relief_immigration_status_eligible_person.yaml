@@ -14,19 +14,19 @@
   output:
     la_general_relief_immigration_status_eligible_person: true
 
-- name: Daca classified are ineligible
+- name: DACA classified are ineligible
   period: 2022
   input:
     in_la: true
-    immigration_status: DACA_TPS
+    immigration_status: DACA
   output:
     la_general_relief_immigration_status_eligible_person: false
 
-- name: Undocumented immigrants are ineligible
+- name: TPS classified are ineligible
   period: 2022
   input:
     in_la: true
-    immigration_status: UNDOCUMENTED
+    immigration_status: TPS
   output:
     la_general_relief_immigration_status_eligible_person: false
 

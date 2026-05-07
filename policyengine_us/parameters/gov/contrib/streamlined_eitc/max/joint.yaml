@@ -1,0 +1,18 @@
+description: The EITC is capped at this amount for joint filers, based on number of children.
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1
+    amount:
+      2020-01-01: 4_993
+
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Streamlined EITC maximum (joint filers)

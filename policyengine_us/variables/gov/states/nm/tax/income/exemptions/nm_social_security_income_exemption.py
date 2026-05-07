@@ -11,9 +11,7 @@ class nm_social_security_income_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # This is the amount of Social Security included in AGI.
-        social_security_income = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
+        social_security_income = tax_unit("tax_unit_taxable_social_security", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period

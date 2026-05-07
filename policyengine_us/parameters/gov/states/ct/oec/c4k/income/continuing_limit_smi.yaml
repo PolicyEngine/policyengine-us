@@ -1,0 +1,17 @@
+description: Connecticut limits the Care 4 Kids program to continuing recipients with income below this share of the state median income.
+values:
+  2020-01-01: 0.5
+  2023-10-01: 0.65
+  2024-10-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Connecticut C4K continuing income limit SMI rate
+  reference:
+    - title: CGA 2023-R-0249
+      href: https://www.cga.ct.gov/2023/rpt/pdf/2023-R-0249.pdf#page=3
+    - title: C4K-POL-24-01 FY 2024-2025 State Median Income Standards
+      href: https://www.ctoec.org/forms-documents/c4k-annual-state-median-incomes-transmittal-fy-2025.pdf#page=1
+    - title: 45 CFR 98.21(b) - Federal CCDF income eligibility ceiling
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-98/subpart-B/section-98.21

@@ -1,0 +1,38 @@
+- name: Case 1, no income is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+  output:
+    # Gross income $0 <= $321
+    nj_wfnj_gross_income_eligible: true
+
+- name: Case 2, income below max allowable is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 3_600  # $300/month
+  output:
+    # Gross income $300 <= $321
+    nj_wfnj_gross_income_eligible: true
+
+- name: Case 3, income above max allowable is ineligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 4_800  # $400/month
+  output:
+    # Gross income $400 > $321
+    nj_wfnj_gross_income_eligible: false
+
+- name: Case 4, income at max allowable is eligible.
+  period: 2024-01
+  input:
+    state_code: NJ
+    spm_unit_size: 1
+    social_security: 3_852  # $321/month
+  output:
+    # Gross income $321 <= $321
+    nj_wfnj_gross_income_eligible: true

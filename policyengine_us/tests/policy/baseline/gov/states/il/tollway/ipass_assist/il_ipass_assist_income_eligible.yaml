@@ -1,0 +1,302 @@
+# Illinois I-PASS Assist income eligibility tests
+# Income limit: 250% of Federal Poverty Guidelines
+#
+# 2025 FPL for contiguous US (Illinois):
+# - 1 person: $15,650 * 2.5 = $39,125
+# - 2 person: $21,150 * 2.5 = $52,875
+# - 3 person: $26,650 * 2.5 = $66,625
+# - 4 person: $32,150 * 2.5 = $80,375
+# - 8 person: $48,650 * 2.5 = $121,625
+#
+# Source: https://agency.illinoistollway.com/assist
+
+- name: Case 1, single person below 250% FPL.
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 36_000  # $36,000/year < $39,125 limit
+  output:
+    il_ipass_assist_income_eligible: true
+
+- name: Case 2, single person above 250% FPL.
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 48_000  # $48,000/year > $39,125 limit
+  output:
+    il_ipass_assist_income_eligible: false
+
+- name: Case 3, single person at exactly 250% FPL.
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 39_125  # Exactly at 250% FPL for 1 person
+  output:
+    il_ipass_assist_income_eligible: true
+
+- name: Case 4, family of 4 below 250% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+      person2:
+        age: 32
+        employment_income: 24_000
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Total income: $72,000/year < $80,375 limit for 4-person household
+    il_ipass_assist_income_eligible: true
+
+- name: Case 5, family of 4 above 250% FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+      person2:
+        age: 38
+        employment_income: 30_000
+      person3:
+        age: 12
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # Total income: $90,000/year > $80,375 limit for 4-person household
+    il_ipass_assist_income_eligible: false
+
+- name: Case 6, two-person household just below threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 42
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Total income: $50,000/year < $52,875 limit for 2-person household
+    il_ipass_assist_income_eligible: true
+
+# ============================================================================
+# EDGE CASE TESTS
+# ============================================================================
+
+- name: Case 7, boundary one dollar above threshold.
+  # Tests that <= operator works correctly (at threshold+1 should fail)
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 39_126  # $39,125 + 1 = one dollar above 250% FPL
+  output:
+    # Threshold: $15,650 * 2.5 = $39,125
+    # Income $39,126 > $39,125 -> NOT eligible
+    il_ipass_assist_income_eligible: false
+
+- name: Case 8, zero income household.
+  # Tests minimum bound - should always be eligible
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 0
+  output:
+    # $0 <= $39,125 -> eligible
+    il_ipass_assist_income_eligible: true
+
+- name: Case 9, very large household 8 members at threshold.
+  # Tests FPG scaling with large household at exact boundary
+  # 2025 FPL for 8 people: $15,650 + 7 * $5,500 = $54,150
+  # 250% FPL = $54,150 * 2.5 = $135,375
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 75_000
+      person2:
+        age: 43
+        employment_income: 60_375  # Total = $135,375 (exactly at threshold)
+      person3:
+        age: 20
+      person4:
+        age: 18
+      person5:
+        age: 15
+      person6:
+        age: 12
+      person7:
+        age: 8
+      person8:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IL
+  output:
+    # 8-person 250% FPL = $135,375
+    # Total income: $75,000 + $60,375 = $135,375 (exactly at threshold)
+    il_ipass_assist_income_eligible: true
+
+- name: Case 10, very large household one dollar over.
+  # Tests boundary for large household
+  # 2025 FPL for 8 people: $15,650 + 7 * $5,500 = $54,150
+  # 250% FPL = $54,150 * 2.5 = $135,375
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 75_000
+      person2:
+        age: 43
+        employment_income: 60_376  # Total = $135,376 (one dollar over)
+      person3:
+        age: 20
+      person4:
+        age: 18
+      person5:
+        age: 15
+      person6:
+        age: 12
+      person7:
+        age: 8
+      person8:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: IL
+  output:
+    # 8-person 250% FPL = $135,375
+    # Total income: $75,000 + $60,376 = $135,376 > $135,375
+    il_ipass_assist_income_eligible: false
+
+- name: Case 11, single person with non-employment income.
+  # Tests that net income includes various sources
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security: 24_000
+        interest_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Total income: $24,000 + $5,000 = $29,000
+    # 250% FPL for 1 person: $39,125
+    # $29,000 < $39,125 -> eligible
+    il_ipass_assist_income_eligible: true
+
+- name: Case 12, two-person at exact threshold.
+  # Tests boundary for 2-person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 52_875  # Exactly at 2-person 250% FPL
+      person2:
+        age: 52
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # 2-person 250% FPL = $21,150 * 2.5 = $52,875
+    # Income $52,875 <= $52,875 -> eligible
+    il_ipass_assist_income_eligible: true
+
+- name: Case 13, two-person one dollar above threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 52_876  # One dollar above 2-person 250% FPL
+      person2:
+        age: 52
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # 2-person 250% FPL = $52,875
+    # Income $52,876 > $52,875 -> NOT eligible
+    il_ipass_assist_income_eligible: false
+
+- name: Case 14, extremely high income.
+  # Tests behavior with very large income values
+  period: 2025-01
+  input:
+    state_code: IL
+    employment_income: 1_000_000  # $1 million income
+  output:
+    # Obviously above 250% FPL ($39,125)
+    il_ipass_assist_income_eligible: false
+
+- name: Case 15, three-person at exact threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 66_625  # Exactly at 3-person 250% FPL
+      person2:
+        age: 38
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # 3-person 250% FPL = $26,650 * 2.5 = $66,625
+    # Income $66,625 <= $66,625 -> eligible
+    il_ipass_assist_income_eligible: true

@@ -1,0 +1,109 @@
+- name: Case 1, eligible with minor child and income under limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        hi_tanf_gross_income_eligible: true
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_eligible: true
+
+- name: Case 2, ineligible due to income exceeding limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        hi_tanf_gross_income_eligible: false
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 3, ineligible due to no eligible child.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        hi_tanf_gross_income_eligible: true
+        is_demographic_tanf_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 4, ineligible due to both income and demographics.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        hi_tanf_gross_income_eligible: false
+        is_demographic_tanf_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 5, ineligible due to no citizen or legal immigrant in unit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        hi_tanf_gross_income_eligible: true
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_eligible: false
+
+- name: Case 6, eligible with mixed immigration status (one citizen).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+      person2:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hi_tanf_gross_income_eligible: true
+        is_demographic_tanf_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_tanf_eligible: true

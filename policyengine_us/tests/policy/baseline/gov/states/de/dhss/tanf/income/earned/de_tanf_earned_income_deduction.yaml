@@ -1,0 +1,97 @@
+# Unit tests for Delaware TANF earned income deduction
+# 16 Del. Admin. Code SS 4000-4008: $90 work expense per earner
+# https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+- name: Case 1, no earnings.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_tanf_earned_income_deduction: 0
+
+- name: Case 2, single earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # 1 earner * $90 = $90
+    de_tanf_earned_income_deduction: 90
+
+- name: Case 3, two earners.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 2 earners * $90 = $180
+    de_tanf_earned_income_deduction: 180
+
+- name: Case 4, one earner one non-earner.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 1 earner * $90 = $90
+    de_tanf_earned_income_deduction: 90
+
+- name: Case 5, minimal earnings still counts.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12  # $1/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Any earnings counts as earner → $90
+    de_tanf_earned_income_deduction: 90

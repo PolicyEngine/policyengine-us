@@ -15,6 +15,4 @@ class in_tanf_countable_earned_income(Variable):
         person = spm_unit.members
         gross_earned = person("tanf_gross_earned_income", period)
         # 75% disregard per 470 IAC 10.3-4-4(d)(1)
-        return spm_unit.sum(
-            gross_earned * (1 - p.benefit.earned_income_disregard.rate)
-        )
+        return spm_unit.sum(gross_earned * (1 - p.benefit.earned_income_disregard.rate))

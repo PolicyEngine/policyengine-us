@@ -8,6 +8,26 @@
   output:
     irs_gross_income: 1 + 2 + 3 + 4
 
+- name: IRS gross income includes farm operations income.
+  period: 2022
+  input:
+    farm_operations_income: 100
+  output:
+    irs_gross_income: 100
+
+- name: IRS gross income includes positive other net gain.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        other_net_gain: 100
+  output:
+    irs_gross_income: 100
+
 - name: Tax unit with tax-exempt pension income as sole income source.
   absolute_error_margin: 0.01
   period: 2021

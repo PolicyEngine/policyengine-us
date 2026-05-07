@@ -3,9 +3,10 @@ values:
   0000-01-01:
   - employment_income
   - self_employment_income
+  - sstb_self_employment_income
   - partnership_s_corp_income
   - gi_cash_assistance
-  - farm_income
+  - farm_operations_income
   - farm_rent_income
   - capital_gains
   - interest_income
@@ -17,8 +18,8 @@ values:
   - debt_relief
   # Decedent income
   # Estate interest income
-  - unemployment_compensation
-  - social_security
+  # unemployment_compensation and social_security are government transfers,
+  # not market income. They are included in household_benefits instead.
   - illicit_income
   - retirement_distributions
   - miscellaneous_income

@@ -35,9 +35,7 @@ class taxable_social_security_tier_1(Variable):
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
 
-        combined_income_excess = tax_unit(
-            "tax_unit_ss_combined_income_excess", period
-        )
+        combined_income_excess = tax_unit("tax_unit_ss_combined_income_excess", period)
 
         # Tier 1 amount (IRC §86(a)(1))
         amount_under_paragraph_1 = min_(

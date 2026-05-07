@@ -17,7 +17,5 @@ class is_ssi_blind_or_disabled_working_student_exclusion_eligible(Variable):
         is_disabled = person("is_disabled", period)
         demographic_eligible = is_blind | is_disabled
         under_age_limit = person("age", period) < p.age_limit
-        eligible_student = under_age_limit & person(
-            "is_full_time_student", period
-        )
+        eligible_student = under_age_limit & person("is_full_time_student", period)
         return eligible_student & demographic_eligible

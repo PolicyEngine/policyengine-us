@@ -1,7 +1,9 @@
 description: Whether children can qualify for Medicaid under the 'medically needy' pathway.
 metadata:
-  unit: bool
   label: Medicaid medically needy pathway for children
+  breakdown:
+    - state_code
+  unit: bool
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/

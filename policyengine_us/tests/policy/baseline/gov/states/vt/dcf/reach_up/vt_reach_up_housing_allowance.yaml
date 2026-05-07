@@ -1,0 +1,81 @@
+# Vermont TANF Housing Allowance
+# Chittenden County: max $450/month
+# Non-Chittenden: max $400/month
+# Capped at actual housing costs
+# Source: Code Vt. R. 13-170-220-X Rule 2246
+
+- name: Case 1, zero housing cost.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Zero housing cost = zero allowance
+    vt_reach_up_housing_allowance: 0
+
+- name: Case 2, Chittenden below and above cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 4_200  # $350/month, below $450 cap
+      person2:
+        age: 35
+        pre_subsidy_rent: 7_200  # $600/month, above $450 cap
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # spm_unit1: min($350, $450) = $350
+    # spm_unit2: min($600, $450) = $450 (capped)
+    vt_reach_up_housing_allowance: [350, 450]
+
+- name: Case 3, non-Chittenden below and above cap.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 3_600  # $300/month, below $400 cap
+      person2:
+        age: 35
+        pre_subsidy_rent: 6_000  # $500/month, above $400 cap
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: VT
+        county: BENNINGTON_COUNTY_VT
+  output:
+    # spm_unit1: min($300, $400) = $300
+    # spm_unit2: min($500, $400) = $400 (capped)
+    vt_reach_up_housing_allowance: [300, 400]

@@ -1,0 +1,104 @@
+description: South Dakota provides this amount as the payment standard for independent living arrangements under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: South Dakota TANF independent living payment standard
+  reference:
+    - title: ARSD 67:10:05:03 - Payment Standards (2016)
+      href: https://sdlegislature.gov/api/Rules/Archived/10994.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2021)
+      href: https://sdlegislature.gov/api/Rules/Archived/11393.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2022)
+      href: https://sdlegislature.gov/api/Rules/Archived/12036.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2023)
+      href: https://sdlegislature.gov/api/Rules/Archived/14008.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2025)
+      href: https://sdlegislature.gov/Rules/Administrative/67:10:05:03
+  # Note: 2025 values reflect 10% benefit reduction effective August 2025.
+  # The state plans gradual annual reductions until reaching 35% total.
+  # Source: https://southdakotasearchlight.com/2025/07/15/south-dakota-legislative-committee-finalizes-benefit-cuts-tanf-needy-families/
+1:
+  values:
+    2016-09-01: 449
+    2021-07-01: 460
+    2022-07-01: 488
+    2023-07-01: 512
+    2025-08-01: 461
+2:
+  values:
+    2016-09-01: 550
+    2021-07-01: 563
+    2022-07-01: 597
+    2023-07-01: 627
+    2025-08-01: 564
+3:
+  values:
+    2016-09-01: 615
+    2021-07-01: 630
+    2022-07-01: 668
+    2023-07-01: 701
+    2025-08-01: 631
+4:
+  values:
+    2016-09-01: 680
+    2021-07-01: 696
+    2022-07-01: 738
+    2023-07-01: 775
+    2025-08-01: 698
+5:
+  values:
+    2016-09-01: 744
+    2021-07-01: 762
+    2022-07-01: 808
+    2023-07-01: 848
+    2025-08-01: 763
+6:
+  values:
+    2016-09-01: 809
+    2021-07-01: 828
+    2022-07-01: 878
+    2023-07-01: 922
+    2025-08-01: 830
+7:
+  values:
+    2016-09-01: 874
+    2021-07-01: 895
+    2022-07-01: 949
+    2023-07-01: 996
+    2025-08-01: 896
+8:
+  values:
+    2016-09-01: 938
+    2021-07-01: 961
+    2022-07-01: 1_019
+    2023-07-01: 1_070
+    2025-08-01: 963
+9:
+  values:
+    2016-09-01: 1_001
+    2021-07-01: 1_025
+    2022-07-01: 1_087
+    2023-07-01: 1_141
+    2025-08-01: 1_027
+10:
+  values:
+    2016-09-01: 1_064
+    2021-07-01: 1_090
+    2022-07-01: 1_155
+    2023-07-01: 1_213
+    2025-08-01: 1_092
+11:
+  values:
+    2016-09-01: 1_130
+    2021-07-01: 1_157
+    2022-07-01: 1_226
+    2023-07-01: 1_287
+    2025-08-01: 1_158
+12:
+  values:
+    2016-09-01: 1_194
+    2021-07-01: 1_223
+    2022-07-01: 1_296
+    2023-07-01: 1_361
+    2025-08-01: 1_225

@@ -24,7 +24,5 @@ class ks_tanf_countable_earned_income(Variable):
         earned_after_deductions = add(
             spm_unit, period, ["ks_tanf_earned_income_after_deductions"]
         )
-        dependent_care = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period
-        )
+        dependent_care = spm_unit("childcare_expenses", period)
         return max_(earned_after_deductions - dependent_care, 0)

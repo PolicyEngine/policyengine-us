@@ -1,0 +1,206 @@
+- name: Case 1, individual with resources below limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_500  # < $1,600
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_resource_eligible: true
+
+- name: Case 2, individual with resources at limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_600  # = $1,600 exactly
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_resource_eligible: true
+
+- name: Case 3, individual with resources above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_700  # > $1,600
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_resource_eligible: false
+
+- name: Case 4, couple with resources below limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_200
+      person2:
+        age: 68
+        ssi_countable_resources: 1_100
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Couple limit is $2,400; combined resources = $2,300
+    ct_ssp_resource_eligible: [true, true]
+
+- name: Case 5, couple with resources above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_500
+      person2:
+        age: 68
+        ssi_countable_resources: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Couple limit is $2,400; combined resources = $2,500 > $2,400
+    ct_ssp_resource_eligible: [false, false]
+
+- name: Case 6, individual with resources one dollar above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_601  # $1,601 > $1,600 limit
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # $1,601 > $1,600 -> ineligible
+    ct_ssp_resource_eligible: false
+
+- name: Case 7, couple with resources at exact limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_200
+      person2:
+        age: 68
+        ssi_countable_resources: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Couple limit is $2,400; combined = $2,400 exactly -> eligible (<=)
+    ct_ssp_resource_eligible: [true, true]
+
+- name: Case 8, couple with resources one dollar above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_201
+      person2:
+        age: 68
+        ssi_countable_resources: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Couple limit is $2,400; combined = $2,401 > $2,400 -> ineligible
+    ct_ssp_resource_eligible: [false, false]
+
+- name: Case 9, individual with zero resources.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # $0 <= $1,600 -> eligible
+    ct_ssp_resource_eligible: true
+
+- name: Case 10, married applicant uses the couple asset limit even if only one spouse is SSI-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_000
+      person2:
+        age: 40
+        ssi_countable_resources: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Married households use the $2,400 couple limit; $2,500 is ineligible.
+    ct_ssp_resource_eligible: [false, false]

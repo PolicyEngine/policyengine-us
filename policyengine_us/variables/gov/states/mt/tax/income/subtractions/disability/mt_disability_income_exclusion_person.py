@@ -11,7 +11,5 @@ class mt_disability_income_exclusion_person(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=31"
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mt.tax.income.subtractions.disability_income
+        p = parameters(period).gov.states.mt.tax.income.subtractions.disability_income
         return min_(p.cap, person("disability_benefits", period))

@@ -29,9 +29,7 @@ class ne_refundable_ctc_eligible_child(Variable):
         received_qualifying_child_care = (
             person("pre_subsidy_childcare_expenses", period) > 0
         )
-        income_eligible = person.tax_unit(
-            "ne_refundable_ctc_income_eligible", period
-        )
+        income_eligible = person.tax_unit("ne_refundable_ctc_income_eligible", period)
         return age_eligible_dependent & (
             received_qualifying_child_care | income_eligible
         )

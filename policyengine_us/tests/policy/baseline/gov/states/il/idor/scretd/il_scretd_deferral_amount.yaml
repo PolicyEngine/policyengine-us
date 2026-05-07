@@ -1,0 +1,120 @@
+# Tests for il_scretd_deferral_amount variable
+# Deferral = min(real_estate_taxes, $7,500) when eligible, $0 when not
+# Source: 320 ILCS 30/3, PIO-64
+
+- name: Eligible senior with property taxes above cap.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Eligible, property taxes $10,000 > $7,500 cap
+    # Deferral = min(10,000, 7,500) = 7,500
+    il_scretd_deferral_amount: 7_500
+
+- name: Eligible senior with property taxes below cap.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        real_estate_taxes: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Eligible, property taxes $5,000 < $7,500 cap
+    # Deferral = min(5,000, 7,500) = 5,000
+    il_scretd_deferral_amount: 5_000
+
+- name: Ineligible due to age receives zero deferral.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 50_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Age 60 < 65, not eligible
+    il_scretd_deferral_amount: 0
+
+- name: Ineligible due to income receives zero deferral.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 80_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Income $80,000 > $65,000 limit, not eligible
+    il_scretd_deferral_amount: 0
+
+- name: Eligible with zero property taxes receives zero deferral.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Eligible but no property taxes to defer
+    # Deferral = min(0, 7,500) = 0
+    il_scretd_deferral_amount: 0
+
+- name: Eligible with property taxes exactly at cap.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 65_000
+        real_estate_taxes: 7_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Deferral = min(7,500, 7,500) = 7,500
+    il_scretd_deferral_amount: 7_500

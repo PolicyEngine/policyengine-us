@@ -7,7 +7,7 @@ class mt_personal_exemptions_indiv(Variable):
     label = "Montana exemptions when married couples file separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
@@ -18,9 +18,7 @@ class mt_personal_exemptions_indiv(Variable):
             blind_head_or_spouse = blind * head_or_spouse
             # Allocate the dependent exemption to the head
             head = person("is_tax_unit_head", period)
-            aged_exemption = person(
-                "mt_aged_exemption_eligible_person", period
-            )
+            aged_exemption = person("mt_aged_exemption_eligible_person", period)
             exemption_count = (
                 head_or_spouse.astype(int)
                 + blind_head_or_spouse.astype(int)

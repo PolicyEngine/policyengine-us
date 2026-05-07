@@ -1,0 +1,130 @@
+# Unit tests for hi_tanf_countable_income variable
+# Tests total countable income = countable earned + unearned income
+# Unearned income has no deductions applied
+# Source: Hawaii TANF State Plan; HAR 17-676
+
+- name: Case 1, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_countable_income: 0
+
+- name: Case 2, only earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $1_000 gross earned -> 270 countable (after deductions)
+        # 20%: 1000 - 200 = 800
+        # $200 flat: 800 - 200 = 600
+        # 55%: 600 * 0.45 = 270
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_countable_income: 270
+
+- name: Case 3, only unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_countable_income: 500
+
+- name: Case 4, both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $1_000 gross earned -> 270 countable
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Total = 270 + 300 = 570
+    hi_tanf_countable_income: 570
+
+- name: Case 5, high earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $2_000 gross earned -> 630 countable
+        # 20%: 2000 - 400 = 1600
+        # $200 flat: 1600 - 200 = 1400
+        # 55%: 1400 * 0.45 = 630
+        tanf_gross_earned_income: 2_000
+        tanf_gross_unearned_income: 400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Total = 630 + 400 = 1_030
+    hi_tanf_countable_income: 1_030
+
+- name: Case 6, multiple people with unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # $500 gross earned
+        # 20%: 500 - 100 = 400
+        # $200 flat: 400 - 200 = 200
+        # 55%: 200 * 0.45 = 90
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 300
+      person2:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Wait - deductions at unit level: 500 gross total
+    # 20%: 500 - 100 = 400
+    # $200 flat: 400 - 200 = 200
+    # 55%: 200 * 0.45 = 90
+    # Unearned: 300 + 200 = 500
+    # Total = 90 + 500 = 590
+    hi_tanf_countable_income: 590

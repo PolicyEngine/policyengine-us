@@ -11,9 +11,7 @@ class pr_earned_income_credit(Variable):
     defined_for = "pr_earned_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.credits.earned_income
+        p = parameters(period).gov.territories.pr.tax.income.credits.earned_income
 
         child_count = tax_unit("eitc_child_count", period)
         filing_status = tax_unit("filing_status", period)
@@ -31,19 +29,21 @@ class pr_earned_income_credit(Variable):
         )
 
         phase_out_rate = p.phase_out.rate.calc(child_count)
-        phase_out_threshold = select(
-            [
-                filing_status == filing_status.possible_values.SINGLE,
-                filing_status == filing_status.possible_values.JOINT,
-            ],
-            [
-                p.phase_out.threshold.single.calc(child_count),
-                p.phase_out.threshold.joint.calc(child_count),
-            ],
+        # Treat SURVIVING_SPOUSE as joint (per US convention for 2 years
+        # post-bereavement); every other status uses the individual/single
+        # threshold. The previous `select` only covered SINGLE and JOINT,
+        # leaving HEAD_OF_HOUSEHOLD, SEPARATE, and SURVIVING_SPOUSE with a
+        # default threshold of 0, which caused the full credit to phase out
+        # immediately at any earned income.
+        joint_or_survivor = (filing_status == filing_status.possible_values.JOINT) | (
+            filing_status == filing_status.possible_values.SURVIVING_SPOUSE
+        )
+        phase_out_threshold = where(
+            joint_or_survivor,
+            p.phase_out.threshold.joint.calc(child_count),
+            p.phase_out.threshold.single.calc(child_count),
         )
         # could be negative if gross income not over threshold, so make the minimum value 0
-        phase_out = max_(
-            0, (gross_income - phase_out_threshold) * phase_out_rate
-        )
+        phase_out = max_(0, (gross_income - phase_out_threshold) * phase_out_rate)
         # minimum value 0 in case person isn't eligible for any amount of credit
         return max_(0, phase_in - phase_out)

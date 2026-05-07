@@ -6,6 +6,10 @@ metadata:
   - state_code
   - range(1,7)
   - range(1,20)
+  breakdown_labels:
+  - State
+  - Family size
+  - Income bracket
   label: Optional state sales tax table
   # IRS updates this from the Consumer Expenditure Survey annually.
   # Assume this follows IRS indexing for now.

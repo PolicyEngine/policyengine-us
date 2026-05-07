@@ -1,0 +1,20 @@
+description: Washington deducts this amount as the standard deduction under the millionaires tax.
+
+values:
+  2028-01-01: 1_000_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington millionaires tax standard deduction
+  uprating: gov.bls.cpi.cpi_w
+  # Sec. 316(2) specifies national CPI-W (all urban wage earners and
+  # clerical workers) for indexing starting Oct 2029 (for tax year 2030).
+  # Fixed at $1M for 2028-2029.
+  rounding:
+    type: nearest
+    interval: 1_000
+  reference:
+    - title: ESSB 6346, Sec. 314 - One million dollar standard deduction
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=14
+    - title: ESSB 6346, Sec. 316(1) - Index for inflation
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=14

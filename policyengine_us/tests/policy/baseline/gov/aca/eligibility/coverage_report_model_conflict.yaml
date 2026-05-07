@@ -1,0 +1,27 @@
+- name: Case 1, Marketplace plus Medicaid conflict is flagged.
+  period: 2025
+  input:
+    has_marketplace_health_coverage_at_interview: true
+    has_medicaid_health_coverage_at_interview: true
+  output:
+    coverage_report_model_conflict: true
+
+- name: Case 2, Marketplace without conflicting coverage is not flagged.
+  period: 2025
+  input:
+    age: 40
+    medicaid_enrolled: false
+    is_chip_eligible: false
+    medicare_enrolled: false
+    has_esi: false
+    has_marketplace_health_coverage_at_interview: true
+  output:
+    coverage_report_model_conflict: false
+
+- name: Case 3, non-Marketplace coverage without reported Marketplace is not flagged.
+  period: 2025
+  input:
+    has_marketplace_health_coverage_at_interview: false
+    has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+  output:
+    coverage_report_model_conflict: false

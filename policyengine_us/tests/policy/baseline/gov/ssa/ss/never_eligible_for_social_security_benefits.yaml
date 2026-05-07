@@ -14,10 +14,9 @@
   output:
     never_eligible_for_social_security_benefits: false
 
-- name: If 70 and no social security income, then assume never eligible.
+- name: If explicitly reported, treat the filer as never eligible.
   period: 2022
   input:
-    age: 70
-    social_security: 0
+    never_eligible_for_social_security_benefits: true
   output:
     never_eligible_for_social_security_benefits: true

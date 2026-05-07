@@ -1,7 +1,9 @@
 description: Minnesota reduces the social security subtraction in these increments of adjusted gross income.
 metadata:
-  unit: bool
   label: Minnesota social security subtraction reduction increment
+  breakdown:
+    - filing_status
+  unit: bool
   period: year
   reference:
   - title: Minnesota Statutes 290.0132 Subd. 26.Social Security benefits. (c)

@@ -1,0 +1,94 @@
+- name: Case 1, meet all check.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        ct_tfa_resources_eligible: true
+        ct_tfa_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: true
+
+- name: Case 2, not demographic eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: false
+        ct_tfa_resources_eligible: true
+        ct_tfa_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: false
+
+- name: Case 3, not income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        ct_tfa_resources_eligible: true
+        ct_tfa_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: false
+
+- name: Case 4, not immigration status eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        ct_tfa_resources_eligible: true
+        ct_tfa_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: false
+
+- name: Case 5, not resources eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_demographic_tanf_eligible: true
+        ct_tfa_resources_eligible: false
+        ct_tfa_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_eligible: false

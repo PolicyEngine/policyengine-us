@@ -17,9 +17,7 @@ class dc_ccsp_qualified_need_eligible(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         is_disabled = person("is_disabled", period)
         age_eligible = age < p.disabled_child
-        has_disabled_child = spm_unit.any(
-            is_dependent & is_disabled & age_eligible
-        )
+        has_disabled_child = spm_unit.any(is_dependent & is_disabled & age_eligible)
         # Income test waived when parent is disabled | child is homeless  | parent is teen parent (age <= 19)
         income_test_waived = spm_unit("dc_ccsp_income_test_waived", period)
         # parent is age >= 62 or get social_security_disability or ssi

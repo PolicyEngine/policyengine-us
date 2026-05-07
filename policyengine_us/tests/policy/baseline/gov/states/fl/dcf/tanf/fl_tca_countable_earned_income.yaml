@@ -1,0 +1,229 @@
+# Tests Florida TCA earned income disregard
+# Formula: Countable = max(max(Gross - $90, 0) - $200, 0) * 0.5
+# Per DCF 2620.0111.01: Step 2 subtract $90, Step 3 subtract $200 and 1/2 of remainder
+# Source: Florida Statutes 414.095(11), DCF Policy Manual 2620.0111.01
+
+- name: Case 1, zero earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $0 earned → $0 countable
+
+- name: Case 2, earned income at $200 (below $290 threshold).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 2_400  # $200/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $200/month: max(max(200-90,0)-200,0)*0.5 = max(110-200,0)*0.5 = 0
+
+- name: Case 3, earned income $500.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 105
+    # $500: After $90 = 410, after $200 = 210, * 0.5 = $105
+
+- name: Case 4, earned income $1000.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 12_000  # $1,000/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 355
+    # $1000: After $90 = 910, after $200 = 710, * 0.5 = $355
+
+- name: Case 5, earned income $100 (below $90 disregard).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_200  # $100/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $100: After $90 = 10, after $200 = 0, * 0.5 = $0
+
+- name: Case 6, multiple earners $800 combined.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        employment_income_before_lsr: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 255
+    # Combined: $800, after $90 = 710, after $200 = 510, * 0.5 = $255
+
+# ============================================================
+# Edge Cases
+# ============================================================
+
+- name: Case 7, earned income at $290 threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 3_480  # $290/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $290: After $90 = 200, after $200 = 0, * 0.5 = $0
+    # Tests: exact threshold ($90 + $200 = $290)
+
+- name: Case 8, earned income $291 (one dollar above threshold).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 3_492  # $291/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0.5
+    # $291: After $90 = 201, after $200 = 1, * 0.5 = $0.50
+
+- name: Case 9, very high earned income $5000.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 60_000  # $5,000/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 2_355
+    # $5000: After $90 = 4910, after $200 = 4710, * 0.5 = $2,355
+
+- name: Case 10, multiple earners $550 combined.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        employment_income_before_lsr: 600  # $50/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 130
+    # Combined: $550, after $90 = 460, after $200 = 260, * 0.5 = $130
+
+- name: Case 11, earned income exactly at $90.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_080  # $90/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $90: After $90 = 0, after $200 = 0, * 0.5 = $0
+
+- name: Case 12, earned income $400.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 4_800  # $400/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 55
+    # $400: After $90 = 310, after $200 = 110, * 0.5 = $55
+
+- name: Case 13, earned income $300.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 3_600  # $300/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 5
+    # $300: After $90 = 210, after $200 = 10, * 0.5 = $5
+
+- name: Case 14, earned income $89 (one dollar below $90 disregard).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_068  # $89/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $89: After $90 = max(89-90, 0) = 0
+
+- name: Case 15, earned income $91 (one dollar above $90 disregard).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr: 1_092  # $91/month
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_tca_countable_earned_income: 0
+    # $91: After $90 = 1, after $200 = max(1-200, 0) = 0

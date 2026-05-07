@@ -1,0 +1,23 @@
+description: Arizona deducts this amount of dependent care expenses under the Temporary Assistance for Needy Families program.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Arizona TANF child dependent care deduction
+  reference:
+    - title: A.R.S. § 46-292(P) - Eligibility for assistance
+      href: https://www.azleg.gov/ars/46/00292.htm
+    - title: 2023 Arizona TANF State Plan
+      href: https://des.az.gov/sites/default/files/dl/tanf_state_plan_oct_2023.pdf#page=18
+
+brackets:
+  - threshold:
+      1997-01-01: 0
+    amount:
+      1997-01-01: 200
+  - threshold:
+      1997-01-01: 2
+    amount:
+      1997-01-01: 175

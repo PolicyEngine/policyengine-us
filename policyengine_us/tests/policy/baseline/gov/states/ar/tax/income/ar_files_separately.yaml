@@ -1,33 +1,213 @@
-- name: Tax unit filers separately
+- name: Joint tax lower than separate tax, files jointly
   period: 2022
   input:
     people:
       person1:
         ar_income_tax_before_non_refundable_credits_indiv: 1_000
         ar_income_tax_before_non_refundable_credits_joint: 100
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 50_000
       person2:
         ar_income_tax_before_non_refundable_credits_indiv: 100
         ar_income_tax_before_non_refundable_credits_joint: 500
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 0
     households:
       household:
         members: [person1, person2]
-        state_code: AR 
+        state_code: AR
   output:
+    # Joint tax 600 < Separate tax 1100 (credits are 0 at high income)
     ar_files_separately: false
 
-- name: Tax unit filers jointly
+- name: Separate tax lower than joint tax, files separately
   period: 2022
   input:
     people:
       person1:
         ar_income_tax_before_non_refundable_credits_indiv: 0
         ar_income_tax_before_non_refundable_credits_joint: 100
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 50_000
       person2:
         ar_income_tax_before_non_refundable_credits_indiv: 100
         ar_income_tax_before_non_refundable_credits_joint: 500
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 0
     households:
       household:
         members: [person1, person2]
-        state_code: AR 
+        state_code: AR
   output:
+    # Separate tax 100 < Joint tax 600
+    ar_files_separately: true
+
+- name: Credits flip the filing decision, separate wins after credits
+  # Without credits: joint tax $300 < separate tax $400
+  # With credits: joint has $0 credit (income $30k > $25.8k threshold)
+  #   separate has $120 credit ($60 * 2, each indiv income < threshold)
+  #   joint net $300 vs separate net $280
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 200
+        ar_income_tax_before_non_refundable_credits_joint: 300
+        ar_taxable_income_indiv: 12_000
+        ar_net_taxable_income_joint: 30_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 200
+        ar_income_tax_before_non_refundable_credits_joint: 0
+        ar_taxable_income_indiv: 12_000
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Before credits: joint $300 < separate $400
+    # Joint credit: income $30k > $25,800 => $0
+    # Sep credit: each $12k < $25,800 => $60 each => $120 total
+    # After credits: joint $300 > separate $280
+    ar_files_separately: true
+
+- name: Credits do not flip the decision, joint still wins
+  # Joint tax much lower, credits can't overcome the gap
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 500
+        ar_income_tax_before_non_refundable_credits_joint: 100
+        ar_taxable_income_indiv: 12_000
+        ar_net_taxable_income_joint: 30_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 500
+        ar_income_tax_before_non_refundable_credits_joint: 0
+        ar_taxable_income_indiv: 12_000
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint credit: $0 (income > threshold)
+    # Sep credit: $120 ($60 * 2)
+    # After credits: joint $100 < separate $880
+    ar_files_separately: false
+
+- name: Both paths get zero credit, high income
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 3_000
+        ar_income_tax_before_non_refundable_credits_joint: 5_000
+        ar_taxable_income_indiv: 80_000
+        ar_net_taxable_income_joint: 100_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 1_000
+        ar_income_tax_before_non_refundable_credits_joint: 0
+        ar_taxable_income_indiv: 40_000
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Both incomes >> threshold, both credits are $0
+    # Separate $4000 < Joint $5000
+    ar_files_separately: true
+
+- name: Equal taxes after credits, files jointly (not strictly less)
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 300
+        ar_income_tax_before_non_refundable_credits_joint: 600
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 50_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 300
+        ar_income_tax_before_non_refundable_credits_joint: 0
+        ar_taxable_income_indiv: 50_000
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Both credits $0 (income >> threshold)
+    # Separate $600 == Joint $600
+    # Uses strict < so equal means files jointly (not separately)
+    ar_files_separately: false
+
+- name: Single filer always files jointly
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 500
+        ar_income_tax_before_non_refundable_credits_joint: 500
+        ar_taxable_income_indiv: 30_000
+        ar_net_taxable_income_joint: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # Single filer: indiv == joint, not strictly less
+    ar_files_separately: false
+
+- name: Joint credit uses joint multiplier for married filers
+  # Joint multiplier doubles the max credit for joint filers
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 400
+        ar_income_tax_before_non_refundable_credits_joint: 500
+        ar_taxable_income_indiv: 24_000
+        ar_net_taxable_income_joint: 24_000
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 0
+        ar_income_tax_before_non_refundable_credits_joint: 0
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Joint credit: income $24k < $25,800 => full credit
+    #   $60 * 2 (joint multiplier) = $120
+    # Sep credit: person1 $24k < $25,800 => $60, person2 $0 => $60
+    #   Total: $120
+    # After credits: joint $500-$120=$380 vs separate $400-$120=$280
+    # Separate cheaper
     ar_files_separately: true

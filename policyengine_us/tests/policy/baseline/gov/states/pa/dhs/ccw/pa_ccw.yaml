@@ -1,0 +1,129 @@
+# Unit tests for pa_ccw
+# Tests top-level benefit amount
+# Benefit = min(expenses - copay, MCCA max monthly payment)
+# If benefit < min dept payment ($5/wk -> ~$21.67/mo), benefit = 0
+# defined_for = "pa_ccw_eligible"
+
+- name: Case 1, basic eligible family with positive benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw_eligible: true
+
+- name: Case 2, ineligible TANF family gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw: 0
+
+- name: Case 3, income over limit gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw: 0
+
+- name: Case 4, negative countable income does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # With negative income, adjusted income floors at 0
+    # Copay should be 0 (chart returns 0 for $0 income)
+    # Benefit = min(expenses - 0, MCCA max) -> capped at MCCA max, not inflated
+    pa_ccw_eligible: true

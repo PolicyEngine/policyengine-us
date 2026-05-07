@@ -7,7 +7,7 @@ class mt_taxable_income_indiv(Variable):
     label = "Montana taxable income when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
     reference = (
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=1",
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=16",
@@ -23,12 +23,8 @@ class mt_taxable_income_indiv(Variable):
         # The dependent exemptions are allocated optimally between the head and spouse
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        head_income = person.tax_unit.sum(
-            pre_dependent_exemption_income * head
-        )
-        spouse_income = person.tax_unit.sum(
-            pre_dependent_exemption_income * spouse
-        )
+        head_income = person.tax_unit.sum(pre_dependent_exemption_income * head)
+        spouse_income = person.tax_unit.sum(pre_dependent_exemption_income * spouse)
         # Calculate the difference between the head and spouse income
         income_difference = np.abs(head_income - spouse_income)
         # Cap the exemption amount initially at the difference between the head and spouse income

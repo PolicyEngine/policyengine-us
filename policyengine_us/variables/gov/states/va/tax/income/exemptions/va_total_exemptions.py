@@ -8,7 +8,5 @@ class va_total_exemptions(Variable):
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-    )
+    reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     adds = ["va_personal_exemption", "va_aged_blind_exemption"]

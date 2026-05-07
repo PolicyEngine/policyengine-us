@@ -5,7 +5,9 @@ class snap_excluded_child_earner(Variable):
     value_type = bool
     entity = Person
     label = "Excluded child earner"
-    documentation = "Whether this person is a child whose earned income is excluded from SNAP "
+    documentation = (
+        "Whether this person is a child whose earned income is excluded from SNAP "
+    )
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#d_7"
 

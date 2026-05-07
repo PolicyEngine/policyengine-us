@@ -1,0 +1,13 @@
+- name: Tax unit state reflects household state
+  period: 2024
+  input:
+    state_code_str: CA
+  output:
+    tax_unit_state: CA
+
+- name: Tax unit state with different state
+  period: 2024
+  input:
+    state_code_str: NY
+  output:
+    tax_unit_state: NY

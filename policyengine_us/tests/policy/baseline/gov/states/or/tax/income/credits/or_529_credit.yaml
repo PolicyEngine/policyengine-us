@@ -1,0 +1,44 @@
+- name: Single filer contribution below max credit
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 100
+  output:
+    or_529_credit: 100
+
+- name: Single filer contribution above max credit
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 500
+  output:
+    or_529_credit: 180
+
+- name: Joint filer contribution above max credit
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: JOINT
+    investment_in_529_plan_indv: 1_000
+  output:
+    or_529_credit: 360
+
+- name: Joint filer contribution below max credit
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: JOINT
+    investment_in_529_plan_indv: 200
+  output:
+    or_529_credit: 200
+
+- name: Zero contributions
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+  output:
+    or_529_credit: 0

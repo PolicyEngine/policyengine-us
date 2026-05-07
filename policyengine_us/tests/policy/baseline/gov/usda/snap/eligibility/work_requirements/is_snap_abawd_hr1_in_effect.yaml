@@ -1,0 +1,30 @@
+# Federal HR1 effective date: 2025-07-01
+# CA delays to 2026-06-01 per ACL 25-93
+
+- name: Case 1, non-CA after federal effective date.
+  period: 2026-01
+  input:
+    state_code: TX
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 2, non-CA before federal effective date.
+  period: 2024-01
+  input:
+    state_code: TX
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 3, CA before state adoption date.
+  period: 2026-01
+  input:
+    state_code: CA
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 4, CA after state adoption date.
+  period: 2027-01
+  input:
+    state_code: CA
+  output:
+    is_snap_abawd_hr1_in_effect: true

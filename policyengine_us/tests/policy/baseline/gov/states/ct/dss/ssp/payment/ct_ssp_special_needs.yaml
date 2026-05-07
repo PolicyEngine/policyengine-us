@@ -1,0 +1,30 @@
+- name: Case 1, person with therapeutic diet.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_has_therapeutic_diet: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Therapeutic diet allowance = $36.20
+    ct_ssp_special_needs: 36.20
+
+- name: Case 2, person without therapeutic diet.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ct_ssp_has_therapeutic_diet: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_special_needs: 0

@@ -1,0 +1,18 @@
+description: Vermont provides up to this amount as the housing allowance outside Chittenden County under the Reach Up program.
+
+# The 2001-07-01 effective date is inferred from Act 147 of 2001
+# (Reach Up program creation, replacing ANFC). The current rule
+# revision (Rule 2246, 08/01/2024 bulletin 23-28) does not
+# document the original establishment date of the $400 amount.
+values:
+  2001-07-01: 400
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Vermont Reach Up housing allowance maximum (non-Chittenden)
+  reference:
+    - title: Code Vt. R. 13-170-220 Rule 2246 - Housing Allowance
+      href: https://www.law.cornell.edu/regulations/vermont/13-220-Code-Vt-R-13-170-220-X
+    - title: Vermont TANF State Plan 2024-2027, Attachment C
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/Benefits/VT-TANF-State-Plan-2024-2027.pdf#page=23

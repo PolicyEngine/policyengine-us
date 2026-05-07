@@ -13,9 +13,7 @@ class ca_capi_eligible_person(Variable):
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_ssi_eligible_spouse = person("is_ssi_eligible_spouse", period)
         immigration_status = person("immigration_status", period)
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
 
         return (

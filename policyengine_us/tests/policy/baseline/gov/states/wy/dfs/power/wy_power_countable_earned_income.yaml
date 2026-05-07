@@ -1,0 +1,164 @@
+# Wyoming POWER Countable Earned Income Tests
+# Tests the calculation: max(gross_earned - disregard, 0)
+# Disregard: $600 (single), $1,200 (married couple)
+# Source: Wyoming Statute 42-2-103, DFS Policy Manual Section 1101
+
+- name: Case 1, single parent with earnings above disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Gross earned: $1,000
+    # Disregard (single): $600
+    # Countable: $1,000 - $600 = $400
+    wy_power_countable_earned_income: 400
+
+- name: Case 2, married couple with earnings above disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_000  # $2,000/month
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Gross earned: $2,000
+    # Disregard (married): $1,200
+    # Countable: $2,000 - $1,200 = $800
+    wy_power_countable_earned_income: 800
+
+- name: Case 3, earnings exactly equal to disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 7_200  # $600/month = disregard
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Gross earned: $600
+    # Disregard (single): $600
+    # Countable: $600 - $600 = $0
+    wy_power_countable_earned_income: 0
+
+- name: Case 4, earnings less than disregard floors to zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month < $600 disregard
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Gross earned: $300
+    # Disregard (single): $600
+    # Countable: max($300 - $600, 0) = max(-$300, 0) = $0
+    wy_power_countable_earned_income: 0
+
+- name: Case 5, no earnings results in zero countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Gross earned: $0
+    # Disregard (single): $600
+    # Countable: max($0 - $600, 0) = $0
+    wy_power_countable_earned_income: 0
+
+- name: Case 6, married couple earnings less than disregard floors to zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month < $1,200 disregard
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Gross earned: $500
+    # Disregard (married): $1,200
+    # Countable: max($500 - $1,200, 0) = max(-$700, 0) = $0
+    wy_power_countable_earned_income: 0
+
+- name: Case 7, both spouses working with combined earnings.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 28
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Gross earned: $1,500 + $1,000 = $2,500
+    # Disregard (married): $1,200
+    # Countable: $2,500 - $1,200 = $1,300
+    wy_power_countable_earned_income: 1_300

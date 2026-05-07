@@ -1,0 +1,158 @@
+- name: Case 1, child under 13 who is a dependent and citizen.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 2, child at age 13 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false]
+
+- name: Case 3, child with special needs under 19 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 4, child with special needs at age 19 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false]
+
+- name: Case 5, child under 13 who is not a dependent is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false]
+
+- name: Case 6, infant is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 7, child at age 12 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 8, special needs child at age 18 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # age 18 < 19 (special needs threshold) => eligible
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 9, non-disabled child at age 12 who is not a dependent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # age 12 < 13 but not a dependent => ineligible
+    vt_ccfap_eligible_child: [false]
+
+- name: Case 10, multiple children with mixed eligibility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 14
+        is_tax_unit_dependent: true
+      person4:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    # person1: age 35, not dependent => false
+    # person2: age 5 < 13, dependent => true
+    # person3: age 14 >= 13, not disabled => false
+    # person4: age 15, disabled, 15 < 19 => true
+    vt_ccfap_eligible_child: [false, true, false, true]

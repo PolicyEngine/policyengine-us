@@ -1,0 +1,48 @@
+description: New Jersey provides this amount as the maximum benefit under the WorkFirst New Jersey program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9) # size
+  breakdown_label:
+    - Assistance unit size
+  label: New Jersey WFNJ monthly maximum benefit
+  reference:
+    - title: N.J.A.C. 10:90-3.3(b) Schedule II - Maximum Benefit Payment Levels
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-90-3-3
+    - title: New Jersey State Plan for TANF FFY 2024-2026
+      href: https://www.nj.gov/humanservices/providers/grants/public/publicnoticefiles/Draft%20New%20Jersey%20State%20Plan%20for%20Temporary%20Assistance%20for%20Needy%20Families%20(TANF)%20FFY%202024%20-%20FFY%202026.pdf#page=64
+
+1:
+  2015-01-01: 162
+  2018-07-01: 178
+  2019-08-01: 214
+2:
+  2015-01-01: 322
+  2018-07-01: 354
+  2019-08-01: 425
+3:
+  2015-01-01: 424
+  2018-07-01: 466
+  2019-08-01: 559
+4:
+  2015-01-01: 488
+  2018-07-01: 537
+  2019-08-01: 644
+5:
+  2015-01-01: 552
+  2018-07-01: 607
+  2019-08-01: 728
+6:
+  2015-01-01: 616
+  2018-07-01: 678
+  2019-08-01: 814
+7:
+  2015-01-01: 677
+  2018-07-01: 745
+  2019-08-01: 894
+8:
+  2015-01-01: 728
+  2018-07-01: 801
+  2019-08-01: 961

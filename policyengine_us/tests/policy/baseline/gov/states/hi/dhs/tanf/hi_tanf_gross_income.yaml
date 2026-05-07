@@ -1,0 +1,94 @@
+# Unit tests for hi_tanf_gross_income variable
+# Tests gross income calculation (sum of earned and unearned)
+# This is used for the 185% of SON gross income test
+# Source: Hawaii TANF State Plan; HAR 17-676
+
+- name: Case 1, no income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 0
+
+- name: Case 2, only earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_500
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 1_500
+
+- name: Case 3, only unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 800
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_tanf_gross_income: 800
+
+- name: Case 4, both earned and unearned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_000
+        tanf_gross_unearned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Gross = 1_000 + 500 = 1_500
+    hi_tanf_gross_income: 1_500
+
+- name: Case 5, multiple people in unit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 1_200
+        tanf_gross_unearned_income: 200
+      person2:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Gross = (1_200 + 0) earned + (200 + 300) unearned = 1_700
+    hi_tanf_gross_income: 1_700

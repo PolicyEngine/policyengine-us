@@ -1,17 +1,21 @@
-description: Ohio provides the following multiples corresponding to the lump sum recipient’s age. 
+description: Ohio provides the following multiples corresponding to the lump sum recipient's age.
 metadata:
-  type: single_amount 
+  type: single_amount
   threshold_unit: year
   period: year
   amount_unit: /1
-  label:  Ohio lump sum distribution credit expected remaining years of life
+  label: Ohio lump sum distribution credit expected remaining years of life
   reference:
-    - title:  Ohio 2021 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
+    - title: Ohio Revised Code Section 5747.055(F), Tax credit for retirement income
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.055
+    - title: Ohio 2021 Instructions for Filing Original and Amended (line 5)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29
-    - title: Ohio 2022 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
+    - title: Ohio 2022 Instructions for Filing Original and Amended (line 5)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=29
     - title: Ohio Income Tax Form 2024 Instructions (line 5) Table 1
       href: https://dam.assets.ohio.gov/image/upload/v1735920104/tax.ohio.gov/forms/ohio_individual/individual/2024/it1040-booklet.pdf#page=44
+    - title: Ohio Income Tax Form 2025 Instructions (Page 44)
+      href: https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=44
 brackets:
   - threshold:
       2021-01-01: 0

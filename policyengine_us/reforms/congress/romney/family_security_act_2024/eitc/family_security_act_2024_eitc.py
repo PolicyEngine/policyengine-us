@@ -3,7 +3,6 @@ from policyengine_core.periods import period as period_
 
 
 def create_family_security_act_2024_eitc() -> Reform:
-
     class eitc_maximum(Variable):
         value_type = float
         entity = TaxUnit
@@ -19,9 +18,7 @@ def create_family_security_act_2024_eitc() -> Reform:
             ).gov.contrib.congress.romney.family_security_act_2_0.eitc.amount
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
-            return where(
-                joint, p.joint.calc(child_count), p.single.calc(child_count)
-            )
+            return where(joint, p.joint.calc(child_count), p.single.calc(child_count))
 
     class reform(Reform):
         def apply(self):

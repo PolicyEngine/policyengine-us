@@ -20,7 +20,7 @@ class oh_owf_eligible(Variable):
         # Must have at least one citizen or legal immigrant
         # Use federal immigration eligibility
         immigration_status_eligible = spm_unit.any(
-            person("is_citizen_or_legal_immigrant", period)
+            person("is_citizen_or_legal_immigrant", period.this_year)
         )
 
         # Must meet income requirements
@@ -32,8 +32,4 @@ class oh_owf_eligible(Variable):
         # are NOT considered in determining eligibility"
 
         # All requirements must be met
-        return (
-            demographic_eligible
-            & immigration_status_eligible
-            & income_eligible
-        )
+        return demographic_eligible & immigration_status_eligible & income_eligible

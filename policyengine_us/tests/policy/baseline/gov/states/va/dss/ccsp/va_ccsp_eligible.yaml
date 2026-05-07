@@ -1,0 +1,130 @@
+# Virginia CCSP overall eligibility tests
+# Combines: has eligible child, income eligible, asset eligible, activity eligible
+
+- name: Case 1, basic eligible family.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_ccsp_eligible: true
+
+- name: Case 2, income too high.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 185% FPG size 2 = 20,440 * 1.85 = 37,814
+    # 120,000 > 37,814 -> income ineligible -> overall ineligible
+    va_ccsp_eligible: false
+
+- name: Case 3, no eligible children.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_ccsp_eligible: false
+
+- name: Case 4, not in Virginia.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    va_ccsp_eligible: false
+
+- name: Case 5, assets over $1 million.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_ccsp_eligible: false

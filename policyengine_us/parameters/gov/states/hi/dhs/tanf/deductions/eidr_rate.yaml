@@ -1,0 +1,17 @@
+description: Hawaii excludes this share of earnings from countable income under the Temporary Assistance for Needy Families program.
+
+values:
+  2010-01-13: 0.55
+
+metadata:
+  unit: /1
+  period: month
+  label: Hawaii TANF earned income disregard rate
+  reference:
+    - title: Hawaii TANF State Plan 10.2.1 (Effective October 1, 2023)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=19
+
+# NOTE: This 55% disregard applies during months 1-24 of TANF receipt for employed recipients
+# PolicyEngine cannot track cumulative months of receipt, so this rate is applied as the default
+# The extended rate (36%) applies after 24 months but cannot be automatically enforced
+# This disregard does NOT apply to applicants or earnings of minor children

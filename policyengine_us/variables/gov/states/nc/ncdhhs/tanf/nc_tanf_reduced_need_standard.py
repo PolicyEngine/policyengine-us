@@ -19,6 +19,6 @@ class nc_tanf_reduced_need_standard(Variable):
             ],
         )
         need_standard = spm_unit("nc_tanf_need_standard", period)
-        reduced_need_standard = max_(need_standard - income, 0)
 
-        return reduced_need_standard
+        reduced = max_(need_standard - income, 0)
+        return min_(reduced, need_standard)

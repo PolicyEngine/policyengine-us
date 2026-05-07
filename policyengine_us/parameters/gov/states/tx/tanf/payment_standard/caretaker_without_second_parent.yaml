@@ -8,105 +8,154 @@ metadata:
   reference:
     - title: Texas Works Handbook C-110, TANF (2023-10-01)
       href: https://web.archive.org/web/20240911175553/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
-    - title: Texas Works Handbook C-110, TANF (2024-10-01)
-      href: https://web.archive.org/web/20250308063323/https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
+    - title: Texas TANF Maximum Grant Amounts (2024-10-01)
+      href: https://www.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-Bulletin-24-12.pdf#page=2
     - title: Texas Works Handbook C-110, TANF (Current)
       href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/c-110-tanf
     - title: 1 Tex. Admin. Code § 372.1505 (a) - Calculating Benefits
       href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-1505
+    - title: Texas TANF Maximum Grant Amounts (2019-10-01)
+      href: https://www.hhs.texas.gov/sites/default/files/documents/laws-regulations/handbooks/twh/bulletin2020/19-08.pdf#page=6
+
+  # 2017-2018 values calculated using rate = (17% × monthly FPL for size 3) ÷ budgetary needs for size 3. 
+  # Rate: 38.48% (2017), 39.15% (2018). Applied uniformly to all family types/sizes. Original bulletins unavailable. 
 brackets:
   - threshold:
-      2023-10-01: 0
+      2017-10-01: 0
     amount:
-      2023-10-01: 0
+      2017-10-01: 0
   - threshold:
-      2023-10-01: 1
+      2017-10-01: 1
     amount:
+      2017-10-01: 120
+      2018-10-01: 123
+      2019-10-01: 126
       2023-10-01: 147
       2024-10-01: 154
       2025-10-01: 159
   - threshold:
-      2023-10-01: 2
+      2017-10-01: 2
     amount:
+      2017-10-01: 250
+      2018-10-01: 254
+      2019-10-01: 262
       2023-10-01: 305
       2024-10-01: 320
       2025-10-01: 331
   - threshold:
-      2023-10-01: 3
+      2017-10-01: 3
     amount:
+      2017-10-01: 289
+      2018-10-01: 294
+      2019-10-01: 303
       2023-10-01: 353
       2024-10-01: 370
       2025-10-01: 382
   - threshold:
-      2023-10-01: 4
+      2017-10-01: 4
     amount:
+      2017-10-01: 347
+      2018-10-01: 354
+      2019-10-01: 364
       2023-10-01: 424
       2024-10-01: 445
       2025-10-01: 459
   - threshold:
-      2023-10-01: 5
+      2017-10-01: 5
     amount:
+      2017-10-01: 386
+      2018-10-01: 393
+      2019-10-01: 404
       2023-10-01: 471
       2024-10-01: 494
       2025-10-01: 510
   - threshold:
-      2023-10-01: 6
-      2024-10-01: 6
+      2017-10-01: 6
     amount:
+      2017-10-01: 444
+      2018-10-01: 451
+      2019-10-01: 464
       2023-10-01: 541
       2024-10-01: 568
       2025-10-01: 586
   - threshold:
-      2023-10-01: 7
+      2017-10-01: 7
     amount:
+      2017-10-01: 482
+      2018-10-01: 490
+      2019-10-01: 504
       2023-10-01: 588
       2024-10-01: 616
       2025-10-01: 636
   - threshold:
-      2023-10-01: 8
+      2017-10-01: 8
     amount:
+      2017-10-01: 548
+      2018-10-01: 558
+      2019-10-01: 574
       2023-10-01: 669
       2024-10-01: 701
       2025-10-01: 724
   - threshold:
-      2023-10-01: 9
+      2017-10-01: 9
     amount:
+      2017-10-01: 588
+      2018-10-01: 598
+      2019-10-01: 615
       2023-10-01: 717
       2024-10-01: 752
       2025-10-01: 776
   - threshold:
-      2023-10-01: 10
+      2017-10-01: 10
     amount:
+      2017-10-01: 655
+      2018-10-01: 666
+      2019-10-01: 685
       2023-10-01: 798
       2024-10-01: 837
       2025-10-01: 864
   - threshold:
-      2023-10-01: 11
+      2017-10-01: 11
     amount:
+      2017-10-01: 694
+      2018-10-01: 706
+      2019-10-01: 726
       2023-10-01: 847
       2024-10-01: 888
       2025-10-01: 916
   - threshold:
-      2023-10-01: 12
+      2017-10-01: 12
     amount:
+      2017-10-01: 761
+      2018-10-01: 774
+      2019-10-01: 796
       2023-10-01: 928
       2024-10-01: 973
       2025-10-01: 1_004
   - threshold:
-      2023-10-01: 13
+      2017-10-01: 13
     amount:
+      2017-10-01: 800
+      2018-10-01: 814
+      2019-10-01: 837
       2023-10-01: 976
       2024-10-01: 1_024
       2025-10-01: 1_057
   - threshold:
-      2023-10-01: 14
+      2017-10-01: 14
     amount:
+      2017-10-01: 867
+      2018-10-01: 882
+      2019-10-01: 907
       2023-10-01: 1_057
       2024-10-01: 1_109
       2025-10-01: 1_144
   - threshold:
-      2023-10-01: 15
+      2017-10-01: 15
     amount:
+      2017-10-01: 907
+      2018-10-01: 922
+      2019-10-01: 949
       2023-10-01: 1_105
       2024-10-01: 1_159
       2025-10-01: 1_197

@@ -1,12 +1,16 @@
-description: Utah limits gross income to this share of the Standard Needs Budget under the Family Employment Program.
+description: Utah limits gross income to this share of the Standard Needs Budget (SNB) under the Family Employment Program.
 
 metadata:
   unit: /1
   period: month
-  label: Utah FEP gross income limit rate
+  label: Utah FEP gross income limit as share of SNB
   reference:
     - title: Utah Admin. Code R986-200-239(1)
       href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-239
+    - title: Utah DWS Obsolete Table 1 (2008 to April 30, 2012)
+      href: https://jobs.utah.gov/infosource/eligibilitymanual/Obsolete_Policy/Obsolete_Tables%2c_Appendices%2c_and_Charts/Table_1/ObsoleteTable1_(2008_to_4_30_12).htm
+    - title: Utah DWS Obsolete Table 1 (May 2012 to September 30, 2022)
+      href: https://jobs.utah.gov/infosource/eligibilitymanual/Obsolete_Policy/Obsolete_Tables%2c_Appendices%2c_and_Charts/Table_1/Obsolete_Table_1_(05_01_12_to_09_30_22).htm
 
 values:
-  2022-10-01: 1.85
+  2008-01-01: 1.85

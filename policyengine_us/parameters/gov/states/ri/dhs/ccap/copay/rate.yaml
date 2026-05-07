@@ -1,0 +1,30 @@
+description: Rhode Island sets this co-share percentage under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Rhode Island CCAP co-share rate by FPL ratio
+  reference:
+    - title: 218-RICR-20-00-4, Section 4.6.1.C
+      href: https://rules.sos.ri.gov/regulations/part/218-20-00-4#4.6.1
+    - title: RI DHS CCAP Co-Pay Chart effective 02/15/2026
+      href: https://dhs.ri.gov/media/10606/download?language=en
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  - threshold:
+      2020-01-01: 1.0001
+    amount:
+      2020-01-01: 0.02
+  - threshold:
+      2020-01-01: 1.2501
+    amount:
+      2020-01-01: 0.05
+  - threshold:
+      2020-01-01: 1.5001
+    amount:
+      2020-01-01: 0.07

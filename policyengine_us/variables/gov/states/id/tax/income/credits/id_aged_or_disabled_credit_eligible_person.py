@@ -9,9 +9,7 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
     defined_for = StateCode.ID
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.id.tax.income.subtractions.aged_or_disabled
+        p = parameters(period).gov.states.id.tax.income.subtractions.aged_or_disabled
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         # Aged eligible individuals cannot be the head or spouse.

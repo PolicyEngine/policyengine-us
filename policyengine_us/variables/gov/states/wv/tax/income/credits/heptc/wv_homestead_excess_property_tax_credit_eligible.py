@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class wv_homestead_excess_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the West Virginia homestead excess property tax credit"
-    )
+    label = "Eligible for the West Virginia homestead excess property tax credit"
     reference = (
         "https://code.wvlegislature.gov/11-21-23/"
         "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13"

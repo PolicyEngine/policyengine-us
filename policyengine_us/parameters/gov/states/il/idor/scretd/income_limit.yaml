@@ -1,0 +1,18 @@
+description: Illinois limits household income to this amount under the Senior Citizens Real Estate Tax Deferral program.
+values:
+  2006-01-01: 50_000
+  2012-01-01: 55_000
+  2022-01-01: 65_000
+  2025-01-01: 75_000
+  2026-01-01: 77_000
+  2027-01-01: 79_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois SCRETD household income limit
+  reference:
+    - title: 320 ILCS 30/2 - Senior Citizens Real Estate Tax Deferral Act - Definitions
+      href: https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31
+    - title: SB1821 - Public Act (Effective 2025)
+      href: https://www.ilga.gov/legislation/BillStatus?DocNum=1821&GAID=18&DocTypeID=SB&LegId=160970&SessionID=114

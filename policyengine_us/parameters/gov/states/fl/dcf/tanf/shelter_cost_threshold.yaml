@@ -1,0 +1,14 @@
+description: Florida uses this amount as the threshold between payment standard tiers based on monthly shelter obligation under the Temporary Cash Assistance program.
+
+values:
+  1992-01-01: 50
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Florida TCA shelter cost threshold
+  reference:
+    - title: Florida Statutes 414.095(10) - Payment Standards
+      href: https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0414/Sections/0414.095.html
+    - title: FAC 65A-4.220 - Amount and Duration of Cash Payment
+      href: https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-65A-4-220

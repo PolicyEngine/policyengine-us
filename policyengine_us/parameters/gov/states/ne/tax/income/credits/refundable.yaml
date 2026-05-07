@@ -3,10 +3,16 @@ values:
   2021-01-01:
     - ne_cdcc_refundable
     - ne_eitc
-  
+
+  2022-01-01:
+    - ne_cdcc_refundable
+    - ne_eitc
+    - ne_stillborn_credit
+
   2024-01-01:
     - ne_cdcc_refundable
     - ne_eitc
+    - ne_stillborn_credit
     - ne_refundable_ctc
     - ne_school_readiness_credit
 
@@ -27,5 +33,7 @@ metadata:
     href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf#page=12
   - title: 2024 Nebraska Individual Income Tax Booklet
     href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=14
+  - title: 2025 Nebraska Individual Income Tax Booklet, Lines 41-49
+    href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=18
   - title: Nebraska Revised Statute | Chapter 77 | §7203
     href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203

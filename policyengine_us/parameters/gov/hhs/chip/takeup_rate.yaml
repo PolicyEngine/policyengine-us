@@ -1,0 +1,14 @@
+description: Percentage of CHIP-eligible people who enroll. CHIP participation rates are typically published by Urban Institute and CMS; default matches Medicaid (0.93) since participation rates cluster closely for the two programs. Adjustable per-reform.
+values:
+  2018-01-01: 0.93
+metadata:
+  label: CHIP takeup rate
+  unit: /1
+  period: year
+  economy: false
+  household: false
+  reference:
+    - title: Urban Institute — Medicaid and CHIP Participation Rates Among Eligible Children and Parents
+      href: https://www.urban.org/research/publication/medicaid-and-chip-participation-rates-among-eligible-children-and-parents-2013-2019
+    - title: CMS — Annual CHIP Performance (participation rate data)
+      href: https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/performance-measurement/index.html

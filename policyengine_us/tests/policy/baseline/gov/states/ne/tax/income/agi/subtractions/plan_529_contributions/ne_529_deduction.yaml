@@ -1,0 +1,41 @@
+- name: Case 1, single filer with contribution below cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NE
+    filing_status: SINGLE
+    investment_in_529_plan: 5_000
+  output:
+    ne_529_deduction: 5_000
+
+- name: Case 2, single filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NE
+    filing_status: SINGLE
+    investment_in_529_plan: 15_000
+  output:
+    # Capped at $10,000
+    ne_529_deduction: 10_000
+
+- name: Case 3, married filing separately with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NE
+    filing_status: SEPARATE
+    investment_in_529_plan: 8_000
+  output:
+    # MFS capped at $5,000
+    ne_529_deduction: 5_000
+
+- name: Case 4, joint filer with no contributions.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: NE
+    filing_status: JOINT
+    investment_in_529_plan: 0
+  output:
+    ne_529_deduction: 0

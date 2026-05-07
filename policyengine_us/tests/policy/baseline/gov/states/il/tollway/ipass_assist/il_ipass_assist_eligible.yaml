@@ -1,0 +1,49 @@
+# Illinois I-PASS Assist eligibility unit tests
+# Formula: (income_eligible | categorical_eligible) with defined_for = StateCode.IL
+#
+# Source: https://agency.illinoistollway.com/assist
+
+- name: Case 1, income eligible only.
+  period: 2025
+  input:
+    state_code: IL
+    il_ipass_assist_income_eligible: true
+    il_ipass_assist_categorical_eligible: false
+  output:
+    il_ipass_assist_eligible: true
+
+- name: Case 2, categorical eligible only.
+  period: 2025
+  input:
+    state_code: IL
+    il_ipass_assist_income_eligible: false
+    il_ipass_assist_categorical_eligible: true
+  output:
+    il_ipass_assist_eligible: true
+
+- name: Case 3, both pathways.
+  period: 2025
+  input:
+    state_code: IL
+    il_ipass_assist_income_eligible: true
+    il_ipass_assist_categorical_eligible: true
+  output:
+    il_ipass_assist_eligible: true
+
+- name: Case 4, neither pathway.
+  period: 2025
+  input:
+    state_code: IL
+    il_ipass_assist_income_eligible: false
+    il_ipass_assist_categorical_eligible: false
+  output:
+    il_ipass_assist_eligible: false
+
+- name: Case 5, non-IL resident.
+  period: 2025
+  input:
+    state_code: WI
+    il_ipass_assist_income_eligible: true
+    il_ipass_assist_categorical_eligible: true
+  output:
+    il_ipass_assist_eligible: false

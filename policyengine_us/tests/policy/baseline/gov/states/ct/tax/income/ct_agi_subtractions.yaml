@@ -1,0 +1,41 @@
+- name: Case 1, no subtractions.
+  period: 2024
+  input:
+    state_code: CT
+  output:
+    ct_agi_subtractions: 0
+
+- name: Case 2, government interest only.
+  period: 2024
+  input:
+    state_code: CT
+    us_govt_interest: 5_000
+  output:
+    ct_agi_subtractions: 5_000
+
+- name: Case 3, military retirement pay only.
+  period: 2024
+  input:
+    state_code: CT
+    military_retirement_pay: 10_000
+  output:
+    ct_agi_subtractions: 10_000
+
+- name: Case 4, multiple subtraction sources.
+  period: 2024
+  input:
+    state_code: CT
+    us_govt_interest: 2_000
+    military_retirement_pay: 8_000
+  output:
+    ct_agi_subtractions: 10_000
+    # 2,000 + 8,000 = 10,000
+
+- name: Case 5, negative subtraction returns zero.
+  period: 2024
+  input:
+    state_code: CT
+    us_govt_interest: -5_000
+  output:
+    ct_agi_subtractions: 0
+    # max(0, -5,000) = 0

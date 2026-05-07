@@ -1,0 +1,178 @@
+- name: Case 1, non-Georgia resident gets zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    ga_ssp_eligible_person: [false]
+    ga_ssp_person: [0]
+    ga_ssp: 0
+
+- name: Case 2, first era 2018-01 still returns $20.
+  # 2018-01 is the last January in the $20 era (rate changes 2018-07-01).
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true]
+    # $20/month (effective 2006-07-01, not yet changed to $35)
+    ga_ssp_person: [20]
+    ga_ssp: 20
+
+- name: Case 3, 2020-01 returns $40 confirming third era.
+  # 2020-01 is the first January fully in the $40 era (effective 2019-07-01).
+  absolute_error_margin: 0.01
+  period: 2020-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true]
+    # $40/month (effective 2019-07-01)
+    ga_ssp_person: [40]
+    ga_ssp: 40
+
+- name: Case 4, couple where only one is in Medicaid facility.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: false
+        ssi_lives_in_medical_treatment_facility: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true, false]
+    # Only person1 gets $40; person2 is ineligible (not in facility)
+    ga_ssp_person: [40, 0]
+    ga_ssp: 40
+
+- name: Case 5, couple both in facility during first era.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true, true]
+    # $20/month each in the first era
+    ga_ssp_person: [20, 20]
+    # SPM unit total = $20 + $20 = $40
+    ga_ssp: 40
+
+- name: Case 6, couple both ineligible gets zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: false
+        ssi_lives_in_medical_treatment_facility: false
+      person2:
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: false
+        ssi_lives_in_medical_treatment_facility: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false, false]
+    ga_ssp_person: [0, 0]
+    ga_ssp: 0
+
+- name: Case 7, couple with mixed eligibility in second era.
+  # person1: SSI-eligible + in facility -> eligible
+  # person2: SSI-eligible + NOT in facility -> ineligible
+  # Tests asymmetric facility status during $35 era.
+  absolute_error_margin: 0.01
+  period: 2019-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: false
+        ssi_lives_in_medical_treatment_facility: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true, false]
+    # $35/month for person1 only (effective 2018-07-01)
+    ga_ssp_person: [35, 0]
+    ga_ssp: 35

@@ -16,12 +16,14 @@ class il_ccap_parent_meets_working_requirements(Variable):
             add(
                 person,
                 period,
-                ["employment_income", "self_employment_income"],
+                [
+                    "employment_income",
+                    "self_employment_income",
+                    "sstb_self_employment_income",
+                ],
             )
             > 0
         )
         is_full_time_student = person("is_full_time_student", period)
-        ineligible_parent = head_or_spouse & ~(
-            is_working | is_full_time_student
-        )
+        ineligible_parent = head_or_spouse & ~(is_working | is_full_time_student)
         return spm_unit.sum(ineligible_parent) == 0

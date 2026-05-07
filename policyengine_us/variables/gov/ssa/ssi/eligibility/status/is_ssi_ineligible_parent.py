@@ -10,4 +10,7 @@ class is_ssi_ineligible_parent(Variable):
     def formula(person, period, parameters):
         eligible = person("is_ssi_aged_blind_disabled", period)
         child = person("is_child", period)
-        return ~eligible & ~child & (person.tax_unit.sum(eligible & child) > 0)
+        is_parent = person("is_parent", period)
+        return (
+            ~eligible & ~child & is_parent & (person.tax_unit.sum(eligible & child) > 0)
+        )

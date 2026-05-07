@@ -8,8 +8,8 @@ class ia_exemption_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
-        "https://tax.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
+        "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf",
+        "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf",
     )
     defined_for = StateCode.IA
 

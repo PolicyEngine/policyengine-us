@@ -101,3 +101,42 @@
     ri_standard_deduction_applicable_percentage: 1
   output:
     ri_standard_deduction: 9_050
+
+# 2025 tests - verifying phaseout mechanism with 2025 parameters
+# Phaseout start: $254,250, increment: $7,250, rate: 20%
+- name: Single filer with 80% deduction in 2025 (income $261,500)
+  # AGI = $261,500, excess = $7,250 (1 increment), reduction = 20%
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_applicable_percentage: 0.8
+  output:
+    # Standard deduction for single in 2025 = $10,900
+    # $10,900 * 0.8 = $8,720
+    ri_standard_deduction: 8_720
+
+- name: Joint filer with 60% deduction in 2025
+  # 2 increments of $7,250 = $14,500 above threshold, 40% reduction
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    filing_status: JOINT
+    ri_standard_deduction_applicable_percentage: 0.6
+  output:
+    # Joint 2025 value = $21,800
+    # $21,800 * 0.6 = $13,080
+    ri_standard_deduction: 13_080
+
+- name: 2025 - Surviving spouse with full deduction (no phaseout)
+  # Verifies SURVIVING_SPOUSE fix: should match JOINT value ($21,800), not SINGLE ($10,900)
+  absolute_error_margin: 0.3
+  period: 2025
+  input:
+    state_code: RI
+    filing_status: SURVIVING_SPOUSE
+    ri_standard_deduction_applicable_percentage: 1
+  output:
+    ri_standard_deduction: 21_800

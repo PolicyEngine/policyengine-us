@@ -1,11 +1,16 @@
-description: Colorado TANF grant standard additional amount per child over 10.
+description: Colorado provides this amount per additional child under the Temporary Assistance for Needy Families program.
 
 values:
+  2013-07-01: 72
   2022-03-01: 82
+  2024-07-01: 86
 
 metadata:
   unit: currency-USD
   period: month
+  label: Colorado TANF grant standard additional child amount
   reference:
-    - title: CODE OF COLORADO REGULATIONS 9 CCR 2503-6 | Income Maintenance (Volume 3)
+    - title: 9 CCR 2503-6, Section 3.606.1.F — Grant Standard Additional Child Amount (eff. 3/1/2022)
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=52
+    - title: 9 CCR 2503-6, Section 3.606.1.F — Grant Standard Additional Child Amount (eff. 7/1/2024)
+      href: https://www.coloradosos.gov/CCR/GenerateRulePdf.do?ruleVersionId=11535&fileName=9%20CCR%202503-6#page=52

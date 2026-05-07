@@ -56,9 +56,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
     return reform
 
 
-def create_nyc_mamdani_income_tax_reform(
-    parameters, period, bypass: bool = False
-):
+def create_nyc_mamdani_income_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_nyc_mamdani_income_tax()
 
@@ -79,6 +77,4 @@ def create_nyc_mamdani_income_tax_reform(
         return None
 
 
-nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(
-    None, None, bypass=True
-)
+nyc_mamdani_income_tax = create_nyc_mamdani_income_tax_reform(None, None, bypass=True)

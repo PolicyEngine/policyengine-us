@@ -1,0 +1,133 @@
+- name: Case 1, family of 3 in California.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # 4-person SMI for CA at 2023-10-01: 110,879
+    # Size adjustment for 3: 0.52 + 0.16 * 2 = 0.84
+    # Annual: 110,879 * 0.84 = 93,138.36
+    # Monthly: 93,138.36 / 12 = 7,761.53
+    ca_child_care_smi: 7_761.53
+
+- name: Case 2, family of 4 in California.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    # 4-person SMI for CA at 2023-10-01: 110,879
+    # Size adjustment for 4: 0.52 + 0.16 * 3 = 1.00
+    # Annual: 110,879 * 1.00 = 110,879
+    # Monthly: 110,879 / 12 = 9,239.92
+    ca_child_care_smi: 9_239.917
+
+- name: Case 3, family of 2 in California.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 4-person SMI for CA: 110,879
+    # Size adjustment for 2: 0.52 + 0.16 * 1 = 0.68
+    # Annual: 110,879 * 0.68 = 75,397.72
+    # Monthly: 75,397.72 / 12 = 6,283.14
+    ca_child_care_smi: 6_283.1436
+
+- name: Case 4, family of 6 in California, max second to sixth adjustment.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: CA
+  output:
+    # 4-person SMI for CA: 110,879
+    # Size adjustment for 6: 0.52 + 0.16 * 5 = 1.32
+    # Annual: 110,879 * 1.32 = 146,360.28
+    # Monthly: 146,360.28 / 12 = 12,196.69
+    ca_child_care_smi: 12_196.69
+
+- name: Case 5, family of 7 in California, uses additional person adjustment.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 40
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 11
+      person6:
+        age: 8
+      person7:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: CA
+  output:
+    # 4-person SMI for CA: 110,879
+    # Size adjustment for 7: 0.52 + 0.16 * 5 + 0.03 * 1 = 1.35
+    # Annual: 110,879 * 1.35 = 149,686.65
+    # Monthly: 149,686.65 / 12 = 12,473.89
+    ca_child_care_smi: 12_473.888

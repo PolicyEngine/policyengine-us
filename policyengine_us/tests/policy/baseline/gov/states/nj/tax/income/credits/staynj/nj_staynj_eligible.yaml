@@ -1,0 +1,453 @@
+# Unit tests for nj_staynj_eligible variable
+# Tests eligibility for Stay NJ Property Tax Credit
+# Eligibility: Age 65+, homeowner, income < $500,000 (strict less than)
+# Note: Stay NJ begins in 2026
+
+- name: Case 1, senior homeowner with income below limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34  # New Jersey
+  output:
+    nj_staynj_eligible: true
+
+- name: Case 2, senior homeowner with higher income is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 400_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 70 >= 65, homeowner, income $400K < $500K
+    nj_staynj_eligible: true
+
+- name: Case 3, senior homeowner with income at limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 500_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $500K is at limit (must be LESS than $500K)
+    nj_staynj_eligible: false
+
+- name: Case 4, senior homeowner with income above limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 600_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $600K > $500K limit
+    nj_staynj_eligible: false
+
+- name: Case 5, non-senior age 64 is ineligible regardless of other factors.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 64 < 65 threshold
+    nj_staynj_eligible: false
+
+- name: Case 6, senior renter is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Must be homeowner (RENTER is ineligible)
+    nj_staynj_eligible: false
+
+- name: Case 7, young non-homeowner is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 45 < 65 AND renter - fails both requirements
+    nj_staynj_eligible: false
+
+- name: Case 8, senior couple where one is under 65.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 63
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # At least one person is age 67 >= 65, homeowner, income $150K < $500K
+    nj_staynj_eligible: true
+
+# ==============================================================================
+# EDGE CASES - Boundary conditions and corner cases
+# ==============================================================================
+
+- name: Edge case 1, income exactly $499,999 one dollar below limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 499_999
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $499,999 < $500,000 (strict less than) - eligible
+    nj_staynj_eligible: true
+
+- name: Edge case 2, income exactly $500,001 one dollar above limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 500_001
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $500,001 > $500,000 limit - ineligible
+    nj_staynj_eligible: false
+
+- name: Edge case 3, age exactly 65 at threshold is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 65 >= 65 (uses >=) - eligible
+    nj_staynj_eligible: true
+
+- name: Edge case 4, zero income is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $0 < $500K - eligible
+    nj_staynj_eligible: true
+
+- name: Edge case 5, very high income is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_000_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $1M far exceeds $500K limit
+    nj_staynj_eligible: false
+
+- name: Edge case 6, couple where only spouse is 65 plus is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # Uses greater_age_head_spouse = max(50, 66) = 66 >= 65
+    # Homeowner, income $100K < $500K
+    nj_staynj_eligible: true
+
+- name: Edge case 7, homeowner who also pays rent is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Implementation: is_homeowner = pays_taxes & ~pays_rent
+    # Pays both taxes AND rent - is_homeowner = false
+    nj_staynj_eligible: false
+
+- name: Edge case 8, person who neither owns nor rents is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # No rent - defaults to 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Not homeowner (no property taxes) and not renter (no rent paid)
+    # Formula: is_homeowner = pays_taxes & ~pays_rent = false
+    # Ineligible
+    nj_staynj_eligible: false
+
+- name: Edge case 9, couple with both under 65 is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 62
+        employment_income: 50_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # greater_age_head_spouse = max(64, 62) = 64 < 65 - ineligible
+    nj_staynj_eligible: false
+
+- name: Edge case 10, very old senior is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 95
+        employment_income: 50_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 95 >= 65, homeowner, income $50K < $500K
+    nj_staynj_eligible: true

@@ -1,0 +1,20 @@
+- name: Income tax positive when tax is positive
+  period: 2024
+  input:
+    income_tax: 5000
+  output:
+    income_tax_positive: 5000
+
+- name: Income tax positive floors negative tax at zero
+  period: 2024
+  input:
+    income_tax: -2000
+  output:
+    income_tax_positive: 0
+
+- name: Income tax positive with zero tax
+  period: 2024
+  input:
+    income_tax: 0
+  output:
+    income_tax_positive: 0

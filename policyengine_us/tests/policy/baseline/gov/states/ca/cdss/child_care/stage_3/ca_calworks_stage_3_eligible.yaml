@@ -1,0 +1,143 @@
+- name: Case 1, former CalWORKs recipient beyond 24 months, eligible for Stage 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Beyond 24 months = eligible for Stage 3
+    ca_calworks_stage_3_eligible: true
+
+- name: Case 2, former CalWORKs recipient within 24 months, not eligible for Stage 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 12
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Within 24 months = Stage 2, not Stage 3
+    ca_calworks_stage_3_eligible: false
+
+- name: Case 3, never received CalWORKs, not eligible for Stage 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Never received CalWORKs = not eligible for Stage 3
+    ca_calworks_stage_3_eligible: false
+
+- name: Case 4, income above 85 percent SMI, not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 120_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Income too high
+    ca_calworks_stage_3_eligible: false
+
+- name: Case 5, exactly 25 months since exit, first month of Stage 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 25
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # 25 months > 24 = first month of Stage 3 eligibility
+    ca_calworks_stage_3_eligible: true
+
+- name: Case 6, exactly 24 months since exit, not yet Stage 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 48_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_calworks_recipient: true
+        months_since_calworks_exit: 24
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Exactly 24 months: uses > 24 for Stage 3, so not eligible yet
+    ca_calworks_stage_3_eligible: false

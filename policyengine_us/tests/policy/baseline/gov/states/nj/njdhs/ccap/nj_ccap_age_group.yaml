@@ -1,0 +1,161 @@
+# nj_ccap_age_group: Person, Enum, MONTH
+# Age group boundaries (from age_group/months.yaml bracket parameter):
+#   0 months -> INFANT (index 0)
+#   18 months -> TODDLER (index 1)
+#   30 months -> PRESCHOOL (index 2)
+#   60 months -> SCHOOL_AGE (index 3)
+# Special needs variants derived from is_disabled flag.
+# Enum values: INFANT, INFANT_SN, TODDLER, TODDLER_SN, PRESCHOOL, PRESCHOOL_SN,
+#   SCHOOL_AGE, SCHOOL_AGE_SN
+
+- name: Case 1, newborn is infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: INFANT
+
+- name: Case 2, child at 1 year is infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 1 year = 12 months < 18 months -> INFANT
+    nj_ccap_age_group: INFANT
+
+- name: Case 3, child at 2 years is toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 2 years = 24 months >= 18, < 30 -> TODDLER
+    nj_ccap_age_group: TODDLER
+
+- name: Case 4, child at 3 years is preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 3 years = 36 months >= 30, < 60 -> PRESCHOOL
+    nj_ccap_age_group: PRESCHOOL
+
+- name: Case 5, child at 4 years is preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 4 years = 48 months >= 30, < 60 -> PRESCHOOL
+    nj_ccap_age_group: PRESCHOOL
+
+- name: Case 6, child at 5 years is school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 5 years = 60 months >= 60 -> SCHOOL_AGE
+    nj_ccap_age_group: SCHOOL_AGE
+
+- name: Case 7, child at 10 years is school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: SCHOOL_AGE
+
+- name: Case 8, disabled infant has special needs variant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: INFANT_SN
+
+- name: Case 9, disabled toddler has special needs variant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: TODDLER_SN
+
+- name: Case 10, disabled preschooler has special needs variant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: PRESCHOOL_SN
+
+- name: Case 11, disabled school age child has special needs variant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_age_group: SCHOOL_AGE_SN

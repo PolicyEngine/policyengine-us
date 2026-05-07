@@ -132,13 +132,15 @@ for state_code, state_name in [
                 unit=USD,
                 definition_period=YEAR,
                 defined_for=getattr(StateCode, state_code.upper()),
-                formula=lambda tax_unit, period, parameters, indiv=indiv_var, joint=joint_var: where(
-                    tax_unit(
-                        f"{indiv.split('_')[0]}_files_separately",  # Get state code from the variable name
-                        period,
-                    ),
-                    add(tax_unit, period, [indiv]),
-                    add(tax_unit, period, [joint]),
+                formula=lambda tax_unit, period, parameters, indiv=indiv_var, joint=joint_var: (
+                    where(
+                        tax_unit(
+                            f"{indiv.split('_')[0]}_files_separately",  # Get state code from the variable name
+                            period,
+                        ),
+                        add(tax_unit, period, [indiv]),
+                        add(tax_unit, period, [joint]),
+                    )
                 ),
             ),
         )

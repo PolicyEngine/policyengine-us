@@ -1,0 +1,293 @@
+- name: Case 1, basic eligible family with income below threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Has eligible child (age 5 < 13, dependent)
+    # FPG for size 2 = 15,650 + 5,500 = 21,150
+    # 575% FPL = 21,150 * 5.75 = 121,612.50
+    # Income 50,000 <= 121,612.50
+    # Assets default to 0 < 1,000,000
+    vt_ccfap_eligible: true
+
+- name: Case 2, income above 575 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 125_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # 575% FPL = 121,612.50
+    # Income 125,000 > 121,612.50
+    vt_ccfap_eligible: false
+
+- name: Case 3, Reach Up eligible bypasses income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 125_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled:
+          2025-01: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Reach Up eligible = categorically eligible (bypasses income test)
+    vt_ccfap_eligible: true
+
+- name: Case 4, protective services child bypasses income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Protective services = categorically eligible
+    vt_ccfap_eligible: true
+
+- name: Case 5, foster child bypasses income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Foster child present = categorically eligible
+    vt_ccfap_eligible: true
+
+- name: Case 6, no eligible child means ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Child is 15, not disabled, so age 15 >= 13 = not eligible child
+    vt_ccfap_eligible: false
+
+- name: Case 7, assets over 1 million means ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Assets 1,500,000 > 1,000,000 limit
+    vt_ccfap_eligible: false
+
+- name: Case 8, single adult with no children is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # No eligible child
+    vt_ccfap_eligible: false
+
+- name: Case 9, income at exactly 575 percent FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 121_612.50
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # 575% FPL = 121,612.50
+    # Income = 121,612.50 <= 121,612.50
+    vt_ccfap_eligible: true
+
+- name: Case 10, income one dollar above 575 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 121_613
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # 575% FPL = 121,612.50
+    # Income 121,613 > 121,612.50
+    vt_ccfap_eligible: false
+
+- name: Case 11, multiple categorical exemptions combined.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled:
+          2025-01: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # All three categorical exemptions present
+    # Income way above threshold but categorically eligible
+    vt_ccfap_eligible: true
+
+- name: Case 12, activity test failure as sole cause of ineligibility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        pension_income: 50_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Income eligible (pension counts for CCFAP), has eligible child, assets OK
+    # But parent has no employment, self-employment, education, or disability
+    # so service need is not met, and not categorically exempt
+    vt_ccfap_eligible: false
+
+- name: Case 13, child only household with disabled teenager.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # age 18 < 19 (special needs), dependent => eligible child
+    # Zero income, zero assets => eligible
+    vt_ccfap_eligible: true

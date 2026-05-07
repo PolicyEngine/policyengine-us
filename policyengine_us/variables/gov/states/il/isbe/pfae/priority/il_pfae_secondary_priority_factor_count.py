@@ -26,9 +26,7 @@ class il_pfae_secondary_priority_factor_count(Variable):
 
         # Factor 7: Teen parent at birth of first child
         # Parent was under 20 when first child was born
-        was_teen_parent = spm_unit(
-            "il_isbe_was_teen_parent_at_first_birth", period
-        )
+        was_teen_parent = spm_unit("il_isbe_was_teen_parent_at_first_birth", period)
 
         # Factor 8: Child or parent born outside US
         born_outside_us = person("is_born_outside_us", period)
@@ -47,9 +45,7 @@ class il_pfae_secondary_priority_factor_count(Variable):
         delay_without_iep = has_developmental_delay & ~has_iep
 
         # Factor 12: No prior formal early learning
-        no_prior_learning = person(
-            "has_no_prior_formal_early_learning", period
-        )
+        no_prior_learning = person("has_no_prior_formal_early_learning", period)
 
         factors = [
             is_low_income,

@@ -6,9 +6,7 @@ class dc_gac_eligible_child(Variable):
     entity = Person
     definition_period = MONTH
     label = "Eligible child for DC General Assistance for Children (GAC) based on demographics"
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
     defined_for = "dc_pap_eligible_child"
 
     def formula(person, period, parameters):

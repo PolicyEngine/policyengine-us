@@ -4,23 +4,26 @@ values:
   2022-01-01: 217_050
   2023-01-01: 233_750
   2024-01-01: 246_450
+  2025-01-01: 254_250
 
 metadata:
-  label: Rhode Island standard deduction phase out start 
-  period: year
   unit: currency-USD
+  period: year
+  label: Rhode Island standard deduction phase out start
   uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
       interval: 50
   reference:
-  # Legal code specifies $175,000 starting in 2011.
-  - title: R.I. Gen. Laws § 44-30-2.6 (c), (3), (B), (III)
-    href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
-  - title: 2024 FORM RI-1040 line 6
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024_1040WE_w.pdf
-  - title: 2022 FORM RI-1040 line 6
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf
-  - title: 2021 FORM RI-1040 line 6
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021_1040we_w.pdf
+    # Legal code specifies $175,000 starting in 2011.
+    - title: R.I. Gen. Laws § 44-30-2.6 (c), (3), (B), (III)
+      href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
+    - title: 2025 RI-1040 Instructions page I-4
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=4
+    - title: 2024 FORM RI-1040 line 6
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024_1040WE_w.pdf
+    - title: 2022 FORM RI-1040 line 6
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf
+    - title: 2021 FORM RI-1040 line 6
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021_1040we_w.pdf

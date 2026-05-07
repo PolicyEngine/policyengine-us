@@ -3,16 +3,38 @@
   input:
     eitc: 0
     state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
   output:
     hi_eitc: 0
 
-- name: 20% match of fed EITC
+- name: 20% match of fed EITC when Hawaii liability is sufficient
   period: 2022
   input:
     eitc: 1_000
     state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
   output:
     hi_eitc: 200
+
+- name: 2022 EITC is capped by Hawaii income tax liability
+  period: 2022
+  input:
+    eitc: 2_700
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 0
+  output:
+    hi_eitc_potential: 540
+    hi_eitc: 0
+
+- name: 2023 EITC remains refundable with zero Hawaii income tax liability
+  period: 2023
+  input:
+    eitc: 2_700
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 0
+  output:
+    hi_eitc_potential: 1_080
+    hi_eitc: 1_080
 
 - name: 40% match of fed EITC
   period: 2023

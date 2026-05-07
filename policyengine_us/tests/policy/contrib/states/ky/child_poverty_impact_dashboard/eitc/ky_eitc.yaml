@@ -1,0 +1,53 @@
+- name: Case 1 - KY EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ky.eitc.ky_eitc
+  input:
+    gov.contrib.states.ky.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: KY
+    eitc: 1_000
+  output:
+    ky_eitc: 100
+    ky_refundable_credits: 100
+
+- name: Case 2 - KY EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ky.eitc.ky_eitc
+  input:
+    gov.contrib.states.ky.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: KY
+    eitc: 2_500
+  output:
+    ky_eitc: 500
+    ky_refundable_credits: 500
+
+- name: Case 3 - KY EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ky.eitc.ky_eitc
+  input:
+    gov.contrib.states.ky.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: KY
+    eitc: 1_000
+  output:
+    ky_eitc: 0
+    ky_refundable_credits: 0
+
+- name: Case 4 - KY EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ky.eitc.ky_eitc
+  input:
+    gov.contrib.states.ky.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: KY
+    eitc: 0
+  output:
+    ky_eitc: 0
+    ky_refundable_credits: 0
+
+- name: Case 5 - KY EITC is 0 for non-KY residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.ky.eitc.ky_eitc
+  input:
+    gov.contrib.states.ky.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    ky_eitc: 0

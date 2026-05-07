@@ -20,6 +20,8 @@ metadata:
       href: https://www.efile.com/oregon-tax-brackets-rates-and-forms/
     - title: 2024 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=28
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=17
 brackets:
   # "* Since 1993 the tax brackets have been indexed for inflation.
   #  ** In 2002, the inflation index changed from the Portland CPI to the U.S. city average CPI."
@@ -42,8 +44,9 @@ brackets:
         2022-01-01: 3_750
         2023-01-01: 4_050
         2024-01-01: 4_300
+        2025-01-01: 4_400
       metadata:
-        uprating: 
+        uprating:
           parameter: gov.irs.uprating
           rounding:
             type: downwards
@@ -62,6 +65,7 @@ brackets:
         2022-01-01: 9_450
         2023-01-01: 10_200
         2024-01-01: 10_750
+        2025-01-01: 11_100
       metadata:
         uprating: 
           parameter: gov.irs.uprating

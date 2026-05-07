@@ -32,9 +32,5 @@ class il_pfae_has_highest_priority_factor(Variable):
         receives_tanf = person.spm_unit("il_tanf", period) > 0
 
         return (
-            is_homeless
-            | is_in_foster_care
-            | has_iep
-            | is_deep_poverty
-            | receives_tanf
+            is_homeless | is_in_foster_care | has_iep | is_deep_poverty | receives_tanf
         )

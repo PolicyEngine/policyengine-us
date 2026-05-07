@@ -28,9 +28,7 @@ class is_snap_ineligible_student(Variable):
         # Not modeled
 
         # Exception 4: Employed at least 20 hours per week or work-study
-        meets_work_hours_exception = person(
-            "meets_snap_work_exception", period
-        )
+        meets_work_hours_exception = person("meets_snap_work_exception", period)
 
         # Exception 5: Parent with responsibility for dependent child under 6,
         # or child 6-11 when adequate child care is not available

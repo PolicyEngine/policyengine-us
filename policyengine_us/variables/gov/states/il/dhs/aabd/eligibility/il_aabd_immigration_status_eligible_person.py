@@ -11,10 +11,8 @@ class il_aabd_immigration_status_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd
-        immigration_status = person("immigration_status", period)
-        is_citizen = (
-            immigration_status == immigration_status.possible_values.CITIZEN
-        )
+        immigration_status = person("immigration_status", period.this_year)
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         immigration_status_str = immigration_status.decode_to_str()
         has_qualifying_status = np.isin(
             immigration_status_str,

@@ -1,0 +1,180 @@
+# Wyoming POWER Earned Income Disregard Tests
+# Tests the flat dollar earned income disregard
+# Single/unmarried: $600, Married couple: $1,200
+# Source: Wyoming Statute 42-2-103, DFS Policy Manual Section 906
+
+- name: Case 1, single parent receives $600 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Single parent (1 head/spouse) -> $600 disregard
+    wy_power_earned_income_disregard: 600
+
+- name: Case 2, married couple with child receives $1,200 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Married couple (2 heads/spouses) -> $1,200 disregard
+    wy_power_earned_income_disregard: 1_200
+
+- name: Case 3, single individual receives $600 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    # Single individual (1 head/spouse) -> $600 disregard
+    wy_power_earned_income_disregard: 600
+
+- name: Case 4, married couple expecting child receives $1,200 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Married couple (2 heads/spouses) -> $1,200 disregard
+    wy_power_earned_income_disregard: 1_200
+
+# =============================================================================
+# EDGE CASES
+# =============================================================================
+
+- name: Edge case 1, single parent with multiple children still gets $600 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 10
+      person5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    # Single parent (1 head/spouse) -> $600 disregard
+    # Disregard is NOT per-child; it's per household type
+    wy_power_earned_income_disregard: 600
+
+- name: Edge case 2, married couple with multiple children still gets $1,200 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+      person4:
+        age: 12
+      person5:
+        age: 8
+      person6:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: WY
+  output:
+    # Married couple (2 heads/spouses) -> $1,200 disregard
+    # Multiple children do NOT increase the disregard
+    wy_power_earned_income_disregard: 1_200
+
+- name: Edge case 3, large household of 12 single parent gets $600 disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 9
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 3
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: WY
+  output:
+    # Large household (12 people), single parent (1 head/spouse) -> $600 disregard
+    # Disregard is based on marital status, not household size
+    wy_power_earned_income_disregard: 600

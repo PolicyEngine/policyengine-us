@@ -38,35 +38,27 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         def formula(tax_unit, period, parameters):
             # specify parameters
             filing_status = tax_unit("filing_status", period)
-            p = parameters(
-                period
-            ).gov.states.mn.tax.income.subtractions.social_security
+            p = parameters(period).gov.states.mn.tax.income.subtractions.social_security
             total_benefit_fraction = p.total_benefit_fraction
             income_amount = p.income_amount[filing_status]
             net_income_fraction = p.net_income_fraction
             alt_amount = p.alternative_amount[filing_status]
             # calculate subtraction amount (following "Worksheet for line 12")
             # ... US-taxable social security benefits
-            us_taxable_oasdi = add(
-                tax_unit, period, ["taxable_social_security"]
-            )
+            us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
             # ... alternative benefit subtraction amount
             us_gross_income = add(tax_unit, period, ["irs_gross_income"])
             adj_income = us_gross_income - us_taxable_oasdi
             total_oasdi = add(tax_unit, period, ["social_security"])
             oasdi_amount = total_oasdi * total_benefit_fraction
-            tax_exempt_int = add(
-                tax_unit, period, ["tax_exempt_interest_income"]
-            )
+            tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
             sum_income = adj_income + oasdi_amount + tax_exempt_int
             us_ald = tax_unit("above_the_line_deductions", period)
             student_loan_int = add(tax_unit, period, ["student_loan_interest"])
             mn_ald = max_(0, us_ald - student_loan_int)
             income = max_(0, sum_income - mn_ald)
             net_income = max_(0, income - income_amount)
-            alt_sub_amt = max_(
-                0, alt_amount - (net_income * net_income_fraction)
-            )
+            alt_sub_amt = max_(0, alt_amount - (net_income * net_income_fraction))
             return min_(us_taxable_oasdi, alt_sub_amt)
 
     class mn_standard_deduction(Variable):
@@ -92,12 +84,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             # ... calculate standard deduction offset
             std_ded_offset = p.reduction.alternate.rate * std_ded
             agi = tax_unit("adjusted_gross_income", period)
-            excess_agi = max_(
-                0, agi - p.reduction.agi_threshold.low[filing_status]
-            )
-            excess_agi_offset = (
-                p.reduction.excess_agi_fraction.low * excess_agi
-            )
+            excess_agi = max_(0, agi - p.reduction.agi_threshold.low[filing_status])
+            excess_agi_offset = p.reduction.excess_agi_fraction.low * excess_agi
             offset = min_(std_ded_offset, excess_agi_offset)
             return max_(0, std_ded - offset)
 
@@ -122,9 +110,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             #   pay less Minnesota income tax if you take the larger of your
             #   itemized or standard deduction.
             # ... calculate pre-limitation itemized deductions
-            itm_deds_less_salt = tax_unit(
-                "itemized_deductions_less_salt", period
-            )
+            itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
             capped_property_taxes = tax_unit("capped_property_taxes", period)
             mn_itm_deds = itm_deds_less_salt + capped_property_taxes
             # ... calculate itemized deductions offset
@@ -138,12 +124,8 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             net_deds_offset = p.reduction.alternate.rate * net_deds
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
-            excess_agi = max_(
-                0, agi - p.reduction.agi_threshold.low[filing_status]
-            )
-            excess_agi_offset = (
-                p.reduction.excess_agi_fraction.low * excess_agi
-            )
+            excess_agi = max_(0, agi - p.reduction.agi_threshold.low[filing_status])
+            excess_agi_offset = p.reduction.excess_agi_fraction.low * excess_agi
             offset = min_(net_deds_offset, excess_agi_offset)
             return max_(0, mn_itm_deds - offset)
 
@@ -173,9 +155,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             non_head = ~person("is_tax_unit_head", period)
             disabled = person("is_incapable_of_self_care", period)
             qualifies_by_disability = non_head & disabled
-            dep_count = tax_unit.sum(
-                qualifies_by_age | qualifies_by_disability
-            )
+            dep_count = tax_unit.sum(qualifies_by_age | qualifies_by_disability)
             # calculate qualifying care expenses
             expense = tax_unit("tax_unit_childcare_expenses", period)
             # ... cap expense by number of qualifying dependents
@@ -205,9 +185,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
     return reform
 
 
-def create_mn_walz_hf1938_repeal_reform(
-    parameters, period, bypass: bool = False
-):
+def create_mn_walz_hf1938_repeal_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_mn_walz_hf1938_repeal()
 

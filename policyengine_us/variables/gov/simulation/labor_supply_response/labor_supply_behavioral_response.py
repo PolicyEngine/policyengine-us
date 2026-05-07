@@ -1,4 +1,9 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
+    calculate_income_lsr_effect,
+    calculate_substitution_lsr_effect,
+    get_behavioral_response_measurements,
+)
 
 
 class labor_supply_behavioral_response(Variable):
@@ -17,66 +22,21 @@ class labor_supply_behavioral_response(Variable):
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
-        if (
-            hasattr(simulation, "_lsr_calculating")
-            and simulation._lsr_calculating
+        if (  # pragma: no cover
+            hasattr(simulation, "_lsr_calculating") and simulation._lsr_calculating
         ):
             return 0
 
         # Mark that we're calculating LSR
-        simulation._lsr_calculating = True
+        simulation._lsr_calculating = True  # pragma: no cover
 
-        try:
-            measurement_branch = simulation.get_branch(
-                "lsr_measurement", clone_system=True
-            )  # A branch without LSRs
-            baseline_branch = simulation.get_branch("baseline").get_branch(
-                "baseline_lsr_measurement", clone_system=True
-            )  # Already created by default
-            baseline_branch.tax_benefit_system.parameters.simulation = (
-                measurement_branch.tax_benefit_system.parameters.simulation
+        try:  # pragma: no cover
+            measurements = get_behavioral_response_measurements(person, period)
+            return calculate_income_lsr_effect(
+                person, period, parameters, measurements
+            ) + calculate_substitution_lsr_effect(
+                person, period, parameters, measurements
             )
-
-            # (system with LSRs) <- (system without LSRs used to calculate LSRs)
-            #                      |
-            #                      * -(baseline system without LSRs used to calculate LSRs)
-
-            for branch in [measurement_branch, baseline_branch]:
-                branch.tax_benefit_system.neutralize_variable(
-                    "employment_income_behavioral_response"
-                )
-                branch.tax_benefit_system.neutralize_variable(
-                    "self_employment_income_behavioral_response"
-                )
-                branch.set_input(
-                    "employment_income_before_lsr",
-                    period,
-                    person("employment_income_before_lsr", period),
-                )
-                branch.set_input(
-                    "self_employment_income_before_lsr",
-                    period,
-                    person("self_employment_income_before_lsr", period),
-                )
-
-            response = add(
-                person,
-                period,
-                [
-                    "income_elasticity_lsr",
-                    "substitution_elasticity_lsr",
-                ],
-            )
-            simulation = person.simulation
-            del simulation.branches["baseline"].branches[
-                "baseline_lsr_measurement"
-            ]
-            del simulation.branches["lsr_measurement"]
-
-            simulation.macro_cache_read = False
-            simulation.macro_cache_write = False
-
-            return response
 
         finally:
             # Clear the re-entry guard

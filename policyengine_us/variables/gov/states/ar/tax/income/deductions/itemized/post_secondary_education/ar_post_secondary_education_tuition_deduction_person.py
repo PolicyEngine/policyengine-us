@@ -11,9 +11,7 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.deductions.itemized.tuition
+        p = parameters(period).gov.states.ar.tax.income.deductions.itemized.tuition
         tuition_expenses = person("qualified_tuition_expenses", period)
         uncapped = p.rate * tuition_expenses
         cap = select(

@@ -1,0 +1,111 @@
+- name: Single person below threshold
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 0
+
+- name: Single person, in middle of bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 150_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 500
+
+- name: Joint couple below threshold
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 150_000
+    filing_status: JOINT
+  output:
+    agi_surtax: 0
+
+- name: Joint couple, in top bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: JOINT
+  output:
+    agi_surtax: 18_000
+
+- name: Single person, in top bracket
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 19_000
+
+- name: Income tax before credits test, reform
+  period: 2026
+  absolute_error_margin: 3
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    adjusted_gross_income: 1_500_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 19_000
+    income_tax_before_credits: 524_000
+
+- name: Income tax before credits test, baseline
+  period: 2026
+  absolute_error_margin: 3
+  input:
+    adjusted_gross_income: 1_500_000
+    filing_status: SINGLE
+  output:
+    income_tax_before_credits: 505_000
+
+- name: Expanded base with 401k contributions pushes single filer into surtax
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    adjusted_gross_income: 80_000
+    traditional_401k_contributions: 30_000
+    filing_status: SINGLE
+  output:
+    # AGI 80k + 401k 30k = 110k expanded base
+    # (110k - 100k) * 1% = 100
+    agi_surtax: 100
+
+- name: Expanded base with tax-exempt interest
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    adjusted_gross_income: 90_000
+    tax_exempt_interest_income: 20_000
+    filing_status: SINGLE
+  output:
+    # AGI 90k + tax-exempt interest 20k = 110k expanded base
+    # (110k - 100k) * 1% = 100
+    agi_surtax: 100
+
+- name: Expanded base not in effect, additional sources ignored
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: false
+    adjusted_gross_income: 80_000
+    traditional_401k_contributions: 30_000
+    filing_status: SINGLE
+  output:
+    # Only AGI 80k used, below 100k threshold
+    agi_surtax: 0

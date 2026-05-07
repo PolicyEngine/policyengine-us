@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class tx_regular_tanf(Variable):
     value_type = float
     entity = SPMUnit
-    label = (
-        "Texas Temporary Assistance for Needy Families (TANF) regular benefit"
-    )
+    label = "Texas Temporary Assistance for Needy Families (TANF) regular benefit"
     unit = USD
     definition_period = MONTH
     reference = (
@@ -22,6 +20,7 @@ class tx_regular_tanf(Variable):
 
         # Calculate benefit as payment standard minus countable income
         calculated_benefit = max_(payment_standard - countable_income, 0)
+        capped_benefit = min_(calculated_benefit, payment_standard)
 
         # Apply minimum grant rule
-        return max_(calculated_benefit, p.minimum_grant)
+        return max_(capped_benefit, p.minimum_grant)

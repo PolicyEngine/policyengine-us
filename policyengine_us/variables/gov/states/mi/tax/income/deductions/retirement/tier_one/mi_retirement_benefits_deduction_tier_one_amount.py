@@ -40,9 +40,7 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         total_military_retirement_pay = tax_unit.sum(military_retirement_pay)
         # the cap is reduced by the amount of military retirement pay
         # Line 11
-        reduced_private_cap = max_(
-            private_cap - total_military_retirement_pay, 0
-        )
+        reduced_private_cap = max_(private_cap - total_military_retirement_pay, 0)
         # Line 12
         public_benefits = (
             person("taxable_public_pension_income", period) * is_head_or_spouse
@@ -57,12 +55,9 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         )
         # Line 14
         uncapped_private_benefits = (
-            person("taxable_private_pension_income", period)
-            * is_head_or_spouse
+            person("taxable_private_pension_income", period) * is_head_or_spouse
         )
-        total_uncapped_private_benefits = tax_unit.sum(
-            uncapped_private_benefits
-        )
+        total_uncapped_private_benefits = tax_unit.sum(uncapped_private_benefits)
         # Line 15
         capped_private_benefits = min_(
             reduced_private_cap_reduced_by_public_benefits,

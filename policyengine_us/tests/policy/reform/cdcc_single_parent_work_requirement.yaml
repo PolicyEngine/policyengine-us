@@ -1,0 +1,154 @@
+# Tests for CDCTC reform that makes families eligible if at least one parent works
+# instead of requiring both parents to work
+#
+# NOTE: This reform overrides cdcc_relevant_expenses directly (not min_head_spouse_earned)
+# to avoid affecting state programs that use min_head_spouse_earned.
+
+- name: One-earner married couple gets CDCC under reform
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult2:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    # min_head_spouse_earned is NOT modified by this reform (unchanged from baseline)
+    min_head_spouse_earned: 0
+    # Reform calculates: min(expenses, cdcc_limit, max(head, spouse))
+    # = min($5,000, $3,000, max($50,000, $0)) = min($5,000, $3,000, $50,000) = $3,000
+    cdcc_relevant_expenses: 3_000
+
+- name: One-earner married couple - baseline would give zero
+  period: 2024
+  # No reform - baseline behavior
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult2:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    # Baseline uses min(head_earned, spouse_earned) = min($50,000, $0) = $0
+    min_head_spouse_earned: 0
+    # No relevant expenses since capped at $0
+    cdcc_relevant_expenses: 0
+    cdcc: 0
+
+- name: Two-earner married couple unchanged by reform
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+      adult2:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    # min_head_spouse_earned unchanged: min($50,000, $30,000) = $30,000
+    min_head_spouse_earned: 30_000
+    # Reform: min($5,000, $3,000, max($50,000, $30,000)) = min($5,000, $3,000, $50,000) = $3,000
+    # Same as baseline since both earnings exceed the $3,000 limit
+    cdcc_relevant_expenses: 3_000
+
+- name: Single parent unaffected by reform
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [adult, child]
+        state_code: CA
+  output:
+    # Single filer - min_head_spouse_earned uses head_earned
+    min_head_spouse_earned: 40_000
+    # Reform: min($4,000, $3,000, $40,000) = $3,000 (same as baseline)
+    cdcc_relevant_expenses: 3_000
+
+- name: Spouse is the only earner - reform enables credit
+  period: 2024
+  reforms: policyengine_us.reforms.cdcc.cdcc_single_parent_work_requirement.cdcc_single_parent_work_requirement
+  input:
+    people:
+      adult1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 0
+      adult2:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 60_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child]
+        tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: CA
+  output:
+    # min_head_spouse_earned unchanged: min($0, $60,000) = $0
+    min_head_spouse_earned: 0
+    # Reform: min($8,000, $3,000, max($0, $60,000)) = min($8,000, $3,000, $60,000) = $3,000
+    cdcc_relevant_expenses: 3_000

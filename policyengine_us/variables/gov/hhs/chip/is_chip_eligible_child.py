@@ -5,11 +5,14 @@ class is_chip_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Child eligible for CHIP"
-    documentation = "Determines if a child is eligible for the Children's Health Insurance Program"
+    documentation = (
+        "Determines if a child is eligible for the Children's Health Insurance Program"
+    )
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
         "https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels",
+        "https://www.healthcare.gov/medicaid-chip/childrens-health-insurance-program/",
     )
 
     def formula(person, period, parameters):
@@ -41,10 +44,13 @@ class is_chip_eligible_child(Variable):
         income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
+        has_esi = person("has_esi", period)
+
         return (
             is_age_eligible
             & state_has_chip
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
+            & ~has_esi
         )

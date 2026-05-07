@@ -6,7 +6,9 @@ class ar_tea_eligible(Variable):
     entity = SPMUnit
     label = "Arkansas TEA eligible"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    reference = (
+        "https://www.law.cornell.edu/regulations/arkansas/208-00-13-Ark-Code-R-SS-001"
+    )
     defined_for = StateCode.AR
 
     def formula(spm_unit, period, parameters):
@@ -15,7 +17,7 @@ class ar_tea_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Must have at least one U.S. citizen or qualified immigrant
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         return (
             income_eligible

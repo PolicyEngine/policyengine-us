@@ -1,0 +1,121 @@
+- name: Case 1, income below 75 percent SMI, exempt from fees.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Monthly SMI for family of 3: 7,761.53
+    # 75% SMI: 5,821.15
+    # Monthly income: 48,000 / 12 = 4,000
+    # 4,000 < 5,821.15 = exempt
+    ca_child_care_family_fee: 0
+
+- name: Case 2, income above 75 percent SMI, fee is 1 percent of income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 72_000
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Monthly SMI for family of 3: 7,761.53
+    # 75% SMI: 5,821.15
+    # Monthly income: 72,000 / 12 = 6,000
+    # 6,000 >= 5,821.15 = not exempt
+    # Fee: 6,000 * 0.01 = 60
+    ca_child_care_family_fee: 60
+
+- name: Case 3, zero income, exempt from fees.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Zero income < 75% SMI = exempt
+    ca_child_care_family_fee: 0
+
+- name: Case 4, income exactly at 75 percent SMI, fee applies.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        # 3-person SMI: 7,761.53/month, 75% = 5,821.15/month
+        # Annual: 5,821.15 * 12 = 69,854
+        employment_income: 69_854
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Income exactly at 75% SMI: uses < for exempt, so fee applies
+    # Fee: 5,821.17 * 0.01 = 58.21
+    ca_child_care_family_fee: 58.21
+
+- name: Case 5, income one dollar below 75 percent SMI, exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 75% SMI = 69,854 annual, so 69,840 is below
+        employment_income: 69_840
+      person2:
+        age: 33
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Income just below 75% SMI = exempt
+    ca_child_care_family_fee: 0

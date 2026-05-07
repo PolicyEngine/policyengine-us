@@ -13,9 +13,7 @@ class il_aabd_utility_allowance_person(Variable):
     )
 
     def formula(person, period, parameters):
-        utility_allowance = person.spm_unit(
-            "il_aabd_utility_allowance", period
-        )
+        utility_allowance = person.spm_unit("il_aabd_utility_allowance", period)
         size = person.spm_unit("spm_unit_size", period)
         # Prorate the total utility allowance across all household members
         return utility_allowance / size

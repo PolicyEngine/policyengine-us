@@ -12,13 +12,35 @@ class spm_unit_benefits(Variable):
         BENEFITS = [
             "social_security",
             "ssi",
+            "in_ssp",
+            "ct_ssp",
+            "ga_ssp",
+            "al_ssp",
+            "ak_ssp",
+            "dc_ossp",  # DC benefits
+            "id_aabd",  # Idaho benefits
+            "ky_ssp",  # Kentucky benefits
+            "de_ssp",  # Delaware benefits
+            "fl_oss",
+            "ks_sspp",  # Kansas benefits
+            "hi_oss",
+            "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "wa_ssp",  # Washington benefits
+            "mi_ssp",  # Michigan benefits
+            "me_ssp",  # Maine benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.
             "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
+            # New Mexico programs.
+            "nm_ssi_state_supplement",
+            # South Carolina programs.
+            "sc_ssi_state_supplement",
+            # Texas programs.
+            "tx_ssi_state_supplement",
             "snap",
             "wic",
             "free_school_meals",
@@ -26,6 +48,12 @@ class spm_unit_benefits(Variable):
             "spm_unit_broadband_subsidy",
             "spm_unit_energy_subsidy",
             "tanf",
+            # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
+            # sit alongside the federal TANF aggregator entry; under default
+            # rules these three are mutually exclusive at the SPM-unit level
+            # so summing them does not double-count.
+            "wa_sfa",
+            "wa_rca",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
             "unemployment_compensation",
@@ -38,7 +66,7 @@ class spm_unit_benefits(Variable):
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-            BENEFITS.append("aca_ptc")
+            BENEFITS.append("assigned_aca_ptc")
         if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
         return add(spm_unit, period, BENEFITS)

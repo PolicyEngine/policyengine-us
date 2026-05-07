@@ -14,7 +14,5 @@ class il_pi_has_geriatric_pregnancy(Variable):
         p = parameters(period).gov.states.il.isbe.pi.eligibility.priority
         is_pregnant = spm_unit.members("is_pregnant", period)
         age = spm_unit.members("age", period)
-        has_geriatric_pregnancy = is_pregnant & (
-            age >= p.geriatric_pregnancy_age
-        )
+        has_geriatric_pregnancy = is_pregnant & (age >= p.geriatric_pregnancy_age)
         return spm_unit.any(has_geriatric_pregnancy)

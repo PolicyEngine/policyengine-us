@@ -1,0 +1,23 @@
+description: California includes these immigration statuses as eligible for state-funded coverage under the Medi-Cal program.
+
+# TODO: After Oct 2026, federal OBBBA removes refugees, asylees, parolees,
+# PRUCOL, and others from federal Medicaid funding. Whether CA will cover
+# these groups with state funds is uncertain as of Jan 2026:
+# - Current state law: keep full-scope Medi-Cal with dental
+# - DHCS interpretation: move to Medi-Cal with no dental + premiums
+# - Governor's proposed budget (Jan 9, 2026): restricted-scope only
+# Update this parameter when legislation clarifies the outcome.
+
+values:
+  2016-01-01:
+    - UNDOCUMENTED
+    - DACA
+    - TPS
+
+metadata:
+  unit: list
+  period: year
+  label: California Medi-Cal state-funded eligible immigration statuses
+  reference:
+    - title: California Welfare and Institutions Code Section 14007.8
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC

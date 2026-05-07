@@ -1,9 +1,16 @@
-description: The Department of Agriculture exempts the Able-Bodied Adult Without Dependents (ABAWD) work requirements for these states under the Supplemental Nutrition Assistance Program.
+# P.L. 119-21 gives HI and AK preferential waiver authority
+# (150% unemployment threshold, good-faith exemptions through 2028-12-31)
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). However, both states
+# chose to implement ABAWD effective 2025-11-01. AK also has borough-level
+# waivers for high-unemployment areas. This parameter is not consumed by
+# any formula; HI/AK delayed adoption is handled in a follow-up PR via
+# state-level hr1_in_effect parameters.
+description: The Department of Agriculture grants these noncontiguous states preferential waiver authority for Able-Bodied Adult Without Dependents (ABAWD) work requirements under the Supplemental Nutrition Assistance Program.
 
 values:
   2018-01-01:
     []
-  2027-01-01:
+  2025-07-04:
     - HI
     - AK
 
@@ -12,5 +19,9 @@ metadata:
   period: year
   unit: list
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: 7 U.S.C. 2015(o)(3) - ABAWD Time Limit Exceptions
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_3
+    - title: USDA FNS ABAWD Waivers Implementation Memorandum (October 3, 2025)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf

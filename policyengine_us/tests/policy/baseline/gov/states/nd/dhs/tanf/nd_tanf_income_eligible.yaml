@@ -1,0 +1,103 @@
+# North Dakota TANF Income Eligibility Unit Tests
+#
+# Income eligible when: Countable Income < Standard of Need (strict less than)
+# Standard of Need: 2D table lookup by caretakers × children
+# Source: https://www.nd.gov/dhs/policymanuals/40019/400_19_110_05.htm
+#
+# NOTE: Tests must include people and proper entity structure for
+# defined_for = StateCode.ND to work correctly.
+
+- name: Case 1, zero income is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_income: 0
+        nd_tanf_standard_of_need: 850
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $0 < $850 = true
+    nd_tanf_income_eligible: true
+
+- name: Case 2, income one dollar below standard of need is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_income: 849
+        nd_tanf_standard_of_need: 850
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $849 < $850 = true (just under threshold)
+    nd_tanf_income_eligible: true
+
+- name: Case 3, income exactly at standard of need is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_income: 850
+        nd_tanf_standard_of_need: 850
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $850 < $850 = false (at threshold - strict less than)
+    nd_tanf_income_eligible: false
+
+- name: Case 4, income one dollar above standard of need is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_income: 851
+        nd_tanf_standard_of_need: 850
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $851 < $850 = false (just over threshold)
+    nd_tanf_income_eligible: false
+
+- name: Case 5, income significantly above standard of need.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nd_tanf_countable_income: 1_500
+        nd_tanf_standard_of_need: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # $1,500 < $1,000 = false
+    nd_tanf_income_eligible: false

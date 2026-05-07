@@ -13,18 +13,12 @@ class snap_excess_shelter_expense_deduction(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.usda.snap.income.deductions.excess_shelter_expense
+        p = parameters(period).gov.usda.snap.income.deductions.excess_shelter_expense
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold.
-        net_income_pre_shelter = spm_unit(
-            "snap_net_income_pre_shelter", period
-        )
+        net_income_pre_shelter = spm_unit("snap_net_income_pre_shelter", period)
         subtracted_income = p.income_share_disregard * net_income_pre_shelter
-        housing_cost = add(
-            spm_unit, period, ["snap_utility_allowance", "housing_cost"]
-        )
+        housing_cost = add(spm_unit, period, ["snap_utility_allowance", "housing_cost"])
         uncapped_ded = max_(housing_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
         state_group = spm_unit.household("snap_region_str", period)

@@ -5,51 +5,61 @@
     people:
       person1:
         age: 28
-        qualified_dividend_income: 2_005
-        taxable_interest_income: 5_505
-        short_term_capital_gains: 4_005
-        long_term_capital_gains: 1_005
-        rental_income: 3_005
-        rent: 24_000
+        qualified_dividend_income: 2005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 4005
+        long_term_capital_gains: 1005
+        rental_income: 3005
+        rent: 24000
         rental_income_would_be_qualified: false
-        self_employment_income: 21_010
+        self_employment_income: 21010
         business_is_qualified: true
         business_is_sstb: true
         w2_wages_from_qualified_business: 100e6
-        ssi: 0  # not in TAXSIM35
-        ma_state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
+        ssi: 0
+        ma_state_supplement: 0
+        wic: 0
       person2:
         age: 28
-        employment_income: 108_010
-        qualified_dividend_income: 2_005
-        taxable_interest_income: 5_505
-        short_term_capital_gains: 4_005
-        long_term_capital_gains: 1_005
-        rental_income: 3_005
+        employment_income: 108010
+        qualified_dividend_income: 2005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 4005
+        long_term_capital_gains: 1005
+        rental_income: 3005
         rental_income_would_be_qualified: false
-        ssi: 0  # not in TAXSIM35
-        ma_state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
+        ssi: 0
+        ma_state_supplement: 0
+        wic: 0
       person3:
         age: 11
-        ssi: 0  # not in TAXSIM35
-        ma_state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
+        ssi: 0
+        ma_state_supplement: 0
+        wic: 0
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
-        aca_ptc: 0  # not in TAXSIM35
-        local_income_tax: 0  # not in TAXSIM35
-        state_sales_tax: 0  # not in TAXSIM35
+        members:
+        - person1
+        - person2
+        - person3
+        aca_ptc: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        sc_income_tax_before_non_refundable_credits: 1000000
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
-        snap: 0  # not in TAXSIM35
-        tanf: 0  # not in TAXSIM35
+        members:
+        - person1
+        - person2
+        - person3
+        snap: 0
+        tanf: 0
     households:
       household:
-        members: [person1, person2, person3]
-        state_fips: 45  # SC
-  output:  # expected results from patched TAXSIM35 2024-01-11 version
+        members:
+        - person1
+        - person2
+        - person3
+        state_fips: 45
+  output:
     sc_two_wage_earner_credit: 136.68

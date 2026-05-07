@@ -5,9 +5,7 @@ class is_lifeline_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Income-eligible for Lifeline"
-    documentation = (
-        "Meets income requirements for Lifeline (federal or state-expanded)"
-    )
+    documentation = "Meets income requirements for Lifeline (federal or state-expanded)"
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/cfr/text/47/54.409",
@@ -28,8 +26,6 @@ class is_lifeline_income_eligible(Variable):
         # Use state-specific limit where applicable, otherwise federal (135%)
         # Convert to float32 to match fpg_ratio dtype for comparison
         # Without this, float32(1.35) > float64(1.35) due to precision differences
-        fpg_limit = where(is_tx, tx_p.fpg_limit, p.fpg_limit).astype(
-            np.float32
-        )
+        fpg_limit = where(is_tx, tx_p.fpg_limit, p.fpg_limit).astype(np.float32)
 
         return fpg_ratio <= fpg_limit

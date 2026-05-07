@@ -29,9 +29,7 @@ class vt_veteran_tax_credit(Variable):
         # Partial credit for households under $30k AGI
 
         # Calculate credit amount based on veteran status and income
-        eligible_for_full_credit = veteran_present & (
-            agi < p.full_credit_threshold
-        )
+        eligible_for_full_credit = veteran_present & (agi < p.full_credit_threshold)
         eligible_for_partial_credit = (
             veteran_present
             & (agi >= p.full_credit_threshold)

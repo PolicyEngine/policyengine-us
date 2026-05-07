@@ -51,3 +51,75 @@
     pa_tanf_eligible: true
   output:
     pa_tanf: 636
+
+# Work Expense Reimbursement (WER) era tests - before Sept 2020
+# WER adds $50 bonus to benefit for families with earned income
+
+- name: Case 7, WER era, family with earned income gets $50 bonus.
+  period: 2019-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_tanf_maximum_benefit: 316
+        pa_tanf_countable_income: 100
+        pa_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Base grant: $316 - $100 = $216
+    # WER bonus: $50 (family has earned income)
+    # Total: $216 + $50 = $266
+    pa_tanf: 266
+
+- name: Case 8, WER era, family without earned income, no bonus.
+  period: 2019-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_tanf_maximum_benefit: 316
+        pa_tanf_countable_income: 100
+        pa_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Base grant: $316 - $100 = $216
+    # No WER bonus (no earned income)
+    # Total: $216
+    pa_tanf: 216
+
+- name: Case 9, WED era, family with earned income, no bonus.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pa_tanf_maximum_benefit: 316
+        pa_tanf_countable_income: 100
+        pa_tanf_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Base grant: $316 - $100 = $216
+    # No WER bonus in WED era (2024)
+    # Total: $216
+    pa_tanf: 216

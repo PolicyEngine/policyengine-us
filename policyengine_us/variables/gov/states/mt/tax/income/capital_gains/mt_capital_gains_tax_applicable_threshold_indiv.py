@@ -8,11 +8,13 @@ class mt_capital_gains_tax_applicable_threshold_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6"  # Net Long-Term Capital Gains Tax Table
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
-        capital_gains = person("long_term_capital_gains", period)
+        ltcg = person("long_term_capital_gains", period)
+        stcg = person("short_term_capital_gains", period)
+        capital_gains = max_(min_(ltcg, ltcg + stcg), 0)
         taxable_income = person("mt_taxable_income_indiv", period)
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",

@@ -46,9 +46,7 @@ def create_family_security_act_2024_ctc() -> Reform:
                 period
             ).gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit
             age = tax_unit.members("age", period)
-            phase_in_rate = tax_unit(
-                "pregnant_mothers_credit_phase_in_rate", period
-            )
+            phase_in_rate = tax_unit("pregnant_mothers_credit_phase_in_rate", period)
             reduction = tax_unit("ctc_phase_out", period)
             maximum_amount = tax_unit.sum(p.amount.calc(age))
             phased_in_max_amount = maximum_amount * phase_in_rate
@@ -74,9 +72,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         entity = Person
         label = "CTC maximum amount (child)"
         unit = USD
-        documentation = (
-            "The CTC entitlement in respect of this person as a child."
-        )
+        documentation = "The CTC entitlement in respect of this person as a child."
         definition_period = YEAR
         reference = (
             "https://www.law.cornell.edu/uscode/text/26/24#a",
@@ -87,18 +83,24 @@ def create_family_security_act_2024_ctc() -> Reform:
 
         def formula(person, period, parameters):
             age = person("age", period)
+            qualifying_child = person("ctc_qualifying_child", period)
+            filer_meets_child_ctc_id_requirements = person.tax_unit(
+                "filer_meets_child_ctc_identification_requirements", period
+            )
             p = parameters(
                 period
             ).gov.contrib.congress.romney.family_security_act_2_0.ctc
-            return p.base.calc(age)
+            return (
+                qualifying_child
+                * filer_meets_child_ctc_id_requirements
+                * p.base.calc(age)
+            )
 
     class ctc_qualifying_children(Variable):
         value_type = int
         entity = TaxUnit
         label = "CTC-qualifying children"
-        documentation = (
-            "Count of children that qualify for the Child Tax Credit"
-        )
+        documentation = "Count of children that qualify for the Child Tax Credit"
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
@@ -121,9 +123,7 @@ def create_family_security_act_2024_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
-            pregnant_mothers_credit = tax_unit(
-                "pregnant_mothers_credit", period
-            )
+            pregnant_mothers_credit = tax_unit("pregnant_mothers_credit", period)
             return pregnant_mothers_credit + previous_credits
 
     class reform(Reform):

@@ -10,9 +10,11 @@ SURVIVING_SPOUSE:
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 32_000
 metadata:
+  label: Retirement credit phase-out threshold
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
-  label: Retirement credit phase-out threshold
   reference:
     - title: Utah Code §59-10-1019 (4) # Superseded 2021-05-05
       href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1019.html?v=C59-10-S1019_2022032320220323

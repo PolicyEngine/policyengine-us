@@ -4,19 +4,22 @@ from policyengine_us.model_api import *
 class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas additional tax credit for qualified individuals for each individual"
+    label = (
+        "Arkansas additional tax credit for qualified individuals for each individual"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
         filing_separately = person.tax_unit("ar_files_separately", period)
-        income_joint = person("ar_taxable_income_joint", period)
-        income_indiv = person("ar_taxable_income_indiv", period)
-        # When filing separately, the credit is calculated based on individual income
-        income = where(
-            filing_separately, income_indiv, person.tax_unit.sum(income_joint)
-        )
+        # When using the low income tax table, the standard deduction is
+        # built in, so net taxable income equals AGI. Otherwise it equals
+        # AGI minus deductions (the regular taxable income).
+        net_income_joint = person("ar_net_taxable_income_joint", period)
+        joint_income = person.tax_unit.sum(net_income_joint)
+        indiv_income = person("ar_taxable_income_indiv", period)
+        income = where(filing_separately, indiv_income, joint_income)
         p = parameters(
             period
         ).gov.states.ar.tax.income.credits.additional_tax_credit_for_qualified_individuals
@@ -24,9 +27,7 @@ class ar_additional_tax_credit_for_qualified_individuals_person(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
         filing_jointly = joint & ~filing_separately
         multiplier = where(filing_jointly, p.joint_multiplier, 1)
-        max_amount = where(
-            filing_jointly, p.max_amount * multiplier, p.max_amount
-        )
+        max_amount = where(filing_jointly, p.max_amount * multiplier, p.max_amount)
         excess = max_(income - p.reduction.start, 0)
         increments = np.ceil(excess / p.reduction.increment)
         reduction_amount = where(

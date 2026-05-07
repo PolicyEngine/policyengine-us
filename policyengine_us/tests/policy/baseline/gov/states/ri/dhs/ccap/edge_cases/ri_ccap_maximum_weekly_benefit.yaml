@@ -1,0 +1,193 @@
+# Edge cases for ri_ccap_maximum_weekly_benefit
+# Tests rate lookup at time category boundaries
+
+- name: Case 1, center full time star 1 school age with exactly 30 hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 30 hrs -> FULL_TIME, Center FT Star 1 School Age = $210
+    ri_ccap_maximum_weekly_benefit: [0, 210]
+
+- name: Case 2, center three quarter time star 1 school age with exactly 29 hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 29
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 29 hrs -> THREE_QUARTER_TIME, Center 3QT Star 1 School Age = $157.50
+    ri_ccap_maximum_weekly_benefit: [0, 157.50]
+
+- name: Case 3, center half time star 1 school age with exactly 19 hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 19
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 19 hrs -> HALF_TIME, Center HT Star 1 School Age = $105
+    ri_ccap_maximum_weekly_benefit: [0, 105]
+
+- name: Case 4, center half time star 1 school age with exactly 10 hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 10
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 10 hrs -> HALF_TIME, Center HT Star 1 School Age = $105
+    ri_ccap_maximum_weekly_benefit: [0, 105]
+
+- name: Case 5, center quarter time star 1 school age with exactly 9 hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 9
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # 9 hrs -> QUARTER_TIME, Center QT Star 1 School Age = $52.50
+    ri_ccap_maximum_weekly_benefit: [0, 52.50]
+
+- name: Case 6, licensed family full time star 1 school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Family FT Star 1 School Age = $194.37
+    ri_ccap_maximum_weekly_benefit: [0, 194.37]
+
+- name: Case 7, license exempt full time step 4 infant toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Exempt FT Step 4 Infant/Toddler = $103.96
+    ri_ccap_maximum_weekly_benefit: [0, 103.96]
+
+- name: Case 8, center full time star 5 school age highest star.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_in_k12_school: true
+        childcare_hours_per_week: 40
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Center FT Star 5 School Age = $263
+    ri_ccap_maximum_weekly_benefit: [0, 263]

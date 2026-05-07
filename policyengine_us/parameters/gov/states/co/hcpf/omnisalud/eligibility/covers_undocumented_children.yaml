@@ -1,0 +1,18 @@
+description: If true, Colorado OmniSalud covers undocumented children and pregnant individuals, otherwise they use Health First Colorado (Medicaid).
+metadata:
+  unit: bool
+  period: year
+  label: Colorado OmniSalud covers undocumented children
+  reference:
+    - title: C.R.S. 10-16-1203(7) - Qualified individual (regardless of immigration status)
+      href: https://law.justia.com/codes/colorado/title-10/health-care-coverage/article-16/part-12/section-10-16-1203/
+    - title: Connect for Health Colorado OmniSalud 2025 Updates
+      href: https://connectforhealthco.com/get-started/omnisalud/
+    - title: Colorado OmniSalud Guide 2024, p. 4
+      href: https://coloradoimmigrant.org/wp-content/uploads/2024/03/Eng.-OmniSalud-Guide-2024.pdf#page=4
+    - title: Health First Colorado - Health Coverage for Immigrants (Cover All Coloradans, HB 22-1289)
+      href: https://www.healthfirstcolorado.com/health-coverage-for-immigrants/
+
+values:
+  2022-01-01: true
+  2025-01-01: false

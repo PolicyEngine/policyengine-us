@@ -1,0 +1,26 @@
+description: New York provides this monthly supplemental home energy allowance under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 7)
+  breakdown_label:
+    - Assistance unit size
+  label: New York TANF supplemental home energy allowance
+  reference:
+    - title: N.Y. Comp. Codes R. & Regs. Tit. 18 § 352.2(d) - Supplemental home energy payments (Schedule SA-2c)
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.2
+
+1:
+  1986-01-01: 11
+2:
+  1986-01-01: 17
+3:
+  1986-01-01: 23
+4:
+  1986-01-01: 30
+5:
+  1986-01-01: 37
+6:
+  1986-01-01: 42

@@ -94,7 +94,7 @@
   output:
     ky_agi: [20_000, 25_000]
     # If filing a joint return, only one standard deduction is allowed.
-    # default: older perpon is head
+    # default: older person is head
     ky_standard_deduction_joint: [0, 2_770]
     ky_itemized_deductions_joint: [0, 0] 
     ky_taxable_income_joint: [0, 42_230]
@@ -164,7 +164,7 @@
   output:
     ky_agi: [20_000, 25_000, 0]
     # If filing a joint return, only one standard deduction is allowed.
-    # default: older perpon is head
+    # default: older person is head
     ky_standard_deduction_joint: [0, 2_770, 0]
     ky_itemized_deductions_joint: [0, 0, 0] 
     ky_taxable_income_joint: [0, 42_230, 0]
@@ -295,3 +295,134 @@
     ky_itemized_deductions_indiv: [4_800 , 1_200]
     ky_standard_deduction_indiv:  [2_690 , 2_690]
     ky_deductions_indiv:          [4_800 , 1_200] # this is the correct result
+
+# ==============================================================================
+# 2025 TAX YEAR TESTS
+# Parameters: Tax rate 4%, Standard deduction $3,270
+# ==============================================================================
+
+- name: 2025 KY single filer standard deduction
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_standard_deduction_indiv: [3_270]
+    ky_taxable_income_indiv: [46_730]
+    ky_income_tax: 1_869.20
+
+- name: 2025 KY MFJ optimization picks separate filing
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 60_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # KY optimizes: separate ($3,738.40) < joint ($3,869.20)
+    ky_income_tax: 3_738.40
+
+- name: 2025 KY FSTC at 100% of threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_650
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_family_size_tax_credit_rate: 1.0
+    ky_family_size_tax_credit: 495.20
+    ky_income_tax: 0
+
+- name: 2025 KY aged personal credit
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_aged_personal_tax_credits: [40]
+    ky_personal_tax_credits: 40
+    ky_income_tax: 1_429.20
+
+- name: 2025 KY pension exclusion over threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 45_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_pension_income_exclusion: [31_110]
+
+- name: 2025 KY dependent care credit
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        is_tax_unit_head: true
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        cdcc: 1_000
+    households:
+      household:
+        members: [person1, child1]
+        state_code: KY
+  output:
+    ky_cdcc: 200

@@ -4,7 +4,7 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true   
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -22,10 +22,10 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -43,13 +43,13 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 35
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -67,10 +67,10 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -88,13 +88,13 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -112,7 +112,7 @@
     people:
       person1:
         age: 15
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -130,7 +130,7 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -148,13 +148,13 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -165,6 +165,31 @@
         state_fips: 50
   output:
     slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY high-income adult uses family tier category even when PTC-ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+    slcsp_family_tier_category: ONE_ADULT
 
 - name: Non-family tier state uses individual age rating
   period: 2023

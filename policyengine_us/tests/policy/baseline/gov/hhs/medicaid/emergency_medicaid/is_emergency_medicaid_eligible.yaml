@@ -40,15 +40,15 @@
   output:
     is_emergency_medicaid_eligible: true
 
-- name: Case 4, DACA-TPS combined status with emergency condition.
+- name: Case 4, DACA combined status without emergency condition.
   period: 2025
   input:
-    immigration_status: DACA_TPS
-    has_emergency_medical_condition: true
+    immigration_status: DACA
+    has_emergency_medical_condition: false
     medicaid_category: ADULT
     is_medicaid_immigration_status_eligible: false
   output:
-    is_emergency_medicaid_eligible: true
+    is_emergency_medicaid_eligible: false
 
 # ============================================================
 # ELIGIBLE CASES - All Medicaid Category Types

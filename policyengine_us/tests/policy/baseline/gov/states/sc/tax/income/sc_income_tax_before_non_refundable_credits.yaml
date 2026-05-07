@@ -52,3 +52,64 @@
   output:
     # Result confirmed with the SC Tax Table
     sc_income_tax_before_non_refundable_credits: 605.2
+
+- name: 2025 income in 1st tax bracket (0% rate)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 3_000
+    state_code: SC
+  output:
+    # 2025 bracket: $0-$3,560 at 0%
+    sc_income_tax_before_non_refundable_credits: 0
+
+- name: 2025 income in 2nd tax bracket (3% rate)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 10_000
+    state_code: SC
+  output:
+    # 2025 bracket: $3,560-$17,830 at 3%
+    # ($10,000 - $3,560) * 0.03 = $193.20
+    sc_income_tax_before_non_refundable_credits: 193
+
+- name: 2025 income in 3rd tax bracket (6% rate)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 25_000
+    state_code: SC
+  output:
+    # 2025 brackets: $0-$3,560 at 0%, $3,560-$17,830 at 3%, $17,830+ at 6%
+    # ($17,830 - $3,560) * 0.03 + ($25,000 - $17,830) * 0.06
+    # $14,270 * 0.03 + $7,170 * 0.06 = $428.10 + $430.20 = $858.30
+    sc_income_tax_before_non_refundable_credits: 858
+
+- name: 2025 boundary, income exactly at $3,560 (0% to 3% threshold)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 3_560
+    state_code: SC
+  output:
+    # 2025 bracket: $0-$3,560 at 0%, $3,560-$17,830 at 3%
+    # Income exactly at $3,560 means all income is in 0% bracket
+    # No income has crossed into the 3% bracket yet
+    # Tax = $0
+    sc_income_tax_before_non_refundable_credits: 0
+
+- name: 2025 boundary, income exactly at $17,830 (3% to 6% threshold)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 17_830
+    state_code: SC
+  output:
+    # 2025 brackets: $0-$3,560 at 0%, $3,560-$17,830 at 3%, $17,830+ at 6%
+    # Income exactly at $17,830 means:
+    # - $0 to $3,560 = $0 (0% bracket)
+    # - $3,560 to $17,830 = ($17,830 - $3,560) * 0.03 = $14,270 * 0.03 = $428.10
+    # No income has crossed into the 6% bracket yet
+    # Total tax = $428.10
+    sc_income_tax_before_non_refundable_credits: 428

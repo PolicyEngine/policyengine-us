@@ -58,7 +58,7 @@
     head_is_dependent_elsewhere: true
     filing_status: SINGLE
     state_code: MI
-  output: 
+  output:
     mi_exemptions: 1_500
 
 - name: not disabled, is a dependent, married
@@ -68,5 +68,248 @@
     head_is_dependent_elsewhere: true
     filing_status: JOINT
     state_code: MI
-  output: 
+  output:
     mi_exemptions: 3_000
+
+# 2025 test cases - personal exemption $5,800, disabled exemption $3,400
+- name: 2025 disabled person, not a dependent
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # $5,800 personal + $3,400 disabled = $9,200
+    mi_exemptions: 9_200
+
+- name: 2025 disabled veteran, not a dependent
+  period: 2025
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: true
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # $5,800 personal + $3,400 disabled + $500 veteran (2024+) = $9,700
+    mi_exemptions: 9_700
+
+- name: 2025 two disabled persons, one veteran
+  period: 2025
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: false
+        mi_disabled_exemption_eligible_person: true
+      person2:
+        is_fully_disabled_service_connected_veteran: true
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 11_600
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # $11,600 personal + $3,400 * 2 disabled + $500 veteran (2024+) = $18,900
+    mi_exemptions: 18_900
+
+# ============================================================================
+# 2025 EDGE CASE TESTS - Disabled Exemption ($3,400) + Veteran ($500)
+# ============================================================================
+
+# Edge case: Multiple disabled persons in household (not veterans)
+- name: Case 1, 2025 edge case multiple disabled persons no veterans.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person2:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person3:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 17_400
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output:
+    # $17,400 personal (3 * $5,800) + $3,400 * 3 disabled = $27,600
+    mi_exemptions: 27_600
+
+# Edge case: All disabled veterans in household
+- name: Case 2, 2025 edge case multiple disabled veterans.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 11_600
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # $11,600 personal (2 * $5,800) + $3,400 * 2 disabled + $500 * 2 veteran = $19,400
+    mi_exemptions: 19_400
+
+# Edge case: Zero disabled persons
+- name: Case 3, 2025 edge case no disabled persons.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: false
+        is_fully_disabled_service_connected_veteran: false
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # $5,800 personal only, no disabled exemption
+    mi_exemptions: 5_800
+
+# Edge case: Disabled veteran without disabled exemption eligibility
+# (veteran but not qualifying as disabled for Michigan purposes)
+- name: Case 4, 2025 edge case veteran but not disabled eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: false
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # $5,800 personal + $0 disabled + $500 veteran = $6,300
+    mi_exemptions: 6_300
+
+# Edge case: Large family with mix of disabled and non-disabled
+- name: Case 5, 2025 edge case large family mixed disabled status.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person3:
+        mi_disabled_exemption_eligible_person: false
+        is_fully_disabled_service_connected_veteran: false
+      person4:
+        mi_disabled_exemption_eligible_person: false
+        is_fully_disabled_service_connected_veteran: false
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 23_200
+        members: [person1, person2, person3, person4]
+    household:
+      members: [person1, person2, person3, person4]
+      state_code: MI
+  output:
+    # $23,200 personal (4 * $5,800) + $3,400 * 2 disabled + $500 * 1 veteran = $30,500
+    mi_exemptions: 30_500
+
+# Edge case: Maximum disabled exemption scenario (8 disabled members)
+- name: Case 6, 2025 edge case maximum disabled household.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person2:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person3:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+      person4:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 23_200
+        members: [person1, person2, person3, person4]
+    household:
+      members: [person1, person2, person3, person4]
+      state_code: MI
+  output:
+    # $23,200 personal (4 * $5,800) + $3,400 * 4 disabled = $36,800
+    mi_exemptions: 36_800
+
+# Edge case: Single disabled veteran (combined exemption)
+- name: Case 7, 2025 edge case single disabled veteran combined exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Combined: $5,800 personal + $3,400 disabled + $500 veteran = $9,700
+    mi_exemptions: 9_700
+
+# Edge case: Disabled dependent (no personal exemption counted)
+- name: Case 8, 2025 edge case disabled person is dependent elsewhere.
+  period: 2025
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: false
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_800
+        head_is_dependent_elsewhere: true
+        filing_status: SINGLE
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # Dependent exemption: $1,500 (for single) + $3,400 disabled = $4,900
+    mi_exemptions: 4_900

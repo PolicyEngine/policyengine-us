@@ -1,0 +1,19 @@
+description: Iowa caps the 529 plan contributions subtraction at this amount per beneficiary.
+values:
+  2021-01-01: 3_474
+  2022-01-01: 3_522
+  2023-01-01: 3_785
+  2024-01-01: 5_500
+  2025-01-01: 5_800
+  2026-01-01: 6_100
+metadata:
+  label: Iowa 529 plan contribution subtraction cap per beneficiary
+  period: year
+  unit: currency-USD
+  reference:
+  - title: Iowa Treasurer - ISave 529 Tax Deduction
+    href: https://www.iowatreasurer.gov/the-treasurers-office/news/treasurer-smith-announces-2025-isave-529-state-tax-deduction-amount
+  - title: Iowa Code Section 422.7(32)
+    href: https://www.legis.iowa.gov/docs/code/422.7.pdf
+  - title: ISave 529 Tax Benefits
+    href: https://www.isave529.com/save/tax-benefits

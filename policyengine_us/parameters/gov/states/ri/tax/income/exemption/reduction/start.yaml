@@ -4,28 +4,31 @@ values:
   2022-01-01: 217_050
   2023-01-01: 233_750
   2024-01-01: 246_450
+  2025-01-01: 254_250
 
 metadata:
-  label: Rhode Island exemption phase out start 
-  period: year
   unit: currency-USD
+  period: year
+  label: Rhode Island exemption phase out start
   uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
       interval: 50
   reference:
-  # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
-  - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 3)
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
-  # The tax form points to this worksheet: Exemption Worksheet for RI-1040 or RI-1040NR, Page 1, line 6)
-  - title: Rhode Island Tax Rate Schedule and Worksheet 2021 (Exemption Worksheet line 3)
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf#page=1
-  - title: Rhode Island Tax Rate Schedule and Worksheet 2023 (Exemption Worksheet line 4)
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/2023%20Tax%20Rate%20and%20Worksheets.pdf#page=1
-  - title: Rhode Island Tax Rate Schedule and Worksheet 2024 (Exemption Worksheet line 4)
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf#page=1
-  # Legal code specifies phase-out thresholds that vary by filing status.
-  # Unclear how this comports with the tax form. We use the tax form.
-  - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (E)(4)(c)
-    href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/
+    - title: 2025 RI-1040 Instructions page I-5
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=5
+    # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
+    - title: Rhode Island Tax Rate Schedule and Worksheet 2024 (Exemption Worksheet line 4)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+    - title: Rhode Island Tax Rate Schedule and Worksheet 2023 (Exemption Worksheet line 4)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/2023%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+    - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 3)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+    # The tax form points to this worksheet: Exemption Worksheet for RI-1040 or RI-1040NR, Page 1, line 6)
+    - title: Rhode Island Tax Rate Schedule and Worksheet 2021 (Exemption Worksheet line 3)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf#page=1
+    # Legal code specifies phase-out thresholds that vary by filing status.
+    # Unclear how this comports with the tax form. We use the tax form.
+    - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (E)(4)(c)
+      href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/

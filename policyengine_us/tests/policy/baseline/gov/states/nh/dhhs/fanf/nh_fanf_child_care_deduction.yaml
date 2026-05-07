@@ -1,0 +1,258 @@
+# Tests for NH FANF child care deduction
+# Age threshold changed from 2 to 6 per BFA SR 22-18 (Eff: 07/01/22)
+# Under 6: $200 FT / $100 PT
+# 6+: $175 FT / $87.50 PT
+# Full-time threshold: $377/month earned income
+# Source: FAM 603.05; BFA SR 22-18
+
+- name: Case 1, no child care expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_fanf_child_care_deduction: 0
+
+- name: Case 2, full-time parent with child under 6.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month, above $377 threshold
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Max for full-time, under 6: $200/month
+    nh_fanf_child_care_deduction: 200
+
+- name: Case 3, full-time parent with child age 6 plus.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Max for full-time, age 6+: $175/month
+    nh_fanf_child_care_deduction: 175
+
+- name: Case 4, part-time parent with child under 6.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600  # $300/month, below $377 threshold
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Max for part-time, under 6: $100/month
+    nh_fanf_child_care_deduction: 100
+
+- name: Case 5, part-time parent with child age 6 plus.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 3_600
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Max for part-time, age 6+: $87.50/month
+    nh_fanf_child_care_deduction: 87.5
+
+- name: Case 6, child exactly age 6 gets 6 plus rate.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Age 6 triggers age 6+ bracket: $175
+    nh_fanf_child_care_deduction: 175
+
+- name: Case 7, earnings exactly at 377 threshold is full-time.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_524  # $377/month exactly
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $377 >= $377 threshold = full-time rate
+    nh_fanf_child_care_deduction: 200
+
+- name: Case 8, two children with mixed ages.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 3
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # Full-time: $200 (under 6) + $175 (6+) = $375
+    nh_fanf_child_care_deduction: 375
+
+- name: Case 9, expenses less than maximum.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_200  # $100/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Actual expenses: $100, max: $200 -> $100
+    nh_fanf_child_care_deduction: 100
+
+- name: Case 10, no children in household.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # No children - no deduction
+    nh_fanf_child_care_deduction: 0
+
+- name: Case 11, earnings $376 per month is part-time.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 4_512  # $376/month, one dollar below $377 threshold
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $376 < $377 threshold = part-time rate ($100 for under 6)
+    nh_fanf_child_care_deduction: 100
+
+- name: Case 12, zero earnings with childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Zero earnings = part-time rate ($100 for under 6)
+    nh_fanf_child_care_deduction: 100

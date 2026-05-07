@@ -1,0 +1,130 @@
+# Tests for TN FF earned income after disregard
+# For 2024: Earned income disregard = $250
+
+- name: Case 1, no earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ff_earned_income_after_disregard: 0
+
+- name: Case 2, earned income exactly equal to disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 250
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $250 - $250 = $0
+    tn_ff_earned_income_after_disregard: 0
+
+- name: Case 3, earned income one dollar above disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 251
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $251 - $250 = $1
+    tn_ff_earned_income_after_disregard: 1
+
+- name: Case 4, earned income below disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # max($100 - $250, 0) = $0
+    tn_ff_earned_income_after_disregard: 0
+
+- name: Case 5, moderate earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $1,000 - $250 = $750
+    tn_ff_earned_income_after_disregard: 750
+
+- name: Case 6, high earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 2_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # $2,500 - $250 = $2,250
+    tn_ff_earned_income_after_disregard: 2_250
+
+- name: Case 7, multiple people with earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+      person2:
+        age: 28
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # ($1,000 + $500) - $250 = $1,250
+    tn_ff_earned_income_after_disregard: 1_250

@@ -23,11 +23,16 @@ class school_meal_tier(Variable):
         categorical_eligibility = spm_unit(
             "meets_school_meal_categorical_eligibility", period
         )
+        # States with universal free meal policies provide the free tier
+        # to all students regardless of household income.
+        state_universal = spm_unit("state_has_universal_free_school_meals", period)
         return select(
             [
-                (fpg_ratio <= p_income_limit.FREE) | categorical_eligibility,
+                (fpg_ratio <= p_income_limit.FREE)
+                | categorical_eligibility
+                | state_universal,
                 fpg_ratio <= p_income_limit.REDUCED,
-                True,
             ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.PAID],
+            [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
+            default=SchoolMealTier.PAID,
         )

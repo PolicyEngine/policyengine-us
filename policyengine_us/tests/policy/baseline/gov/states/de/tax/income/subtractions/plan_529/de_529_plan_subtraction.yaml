@@ -1,0 +1,55 @@
+- name: Delaware 529 subtraction - single under cap and AGI limit
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 800
+    adjusted_gross_income: 80_000
+  output:
+    # Cap for single is $1,000, AGI limit $100K
+    # Subtraction = min(800, 1,000) = 800
+    de_529_plan_subtraction: 800
+
+- name: Delaware 529 subtraction - single over cap
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 1_500
+    adjusted_gross_income: 80_000
+  output:
+    # Cap for single is $1,000
+    # Subtraction = min(1,500, 1,000) = 1,000
+    de_529_plan_subtraction: 1_000
+
+- name: Delaware 529 subtraction - joint under cap
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: JOINT
+    investment_in_529_plan_indv: 1_500
+    adjusted_gross_income: 150_000
+  output:
+    # Cap for joint is $2,000, AGI limit $200K
+    # Subtraction = min(1,500, 2,000) = 1,500
+    de_529_plan_subtraction: 1_500
+
+- name: Delaware 529 subtraction - over AGI limit
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 500
+    adjusted_gross_income: 110_000
+  output:
+    # AGI $110K >= $100K limit, not eligible
+    de_529_plan_subtraction: 0
+
+- name: Delaware 529 subtraction - no contribution
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+  output:
+    de_529_plan_subtraction: 0

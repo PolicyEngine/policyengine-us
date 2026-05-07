@@ -79,3 +79,46 @@
     # Step 1: $250 × 50% = $125 (EID: keep 50%)
     # Step 2: $125 - $200 = -$75, clipped to 0 (WED)
     pa_tanf_earned_income_after_deductions_person: 0
+
+# Work Expense Reimbursement (WER) era tests - before Sept 2020
+# In WER era, no $200 WED deduction is applied
+
+- name: Case 8, WER era, low earnings, enrolled recipient, no WED.
+  period: 2019-01
+  input:
+    employment_income_before_lsr: 12_000
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $12,000/12 = $1,000
+    # Step 1: $1,000 × 50% = $500 (EID: keep 50%)
+    # Step 2: No WED in WER era (pre-2020)
+    # Countable: $500
+    pa_tanf_earned_income_after_deductions_person: 500
+
+- name: Case 9, WER era, high earnings, enrolled recipient, no WED.
+  period: 2019-01
+  input:
+    employment_income_before_lsr: 36_000
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $36,000/12 = $3,000
+    # Step 1: $3,000 × 50% = $1,500 (EID: keep 50%)
+    # Step 2: No WED in WER era (pre-2020)
+    # Countable: $1,500
+    pa_tanf_earned_income_after_deductions_person: 1_500
+
+- name: Case 10, WER era, deductions would have zeroed income in WED era.
+  period: 2019-01
+  input:
+    employment_income_before_lsr: 2_400
+    is_tanf_enrolled: true
+    state_code: PA
+  output:
+    # Monthly: $2,400/12 = $200
+    # Step 1: $200 × 50% = $100 (EID: keep 50%)
+    # Step 2: No WED in WER era
+    # In WED era this would be: $100 - $200 = 0
+    # In WER era: $100 (no deduction)
+    pa_tanf_earned_income_after_deductions_person: 100

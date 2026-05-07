@@ -5,6 +5,8 @@ metadata:
   period: month
   breakdown:
     - range(0, 10)
+  breakdown_labels:
+    - Household size
   label: Kansas TANF payment standard amount
   reference:
     - title: K.A.R. 30-4-100 - Payment Standards
@@ -18,13 +20,17 @@ metadata:
     - title: Kansas TANF State Plan FFY 2024-2026
       href: https://www.dcf.ks.gov/services/ees/Documents/Reports/TANF%20State%20Plan%20FFY%202024%20-%202026.pdf#page=29
 
-# Using High Population Counties (Group III) values for Non-shared Living Arrangements
-# Per K.A.R. 30-4-101: Basic allowance + $109 shelter (Group III)
+# Group IV non-shared living: basic allowance + $135/month shelter standard
+# per K.A.R. 30-4-101. Group IV covers Douglas, Harvey, and Johnson counties —
+# Johnson is the most populous county in Kansas, making this the cross-state
+# research convention used by CBPP and the Urban Welfare Rules Database.
+# Group III ($109 shelter; Butler, Jefferson, Leavenworth, McPherson, Miami,
+# Osage, Reno, Rice, Riley, Sedgwick, Shawnee) yields $403 for a family of 3.
 1:
-  1997-03-01: 241
+  1997-03-01: 267
 2:
-  1997-03-01: 326
+  1997-03-01: 352
 3:
-  1997-03-01: 403
+  1997-03-01: 429
 4:
-  1997-03-01: 471
+  1997-03-01: 497

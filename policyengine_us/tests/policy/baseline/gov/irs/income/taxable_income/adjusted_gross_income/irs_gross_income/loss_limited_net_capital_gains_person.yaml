@@ -1,0 +1,72 @@
+- name: Capital gains with no losses are passed through unchanged
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: 1000
+        long_term_capital_gains: 2000
+      person2:
+        short_term_capital_gains: 500
+        long_term_capital_gains: 1500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    loss_limited_net_capital_gains_person: [3000, 2000]
+
+- name: Capital losses are limited to $3,000 for single filers
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: -10000
+        long_term_capital_gains: 5000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Raw: -10000 + 5000 = -5000
+    # Loss limited: -3000
+    loss_limited_net_capital_gains_person: [-3000]
+
+- name: Capital losses for joint filers with proportional allocation
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: -8000
+        long_term_capital_gains: 2000
+      person2:
+        short_term_capital_gains: -4000
+        long_term_capital_gains: 2000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Person1 raw: -8000 + 2000 = -6000
+    # Person2 raw: -4000 + 2000 = -2000
+    # Total raw: -8000
+    # Loss limited total: -3000
+    # Person1 proportion: -6000 / -8000 = 0.75, share = -3000 * 0.75 = -2250
+    # Person2 proportion: -2000 / -8000 = 0.25, share = -3000 * 0.25 = -750
+    loss_limited_net_capital_gains_person: [-2250, -750]
+
+- name: Mixed gains and losses at person level but net gain at tax unit level
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: -5000
+        long_term_capital_gains: 2000
+      person2:
+        short_term_capital_gains: 10000
+        long_term_capital_gains: 5000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Person1 raw: -5000 + 2000 = -3000
+    # Person2 raw: 10000 + 5000 = 15000
+    # Total raw: 12000 (positive, so no limit applied)
+    # Return person's raw amounts unchanged
+    loss_limited_net_capital_gains_person: [-3000, 15000]

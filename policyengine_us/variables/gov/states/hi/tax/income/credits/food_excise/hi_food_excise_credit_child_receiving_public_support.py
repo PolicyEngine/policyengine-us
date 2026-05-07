@@ -20,9 +20,5 @@ class hi_food_excise_credit_child_receiving_public_support(Variable):
         # If zero total income, assign 0% public support.
         public_support_percent = np.zeros_like(total_income)
         mask = total_income > 0
-        public_support_percent[mask] = (
-            government_payments[mask] / total_income[mask]
-        )
-        return (
-            public_support_percent > p.minor_child.support_proportion_threshold
-        )
+        public_support_percent[mask] = government_payments[mask] / total_income[mask]
+        return public_support_percent > p.minor_child.support_proportion_threshold

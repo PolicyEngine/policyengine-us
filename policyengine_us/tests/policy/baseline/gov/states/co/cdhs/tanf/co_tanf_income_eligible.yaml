@@ -17,3 +17,41 @@
     co_tanf_countable_gross_unearned_income: 1
   output:
     co_tanf_income_eligible: false
+
+# --- 2013 era (period 2014) ---
+
+- name: Case 3, no income is eligible in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_000
+    co_tanf_countable_earned_income_need: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf_income_eligible: true
+
+- name: Case 4, income at need standard boundary in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_000
+    co_tanf_countable_earned_income_need: 3_000
+    co_tanf_countable_gross_unearned_income: 2_000
+  output:
+    # 3,000 + 2,000 = 5,000 which is NOT less than 5,000 (uses strict <)
+    co_tanf_income_eligible: false
+
+# --- 2024 era (period 2025) ---
+
+- name: Case 5, income below need standard in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_need_standard: 5_000
+    co_tanf_countable_earned_income_need: 2_000
+    co_tanf_countable_gross_unearned_income: 1_000
+  output:
+    co_tanf_income_eligible: true

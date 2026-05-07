@@ -1,0 +1,418 @@
+# NJ CCAP Integration Tests
+# 2026 FPG (Contiguous US): first_person = 15_960, additional = 5_680
+#   Family of 2: 21_640; 200% = 43_280
+#   Family of 3: 27_320; 200% = 54_640
+#   Family of 4: 33_000; 200% = 66_000; 250% = 82_500
+#   Family of 5: 38_680; 200% = 77_360
+
+- name: Case 1, single parent one infant FT licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 31_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 19_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    # Child age 1 < 13 -> age eligible
+    # Citizen, dependent -> eligible child
+    nj_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21_640
+    # 31_000 <= 43_280 (200% FPL) -> income eligible
+    nj_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 31_000 / 21_640 = 1.433 -> 101-200% FPL tier
+    # 1 child FT -> 2% of annual income
+    # annual copay = 31_000 * 0.02 = 620
+    # monthly copay = 620 / 12 = 51.67
+    nj_ccap_copay: 51.67
+
+    # === Provider rates ===
+    # Parent (age 28 = 336 mo >= 60) -> SCHOOL_AGE; Child (age 1 = 12 mo < 18) -> INFANT
+    nj_ccap_age_group: [SCHOOL_AGE, INFANT]
+    # Parent: 0 hrs -> PART_TIME; Child: 40 hrs -> FULL_TIME
+    nj_ccap_time_category: [PART_TIME, FULL_TIME]
+    # Center FT Base Infant = $366.67/wk
+    nj_ccap_maximum_weekly_benefit: [0, 366.67]
+
+    # === Benefit ===
+    # max annual = 366.67 * 52 = 19_066.84
+    # uncapped = max(19_000 - 620, 0) = 18_380
+    # annual benefit = min(18_380, 19_066.84) = 18_380
+    # monthly = 18_380 / 12 = 1_531.67
+    nj_ccap: 1_531.67
+
+- name: Case 2, single parent two children PT registered family low income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+        nj_ccap_provider_type: REGISTERED_FAMILY
+        nj_ccap_grow_nj_kids_rating: NONE
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+        nj_ccap_provider_type: REGISTERED_FAMILY
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    nj_ccap_eligible_child: [false, true, true]
+
+    # FPG family of 3: 27_320
+    # 20_000 <= 54_640 (200% FPL) -> income eligible
+    nj_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 20_000 / 27_320 = 0.732 -> at or below 100% FPL -> waived
+    nj_ccap_copay: 0
+
+    # === Provider rates ===
+    # Parent (age 25 = 300 mo >= 60) -> SCHOOL_AGE
+    # child1 (age 2 = 24 mo): >= 18, < 30 -> TODDLER
+    # child2 (age 7 = 84 mo): >= 60 -> SCHOOL_AGE
+    nj_ccap_age_group: [SCHOOL_AGE, TODDLER, SCHOOL_AGE]
+    # Parent: 0 hrs -> PT; child1: 20 hrs -> PT; child2: 15 hrs -> PT
+    nj_ccap_time_category: [PART_TIME, PART_TIME, PART_TIME]
+    # Registered family PT base toddler = $140.60; school age = $122.63
+    nj_ccap_maximum_weekly_benefit: [0, 140.60, 122.63]
+
+    # === Benefit ===
+    # max annual = (140.60 + 122.63) * 52 = 263.23 * 52 = 13_687.96
+    # uncapped = max(12_000 - 0, 0) = 12_000
+    # annual benefit = min(12_000, 13_687.96) = 12_000
+    # monthly = 12_000 / 12 = 1_000
+    nj_ccap: 1_000
+
+- name: Case 3, two parents one preschooler FT 5-star center enrolled at 220% FPL.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_000
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nj_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 16_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    nj_ccap_eligible_child: [false, false, true]
+
+    # FPG family of 3: 27_320
+    # Enrolled -> uses 85% SMI (graduated phase-out)
+    # 85% SMI family of 3 = 113_577 / 12 = 9_464.75/mo
+    # Monthly income = 70_000 / 12 = 5_833.33
+    # 5_833.33 <= 9_464.75 -> eligible
+    nj_ccap_income_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 70_000 / 27_320 = 2.562 (above 200% -> higher tier)
+    # 1 child FT at 201%+ FPL: 3% (CC-236 06/24 reinstatement rate)
+    # Monthly copay = 70_000 * 0.03 / 12 = 175
+    nj_ccap_copay: 175
+
+    # === Rates ===
+    # Preschool FT 5-star licensed center = $322.34/wk
+    nj_ccap_maximum_weekly_benefit: [0, 0, 322.34]
+
+    # === Benefit ===
+    # Expenses: 16_000 / 12 = 1_333.33/mo
+    # Uncapped: 1_333.33 - 175 = 1_158.33
+    # Max reimbursement: 322.34 * 52 / 12 = 1_396.81
+    # Benefit = min(1_158.33, 1_396.81) = 1_158.33
+    nj_ccap: 1_158.33
+
+- name: Case 4, family exactly at 200% FPL initial application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 66_000
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_4
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    nj_ccap_eligible_child: [false, false, true, true]
+
+    # FPG family of 4: 33_000; 200% = 66_000
+    # 66_000 <= 66_000 -> exactly at limit -> eligible
+    nj_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 66_000 / 33_000 = 2.0 -> at 200% exactly
+    # Threshold for higher tier is 2.0001, so 2.0 < 2.0001 -> 101-200% tier
+    # 2 children both FT -> first child FT 2% + second child FT 1% = 3% (CC-236 06/24)
+    # copay = 66_000 * 0.03 / 12 = 165
+    nj_ccap_copay: 165
+
+    # === Provider rates ===
+    # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
+    # child1 (age 4 = 48 mo): PRESCHOOL; child2 (age 8 = 96 mo): SCHOOL_AGE
+    nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL, SCHOOL_AGE]
+    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME, FULL_TIME]
+    # Center FT Star 4 Preschool = 312.71; Center FT Star 4 School Age = 274.96 (base)
+    nj_ccap_maximum_weekly_benefit: [0, 0, 312.71, 274.96]
+
+    # === Benefit ===
+    # max annual = (312.71 + 274.96) * 52 = 587.67 * 52 = 30_558.84
+    # annual copay = 66_000 * 0.03 = 1_980
+    # uncapped = max(20_000 - 1_980, 0) = 18_020
+    # annual benefit = min(18_020, 30_558.84) = 18_020
+    # monthly = 18_020 / 12 = 1_501.67
+    nj_ccap: 1_501.67
+
+- name: Case 5, enrolled family at 240% FPL continuing eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 79_200
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nj_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 22_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    nj_ccap_eligible_child: [false, false, true]
+
+    # FPG family of 3: 27_320
+    # Enrolled -> uses 85% SMI (graduated phase-out)
+    # 85% SMI family of 3 = 113_577 / 12 = 9_464.75/mo
+    # Monthly income = 79_200 / 12 = 6_600
+    # 6_600 <= 9_464.75 -> eligible
+    nj_ccap_income_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 79_200 / 27_320 = 2.899 (above 200% -> higher tier)
+    # 1 child FT at 201%+ FPL: 3% (CC-236 06/24 reinstatement rate)
+    # Monthly copay = 79_200 * 0.03 / 12 = 198
+    nj_ccap_copay: 198
+
+    # === Rates ===
+    # Infant FT 3-star licensed center = $391.32/wk
+    nj_ccap_maximum_weekly_benefit: [0, 0, 391.32]
+
+    # === Benefit ===
+    # Expenses: 22_000 / 12 = 1_833.33/mo
+    # Uncapped: 1_833.33 - 198 = 1_635.33
+    # Max reimbursement: 391.32 * 52 / 12 = 1_695.72
+    # Benefit = min(1_635.33, 1_695.72) = 1_635.33
+    nj_ccap: 1_635.33
+
+- name: Case 6, enrolled family at 230% FPL continuing eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 62_836
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nj_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 22_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # === Eligibility ===
+    nj_ccap_eligible_child: [false, false, true]
+
+    # FPG family of 3: 27_320; 250% = 68_300
+    # Enrolled: 62_836 <= 68_300 -> eligible
+    nj_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    nj_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 62_836 / 27_320 = 2.300 -> 201%+ tier
+    # 1 child FT -> 3% (CC-236 06/24 reinstatement rate)
+    # monthly copay = 62_836 * 0.03 / 12 = 157.09
+    nj_ccap_copay: 157.09
+
+    # === Provider rates ===
+    # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
+    # Child (age 1 = 12 mo < 18) -> INFANT
+    nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, INFANT]
+    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME]
+    # Center FT Star 3 Infant = $391.32
+    nj_ccap_maximum_weekly_benefit: [0, 0, 391.32]
+
+    # === Benefit ===
+    # max annual = 391.32 * 52 = 20_348.64
+    # annual copay = 62_836 * 0.03 = 1_885.08
+    # uncapped = max(22_000 - 1_885.08, 0) = 20_114.92
+    # annual benefit = min(20_114.92, 20_348.64) = 20_114.92
+    # monthly = 20_114.92 / 12 = 1_676.24
+    nj_ccap: 1_676.24
+
+- name: Case 7, child exactly age 13 is ineligible unless special needs.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Child age 13 >= 13 -> not eligible (not disabled)
+    nj_ccap_eligible_child: [false, false]
+    nj_ccap_eligible: false
+    nj_ccap: 0

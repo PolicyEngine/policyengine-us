@@ -1,0 +1,13 @@
+description: New York uses post-October 2022 Temporary Assistance for Needy Families rules when this is true.
+
+metadata:
+  unit: bool
+  period: month
+  label: New York TANF October 2022 reform in effect
+  reference:
+    - title: 22-ADM-11 Public Assistance Policy Changes Section II
+      href: https://otda.ny.gov/policy/directives/2022/ADM/22-ADM-11.pdf#page=2
+
+values:
+  1998-01-01: false
+  2022-10-01: true

@@ -1,0 +1,14 @@
+description: New Jersey combines short-term and long-term capital gains into Category (c) and disregards the net if negative under the same-category rule.
+values:
+  2021-01-01:
+    - short_term_capital_gains  # Line 19: Short-term capital gains
+    - long_term_capital_gains  # Line 19: Long-term capital gains
+metadata:
+  unit: list
+  period: year
+  label: NJ Category (c) - Capital gains
+  reference:
+    - title: N.J.S. 54A:5-1(c)
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/
+    - title: NJ-1040 Line 19
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf

@@ -1,0 +1,18 @@
+description: The Committee for a Responsible Federal Budget proposes to replace the additional senior deduction with a nonrefundable credit which is phased out at this rate for non-joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: CRFB Social Security nonrefundable credit other filers phase out rate
+
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 75_000
+    rate:
+      0000-01-01: 0.06

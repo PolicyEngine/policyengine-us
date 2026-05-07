@@ -1,0 +1,62 @@
+- name: Eligible child - Apple Health for Kids
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: WA
+        members: [child]
+    people:
+      child:
+        age: 10
+        medicaid_income_level: 2.0  # 200% FPL - below 317% threshold
+  output:
+    wa_apple_health_cost_if_enrolled: 3_643.43  # 3,188,000,000 / 875,000
+
+- name: Eligible expansion adult - undocumented
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    households:
+      household:
+        state_code: WA
+        members: [adult]
+    people:
+      adult:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.2  # 120% FPL - below 138% threshold
+        is_pregnant: false
+  output:
+    wa_apple_health_cost_if_enrolled: 8_792.99  # 7,773,000,000 / 884,000
+
+- name: Ineligible - adult citizen (not expansion eligible)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    households:
+      household:
+        state_code: WA
+        members: [adult]
+    people:
+      adult:
+        age: 35
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.2
+  output:
+    wa_apple_health_cost_if_enrolled: 0
+
+- name: Ineligible - child over income threshold
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    households:
+      household:
+        state_code: WA
+        members: [child]
+    people:
+      child:
+        age: 10
+        medicaid_income_level: 4.0  # 400% FPL - above 317% threshold
+  output:
+    wa_apple_health_cost_if_enrolled: 0

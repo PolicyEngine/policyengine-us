@@ -1,0 +1,35 @@
+description: Maine provides this amount as the monthly couple State Supplement under the State Supplemental Income Program.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Maine SSP couple monthly amount
+  breakdown:
+    - me_ssp_payment_category
+  reference:
+    - title: 10-144 C.M.R. ch. 332, Part 11, § 11-5 Types of Living Arrangements
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-332-SS-11-5
+    - title: 10-144 C.M.R. ch. 332, Part 11, § 5 (MaineCare Eligibility Manual)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/144c332-2025-101%20%28AMD%29_0.docx
+    - title: 10-144 C.M.R. ch. 332 Appendices and Charts, Chart 3.6
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/content/assets/144c332-appendices-charts.docx
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Maine, Table 1
+      href: https://web.archive.org/web/2024/https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/me.html
+
+LIVING_ALONE_OR_WITH_OTHERS:
+  2011-01-01: 15
+HOUSEHOLD_OF_ANOTHER:
+  2011-01-01: 12
+ADULT_FOSTER_HOME:
+  2011-01-01: 273
+FLAT_RATE_BOARDING_HOME:
+  2011-01-01: 590
+ADULT_FAMILY_CARE_HOME:
+  2011-01-01: 636
+COST_REIMBURSED_BOARDING_HOME:
+  2011-01-01: 636
+MEDICAID_FACILITY:
+  2011-01-01: 20
+RESIDENTIAL_CARE_FACILITY:
+  2011-01-01: 15
+NONE:
+  2011-01-01: 0

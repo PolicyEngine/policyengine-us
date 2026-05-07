@@ -1,0 +1,83 @@
+# Maine TANF Income Eligibility Tests
+# Tests income eligibility by comparing countable income to standard of need
+# Source: 22 M.R.S. Section 3762(3)(B)(7-F)
+
+- name: Case 1, zero income is eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 0
+    me_tanf_standard_of_need: 1_030
+  output:
+    # $0 <= $1,030, eligible
+    me_tanf_income_eligible: true
+
+- name: Case 2, income below standard of need is eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 500
+    me_tanf_standard_of_need: 1_030
+  output:
+    # $500 <= $1,030, eligible
+    me_tanf_income_eligible: true
+
+- name: Case 3, income exactly at standard of need is eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 1_030
+    me_tanf_standard_of_need: 1_030
+  output:
+    # $1,030 <= $1,030, eligible
+    me_tanf_income_eligible: true
+
+- name: Case 4, income above standard of need is ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 1_100
+    me_tanf_standard_of_need: 1_030
+  output:
+    # $1,100 > $1,030, ineligible
+    me_tanf_income_eligible: false
+
+- name: Case 5, single person eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 400
+    me_tanf_standard_of_need: 489
+  output:
+    # $400 <= $489, eligible
+    me_tanf_income_eligible: true
+
+- name: Case 6, single person ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 500
+    me_tanf_standard_of_need: 489
+  output:
+    # $500 > $489, ineligible
+    me_tanf_income_eligible: false
+
+- name: Case 7, family of 4 eligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 1_200
+    me_tanf_standard_of_need: 1_296
+  output:
+    # $1,200 <= $1,296, eligible
+    me_tanf_income_eligible: true
+
+- name: Case 8, family of 4 ineligible.
+  period: 2025-01
+  input:
+    state_code: ME
+    me_tanf_countable_income: 1_400
+    me_tanf_standard_of_need: 1_296
+  output:
+    # $1,400 > $1,296, ineligible
+    me_tanf_income_eligible: false

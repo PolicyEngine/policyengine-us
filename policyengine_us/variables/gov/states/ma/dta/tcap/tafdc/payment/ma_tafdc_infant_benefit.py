@@ -7,9 +7,7 @@ class ma_tafdc_infant_benefit(Variable):
     entity = Person
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) infant benefit"
     definition_period = YEAR
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-705-600"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-705-600"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):

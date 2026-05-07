@@ -10,9 +10,7 @@ class oh_pension_based_retirement_income_credit_eligible(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.retirement.pension_based
+        p = parameters(period).gov.states.oh.tax.income.credits.retirement.pension_based
 
         agi = tax_unit("oh_modified_agi", period)
         exemptions = tax_unit("oh_personal_exemptions", period)

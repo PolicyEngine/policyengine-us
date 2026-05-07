@@ -86,3 +86,100 @@
     ca_riv_general_relief_special_needs_amount: 2.5
     ca_riv_general_relief: 22.93
     # 436 + 2.5 - 415.57
+
+- name: Case 4, single senior with moderate income.
+  period: 2026-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 24_060
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        housing_cost: 700
+  output:
+    # Age 65 qualifies for SSI ($34/month in 2026)
+    # ineligible_person=true due to SSI, so not eligible for GR
+    ssi: 34
+    ca_riv_general_relief_ineligible_person: true
+    ca_riv_general_relief_income_eligible: true
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0
+
+- name: Case 5, single adult age 64 with moderate income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 24_060
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        housing_cost: 700
+  output:
+    # Age 64 doesn't qualify for SSI
+    ssi: 0
+    ca_riv_general_relief_ineligible_person: false
+    ca_riv_general_relief_income_eligible: false
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0
+
+- name: Case 6, single senior with high rent.
+  period: 2026-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 24_060
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        housing_cost: 700 * 12
+  output:
+    # Same as Case 4 but high rent (700 * 12)
+    # Age 65 qualifies for SSI ($34/month in 2026), ineligible_person=true, so not eligible for GR
+    ssi: 34
+    ca_riv_general_relief_ineligible_person: true
+    ca_riv_general_relief_income_eligible: true
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0
+
+- name: Case 7, single adult age 64 with high rent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 24_060
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        housing_cost: 700 * 12
+  output:
+    # Same as Case 5 but high rent (700 * 12)
+    # Age 64 doesn't qualify for SSI
+    ssi: 0
+    ca_riv_general_relief_ineligible_person: false
+    ca_riv_general_relief_income_eligible: false
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0

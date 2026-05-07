@@ -15,7 +15,7 @@ class hi_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         # Hawaii applies an federal AGI limit which has been introduced in 2009
-        p = parameters(f"2009-01-01").gov.irs.deductions.itemized.reduction
+        p = parameters(f"2009-01-01").gov.irs.deductions.itemized.limitation
 
         # Hawaii did not suspend the overall limitation on itemized deductions
         # You may not be able to deduct all of your itemized deductions if agi reach the cap
@@ -23,7 +23,7 @@ class hi_itemized_deductions(Variable):
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         total_itemized_deduction_eligibility = (
-            hi_agi < p.agi_threshold[filing_status]
+            hi_agi < p.applicable_amount[filing_status]
         )
         return where(
             total_itemized_deduction_eligibility,

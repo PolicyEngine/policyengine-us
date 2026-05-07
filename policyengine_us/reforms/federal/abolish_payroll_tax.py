@@ -12,9 +12,7 @@ def create_abolish_payroll_tax() -> Reform:
 
         def formula(household, period, parameters):
             p = parameters(period)
-            added_components = (
-                p.gov.household.household_tax_before_refundable_credits
-            )
+            added_components = p.gov.household.household_tax_before_refundable_credits
             added_components = [
                 c for c in added_components if c != "employee_payroll_tax"
             ]
@@ -27,9 +25,7 @@ def create_abolish_payroll_tax() -> Reform:
     return reform
 
 
-def create_abolish_payroll_tax_reform(
-    parameters, period, bypass: bool = False
-):
+def create_abolish_payroll_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_abolish_payroll_tax()
 
@@ -41,6 +37,4 @@ def create_abolish_payroll_tax_reform(
         return None
 
 
-abolish_payroll_tax = create_abolish_payroll_tax_reform(
-    None, None, bypass=True
-)
+abolish_payroll_tax = create_abolish_payroll_tax_reform(None, None, bypass=True)

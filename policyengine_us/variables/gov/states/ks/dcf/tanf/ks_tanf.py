@@ -18,4 +18,5 @@ class ks_tanf(Variable):
         # Benefit = Payment Standard - Countable Income
         maximum_benefit = spm_unit("ks_tanf_maximum_benefit", period)
         countable_income = spm_unit("ks_tanf_countable_income", period)
-        return max_(maximum_benefit - countable_income, 0)
+        benefit = max_(maximum_benefit - countable_income, 0)
+        return min_(benefit, maximum_benefit)

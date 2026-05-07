@@ -13,11 +13,7 @@ class va_eitc_person(Variable):
     def formula(person, period, parameters):
         refundable_eitc = person.tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = person.tax_unit("va_non_refundable_eitc", period)
-        claims_refundable = person.tax_unit(
-            "va_claims_refundable_eitc", period
-        )
+        claims_refundable = person.tax_unit("va_claims_refundable_eitc", period)
         va_agi_share = person("va_agi_share", period)
-        eitc_claimed = where(
-            claims_refundable, refundable_eitc, non_refundable_eitc
-        )
+        eitc_claimed = where(claims_refundable, refundable_eitc, non_refundable_eitc)
         return eitc_claimed * va_agi_share

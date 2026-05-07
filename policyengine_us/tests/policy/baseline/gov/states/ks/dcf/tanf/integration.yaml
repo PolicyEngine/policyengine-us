@@ -5,8 +5,8 @@
 # - 60% earned income disregard on remainder (KEESM Memo 2008-0326)
 # - Dependent care deduction - no cap (KEESM 7224)
 # - Gross income must be < 30% FPL (K.S.A. 39-709)
-# - Payment standards (High Population Counties, Group III):
-#   1=$241, 2=$326, 3=$403, 4=$471, 5+=$471+$61/person
+# - Payment standards (Group IV: Douglas, Harvey, Johnson counties — most populous, cross-state convention):
+#   1=$267, 2=$352, 3=$429, 4=$497, 5+=$497+$61/person
 # - Resource limit: $3,000
 
 - name: Case 1, family of 3 with no income, receives full benefit.
@@ -35,15 +35,15 @@
   output:
     # Intermediate values
     spm_unit_size: 3
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     ks_tanf_countable_income: 0
     # Eligibility
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 403 - 0 = 403
-    ks_tanf: 403
+    # Benefit: 429 - 0 = 429
+    ks_tanf: 429
 
 - name: Case 2, family of 3 with low earned income.
   period: 2025-01
@@ -79,14 +79,14 @@
     ks_tanf_earned_income_after_deductions: [164, 0, 0]
     ks_tanf_countable_earned_income: 164
     ks_tanf_countable_income: 164
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     # Gross income ($500) < 30% FPL for family of 3 (~$670)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 403 - 164 = 239
-    ks_tanf: 239
+    # Benefit: 429 - 164 = 265
+    ks_tanf: 265
 
 - name: Case 3, family of 3 with net income exceeding limit.
   period: 2025-01
@@ -120,7 +120,7 @@
     ks_tanf_earned_income_after_deductions: [284, 0, 0]
     ks_tanf_countable_earned_income: 284
     ks_tanf_countable_income: 284
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     # Gross ($800) > 30% FPL for family of 3 (~$670)
     ks_tanf_gross_income_eligible: false
     ks_tanf_eligible: false
@@ -148,7 +148,7 @@
         state_code: KS
   output:
     spm_unit_size: 2
-    ks_tanf_maximum_benefit: 326
+    ks_tanf_maximum_benefit: 352
     # Resources: $5,000 > $3,000 limit
     ks_tanf_resources_eligible: false
     ks_tanf_eligible: false
@@ -179,14 +179,14 @@
     # Unearned income has no disregard
     # Countable: $200/month
     ks_tanf_countable_income: 200
-    ks_tanf_maximum_benefit: 326
+    ks_tanf_maximum_benefit: 352
     # Gross ($200) < 30% FPL for family of 2 (~$530)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 326 - 200 = 126
-    ks_tanf: 126
+    # Benefit: 352 - 200 = 152
+    ks_tanf: 152
 
 - name: Case 6, family with small benefit.
   period: 2025-01
@@ -220,13 +220,13 @@
     ks_tanf_earned_income_after_deductions: [124, 0, 0]
     ks_tanf_countable_earned_income: 124
     ks_tanf_countable_income: 124
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     # Gross ($400) < 30% FPL (~$670)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 403 - 124 = 279
-    ks_tanf: 279
+    # Benefit: 429 - 124 = 305
+    ks_tanf: 305
 
 - name: Case 7, household with two earners.
   period: 2025-01
@@ -261,14 +261,14 @@
     ks_tanf_earned_income_after_deductions: [84, 44, 0]
     ks_tanf_countable_earned_income: 128
     ks_tanf_countable_income: 128
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     # Gross ($500) < 30% FPL for family of 3 (~$670)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 403 - 128 = 275
-    ks_tanf: 275
+    # Benefit: 429 - 128 = 301
+    ks_tanf: 301
 
 - name: Case 8, large family of 5.
   period: 2025-01
@@ -301,21 +301,21 @@
         state_code: KS
   output:
     # Large family tests the additional-person formula for 5+ members
-    # Payment standard for 5: $471 + $61 = $532
+    # Payment standard for 5: $497 + $61 = $558
     # Gross earned: $7,200/year = $600/month
     # adult1: $600 - $90 = $510, $510 * 0.40 = $204
     spm_unit_size: 5
     ks_tanf_earned_income_after_deductions: [204, 0, 0, 0, 0]
     ks_tanf_countable_earned_income: 204
     ks_tanf_countable_income: 204
-    ks_tanf_maximum_benefit: 532
+    ks_tanf_maximum_benefit: 558
     # Gross ($600) < 30% FPL for family of 5 (~$890)
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 532 - 204 = 328
-    ks_tanf: 328
+    # Benefit: 558 - 204 = 354
+    ks_tanf: 354
 
 - name: Case 9, family with dependent care expenses.
   period: 2025-01
@@ -334,7 +334,7 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_cash_assets: 500
-        spm_unit_pre_subsidy_childcare_expenses: 1_200  # $100/month
+        childcare_expenses: 1_200  # $100/month
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -354,10 +354,10 @@
     ks_tanf_earned_income_after_deductions: [164, 0, 0]
     ks_tanf_countable_earned_income: 64
     ks_tanf_countable_income: 64
-    ks_tanf_maximum_benefit: 403
+    ks_tanf_maximum_benefit: 429
     ks_tanf_gross_income_eligible: true
     ks_tanf_income_eligible: true
     ks_tanf_resources_eligible: true
     ks_tanf_eligible: true
-    # Benefit: 403 - 64 = 339
-    ks_tanf: 339
+    # Benefit: 429 - 64 = 365
+    ks_tanf: 365

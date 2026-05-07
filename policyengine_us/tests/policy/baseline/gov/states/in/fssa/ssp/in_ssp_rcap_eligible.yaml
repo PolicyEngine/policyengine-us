@@ -1,0 +1,121 @@
+- name: Case 1, SSI-eligible adult in licensed residential facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: true
+
+- name: Case 2, child under 18 in licensed residential facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_ssi_eligible: true
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: false
+
+- name: Case 3, adult in Medicaid facility not licensed residential.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: false
+
+- name: Case 4, not SSI recipient and not Medicaid enrolled in licensed residential.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_eligible: false
+        is_medicaid_eligible: false
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: false
+
+- name: Case 5, non-IN resident in licensed residential facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_eligible: true
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    in_ssp_rcap_eligible: false
+
+- name: Case 6, independent living arrangement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        is_ssi_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: false
+
+- name: Case 7, adult exactly at age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        in_resides_in_licensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: true
+
+- name: Case 8, SSI-eligible adult in unlicensed residential facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_eligible: true
+        is_ssi_aged_blind_disabled: true
+        in_resides_in_unlicensed_residential_facility: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: true

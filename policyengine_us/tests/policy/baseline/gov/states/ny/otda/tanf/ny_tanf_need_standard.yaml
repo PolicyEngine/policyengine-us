@@ -1,23 +1,64 @@
-- name: If no children and one adult, need standard is $158/mo.
-  period: 2023
+- name: Case 1, one person household with no shelter cost.
+  period: 2023-01
   input:
     state_code: NY
     spm_unit_size: 1
   output:
-    ny_tanf_need_standard: 158 * 12
+    # Basic ($158) + home energy ($14.10) + supplemental energy ($11)
+    # + shelter ($0, no rent) = $183.10
+    ny_tanf_need_standard: 183.10
 
-- name: If not eligible, we don't calculate it.
-  period: 2023
+- name: Case 2, non-NY state returns zero.
+  period: 2023-01
   input:
     state_code: CA
     spm_unit_size: 1
   output:
     ny_tanf_need_standard: 0
 
-- name: If 10 people, need standard is $617 + 4 * $85 = $957 per month.
-  period: 2023
+- name: Case 3, three person household with no shelter cost.
+  period: 2023-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+  output:
+    # Basic ($336) + home energy ($30) + supplemental energy ($23)
+    # + shelter ($0, no rent) = $389
+    ny_tanf_need_standard: 389
+
+- name: Case 4, three person NYC household with rent above the cap.
+  period: 2023-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+    pre_subsidy_rent: 18_000
+  output:
+    # Basic ($336) + home energy ($30) + supplemental energy ($23)
+    # + shelter (capped at NYC family-of-3 max $400) = $789
+    # pre_subsidy_rent is annual ($18,000 = $1,500/month, well above cap)
+    ny_tanf_need_standard: 789
+
+- name: Case 5, three person household with rent below the cap.
+  period: 2023-01
+  input:
+    state_code: NY
+    spm_unit_size: 3
+    pre_subsidy_rent: 3_000
+  output:
+    # Basic ($336) + home energy ($30) + supplemental energy ($23)
+    # + shelter (actual rent $250/month) = $639
+    # pre_subsidy_rent is annual ($3,000 = $250/month)
+    ny_tanf_need_standard: 639
+
+- name: Case 6, ten person household with no shelter cost.
+  period: 2023-01
   input:
     state_code: NY
     spm_unit_size: 10
   output:
-    ny_tanf_need_standard: 957 * 12
+    # Basic: $617 (size 6) + 4 * $85 (additional) = $957
+    # Home energy: $55.20 (size 6) + 4 * $7.50 (additional) = $85.20
+    # Supplemental energy: $42 (size 6) + 4 * $5 (additional) = $62
+    # Shelter: $0 (no rent)
+    # Total: $957 + $85.20 + $62 + $0 = $1,104.20
+    ny_tanf_need_standard: 1104.20
