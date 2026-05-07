@@ -90,3 +90,77 @@
     state_code: SC
   output:
     sc_state_tax_addback: 0
+
+# 2025+ tests: SC IL #26-4 Item 6 — SC has not conformed to OBBBA's federal SALT
+# cap increase from $10K to $40K. SC's State Tax Addback worksheet must continue
+# to use the pre-OBBBA $10K / $5K MFS cap. The federal SALT cap parameter
+# steps up to $40K at 2025-01-01, so a SC-frozen cap parameter is required.
+- name: 2025 SC JOINT itemizer with SALT just above $10K — non-conformity holds
+  period: 2025
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 50_000
+    standard_deduction: 30_000
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 8_000
+    state_code: SC
+  output:
+    # line 3 = 50000 - 30000 = 20000
+    # line 4 = 8000
+    # line 5 (SC-frozen $10K cap) = 10000 - 5000 = 5000
+    # addback = min(min(8000, 5000), 20000) = 5000
+    sc_state_tax_addback: 5_000
+
+- name: 2025 SC JOINT high-SALT itemizer — addback capped by SC-frozen $10K, not federal $40K
+  period: 2025
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 60_000
+    standard_deduction: 30_000
+    real_estate_taxes: 10_000
+    state_and_local_sales_or_income_tax: 30_000
+    state_code: SC
+  output:
+    # line 3 = 60000 - 30000 = 30000
+    # line 4 = 30000
+    # line 5 (SC-frozen $10K cap) = max(0, 10000 - 10000) = 0
+    # addback = min(min(30000, 0), 30000) = 0
+    # If using federal $40K cap: line 5 = 30000, addback = 30000 — wrong per IL #26-4
+    sc_state_tax_addback: 0
+
+- name: 2025 SC SINGLE itemizer with SALT > $10K — non-conformity
+  period: 2025
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 15_000
+    real_estate_taxes: 2_000
+    state_and_local_sales_or_income_tax: 12_000
+    state_code: SC
+  output:
+    # line 3 = 30000 - 15000 = 15000
+    # line 4 = 12000
+    # line 5 (SC-frozen $10K cap) = 10000 - 2000 = 8000
+    # addback = min(min(12000, 8000), 15000) = 8000
+    sc_state_tax_addback: 8_000
+
+- name: 2025 SC MFS itemizer — SC-frozen $5K cap (not federal $20K)
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    standard_deduction: 15_000
+    real_estate_taxes: 3_000
+    state_and_local_sales_or_income_tax: 6_000
+    state_code: SC
+  output:
+    # line 2 = 0 (MFS not eligible for the line-2 reduction in this worksheet)
+    # line 3 = 20000 - 0 = 20000
+    # line 4 = 6000
+    # line 5 (SC-frozen $5K MFS cap) = max(0, 5000 - 3000) = 2000
+    # addback = min(min(6000, 2000), 20000) = 2000
+    sc_state_tax_addback: 2_000

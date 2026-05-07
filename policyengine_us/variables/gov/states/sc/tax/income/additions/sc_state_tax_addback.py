@@ -11,12 +11,11 @@ class sc_state_tax_addback(Variable):
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
         "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2",
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1130 (2)
+        "https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update",  # IL #26-4 Item 6 — SALT cap non-conformity
     )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        p_us = parameters(period).gov.irs.deductions
-
         us_itemizing = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("standard_deduction", period)
         filing_status = tax_unit("filing_status", period)
@@ -33,11 +32,14 @@ class sc_state_tax_addback(Variable):
         )
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
-        # line 5
+        # line 5: SC has not conformed to OBBBA's 2025 SALT cap increase from
+        # $10,000 to $40,000 (SC IL #26-4 Item 6). Use the SC-frozen cap so
+        # the addback continues to reflect the pre-OBBBA $10K / $5K MFS limit.
+        p_sc = parameters(period).gov.states.sc.tax.income.additions
         real_estate_and_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         less_income_amount = max_(
             0,
-            p_us.itemized.salt_and_real_estate.cap[filing_status]
+            p_sc.state_tax_addback.salt_cap[filing_status]
             - real_estate_and_property_taxes,
         )
         # compare line 3,4,5. get the minimum

@@ -1,0 +1,27 @@
+description: South Carolina applies this state and local tax cap when computing the State Tax addback worksheet, holding to the pre-OBBBA federal SALT cap because SC has not conformed to the 2025 federal SALT cap increase.
+metadata:
+  label: South Carolina State Tax addback SALT cap
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  reference:
+    - title: SC Information Letter #26-4 Revised — Item 6 (SALT cap non-conformity)
+      href: https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update
+    - title: SC1040 Instructions — State Tax Addback Worksheet, Line 5 ("the federal limit of $10,000 ($5,000 if MFS)")
+      href: https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=3
+HEAD_OF_HOUSEHOLD:
+  values:
+    2018-01-01: 10_000
+JOINT:
+  values:
+    2018-01-01: 10_000
+SEPARATE:
+  values:
+    2018-01-01: 5_000
+SINGLE:
+  values:
+    2018-01-01: 10_000
+SURVIVING_SPOUSE:
+  values:
+    2018-01-01: 10_000
