@@ -21,7 +21,7 @@
   output:
     spm_unit_work_expenses: 349.945
 
-- name: Farm-income-only adults still incur Census SPM work expenses
+- name: Farm-operations-income-only adults still incur Census SPM work expenses
   period: 2024
   absolute_error_margin: 0.001
   input:
@@ -29,13 +29,32 @@
       adult_farmer:
         age: 40
         weeks_worked: 10
-        farm_income: 20_000
+        farm_operations_income: 20_000
       adult_nonworker:
         age: 38
         weeks_worked: 30
-        farm_income: 0
+        farm_operations_income: 0
     spm_units:
       spm_unit:
         members: [adult_farmer, adult_nonworker]
+  output:
+    spm_unit_work_expenses: 349.945
+
+- name: SSTB-self-employment-income-only adults still incur Census SPM work expenses
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      adult_consultant:
+        age: 40
+        weeks_worked: 10
+        sstb_self_employment_income: 20_000
+      adult_nonworker:
+        age: 38
+        weeks_worked: 30
+        sstb_self_employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [adult_consultant, adult_nonworker]
   output:
     spm_unit_work_expenses: 349.945

@@ -11,5 +11,6 @@ class spm_work_childcare_earnings(Variable):
     adds = [
         "employment_income",
         "self_employment_income",
-        "farm_income",
+        "sstb_self_employment_income",
+        "farm_operations_income",
     ]

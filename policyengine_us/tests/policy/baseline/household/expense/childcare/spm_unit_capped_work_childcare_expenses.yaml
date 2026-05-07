@@ -26,7 +26,7 @@
   output:
     spm_unit_capped_work_childcare_expenses: 2_000
 
-- name: Work expenses are preserved when they already exceed the earnings cap
+- name: Combined expenses are capped when work expenses already exceed the earnings cap
   period: 2024
   absolute_error_margin: 0.001
   input:
@@ -47,7 +47,7 @@
         members: [head, child]
         spm_unit_pre_subsidy_childcare_expenses: 3_000
   output:
-    spm_unit_capped_work_childcare_expenses: 1_819.714
+    spm_unit_capped_work_childcare_expenses: 1_500
 
 - name: Childcare is capped by the remaining lower-earner earnings after work expenses
   period: 2024

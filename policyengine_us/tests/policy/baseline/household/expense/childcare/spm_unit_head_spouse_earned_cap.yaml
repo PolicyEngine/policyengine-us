@@ -51,7 +51,7 @@
   output:
     spm_unit_head_spouse_earned_cap: 2_500
 
-- name: Farm income counts toward the Census SPM childcare earnings cap
+- name: Farm operations income counts toward the Census SPM childcare earnings cap
   period: 2024
   absolute_error_margin: 0.001
   input:
@@ -63,7 +63,7 @@
         is_tax_unit_head: true
       spouse:
         age: 33
-        farm_income: 3_000
+        farm_operations_income: 3_000
         is_tax_unit_spouse: true
       child:
         age: 8
@@ -75,6 +75,31 @@
         members: [reference_person, spouse, child]
   output:
     spm_unit_head_spouse_earned_cap: 3_000
+
+- name: SSTB self-employment income counts toward the Census SPM childcare earnings cap
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      spouse:
+        age: 33
+        sstb_self_employment_income: 3_500
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [reference_person, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [reference_person, spouse, child]
+  output:
+    spm_unit_head_spouse_earned_cap: 3_500
 
 - name: Extra adults in the SPM unit do not expand the reference person's childcare cap
   period: 2024
