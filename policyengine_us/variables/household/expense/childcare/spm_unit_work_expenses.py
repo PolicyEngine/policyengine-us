@@ -15,7 +15,5 @@ class spm_unit_work_expenses(Variable):
         earned_income = person("spm_work_childcare_earnings", period)
         weekly_amount = parameters(period).gov.census.spm.work_expense.weekly_amount
 
-        eligible_weeks = is_adult * (earned_income > 0) * np.clip(
-            weeks_worked, 0, 52
-        )
+        eligible_weeks = is_adult * (earned_income > 0) * np.clip(weeks_worked, 0, 52)
         return spm_unit.sum(eligible_weeks) * weekly_amount
