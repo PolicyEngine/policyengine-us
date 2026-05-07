@@ -1,0 +1,283 @@
+- name: 2025 family of 3 with 2-year-old at $20,000, Birth to Three ECEAP eligible (FPL era).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $20,000 < 130% FPL family of 3 ($34,645), and child age 2 is under BT3 limit (3).
+    wa_birth_to_three_eceap_eligible: [false, true, false]
+
+- name: 2026 family with 2-year-old at $50,000, BT3 still in FPL era — not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # BT3 toggle flips 2026-07-01; annual reads Jan 1, so 2026 is still FPL.
+    # $50,000 well above 130% FPL family of 2, no SNAP — not eligible.
+    wa_birth_to_three_eceap_eligible: [false, false]
+
+- name: 2027 family with 2-year-old at $50,000, BT3 SMI era — eligible.
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # By 2027 the toggle has flipped — BT3 uses 50% SMI. $50,000 < 50% SMI family of 2.
+    wa_birth_to_three_eceap_eligible: [false, true]
+
+- name: Family with 3-year-old at low income, not BT3 eligible (age 3 is ECEAP, not BT3).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Age 3 is at BT3 age limit (exclusive). Eligible for ECEAP instead.
+    wa_birth_to_three_eceap_eligible: [false, false]
+
+- name: Homeless 1-year-old with high income, NOT BT3 eligible (no homeless categorical path under RCW 43.216.578).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 1
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        is_homeless: true
+  output:
+    # Homelessness is NOT a BT3 categorical path; income too high; no SNAP.
+    wa_birth_to_three_eceap_eligible: [false, false]
+
+- name: High-income 2-year-old with IEP, NOT BT3 eligible (no IEP categorical path under RCW 43.216.578).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 2
+        employment_income: 0
+        has_individualized_education_program: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # IEP is NOT a BT3 categorical path; income too high; no SNAP.
+    wa_birth_to_three_eceap_eligible: [false, false]
+
+- name: High-income 2-year-old with reported SNAP receipt, BT3 eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap_reported: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # RCW 43.216.578 covers assistance units eligible for or receiving Basic Food.
+    wa_birth_to_three_eceap_eligible: [false, true]
+
+- name: Oregon family with 2-year-old at low income, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_birth_to_three_eceap_eligible: [false, false]
+
+# ---- Edge cases ----
+
+- name: Multi-child family with 2-year-old and 4-year-old, only 2-year-old is BT3-eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child_b3:
+        age: 2
+        employment_income: 0
+      child_eceap:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child_b3, child_eceap]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child_b3, child_eceap]
+    households:
+      household:
+        members: [parent, child_b3, child_eceap]
+        state_code: WA
+  output:
+    # Only the 2-year-old qualifies for BT3 (under age 3).
+    wa_birth_to_three_eceap_eligible: [false, true, false]
+
+- name: Age 0 infant with low income, BT3 eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 0
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_eligible: [false, true]
+
+- name: Idaho family with 2-year-old, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    wa_birth_to_three_eceap_eligible: [false, false]

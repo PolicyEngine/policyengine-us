@@ -21,9 +21,10 @@ class sstb_self_employment_income_behavioral_response(Variable):
         total_self_employment_income = (
             non_sstb_self_employment_income + sstb_self_employment_income
         )
-        sstb_share = where(
-            total_self_employment_income > 0,
-            sstb_self_employment_income / total_self_employment_income,
-            0,
+        sstb_share = np.divide(
+            sstb_self_employment_income,
+            total_self_employment_income,
+            out=np.zeros_like(total_self_employment_income),
+            where=total_self_employment_income > 0,
         )
         return total_self_employment_response * sstb_share

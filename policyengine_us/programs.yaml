@@ -79,6 +79,43 @@ programs:
     parameter_prefix: gov.usda.school_meals
     verified_start_year: 2021
     notes: Nationwide rules
+    state_implementations:
+      - state: CA
+        name: California universal meals
+        effective: 2022-07-01
+        reference: AB 130 (2021); Cal. Educ. Code § 49501.5
+      - state: CO
+        name: Colorado Healthy School Meals for All
+        effective: 2023-07-01
+        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
+      - state: MA
+        name: Massachusetts universal meals
+        effective: 2023-07-01
+        reference: FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections
+      - state: ME
+        name: Maine School Meals for All
+        effective: 2022-07-01
+        reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
+      - state: MI
+        name: Michigan School Meals
+        effective: 2023-07-01
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
+      - state: MN
+        name: Minnesota Free School Meals for Kids
+        effective: 2023-07-01
+        reference: HF 5 (2023); Minn. Stat. § 124D.111
+      - state: NM
+        name: New Mexico Healthy Universal School Meals
+        effective: 2023-07-01
+        reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
+      - state: NY
+        name: New York Universal Free School Meals
+        effective: 2025-07-01
+        reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
+      - state: VT
+        name: Vermont Universal School Meals
+        effective: 2023-07-01
+        reference: Act 64 / H.165 (2023); 16 V.S.A. § 4017
 
   - id: summer_ebt
     name: Summer EBT
@@ -523,11 +560,24 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: US
+    coverage: US, WA
     variable: head_start
     parameter_prefix: gov.hhs.head_start
     verified_start_year: 2022
     notes: State enrollment/spending data from FY2022 (Sep 2021); currently adding immigration rules
+    state_implementations:
+      - state: WA
+        status: complete
+        name: ECEAP
+        full_name: Early Childhood Education and Assistance Program (Washington)
+        variable: wa_eceap
+        parameter_prefix: gov.states.wa.dcyf.eceap
+      - state: WA
+        status: complete
+        name: Birth to Three ECEAP
+        full_name: Washington Birth to Three Early Childhood Education and Assistance Program
+        variable: wa_birth_to_three_eceap
+        parameter_prefix: gov.states.wa.dcyf.eceap.birth_to_three_eceap
 
   - id: liheap
     name: LIHEAP
@@ -619,9 +669,10 @@ programs:
         full_name: Delaware State Supplementary Payment
         variable: de_ssp
       - state: FL
-        status: in_progress
+        status: complete
         name: Florida OSS
         full_name: Florida Optional State Supplementation
+        variable: fl_oss
       - state: GA
         status: complete
         name: Georgia SSP
@@ -650,11 +701,32 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MI
+        status: complete
+        name: Michigan SSP
+        full_name: Michigan State Supplementary Payment
+        variable: mi_ssp
+        parameter_prefix: gov.states.mi.mdhhs.ssp
+      - state: ME
+        status: complete
+        name: Maine SSP
+        full_name: Maine State Supplemental Income Program
+        variable: me_ssp
       - state: KS
         status: complete
         name: Kansas SSPP
         full_name: Kansas State Supplemental Payment Program
         variable: ks_sspp
+      - state: LA
+        status: complete
+        name: Louisiana OSS
+        full_name: Louisiana Optional State Supplement
+        variable: la_oss
+      - state: KY
+        status: complete
+        name: Kentucky SSP
+        full_name: Kentucky State Supplementary Payment
+        variable: ky_ssp
       - state: IL
         status: complete
         name: Illinois AABD
@@ -675,6 +747,17 @@ programs:
         name: Texas SSI supplement
         full_name: Texas SSI state supplement
         variable: tx_ssi_state_supplement
+      - state: WA
+        status: partial
+        name: Washington SSP
+        full_name: Washington State Supplementary Payment
+        variable: wa_ssp
+        parameter_prefix: gov.states.wa.dshs.ssp
+        notes: >-
+          Models WAC 388-478-0055(2)(a) STANDARD and (2)(c) MEDICAL_INSTITUTION
+          tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
+          institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
+          PVL track per (2)(f); and foster child in BRS per (2)(g).
 
   - id: social_security
     name: Social Security
@@ -1052,6 +1135,17 @@ programs:
     coverage: TX
     variable: tx_fpp_benefit
     parameter_prefix: gov.states.tx.fpp
+
+  - id: pa_uc
+    name: Pennsylvania Unemployment Compensation
+    full_name: Pennsylvania Unemployment Compensation
+    category: Benefits
+    agency: PA Department of Labor & Industry
+    status: complete
+    coverage: PA
+    variable: pa_uc
+    parameter_prefix: gov.states.pa.dli.unemployment_compensation
+    verified_years: "2025"
 
   - id: tx_dart_benefit
     name: Texas DART

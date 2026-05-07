@@ -1,0 +1,111 @@
+description: Current monthly WIC cash-value benefit amount by food package.
+
+PREGNANT:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+PREGNANT_SINGLETON:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+PREGNANT_MULTIPLE_FETUSES:
+  2018-01-01: 0
+  2023-10-01: 52
+BREASTFEEDING:
+  2018-01-01: 0
+  2023-10-01: 52
+PARTIALLY_BREASTFEEDING:
+  2018-01-01: 0
+  2023-10-01: 52
+FULLY_BREASTFEEDING:
+  2018-01-01: 0
+  2023-10-01: 52
+FULLY_BREASTFEEDING_MULTIPLES:
+  2018-01-01: 0
+  2023-10-01: 78
+POSTPARTUM:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+POSTPARTUM_NON_BREASTFEEDING:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+CHILD:
+  2018-01-01: 0
+  2023-10-01: 26
+CHILD_12_23_MONTHS:
+  2018-01-01: 0
+  2023-10-01: 26
+CHILD_24_59_MONTHS:
+  2018-01-01: 0
+  2023-10-01: 26
+INFANT:
+  2018-01-01: 0
+INFANT_AVERAGE:
+  2018-01-01: 0
+INFANT_0_3_FULLY_FORMULA_FED:
+  2018-01-01: 0
+INFANT_4_5_FULLY_FORMULA_FED:
+  2018-01-01: 0
+INFANT_0_3_PARTIALLY_BREASTFED:
+  2018-01-01: 0
+INFANT_4_5_PARTIALLY_BREASTFED:
+  2018-01-01: 0
+INFANT_6_11_PARTIALLY_BREASTFED:
+  2018-01-01: 0
+INFANT_0_5_FULLY_BREASTFED:
+  2018-01-01: 0
+INFANT_6_11_FULLY_FORMULA_FED:
+  2018-01-01: 0
+INFANT_6_11_FULLY_BREASTFED:
+  2018-01-01: 0
+I-FF-A:
+  2018-01-01: 0
+I-FF-B:
+  2018-01-01: 0
+I-BF/FF-A:
+  2018-01-01: 0
+I-BF/FF-B:
+  2018-01-01: 0
+I-BF/FF-C:
+  2018-01-01: 0
+I-BF-A:
+  2018-01-01: 0
+I-BF-B:
+  2018-01-01: 0
+II-FF:
+  2018-01-01: 0
+II-BF/FF:
+  2018-01-01: 0
+II-BF:
+  2018-01-01: 0
+IV-A:
+  2018-01-01: 0
+  2023-10-01: 26
+IV-B:
+  2018-01-01: 0
+  2023-10-01: 26
+V:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+VI:
+  2018-01-01: 0
+  2023-10-01: 47
+  2025-10-01: 48
+VII:
+  2018-01-01: 0
+  2023-10-01: 52
+NONE:
+  2018-01-01: 0
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  reference:
+    - title: WIC Cash-Value Voucher/Benefit Amounts for FY 2026
+      href: https://www.fns.usda.gov/wic/agency/cvvb-fy26
+    - title: WIC Cash-Value Voucher/Benefit Amounts for FY 2024
+      href: https://www.fns.usda.gov/wic/2024-cash-value-voucher-benefit-amounts

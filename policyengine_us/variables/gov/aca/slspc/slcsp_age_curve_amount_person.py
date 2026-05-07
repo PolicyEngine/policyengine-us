@@ -7,7 +7,7 @@ class slcsp_age_curve_amount_person(Variable):
     label = "Second-lowest ACA silver-plan cost, for people in age curve states"
     unit = USD
     definition_period = MONTH
-    defined_for = "is_aca_ptc_eligible"
+    defined_for = "pays_aca_premium"
 
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)

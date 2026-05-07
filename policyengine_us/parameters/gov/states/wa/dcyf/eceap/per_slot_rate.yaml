@@ -1,0 +1,23 @@
+description: Washington provides this annual cost per slot under the Early Childhood Education and Assistance Program.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Washington ECEAP per-slot annual cost
+  breakdown:
+    - wa_eceap_slot_type
+  reference:
+    - title: DCYF Community-Funded ECEAP Cost Structure (Oct 2019)
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/CFE_Cost_Structure.pdf
+    - title: DCYF Community-Funded ECEAP Funding
+      href: https://www.dcyf.wa.gov/services/early-learning-providers/eceap/community-funded-eceap/funding
+
+PART_DAY:
+  2019-10-01: 8_237
+  2024-07-01: 9_835
+SCHOOL_DAY:
+  2019-10-01: 11_309
+  2024-07-01: 15_638
+WORKING_DAY:
+  2019-10-01: 17_656
+  2024-07-01: 23_411

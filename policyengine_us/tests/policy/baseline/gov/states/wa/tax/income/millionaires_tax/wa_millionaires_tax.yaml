@@ -1,0 +1,244 @@
+# Washington Millionaires Tax tests
+# ESSB 6346 imposes a 9.9% tax on Washington taxable income above $1,000,000
+# Effective January 1, 2028
+
+- name: Case 1, single filer with $2M income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+  output:
+    # Taxable income = $2M - $1M standard deduction = $1M
+    # Tax = $1M * 9.9% = $99,000
+    wa_millionaires_tax: 99_000
+
+- name: Case 2, single filer with $1.5M income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_500_000
+  output:
+    # Taxable income = $1.5M - $1M standard deduction = $500K
+    # Tax = $500K * 9.9% = $49,500
+    wa_millionaires_tax: 49_500
+
+- name: Case 3, single filer below $1M threshold.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 900_000
+  output:
+    # Income below $1M standard deduction, no tax owed
+    wa_millionaires_tax: 0
+
+- name: Case 4, single filer exactly at $1M threshold.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_000_000
+  output:
+    # Taxable income = $1M - $1M = $0
+    wa_millionaires_tax: 0
+
+- name: Case 5, single filer just above $1M threshold.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_001_000
+  output:
+    # Taxable income = $1,001,000 - $1M = $1,000
+    # Tax = $1,000 * 9.9% = $99
+    wa_millionaires_tax: 99
+
+- name: Case 6, non-WA resident not subject to tax.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    adjusted_gross_income: 2_000_000
+  output:
+    wa_millionaires_tax: 0
+
+- name: Case 7, charitable deduction reduces taxable income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+    charitable_cash_donations: 50_000
+  output:
+    # Taxable = $2M - $1M standard - $50K charitable = $950K
+    # Tax = $950K * 9.9% = $94,050
+    wa_millionaires_tax: 94_050
+
+- name: Case 8, charitable deduction capped at $100K.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_500_000
+    charitable_cash_donations: 200_000
+  output:
+    # Charitable deduction capped at $100K
+    # Taxable = $2.5M - $1M standard - $100K charitable = $1.4M
+    # Tax = $1.4M * 9.9% = $138,600
+    wa_millionaires_tax: 138_600
+
+- name: Case 9, joint filers share $1M standard deduction.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    filing_status: JOINT
+    adjusted_gross_income: 2_000_000
+  output:
+    # Married couples share the $1M deduction (not doubled)
+    # Taxable = $2M - $1M = $1M
+    # Tax = $1M * 9.9% = $99,000
+    wa_millionaires_tax: 99_000
+
+- name: Case 10, no tax before 2028.
+  period: 2027
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+  output:
+    wa_millionaires_tax: 0
+
+- name: Case 11, non-cash charitable donations reduce taxable income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_000_000
+    charitable_non_cash_donations: 75_000
+  output:
+    # Taxable = $2M - $1M standard - $75K charitable = $925K
+    # Tax = $925K * 9.9% = $91,575
+    wa_millionaires_tax: 91_575
+
+- name: Case 12, combined cash and non-cash donations capped at $100K.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_500_000
+    charitable_cash_donations: 80_000
+    charitable_non_cash_donations: 60_000
+  output:
+    # Charitable = $80K + $60K = $140K, capped at $100K
+    # Taxable = $2.5M - $1M standard - $100K charitable = $1.4M
+    # Tax = $1.4M * 9.9% = $138,600
+    wa_millionaires_tax: 138_600
+
+- name: Case 13, zero income.
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 0
+  output:
+    wa_millionaires_tax: 0
+
+- name: Case 14, negative AGI from self-employment losses.
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: -500_000
+  output:
+    wa_millionaires_tax: 0
+
+- name: Case 15, charitable deduction zeroes out taxable income.
+  period: 2028
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_050_000
+    charitable_cash_donations: 100_000
+  output:
+    # Taxable = $1.05M - $1M standard - $100K charitable = -$50K = $0
+    wa_millionaires_tax: 0
+
+- name: Case 16, long-term capital gains below the WA capital gains threshold are removed from base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_200_000
+    long_term_capital_gains: 200_000
+  output:
+    # Base income = $1.2M - $200K LT capital gains = $1M
+    # Taxable = $1M - $1M standard = $0
+    wa_millionaires_tax: 0
+
+- name: Case 17, tax-exempt interest is added to Washington base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_100_000
+    tax_exempt_interest_income: 100_000
+  output:
+    # Base income = $1.1M AGI + $100K tax-exempt interest = $1.2M
+    # Taxable = $1.2M - $1M standard = $200K
+    wa_millionaires_tax_base_income: 1_200_000
+    wa_millionaires_tax_taxable_income: 200_000
+    wa_millionaires_tax: 19_800
+
+- name: Case 18, long-term capital loss is added back into Washington base income.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 1_900_000
+    long_term_capital_gains: -100_000
+  output:
+    # Base income = $1.9M AGI - (-$100K LTCG) = $2M
+    # Taxable = $2M - $1M standard = $1M
+    wa_millionaires_tax_base_income: 2_000_000
+    wa_millionaires_tax: 99_000
+
+- name: Case 19, MFS filer gets half of the combined standard deduction.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    filing_status: SEPARATE
+    adjusted_gross_income: 1_000_000
+  output:
+    # MFS standard deduction = $500K (half of the $1M combined amount)
+    # Taxable = $1M - $500K = $500K
+    wa_millionaires_tax_standard_deduction: 500_000
+    wa_millionaires_tax: 49_500
+
+- name: Case 20, MFS filer gets half of the combined charitable cap.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    filing_status: SEPARATE
+    adjusted_gross_income: 1_600_000
+    charitable_cash_donations: 80_000
+  output:
+    # MFS charitable cap = $50K (half of the $100K combined amount)
+    # Standard deduction = $500K (half)
+    # Taxable = $1.6M - $500K - $50K = $1.05M
+    wa_millionaires_tax_charitable_deduction: 50_000
+    wa_millionaires_tax: 103_950
+
+- name: Case 21, millionaires tax applies even when the filer also owes the capital gains tax.
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    state_code: WA
+    adjusted_gross_income: 2_500_000
+    long_term_capital_gains: 500_000
+  output:
+    # Base income removes LTCG and then adds WA capital gains back in when
+    # the filer owes the capital gains tax, so base income = $2.5M.
+    # Taxable = $2.5M - $1M standard = $1.5M; tax = $1.5M * 9.9% = $148,500.
+    wa_millionaires_tax_base_income: 2_500_000
+    wa_millionaires_tax: 148_500

@@ -54,3 +54,39 @@ def test_limit_test_paths_can_defer_to_full_suite_when_no_changed_tests_exist():
     )
 
     assert limited_paths == set()
+
+
+def test_limit_test_paths_defers_slow_ssa_baseline_directory():
+    runner = SelectiveTestRunner()
+
+    changed_files = {
+        "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/policy/baseline/gov/ssa" not in limited_paths
+    assert limited_paths == set()
+
+
+def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
+    runner = SelectiveTestRunner()
+
+    changed_files = {
+        "policyengine_us/reforms/ssa/trustees_core_thresholds.py",
+        "policyengine_us/tests/policy/contrib/ssa/test_trustees_core_thresholds.py",
+        "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/policy/baseline/gov/ssa" not in limited_paths
+    assert "policyengine_us/tests/policy/reform" not in limited_paths
+    assert limited_paths == {
+        "policyengine_us/tests/policy/contrib/ssa",
+        "policyengine_us/tests/policy/contrib/ssa/test_trustees_core_thresholds.py",
+    }
