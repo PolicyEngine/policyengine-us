@@ -24,6 +24,8 @@ metadata:
     href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
   - title: 2024 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+  - title: Arkansas HB1001 (2026 1st Extraordinary Session), Section 1 amending A.C.A. § 26-51-201(a)(4)
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FBills%2F2026S1%2FPublic%2FHB1001.pdf#page=1
 
 brackets:
   - threshold:
@@ -46,6 +48,7 @@ brackets:
         2022-01-01: 5_100
         2023-01-01: 5_300
         2024-01-01: 5_500
+        2026-01-01: 5_600
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -64,6 +67,7 @@ brackets:
         2022-01-01: 10_300
         2023-01-01: 10_600
         2024-01-01: 10_900
+        2026-01-01: 11_200
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -83,6 +87,7 @@ brackets:
         2022-01-01: 14_700
         2023-01-01: 15_100
         2024-01-01: 15_600
+        2026-01-01: 16_000
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -102,6 +107,7 @@ brackets:
         2022-01-01: 24_300
         2023-01-01: 25_000
         2024-01-01: 25_700
+        2026-01-01: 26_400
       metadata:
         uprating: gov.irs.uprating
         rounding:
@@ -113,6 +119,7 @@ brackets:
       2022-01-01: 0.049
       2023-01-01: 0.047
       2024-01-01: 0.039
+      2026-01-01: 0.037
   - threshold:
       values:
         2014-01-01: 35_100
