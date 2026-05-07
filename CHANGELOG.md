@@ -1,3 +1,10 @@
+## [1.688.1] - 2026-05-07
+
+### Fixed
+
+- Fix ACA family-tier premium calculations for older dependents in New York and Vermont.
+
+
 ## [1.688.0] - 2026-05-06
 
 ### Added
