@@ -37,3 +37,34 @@
     tax_unit_size: 3
   output:
     ky_family_size_tax_credit_rate: 0
+
+# 2025 KY Schedule ITC table for family of 4 (FPG=$32,150):
+# "is over $41,795, not over $42,760: 10% credit"
+# KY rounds the .5-cent boundary up to the next whole dollar, so the
+# effective ratio cutoff is $42,760/$32,150 = 1.330016, slightly above 1.33.
+- name: Family of 4 just below 1.33 boundary, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 42_759.88
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 4 at $42,760 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 42_760
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 4 above 1.33 boundary, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 50_000
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0
