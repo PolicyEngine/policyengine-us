@@ -1,10 +1,35 @@
-import numpy as np
-
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.income.spm_unit.spm_unit_spm_threshold import (
-    _reference_threshold_array,
+from policyengine_us.variables.household.income.spm_unit.spm_unit_tenure_type import (
+    SPMUnitTenureType,
 )
-from spm_calculator.equivalence_scale import spm_equivalence_scale
+from spm_calculator.geoadj import get_cd_geoadj
+
+
+SPM_TENURE_TYPE_TO_GEOADJ_KEY = {
+    SPMUnitTenureType.OWNER_WITH_MORTGAGE: "owner_with_mortgage",
+    SPMUnitTenureType.OWNER_WITHOUT_MORTGAGE: "owner_without_mortgage",
+    SPMUnitTenureType.RENTER: "renter",
+}
+
+
+def _cd_geoadj_array(cd_geoids, tenure, geoadj_year: int = 2023):
+    geoadj = np.ones(len(cd_geoids), dtype=float)
+    valid_cd = cd_geoids > 0
+
+    for tenure_enum, tenure_key in SPM_TENURE_TYPE_TO_GEOADJ_KEY.items():
+        tenure_mask = valid_cd & (tenure == tenure_enum)
+        for cd_geoid in np.unique(cd_geoids[tenure_mask]):
+            try:
+                value = get_cd_geoadj(
+                    int(cd_geoid),
+                    year=geoadj_year,
+                    tenure=tenure_key,
+                )
+            except ValueError:
+                value = 1.0
+            geoadj[tenure_mask & (cd_geoids == cd_geoid)] = value
+
+    return geoadj
 
 
 class spm_unit_geographic_adjustment(Variable):
@@ -15,33 +40,7 @@ class spm_unit_geographic_adjustment(Variable):
     definition_period = YEAR
     default_value = 1.0
 
-    def formula_2016(spm_unit, period, parameters):
-        """Infer the location adjustment from prior-year threshold inputs.
-
-        Datasets can provide this directly. For older datasets that only
-        contain stored SPM thresholds, this preserves the implied adjustment.
-        """
-        prior_period = period.last_year
-        cpi_u = parameters.gov.bls.cpi.cpi_u
-
-        prior_threshold = spm_unit("spm_unit_spm_threshold", prior_period)
-        prior_adults = spm_unit("spm_unit_count_adults", prior_period)
-        prior_children = spm_unit("spm_unit_count_children", prior_period)
-        prior_tenure = spm_unit("spm_unit_tenure_type", prior_period)
-
-        prior_base = _reference_threshold_array(
-            prior_tenure,
-            prior_period.start.year,
-            cpi_u,
-        )
-        prior_equiv_scale = spm_equivalence_scale(
-            prior_adults,
-            prior_children,
-        )
-        denominator = prior_base * prior_equiv_scale
-        return np.divide(
-            prior_threshold,
-            denominator,
-            out=np.ones_like(prior_threshold, dtype=float),
-            where=(prior_threshold > 0) & (denominator > 0),
-        )
+    def formula_2015(spm_unit, period, parameters):
+        cd_geoids = spm_unit.household("congressional_district_geoid", period)
+        tenure = spm_unit("spm_unit_tenure_type", period)
+        return _cd_geoadj_array(cd_geoids, tenure)
