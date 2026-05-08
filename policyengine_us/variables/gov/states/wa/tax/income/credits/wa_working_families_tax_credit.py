@@ -20,6 +20,11 @@ class wa_working_families_tax_credit(Variable):
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.wa.tax.income.credits.working_families_tax_credit
+        # RCW 82.08.0206 pins Washington's WFTC to the federal EITC rules as
+        # in effect on June 9, 2022 (the date the statute references).
         frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
         person = tax_unit.members
         has_tin = person("has_tin", period)
@@ -103,9 +108,6 @@ class wa_working_families_tax_credit(Variable):
         eligible = eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
 
         # Parameters are based on EITC-eligible children.
-        p = parameters(
-            period
-        ).gov.states.wa.tax.income.credits.working_families_tax_credit
         eitc_child_count = max_(federal_child_count, child_count)
         max_amount = p.amount.calc(eitc_child_count)
         # WFTC phases out at a certain amount below the EITC maximum AGI.

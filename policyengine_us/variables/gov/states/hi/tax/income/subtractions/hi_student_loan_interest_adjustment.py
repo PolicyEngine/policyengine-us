@@ -11,12 +11,17 @@ class hi_student_loan_interest_deduction(Variable):
     reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
+        # Hawaii's student loan interest deduction parameters become available
+        # starting in 2025; before then the deduction does not apply.
         if period.start.year < 2025:
             return 0
         person = tax_unit.members
         eligible = person("student_loan_interest_ald_eligible", period)
         interest_paid = tax_unit.sum(person("student_loan_interest", period) * eligible)
-        capped_interest = min_(interest_paid, 2_500)
+        p_sli = parameters(
+            period
+        ).gov.states.hi.tax.income.subtractions.student_loan_interest
+        capped_interest = min_(interest_paid, p_sli.cap)
 
         p = parameters(period).gov.states.hi.tax.income
         other_additions = [
@@ -43,10 +48,9 @@ class hi_student_loan_interest_deduction(Variable):
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        joint = filing_status == status.JOINT
         separate = filing_status == status.SEPARATE
-        phase_out_start = where(joint, 100_000, 50_000)
-        phase_out_divisor = where(joint, 30_000, 15_000)
+        phase_out_start = p_sli.phase_out.start[filing_status]
+        phase_out_divisor = p_sli.phase_out.divisor[filing_status]
         reduction_share = np.minimum(
             1.0, np.maximum(0.0, (hi_magi - phase_out_start) / phase_out_divisor)
         )

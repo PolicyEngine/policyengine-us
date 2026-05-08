@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: PA
-    cdcc: 0
+    cdcc_potential: 0
   output:
     pa_cdcc: 0
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     state_code: PA
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     pa_cdcc: 300
 
@@ -18,15 +18,15 @@
   period: 2023
   input:
     state_code: PA
-    cdcc: 1_000
+    cdcc_potential: 1_000
   output:
     pa_cdcc: 1_000
 
-- name: No Pennsylvania credit when only the federal potential credit is positive
+- name: Pennsylvania uses the federal potential credit even when the claimed credit is limited to zero
   period: 2023
   input:
     state_code: PA
     cdcc: 0
     cdcc_potential: 1_000
   output:
-    pa_cdcc: 0
+    pa_cdcc: 1_000

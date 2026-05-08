@@ -21,6 +21,8 @@ class in_eitc_eligible(Variable):
         if not p.credits.earned_income.decoupled:
             return gets_federal_eitc
         if period.start.year >= 2023:
+            # IC 6-3.1-21 pins Indiana's static-conformity EITC to the IRC as
+            # in effect on January 1, 2023.
             frozen_eitc = parameters.gov.irs.credits.eitc("2023-01-01")
             child_count = tax_unit("eitc_child_count", period)
             demographic_eligible = calculate_eitc_demographic_eligibility(

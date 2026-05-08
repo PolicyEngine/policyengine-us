@@ -10,14 +10,9 @@ class state_itemized_deductions(Variable):
     adds = "gov.states.household.state_itemized_deductions"
 
     def formula(tax_unit, period, parameters):
-        year = period.start.year
-        # States that adopt the federal itemized deductions
-        # Based on comments in state_itemized_deductions.yaml
-        FEDERAL_ITEMIZED_DEDUCTION_STATES = [
-            "GA",  # Georgia
-            "ND",  # North Dakota
-            "UT",  # Utah
-        ]
+        federal_itemized_states = parameters(
+            period
+        ).gov.states.household.states_using_federal_itemized_deductions
 
         # Get the current state
         state_code = tax_unit.household("state_code_str", period)
@@ -58,9 +53,7 @@ class state_itemized_deductions(Variable):
             state_specific_base = where(is_state, max_deductions, state_specific_base)
 
         # Check if the state adopts federal itemized deductions
-        uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES) | (
-            (state_code == "SC") & (year < 2026)
-        )
+        uses_federal = np.isin(state_code, federal_itemized_states)
 
         federal_itemized_claimed = tax_unit(
             "itemized_taxable_income_deductions", period

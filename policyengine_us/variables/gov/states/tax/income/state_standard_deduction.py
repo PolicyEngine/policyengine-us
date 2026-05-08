@@ -9,17 +9,9 @@ class state_standard_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        year = period.start.year
-        # States that adopt the federal standard deduction
-        # Based on comments in state_standard_deductions.yaml
-        FEDERAL_STANDARD_DEDUCTION_STATES = [
-            "ID",  # Idaho
-            "MO",  # Missouri
-            "ND",  # North Dakota
-            "NM",  # New Mexico
-            "UT",  # Utah
-            "CO",  # Colorado
-        ]
+        federal_standard_states = parameters(
+            period
+        ).gov.states.household.states_using_federal_standard_deduction
 
         # Get the sum of state-specific standard deductions
         state_specific = add(
@@ -66,9 +58,7 @@ class state_standard_deduction(Variable):
             state_specific = where(is_state, max_deductions, state_specific)
 
         # Check if the state adopts federal standard deduction
-        uses_federal = np.isin(state_code, FEDERAL_STANDARD_DEDUCTION_STATES) | (
-            (state_code == "SC") & (year < 2026)
-        )
+        uses_federal = np.isin(state_code, federal_standard_states)
 
         # Get federal standard deduction
         federal_deduction = tax_unit("standard_deduction", period)

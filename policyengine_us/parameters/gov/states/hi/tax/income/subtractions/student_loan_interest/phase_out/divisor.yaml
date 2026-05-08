@@ -1,0 +1,22 @@
+description: Hawaii phases out the student loan interest deduction over this income range above the phase-out start, by filing status.
+
+SINGLE:
+  2025-01-01: 15_000
+JOINT:
+  2025-01-01: 30_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 15_000
+SURVIVING_SPOUSE:
+  2025-01-01: 30_000
+SEPARATE:
+  2025-01-01: 1
+
+metadata:
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: Hawaii student loan interest deduction phase-out divisor
+  reference:
+    - title: 2025 Hawaii N-11 Instructions
+      href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35
