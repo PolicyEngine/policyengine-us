@@ -1,3 +1,10 @@
+## [1.690.1] - 2026-05-08
+
+### Changed
+
+- Made SPM geographic adjustments formulaic from congressional district and tenure instead of backing them out from stored thresholds.
+
+
 ## [1.690.0] - 2026-05-07
 
 ### Added
