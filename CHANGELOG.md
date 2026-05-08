@@ -1,3 +1,10 @@
+## [1.690.2] - 2026-05-08
+
+### Fixed
+
+- Fix SPM childcare earnings cap projection for datasets with multiple SPM units.
+
+
 ## [1.690.1] - 2026-05-08
 
 ### Changed
