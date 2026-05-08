@@ -84,9 +84,7 @@ class wa_working_families_tax_credit(Variable):
         )
         state_only_income_eligible = (earnings > 0) & (
             higher_income
-            <= calculate_eitc_max_agi_limit(
-                tax_unit, period, frozen_eitc, child_count
-            )
+            <= calculate_eitc_max_agi_limit(tax_unit, period, frozen_eitc, child_count)
         )
         state_only_eitc_eligible = needs_state_only_path & (
             state_only_income_eligible

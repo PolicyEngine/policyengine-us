@@ -11,6 +11,8 @@ class hi_student_loan_interest_deduction(Variable):
     reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
+        if period.start.year < 2025:
+            return 0
         person = tax_unit.members
         eligible = person("student_loan_interest_ald_eligible", period)
         interest_paid = tax_unit.sum(person("student_loan_interest", period) * eligible)
@@ -62,6 +64,8 @@ class hi_student_loan_interest_adjustment(Variable):
     reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
+        if period.start.year < 2025:
+            return 0
         hawaii_deduction = tax_unit("hi_student_loan_interest_deduction", period)
         federal_deduction = tax_unit.sum(
             tax_unit.members("student_loan_interest_ald", period)

@@ -25,9 +25,9 @@ class dc_eitc_without_qualifying_child(Variable):
         min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         age_eligible = is_head_or_spouse & (age >= min_age) & (age <= max_age)
-        no_qualifying_child = tax_unit.sum(
-            person("is_qualifying_child_dependent", period) & has_tin
-        ) == 0
+        no_qualifying_child = (
+            tax_unit.sum(person("is_qualifying_child_dependent", period) & has_tin) == 0
+        )
         us_eligible = (
             filer_has_tin
             & no_qualifying_child

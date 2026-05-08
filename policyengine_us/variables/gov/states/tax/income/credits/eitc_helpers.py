@@ -58,9 +58,9 @@ def calculate_eitc_phase_out_start(
     """Return the EITC phase-out starting point for a chosen law version."""
 
     phase_out_start = eitc_parameters.phase_out.start.calc(child_count)
-    phase_out_start += tax_unit("tax_unit_is_joint", period) * eitc_parameters.phase_out.joint_bonus.calc(
-        child_count
-    )
+    phase_out_start += tax_unit(
+        "tax_unit_is_joint", period
+    ) * eitc_parameters.phase_out.joint_bonus.calc(child_count)
     return phase_out_start
 
 
