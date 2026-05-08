@@ -23,6 +23,7 @@ from policyengine_us.variables.household.income.spm_unit.spm_unit_tenure_type im
 )
 from spm_calculator.equivalence_scale import spm_equivalence_scale
 from spm_calculator.forecast import HISTORICAL_THRESHOLDS
+from spm_calculator.geoadj import get_cd_geoadj
 
 
 def _cpi_u():
@@ -73,27 +74,18 @@ def test_reference_threshold_uprates_with_cpi_u_past_latest_published():
 def test_formula_respects_composition_change_between_years():
     """When a child ages into adulthood between the prior and current
     period, the threshold must rescale by the Betson equivalence-scale
-    ratio (current composition / prior composition)."""
+    ratio."""
     YEAR = 2026
     PRIOR = 2025
 
     # Build a simulation where person "teen" is 17 (child) in PRIOR and
     # 18 (adult) in YEAR, converting the SPM unit from 2A2C to 3A1C.
-    # Calibrate the prior stored threshold so the implied geoadj is
-    # exactly 1.0; the current threshold must then be
-    # current_base * current_equiv.
     cpi_u = _cpi_u()
-    prior_base = _reference_threshold_array(
-        np.array([SPMUnitTenureType.RENTER]),
-        PRIOR,
-        cpi_u,
-    )[0]
     current_base = _reference_threshold_array(
         np.array([SPMUnitTenureType.RENTER]),
         YEAR,
         cpi_u,
     )[0]
-    prior_equiv = spm_equivalence_scale(2, 2)  # 2A2C in PRIOR
     current_equiv = spm_equivalence_scale(3, 1)  # teen is adult in YEAR
 
     situation = {
@@ -106,9 +98,6 @@ def test_formula_respects_composition_change_between_years():
         "spm_units": {
             "spm_unit": {
                 "members": ["adult1", "adult2", "teen", "child"],
-                "spm_unit_spm_threshold": {
-                    PRIOR: float(prior_base * prior_equiv),
-                },
                 "spm_unit_tenure_type": {
                     PRIOR: "RENTER",
                     YEAR: "RENTER",
@@ -123,67 +112,24 @@ def test_formula_respects_composition_change_between_years():
     assert got == pytest.approx(expected, rel=1e-4)
 
 
-def test_formula_preserves_implied_geographic_adjustment():
-    """A prior-year threshold 1.5x the national base should produce a
-    current-year threshold 1.5x the current national base, all else
-    equal."""
-    YEAR = 2026
-    PRIOR = 2025
-    GEOADJ = 1.5
-
-    cpi_u = _cpi_u()
-    prior_base = _reference_threshold_array(
-        np.array([SPMUnitTenureType.RENTER]),
-        PRIOR,
-        cpi_u,
-    )[0]
-    current_base = _reference_threshold_array(
-        np.array([SPMUnitTenureType.RENTER]),
-        YEAR,
-        cpi_u,
-    )[0]
-    equiv = spm_equivalence_scale(2, 2)
-
-    situation = {
-        "people": {
-            "a1": {"age": {PRIOR: 40, YEAR: 41}},
-            "a2": {"age": {PRIOR: 40, YEAR: 41}},
-            "k1": {"age": {PRIOR: 5, YEAR: 6}},
-            "k2": {"age": {PRIOR: 3, YEAR: 4}},
-        },
-        "spm_units": {
-            "spm_unit": {
-                "members": ["a1", "a2", "k1", "k2"],
-                "spm_unit_spm_threshold": {
-                    PRIOR: float(prior_base * equiv * GEOADJ),
-                },
-                "spm_unit_tenure_type": {
-                    PRIOR: "RENTER",
-                    YEAR: "RENTER",
-                },
-            }
-        },
-    }
-
-    sim = Simulation(situation=situation)
-    got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
-    expected = current_base * equiv * GEOADJ
-    assert got == pytest.approx(expected, rel=1e-5)
-
-
-def test_formula_uses_current_geographic_adjustment_input():
-    """A dataset can provide the geographic adjustment directly without
-    materializing an SPM threshold input."""
+def test_formula_uses_congressional_district_geographic_adjustment():
+    """The geographic adjustment is calculated from raw household geography
+    and SPM tenure."""
     YEAR = 2023
-    GEOADJ = 1.25
+    CD_GEOID = 101
 
     cpi_u = _cpi_u()
     base = _reference_threshold_array(
-        np.array([SPMUnitTenureType.RENTER]),
+        np.array([SPMUnitTenureType.OWNER_WITH_MORTGAGE]),
         YEAR,
         cpi_u,
     )[0]
     equiv = spm_equivalence_scale(2, 2)
+    geoadj = get_cd_geoadj(
+        CD_GEOID,
+        year=2023,
+        tenure="owner_with_mortgage",
+    )
 
     situation = {
         "people": {
@@ -192,14 +138,19 @@ def test_formula_uses_current_geographic_adjustment_input():
             "k1": {"age": {YEAR: 5}},
             "k2": {"age": {YEAR: 3}},
         },
+        "households": {
+            "household": {
+                "members": ["a1", "a2", "k1", "k2"],
+                "congressional_district_geoid": {
+                    YEAR: CD_GEOID,
+                },
+            }
+        },
         "spm_units": {
             "spm_unit": {
                 "members": ["a1", "a2", "k1", "k2"],
-                "spm_unit_geographic_adjustment": {
-                    YEAR: GEOADJ,
-                },
                 "spm_unit_tenure_type": {
-                    YEAR: "RENTER",
+                    YEAR: "OWNER_WITH_MORTGAGE",
                 },
             }
         },
@@ -207,13 +158,13 @@ def test_formula_uses_current_geographic_adjustment_input():
 
     sim = Simulation(situation=situation)
     got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
-    expected = base * equiv * GEOADJ
+    expected = base * equiv * geoadj
     assert got == pytest.approx(expected, rel=1e-5)
 
 
-def test_geographic_adjustment_defaults_to_one_without_prior_threshold():
-    """With no direct or implied geographic adjustment, the threshold uses
-    the national reference threshold."""
+def test_geographic_adjustment_defaults_to_one_without_congressional_district():
+    """With no congressional district input, the threshold uses the national
+    reference threshold."""
     YEAR = 2024
 
     cpi_u = _cpi_u()
@@ -247,13 +198,12 @@ def test_geographic_adjustment_defaults_to_one_without_prior_threshold():
     assert got == pytest.approx(expected, rel=1e-5)
 
 
-def test_current_geographic_adjustment_input_overrides_prior_implied_value():
-    """Current-period geographic adjustment inputs should take precedence
-    over a prior-year threshold used for backward compatibility."""
+def test_prior_threshold_does_not_imply_geographic_adjustment():
+    """Stored prior-year thresholds should not back out geographic adjustment;
+    geographic adjustment is formulaic from current raw geography."""
     YEAR = 2026
     PRIOR = 2025
     PRIOR_GEOADJ = 1.5
-    CURRENT_GEOADJ = 1.1
 
     cpi_u = _cpi_u()
     prior_base = _reference_threshold_array(
@@ -281,9 +231,6 @@ def test_current_geographic_adjustment_input_overrides_prior_implied_value():
                 "spm_unit_spm_threshold": {
                     PRIOR: float(prior_base * equiv * PRIOR_GEOADJ),
                 },
-                "spm_unit_geographic_adjustment": {
-                    YEAR: CURRENT_GEOADJ,
-                },
                 "spm_unit_tenure_type": {
                     PRIOR: "RENTER",
                     YEAR: "RENTER",
@@ -294,5 +241,5 @@ def test_current_geographic_adjustment_input_overrides_prior_implied_value():
 
     sim = Simulation(situation=situation)
     got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
-    expected = current_base * equiv * CURRENT_GEOADJ
+    expected = current_base * equiv
     assert got == pytest.approx(expected, rel=1e-5)
