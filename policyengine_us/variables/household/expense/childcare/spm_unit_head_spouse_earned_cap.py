@@ -22,11 +22,13 @@ class spm_unit_head_spouse_earned_cap(Variable):
             "is_unmarried_partner_of_household_head", period
         )
         has_spouse = spm_unit.any(is_reference_person_spouse)
+        has_spouse_person = spm_unit.project(has_spouse)
         eligible_reference_person_or_partner = (
             is_reference_person
             | is_reference_person_spouse
-            | (~has_spouse & is_reference_person_partner)
+            | (~has_spouse_person & is_reference_person_partner)
         )
+        has_reference_person = spm_unit.project(has_reference_person)
         eligible_people = where(
             has_reference_person,
             eligible_reference_person_or_partner,
