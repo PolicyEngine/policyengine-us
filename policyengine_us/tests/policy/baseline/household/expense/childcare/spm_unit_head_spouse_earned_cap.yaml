@@ -186,3 +186,44 @@
         members: [head, spouse]
   output:
     spm_unit_head_spouse_earned_cap: 4_000
+
+- name: Multiple SPM units project reference spouse and partner flags to members
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      reference_person:
+        age: 35
+        employment_income: 40_000
+        is_household_head: true
+        is_tax_unit_head: true
+      partner:
+        age: 33
+        employment_income: 3_000
+        is_unmarried_partner_of_household_head: true
+        is_tax_unit_head: true
+      child:
+        age: 8
+      second_reference_person:
+        age: 45
+        employment_income: 50_000
+        is_household_head: true
+        is_tax_unit_head: true
+      second_spouse:
+        age: 44
+        employment_income: 7_000
+        is_tax_unit_spouse: true
+    tax_units:
+      reference_unit:
+        members: [reference_person, child]
+      partner_unit:
+        members: [partner]
+      second_unit:
+        members: [second_reference_person, second_spouse]
+    spm_units:
+      spm_unit:
+        members: [reference_person, partner, child]
+      second_spm_unit:
+        members: [second_reference_person, second_spouse]
+  output:
+    spm_unit_head_spouse_earned_cap: [3_000, 7_000]
