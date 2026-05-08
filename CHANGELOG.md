@@ -1,3 +1,10 @@
+## [1.690.3] - 2026-05-08
+
+### Fixed
+
+- Fix ACA Premium Tax Credit and Basic Health Program eligibility for lawfully present immigrants who are ineligible for Medicaid due to immigration status, including Medicaid five-year-bar cases.
+
+
 ## [1.690.2] - 2026-05-08
 
 ### Fixed
