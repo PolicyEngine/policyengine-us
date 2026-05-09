@@ -202,6 +202,84 @@ def test_historical_msp_asset_limits_before_2013():
     ]
 
 
+@pytest.mark.parametrize(
+    "state_code",
+    (
+        "ME",
+        "MA",
+    ),
+)
+def test_states_without_msp_asset_tests_cover_standard_part_b_premium(
+    state_code: str,
+):
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "medicare_enrolled": {PERIOD: True},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "gross_medicare_part_b_premium": {PERIOD: 2_220},
+                    "msp_income_eligible": {
+                        f"{PERIOD}-{month:02d}": True
+                        for month in range(1, 13)
+                    },
+                    "bank_account_assets": {PERIOD: 20_000},
+                }
+            },
+            "households": {
+                "household": {"members": ["person"], "state_code": state_code}
+            },
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {
+                "spm_unit": {
+                    "members": ["person"],
+                    "spm_unit_is_married": {PERIOD: False},
+                }
+            },
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("msp_asset_eligible", f"{PERIOD}-03")[0]
+    assert sim.calculate("msp_part_b_premium_coverage", PERIOD)[0] == pytest.approx(
+        2_220
+    )
+    assert sim.calculate("medicare_part_b_premium", PERIOD)[0] == pytest.approx(0)
+
+
+def test_massachusetts_msp_asset_test_elimination_starts_march_2024():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {"2024": 65},
+                    "bank_account_assets": {"2024": 20_000},
+                }
+            },
+            "households": {
+                "household": {"members": ["person"], "state_code": "MA"}
+            },
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {
+                "spm_unit": {
+                    "members": ["person"],
+                    "spm_unit_is_married": {"2024": False},
+                }
+            },
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert not sim.calculate("msp_asset_eligible", "2024-02")[0]
+    assert sim.calculate("msp_asset_eligible", "2024-03")[0]
+
+
 def test_medicare_part_b_premium_does_not_depend_on_calculation_order():
     no_msp_eligibility = {
         f"{year}-{month:02d}": False
