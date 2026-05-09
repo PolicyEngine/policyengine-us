@@ -10,6 +10,10 @@ metadata:
       href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
     - title: Medicare Interactive - Medicare Savings Program Income and Asset Limits
       href: https://www.medicareinteractive.org/understanding-medicare/cost-saving-programs/medicare-savings-programs-qmb-slmb-qi/medicare-savings-program-income-and-asset-limits
+    - title: Maine Revised Statutes Title 22, Section 3174-LLL, Medicare savings program
+      href: https://legislature.maine.gov/statutes/22/title22sec3174-LLL.html
+    - title: MassHealth EOM 24-03, Medicare Savings Programs
+      href: https://www.mass.gov/doc/eom-24-03-medicare-savings-programs-formerly-known-as-masshealth-senior-buy-in-and-masshealth-buy-in-programs-0/download
 # Federal MSP rules apply the asset test by default; states that have
 # eliminated it in current law are set to false from 2024.
 AL:
@@ -71,13 +75,13 @@ LA:
   2024-01-01: false
 ME:
   0000-01-01: true
-  2024-01-01: true
+  2024-01-01: false
 MD:
   0000-01-01: true
   2024-01-01: true
 MA:
   0000-01-01: true
-  2024-01-01: true
+  2024-01-01: false
 MI:
   0000-01-01: true
   2024-01-01: true
