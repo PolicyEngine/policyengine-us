@@ -1,3 +1,10 @@
+## [1.690.5] - 2026-05-10
+
+### Fixed
+
+- Fix New York and elderly/disabled SNAP BBCE gross income limits.
+
+
 ## [1.690.4] - 2026-05-10
 
 ### Fixed
