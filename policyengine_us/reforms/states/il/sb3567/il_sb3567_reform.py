@@ -13,8 +13,9 @@ def create_il_sb3567() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://ilga.gov/Legislation/BillStatus/FullText?DocNum=3567&DocTypeID=SB&GAID=18&LegId=166617&Print=1&SessionID=114",
+            "https://www.ilga.gov/documents/legislation/104/SB/PDF/10400SB3567lv.pdf#page=2",
             "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244",
+            "https://www.law.cornell.edu/uscode/text/26/152",
         )
         defined_for = StateCode.IL
 
@@ -30,16 +31,13 @@ def create_il_sb3567() -> Reform:
 
             actual_credit = tax_unit("il_eitc", period) * ctc.rate
 
-            # SB3567 keys the maximum credit amount to the dependent count.
-            # The bill cites IRC § 152, but here we use the tax unit's child
-            # dependent count, capped at 3 to match the federal EITC schedule.
-            dependent_count = min_(tax_unit("tax_unit_child_dependents", period), 3)
-            federal_eitc = parameters(period).gov.irs.credits.eitc
-            federal_maximum = federal_eitc.max.calc(dependent_count)
-            phase_in_rate = federal_eitc.phase_in_rate.calc(dependent_count)
+            if period.start.year < 2025:
+                return eligible_child_present * actual_credit
 
             # The bill's "income threshold to qualify for the maximum federal
             # EITC" is the end of the phase-in range (start of the plateau).
+            federal_maximum = tax_unit("eitc_maximum", period)
+            phase_in_rate = tax_unit("eitc_phase_in_rate", period)
             max_federal_eitc_threshold = federal_maximum / phase_in_rate
             max_credit = federal_maximum * p.eitc.match * ctc.rate
 
@@ -57,12 +55,15 @@ def create_il_sb3567() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://ilga.gov/Legislation/BillStatus/FullText?DocNum=3567&DocTypeID=SB&GAID=18&LegId=166617&Print=1&SessionID=114",
+            "https://www.ilga.gov/documents/legislation/104/SB/PDF/10400SB3567lv.pdf#page=2",
             "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244",
         )
         defined_for = StateCode.IL
 
         def formula(tax_unit, period, parameters):
+            if period.start.year < 2025:
+                return tax_unit("il_ctc_potential", period)
+
             ordered_credits = parameters(
                 period
             ).gov.states.il.tax.income.credits.non_refundable

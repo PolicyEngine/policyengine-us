@@ -24,6 +24,31 @@
   output:
     il_ctc: 346.24
 
+- name: SB3567 preserves the 2024 flat-credit formula
+  period: 2024
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    il_ctc: 40
+
 - name: SB3567 uses the three-child EITC maximum for larger dependent counts
   period: 2025
   absolute_error_margin: 0.01
@@ -263,3 +288,33 @@
   # AGI <= threshold so boost applies; max credit = 572.16
   output:
     il_ctc: 572.16
+
+- name: SB3567 stops the boost above the two-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 32
+      child1:
+        age: 6
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        adjusted_gross_income: 17_881
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 1_420
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  output:
+    il_ctc: 568
