@@ -1,3 +1,10 @@
+## [1.690.7] - 2026-05-10
+
+### Fixed
+
+- Fixed SNAP categorical eligibility so SSI only qualifies a multi-person SPM unit when all members receive SSI.
+
+
 ## [1.690.6] - 2026-05-10
 
 ### Fixed
