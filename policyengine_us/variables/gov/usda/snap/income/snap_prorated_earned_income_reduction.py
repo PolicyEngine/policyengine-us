@@ -28,8 +28,8 @@ class snap_prorated_earned_income_reduction(Variable):
         person = spm_unit.members
         is_prorated = person("is_snap_disqualified_prorated", period)
         countable = person("snap_countable_earner", period)
-        spm_size = person.spm_unit("spm_unit_size", period)
-        prorated_count = person.spm_unit.sum(is_prorated)
+        spm_size = np.asarray(spm_unit.project(spm_unit("spm_unit_size", period)))
+        prorated_count = np.asarray(spm_unit.project(spm_unit.sum(is_prorated)))
         safe_size = where(spm_size > 0, spm_size, 1)
         # Per 273.11(c)(2), divide income evenly across all members;
         # count only the eligible share. The excluded share is
@@ -44,14 +44,16 @@ class snap_prorated_earned_income_reduction(Variable):
                 "sstb_self_employment_income_before_lsr",
             ],
         )
-        spm_self_emp_gross = person.spm_unit.sum(self_emp_gross)
-        spm_expense = person.spm_unit("snap_self_employment_expense_deduction", period)
+        spm_self_emp_gross = np.asarray(spm_unit.project(spm_unit.sum(self_emp_gross)))
+        spm_expense = np.asarray(
+            spm_unit.project(spm_unit("snap_self_employment_expense_deduction", period))
+        )
         # Attribute the SPM-level expense deduction proportionally to
         # each member's share of total self-employment gross income.
         safe_gross = where(spm_self_emp_gross > 0, spm_self_emp_gross, 1)
         attributed_expense = where(
             spm_self_emp_gross > 0,
-            spm_expense * self_emp_gross / safe_gross,
+            self_emp_gross * spm_expense / safe_gross,
             0,
         )
         self_emp_net_person = max_(self_emp_gross - attributed_expense, 0)
