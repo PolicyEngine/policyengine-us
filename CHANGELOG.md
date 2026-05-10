@@ -1,3 +1,10 @@
+## [1.690.6] - 2026-05-10
+
+### Fixed
+
+- Net Medicare Part B premiums in baseline SPM expenses against cycle-free Medicare Savings Program coverage, preserve reported premiums as an audit input, and stop treating reported health insurance premiums as pre-tax wage deductions in federal AGI.
+
+
 ## [1.690.5] - 2026-05-10
 
 ### Fixed
