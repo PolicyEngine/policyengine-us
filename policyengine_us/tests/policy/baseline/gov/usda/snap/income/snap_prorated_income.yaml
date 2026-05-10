@@ -87,6 +87,31 @@
     snap_prorated_earned_income_reduction: 500   # b's $1k/mo × 1/2
     snap_earned_income: 1_500                    # $2k raw − $500
 
+- name: Self-employment expense deduction attributed before proration.
+  period: 2024-01
+  input:
+    people:
+      a:
+        age: 40
+        self_employment_income_before_lsr: 12_000
+      b:
+        age: 19
+        self_employment_income_before_lsr: 12_000
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [a, b]
+    tax_units:
+      tax_unit:
+        members: [a, b]
+    households:
+      household:
+        members: [a, b]
+        state_code: CA
+  output:
+    snap_prorated_earned_income_reduction: 300
+    snap_earned_income: 900
+
 - name: Unearned income prorated for ineligible student.
   period: 2024-01
   input:
