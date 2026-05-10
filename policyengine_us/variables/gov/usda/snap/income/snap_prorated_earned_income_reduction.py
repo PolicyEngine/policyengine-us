@@ -9,7 +9,7 @@ class snap_prorated_earned_income_reduction(Variable):
     unit = USD
     documentation = (
         "The portion of prorated-disqualified members' earned income "
-        "that should not be counted per 7 CFR 273.11(c)(2) / (c)(3). "
+        "that should not be counted per 7 CFR 273.11(c)(2) or (c)(3). "
         "The regulation divides the ineligible member's income evenly "
         "among all household members; only the portion that would go "
         "to eligible members is counted. This variable returns the "

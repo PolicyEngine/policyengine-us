@@ -40,7 +40,6 @@
 
 - name: Case 5, CA pre-HR1 age 55 exempt flows through SPM.
   period: 2026-01
-  absolute_error_margin: 0.9
   input:
     people:
       person1:
@@ -63,7 +62,6 @@
 
 - name: Case 6, non-CA post-HR1 age 55 not exempt.
   period: 2026-01
-  absolute_error_margin: 0.9
   input:
     people:
       person1:

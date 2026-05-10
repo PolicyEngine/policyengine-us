@@ -1,0 +1,15 @@
+- name: General work requirement failure is an individual disqualification.
+  period: 2024-01
+  input:
+    meets_snap_general_work_requirements: false
+    meets_snap_abawd_work_requirements: true
+  output:
+    is_snap_work_requirements_disqualified: true
+
+- name: ABAWD time-limit failure is not a general work requirement disqualification.
+  period: 2024-01
+  input:
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: false
+  output:
+    is_snap_work_requirements_disqualified: false

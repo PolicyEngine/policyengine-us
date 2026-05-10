@@ -1,0 +1,25 @@
+- name: ABAWD time-limit failure receives prorated treatment.
+  period: 2024-01
+  input:
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: false
+    is_snap_immigration_status_eligible: true
+  output:
+    is_snap_disqualified_prorated: true
+
+- name: Immigration-ineligible member receives prorated treatment.
+  period: 2024-01
+  input:
+    meets_snap_abawd_work_requirements: true
+    is_snap_immigration_status_eligible: false
+  output:
+    is_snap_disqualified_prorated: true
+
+- name: Ineligible student does not receive prorated treatment.
+  period: 2024-01
+  input:
+    is_snap_ineligible_student: true
+    meets_snap_abawd_work_requirements: true
+    is_snap_immigration_status_eligible: true
+  output:
+    is_snap_disqualified_prorated: false

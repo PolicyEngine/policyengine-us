@@ -10,9 +10,9 @@ class meets_snap_work_requirements(Variable):
         "https://www.fns.usda.gov/snap/work-requirements",
         # 7 CFR 273.7(f)(1) — general work requirement; individual
         # disqualification is the default rule.
-        "https://www.law.cornell.edu/cfr/text/7/273.7",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#f_1",
         # 7 CFR 273.24(b) — ABAWD time limit; always individual.
-        "https://www.law.cornell.edu/cfr/text/7/273.24",
+        "https://www.law.cornell.edu/cfr/text/7/273.24#b",
     )
 
     def formula(spm_unit, period, parameters):
@@ -28,5 +28,23 @@ class meets_snap_work_requirements(Variable):
         # fails the general work requirement, bounded to at most 180
         # days, is not yet parameterized here.
         person = spm_unit.members
-        disqualified = person("is_snap_work_requirements_disqualified", period)
+        # ABAWD time-limit failures apply only when the household has no
+        # dependent child under the applicable age threshold.
+        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
+        p = parameters(period).gov.usda.snap.work_requirements.abawd.age_threshold
+        p_pre = parameters(
+            "2025-06-01"
+        ).gov.usda.snap.work_requirements.abawd.age_threshold
+        dep_threshold = where(hr1_in_effect, p.dependent, p_pre.dependent)
+        age = person("monthly_age", period)
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_child = age < dep_threshold
+        no_dependent_child = person.spm_unit.sum(is_dependent & is_child) == 0
+        abawd_disqualified = no_dependent_child & ~person(
+            "meets_snap_abawd_work_requirements", period
+        )
+        disqualified = (
+            person("is_snap_work_requirements_disqualified", period)
+            | abawd_disqualified
+        )
         return spm_unit.any(~disqualified)

@@ -8,8 +8,9 @@ class snap_income_share(Variable):
     documentation = (
         "The fraction of this person's income and prorated deductions "
         "that count toward the SNAP unit's calculation, per 7 CFR "
-        "273.11(c). For prorated-disqualified members (students, "
-        "immigration-ineligible), this equals (total_size - "
+        "273.11(c). For prorated-disqualified members (ABAWD "
+        "time-limit failures or immigration-ineligible members), this "
+        "equals (total_size - "
         "prorated_count) / total_size so that only the eligible "
         "members' share of the member's income is counted. For all "
         "other persons (eligible members and entirety-disqualified "

@@ -9,11 +9,13 @@ class snap_unearned_income(Variable):
     documentation = (
         "Unearned income for calculating the SNAP benefit. Reduced by "
         "the non-counted share of prorated-disqualified members' "
-        "Person-level unearned income per 7 CFR 273.11(c)(2) / (c)(3)."
+        "Person-level unearned income per 7 CFR 273.11(c)(2) or "
+        "(c)(3)."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.9#b_2",
         "https://www.law.cornell.edu/cfr/text/7/273.11#c_2",
+        "https://www.law.cornell.edu/cfr/text/7/273.11#c_3",
     )
     unit = USD
 

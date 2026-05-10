@@ -12,6 +12,11 @@ PERSON_LEVEL_UNEARNED_SOURCES = [
     "retirement_distributions",
     "child_support_received",
     "alimony_income",
+    "dividend_income",
+    "interest_income",
+    "miscellaneous_income",
+    "rental_income",
+    "general_assistance",
 ]
 
 
@@ -24,9 +29,9 @@ class snap_prorated_unearned_income_reduction(Variable):
     documentation = (
         "The portion of prorated-disqualified members' Person-level "
         "unearned income that should not be counted per 7 CFR "
-        "273.11(c)(2) / (c)(3). SPM-level and tax-unit-level sources "
-        "(tanf, general_assistance, rental_income) cannot be "
-        "attributed to specific persons for proration and are excluded."
+        "273.11(c)(2) or (c)(3). SPM-level sources such as TANF "
+        "cannot be attributed to specific persons for proration and "
+        "are excluded."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.11#c_2",
