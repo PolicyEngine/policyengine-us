@@ -1,3 +1,10 @@
+## [1.690.4] - 2026-05-10
+
+### Fixed
+
+- Fix WIC income eligibility to use the July-June WIC income guideline year.
+
+
 ## [1.690.3] - 2026-05-08
 
 ### Fixed
