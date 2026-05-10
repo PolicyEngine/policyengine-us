@@ -1,12 +1,15 @@
-from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant, period as period_
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 def create_il_sb3567() -> Reform:
-    class il_ctc(Variable):
+    class il_ctc_potential(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Illinois Child Tax Credit"
+        label = "Illinois Child Tax Credit before non-refundable cap"
         unit = USD
         definition_period = YEAR
         reference = (
@@ -47,9 +50,58 @@ def create_il_sb3567() -> Reform:
                 actual_credit,
             )
 
+    class il_ctc(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Illinois Child Tax Credit"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://ilga.gov/Legislation/BillStatus/FullText?DocNum=3567&DocTypeID=SB&GAID=18&LegId=166617&Print=1&SessionID=114",
+            "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244",
+        )
+        defined_for = StateCode.IL
+
+        def formula(tax_unit, period, parameters):
+            ordered_credits = parameters(
+                period
+            ).gov.states.il.tax.income.credits.non_refundable
+            return applied_state_non_refundable_credit(
+                tax_unit,
+                period,
+                ordered_credits,
+                "il_income_tax_before_non_refundable_credits",
+                "il_ctc",
+                "il_ctc_potential",
+            )
+
+    def modify_parameters(parameters: ParameterNode) -> ParameterNode:
+        refundable = parameters.gov.states.il.tax.income.credits.refundable
+        refundable_credits = list(refundable(instant("2025-01-01")))
+        if "il_ctc" in refundable_credits:
+            refundable_credits.remove("il_ctc")
+        refundable.update(
+            start=instant("2025-01-01"),
+            stop=instant("2100-12-31"),
+            value=refundable_credits,
+        )
+
+        non_refundable = parameters.gov.states.il.tax.income.credits.non_refundable
+        non_refundable_credits = list(non_refundable(instant("2025-01-01")))
+        if "il_ctc" not in non_refundable_credits:
+            non_refundable_credits.append("il_ctc")
+        non_refundable.update(
+            start=instant("2025-01-01"),
+            stop=instant("2100-12-31"),
+            value=non_refundable_credits,
+        )
+        return parameters
+
     class reform(Reform):
         def apply(self):
+            self.add_variable(il_ctc_potential)
             self.update_variable(il_ctc)
+            self.modify_parameters(modify_parameters)
 
     return reform
 
