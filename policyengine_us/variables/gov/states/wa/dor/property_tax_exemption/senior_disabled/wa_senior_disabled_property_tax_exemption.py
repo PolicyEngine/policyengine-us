@@ -18,7 +18,7 @@ class wa_senior_disabled_property_tax_exemption(Variable):
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.benefit
-        annual_taxes = tax_unit("real_estate_taxes", period)
+        annual_taxes = add(tax_unit, period, ["real_estate_taxes"])
         assessed_value = add(tax_unit, period, ["assessed_property_value"])
         tier = tax_unit("wa_pte_tier", period)
         # RCW 84.36.381(5)(a): every qualifying tier is exempt from excess

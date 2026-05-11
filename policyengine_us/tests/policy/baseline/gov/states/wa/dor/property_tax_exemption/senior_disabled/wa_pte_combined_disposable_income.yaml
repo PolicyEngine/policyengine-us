@@ -73,7 +73,7 @@
     people:
       person1:
         age: 70
-        medical_out_of_pocket_expenses: 5_000
+        other_medical_expenses: 5_000
         long_term_health_insurance_premiums: 3_000
     tax_units:
       tax_unit:
@@ -96,7 +96,7 @@
     people:
       person1:
         age: 70
-        medical_out_of_pocket_expenses: 2_000
+        other_medical_expenses: 2_000
       person2:
         age: 68
         long_term_health_insurance_premiums: 1_500
@@ -122,7 +122,7 @@
     people:
       person1:
         age: 70
-        medical_out_of_pocket_expenses: 3_000
+        other_medical_expenses: 3_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -147,7 +147,7 @@
     people:
       person1:
         age: 70
-        medical_out_of_pocket_expenses: 5_000
+        other_medical_expenses: 5_000
       person2:
         age: 68
     tax_units:
@@ -174,7 +174,7 @@
     people:
       person1:
         age: 70
-        medical_out_of_pocket_expenses: 20_000
+        other_medical_expenses: 20_000
     tax_units:
       tax_unit:
         members: [person1]

@@ -8,7 +8,7 @@
 # Combined disposable income (RCW 84.36.383):
 #   add-backs: AGI + tax_exempt_pension_income + military_basic_pay + veterans_benefits
 #              + tax_exempt_social_security + tax_exempt_interest_income
-#   itemized deductions: medical_out_of_pocket_expenses + long_term_health_insurance_premiums
+#   itemized deductions: other_medical_expenses + long_term_health_insurance_premiums
 #   standard deduction option (2027+): $7,500 per claimant + $7,500 if joint filing;
 #   claimant takes the larger of itemized or standard.
 #
@@ -398,7 +398,7 @@
         age: 70
         real_estate_taxes: 6_000
         assessed_property_value: 700_000
-        medical_out_of_pocket_expenses: 1_000
+        other_medical_expenses: 1_000
     tax_units:
       tax_unit:
         members: [person1]

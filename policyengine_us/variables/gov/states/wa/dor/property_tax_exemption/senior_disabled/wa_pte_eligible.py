@@ -17,6 +17,6 @@ class wa_pte_eligible(Variable):
             add(tax_unit, period, ["wa_pte_categorical_eligible"]) > 0
         )
         # Owner-occupancy proxy: only homeowners pay real_estate_taxes directly.
-        pays_property_tax = tax_unit("real_estate_taxes", period) > 0
+        pays_property_tax = add(tax_unit, period, ["real_estate_taxes"]) > 0
         income_eligible = tax_unit("wa_pte_income_eligible", period)
         return has_categorical_member & pays_property_tax & income_eligible

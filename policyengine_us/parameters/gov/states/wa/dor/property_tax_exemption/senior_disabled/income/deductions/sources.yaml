@@ -1,11 +1,15 @@
 description: Washington subtracts these medical expenses from combined disposable income under the Senior Citizens and Disabled Persons Property Tax Exemption program.
 values:
   2008-01-01:
-    # RCW 84.36.383(2)(a) prescription drugs and (c) Medicare premiums — covered as an aggregate by medical_out_of_pocket_expenses (premiums + other OOP).
-    - medical_out_of_pocket_expenses
+    # RCW 84.36.383(2)(a) — prescription drugs
+    - prescription_expense
+    # RCW 84.36.383(2)(c) — Medicare premiums, plus other reported health insurance premiums
+    - medical_expense_health_insurance_premiums
+    # RCW 84.36.383(2)(e) DME / prosthetics, (h) nebulizers, (j) ostomic items, (k) insulin, (l) kidney dialysis devices, (m) disposable drug-delivery devices — covered as an aggregate by other_medical_expenses.
+    - other_medical_expenses
     # RCW 84.36.383(2)(f) — long-term care insurance premiums
     - long_term_health_insurance_premiums
-    # Not modeled — we don't track at the moment: nursing-home/assisted-living costs (2)(b), Medicare A/B/C/D premiums separately (2)(c), Medigap premiums (2)(d), DME and prosthetics (2)(e), cost-sharing toward OOP max (2)(g), nebulizers (2)(h), naturopathic prescribed botanicals (2)(i), ostomic items (2)(j), insulin (2)(k), kidney dialysis devices (2)(l), disposable drug-delivery devices (2)(m).
+    # Not modeled — we don't track at the moment: nursing-home/assisted-living costs (2)(b), Medigap premiums separately (2)(d), cost-sharing toward OOP max (2)(g), naturopathic prescribed botanicals (2)(i).
 
 metadata:
   unit: list
