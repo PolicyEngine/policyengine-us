@@ -1,3 +1,73 @@
+## [1.690.7] - 2026-05-10
+
+### Fixed
+
+- Fixed SNAP categorical eligibility so SSI only qualifies a multi-person SPM unit when all members receive SSI.
+
+
+## [1.690.6] - 2026-05-10
+
+### Fixed
+
+- Net Medicare Part B premiums in baseline SPM expenses against cycle-free Medicare Savings Program coverage, preserve reported premiums as an audit input, and stop treating reported health insurance premiums as pre-tax wage deductions in federal AGI.
+
+
+## [1.690.5] - 2026-05-10
+
+### Fixed
+
+- Fix New York and elderly/disabled SNAP BBCE gross income limits.
+
+
+## [1.690.4] - 2026-05-10
+
+### Fixed
+
+- Fix WIC income eligibility to use the July-June WIC income guideline year.
+
+
+## [1.690.3] - 2026-05-08
+
+### Fixed
+
+- Fix ACA Premium Tax Credit and Basic Health Program eligibility for lawfully present immigrants who are ineligible for Medicaid due to immigration status, including Medicaid five-year-bar cases.
+
+
+## [1.690.2] - 2026-05-08
+
+### Fixed
+
+- Fix SPM childcare earnings cap projection for datasets with multiple SPM units.
+
+
+## [1.690.1] - 2026-05-08
+
+### Changed
+
+- Made SPM geographic adjustments formulaic from congressional district and tenure instead of backing them out from stored thresholds.
+
+
+## [1.690.0] - 2026-05-07
+
+### Added
+
+- Add Census SPM weekly work-expense parameters and formulas for work and childcare expense caps.
+
+
+## [1.689.0] - 2026-05-07
+
+### Added
+
+- Add an SPM unit geographic adjustment input and use it to calculate SPM thresholds.
+
+
+## [1.688.1] - 2026-05-07
+
+### Fixed
+
+- Fix ACA family-tier premium calculations for older dependents in New York and Vermont.
+
+
 ## [1.688.0] - 2026-05-06
 
 ### Added

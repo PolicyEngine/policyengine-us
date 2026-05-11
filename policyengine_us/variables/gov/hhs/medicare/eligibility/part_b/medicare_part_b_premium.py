@@ -7,46 +7,11 @@ class medicare_part_b_premium(Variable):
     label = "Medicare Part B premium"
     unit = USD
     definition_period = YEAR
-    defined_for = "is_medicare_eligible"
+    defined_for = "medicare_enrolled"
     reference = "https://www.medicare.gov/your-medicare-costs/part-b-costs"
-    documentation = "Annual Medicare Part B premium, including any income-related monthly adjustment amount. Based on modified adjusted gross income from 2 years prior."
+    documentation = "Annual Medicare Part B premium paid out of pocket by the enrollee, net of Medicare Savings Program coverage."
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        filing_status = tax_unit("filing_status", period)
-        # Medicare Part B IRMAA is based on MAGI from 2 years prior
-        # MAGI = AGI + tax-exempt interest
-        prior_period = period.offset(-2, "year")
-        agi = tax_unit("adjusted_gross_income", prior_period)
-        tax_exempt_interest = tax_unit("tax_exempt_interest_income", prior_period)
-        magi = agi + tax_exempt_interest
-        base = person("base_part_b_premium", period)
-
-        # Build boolean masks for each status
-        status = filing_status.possible_values
-        statuses = [
-            status.SINGLE,
-            status.JOINT,
-            status.HEAD_OF_HOUSEHOLD,
-            status.SURVIVING_SPOUSE,
-            status.SEPARATE,
-        ]
-        in_status = [filing_status == s for s in statuses]
-
-        p = parameters(period).gov.hhs.medicare.part_b.irmaa
-
-        irmaa_amount = select(
-            in_status,
-            [
-                p.single.calc(magi),
-                p.joint.calc(magi),
-                p.head_of_household.calc(magi),
-                p.surviving_spouse.calc(magi),
-                p.separate.calc(magi),
-            ],
-        )
-
-        # IRMAA amounts are monthly, multiply by MONTHS_IN_YEAR to get annual
-        # Base is already annual
-        annual_irmaa = irmaa_amount * MONTHS_IN_YEAR
-        return base + annual_irmaa
+        gross_premium = person("gross_medicare_part_b_premium", period)
+        msp_coverage = person("msp_part_b_premium_coverage", period)
+        return max_(gross_premium - msp_coverage, 0)

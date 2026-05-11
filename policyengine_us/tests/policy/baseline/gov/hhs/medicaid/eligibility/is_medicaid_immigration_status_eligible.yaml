@@ -12,10 +12,50 @@
   output:
     is_medicaid_immigration_status_eligible: true
 
+- name: Recent legal permanent resident is ineligible during five-year bar
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Legal permanent resident past five-year bar remains eligible
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Recent one-year parolee is ineligible during five-year bar
+  period: 2025
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    years_since_us_entry: 0
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: One-year parolee past five-year bar is eligible
+  period: 2025
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    years_since_us_entry: 5
+  output:
+    is_medicaid_immigration_status_eligible: true
+
 - name: Eligible immigration status - Refugee
   period: 2024
   input:
     immigration_status: REFUGEE
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Refugee is exempt from five-year bar
+  period: 2025
+  input:
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
   output:
     is_medicaid_immigration_status_eligible: true
 
