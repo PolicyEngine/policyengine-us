@@ -115,3 +115,79 @@
   output:
     # 30_000 + 14_000 - 2_000 - 1_500 = 40_500
     wa_pte_combined_disposable_income: 40_500
+
+- name: Case 6, 2028 single claimant elects standard deduction over small itemized.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        medical_out_of_pocket_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # itemized = 3,000; standard = 7,500 (single)
+    # deduction = max(3,000, 7,500) = 7,500
+    # 50,000 - 7,500 = 42,500
+    wa_pte_combined_disposable_income: 42_500
+
+- name: Case 7, 2028 joint filers get doubled standard deduction.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        medical_out_of_pocket_expenses: 5_000
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 80_000
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # itemized = 5,000; standard = 7,500 * 2 = 15,000
+    # deduction = max(5,000, 15,000) = 15,000
+    # 80,000 - 15,000 = 65,000
+    wa_pte_combined_disposable_income: 65_000
+
+- name: Case 8, 2028 single claimant with large medical expenses keeps itemized.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        medical_out_of_pocket_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # itemized = 20,000 > standard = 7,500 -> use itemized
+    # 50,000 - 20,000 = 30,000
+    wa_pte_combined_disposable_income: 30_000

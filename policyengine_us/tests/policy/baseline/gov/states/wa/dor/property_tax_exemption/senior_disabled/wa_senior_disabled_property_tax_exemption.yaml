@@ -1,10 +1,11 @@
-- name: Case 1, Tier 1 senior in King County receives 80% reduction.
+- name: Case 1, Tier 1 senior in King County with $700k assessed value.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -18,18 +19,22 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Tier 1 (income $40k <= $60k T1)
-    # Annual taxes $6,000 -> monthly $500
-    # Monthly benefit: $500 * 0.8 = $400
-    wa_senior_disabled_property_tax_exemption: 4_800
+    # Tier 1 (income $40k <= T1 $60k).
+    # full_exempt = 6,000 * 0.30 = 1,800
+    # regular_rate = (6,000 * 0.70) / 700,000 = 0.006
+    # tier_1_exempt_value = min(max(60,000, 700,000 * 0.6), 700,000) = 420,000
+    # tier_1_extra = 420,000 * 0.006 = 2,520
+    # total = 1,800 + 2,520 = 4,320
+    wa_senior_disabled_property_tax_exemption: 4_320
 
-- name: Case 2, Tier 2 senior in King County receives 60% reduction.
+- name: Case 2, Tier 2 senior in King County with $700k assessed value.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -43,17 +48,21 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Tier 2 (income $70k > T1 $60k and <= T2 $72k)
-    # Monthly benefit: $500 * 0.6 = $300
-    wa_senior_disabled_property_tax_exemption: 3_600
+    # Tier 2 (T1 $60k < income $70k <= T2 $72k).
+    # tier_2_exempt_value = min(min(max(50,000, 700,000 * 0.35), 70,000), 700,000)
+    #                     = min(min(245,000, 70,000), 700,000) = 70,000
+    # tier_2_extra = 70,000 * 0.006 = 420
+    # total = 1,800 + 420 = 2,220
+    wa_senior_disabled_property_tax_exemption: 2_220
 
-- name: Case 3, Tier 3 senior in King County receives 40% reduction.
+- name: Case 3, Tier 3 senior in King County receives only the full-exempt share.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -67,9 +76,10 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Tier 3 (income $80k > T2 $72k and <= T3 $84k)
-    # Monthly benefit: $500 * 0.4 = $200
-    wa_senior_disabled_property_tax_exemption: 2_400
+    # Tier 3 (T2 $72k < income $80k <= T3 $84k).
+    # Tier 3 has no valuation-based addition.
+    # total = full_exempt = 6,000 * 0.30 = 1,800
+    wa_senior_disabled_property_tax_exemption: 1_800
 
 - name: Case 4, ineligible household receives no benefit.
   period: 2024
@@ -78,6 +88,7 @@
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -94,13 +105,14 @@
     # Income $100k > T3 $84k -> ineligible
     wa_senior_disabled_property_tax_exemption: 0
 
-- name: Case 5, negative countable income does not inflate benefit beyond cap.
+- name: Case 5, negative countable income does not inflate benefit beyond statutory cap.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -114,18 +126,19 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Negative income still falls under Tier 1
-    # Benefit capped at real_estate_taxes/12 * tier_1_rate, never inflated
-    # $500 * 0.8 = $400
-    wa_senior_disabled_property_tax_exemption: 4_800
+    # Same as Tier 1 case — negative income falls under Tier 1, but the
+    # exemption is derived from positive tax bill and valuation, so it
+    # cannot exceed the Tier 1 amount.
+    wa_senior_disabled_property_tax_exemption: 4_320
 
-- name: Case 6, zero real_estate_taxes yields zero benefit even when eligible.
+- name: Case 6, zero real_estate_taxes yields zero benefit even when income-eligible.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 0
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -139,20 +152,21 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Tier 1 eligible, but no tax bill -> 0 * 0.8 = 0
+    # No tax bill -> exemption is zero regardless of tier.
     wa_senior_disabled_property_tax_exemption: 0
 
-- name: Case 7, zero AGI senior in King County qualifies for Tier 1.
+- name: Case 7, missing assessed value falls back to tier 3 share only.
   period: 2024
   input:
     people:
       person1:
         age: 70
-        real_estate_taxes: 4_800
+        real_estate_taxes: 6_000
+        # assessed_property_value defaults to 0
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 0
+        adjusted_gross_income: 40_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -162,17 +176,19 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # No add-back categories present, income = 0 <= Tier 1 -> Tier 1
-    # 4800/12 * 0.8 = 320
-    wa_senior_disabled_property_tax_exemption: 3_840
+    # Without assessed value, regular_rate is 0, so the valuation-based
+    # tier 1 extra collapses to 0 and only the tier 3 share remains.
+    # total = 6,000 * 0.30 = 1,800
+    wa_senior_disabled_property_tax_exemption: 1_800
 
-- name: Case 8, OR state household receives no benefit (defined_for filter).
+- name: Case 8, OR state household receives no benefit.
   period: 2024
   input:
     people:
       person1:
         age: 70
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -196,6 +212,7 @@
         age: 60
         is_disabled: true
         real_estate_taxes: 6_000
+        assessed_property_value: 700_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -209,6 +226,63 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Age 60 < 61 (not age-eligible), but is_disabled (disability-eligible)
-    # Tier 1 (30k <= 60k); annual taxes 6_000 * Tier 1 rate 0.8 = 4_800
-    wa_senior_disabled_property_tax_exemption: 4_800
+    # Tier 1 (30k < T1 60k); same math as Case 1.
+    wa_senior_disabled_property_tax_exemption: 4_320
+
+- name: Case 10, 2028 Tier 1 with ESSB 6162 expanded valuation exemption.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2027-2029: T1 $76k, T2 $89k, T3 $101k.
+    # tier_3_exempt_share = 0.45 (state levy consolidated)
+    # full_exempt = 6,000 * 0.45 = 2,700
+    # regular_rate = (6,000 * 0.55) / 700,000 = 0.00471428...
+    # tier_1_exempt_value = min(max(80,000, 700,000 * 0.8), 700,000) = 560,000
+    # tier_1_extra = 560,000 * 0.00471428... = 2,640
+    # total = 2,700 + 2,640 = 5,340
+    wa_senior_disabled_property_tax_exemption: 5_340
+
+- name: Case 11, 2028 Tier 2 hits the expanded $200k valuation cap.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 85_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # 2028 King: T1 $76k, T2 $89k, T3 $101k. $85k > T1, <= T2 -> Tier 2.
+    # tier_2_exempt_value = min(min(max(70,000, 700,000 * 0.45), 200,000), 700,000)
+    #                     = min(min(315,000, 200,000), 700,000) = 200,000
+    # tier_2_extra = 200,000 * 0.00471428... = 942.857
+    # total = 2,700 + 942.857 = 3,642.857
+    wa_senior_disabled_property_tax_exemption: 3_642.857
