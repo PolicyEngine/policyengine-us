@@ -1,0 +1,1 @@
+Fall back to SPM unit-level utility expenses for `heating_expense_person` so the MA, DC, and IL LIHEAP expense caps work for households calculated without microdata-imputed person-level heating costs.

@@ -133,3 +133,37 @@
     ma_liheap_standard_payment: 1_239
     ma_liheap_hecs_payment: 160
     ma_liheap: 500
+
+- name: SPM-level heating_cooling_expense input drives expense cap when heating_expense_person not supplied
+  period: 2025
+  input:
+    age: 65
+    employment_income: 3_600
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: false
+    heating_cooling_expense: 10_200
+    gas_expense: 0
+    electricity_expense: 0
+    state_code: MA
+  output:
+    ma_liheap_eligible: true
+    ma_liheap_standard_payment: 718
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 718
+
+- name: SPM-level expense below payment — capped at SPM-level total
+  period: 2025
+  input:
+    age: 65
+    employment_income: 3_600
+    receives_housing_assistance: true
+    heat_expense_included_in_rent: false
+    heating_cooling_expense: 300
+    gas_expense: 100
+    electricity_expense: 50
+    state_code: MA
+  output:
+    ma_liheap_eligible: true
+    ma_liheap_standard_payment: 718
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 450
