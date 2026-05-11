@@ -14,7 +14,6 @@ INPUT_VARIABLES = [
     "social_security_disability",
     "health_savings_account_ald",
     "investment_income_elected_form_4952",
-    "medical_out_of_pocket_expenses",
     "unemployment_compensation",
     "self_employment_income",
     "interest_deduction",
@@ -60,7 +59,6 @@ INPUT_VARIABLES = [
     "spm_unit_spm_threshold",
     "non_sch_d_capital_gains",
     "spm_unit_state_tax_reported",
-    "spm_unit_capped_work_childcare_expenses",
     "farm_operations_income",
     "taxable_403b_distributions",
     "qualified_tuition_expenses",
@@ -103,8 +101,8 @@ INPUT_VARIABLES = [
     "strike_benefits",
     "other_medical_expenses",
     "over_the_counter_health_expenses",
-    "medicare_part_b_premiums",
     "health_insurance_premiums_without_medicare_part_b",
+    "other_health_insurance_premiums",
 ]
 
 

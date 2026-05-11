@@ -1,0 +1,114 @@
+- name: Case 1, eligible worker with combined leave facts gets the maximum annual benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: COMBINED
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_eligible: true
+    wa_pfml_weekly_benefit_amount: 866
+    wa_pfml_max_leave_weeks: 16
+    wa_pfml: 13_856
+
+- name: Case 2, no leave type selected produces no maximum benefit estimate.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_eligible: true
+    wa_pfml_max_leave_weeks: 0
+    wa_pfml: 0
+
+- name: Case 3, family leave estimate uses the 12 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 12
+    wa_pfml: 10_392
+
+- name: Case 4, medical leave estimate uses the 12 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: MEDICAL
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 12
+    wa_pfml: 10_392
+
+- name: Case 5, pregnancy-related medical leave estimate uses the 14 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: MEDICAL_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 14
+    wa_pfml: 12_124
+
+- name: Case 6, combined leave with pregnancy incapacity estimate uses the 18 week cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 20
+        employment_income: 52_000
+        wa_pfml_leave_type: COMBINED_WITH_PREGNANCY_INCAPACITY
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_max_leave_weeks: 18
+    wa_pfml: 15_588
+
+- name: Case 7, ineligible workers get no leave or benefit estimate.
+  period: 2026
+  input:
+    people:
+      person1:
+        weekly_hours_worked: 15
+        employment_income: 52_000
+        wa_pfml_leave_type: COMBINED
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pfml_eligible: false
+    wa_pfml_max_leave_weeks: 0
+    wa_pfml: 0

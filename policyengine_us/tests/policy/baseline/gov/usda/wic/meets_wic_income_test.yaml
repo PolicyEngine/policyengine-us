@@ -1,15 +1,45 @@
-- name: Up to 185% of the poverty line (reduced school meal limit) is eligible.
-  period: 2022
+- name: Up to the WIC annual income limit is eligible.
+  period: 2022-01
   input:
-    wic_fpg: 1
-    school_meal_countable_income: 1.85
+    wic_income_limit: 1.85
+    wic_countable_income: 1.85
   output:
     meets_wic_income_test: true
 
-- name: Above 185% of the poverty line (reduced school meal limit) is ineligible.
-  period: 2022
+- name: Above the WIC annual income limit is ineligible.
+  period: 2022-01
   input:
-    wic_fpg: 1
-    school_meal_countable_income: 1.86
+    wic_income_limit: 1.85
+    wic_countable_income: 1.86
+  output:
+    meets_wic_income_test: false
+
+- name: Two-person household at the 2025-2026 WIC annual income limit qualifies.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        wic_countable_income: 39_128
+  output:
+    meets_wic_income_test: true
+
+- name: Two-person household above the 2025-2026 WIC annual income limit does not qualify.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        wic_countable_income: 40_000
   output:
     meets_wic_income_test: false

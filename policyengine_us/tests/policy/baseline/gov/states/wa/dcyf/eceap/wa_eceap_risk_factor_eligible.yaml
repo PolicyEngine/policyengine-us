@@ -1,0 +1,775 @@
+- name: 2025 FPL era, income in 130-200% FPL band with developmental delay, eligible via risk pathway.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 45_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 2025 FPG family of 3 = $26,650; 130% = $34,645; 200% = $53,300.
+    # $45,000 is in band. Only child has dev-delay risk factor.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2025 FPL era, income below 130% FPL (already standard-eligible), risk pathway not triggered.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Income below 130% FPL ($34,645). Risk-factor band is 130-200% FPL only.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2025 FPL era, income above 200% FPL with risk factor, above risk pathway band.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $60,000 > 200% FPL ($53,300). Risk pathway band is 130-200% FPL only.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2025 FPL era at exactly 130% FPL floor, below risk pathway band, not eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_645
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # At exactly 130% FPL floor ($34,645), income is not strictly greater than
+    # lower bound, so not in risk-factor band (band is > 130% and <= 200%).
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2025 FPL era at $34,646 just above 130% FPL floor with dev delay, in risk pathway band.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_646
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $34,646 is strictly > 130% FPL ($34,645), within risk pathway band.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2025 FPL era at exactly 200% FPL upper bound with dev delay, in risk pathway band.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 53_300
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 200% FPL family of 3 in 2025 = $53,300. $53,300 <= upper bound is eligible.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026, income in 36-50% SMI band with developmental delay, eligible via risk pathway.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 in 2026 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # Only child has the dev-delay risk factor.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026, income in 36-50% SMI band with migratory child, eligible via risk pathway.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 4
+        employment_income: 0
+        is_migratory_child: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026, income in 36-50% SMI band with no risk factors, not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Income in risk-factor band but zero qualifying risk factors.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026, income below 36% SMI (already standard-eligible), risk pathway not triggered.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Income below 36% SMI ($42,128). Risk-factor pathway only applies in 36-50% SMI band.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026, income above 50% SMI with risk factor, above risk pathway band.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 70_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $70,000 > 50% SMI ($58,511). Risk pathway band is 36-50% SMI only.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2031, risk-factor pathway expired, not eligible despite risk factor.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # RCW 43.216.512 expires 2030-08-01 — in_effect parameter flips to false.
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026, risk factor but Oregon residency, not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_eceap_risk_factor_eligible: [false, false]
+
+# ---- Edge cases ----
+
+- name: 2030 pre-expiration, income in 36-50% SMI band with dev delay, eligible via risk pathway.
+  period: 2030
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Period 2030 reads 2030-01-01 params: risk_factor_pathway in_effect = True.
+    # 36% SMI family of 3 in 2030 ~= $50,874; 50% SMI ~= $70,658. $60,000 in band.
+    # Only child has the dev-delay risk factor.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2031 post-expiration, income in band with ESL risk factor, not eligible.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        is_non_english_speaking_home: true
+  output:
+    # 2031-01-01 risk_factor_pathway.in_effect = False (expired 2030-08-01).
+    wa_eceap_risk_factor_eligible: [false, false]
+
+- name: 2026 family in 36-50% SMI band with IEP risk factor (no ESL), eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_individualized_education_program: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 in band.
+    # Only child has IEP risk factor.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026 family in 36-50% SMI band with non-English-speaking home, all persons eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+        is_non_english_speaking_home: true
+  output:
+    # ESL risk factor applies at household level: projects to all persons.
+    wa_eceap_risk_factor_eligible: [true, true, true]
+
+- name: 2026 family at exactly 36% SMI floor, below risk pathway band, not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 44_425
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # At exactly 36% SMI floor ($44,425.03), income is not strictly greater than
+    # lower bound, so not in risk-factor band (band is > 36% and <= 50%).
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026 family just above 36% SMI floor with dev delay, in risk pathway band.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 44_426
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $44,426 is strictly > 36% SMI ($44,425.03), within risk pathway band.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026 family at exactly 50% SMI upper bound with dev delay, in risk pathway band.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 61_701
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 50% SMI family of 3 in 2026 ~= $61,701.43. $61,701 <= upper bound.
+    wa_eceap_risk_factor_eligible: [false, true, false]
+
+- name: 2026 single-parent household in 36-50% SMI band, eligible via single-parent risk factor.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: true
+      child:
+        age: 4
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # Single-parent flag is True only on the unmarried tax-unit head (parent),
+    # but the risk factor projects to all SPM unit members so the child is
+    # eligible via the single-parent path.
+    wa_eceap_risk_factor_eligible: [true, true, true]
+
+- name: 2026 family just above 50% SMI upper bound with dev delay, above risk pathway.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 61_702
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        has_developmental_delay: true
+        is_english_proficient: true
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_eceap_risk_factor_eligible: [false, false, false]
+
+- name: 2026 married kinship caregiver family in 36-50% SMI band, foster child eligible via child welfare risk factor.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 34
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # Child welfare involvement is person-specific, so only the foster child has
+    # this risk factor.
+    wa_eceap_risk_factor_eligible: [false, false, true]
+
+- name: 2026 married family in 36-50% SMI band, child formerly in foster care eligible via child welfare risk factor.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 35
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        was_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    wa_eceap_risk_factor_eligible: [false, false, true]

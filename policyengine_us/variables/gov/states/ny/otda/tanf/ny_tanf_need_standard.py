@@ -11,8 +11,16 @@ class ny_tanf_need_standard(Variable):
     reference = "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.1"
 
     def formula(spm_unit, period, parameters):
-        size = spm_unit("spm_unit_size", period.this_year)
-        p = parameters(period).gov.states.ny.otda.tanf.need_standard
-        capped_size = min_(size, p.max_table_size)
-        additional_size = size - capped_size
-        return p.main[capped_size] + p.additional * additional_size
+        # Per 18 NYCRR 352.1: Standard of need = basic monthly allowance
+        # + home energy allowance + supplemental home energy allowance
+        # + shelter allowance (capped at the local agency maximum).
+        return add(
+            spm_unit,
+            period,
+            [
+                "ny_tanf_basic_monthly_allowance",
+                "ny_tanf_home_energy_allowance",
+                "ny_tanf_supplemental_home_energy_allowance",
+                "ny_tanf_shelter_allowance",
+            ],
+        )

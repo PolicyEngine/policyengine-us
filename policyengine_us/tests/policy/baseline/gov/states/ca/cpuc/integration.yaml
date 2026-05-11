@@ -91,6 +91,7 @@
       household:
         members: [adult1, adult2, adult3]
         state_code: CA
+        ca_care_categorically_eligible: false
   output:
     ca_care_categorically_eligible: false
     ca_care_eligible: false

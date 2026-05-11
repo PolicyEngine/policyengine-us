@@ -41,3 +41,15 @@
   output:
     # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($2000) = $4000
     me_agi_subtractions: 4_000   
+
+- name: Maine subtracts reported affordability payment from AGI in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 2_000
+    me_affordability_payment_subtraction_reported: 300
+  output:
+    me_agi_subtractions: 4_300

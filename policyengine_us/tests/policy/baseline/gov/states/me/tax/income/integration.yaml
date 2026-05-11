@@ -33,3 +33,48 @@
         state_fips: 23
   output:
     me_income_tax: -1_370
+
+- name: Maine 2026 surcharge, AGI subtraction, and PTFC under-65 cap are all active for a high-income single filer.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_taxable_income: 1_200_000
+    me_affordability_payment_subtraction_reported: 300
+    tax_unit_taxable_social_security: 0
+    us_govt_interest: 0
+    me_pension_income_deduction: 0
+  output:
+    # Surcharge: 2% * (1,200,000 - 1,000,000) = 4,000
+    me_income_tax_surcharge: 4_000
+    # AGI subtraction includes the reported affordability payment in 2026
+    me_agi_subtractions: 300
+
+- name: Maine 2026 joint household with one spouse age 65+ keeps the $2,000 senior PTFC cap.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 3_000
+    age_head: 64
+    age_spouse: 66
+  output:
+    me_property_tax_fairness_credit_base_cap: 2_000
+
+- name: Maine 2026 joint household with both spouses under 65 takes the new $1,500 under-65 PTFC cap.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 3_000
+    age_head: 60
+    age_spouse: 55
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_500

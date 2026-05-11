@@ -1,0 +1,80 @@
+- name: Case 1, eligible refugee with no income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 450
+    wa_tanf_countable_income: 0
+  output:
+    # Single-person payment standard = $450 (2024 Jan, family of 1)
+    wa_rca: 450
+
+- name: Case 2, eligible refugee family with partial income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 250
+  output:
+    # Benefit = $706 - $250 = $456
+    wa_rca: 456
+
+- name: Case 3, countable income equals payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 706
+  output:
+    wa_rca: 0
+
+- name: Case 4, countable income exceeds payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 900
+  output:
+    wa_rca: 0
+
+- name: Case 5, ineligible household.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: false
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_rca: 0
+
+- name: Case 6, negative countable income capped at payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 450
+    wa_tanf_countable_income: -500
+  output:
+    wa_rca: 450
+
+- name: Case 7, eligible refugee in 2023.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_rca_eligible: true
+    wa_tanf_payment_standard: 417
+    wa_tanf_countable_income: 0
+  output:
+    # Confirms 2023 coverage (household_state_benefits.yaml lists wa_rca
+    # starting 2023-01-01).
+    wa_rca: 417

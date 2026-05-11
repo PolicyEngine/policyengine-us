@@ -1,0 +1,36 @@
+description: Michigan provides this amount as the monthly individual payment standard under the State Supplementary Payment program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Michigan SSP individual payment
+  breakdown:
+    - mi_ssp_payment_category
+  reference:
+    - title: MDHHS RFT 248, SSI Payment Levels
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2
+    - title: MDHHS BEM 660, State SSI Payment, Legal Base
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4
+    - title: MCL 400.10, Social Welfare Act, supplementary payments
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-400-10
+    - title: SSA State Assistance Programs for SSI Recipients, Michigan, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mi.html
+    - title: MDHHS RFT 248, SSI Payment Levels (RFB 2016-001 archive)
+      href: https://web.archive.org/web/20161223122049id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
+
+# Individual rates have not changed since 2016 across all six living
+# arrangements (verified against RFT 248 RFB 2016-001 through RFB 2026-001).
+INDEPENDENT_LIVING:
+  2016-01-01: 14
+HOUSEHOLD_OF_ANOTHER:
+  2016-01-01: 9.33
+DOMICILIARY_CARE:
+  2016-01-01: 87
+PERSONAL_CARE:
+  2016-01-01: 157.5
+HOME_FOR_AGED:
+  2016-01-01: 179.3
+INSTITUTION:
+  2016-01-01: 7
+NONE:
+  2016-01-01: 0
