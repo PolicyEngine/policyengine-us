@@ -41,7 +41,7 @@
     # 30_000 + 12_000 + 8_000 = 50_000
     wa_pte_combined_disposable_income: 50_000
 
-- name: Case 3, all add-backs included.
+- name: Case 3, all modeled add-backs included; veterans_benefits is ignored.
   period: 2024
   input:
     people:
@@ -64,8 +64,11 @@
         members: [person1]
         state_code: WA
   output:
-    # 20_000 + 5_000 + 3_000 + 4_000 + 10_000 + 2_000 = 44_000
-    wa_pte_combined_disposable_income: 44_000
+    # 20_000 + 5_000 + 3_000 + 10_000 + 2_000 = 40_000
+    # veterans_benefits (4_000) is NOT added — statute excludes VA disability,
+    # DIC, attendant-care, medical-aid; the PolicyEngine aggregate is
+    # dominated by those excluded categories.
+    wa_pte_combined_disposable_income: 40_000
 
 - name: Case 4, medical deductions reduce combined disposable income.
   period: 2024

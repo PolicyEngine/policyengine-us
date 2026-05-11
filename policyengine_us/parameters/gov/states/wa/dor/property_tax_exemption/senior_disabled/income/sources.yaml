@@ -6,8 +6,12 @@ values:
     - tax_exempt_pension_income
     # RCW 84.36.383(7)(e) — military pay/benefits not in AGI
     - military_basic_pay
-    # RCW 84.36.383(7)(f) — veterans benefits not in AGI; statute excludes attendant-care, medical-aid, VA disability comp, DIC. Not modeled — we don't track these subcomponents at the moment.
-    - veterans_benefits
+    # RCW 84.36.383(7)(f) — veterans benefits not in AGI, but the statute
+    # excludes attendant-care, medical-aid, VA disability compensation, and
+    # DIC. PolicyEngine's veterans_benefits is an undecomposed aggregate
+    # dominated by those excluded categories, so adding it back would
+    # systematically over-count CDI. We omit it conservatively at the moment
+    # and don't track the included subcomponents separately.
     # RCW 84.36.383(7)(g) — Social Security and Railroad Retirement not in AGI
     - tax_exempt_social_security
     # RCW 84.36.383(7)(i) — state/municipal bond interest not in AGI

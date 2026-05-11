@@ -21,9 +21,15 @@ class wa_pte_combined_disposable_income(Variable):
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income
         # RCW 84.36.383(2) requires combining the claimant's, spouse's, and
-        # each occupying cotenant's disposable income. Tax-unit AGI captures
-        # the claimant + spouse + dependents; non-tax-unit cotenants come in
-        # through wa_pte_cotenant_disposable_income.
+        # each occupying cotenant's disposable income. AGI (and the other
+        # tax-unit-level sources) already excludes dependents because
+        # irs_gross_income masks them out at the person level. Non-tax-unit
+        # cotenants come in through wa_pte_cotenant_disposable_income.
+        # Person-level income add-backs (pension, military pay, veterans
+        # benefits) and medical deductions are summed across all tax-unit
+        # members. The statute (RCW 84.36.383(2) and (7)) restricts these
+        # to amounts of the claimant and spouse/domestic partner only, but
+        # we don't filter dependents at the moment.
         own_income = add(tax_unit, period, p.sources)
         cotenant_income = tax_unit("wa_pte_cotenant_disposable_income", period)
         income = own_income + cotenant_income

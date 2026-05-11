@@ -3,13 +3,13 @@ values:
   2008-01-01:
     # RCW 84.36.383(2)(a) — prescription drugs
     - prescription_expense
-    # RCW 84.36.383(2)(c) — Medicare premiums, plus other reported health insurance premiums
-    - medical_expense_health_insurance_premiums
+    # RCW 84.36.383(2)(c) — Medicare premiums (Part B, net of MSP coverage). The statute authorizes Medicare premiums only, not general private health insurance, so we use medicare_part_b_premium rather than the broader medical_expense_health_insurance_premiums.
+    - medicare_part_b_premium
     # RCW 84.36.383(2)(e) DME / prosthetics, (h) nebulizers, (j) ostomic items, (k) insulin, (l) kidney dialysis devices, (m) disposable drug-delivery devices — covered as an aggregate by other_medical_expenses.
     - other_medical_expenses
     # RCW 84.36.383(2)(f) — long-term care insurance premiums
     - long_term_health_insurance_premiums
-    # Not modeled — we don't track at the moment: nursing-home/assisted-living costs (2)(b), Medigap premiums separately (2)(d), cost-sharing toward OOP max (2)(g), naturopathic prescribed botanicals (2)(i).
+    # Not modeled — we don't track at the moment: nursing-home/assisted-living costs (2)(b), Medigap premiums (2)(d), cost-sharing toward OOP max (2)(g), naturopathic prescribed botanicals (2)(i).
 
 metadata:
   unit: list
