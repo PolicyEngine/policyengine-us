@@ -188,3 +188,28 @@
   output:
     medicaid_category: WORKING_DISABLED_BUY_IN
     is_medicaid_eligible: true
+
+- name: Case 6, adult group enrollee is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_eligible: false
+
+- name: Case 7, parent category remains eligible when adult group work requirements apply.
+  period: 2027
+  input:
+    medicaid_category: PARENT
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 8, adult group enrollee meets work requirements through the income safe harbor.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    is_medicaid_eligible: true
