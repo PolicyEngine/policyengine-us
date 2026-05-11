@@ -247,3 +247,73 @@
   output:
     # Combined AGI 80k: > T2 (72k) and <= T3 (84k) -> Tier 3
     wa_pte_tier: 3
+
+- name: Case 12, King County income $1 below Tier 1 threshold returns Tier 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 59_999
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T1 = $60,000. 59,999 < T1 -> Tier 1. Completes the Tier 1
+    # boundary triple together with Case 1 (at T1) and Case 6 (T1+1 -> Tier 2).
+    wa_pte_tier: 1
+
+- name: Case 13, King County income $1 below Tier 2 threshold returns Tier 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 71_999
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T2 = $72,000. 71,999 > T1 (60,000) and < T2 -> Tier 2.
+    # Opens the Tier 2 boundary triple (T2-1, T2, T2+1).
+    wa_pte_tier: 2
+
+- name: Case 14, King County income $1 above Tier 2 threshold returns Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 72_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T2 = $72,000. 72,001 > T2 and <= T3 ($84,000) -> Tier 3.
+    # Completes the Tier 2 boundary triple together with Case 13 (T2-1) and
+    # Case 2 (at T2).
+    wa_pte_tier: 3

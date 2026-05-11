@@ -19,6 +19,10 @@ class wa_pte_categorical_eligible(Variable):
         # as a proxy — it captures unable-to-work disability across SSDI, SSI,
         # VA, and physician-certified pathways, but doesn't directly verify the
         # "retired from gainful employment" condition.
+        # Disability eligibility is proxied via the federal `is_disabled` variable
+        # (SSDI/SSI/VA/physician-certified). Note: RCW 84.36.381(3)(a)(iii) also
+        # allows VA-rated 40%+ service-connected disability as a separate pathway;
+        # this is not modeled explicitly (subsumed under `is_disabled` in practice).
         is_disabled = person("is_disabled", period)
         p = parameters(period).gov.states.wa.dor.property_tax_exemption.senior_disabled
         return (age >= p.age_threshold) | is_disabled

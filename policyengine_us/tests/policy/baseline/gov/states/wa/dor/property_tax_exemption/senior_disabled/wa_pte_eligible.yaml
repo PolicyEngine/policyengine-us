@@ -169,3 +169,69 @@
     # Head (person1) is categorically eligible (age 70 >= 61) and is the
     # head/spouse, so the exemption is awarded. Spouse's age does not block.
     wa_pte_eligible: true
+
+- name: Case 8, non-elderly head with senior spouse on joint return is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+      person2:
+        age: 70
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Head (person1) is not categorically eligible (age 50, not disabled),
+    # but spouse (person2) is age 70. Filing JOINT, so the spouse-and-joint
+    # guard (is_tax_unit_spouse & tax_unit_is_joint) is satisfied and the
+    # spouse is a qualifying filer. Exemption is awarded.
+    wa_pte_eligible: true
+
+- name: Case 9, non-elderly head with senior non-head adult on single return is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Counterfactual to Case 8: same household composition but the senior
+    # is a non-head adult on a non-joint (SINGLE) return rather than a
+    # joint-filing spouse. The spouse-and-joint guard requires
+    # is_tax_unit_spouse AND tax_unit_is_joint; both are false here, so
+    # only the non-elderly head is a qualifying filer, and they fail the
+    # categorical test. Eligibility denied.
+    wa_pte_eligible: false

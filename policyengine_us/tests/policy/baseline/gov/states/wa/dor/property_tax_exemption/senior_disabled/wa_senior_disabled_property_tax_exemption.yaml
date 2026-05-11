@@ -286,3 +286,208 @@
     # tier_2_extra = 200,000 * 0.00471428... = 942.857
     # total = 2,700 + 942.857 = 3,642.857
     wa_senior_disabled_property_tax_exemption: 3_642.857
+
+- name: Case 12, 2017 pre-Part-2 era applies the 0.20 tier 3 share.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 4_000
+        assessed_property_value: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 38_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Pre-2020 statewide flat thresholds: T1=$30k, T2=$35k, T3=$40k.
+    # AGI $38k > T2 ($35k) and <= T3 ($40k) -> Tier 3 (full-exempt share only).
+    # Pre-2018 tier_3_exempt_share = 0.20 (state Part 2 did not yet exist).
+    # exemption = 0.20 * 4,000 = 800.
+    wa_senior_disabled_property_tax_exemption: 800
+
+- name: Case 13, 2018 Tier 3 share rises to 0.30 (era-transition pair with Case 12).
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 4_000
+        assessed_property_value: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 38_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Identical household to Case 12 but in 2018: tier_3_exempt_share rises
+    # from 0.20 to 0.30 (ESSB 5239 added state property tax Part 2).
+    # Thresholds still pre-2020 flat: T1=$30k, T2=$35k, T3=$40k.
+    # AGI $38k -> Tier 3 (full-exempt only).
+    # exemption = 0.30 * 4,000 = 1,200.
+    wa_senior_disabled_property_tax_exemption: 1_200
+
+- name: Case 14, 2023 King County (2020-2023 era) tier shifts vs 2024.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 70_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2020-2023 era T3 = $58,423. AGI $70,000 > T3 -> ineligible.
+    # No exemption; pairs with Case 15 below in 2024 where the same household
+    # qualifies for Tier 2 once thresholds rise to T1 $60k / T2 $72k / T3 $84k.
+    wa_senior_disabled_property_tax_exemption: 0
+
+- name: Case 15, 2024 King County tier shifts from ineligible (Case 14) to Tier 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 70_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024: T1=$60k, T2=$72k, T3=$84k. AGI $70k -> Tier 2.
+    # full_exempt = 6,000 * 0.30 = 1,800
+    # regular_rate = (6,000 * 0.70) / 700,000 = 0.006
+    # tier_2_exempt_value = min(min(max(50,000, 700,000 * 0.35), 70,000), 700,000)
+    #                     = min(min(245,000, 70,000), 700,000) = 70,000
+    # tier_2_extra = 70,000 * 0.006 = 420
+    # total = 1,800 + 420 = 2,220
+    wa_senior_disabled_property_tax_exemption: 2_220
+
+- name: Case 16, 2026 Tier 1 under prior valuation/share parameters (era-transition pair).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # 2026 (pre-ESSB 6162): tier_3_exempt_share = 0.30,
+    # tier_1 dollar_floor = $60,000 @ 0.6 valuation_pct, no standard deduction.
+    # AGI $40k -> Tier 1.
+    # full_exempt = 6,000 * 0.30 = 1,800
+    # regular_rate = (6,000 * 0.70) / 700,000 = 0.006
+    # tier_1_exempt_value = min(max(60,000, 700,000 * 0.6), 700,000) = 420,000
+    # tier_1_extra = 420,000 * 0.006 = 2,520
+    # total = 1,800 + 2,520 = 4,320
+    wa_senior_disabled_property_tax_exemption: 4_320
+
+- name: Case 17, 2027 ESSB 6162 raises share, valuation, and adds standard deduction.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+        assessed_property_value: 700_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Identical household to Case 16 but in 2027:
+    #   (i) tier_3_exempt_share rises 0.30 -> 0.45
+    #  (ii) tier_1 valuation params rise to $80k @ 0.8 (tier_2 to $70k @ 0.45 cap $200k)
+    # (iii) standard deduction = $7,500 (single) for CDI
+    # CDI = 40,000 - max(0, 7,500) = 32,500 -> still Tier 1 (King 2027 T1 $76k).
+    # full_exempt = 6,000 * 0.45 = 2,700
+    # regular_rate = (6,000 * 0.55) / 700,000 = 0.00471428...
+    # tier_1_exempt_value = min(max(80,000, 700,000 * 0.8), 700,000) = 560,000
+    # tier_1_extra = 560,000 * 0.00471428... = 2,640
+    # total = 2,700 + 2,640 = 5,340
+    wa_senior_disabled_property_tax_exemption: 5_340
+
+- name: Case 18, 2028 Tier 1 with missing assessed value collapses to tier 3 share.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 5_000
+        # assessed_property_value omitted -> defaults to 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2028: T1 $76k, T2 $89k, T3 $101k. AGI $40k -> Tier 1.
+    # Without assessed_property_value, regular_rate = 0, so tier_1_extra
+    # collapses to 0 and only the tier 3 share remains.
+    # exemption = tier_3_exempt_share * real_estate_taxes
+    #           = 0.45 * 5,000 = 2,250
+    wa_senior_disabled_property_tax_exemption: 2_250

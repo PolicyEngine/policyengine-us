@@ -27,6 +27,10 @@ class wa_pte_eligible(Variable):
         qualifying_filer = head | spouse_in_joint
         has_qualifying_filer = tax_unit.any(categorical & qualifying_filer)
         # Owner-occupancy proxy: only homeowners pay real_estate_taxes directly.
+        # Ownership is proxied via real_estate_taxes > 0. Per RCW 84.36.381(1)(a),
+        # claimant must own and occupy the residence; the proxy may include rare
+        # non-ownership cases (e.g., certain leasehold arrangements with property
+        # tax obligation) but is sufficient for population-level modeling.
         pays_property_tax = add(tax_unit, period, ["real_estate_taxes"]) > 0
         income_eligible = tax_unit("wa_pte_income_eligible", period)
         return has_qualifying_filer & pays_property_tax & income_eligible

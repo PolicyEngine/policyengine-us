@@ -32,7 +32,7 @@ class wa_senior_disabled_property_tax_exemption(Variable):
         regular_taxes = annual_taxes * (1 - p.tier_3_exempt_share)
         regular_rate = where(
             assessed_value > 0,
-            regular_taxes / where(assessed_value > 0, assessed_value, 1),
+            regular_taxes / max_(assessed_value, 1),
             0,
         )
         # RCW 84.36.381(5)(b)(i): tier 2 exempts regular taxes on the greater
