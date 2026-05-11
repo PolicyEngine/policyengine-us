@@ -217,3 +217,27 @@
   output:
     # King County 2027-2029 era T3 = $101,000; $110,000 > T3 -> ineligible
     wa_pte_income_eligible: false
+
+- name: Case 11, King County cotenant income pushes CDI over Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_000
+        wa_pte_cotenant_disposable_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # CDI = 60,000 + 30,000 = 90,000 > King 2024 T3 ($84,000) -> ineligible.
+    # Without the cotenant amount the tax unit would have qualified for Tier 3.
+    wa_pte_income_eligible: false

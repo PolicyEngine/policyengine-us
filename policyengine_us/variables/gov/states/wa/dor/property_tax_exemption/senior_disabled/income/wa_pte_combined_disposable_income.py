@@ -20,7 +20,13 @@ class wa_pte_combined_disposable_income(Variable):
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income
-        income = add(tax_unit, period, p.sources)
+        # RCW 84.36.383(2) requires combining the claimant's, spouse's, and
+        # each occupying cotenant's disposable income. Tax-unit AGI captures
+        # the claimant + spouse + dependents; non-tax-unit cotenants come in
+        # through wa_pte_cotenant_disposable_income.
+        own_income = add(tax_unit, period, p.sources)
+        cotenant_income = tax_unit("wa_pte_cotenant_disposable_income", period)
+        income = own_income + cotenant_income
         itemized = add(tax_unit, period, p.deductions.sources)
         # ESSB 6162 (RCW 84.36.383(14)) lets the claimant elect the standard
         # deduction in place of the itemized medical basket. The per-claimant

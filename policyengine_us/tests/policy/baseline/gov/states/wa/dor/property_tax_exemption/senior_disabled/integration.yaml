@@ -1,14 +1,17 @@
 # Integration tests for Washington Senior Citizens and Disabled Persons
 # Property Tax Exemption (RCW 84.36.379-389; WAC 458-16A-100..150).
 #
-# Eligibility: age threshold (62 pre-2020, 61 from 2020) OR is_disabled;
-# tax-unit owner-occupant (real_estate_taxes > 0);
+# Eligibility: someone who is the tax-unit head (or spouse in a joint return)
+# satisfies the age threshold (62 pre-2020, 61 from 2020) OR is_disabled;
+# the tax unit owns an occupied residence (real_estate_taxes > 0);
 # combined disposable income (annual) <= Tier 3 threshold for the household's county.
 #
 # Combined disposable income (RCW 84.36.383):
 #   add-backs: AGI + tax_exempt_pension_income + military_basic_pay + veterans_benefits
 #              + tax_exempt_social_security + tax_exempt_interest_income
-#   itemized deductions: other_medical_expenses + long_term_health_insurance_premiums
+#              + wa_pte_cotenant_disposable_income (occupying cotenants' AGI)
+#   itemized deductions: prescription_expense + medical_expense_health_insurance_premiums
+#                        + other_medical_expenses + long_term_health_insurance_premiums
 #   standard deduction option (2027+): $7,500 per claimant + $7,500 if joint filing;
 #   claimant takes the larger of itemized or standard.
 #
