@@ -41,16 +41,18 @@ def _parameter_tree():
 def test_acp_lifeline_categorical_eligibility_is_vectorized(monkeypatch):
     spm_unit = _Node(
         {
-            "fcc_fpg_ratio": np.array([2.1, 2.1]),
-            "ebb": np.array([0, 0]),
+            "fcc_fpg_ratio": np.array([2.1, 2.1, 2.1]),
+            "ebb": np.array([0, 0, 0]),
         }
     )
-    spm_unit.household = _Node({"is_on_tribal_land": np.array([False, False])})
+    spm_unit.household = _Node(
+        {"is_on_tribal_land": np.array([False, True, True])}
+    )
     program_values = {
-        "lifeline": np.array([0, 0]),
-        "wic": np.array([0, 0]),
-        "medicaid": np.array([1, 0]),
-        "fdpir": np.array([0, 0]),
+        "lifeline": np.array([0, 0, 0]),
+        "wic": np.array([0, 0, 0]),
+        "medicaid": np.array([1, 1, 0]),
+        "fdpir": np.array([0, 0, 1]),
     }
 
     def fake_add(entity, period, variables):
@@ -60,7 +62,7 @@ def test_acp_lifeline_categorical_eligibility_is_vectorized(monkeypatch):
 
     result = acp_module.is_acp_eligible.formula(spm_unit, "2022", _parameter_tree())
 
-    np.testing.assert_array_equal(result, np.array([True, False]))
+    np.testing.assert_array_equal(result, np.array([True, False, True]))
 
 
 def test_ebb_categorical_eligibility_is_vectorized(monkeypatch):
