@@ -1,5 +1,4 @@
 INPUT_VARIABLES = [
-    "tanf_reported",
     "spm_unit_payroll_tax_reported",
     "veterans_benefits",
     "other_credits",
