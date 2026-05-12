@@ -363,3 +363,33 @@
         state_code: WA
   output:
     wa_working_families_tax_credit: 660
+
+- name: WA WFTC - married filing separately filer with one child can qualify via state-only path
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        is_tax_unit_head: true
+        has_tin: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WA
+  output:
+    # Frozen 2022-06-09 federal EITC parameters allow separate filers, so the
+    # state-only path applies for MFS filers and yields a positive credit.
+    wa_working_families_tax_credit: 640

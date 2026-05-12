@@ -50,3 +50,103 @@
     # Federal AGI $100,000 (wages $60K + pension $40K) minus Hawaii pension
     # subtraction $40K minus Hawaii student loan subtraction $833.33.
     hi_agi: 59_166.67
+
+- name: Pre-2025 Hawaii student loan interest variables are zero before the deduction takes effect
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 60_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # The student_loan_interest.in_effect parameter is false before 2025-01-01.
+    hi_student_loan_interest_deduction: 0
+    hi_student_loan_interest_adjustment: 0
+    hi_student_loan_interest_subtraction: 0
+    hi_student_loan_interest_addition: 0
+
+- name: Married filing separately receives no Hawaii student loan interest deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # The `where(separate, 0, deduction)` guard in hi_student_loan_interest_deduction.
+    hi_student_loan_interest_deduction: 0
+
+- name: Joint filer above the phase-out end receives no Hawaii student loan interest deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 150_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+      spouse:
+        age: 35
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # Joint phase-out: $100K start with $30K divisor -> ends at $130K MAGI.
+    # MAGI = $150K is above $130K, so deduction is fully phased out.
+    hi_student_loan_interest_deduction: 0
+
+- name: Hawaii student loan subtraction equals max(adjustment, 0)
+  period: 2025
+  input:
+    state_code: HI
+    hi_student_loan_interest_adjustment: 500
+  output:
+    hi_student_loan_interest_subtraction: 500
+    hi_student_loan_interest_addition: 0
+
+- name: Hawaii student loan addition equals max(0, -adjustment)
+  period: 2025
+  input:
+    state_code: HI
+    hi_student_loan_interest_adjustment: -250
+  output:
+    hi_student_loan_interest_subtraction: 0
+    hi_student_loan_interest_addition: 250

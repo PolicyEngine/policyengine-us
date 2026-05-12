@@ -191,3 +191,34 @@
   output:
     # Should take the maximum (joint in this case)
     state_itemized_deductions: 7_600
+
+- name: South Carolina adopts federal itemized deductions in tax year 2025 (pre-decoupling)
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    age_head: 35
+    # Federal itemized components total $20,000.
+    charitable_deduction: 5_000
+    interest_deduction: 10_000
+    salt_deduction: 5_000
+  output:
+    # Pre-2026, SC is in states_using_federal_itemized_deductions, so the state
+    # uses the federal sum.
+    state_itemized_deductions: 20_000
+
+- name: South Carolina decouples from federal itemized deductions in tax year 2026
+  period: 2026
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    age_head: 35
+    # Federal itemized components total $20,000 again.
+    charitable_deduction: 5_000
+    interest_deduction: 10_000
+    salt_deduction: 5_000
+  output:
+    # Per H. 4216 / Act 110 of 2026, SC drops out of
+    # states_using_federal_itemized_deductions effective 2026-01-01.
+    # SC has no state-specific itemized variable yet, so the result is 0.
+    state_itemized_deductions: 0

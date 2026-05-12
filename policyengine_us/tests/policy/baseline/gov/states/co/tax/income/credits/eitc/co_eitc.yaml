@@ -125,3 +125,78 @@
         state_code: CO
   output:
     co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 17 is below all minimums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Age 17 is below all under_25_expansion minimums (default 19, homeless/foster 18).
+    # Federal EITC childless minimum age (25) also not met.
+    co_eitc: 0
+
+- name: Colorado EITC under-25 path - age 18 without homeless/foster status.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Age 18 only qualifies under the homeless/foster minimum (18); default
+    # minimum is 19 for non-students. Federal EITC also not eligible.
+    co_eitc: 0
+
+- name: Colorado EITC under-25 path - age 20 full-time college student is excluded.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Specified students are excluded from the default age 19-23 under-25 path.
+    co_eitc: 0
