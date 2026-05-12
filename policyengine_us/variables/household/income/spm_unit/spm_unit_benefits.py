@@ -26,6 +26,7 @@ class spm_unit_benefits(Variable):
             "hi_oss",
             "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "wa_ssp",  # Washington benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
             "mn_msa",  # Minnesota benefits
@@ -45,7 +46,6 @@ class spm_unit_benefits(Variable):
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
-            "spm_unit_broadband_subsidy",
             "spm_unit_energy_subsidy",
             "tanf",
             # Washington (WA) cash-assistance programs. wa_sfa and wa_rca

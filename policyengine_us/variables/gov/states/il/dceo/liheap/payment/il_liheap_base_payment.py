@@ -34,7 +34,9 @@ class il_liheap_base_payment(Variable):
         )
         # Cap non-cash benefits at actual heating expenses.
         # Cash (heat in rent) is a direct payment — no expense cap.
-        heating_expenses = add(spm_unit, period, ["heating_expense_person"])
+        heating_person = add(spm_unit, period, ["heating_expense_person"])
+        heating_cooling = spm_unit("heating_cooling_expense", period)
+        heating_expenses = where(heating_person > 0, heating_person, heating_cooling)
         return where(
             is_cash,
             matrix_amount,

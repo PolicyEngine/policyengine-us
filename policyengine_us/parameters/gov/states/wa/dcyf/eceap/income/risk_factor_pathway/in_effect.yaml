@@ -1,0 +1,15 @@
+description: Washington uses this indicator to determine whether the risk-factor pathway applies under the Early Childhood Education and Assistance Program.
+
+values:
+  2021-07-25: true
+  2030-08-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Washington ECEAP risk-factor pathway in effect
+  reference:
+    - title: RCW 43.216.512 Expanded enrollment (expires 2030-08-01)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.512
+    - title: Fair Start for Kids Act Summary, Section 203 (2030-31 expansion to 50% SMI absorbs the risk-factor band)
+      href: https://www.startearly.org/app/uploads/2021/06/Final-Summary-of-Fair-Start-for-Kids-Act.pdf#page=6

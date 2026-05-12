@@ -137,6 +137,139 @@
   output:
     is_basic_health_program_eligible: [false]
 
+- name: Lawfully present Medicaid-barred immigrant below 133 percent FPL qualifies for BHP
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_medicaid_immigration_status_eligible: [false]
+    is_basic_health_program_eligible: [true]
+
+- name: BHP alien-status lane excludes Oregon Healthier Oregon coverage
+  period: 2026
+  input:
+    people:
+      mn_person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      ny_person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      or_person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      dc_person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      mn_household:
+        members: [mn_person]
+        state_code: MN
+      ny_household:
+        members: [ny_person]
+        state_code: NY
+      or_household:
+        members: [or_person]
+        state_code: OR
+      dc_household:
+        members: [dc_person]
+        state_code: DC
+  output:
+    or_healthier_oregon_eligible: [false, false, true, false]
+    is_basic_health_program_eligible: [true, true, false, true]
+
+- name: Oregon Healthier Oregon coverage blocks BHP below 138 percent FPL
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [true]
+    is_basic_health_program_eligible: [false]
+
+- name: Lawfully present Medicaid-barred immigrant at 133 percent FPL qualifies for BHP
+  period: 2025
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 1.33
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+
+- name: BHP eligibility survives 2027 PTC alien restriction
+  period: 2027
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: TPS
+        medicaid_income_level: 1.2
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_aca_ptc_immigration_status_eligible: [false]
+    is_basic_health_program_immigration_status_eligible: [true]
+    is_basic_health_program_eligible: [true]
+
 # Regression: NY Essential Plan at 150% FPL in 2016 (first full BHP year).
 - name: New York Basic Health Program is active from 2016 onward in annual simulations
   period: 2016

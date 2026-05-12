@@ -18,6 +18,7 @@ class pays_aca_premium(Variable):
             "is_basic_health_program_eligible",
             "is_aca_eshi_eligible",
             "is_medicare_eligible",
+            "or_healthier_oregon_eligible",
         ]
         is_coverage_eligible = add(person, period, INELIGIBLE_COVERAGE) == 0
 

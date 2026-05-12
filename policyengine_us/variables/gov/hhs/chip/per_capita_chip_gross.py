@@ -11,11 +11,9 @@ class per_capita_chip_gross(Variable):
         "to the net federal-plus-state CHIP expenditure plus the household "
         "cost-sharing collections that offset it on CMS-21. This represents "
         "the gross benefit value a CHIP enrollee receives (the service), "
-        "before netting their household-paid premium. Data years are not "
-        "perfectly aligned: the net spending calibration is FY2023, "
-        "enrollment is FY2022, and cost-sharing offsets are FY2024 "
-        "(the most recent complete CMS-21 data). A follow-up will roll all "
-        "three to the same fiscal year."
+        "before netting their household-paid premium. For 2024 simulations, "
+        "net spending, enrollment, and cost-sharing offsets all use FY2024 "
+        "calibration data."
     )
     definition_period = YEAR
     reference = (
