@@ -1,7 +1,7 @@
 # Edge case tests for Oklahoma Unemployment Insurance (OK UI).
 # Boundary conditions for the monetary eligibility tests (§ 2-207),
 # the WBA clamp (§ 2-104), the partial-benefit subtraction (§ 2-105),
-# the MBA / max_weeks transition (§ 2-106, HB 1933), and the
+# the MBA lesser-of caps / max_weeks transition (§ 2-106, HB 1933), and the
 # defined_for state gate.
 
 # --- Test A boundary (§ 2-207(A)): taxable >= $1,500 AND total >= 1.5 * HQW ---
@@ -503,3 +503,28 @@
         ok_ui_weekly_benefit_rate: 500
         # MBA = $500 * 16 = $8,000; annual = min($500 * 16, $8,000) = $8,000.
         ok_ui: 8_000
+
+- name: Case 23, base-period wages share caps annual benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 15_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 434
+        # Lesser of $434 * 16 = $6,944, statewide $8,656, and 40% * $15,000 = $6,000.
+        ok_ui_maximum_benefit_amount: 6_000
+        ok_ui: 6_000
