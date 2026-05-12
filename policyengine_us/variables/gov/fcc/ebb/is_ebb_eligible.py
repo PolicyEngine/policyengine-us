@@ -10,7 +10,10 @@ class is_ebb_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).gov.fcc.ebb.categorical_eligibility
-        eligible = np.any([spm_unit(program, period) for program in programs])
+        eligible = np.any(
+            [add(spm_unit, period, [program]) for program in programs],
+            axis=0,
+        )
         # In transition period to Affordable Connectivity Program, households
         # must already be enrolled to receive EBB.
         if parameters(period).gov.fcc.ebb.prior_enrollment_required:

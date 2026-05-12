@@ -107,10 +107,7 @@ def test_reform_extends_soi_income_upraters_from_trustees_2025_nawi_path():
         assert growth == pytest.approx(expected_growth)
 
 
-def test_reported_social_security_components_use_aggregate_ss_uprater():
-    from policyengine_us.variables.gov.ssa.social_security.social_security_retirement_reported import (
-        social_security_retirement_reported,
-    )
+def test_social_security_components_use_aggregate_ss_uprater():
     from policyengine_us.variables.gov.ssa.ss.social_security_dependents import (
         social_security_dependents,
     )
@@ -126,7 +123,6 @@ def test_reported_social_security_components_use_aggregate_ss_uprater():
 
     expected_uprater = "calibration.gov.irs.soi.social_security"
     assert social_security_retirement.uprating == expected_uprater
-    assert social_security_retirement_reported.uprating == expected_uprater
     assert social_security_disability.uprating == expected_uprater
     assert social_security_dependents.uprating == expected_uprater
     assert social_security_survivors.uprating == expected_uprater
