@@ -29,11 +29,13 @@
     me_deduction_phaseout_percentage: 0.40
     me_standard_deduction: 10_000
     me_itemized_deductions_pre_phaseout: 15_000
+    # Tied-federal-tax fallback uses the federal standard vs. itemized
+    # comparison; provide consistent federal-level inputs to itemize.
+    standard_deduction: 10_000
+    itemized_taxable_income_deductions: 15_000
   output:
     tax_liability_if_itemizing: 0
     tax_liability_if_not_itemizing: 0
-    state_standard_deduction: 10_000
-    state_itemized_deductions: 15_000
     me_deductions: 9_000
 
 - name: ME single 2025 100K self-employment (TaxAct verified, taxsim issue 790)

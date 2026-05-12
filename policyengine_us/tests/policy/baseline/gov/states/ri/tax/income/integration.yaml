@@ -150,3 +150,48 @@
     # Tax = $79,900 * 0.0375 + ($181,650 - $79,900) * 0.0475 + ($184,000 - $181,650) * 0.0599
     #     = $2,996.25 + $4,833.125 + $140.765 = $7,970.14
     ri_income_tax: 7_970
+
+# Locks in the fix for #8210 / taxsim #868. Pre-fix the tied-federal-tax
+# fallback in tax_unit_itemizes returned False; ri_cdcc was $150 (computed
+# against standard-deduction federal tax) and ri_income_tax matched the
+# standard-deduction path. Post-fix: itemizes, federal tax is $0 so federal
+# cdcc and ri_cdcc both round to $0, matching TaxAct's ri_cdcc of $0.
+- name: 2025 RI joint with property tax + mortgage itemizes when federal tax tied (taxsim #868)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 26_190.477
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        taxable_interest_income: 939.4469
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: RI
+  output:
+    tax_unit_itemizes: true
+    ri_cdcc: 0
+    ri_income_tax: -398

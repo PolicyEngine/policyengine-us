@@ -1,0 +1,1 @@
+Fix tax_unit_itemizes tied-federal-tax fallback to compare federal standard against federal itemized deductions, restoring TaxAct/TAXSIM behavior and resolving downstream CO/VT/LA state-tax discrepancies.
