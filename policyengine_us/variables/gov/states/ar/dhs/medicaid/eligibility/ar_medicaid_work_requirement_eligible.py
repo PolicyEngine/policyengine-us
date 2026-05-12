@@ -13,6 +13,7 @@ class ar_medicaid_work_requirement_eligible(Variable):
         "https://www.kff.org/medicaid/issue-brief/state-data-for-medicaid-work-requirements-in-arkansas/",
         "https://www.law.cornell.edu/regulations/arkansas/016-20-18-Ark-Code-R-003",
     )
+    defined_for = StateCode.AR
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.dhs.medicaid.work_requirements

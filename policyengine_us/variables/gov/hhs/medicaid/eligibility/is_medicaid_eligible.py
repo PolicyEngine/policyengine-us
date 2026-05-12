@@ -20,9 +20,6 @@ class is_medicaid_eligible(Variable):
         )
         ca_ffyp_eligible = person("ca_ffyp_eligible", period)
         il_hbi_eligible = person("il_hbi_eligible", period)
-        ar_work_requirement_eligible = person(
-            "ar_medicaid_work_requirement_eligible", period
-        )
 
         p = parameters(period).gov.hhs.medicaid.eligibility
         federal_work_requirement_eligible = True
@@ -32,6 +29,16 @@ class is_medicaid_eligible(Variable):
             )
             federal_work_requirement_eligible = where(
                 adult_group, work_requirement_eligible, True
+            )
+
+        ar_p = parameters(period).gov.states.ar.dhs.medicaid.work_requirements
+        ar_work_requirement_eligible = True
+        if ar_p.applies:
+            state = person.household("state_code_str", period)
+            ar_work_requirement_eligible = where(
+                state == "AR",
+                person("ar_medicaid_work_requirement_eligible", period),
+                True,
             )
         return (
             (
