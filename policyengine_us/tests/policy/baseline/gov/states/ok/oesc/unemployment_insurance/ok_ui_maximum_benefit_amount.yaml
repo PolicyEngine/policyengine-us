@@ -1,0 +1,44 @@
+# Tests for Oklahoma UI maximum benefit amount (40 O.S. §2-106).
+# MBA = WBA * max_weeks.
+# max_weeks: 26 before 2023-01-01, 16 from 2023-01-01.
+# Reference: 40 O.S. §2-106; HB 1933 (2022).
+
+- name: Case 1, 2024 - WBA $400 yields MBA $6,400 over 16 weeks.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> floor($9,200 / 23) = $400 (within 2024 [$16, $519] range).
+        ok_ui_high_quarter_taxable_wages: 9_200
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # 2024 max_weeks = 16; MBA = $400 * 16 = $6,400.
+        ok_ui_maximum_benefit_amount: 6_400
+
+- name: Case 2, pre-2023 - WBA $300 yields MBA $7,800 over 26 weeks.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300.
+        ok_ui_high_quarter_taxable_wages: 6_900
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # Pre-2023 max_weeks = 26; MBA = $300 * 26 = $7,800.
+        ok_ui_maximum_benefit_amount: 7_800

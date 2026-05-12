@@ -1,0 +1,84 @@
+# Tests for Oklahoma UI monetary eligibility Test A (40 O.S. §2-207(A)).
+# Both conditions must be met:
+#   1. Base-period taxable wages >= $1,500.
+#   2. Total base-period wages >= 1.5 x high-quarter taxable wages.
+# Reference: 40 O.S. §2-207(A).
+
+- name: Case 1, both prongs pass with margin.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_500
+        ok_ui_base_period_total_wages: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $1,500 >= $1,500 (passes prong 1).
+        # Total $15,000 >= 1.5 * $10,000 = $15,000 (passes prong 2).
+        ok_ui_meets_high_quarter_test: true
+
+- name: Case 2, fails taxable wages floor by one dollar.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_499
+        ok_ui_base_period_total_wages: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $1,499 < $1,500 -> fails prong 1.
+        ok_ui_meets_high_quarter_test: false
+
+- name: Case 3, fails 1.5x high-quarter multiplier by one dollar.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 2_000
+        ok_ui_base_period_total_wages: 14_999
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $2,000 >= $1,500 (passes prong 1).
+        # Total $14,999 < 1.5 * $10,000 = $15,000 -> fails prong 2.
+        ok_ui_meets_high_quarter_test: false
+
+- name: Case 4, boundary - taxable exactly at floor and total exactly at 1.5 x HQW.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_500
+        ok_ui_base_period_total_wages: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable exactly $1,500 (passes prong 1; >= test).
+        # Total exactly $15,000 = 1.5 * $10,000 (passes prong 2; >= test).
+        ok_ui_meets_high_quarter_test: true
