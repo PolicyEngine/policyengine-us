@@ -1,3 +1,12 @@
+## [1.691.3] - 2026-05-12
+
+### Changed
+
+- Remove the reported SNAP simulation switch and public SNAP/TANF-reported variables, and make SSI disability depend on modeled disability rather than reported SSI receipt.
+- Remove public reported-variable paths for WIC, school meals, state income tax, SALT, and SPM tax inputs; include ACP/EBB directly in net income, and rename remaining data-backed SPM housing and energy subsidy inputs without the reported suffix.
+- Make social_security_retirement the canonical input variable and remove the separate reported Social Security retirement variable and parameter.
+
+
 ## [1.691.2] - 2026-05-12
 
 ### Fixed
