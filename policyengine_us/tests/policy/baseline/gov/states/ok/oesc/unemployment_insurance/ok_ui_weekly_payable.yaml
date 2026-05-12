@@ -1,0 +1,98 @@
+# Tests for Oklahoma UI partial weekly benefit (40 O.S. §2-105).
+# Formula: weekly_payable = max(0, WBA - max(0, weekly_earnings - $100)).
+# The first $100 of weekly earnings is disregarded; every dollar above $100
+# reduces WBA dollar-for-dollar; result is floored at $0.
+# Reference: 40 O.S. §2-105.
+
+- name: Case 1, weekly earnings below disregard - full WBA paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> floor($9,200 / 23) = $400 WBA (within 2025 range).
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 50
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # Earnings $50 < $100 disregard -> earnings_offset = max(0, 50 - 100) = $0.
+        # Payable = max(0, $400 - $0) = $400.
+        ok_ui_weekly_payable: 400
+
+- name: Case 2, weekly earnings exactly at disregard - full WBA paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 100
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # Earnings $100 = $100 disregard -> earnings_offset = max(0, 100 - 100) = $0.
+        # Payable = max(0, $400 - $0) = $400.
+        ok_ui_weekly_payable: 400
+
+- name: Case 3, weekly earnings above disregard - dollar-for-dollar reduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 150
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # Earnings $150 > $100 -> earnings_offset = $150 - $100 = $50.
+        # Payable = max(0, $400 - $50) = $350.
+        ok_ui_weekly_payable: 350
+
+- name: Case 4, weekly earnings so high payable would be negative - floored at zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 600
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # Earnings $600 > $100 -> earnings_offset = $600 - $100 = $500.
+        # Raw payable = $400 - $500 = -$100; max(0, -$100) = $0.
+        ok_ui_weekly_payable: 0

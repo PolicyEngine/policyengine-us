@@ -1,0 +1,74 @@
+# Tests for Oklahoma UI overall monetary eligibility (40 O.S. §2-207).
+# Eligible if Test A OR Test B passes:
+#   Test A (§2-207(A)): taxable >= $1,500 AND total >= 1.5 x HQW.
+#   Test B (§2-207(B)): taxable > 0 AND total >= annual taxable wage base.
+# Reference: 40 O.S. §2-207.
+
+- name: Case 1, Test A passes alone (Test B fails on total below wage base).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 5_000
+        ok_ui_base_period_total_wages: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $5,000 >= $1,500 AND $20,000 >= 1.5 * $10,000 = $15,000 -> passes.
+        # Test B: total $20,000 < $27,400 (2024 wage base) -> fails.
+        # Overall: A OR B = true.
+        ok_ui_meets_high_quarter_test: true
+        ok_ui_meets_alternate_wages_test: false
+        ok_ui_monetarily_eligible: true
+
+- name: Case 2, Test B passes alone (Test A fails on 1.5x prong).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_base_period_taxable_wages: 2_000
+        ok_ui_base_period_total_wages: 28_500
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $2,000 >= $1,500 (ok); total $28,500 < 1.5 * $20,000 = $30,000 -> fails.
+        # Test B: taxable $2,000 > $0 (ok); total $28,500 >= $28,200 (2025 wage base) -> passes.
+        # Overall: A OR B = true.
+        ok_ui_meets_high_quarter_test: false
+        ok_ui_meets_alternate_wages_test: true
+        ok_ui_monetarily_eligible: true
+
+- name: Case 3, both tests fail.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_000
+        ok_ui_base_period_total_wages: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $1,000 < $1,500 -> fails.
+        # Test B: total $12,000 < $28,200 (2025 wage base) -> fails.
+        # Overall: A OR B = false.
+        ok_ui_meets_high_quarter_test: false
+        ok_ui_meets_alternate_wages_test: false
+        ok_ui_monetarily_eligible: false
