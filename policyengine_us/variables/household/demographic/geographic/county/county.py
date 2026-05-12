@@ -39,9 +39,15 @@ class county(Variable):
             COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
 
             # Decode FIPS codes
-            county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
-            county_name = county_fips_codes.loc[county_fips, "county_name"]
-            state_code = county_fips_codes.loc[county_fips, "state"]
+            county_fips_codes = pd.DataFrame({"county_fips": county_fips})
+            counties = pd.merge(
+                county_fips_codes,
+                COUNTY_FIPS_DATASET,
+                on="county_fips",
+                how="left",
+            )
+            county_name = counties["county_name"]
+            state_code = counties["state"]
             return map_county_string_to_enum(county_name, state_code)
 
         return household("first_county_in_state", period)
