@@ -21,22 +21,15 @@ class is_medicaid_eligible(Variable):
         il_hbi_eligible = person("il_hbi_eligible", period)
 
         p = parameters(period).gov.hhs.medicaid.eligibility
-        federal_medicaid_eligible = (
-            categorically_eligible & immigration_status_eligible
-        )
+        federal_medicaid_eligible = categorically_eligible & immigration_status_eligible
         if p.work_requirements.applies:
             work_requirement_eligible = person(
                 "medicaid_work_requirement_eligible", period
             )
             adult_group = category == category.possible_values.ADULT
             return (
-                federal_medicaid_eligible
-                & (~adult_group | work_requirement_eligible)
+                federal_medicaid_eligible & (~adult_group | work_requirement_eligible)
                 | ca_ffyp_eligible
                 | il_hbi_eligible
             )
-        return (
-            federal_medicaid_eligible
-            | ca_ffyp_eligible
-            | il_hbi_eligible
-        )
+        return federal_medicaid_eligible | ca_ffyp_eligible | il_hbi_eligible
