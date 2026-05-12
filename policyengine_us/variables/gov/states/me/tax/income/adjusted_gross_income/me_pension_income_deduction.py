@@ -13,37 +13,36 @@ class me_pension_income_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-
-        # Get the non-militariy pension income of each person (Pension Income Deduction Worksheet, Line 1).
-        pension_income = person("pension_income", period)
-
-        # Get the deduction cap (Pension Income Deduction Worksheet, Line 2)
-        deduction_cap = parameters(
+        p = parameters(
             period
-        ).gov.states.me.tax.income.agi.subtractions.pension_exclusion.cap
+        ).gov.states.me.tax.income.agi.subtractions.pension_exclusion
 
-        # Get the total social security for each person (Pension Income Deduction Worksheet, Line 3)
+        # Per-person non-military pension deduction (Pension Income Deduction
+        # Worksheet, lines P1-P5).
+        pension_income = person("pension_income", period)
         gross_ss = person("social_security", period)
+        ss_reduced_cap = max_(p.cap - gross_ss, 0)
+        non_military_deduction = min_(pension_income, ss_reduced_cap)
 
-        # Subtract Line 3 from Line 2 to get new cap (line 4).
-        ss_reduced_cap = max_(deduction_cap - gross_ss, 0)
-
-        # Get the pension income deduction (line 5).
-        pension_income_deduction = min_(pension_income, ss_reduced_cap)
-
-        # Get the military retirement pay (line 6).
         military_retirement_pay = person("military_retirement_pay", period)
 
-        # Get the total deduction.
-        deduction = pension_income_deduction + military_retirement_pay
-
-        # Return the total deduction for the tax unit.
+        # Restrict to the head (and spouse if filing jointly) per Schedule 1S
+        # line 4.
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
-        return where(
-            is_joint,
-            tax_unit.sum(where(is_head | is_spouse, deduction, 0)),
-            tax_unit.sum(where(is_head, deduction, 0)),
-        )
+        relevant = where(is_joint, is_head | is_spouse, is_head)
+        total_non_military = tax_unit.sum(where(relevant, non_military_deduction, 0))
+        total_military = tax_unit.sum(where(relevant, military_retirement_pay, 0))
+
+        # Phaseout fraction (Worksheet for Phaseout of Non-Military Pension
+        # Income Deduction). Military retirement pay is not phased out per
+        # 36 M.R.S. § 5122(2)(LL).
+        agi = tax_unit("adjusted_gross_income", period)
+        start = p.phaseout.start[filing_status]
+        length = p.phaseout.length[filing_status]
+        excess = max_(agi - start, 0)
+        phaseout_fraction = min_(excess / length, 1)
+        allowed_non_military = total_non_military * (1 - phaseout_fraction)
+        return allowed_non_military + total_military

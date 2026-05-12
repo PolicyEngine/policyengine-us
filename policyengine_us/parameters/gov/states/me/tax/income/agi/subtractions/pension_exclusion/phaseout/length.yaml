@@ -1,0 +1,22 @@
+description: Maine reduces the non-military pension income deduction proportionally over this income range above the phaseout start, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine pension income deduction phaseout length
+  reference:
+    - title: 36 M.R.S. § 5122(2)(M-2)(2)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5122.html
+    - title: 2025 Form 1040ME Schedule 1S, Worksheet for Phaseout of Non-Military Pension Income Deduction, line 4
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sched_1s_ff.pdf#page=2
+  breakdown:
+    - filing_status
+SINGLE:
+  2014-01-01: 100_000
+SEPARATE:
+  2014-01-01: 50_000
+HEAD_OF_HOUSEHOLD:
+  2014-01-01: 100_000
+JOINT:
+  2014-01-01: 100_000
+SURVIVING_SPOUSE:
+  2014-01-01: 100_000

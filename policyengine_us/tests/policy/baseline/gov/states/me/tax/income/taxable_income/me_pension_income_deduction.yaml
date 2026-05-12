@@ -119,4 +119,73 @@
       spm_unit:
         members: [person1]
   output:
-    me_pension_income_deduction: 2_000   
+    me_pension_income_deduction: 2_000
+
+# Locks in the 2025 income-based phaseout introduced by 36 M.R.S.
+# § 5122(2)(M-2)(2) (taxsim #883). Pre-fix the formula ignored federal AGI and
+# returned the full $18,216 pre-phaseout deduction; post-fix the phaseout
+# fraction (285,348 - 187,500) / 100,000 = 0.97848 leaves ~$392 allowed.
+- name: Maine 2025 HoH pension income deduction phased out by federal AGI (taxsim #883)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        taxable_pension_income: 259_848
+        social_security_retirement: 30_000
+        is_tax_unit_head: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ME
+  output:
+    # Pre-phaseout: $48,216 cap - $30,000 SS = $18,216
+    # Phaseout fraction: (285,348 - 187,500) / 100,000 = 0.97848
+    # Allowed deduction = $18,216 * (1 - 0.97848) ~= $392
+    me_pension_income_deduction: 392
+
+# Confirms the phaseout does not apply to military retirement pay
+# (36 M.R.S. § 5122(2)(LL)).
+- name: Maine 2025 high-income single retiree with military retirement (not phased out)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        social_security: 0
+        pension_income: 50_000
+        military_retirement_pay: 40_000
+        taxable_interest_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Federal AGI = $300,000 (well above $125k single threshold + $100k length)
+    # Non-military pension deduction P5 = min(50_000, 48_216) = 48_216;
+    # phaseout fraction = 1 -> non-military allowed = 0
+    # Military retirement pay $40,000 not phased out
+    me_pension_income_deduction: 40_000
