@@ -1,3 +1,10 @@
+## [1.691.1] - 2026-05-12
+
+### Changed
+
+- Support legacy per-fuel expense inputs as fallbacks in DC, MA, and IL LIHEAP formulas.
+
+
 ## [1.691.0] - 2026-05-12
 
 ### Added
