@@ -1,0 +1,11 @@
+- name: Social Security retirement benefits are an input variable
+  period: 2024
+  input:
+    social_security_retirement: 18_000
+  output:
+    social_security_retirement: 18_000
+
+- name: Social Security retirement benefits default to zero
+  period: 2024
+  output:
+    social_security_retirement: 0
