@@ -1,0 +1,22 @@
+description: Washington counts these income sources when determining family income for the Early Childhood Education and Assistance Program.
+
+values:
+  2021-07-25:
+    - market_income
+    - tanf
+    - ssi
+    - social_security
+    - child_support_received
+    - unemployment_compensation
+    - veterans_benefits
+    - workers_compensation
+
+metadata:
+  unit: list
+  period: year
+  label: Washington ECEAP family income sources
+  reference:
+    - title: DCYF 05-006 ECEAP Prescreen and Application (Combined Form), Section 9 - Income Received by Child's Parent(s) or Guardian(s)
+      href: https://olycap.org/hubfs/PDF%20Attachments/ECEAP%202025-2026%20(EN).pdf#page=6
+    - title: RCW 43.216.505 Eligible children
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505

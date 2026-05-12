@@ -1,0 +1,14 @@
+description: Washington exempts regular property taxes on at least this amount of residence valuation for Tier 2 claimants under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+values:
+  2008-01-01: 50_000
+  2027-01-01: 70_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington senior/disabled property tax exemption Tier 2 valuation dollar floor
+  reference:
+    - title: RCW 84.36.381(5)(b)(i)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381
+    - title: ESSB 6162, Chapter 163, Laws of 2026, Sec. 101
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/6162-S.SL.pdf#page=4

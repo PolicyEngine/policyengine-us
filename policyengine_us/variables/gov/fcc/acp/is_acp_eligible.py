@@ -30,8 +30,8 @@ class is_acp_eligible(Variable):
         )
         lifeline_categorically_eligible = np.where(
             is_on_tribal_land,
-            np.any(tribal_lifeline_programs),
-            np.any(non_tribal_lifeline_programs),
+            tribal_lifeline_programs > 0,
+            non_tribal_lifeline_programs > 0,
         )
 
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit

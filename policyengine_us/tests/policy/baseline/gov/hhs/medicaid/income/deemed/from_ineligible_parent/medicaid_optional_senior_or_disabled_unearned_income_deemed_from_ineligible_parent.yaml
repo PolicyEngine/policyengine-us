@@ -1,0 +1,20 @@
+- name: Case 1, Connecticut applies its unearned disregard only to unearned parental income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 12
+        is_ssi_disabled: true
+      person2:
+        is_parent: true
+        ssi_earned_income: 36_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [6_006, 0]

@@ -33,6 +33,7 @@ Conventions:
 - Use `where(...)`, `max_(...)`, `min_(...)` inside formulas — never Python `if` / `max` / `min`. Vectorisation requires numpy.
 - Match the variable file name to the class name (e.g. `my_tax_credit.py` defines `class my_tax_credit(Variable)`).
 - Filing-status breakdowns must cover all five statuses: `SINGLE`, `SEPARATE`, `SURVIVING_SPOUSE`, `HEAD_OF_HOUSEHOLD`, `JOINT`. If a source only lists four, treat `SURVIVING_SPOUSE` the same as `JOINT`.
+- Enum breakdown parameters must be real tables, not single-member tables. If a parameter only applies to one enum member, make it a scalar under a member-specific path instead of using `metadata.breakdown`; for example use `.../income_limit/ny/earned_income.yaml` with `values:` rather than a `state_code` table containing only `NY`.
 - For scale parameters returning integers, use `/1` in `rate_unit`, not `int`.
 - Cite the specific CFR / USC / state-code section in the variable's `reference` field.
 - State programs should be self-contained with state-specific variable names (e.g. `il_tanf_countable_income`, not `tanf_countable_income`).
