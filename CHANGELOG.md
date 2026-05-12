@@ -1,3 +1,10 @@
+## [1.691.2] - 2026-05-12
+
+### Fixed
+
+- Updated the Maine Sales Tax Fairness Credit base amount and phase-out start for 2025.
+
+
 ## [1.691.1] - 2026-05-12
 
 ### Changed
