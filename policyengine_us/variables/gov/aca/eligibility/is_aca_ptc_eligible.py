@@ -14,6 +14,10 @@ class is_aca_ptc_eligible(Variable):
         # determine income eligibility for ACA PTC
         p = parameters(period).gov.aca
         magi_frac = person.tax_unit("aca_magi_fraction", period)
-        is_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
+        standard_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
+        below_fpl_exception = person.tax_unit(
+            "aca_ptc_below_fpl_immigration_exception", period
+        )
+        is_income_eligible = standard_income_eligible | below_fpl_exception
 
         return person("pays_aca_premium", period) & ~separate & is_income_eligible

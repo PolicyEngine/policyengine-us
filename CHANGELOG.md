@@ -1,3 +1,196 @@
+## [1.691.3] - 2026-05-12
+
+### Changed
+
+- Remove the reported SNAP simulation switch and public SNAP/TANF-reported variables, and make SSI disability depend on modeled disability rather than reported SSI receipt.
+- Remove public reported-variable paths for WIC, school meals, state income tax, SALT, and SPM tax inputs; include ACP/EBB directly in net income, and rename remaining data-backed SPM housing and energy subsidy inputs without the reported suffix.
+- Make social_security_retirement the canonical input variable and remove the separate reported Social Security retirement variable and parameter.
+
+
+## [1.691.2] - 2026-05-12
+
+### Fixed
+
+- Updated the Maine Sales Tax Fairness Credit base amount and phase-out start for 2025.
+
+
+## [1.691.1] - 2026-05-12
+
+### Changed
+
+- Support legacy per-fuel expense inputs as fallbacks in DC, MA, and IL LIHEAP formulas.
+
+
+## [1.691.0] - 2026-05-12
+
+### Added
+
+- Add Washington Senior Citizens and Disabled Persons Property Tax Exemption Program, including ESSB 6162 (2026) provisions effective for taxes levied for collection in 2027 and thereafter.
+
+
+## [1.690.7] - 2026-05-10
+
+### Fixed
+
+- Fixed SNAP categorical eligibility so SSI only qualifies a multi-person SPM unit when all members receive SSI.
+
+
+## [1.690.6] - 2026-05-10
+
+### Fixed
+
+- Net Medicare Part B premiums in baseline SPM expenses against cycle-free Medicare Savings Program coverage, preserve reported premiums as an audit input, and stop treating reported health insurance premiums as pre-tax wage deductions in federal AGI.
+
+
+## [1.690.5] - 2026-05-10
+
+### Fixed
+
+- Fix New York and elderly/disabled SNAP BBCE gross income limits.
+
+
+## [1.690.4] - 2026-05-10
+
+### Fixed
+
+- Fix WIC income eligibility to use the July-June WIC income guideline year.
+
+
+## [1.690.3] - 2026-05-08
+
+### Fixed
+
+- Fix ACA Premium Tax Credit and Basic Health Program eligibility for lawfully present immigrants who are ineligible for Medicaid due to immigration status, including Medicaid five-year-bar cases.
+
+
+## [1.690.2] - 2026-05-08
+
+### Fixed
+
+- Fix SPM childcare earnings cap projection for datasets with multiple SPM units.
+
+
+## [1.690.1] - 2026-05-08
+
+### Changed
+
+- Made SPM geographic adjustments formulaic from congressional district and tenure instead of backing them out from stored thresholds.
+
+
+## [1.690.0] - 2026-05-07
+
+### Added
+
+- Add Census SPM weekly work-expense parameters and formulas for work and childcare expense caps.
+
+
+## [1.689.0] - 2026-05-07
+
+### Added
+
+- Add an SPM unit geographic adjustment input and use it to calculate SPM thresholds.
+
+
+## [1.688.1] - 2026-05-07
+
+### Fixed
+
+- Fix ACA family-tier premium calculations for older dependents in New York and Vermont.
+
+
+## [1.688.0] - 2026-05-06
+
+### Added
+
+- Added an explicit Trustees federal income tax parameter reform for long-run TOB analysis scenarios.
+
+
+## [1.687.0] - 2026-05-05
+
+### Added
+
+- Add TANF max benefit standard variables for AZ, CA, CT, FL, HI, KS, NY, and VT following CBPP/WRD research conventions for cross-state comparison.
+
+### Changed
+
+- Updated GitHub Actions workflows for Node 24-compatible action runtimes.
+
+
+## [1.686.1] - 2026-05-05
+
+### Fixed
+
+- Aligned CHIP spending and enrollment calibration to FY2024 for 2024 simulations.
+
+
+## [1.686.0] - 2026-05-05
+
+### Added
+
+- Implement Washington State Supplementary Payment for SSI recipients.
+
+
+## [1.685.0] - 2026-05-05
+
+### Added
+
+- State universal free school meal programs in CA, CO, MA, ME, MI, MN, NM, NY, and VT.
+
+
+## [1.684.0] - 2026-05-05
+
+### Added
+
+- Implement Washington's Early Childhood Education and Assistance Program (ECEAP), including the standard ECEAP eligibility for ages 3-5, Birth to Three ECEAP eligibility for children below age 3, and per-slot benefit values.
+
+
+## [1.683.0] - 2026-05-05
+
+### Added
+
+- Added an explicit Trustees core threshold reform for long-run TOB analysis scenarios.
+
+
+## [1.682.1] - 2026-05-05
+
+### Changed
+
+- Added runtime metadata with installed policyengine-core identity for bundle validation.
+
+
+## [1.682.0] - 2026-05-05
+
+### Added
+
+- Add CBO-style household income concepts and equivalized variants, including employer-sponsored insurance premiums in market income.
+
+
+## [1.681.0] - 2026-05-04
+
+### Added
+
+- Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
+
+### Fixed
+
+- Fixed Hawaii TANF maximum benefit to apply the steady-state mandatory-work 20% Standard of Assistance reduction, updated Kansas TANF to the Group IV non-shared living standard (the most-populous-county convention) so headline benefit values align with cross-state research reporting, and corrected the Vermont Reach Up special housing allowance to pay only the lesser of (housing expenses in excess of the maximum housing allowance) or $90 per Rule 2244.3, replacing the previous flat $90 payout.
+
+
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
 ## [1.678.0] - 2026-04-30
 
 ### Added

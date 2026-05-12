@@ -1,0 +1,95 @@
+- name: Eligible 2-year-old receives the Birth to Three per-slot value.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap: [0, 23_645]
+
+- name: Ineligible 4-year-old (above BT3 age limit) receives zero.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap: [0, 0]
+
+- name: High-income 1-year-old, no SNAP, not eligible (no homeless or IEP path under RCW 43.216.578).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 200_000
+      child:
+        age: 1
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap: [0, 0]
+
+- name: Oregon family, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_birth_to_three_eceap: [0, 0]

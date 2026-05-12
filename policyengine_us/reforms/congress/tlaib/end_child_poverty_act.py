@@ -92,7 +92,9 @@ def create_end_child_poverty_act() -> Reform:
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
-            "spm_unit_broadband_subsidy",
+            # Broadband subsidies.
+            "acp",
+            "ebb",
             "tanf",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
@@ -126,7 +128,9 @@ def create_end_child_poverty_act() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
-                "spm_unit_broadband_subsidy",
+                # Broadband subsidies.
+                "acp",
+                "ebb",
                 "spm_unit_energy_subsidy",
                 "tanf",
                 "high_efficiency_electric_home_rebate",

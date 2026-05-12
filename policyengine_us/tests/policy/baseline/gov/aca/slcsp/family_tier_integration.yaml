@@ -52,6 +52,149 @@
     slcsp_family_tier_multiplier: 2.85
     slcsp: 2166  # 760 * 2.85
 
+- name: NY married couple with 25-year-old dependent uses family tier child rate
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 25
+        monthly_age: 25
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 2.85
+    slcsp: 2166
+
+- name: NY married couple with 26-year-old dependent uses Age 29 child tier rate
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 26
+        monthly_age: 26
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    is_aca_ny_age_29_dependent_child: [false, false, true]
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 2.9925
+    slcsp: 2274.3
+
+- name: NY married couple with 60-year-old dependent includes an extra adult premium
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 60
+        monthly_age: 60
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS
+    slcsp_family_tier_multiplier: 3
+    slcsp: 2280
+
+- name: NY Age 29 child tier does not scale extra adult dependent premium
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 26
+        monthly_age: 26
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+      person4:
+        age: 60
+        monthly_age: 60
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    is_aca_ny_age_29_dependent_child: [false, false, true, false]
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 3.9925
+    slcsp: 3034.3
+
 - name: VT single adult premium calculation
   period: 2023-01
   input:
@@ -74,6 +217,40 @@
     slcsp_family_tier_category: ONE_ADULT
     slcsp_family_tier_multiplier: 1.0
     slcsp: 1277
+
+- name: VT married couple with 60-year-old dependent includes an extra adult premium
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 60
+        monthly_age: 60
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+        slcsp_rating_area: 1
+        slcsp_age_0: 1277
+  output:
+    slcsp_family_tier_category: TWO_ADULTS
+    slcsp_family_tier_multiplier: 3
+    slcsp: 3831
 
 - name: VT family with one adult and two children
   period: 2023-01
