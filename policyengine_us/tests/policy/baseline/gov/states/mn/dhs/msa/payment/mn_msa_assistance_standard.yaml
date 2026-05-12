@@ -205,3 +205,112 @@
         state_code: MN
   output:
     mn_msa_assistance_standard: 89
+
+- name: Case 11, individual living alone in 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 500
+        ssi: 11_604
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 1_028
+
+- name: Case 12, individual living with others in 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+        ssi: 11_604
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 737.33
+
+- name: Case 13, couple living alone joint claim in 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_claim_is_joint: true
+        ssi: 8_700
+      person2:
+        age: 68
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+        ssi_claim_is_joint: true
+        ssi: 8_700
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: [1_541, 1_541]
+
+- name: Case 14, couple living with others joint claim in 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 72
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        ssi_claim_is_joint: true
+        ssi: 8_700
+      person2:
+        age: 70
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        ssi_claim_is_joint: true
+        ssi: 8_700
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: [1_030.67, 1_030.67]
+
+- name: Case 15, person in Medicaid facility in 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_countable_resources: 200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi: 360
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 128

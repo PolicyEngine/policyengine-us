@@ -36,6 +36,12 @@ class mn_msa_person(Variable):
         )
         is_medicaid_facility = arrangement == LA.MEDICAID_FACILITY
         standard = person("mn_msa_assistance_standard", period)
+        special_needs = person("mn_msa_special_needs_total", period)
+        need_standard = standard + special_needs
+        # Couple income is tested at the assistance-unit level, but modeled
+        # special needs remain attached to the spouse with the allowance.
+        couple_special_needs = person.marital_unit.sum(special_needs)
+        special_needs_share = special_needs / max_(couple_special_needs, 1)
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
         ssi_fbr = person("ssi_amount_if_eligible", period)
@@ -59,9 +65,13 @@ class mn_msa_person(Variable):
             - disregard,
             0,
         )
-        couple_ssi_supplement = max_(standard - couple_ssi_countable, 0) / 2
+        couple_ssi_supplement = (
+            max_(standard - couple_ssi_countable, 0) / 2
+            + max_(couple_special_needs - max_(couple_ssi_countable - standard, 0), 0)
+            * special_needs_share
+        )
         individual_ssi_countable = max_(ssi_fbr + raw_unearned - disregard, 0)
-        individual_ssi_supplement = max_(standard - individual_ssi_countable, 0)
+        individual_ssi_supplement = max_(need_standard - individual_ssi_countable, 0)
         ssi_track = where(is_couple, couple_ssi_supplement, individual_ssi_supplement)
 
         # Non-SSI track: applies federal SSI exclusions ($20 + $65 + 1/2)
@@ -96,12 +106,18 @@ class mn_msa_person(Variable):
         individual_non_ssi_countable = (
             individual_non_ssi_countable_annual / MONTHS_IN_YEAR
         )
-        couple_non_ssi_supplement = max_(standard - couple_non_ssi_countable, 0) / 2
-        individual_non_ssi_supplement = max_(standard - individual_non_ssi_countable, 0)
+        couple_non_ssi_supplement = (
+            max_(standard - couple_non_ssi_countable, 0) / 2
+            + max_(
+                couple_special_needs - max_(couple_non_ssi_countable - standard, 0), 0
+            )
+            * special_needs_share
+        )
+        individual_non_ssi_supplement = max_(
+            need_standard - individual_non_ssi_countable, 0
+        )
         non_ssi_track = where(
             is_couple, couple_non_ssi_supplement, individual_non_ssi_supplement
         )
 
-        base = where(receives_ssi, ssi_track, non_ssi_track)
-        special_needs = person("mn_msa_special_needs_total", period)
-        return base + special_needs
+        return where(receives_ssi, ssi_track, non_ssi_track)

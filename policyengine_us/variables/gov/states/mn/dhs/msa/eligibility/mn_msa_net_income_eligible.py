@@ -98,5 +98,8 @@ class mn_msa_net_income_eligible(Variable):
         # AU-aggregate (computed via marital_unit.sum); the couple standard
         # is the AU total, so compare directly.
         countable = where(receives_ssi, ssi_countable, non_ssi_countable)
-        standard = person("mn_msa_assistance_standard", period)
-        return countable <= standard
+        special_needs = person("mn_msa_special_needs_total", period)
+        need_standard = person("mn_msa_assistance_standard", period) + where(
+            is_couple, person.marital_unit.sum(special_needs), special_needs
+        )
+        return countable <= need_standard
