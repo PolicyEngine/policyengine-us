@@ -21,7 +21,7 @@
     people:
       person1:
         # Test A: taxable $5,000 >= $1,500 AND $20,000 >= 1.5 * $10,000 = $15,000 -> passes.
-        # Test B: total $20,000 < $27,400 (2024 wage base) -> fails.
+        # Test B: total $20,000 < $27,000 (2024 wage base) -> fails.
         # Overall: A OR B = true.
         ok_ui_meets_high_quarter_test: true
         ok_ui_meets_alternate_wages_test: false

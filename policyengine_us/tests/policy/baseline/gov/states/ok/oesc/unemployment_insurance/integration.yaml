@@ -55,7 +55,7 @@
       person1:
         # Test A: taxable $500 < $1,500 -> fails.
         ok_ui_meets_high_quarter_test: false
-        # Test B: total $5,000 < $27,400 (2024 wage base) -> fails.
+        # Test B: total $5,000 < $27,000 (2024 wage base) -> fails.
         ok_ui_meets_alternate_wages_test: false
         ok_ui_monetarily_eligible: false
         # defined_for gate -> $0.
