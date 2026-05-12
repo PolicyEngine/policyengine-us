@@ -1,0 +1,294 @@
+- name: 2025 FPL era, family of 3 at $34,000, below 130% FPL threshold.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 130% FPL family of 3 in 2025 = ($15,650 + 2*$5,500) * 1.30 = $34,645.
+    wa_birth_to_three_eceap_income_eligible: [true, true, true]
+
+- name: 2025 FPL era, family of 3 at $40,000, above 130% FPL threshold.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 40_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [false, false, false]
+
+- name: 2025 family of 3 at exactly 130% FPL ($34,645), boundary-eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_645
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [true, true, true]
+
+- name: 2026 still in FPL era (transition is 2026-07-01, annual reads Jan 1), $50,000 above 130% FPL not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # BT3 still uses 130% FPL for the 2026 simulation year because the
+    # uses_fpg toggle flips 2026-07-01 and annual periods read Jan 1.
+    # $50,000 is well above 130% FPL family of 3 (~$34,645+), so not eligible.
+    wa_birth_to_three_eceap_income_eligible: [false, false, false]
+
+- name: 2026 still in FPL era, family of 3 at $20,000 below 130% FPL eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [true, true, true]
+
+- name: 2027 SMI era, family of 3 at $50,000 below 50% SMI eligible (regression test of date transition).
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 50_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # By 2027 the toggle has flipped — BT3 uses 50% SMI. $50,000 < ~$60,000 SMI, eligible.
+    wa_birth_to_three_eceap_income_eligible: [true, true, true]
+
+- name: 2027 SMI era, family of 3 at $80,000 above 50% SMI not eligible.
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [false, false, false]
+
+- name: Oregon family below threshold, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_birth_to_three_eceap_income_eligible: [false, false]
+
+# ---- Edge cases ----
+
+- name: 2025 family of 3 at $34,646, one dollar above 130% FPL, not eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_646
+      child:
+        age: 2
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [false, false, false]
+
+- name: Zero income family with 1-year-old in 2025, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 1
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_birth_to_three_eceap_income_eligible: [true, true]
+
+- name: Idaho family with 2-year-old, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    wa_birth_to_three_eceap_income_eligible: [false, false]

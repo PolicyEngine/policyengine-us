@@ -1,0 +1,20 @@
+description: The United States exempts these Medicaid-qualified immigration statuses from the federal five-year bar.
+
+# PolicyEngine does not currently distinguish humanitarian parolee subgroups
+# from the general PAROLED_ONE_YEAR qualified-alien category, so parolees are
+# modeled as subject to the five-year bar unless years_since_us_entry is at
+# least five.
+values:
+  1996-08-22:
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+
+metadata:
+  unit: list
+  period: year
+  label: Medicaid five-year bar exempt immigration statuses
+  reference:
+    - title: 8 USC 1613(b)(1) - Exceptions to five-year limited eligibility
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim
