@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+from policyengine_us.tools.state_eitc_helpers import (
     eitc_filing_requirement_met,
     eitc_filing_status_eligible,
 )
@@ -17,6 +17,8 @@ class dc_eitc_without_qualifying_child(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
+        # D.C. Law 23-149 extends the EITC to ITIN filers, overriding the
+        # federal IRC section 32 SSN-only identification rule.
         person = tax_unit.members
         age = person("age", period)
         has_tin = person("has_tin", period)

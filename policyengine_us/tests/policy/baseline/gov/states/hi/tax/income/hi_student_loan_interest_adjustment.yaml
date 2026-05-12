@@ -47,4 +47,6 @@
         state_code: HI
   output:
     hi_student_loan_interest_adjustment: 833.33
-    hi_agi: 19_166.67
+    # Federal AGI $100,000 (wages $60K + pension $40K) minus Hawaii pension
+    # subtraction $40K minus Hawaii student loan subtraction $833.33.
+    hi_agi: 59_166.67

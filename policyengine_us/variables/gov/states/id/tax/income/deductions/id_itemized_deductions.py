@@ -14,9 +14,14 @@ class id_itemized_deductions(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        # Idaho reduces the federal itemized deductions
-        # by the amount of the SALT deduction
+        # Idaho reduces the federal itemized deductions by the SALT deduction.
+        # When foreign tax is claimed as a federal itemized deduction, it is
+        # already in itemized_taxable_income_deductions; when claimed as a
+        # federal credit (Form 1116), it is not in itemized deductions and
+        # there is nothing to add back. Idaho Form 39R instructions
+        # ("Do not include foreign taxes as a subtraction, since they're
+        # claimed as part of the Idaho itemized deduction, if allowable")
+        # are consistent with no unconditional addback here.
         id_salt_ded = tax_unit("id_salt_deduction", period)
         itemized_ded = tax_unit("itemized_taxable_income_deductions", period)
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
-        return max_(itemized_ded - id_salt_ded + foreign_tax_credit, 0)
+        return max_(itemized_ded - id_salt_ded, 0)

@@ -11,51 +11,64 @@ class hi_student_loan_interest_deduction(Variable):
     reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
-        # Hawaii's student loan interest deduction parameters become available
-        # starting in 2025; before then the deduction does not apply.
-        if period.start.year < 2025:
+        # HRS § 235-2.4 / N-11 Instructions p.35 — gate on whether Hawaii's
+        # static-conformity student loan interest deduction is in effect.
+        p_sli = parameters(
+            period
+        ).gov.states.hi.tax.income.subtractions.student_loan_interest
+        if not p_sli.in_effect:
             return 0
         person = tax_unit.members
         eligible = person("student_loan_interest_ald_eligible", period)
         interest_paid = tax_unit.sum(person("student_loan_interest", period) * eligible)
-        p_sli = parameters(
-            period
-        ).gov.states.hi.tax.income.subtractions.student_loan_interest
         capped_interest = min_(interest_paid, p_sli.cap)
 
-        p = parameters(period).gov.states.hi.tax.income
-        other_additions = [
-            variable
-            for variable in p.additions.additions
-            if variable != "hi_student_loan_interest_addition"
-        ]
-        other_subtractions = [
-            variable
-            for variable in p.subtractions.subtractions
-            if variable != "hi_student_loan_interest_subtraction"
-        ]
-        other_additions_amount = (
-            add(tax_unit, period, other_additions) if len(other_additions) > 0 else 0
-        )
-        other_subtractions_amount = (
-            add(tax_unit, period, other_subtractions)
-            if len(other_subtractions) > 0
-            else 0
-        )
-        hi_magi = tax_unit("adjusted_gross_income", period)
-        hi_magi += other_additions_amount
-        hi_magi -= other_subtractions_amount
+        hi_magi = tax_unit("hi_modified_agi", period)
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         separate = filing_status == status.SEPARATE
         phase_out_start = p_sli.phase_out.start[filing_status]
         phase_out_divisor = p_sli.phase_out.divisor[filing_status]
-        reduction_share = np.minimum(
-            1.0, np.maximum(0.0, (hi_magi - phase_out_start) / phase_out_divisor)
+        reduction_share = min_(
+            1, max_(0, (hi_magi - phase_out_start) / phase_out_divisor)
         )
         deduction = capped_interest * (1 - reduction_share)
         return where(separate, 0, deduction)
+
+
+class hi_modified_agi(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Hawaii modified adjusted gross income for student loan interest phase-out"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.HI
+    reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
+
+    def formula(tax_unit, period, parameters):
+        # Federal AGI plus Hawaii additions minus subtractions, excluding the
+        # student loan interest add/subtract pair to break the circular reference.
+        p = parameters(period).gov.states.hi.tax.income
+        other_additions = [
+            v for v in p.additions.additions if v != "hi_student_loan_interest_addition"
+        ]
+        other_subtractions = [
+            v
+            for v in p.subtractions.subtractions
+            if v != "hi_student_loan_interest_subtraction"
+        ]
+        other_additions_amount = (
+            add(tax_unit, period, other_additions) if other_additions else 0
+        )
+        other_subtractions_amount = (
+            add(tax_unit, period, other_subtractions) if other_subtractions else 0
+        )
+        return (
+            tax_unit("adjusted_gross_income", period)
+            + other_additions_amount
+            - other_subtractions_amount
+        )
 
 
 class hi_student_loan_interest_adjustment(Variable):
@@ -68,7 +81,10 @@ class hi_student_loan_interest_adjustment(Variable):
     reference = "https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
-        if period.start.year < 2025:
+        in_effect = parameters(
+            period
+        ).gov.states.hi.tax.income.subtractions.student_loan_interest.in_effect
+        if not in_effect:
             return 0
         hawaii_deduction = tax_unit("hi_student_loan_interest_deduction", period)
         federal_deduction = tax_unit.sum(

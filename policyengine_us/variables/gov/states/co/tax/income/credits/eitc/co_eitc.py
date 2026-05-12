@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_like_amount,
 )
 
@@ -46,10 +46,17 @@ class co_eitc(Variable):
         homeless_or_foster = person("was_in_foster_care", period) | person.household(
             "is_homeless", period
         )
+        p_u25 = parameters(
+            period
+        ).gov.states.co.tax.income.credits.eitc.under_25_expansion
         under_25_age_eligible = (
-            ((age >= 19) & (age < 24) & ~specified_student)
-            | (age == 24)
-            | ((age >= 18) & (age < 24) & homeless_or_foster)
+            ((age >= p_u25.min_age) & (age < p_u25.max_age) & ~specified_student)
+            | (p_u25.eligible_at_max_age & (age == p_u25.max_age))
+            | (
+                (age >= p_u25.homeless_or_foster_min_age)
+                & (age < p_u25.max_age)
+                & homeless_or_foster
+            )
         )
         under_25_demographic_eligible = tax_unit.any(
             is_head_or_spouse & under_25_age_eligible

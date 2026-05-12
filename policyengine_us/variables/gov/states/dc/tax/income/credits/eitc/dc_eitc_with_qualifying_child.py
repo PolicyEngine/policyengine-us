@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_like_amount,
 )
 
@@ -16,6 +16,8 @@ class dc_eitc_with_qualifying_child(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
+        # D.C. Law 23-149 extends the EITC to ITIN filers and ITIN qualifying
+        # children, overriding the federal IRC section 32 SSN-only rule.
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)

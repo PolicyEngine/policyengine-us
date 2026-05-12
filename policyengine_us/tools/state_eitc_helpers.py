@@ -23,10 +23,10 @@ def eitc_filing_status_eligible(
         separate_filer_eligible = (
             parameters.gov.irs.credits.eitc.eligibility.separate_filer(period)
         )
-    if separate_filer_eligible:
-        return True
     filing_status = tax_unit("filing_status", period)
-    return filing_status != filing_status.possible_values.SEPARATE
+    return separate_filer_eligible | (
+        filing_status != filing_status.possible_values.SEPARATE
+    )
 
 
 def calculate_eitc_demographic_eligibility(

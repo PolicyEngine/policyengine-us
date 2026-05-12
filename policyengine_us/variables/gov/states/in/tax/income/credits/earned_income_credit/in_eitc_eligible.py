@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_demographic_eligibility,
     calculate_eitc_like_amount,
 )
@@ -20,7 +20,7 @@ class in_eitc_eligible(Variable):
         gets_federal_eitc = tax_unit("eitc", period) > 0
         if not p.credits.earned_income.decoupled:
             return gets_federal_eitc
-        if period.start.year >= 2023:
+        if p.credits.earned_income.static_conformity_in_effect:
             # IC 6-3.1-21 pins Indiana's static-conformity EITC to the IRC as
             # in effect on January 1, 2023.
             frozen_eitc = parameters.gov.irs.credits.eitc("2023-01-01")

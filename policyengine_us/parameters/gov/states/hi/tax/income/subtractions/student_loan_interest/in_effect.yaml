@@ -1,12 +1,13 @@
-description: Hawaii additions to federal adjusted gross income.
+description: Hawaii applies its static-conformity student loan interest deduction for the tax year if this indicator is true.
+
 values:
-  2025-01-01:
-    - hi_student_loan_interest_addition
+  2020-01-01: false
+  2025-01-01: true
 
 metadata:
-  unit: list
+  unit: bool
   period: year
-  label: Hawaii additions to federal adjusted gross income
+  label: Hawaii student loan interest deduction in effect
   reference:
     - title: 2025 Hawaii N-11 Instructions, page 35
       href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35

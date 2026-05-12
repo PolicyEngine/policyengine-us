@@ -1,0 +1,15 @@
+description: Indiana applies its static-conformity-to-2023-Internal-Revenue-Code branch for the Earned Income Tax Credit if this indicator is true.
+
+values:
+  2010-01-01: false
+  2023-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Indiana EITC static conformity in effect
+  reference:
+    - title: IC 6-3.1-21-6
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21
+    - title: 2023 IT-40 Income Tax Form Instruction Booklet
+      href: https://forms.in.gov/Download.aspx?id=15792

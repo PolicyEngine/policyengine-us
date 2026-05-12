@@ -13,6 +13,8 @@ class dc_eitc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
+        # D.C. Law 23-149 extends the EITC to filers and children with ITINs,
+        # overriding the federal IRC section 32 SSN-only identification rule.
         person = tax_unit.members
         dc_qualifying_child = person("is_qualifying_child_dependent", period) & person(
             "has_tin", period

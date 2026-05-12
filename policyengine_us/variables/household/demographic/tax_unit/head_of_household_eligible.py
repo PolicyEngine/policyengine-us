@@ -11,7 +11,11 @@ class head_of_household_eligible(Variable):
     def formula(tax_unit, period, parameters):
         married = tax_unit("tax_unit_married", period)
         person = tax_unit.members
-        is_separated = tax_unit.any(person("is_separated", period))
+        # IRC 7703(b) "considered unmarried" applies to the taxpayer (head or
+        # spouse), not to dependents. A separated dependent must not trigger
+        # the 7703(b) child-only qualifying-person path.
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_separated = tax_unit.any(is_head_or_spouse & person("is_separated", period))
         # Qualifying children and permanently disabled always count
         is_qualifying_child = person("is_qualifying_child_dependent", period)
         is_disabled_dependent = person(

@@ -1,0 +1,14 @@
+description: Colorado treats filers at the maximum age as eligible for the Earned Income Tax Credit under-25 expansion if this indicator is true.
+
+values:
+  2022-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Colorado EITC under-25 expansion eligibility at maximum age
+  reference:
+    - title: C.R.S. 39-22-123.5
+      href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-39.pdf
+    - title: Colorado Earned Income Tax Credit (te19)
+      href: https://leg.colorado.gov/sites/default/files/te19_colorado_earned_income_tax_credit.pdf

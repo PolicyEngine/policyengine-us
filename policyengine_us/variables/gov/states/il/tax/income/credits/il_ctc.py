@@ -14,8 +14,10 @@ class il_ctc(Variable):
         p = parameters(period).gov.states.il.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
-        dependent = person("is_tax_unit_dependent", period)
-        eligible_child = dependent & (age < p.age_limit)
+        # 35 ILCS 5/212.3 incorporates IRC §32 EITC qualifying-child rules,
+        # which tie to IRC §152(c) (excluding §152(d) qualifying relatives).
+        qualifying_child = person("is_qualifying_child_dependent", period)
+        eligible_child = qualifying_child & (age < p.age_limit)
         eligible_child_present = tax_unit.any(eligible_child)
         state_eitc = tax_unit("il_eitc", period)
         return eligible_child_present * state_eitc * p.rate

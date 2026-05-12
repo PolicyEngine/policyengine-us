@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.tax.income.credits.eitc_helpers import (
+from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_demographic_eligibility,
     calculate_eitc_max_agi_limit,
     eitc_filing_requirement_met,
