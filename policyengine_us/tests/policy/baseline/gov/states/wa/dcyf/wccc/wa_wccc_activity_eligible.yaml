@@ -215,3 +215,60 @@
   output:
     # Disabled head exempt from activity test; working spouse passes via earnings.
     wa_wccc_activity_eligible: true
+
+- name: Case 8, teen K-12 parent with no earnings, eligible via K-12 path.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+        is_in_k12_school: true
+        is_disabled: false
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # WAC 110-15-0040 / RCW 43.216.814(1) qualify K-12 attendance.
+    wa_wccc_activity_eligible: true
+
+- name: Case 9, self-employed parent with net loss, eligible via self-employment activity.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        self_employment_income: -5_000
+        is_full_time_student: false
+        is_in_k12_school: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Non-zero self-employment income (even a loss) counts as work activity.
+    wa_wccc_activity_eligible: true
