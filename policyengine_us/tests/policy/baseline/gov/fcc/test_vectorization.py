@@ -45,9 +45,7 @@ def test_acp_lifeline_categorical_eligibility_is_vectorized(monkeypatch):
             "ebb": np.array([0, 0, 0]),
         }
     )
-    spm_unit.household = _Node(
-        {"is_on_tribal_land": np.array([False, True, True])}
-    )
+    spm_unit.household = _Node({"is_on_tribal_land": np.array([False, True, True])})
     program_values = {
         "lifeline": np.array([0, 0, 0]),
         "wic": np.array([0, 0, 0]),
