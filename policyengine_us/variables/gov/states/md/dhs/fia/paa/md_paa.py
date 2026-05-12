@@ -16,28 +16,13 @@ class md_paa(Variable):
     )
 
     def formula(person, period, parameters):
-        # SSA state-supplementation cascade per COMAR 07.03.07.09(A):
-        # Maryland PAA equals the amount by which allowable needs exceed
-        # net countable income, with federal SSI absorbing income first.
-        # COMAR §07.03.07.04(A)(1)/(B)/(C) establishes the rate schedule
-        # per recipient — couples are evaluated per-individual, so the
-        # cascade uses the federal individual FBR for each spouse rather
-        # than couple_FBR/2. The $30/mo medical-facility cap applies to
-        # REHAB residents per 42 USC § 1382(e)(1)(A). Federal SSI remains
-        # its own variable; this formula computes only the state share.
-        p_ssi = parameters(period).gov.ssa.ssi.amount
-        arrangement = person("ssi_federal_living_arrangement", period.this_year)
-        is_medical_facility = (
-            arrangement == arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
-        )
-        federal_ssi_max = where(
-            is_medical_facility, p_ssi.medical_facility, p_ssi.individual
-        )
-
+        # Model PAA as a prospective SSI state-supplement cascade: the
+        # applicant applies for federal SSI, federal SSI is imputed under
+        # federal rules, and Maryland pays the remaining gap to PAA needs.
         combined_need = person("md_paa_total_cost_of_care", period)
-        state_supp_max = max_(combined_need - federal_ssi_max, 0)
-
-        countable = person("ssi_countable_income", period)
-        income_excess = max_(countable - federal_ssi_max, 0)
-
-        return max_(state_supp_max - income_excess, 0)
+        available_resources = add(
+            person,
+            period,
+            ["ssi_countable_income", "md_paa_imputed_federal_ssi"],
+        )
+        return max_(combined_need - available_resources, 0)

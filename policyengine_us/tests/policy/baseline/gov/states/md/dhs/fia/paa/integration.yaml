@@ -1,7 +1,8 @@
 # Integration tests for Maryland Public Assistance to Adults (PAA).
-# Verifies the SSA cascade method (state SSP = combined need - federal SSI -
-# residual countable income). Period 2026-01: federal individual FBR = $994,
-# couple FBR = $1,491, medical-facility rate = $30, PNA = $106.
+# Verifies the prospective SSI cascade method: PAA equals combined need minus
+# SSI countable income and imputed federal SSI. Period 2026-01: federal
+# individual FBR = $994, couple FBR = $1,491, medical-facility rate = $30,
+# PNA = $106.
 
 - name: Case 1, single SSI in CARE_HOME_LEVEL_B — federal SSI exceeds combined need.
   period: 2026-01
@@ -33,8 +34,8 @@
     is_ssi_eligible: [true]
     ssi: [994]
     md_paa_eligible: [true]
-    # combined_need = 875 + 106 = 981. federal_max = 994.
-    # state_supp_max = max(981 - 994, 0) = 0. PAA = 0.
+    # combined_need = 875 + 106 = 981. imputed SSI = 994.
+    # PAA = max(981 - 994, 0) = 0.
     md_paa_provider_rate: [875]
     md_paa_personal_needs_allowance: [106]
     md_paa_total_cost_of_care: [981]
@@ -72,8 +73,8 @@
     is_ssi_eligible: [true]
     ssi: [936.50]
     md_paa_eligible: [true]
-    # combined_need = 1173 + 106 = 1279. state_supp_max = 1279 - 994 = 285.
-    # countable = 57.50; income_excess = max(57.50 - 994, 0) = 0. PAA = 285.
+    # combined_need = 1173 + 106 = 1279. imputed SSI = 936.50.
+    # countable = 57.50. PAA = 1279 - 936.50 - 57.50 = 285.
     md_paa_total_cost_of_care: [1_279]
     md_paa: [285]
 
@@ -109,8 +110,8 @@
     is_ssi_eligible: [true]
     ssi: [614]
     md_paa_eligible: [true]
-    # combined = 894 + 106 = 1000. state_supp_max = 1000 - 994 = 6.
-    # countable = 380; income_excess = max(380 - 994, 0) = 0. PAA = 6.
+    # combined = 894 + 106 = 1000. imputed SSI = 614.
+    # countable = 380. PAA = 1000 - 614 - 380 = 6.
     md_paa_total_cost_of_care: [1_000]
     md_paa: [6]
 
@@ -149,8 +150,8 @@
     # Federal SSI = $30/mo medical-facility rate (annualized $360).
     ssi: [30]
     md_paa_eligible: [true]
-    # combined = 0 + 106 = 106. federal_max = $30. state_supp_max = 76.
-    # countable = 0; income_excess = 0. PAA = 76.
+    # combined = 0 + 106 = 106. imputed SSI = $30.
+    # countable = 0. PAA = 76.
     md_paa_provider_rate: [0]
     md_paa_personal_needs_allowance: [106]
     md_paa: [76]
@@ -190,17 +191,14 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Federal SSI uses couple_FBR/2 = $1,491 / 2 = $745.50 per spouse, but
-    # per COMAR 07.03.07.04 (rate schedule per recipient) the PAA cascade
-    # uses the individual FBR ($994) per spouse — never couple_FBR/2.
-    # combined per person = 776 + 106 = 882; state_supp_max = max(882 -
-    # 994, 0) = 0 per spouse. The couple is left at federal $745.50 + state
-    # $0 = $745.50 per spouse — Maryland does not top up to fill the
-    # federal couple-FBR reduction.
+    # Imputed federal SSI uses couple_FBR/2 = $1,491 / 2 = $745.50 per
+    # spouse. Combined need per person = 776 + 106 = 882, so Maryland fills
+    # the $136.50 gap for each spouse.
     ssi_amount_if_eligible: [745.50, 745.50]
     ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
     md_paa_eligible: [true, true]
-    md_paa: [0, 0]
+    md_paa: [136.50, 136.50]
 
 - name: Case 6, person not in PAA facility (NONE) is ineligible.
   period: 2026-01
@@ -299,9 +297,8 @@
         state_code: MD
   output:
     md_paa_eligible: [true]
-    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
-    # countable = 1000 - 20 = 980. income_excess = max(980 - 994, 0) = 0.
-    # PAA = 285 - 0 = 285.
+    # combined = 1173 + 106 = 1279. countable = 1000 - 20 = 980.
+    # Imputed SSI = max(994 - 980, 0) = 14. PAA = 1279 - 980 - 14 = 285.
     md_paa: [285]
 
 - name: Case 9, asymmetric married couple — only one spouse PAA-eligible.
@@ -344,15 +341,16 @@
     # person2 not in PAA facility → ineligible. person1 eligible via SSI.
     # person1 cascade: combined = 1173 + 106 = 1279. ssi_amount_if_eligible
     # for an aged spouse paired with a non-ABD spouse falls back to the
-    # individual FBR ($994). state_supp_max = 1279 - 994 = 285. Own SSI
-    # receipt is excluded from ssi_countable_income by design, so countable
-    # = 0 and income_excess = 0. PAA = 285. Locked intermediates below
+    # individual FBR ($994). Own SSI receipt is excluded from
+    # ssi_countable_income by design, so countable = 0 and imputed SSI =
+    # 994. PAA = 1279 - 994 = 285. Locked intermediates below
     # guard against regressions in either assumption. Note:
     # ssi_amount_if_eligible returns the maximum federal SSI amount a
     # person *would* receive if categorically eligible; it does not gate
     # on receipt, so person2 also returns $994.
     ssi_amount_if_eligible: [994, 994]
     ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [994, 0]
     md_paa_eligible: [true, false]
     md_paa_provider_rate: [1_173, 0]
     md_paa_personal_needs_allowance: [106, 0]
@@ -393,19 +391,19 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Federal SSI uses couple_FBR/2 = $745.50 per spouse, but per COMAR
-    # 07.03.07.04 (rate schedule per recipient) the PAA cascade uses the
-    # individual FBR ($994) per spouse. Per-person cascade:
+    # Imputed federal SSI uses couple_FBR/2 = $745.50 per spouse.
+    # Per-person cascade:
     #   person1 (CARE_HOME_LEVEL_A): combined = 776 + 106 = 882;
-    #     state_supp_max = max(882 - 994, 0) = 0.
+    #     PAA = 882 - 745.50 = 136.50.
     #   person2 (CARE_HOME_LEVEL_C): combined = 1173 + 106 = 1279;
-    #     state_supp_max = 1279 - 994 = 285.
+    #     PAA = 1279 - 745.50 = 533.50.
     # Verifies per-person evaluation produces different PAA amounts within
-    # one marital unit and that the cascade does not use couple_FBR/2.
+    # one marital unit.
     ssi_amount_if_eligible: [745.50, 745.50]
     ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
     md_paa_eligible: [true, true]
-    md_paa: [0, 285]
+    md_paa: [136.50, 533.50]
 
 - name: Case 11, OASI recipient who is not aged/blind/disabled is PAA-ineligible.
   period: 2026-01
@@ -476,9 +474,8 @@
         state_code: MD
   output:
     md_paa_eligible: [true]
-    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
-    # countable = 1000 - 20 = 980. income_excess = max(980 - 994, 0) = 0.
-    # PAA = 285.
+    # combined = 1173 + 106 = 1279. countable = 1000 - 20 = 980.
+    # Imputed SSI = max(994 - 980, 0) = 14. PAA = 1279 - 980 - 14 = 285.
     md_paa: [285]
 
 - name: Case 13, married couple both SSI-eligible in CARE_HOME_LEVEL_C — symmetric positive output.
@@ -516,12 +513,12 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Per-person cascade uses individual FBR ($994), not couple_FBR/2.
-    # combined per spouse = 1173 + 106 = 1279; state_supp_max = 285 each.
-    # Both spouses receive a positive PAA — verifies the symmetric path
-    # (Case 5 covers symmetric zero-output, Case 10 covers asymmetric).
+    # Imputed federal SSI uses couple_FBR/2 = $745.50 per spouse.
+    # combined per spouse = 1173 + 106 = 1279, so PAA = 533.50 each.
+    # Both spouses receive a positive PAA — verifies the symmetric path.
     md_paa_eligible: [true, true]
-    md_paa: [285, 285]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
+    md_paa: [533.50, 533.50]
 
 - name: Case 14, pending §300.5 applicant with no income in CARE_HOME_LEVEL_C — positive PAA.
   period: 2026-01
@@ -555,7 +552,7 @@
         state_code: MD
   output:
     # Pending pathway gates eligibility; cascade then runs normally.
-    # combined = 1173 + 106 = 1279. federal_max = 994. state_supp_max = 285.
+    # combined = 1173 + 106 = 1279. imputed SSI = 994.
     # countable = 0. PAA = 285.
     md_paa_eligible: [true]
     md_paa: [285]

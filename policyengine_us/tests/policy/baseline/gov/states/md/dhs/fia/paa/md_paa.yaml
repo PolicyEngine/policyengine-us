@@ -1,8 +1,7 @@
 # Tests for md_paa main benefit variable.
-# Formula (SSA cascade): paa = max(state_supp_max - income_excess, 0)
-#   state_supp_max = max(combined_need - federal_ssi_max, 0)
-#   income_excess  = max(ssi_countable_income - federal_ssi_max, 0)
-# REHAB residents use $30 federal SSI medical-facility rate.
+# Formula (prospective SSI cascade):
+#   paa = max(combined_need - ssi_countable_income - imputed_federal_ssi, 0)
+# REHAB residents impute the $30 federal SSI medical-facility rate.
 # 2026 federal SSI individual FBR = $994; PNA = $106.
 
 - name: Case 1, CARE_HOME_LEVEL_B with only SSI — federal SSI exceeds combined need.
@@ -22,8 +21,7 @@
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 875 + 106 = 981. federal_max = 994.
-    # state_supp_max = max(981 - 994, 0) = 0. PAA = 0.
+    # combined_need = 875 + 106 = 981. imputed SSI = 994. PAA = 0.
     md_paa: 0
 
 - name: Case 2, REHAB_RESIDENCE with only SSI receives state-funded gap to PNA.
@@ -47,8 +45,7 @@
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 0 + 106 = 106. federal_max = $30 (medical fac).
-    # state_supp_max = max(106 - 30, 0) = 76. countable = 0. PAA = 76.
+    # combined_need = 0 + 106 = 106. imputed SSI = $30. PAA = 76.
     md_paa: 76
 
 - name: Case 3, ineligible (NONE living arrangement).
@@ -85,8 +82,7 @@
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 1173 + 106 = 1279. state_supp_max = 1279 - 994 = 285.
-    # countable = 0, income_excess = 0. PAA = 285.
+    # combined_need = 1173 + 106 = 1279. imputed SSI = 994. PAA = 285.
     md_paa: 285
 
 - name: Case 5, negative earned income does not inflate benefit.
@@ -107,7 +103,7 @@
         state_code: MD
   output:
     # ssi_countable_income floors at 0 by design.
-    # state_supp_max = 1279 - 994 = 285. income_excess = 0. PAA = 285.
+    # imputed SSI = 994. PAA = 1279 - 994 = 285.
     md_paa: 285
 
 - name: Case 6, out-of-state recipient is ineligible.
@@ -146,9 +142,9 @@
         members: [person1]
         state_code: MD
   output:
-    # combined = 106. federal_max = 30. state_supp_max = 76.
-    # countable = 2500 - 20 = 2480. income_excess = max(2480-30, 0) = 2450.
-    # PAA = max(76 - 2450, 0) = 0.
+    # combined = 106. countable = 2500 - 20 = 2480.
+    # imputed SSI = 0 because countable income exceeds the $30 medical rate.
+    # PAA = max(106 - 2480, 0) = 0.
     md_paa: 0
 
 - name: Case 8, CARE_HOME_LEVEL_D recipient gets the largest state supplement.
@@ -166,14 +162,11 @@
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 1376 + 106 = 1482. state_supp_max = 1482 - 994 = 488.
+    # combined_need = 1376 + 106 = 1482. imputed SSI = 994. PAA = 488.
     md_paa: 488
 
-# Income-excess waterfall: covers the partial-erosion branch where
-# `state_supp_max - income_excess > 0` — i.e., countable income exceeds
-# the federal max but does not fully exhaust the state supplement. Cases
-# 1-8 only exercise full erosion (PAA = 0) or no erosion (income_excess
-# = 0); without this case the partial branch is silently untested.
+# Partial-erosion case: countable income exceeds the imputed medical-facility
+# SSI amount but does not fully exhaust the PNA.
 - name: Case 9, REHAB recipient with $80/mo unearned — partial state erosion.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -192,9 +185,7 @@
         members: [person1]
         state_code: MD
   output:
-    # combined_need = 0 + 106 = 106. federal_max = $30 (medical fac).
-    # state_supp_max = max(106 - 30, 0) = 76.
     # countable monthly = 80 - 20 (general exclusion) = 60.
-    # income_excess = max(60 - 30, 0) = 30.
-    # PAA = max(76 - 30, 0) = 46. Partial reduction (not zero).
+    # imputed SSI = max(30 - 60, 0) = 0.
+    # PAA = max(106 - 60, 0) = 46. Partial reduction (not zero).
     md_paa: 46
