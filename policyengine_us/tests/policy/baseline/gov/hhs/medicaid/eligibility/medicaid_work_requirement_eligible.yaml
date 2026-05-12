@@ -127,3 +127,11 @@
     is_incarcerated: true
   output:
     medicaid_work_requirement_eligible: true
+
+- name: Case 15, person with Indian Health Service coverage is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    has_indian_health_service_coverage_at_interview: true
+  output:
+    medicaid_work_requirement_eligible: true

@@ -37,6 +37,10 @@ class medicaid_work_requirement_eligible(Variable):
         former_foster_care_youth = was_in_foster_care & (
             age < p.former_foster_care_age_limit
         )
+        # American Indian or Alaska Native / IHS eligibility exclusion.
+        has_ihs_coverage = person(
+            "has_indian_health_service_coverage_at_interview", period
+        )
         # Entitled to or enrolled in Medicare Part A or B.
         medicare_eligible = person("is_medicare_eligible", period)
         # parent, guardian, caretaker of a disabled person
@@ -63,6 +67,7 @@ class medicaid_work_requirement_eligible(Variable):
             is_enrolled_at_least_half_time
             | is_pregnant_or_postpartum
             | former_foster_care_youth
+            | has_ihs_coverage
             | medicare_eligible
             | has_disabled
             | eligible_veteran
