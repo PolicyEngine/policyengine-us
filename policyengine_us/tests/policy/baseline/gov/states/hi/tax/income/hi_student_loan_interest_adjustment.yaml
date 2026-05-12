@@ -150,3 +150,36 @@
   output:
     hi_student_loan_interest_subtraction: 0
     hi_student_loan_interest_addition: 250
+
+- name: Joint filer at $115K Hawaii MAGI receives a partial Hawaii student loan interest deduction
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 115_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # Federal AGI is $112,500 (= $115K wages - $2,500 federal student loan
+    # interest deduction). hi_modified_agi equals federal AGI plus 0 net
+    # Hawaii additions/subtractions = $112,500. Joint phase-out: start $100K,
+    # divisor $30K -> reduction share = (112,500-100,000)/30,000 = 0.4167.
+    # Deduction = $2,500 * (1 - 0.4167) = $1,458.33.
+    hi_student_loan_interest_deduction: 1_458.33

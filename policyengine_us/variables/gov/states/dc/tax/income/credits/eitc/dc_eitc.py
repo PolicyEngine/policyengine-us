@@ -13,10 +13,15 @@ class dc_eitc(Variable):
     )
     defined_for = StateCode.DC
 
-    # TODO: split into two named branches to mirror DC's statutory architecture:
-    #   - dc_base_eitc: SSN-required, per section 47-1806.04 federal IRC section 32 incorporation
-    #   - dc_itin_eitc: ITIN-eligible, per D.C. Law 23-149 (Earned Income Tax Credit Expansion Clarification Amendment)
-    # The unified has_tin path below is behaviorally correct but conceptually merges the two.
+    # DC EITC architecture:
+    #   - dc_base_eitc: the SSN-only credit under section 47-1806.04 (federal
+    #     IRC section 32 incorporation). This is the base statutory entitlement.
+    #   - dc_eitc (this variable): the Law 23-149 ITIN-inclusive credit. Law
+    #     23-149 (Earned Income Tax Credit Expansion Clarification Amendment
+    #     Act of 2020) extends the EITC to filers and children with ITINs, so
+    #     dc_eitc >= dc_base_eitc for any household.
+    # The difference dc_eitc - dc_base_eitc is the incremental Law 23-149
+    # benefit.
 
     def formula(tax_unit, period, parameters):
         # D.C. Law 23-149 extends the EITC to filers and children with ITINs,

@@ -393,3 +393,120 @@
     # Frozen 2022-06-09 federal EITC parameters allow separate filers, so the
     # state-only path applies for MFS filers and yields a positive credit.
     wa_working_families_tax_credit: 640
+
+- name: WA WFTC - SSN filer with one SSN child and one ITIN child uses state-only path
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      ssn_child:
+        age: 5
+        is_tax_unit_dependent: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      itin_child:
+        age: 7
+        is_tax_unit_dependent: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, ssn_child, itin_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, ssn_child, itin_child]
+    households:
+      household:
+        members: [head, ssn_child, itin_child]
+        state_code: WA
+  output:
+    # Federal EITC counts only the SSN child (federal_child_count = 1) but the
+    # WA WFTC counts both children (state child_count = 2). Because child_count
+    # > federal_child_count, the state-only path applies and the credit reflects
+    # the 2-child WFTC amount; partially phased out at $20K earnings.
+    wa_working_families_tax_credit: 995
+
+- name: WA WFTC age expansion - age 18 filer qualifies in tax year 2029
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # ESSB 6346 Sec. 901 age expansion is in_effect from 2029-01-01 with
+    # min_age = 18. Age 18 single filer who would otherwise be too young for
+    # federal EITC childless (min 25) qualifies for WFTC via the age expansion.
+    wa_working_families_tax_credit_age_expansion_eligible: true
+
+- name: WA WFTC age expansion - age 17 filer does not qualify in 2029 (below min age 18)
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # Below the age expansion minimum (18) - not eligible via this path.
+    wa_working_families_tax_credit_age_expansion_eligible: false
+
+- name: WA WFTC age expansion - age 18 filer in 2028 (before in_effect) does not qualify via expansion
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    # ESSB 6346 Sec. 901 takes effect 2029-01-01; in 2028 the expansion is not yet
+    # active so the age 18 filer does not qualify via this path.
+    wa_working_families_tax_credit_age_expansion_eligible: false
