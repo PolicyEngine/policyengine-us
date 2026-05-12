@@ -8,7 +8,7 @@ class ok_ui_monetarily_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.OK
     reference = (
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=56"
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=56",
     )
 
     def formula(person, period, parameters):

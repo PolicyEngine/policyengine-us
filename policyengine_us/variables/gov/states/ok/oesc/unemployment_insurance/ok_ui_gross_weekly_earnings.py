@@ -16,5 +16,5 @@ class ok_ui_gross_weekly_earnings(Variable):
     default_value = 0
     defined_for = StateCode.OK
     reference = (
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50"
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50",
     )

@@ -9,7 +9,7 @@ class ok_ui_weekly_payable(Variable):
     definition_period = YEAR
     defined_for = "ok_ui_monetarily_eligible"
     reference = (
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50"
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50",
     )
 
     def formula(person, period, parameters):
