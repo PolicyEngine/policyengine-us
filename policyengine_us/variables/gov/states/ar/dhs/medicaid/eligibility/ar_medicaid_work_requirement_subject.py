@@ -20,10 +20,4 @@ class ar_medicaid_work_requirement_subject(Variable):
         income_level = person("medicaid_income_level", period)
         age_subject = p.age_range.calc(age)
         income_subject = income_level <= p.income_limit
-        return (
-            (state == "AR")
-            & p.applies
-            & adult_group
-            & age_subject
-            & income_subject
-        )
+        return (state == "AR") & p.applies & adult_group & age_subject & income_subject

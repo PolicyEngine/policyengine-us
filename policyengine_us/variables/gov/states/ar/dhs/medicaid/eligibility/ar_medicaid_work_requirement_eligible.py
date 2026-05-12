@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ar_medicaid_work_requirement_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible under the Arkansas historical Medicaid work requirement approximation"
+    label = (
+        "Eligible under the Arkansas historical Medicaid work requirement approximation"
+    )
     definition_period = YEAR
     reference = (
         "https://www.medicaid.gov/medicaid/section-1115-demo/demonstration-and-waiver-list/81021",
@@ -22,9 +24,7 @@ class ar_medicaid_work_requirement_eligible(Variable):
         # compliance, good-cause months, treatment-program participation, and
         # other administrative exemptions are therefore left out.
         monthly_hours_worked = person("monthly_hours_worked", period)
-        meets_monthly_work_hours = (
-            monthly_hours_worked >= p.monthly_hours_threshold
-        )
+        meets_monthly_work_hours = monthly_hours_worked >= p.monthly_hours_threshold
 
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
@@ -38,15 +38,12 @@ class ar_medicaid_work_requirement_eligible(Variable):
             is_dependent & (age <= p.dependent_age_limit)
         )
         has_disabled_dependent = person.tax_unit.any(
-            is_dependent
-            & (is_disabled | is_blind | is_incapable_of_self_care)
+            is_dependent & (is_disabled | is_blind | is_incapable_of_self_care)
         )
         receives_unemployment_compensation = (
             person("unemployment_compensation", period) > 0
         )
-        eligible_disabled = (
-            is_disabled | is_blind | is_incapable_of_self_care
-        )
+        eligible_disabled = is_disabled | is_blind | is_incapable_of_self_care
 
         observable_exemption = (
             is_pregnant
