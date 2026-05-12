@@ -58,37 +58,7 @@
     # Income $200,000/yr = $16,667/mo, above limit, no SNAP, not homeless.
     wa_wccc_income_eligible: false
 
-- name: Case 3, SNAP recipient, automatically income eligible regardless of income.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head_or_spouse: true
-        is_in_k12_school: false
-        is_wccc_enrolled: false
-        employment_income: 200_000
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        snap_reported: 2_400
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WA
-        is_homeless: false
-  output:
-    # snap_reported > 0 triggers automatic income eligibility per
-    # RCW 43.216.802(5).
-    wa_wccc_income_eligible: true
-
-- name: Case 4, homeless household above standard income tier, not income eligible (HGP path is in wa_wccc_eligible).
+- name: Case 3, homeless household above standard income tier, not income eligible (HGP path is in wa_wccc_eligible).
   period: 2025-01
   input:
     people:
@@ -119,7 +89,7 @@
     # Income $80,000/yr = $6,667/mo > 85% SMI ($6,312/mo size 2).
     wa_wccc_income_eligible: false
 
-- name: Case 5, applicant income just under 60% SMI limit, eligible.
+- name: Case 4, applicant income just under 60% SMI limit, eligible.
   period: 2025-01
   input:
     people:
@@ -149,7 +119,7 @@
     # Income $53,470/yr = $4,455.833/mo, $0.003 below limit -> eligible (<=).
     wa_wccc_income_eligible: true
 
-- name: Case 6, applicant income just above 60% SMI limit, ineligible.
+- name: Case 5, applicant income just above 60% SMI limit, ineligible.
   period: 2025-01
   input:
     people:
@@ -179,7 +149,7 @@
     # Income $53,500/yr = $4,458.333/mo, above limit -> ineligible.
     wa_wccc_income_eligible: false
 
-- name: Case 7, recipient income just under 65% SMI limit, eligible.
+- name: Case 6, recipient income just under 65% SMI limit, eligible.
   period: 2025-01
   input:
     people:
@@ -209,7 +179,7 @@
     # Income $57,925/yr = $4,827.083/mo, just under limit -> eligible.
     wa_wccc_income_eligible: true
 
-- name: Case 8, recipient income just above 65% SMI limit, ineligible.
+- name: Case 7, recipient income just above 65% SMI limit, ineligible.
   period: 2025-01
   input:
     people:

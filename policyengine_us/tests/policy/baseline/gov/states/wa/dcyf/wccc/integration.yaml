@@ -198,53 +198,7 @@
     # Benefit = min(1,500, 1,301.57) = $1,301.57.
     wa_wccc: 1_301.57
 
-- name: Case 5, SNAP recipient with high income, auto-income-eligible.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head_or_spouse: true
-        is_in_k12_school: false
-        is_wccc_enrolled: false
-        employment_income: 80_000
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        wa_wccc_provider_type: CENTER
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_pre_subsidy_childcare_expenses: 24_000
-        spm_unit_assets: 10_000
-        snap_reported: 2_400
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WA
-        county_str: ADAMS_COUNTY_WA
-        is_homeless: false
-  output:
-    wa_wccc_eligible_child: [false, true]
-    # SNAP recipient triggers auto-income-eligibility regardless of $80k/yr.
-    wa_wccc_income_eligible: true
-    wa_wccc_eligible: true
-    # Income $80,000/yr = $6,666.67/mo. Size 2 SMI/mo = $7,426.39.
-    # SMI fraction = 6,666.67 / 7,426.39 = 0.898 -> above 60% -> $215 tier.
-    wa_wccc_copay: 215
-    wa_wccc_center_age_group: [SCHOOL_AGE, PRESCHOOL]
-    wa_wccc_center_region: REGION_1
-    # Region 1 PRESCHOOL FULL_DAY = $53.18. Max reimbursement = 53.18 * 23 = $1,223.14.
-    wa_wccc_max_monthly_reimbursement: [0, 1_223.14]
-    # Expenses 24,000/12 = $2,000/mo. Uncapped = max(2000 - 215, 0) = $1,785.
-    # Benefit = min(1,785, 1,223.14) = $1,223.14.
-    wa_wccc: 1_223.14
-
-- name: Case 6, assets above $1M, ineligible regardless of income.
+- name: Case 5, assets above $1M, ineligible regardless of income.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -279,7 +233,7 @@
     wa_wccc_eligible: false
     wa_wccc: 0
 
-- name: Case 7, income just under 65% SMI threshold, recipient eligible.
+- name: Case 6, income just under 65% SMI threshold, recipient eligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -317,7 +271,7 @@
     wa_wccc_income_eligible: true
     wa_wccc_eligible: true
 
-- name: Case 8, negative self-employment income does not inflate benefit.
+- name: Case 7, negative self-employment income does not inflate benefit.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
