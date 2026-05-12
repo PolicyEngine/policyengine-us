@@ -9,3 +9,10 @@
   period: 2024
   output:
     social_security_retirement: 0
+
+- name: SSA calculation internals do not flow into reported retirement benefits
+  period: 2024
+  input:
+    ss_retirement_benefit_before_earnings_test: 24_000
+  output:
+    social_security_retirement: 0
