@@ -8,9 +8,15 @@ class dc_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04",  # (f)
+        "https://code.dccouncil.gov/us/dc/council/laws/23-149",  # D.C. Law 23-149 ITIN expansion
     )
     defined_for = StateCode.DC
+
+    # TODO: split into two named branches to mirror DC's statutory architecture:
+    #   - dc_base_eitc: SSN-required, per section 47-1806.04 federal IRC section 32 incorporation
+    #   - dc_itin_eitc: ITIN-eligible, per D.C. Law 23-149 (Earned Income Tax Credit Expansion Clarification Amendment)
+    # The unified has_tin path below is behaviorally correct but conceptually merges the two.
 
     def formula(tax_unit, period, parameters):
         # D.C. Law 23-149 extends the EITC to filers and children with ITINs,
