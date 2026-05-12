@@ -1,3 +1,10 @@
+## [1.691.0] - 2026-05-12
+
+### Added
+
+- Add Washington Senior Citizens and Disabled Persons Property Tax Exemption Program, including ESSB 6162 (2026) provisions effective for taxes levied for collection in 2027 and thereafter.
+
+
 ## [1.690.7] - 2026-05-10
 
 ### Fixed
