@@ -1,19 +1,19 @@
-description: Oklahoma sets the maximum weekly benefit amount at this amount under the Unemployment Insurance program.
+description: Oklahoma limits unemployment compensation benefits to this amount within a benefit year under the Unemployment Insurance program.
 
 values:
-  2022-01-01: 476
-  2023-01-01: 493
-  2024-01-01: 519
-  2025-01-01: 541
-  2026-01-01: 649
+  2022-01-01: 9_900
+  2023-01-01: 7_888
+  2024-01-01: 8_304
+  2025-01-01: 8_656
+  2026-01-01: 10_384
 
 metadata:
   unit: currency-USD
-  period: week
-  label: Oklahoma UI maximum weekly benefit amount
+  period: year
+  label: Oklahoma UI maximum benefit amount
   reference:
-    - title: 40 O.S. §2-104(B) (OESC Board determines maximum weekly benefit annually)
-      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50
+    - title: 40 O.S. §2-106
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=51
     - title: Oklahoma UI Tax Rates by Industry, Size, and County, 2021, page 2
       href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=2
     - title: OESC Important Numbers for 2023
@@ -22,9 +22,5 @@ metadata:
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
     - title: OESC Important Numbers for 2025
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
-    - title: OESC Claimant Handbook OES-339 (Rev. 05-2025), page 4
-      href: https://oklahoma.gov/content/dam/ok/en/oesc/documents/forms/OES-339.pdf#page=4
-    - title: Oklahoma Employment Security Commission
-      href: https://oklahoma.gov/oesc.html
     - title: OESC Important Numbers for 2026
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1

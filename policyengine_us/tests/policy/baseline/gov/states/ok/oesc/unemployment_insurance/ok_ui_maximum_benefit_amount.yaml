@@ -1,5 +1,5 @@
 # Tests for Oklahoma UI maximum benefit amount (40 O.S. §2-106).
-# MBA = WBA * max_weeks.
+# MBA = min(WBA * max_weeks, statewide max benefit amount, base-period wages share cap).
 # max_weeks: 26 before 2023-01-01, 16 from 2023-01-01.
 # Reference: 40 O.S. §2-106; HB 1933 (2022).
 
@@ -12,6 +12,7 @@
         age: 35
         # HQW $9,200 -> floor($9,200 / 23) = $400 (within 2024 [$16, $519] range).
         ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
     households:
       household:
         members: [person1]
@@ -32,6 +33,7 @@
         age: 35
         # HQW $6,900 -> floor($6,900 / 23) = $300.
         ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 20_700
     households:
       household:
         members: [person1]
@@ -42,3 +44,24 @@
         ok_ui_weekly_benefit_rate: 300
         # Pre-2023 max_weeks = 26; MBA = $300 * 26 = $7,800.
         ok_ui_maximum_benefit_amount: 7_800
+
+- name: Case 3, 2025 - base-period wages share caps marginal Test A claimant.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $10,000 -> floor($10,000 / 23) = $434.
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 434
+        # Lesser of $434 * 16 = $6,944, statewide $8,656, and 40% * $15,000 = $6,000.
+        ok_ui_maximum_benefit_amount: 6_000

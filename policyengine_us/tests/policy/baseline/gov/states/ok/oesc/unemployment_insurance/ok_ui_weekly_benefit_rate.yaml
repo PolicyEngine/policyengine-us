@@ -1,6 +1,6 @@
 # Tests for Oklahoma UI weekly benefit amount (40 O.S. §2-104(A), §2-102).
 # Formula: WBA = clamp(floor(HQW_taxable / 23), [min=$16, max=annual_cap]).
-# Annual max WBA: 2024=$519, 2025=$541, 2026=$649.
+# Annual max WBA: 2022=$476, 2023=$493, 2024=$519, 2025=$541, 2026=$649.
 # Min WBA $16 has been the statutory floor since 1980.
 # Reference: 40 O.S. §2-104(A), §2-102; OESC Important Numbers.
 
@@ -99,3 +99,22 @@
         # floor($20,000 / 23) = floor($869.57) = $869.
         # $869 > $649 (2026 max) -> clamped to $649.
         ok_ui_weekly_benefit_rate: 649
+
+- name: Case 6, high HQW clamped to 2022 maximum.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ok_ui_high_quarter_taxable_wages: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($20,000 / 23) = floor($869.57) = $869.
+        # $869 > $476 (2022 max) -> clamped to $476.
+        ok_ui_weekly_benefit_rate: 476
