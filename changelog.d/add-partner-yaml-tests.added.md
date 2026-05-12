@@ -1,0 +1,1 @@
+YAML tests mirroring policyengine-household-api customer fixtures (Amplifi, Impactica, MyFriendBen) under tests/policy/baseline/partners/, plus a dedicated CI runner so partner-affecting changes are visible in PRs.

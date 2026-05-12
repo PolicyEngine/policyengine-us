@@ -81,6 +81,8 @@ jobs:
             cmd: make test-yaml-no-structural-other-rest
           - group: contrib
             cmd: make test-yaml-no-structural-other-contrib
+          - group: partners
+            cmd: make test-yaml-no-structural-other-partners
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6

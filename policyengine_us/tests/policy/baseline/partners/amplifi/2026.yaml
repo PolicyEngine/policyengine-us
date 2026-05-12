@@ -1,0 +1,150 @@
+- name: amplifi_2026 (2026)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      you:
+        age: 30
+        immigration_status_str: UNDOCUMENTED
+        is_disabled: false
+        employment_income: 48000
+        rent: 38748
+        is_aca_eshi_eligible: false
+        is_pregnant: false
+        ca_calworks_child_care_time_category: MONTHLY
+        receives_medicaid: false
+      member1:
+        age: 3
+        immigration_status_str: CITIZEN
+        is_aca_eshi_eligible: false
+        is_disabled: false
+        ca_calworks_child_care_time_category: MONTHLY
+      member2:
+        age: 1
+        immigration_status_str: CITIZEN
+        is_aca_eshi_eligible: false
+        is_disabled: false
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        zip_code: '91367'
+        tenant_pays_utilities: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 33501.0
+        lives_in_vehicle: false
+        members:
+          - you
+          - member1
+          - member2
+        ca_tanf_region1: true
+        state_code_str: CA
+        living_arrangements_allow_for_food_preparation: true
+        in_la: true
+        in_riv: false
+        in_ala: false
+    families:
+      family:
+        members:
+          - you
+          - member1
+          - member2
+    spm_units:
+      spm_unit:
+        heating_cooling_expense: 1
+        pre_subsidy_electricity_expense: 6000
+        members:
+          - you
+          - member1
+          - member2
+        phone_cost: 999
+    tax_units:
+      tax_unit:
+        tax_unit_is_joint: false
+        members:
+          - you
+          - member1
+          - member2
+  output:
+    people:
+      you:
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        wic: 0.0
+        is_aca_ptc_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        ssi: 0.0
+        ca_state_supplement_eligible_person: false
+        ca_ala_general_assistance_eligible_person: false
+      member1:
+        medicaid: 3258.31
+        is_medicaid_eligible: true
+        wic: 723.15
+        is_aca_ptc_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        ssi: 0.0
+        ca_state_supplement_eligible_person: false
+        ca_ala_general_assistance_eligible_person: false
+      member2:
+        medicaid: 3258.31
+        is_medicaid_eligible: true
+        wic: 722.99
+        is_aca_ptc_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        ssi: 0.0
+        ca_state_supplement_eligible_person: false
+        ca_ala_general_assistance_eligible_person: false
+    households:
+      household:
+        ca_care: 1950.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save:
+          2026-3: 8.17
+        ca_la_ez_save_eligible:
+          2026-3: true
+    spm_units:
+      spm_unit:
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        snap: 0.0
+        is_snap_eligible: false
+        lifeline: 228.0
+        is_lifeline_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        ca_riv_general_relief_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_ala_general_assistance: 0.0
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_state_supplement: 0.0
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0.0
+        eitc: 2238.43
+        eitc_eligible: true
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ctc: 4400.0
+        refundable_ctc: 1892.0
+        ca_yctc: 0.0
+        aca_ptc: 0.0
+        ca_renter_credit: 120.0
+        cdcc: 0.0
+        ca_cdcc: 0.0
+        ca_foster_youth_tax_credit: 0.0
+        income_tax_before_credits: 2508.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_refundable_credits: 4130.43
+        income_tax_capped_non_refundable_credits: 2508.0
+        income_tax_non_refundable_credits: 2508.0
+        income_tax: -4130.43
+        ca_income_tax_before_credits: 505.0
+        ca_income_tax_before_refundable_credits: 0.0
