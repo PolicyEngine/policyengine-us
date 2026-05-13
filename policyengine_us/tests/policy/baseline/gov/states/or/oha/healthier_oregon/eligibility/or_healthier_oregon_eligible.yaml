@@ -70,6 +70,30 @@
   output:
     or_healthier_oregon_eligible: true
 
+- name: Recent legal permanent resident with low income eligible
+  period: 2025
+  input:
+    age: 30
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    medicaid_income_level: 1.0
+    state_code: OR
+  output:
+    is_medicaid_immigration_status_eligible: false
+    or_healthier_oregon_eligible: true
+
+- name: Legal permanent resident past five-year bar uses federal Medicaid instead
+  period: 2025
+  input:
+    age: 30
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+    medicaid_income_level: 1.0
+    state_code: OR
+  output:
+    is_medicaid_immigration_status_eligible: true
+    or_healthier_oregon_eligible: false
+
 - name: Adult at exactly 138% FPL eligible
   period: 2024
   input:

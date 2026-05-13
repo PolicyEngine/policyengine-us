@@ -59,3 +59,48 @@
     # Only $5,000 flat exclusion applies since gains are from financial instruments
     # VT AGI: 140418 - 5000 = 135418
     vt_agi: 135_418
+
+# Locks in the fix for #8210 / taxsim #869. Pre-fix the tied-federal-tax
+# fallback in tax_unit_itemizes returned False; vt_cdcc was $497 (computed
+# against standard-deduction federal tax). Post-fix: itemizes, federal tax is
+# $0 so capped CDCC and vt_cdcc both round to $0, matching TaxAct's vt_cdcc
+# of $0 and vt_income_tax of -$3,045.
+- name: 2025 VT joint with property tax + mortgage itemizes when federal tax tied (taxsim #869)
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_096.83
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 20_000
+        social_security_retirement: 8_978.28
+        is_tax_unit_spouse: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: VT
+  output:
+    tax_unit_itemizes: true
+    vt_cdcc: 0
+    vt_income_tax: -3_045

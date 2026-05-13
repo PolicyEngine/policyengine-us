@@ -56,54 +56,28 @@ class spm_unit_spm_threshold(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula_2024(spm_unit, period, parameters):
+    def formula_2015(spm_unit, period, parameters):
         """Rebuild the SPM threshold from current composition, current
-        tenure, and the unit-specific geographic adjustment implied by
-        the prior-year stored threshold.
-
-        The implied geographic adjustment is
-        ``prior_threshold / (prior_base * prior_equiv_scale)``. Carrying
-        it forward this way preserves the location-specific SPM
-        adjustment baked into the input data while letting composition
-        and tenure changes flow through.
+        tenure, and the unit-specific geographic adjustment.
 
         Base reference thresholds and the Betson three-parameter
         equivalence scale come from ``spm-calculator``.
         """
-        prior_period = period.last_year
         cpi_u = parameters.gov.bls.cpi.cpi_u
-
-        prior_threshold = spm_unit("spm_unit_spm_threshold", prior_period)
-        prior_adults = spm_unit("spm_unit_count_adults", prior_period)
-        prior_children = spm_unit("spm_unit_count_children", prior_period)
-        prior_tenure = spm_unit("spm_unit_tenure_type", prior_period)
 
         current_adults = spm_unit("spm_unit_count_adults", period)
         current_children = spm_unit("spm_unit_count_children", period)
         current_tenure = spm_unit("spm_unit_tenure_type", period)
-
-        prior_base = _reference_threshold_array(
-            prior_tenure,
-            prior_period.start.year,
-            cpi_u,
-        )
+        geoadj = spm_unit("spm_unit_geographic_adjustment", period)
         current_base = _reference_threshold_array(
             current_tenure,
             period.start.year,
             cpi_u,
         )
 
-        prior_equiv_scale = spm_equivalence_scale(prior_adults, prior_children)
         current_equiv_scale = spm_equivalence_scale(
             current_adults,
             current_children,
         )
 
-        denominator = prior_base * prior_equiv_scale
-        geoadj = np.divide(
-            prior_threshold,
-            denominator,
-            out=np.ones_like(prior_threshold, dtype=float),
-            where=denominator > 0,
-        )
         return current_base * current_equiv_scale * geoadj

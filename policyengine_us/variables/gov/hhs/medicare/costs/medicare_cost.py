@@ -21,9 +21,10 @@ class medicare_cost(Variable):
             period
         ).calibration.gov.hhs.medicare.per_capita_cost
 
-        # Premiums paid by beneficiary
+        # Premium offsets to Medicare program cost. Use gross Part B premiums
+        # before MSP offsets so MSP support does not inflate Medicare's value.
         part_a_premium = person("base_part_a_premium", period)
-        part_b_premium = person("medicare_part_b_premium", period)
+        part_b_premium = person("gross_medicare_part_b_premium", period)
         total_premiums = part_a_premium + part_b_premium
 
         # Net benefit = spending - premiums

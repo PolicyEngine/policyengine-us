@@ -29,3 +29,12 @@
       school_meal_fpg_ratio: 2
   output:
       school_meal_tier: PAID
+
+- name: Universal state program assigns the free tier regardless of income.
+  period: 2024
+  input:
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 4
+      state_has_universal_free_school_meals: true
+  output:
+      school_meal_tier: FREE
