@@ -21,7 +21,7 @@
   output:
     people:
       person1:
-        # Monetarily eligible: $25,000 >= $5,500 and >= 1.5 * $10,000 = $15,000.
+        # Monetarily eligible: $25,000 >= $5,300 and >= 1.5 * $10,000 = $15,000.
         # WBA = floor($10,000 / 26) - $5 = $384 - $5 = $379.
         # $379 below 2025 cap of $777, so no cap applies.
         ut_ui_weekly_benefit_amount: 379
@@ -87,6 +87,6 @@
   output:
     people:
       person1:
-        # $5,000 < $5,500 minimum -> not monetarily eligible.
+        # $5,000 < $5,300 minimum -> not monetarily eligible.
         # WBA = 0 regardless of high-quarter calculation.
         ut_ui_weekly_benefit_amount: 0
