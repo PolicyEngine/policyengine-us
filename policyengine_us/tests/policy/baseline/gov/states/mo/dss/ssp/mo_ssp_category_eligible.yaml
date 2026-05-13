@@ -28,13 +28,44 @@
   output:
     mo_ssp_category_eligible: false
 
-- name: SNC RCF_LEVEL_I is category-eligible regardless of is_blind.
+- name: SNC RCF_LEVEL_I aged resident is category-eligible without blindness.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
         is_blind: false
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SNC RCF_LEVEL_I resident who is not aged, blind, or disabled is not category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: false
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: false
+
+- name: SNC RCF_LEVEL_I disabled resident is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
         mo_ssp_living_arrangement: RCF_LEVEL_I
     households:
       household:

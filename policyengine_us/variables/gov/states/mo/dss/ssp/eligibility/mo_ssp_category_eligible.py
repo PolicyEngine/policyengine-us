@@ -10,7 +10,10 @@ class mo_ssp_category_eligible(Variable):
     label = "In a Missouri SSP covered category"
     definition_period = MONTH
     defined_for = StateCode.MO
-    reference = ("https://revisor.mo.gov/main/OneSection.aspx?section=208.030",)
+    reference = (
+        "https://revisor.mo.gov/main/OneSection.aspx?section=208.030",
+        "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
+    )
 
     def formula(person, period, parameters):
         living_arrangement = person("mo_ssp_living_arrangement", period)
@@ -22,5 +25,9 @@ class mo_ssp_category_eligible(Variable):
             | (living_arrangement == categories.SNF_OR_ICF_NON_MEDICAID)
         )
         is_blind = person("is_blind", period.this_year)
+        is_aged_blind_disabled = person(
+            "is_ssi_aged_blind_disabled", period.this_year
+        )
         sab_pathway = (living_arrangement == categories.SAB) & is_blind
-        return in_snc_facility | sab_pathway
+        snc_pathway = in_snc_facility & is_aged_blind_disabled
+        return snc_pathway | sab_pathway

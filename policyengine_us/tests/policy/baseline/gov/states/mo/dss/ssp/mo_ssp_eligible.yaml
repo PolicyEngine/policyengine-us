@@ -170,12 +170,13 @@
     # SAB pathway requires is_blind.
     mo_ssp_eligible: false
 
-- name: Case 9, adult age 21 in SNF non-Medicaid is eligible.
+- name: Case 9, disabled adult age 21 in SNF non-Medicaid is eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 21
+        is_disabled: true
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
         mo_snc_facility_base_charge: 1_000
@@ -184,7 +185,7 @@
         members: [person1]
         state_code: MO
   output:
-    # Exactly meets SNC age threshold.
+    # Exactly meets SNC age threshold and the ABD category requirement.
     mo_ssp_eligible: true
 
 - name: Case 10, adult exactly age 18 with SAB arrangement is eligible.
@@ -204,12 +205,13 @@
     # Exactly meets SAB age threshold of 18.
     mo_ssp_eligible: true
 
-- name: Case 11, adult exactly age 21 with RCF Level I is eligible.
+- name: Case 11, disabled adult exactly age 21 with RCF Level I is eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 21
+        is_disabled: true
         ssi: 500
         mo_ssp_living_arrangement: RCF_LEVEL_I
         mo_snc_facility_base_charge: 1_000
@@ -218,7 +220,7 @@
         members: [person1]
         state_code: MO
   output:
-    # Exactly meets SNC age threshold of 21.
+    # Exactly meets SNC age threshold of 21 and the ABD category requirement.
     mo_ssp_eligible: true
 
 - name: Case 12, adult age 20 in RCF Level I is not eligible.
@@ -330,3 +332,23 @@
     # $1,000 monthly earned income is ~$458/month, within the limit, so SAB
     # pathway passes.
     mo_ssp_eligible: true
+
+- name: Case 18, SNC resident who is not aged, blind, or disabled is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: false
+        social_security: 600
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Facility cost exceeds income, but SNC still requires aged, blind, or
+    # disabled categorical eligibility.
+    mo_ssp_eligible: false
