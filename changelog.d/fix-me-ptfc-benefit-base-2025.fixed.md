@@ -1,0 +1,1 @@
+Set explicit 2025 Maine property tax fairness credit benefit-base values to match the published Schedule PTFC/STFC line 8 table ($2,550 single / $3,300 HoH-one-child or joint-no-child / $4,050 joint or HoH-multi / $4,100 senior). IRS uprating with downwards $50 rounding produced values $50 short.
