@@ -1,0 +1,108 @@
+- name: Case 1, PCH resident receives PCH personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: PCH
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # PCH PNA = $60/mo.
+    ky_ssp_personal_needs_allowance: [60]
+
+- name: Case 2, FCH resident receives FCH personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: FCH
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # FCH PNA = $40/mo.
+    ky_ssp_personal_needs_allowance: [40]
+
+- name: Case 3, CIS resident receives no personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CIS
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CIS category => no PNA applies.
+    ky_ssp_personal_needs_allowance: [0]
+
+- name: Case 4, Caretaker resident receives no personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: CARETAKER
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # CARETAKER category => no PNA applies.
+    ky_ssp_personal_needs_allowance: [0]
+
+- name: Case 5, NONE category receives no personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ssp_personal_needs_allowance: [0]
+
+- name: Case 6, ineligible PCH resident (minor) receives no personal needs allowance.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_ssi_eligible: true
+        meets_ssi_resource_test: true
+        ky_ssp_category: PCH
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # §4(1)(c) requires age ≥ 18 => ky_ssp_eligible is false => no SSP
+    # payment => no PNA to retain.
+    ky_ssp_eligible: [false]
+    ky_ssp_personal_needs_allowance: [0]

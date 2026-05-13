@@ -15,7 +15,7 @@ class wv_works_eligible(Variable):
         resources_eligible = spm_unit("wv_works_resources_eligible", period)
         # Immigration eligibility per WV IMM Chapter 18
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         return (
             income_eligible

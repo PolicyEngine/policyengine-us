@@ -1,0 +1,44 @@
+- name: Delaware personal credits apply before non-refundable EITC
+  period: 2021
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 832
+    de_personal_credit_potential: 330
+    de_aged_personal_credit_potential: 0
+    de_cdcc_potential: 0
+    de_non_refundable_eitc_potential: 965.2
+  output:
+    de_personal_credit: 330
+    de_aged_personal_credit: 0
+    de_cdcc: 0
+    de_non_refundable_eitc: 502
+
+- name: Delaware applies all four non-refundable credits in PIT-RES order with middle-slot cascade.
+  period: 2021
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 500
+    de_personal_credit_potential: 100
+    de_aged_personal_credit_potential: 300
+    de_cdcc_potential: 200
+    de_non_refundable_eitc_potential: 200
+  output:
+    de_personal_credit: 100
+    de_aged_personal_credit: 300
+    de_cdcc: 100
+    de_non_refundable_eitc: 0
+
+- name: Delaware first credit consumes entire liability, later credits zero out.
+  period: 2021
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_unit: 100
+    de_personal_credit_potential: 300
+    de_aged_personal_credit_potential: 100
+    de_cdcc_potential: 200
+    de_non_refundable_eitc_potential: 500
+  output:
+    de_personal_credit: 100
+    de_aged_personal_credit: 0
+    de_cdcc: 0
+    de_non_refundable_eitc: 0

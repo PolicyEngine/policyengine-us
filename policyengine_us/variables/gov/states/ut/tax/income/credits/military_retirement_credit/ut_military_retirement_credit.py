@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ut_military_retirement_credit(Variable):
@@ -11,6 +14,14 @@ class ut_military_retirement_credit(Variable):
     defined_for = "ut_military_retirement_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        military_retirement_pay = add(tax_unit, period, ["military_retirement_pay"])
-        p = parameters(period).gov.states.ut.tax.income.credits.military_retirement
-        return military_retirement_pay * p.rate
+        ordered_credits = parameters(
+            period
+        ).gov.states.ut.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ut_income_tax_before_non_refundable_credits",
+            "ut_military_retirement_credit",
+            "ut_military_retirement_credit_potential",
+        )

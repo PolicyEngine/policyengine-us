@@ -1,0 +1,1180 @@
+# SC CCAP Edge Case Tests
+# Tests boundary conditions for income, copay, age, hours, rates, surcharges.
+#
+# 2025 Key Values:
+#   SC SMI base (4-person, 2024-10-01): $98,172
+#   SMI adj: first=0.52, 2nd-6th=+0.16, 7th+=+0.03
+#   85% SMI size 2: 98,172 * 0.68 * 0.85 = $56,743.416
+#   Fee scale family_size_2 thresholds (monthly):
+#     $0 -> $0, $2,645 -> $6, $3,104 -> $11,
+#     $3,563 -> $14, $4,022 -> $17, $4,481 -> $20
+#   Activity hours: >= 15 hrs/wk
+#   Time category: < 25 hrs = HT, >= 25 hrs = FT
+#   CCDF age limit: age < 13
+#
+# Note: sc_ccap_copay is entity=SPMUnit, definition_period=MONTH.
+# The copay formula returns total monthly copay for the SPM unit.
+
+# ============================================================
+# INCOME THRESHOLD EDGE CASES
+# ============================================================
+
+- name: Case 1, income exactly at 85 percent SMI threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_743
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 85% SMI size 2 = 98,172 * 0.68 * 0.85 = 56,743.416
+    # Monthly countable = 56,743 / 12 = 4,728.583
+    # Monthly 85% SMI = 66,756.96 / 12 * 0.85 = 4,728.618
+    # 4,728.583 <= 4,728.618 -> eligible (just barely)
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+
+- name: Case 2, income one dollar above 85 percent SMI threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_744
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Monthly countable = 56,744 / 12 = 4,728.667
+    # Monthly 85% SMI = 4,728.618
+    # 4,728.667 > 4,728.618 -> ineligible
+    sc_ccap_income_eligible: false
+    sc_ccap_eligible: false
+    sc_ccap: 0
+
+- name: Case 3, zero income family.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 0
+        immigration_status: CITIZEN
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Zero income -> income eligible, $0 copay, student -> activity eligible
+    # Center C Rural (default) FT Age 2 = $130/wk
+    # Annual max = $130 * 52 = $6,760
+    # Benefit = min(8,000 - 0, 6,760) = 6,760
+    sc_ccap_income_eligible: true
+    sc_ccap_eligible: true
+    sc_ccap: 6_760
+
+# ============================================================
+# COPAY BRACKET BOUNDARY EDGE CASES
+# ============================================================
+
+- name: Case 4, income at first copay bracket boundary family size 2.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Monthly income exactly at $2,645 (first non-zero tier)
+        employment_income: 31_740
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Monthly income = 31,740 / 12 = $2,645 -> $6/wk per child
+    # $6/wk * 1 eligible child * (52/12) = $26.00/mo
+    # Annual copay (MONTH var at YEAR period) = $26 * 12 = $312
+    # Center C Rural FT Age 3 = $127/wk
+    # Monthly max rate = $127 * 52 / 12 = $550.33
+    # Monthly expenses = $12,000 / 12 = $1,000
+    # Monthly uncapped = max(1,000 - 26, 0) = $974
+    # Monthly benefit = min(974, 550.33) = $550.33
+    # Annual benefit = $550.33 * 12 = $6,604
+    sc_ccap_copay: 312
+    sc_ccap_eligible: true
+    sc_ccap: 6_604
+
+- name: Case 5, income one dollar below first copay threshold family size 2.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Monthly income $2,644 -> just below $2,645 -> $0 copay
+        employment_income: 31_728
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Monthly income = 31,728 / 12 = $2,644.00
+    # Family size 2: below $2,645 threshold -> $0/wk
+    sc_ccap_copay: 0
+    sc_ccap_eligible: true
+
+- name: Case 6, income at highest copay bracket family size 2.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Monthly income $4,481 -> highest tier = $20/wk
+        employment_income: 53_772
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Family size 2: $4,481+ -> $20/wk per child
+    # 2% cap: 4,481 * 0.02 * 12 / 52 = $20.68/wk -> $20 < $20.68 -> fee applies
+    # $20/wk * 1 eligible child * (52/12) = $86.67/mo
+    # Annual copay (MONTH var at YEAR period) = $86.67 * 12 = $1,040
+    sc_ccap_copay: 1_040
+    sc_ccap_eligible: true
+
+# ============================================================
+# 2% COPAY CAP EDGE CASE
+# ============================================================
+
+- name: Case 7, multiple children copay at highest tier.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 53_772
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    # Family size 4, monthly income = 53,772 / 12 = $4,481
+    # Fee scale family_size_4: $4,020-$4,668 -> $6/wk per child
+    # 2% cap: 4,481 * 0.02 * 12 / 52 = $20.68/wk
+    # min(6, 20.68) = $6/wk per child -> cap does not bind
+    # $6/wk * 3 eligible children * (52/12) = $78.00/mo
+    # Annual copay (MONTH var at YEAR period) = $78 * 12 = $936
+    sc_ccap_copay: 936
+    sc_ccap_eligible: true
+
+# ============================================================
+# ACTIVITY HOURS EDGE CASES
+# ============================================================
+
+- name: Case 8, activity hours exactly at 15 hour minimum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 15
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 15 >= 15 -> activity eligible
+    sc_ccap_activity_eligible: true
+
+- name: Case 9, activity hours below 15 hour minimum.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 14
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 14 < 15 -> not activity eligible (not a student)
+    sc_ccap_activity_eligible: false
+    sc_ccap_eligible: false
+
+- name: Case 10, zero work hours but full time student.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 0
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 0 hrs but full-time student -> activity eligible
+    sc_ccap_activity_eligible: true
+
+# ============================================================
+# CHILDCARE HOURS / TIME CATEGORY EDGE CASES
+# ============================================================
+
+- name: Case 11, childcare hours exactly at FT boundary 25 hours.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 25
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # Bracket: threshold 25 -> FULL_TIME; 25 >= 25 -> FULL_TIME
+    sc_ccap_time_category: FULL_TIME
+
+- name: Case 12, childcare hours 24 just below FT boundary.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 24
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 24 < 25 -> HALF_TIME
+    sc_ccap_time_category: HALF_TIME
+
+- name: Case 13, zero childcare hours.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 0 -> HALF_TIME (below 25)
+    sc_ccap_time_category: HALF_TIME
+
+# ============================================================
+# CHILD AGE BOUNDARY EDGE CASES
+# ============================================================
+
+- name: Case 14, child age 12 just under limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # CCDF: age < 13 -> 12 < 13 = true
+    sc_ccap_eligible_child: true
+
+- name: Case 15, child age 13 at limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # CCDF: age < 13 -> 13 < 13 = false
+    sc_ccap_eligible_child: false
+
+- name: Case 16, infant age 0.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 0 < 13 -> eligible
+    sc_ccap_eligible_child: true
+
+- name: Case 17, disabled child age 15 eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # SC disabled_child_age_limit = 19; age 15 < 19 -> eligible
+    sc_ccap_eligible_child: true
+
+# ============================================================
+# AGE GROUP CLASSIFICATION EDGE CASES
+# ============================================================
+
+- name: Case 18, age 5 not in school gets AGE_5_NOT_IN_K.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: AGE_5_NOT_IN_K
+
+- name: Case 19, age 5 in school gets AGE_5_12_IN_SCHOOL.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: AGE_5_12_IN_SCHOOL
+
+- name: Case 20, infant age 0 gets UNDER_1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_age_group: UNDER_1
+
+# ============================================================
+# PROVIDER TYPE AND RATE EDGE CASES
+# ============================================================
+
+- name: Case 21, FFN vs center rate difference same child age.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    # FFN FT Age 3 = $46/wk (no quality/geography dimension)
+    # Center C Rural (default) FT Age 3 = $127/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 552, 1_524]
+
+- name: Case 22, urban vs rural rate for highest quality center.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: A_PLUS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        county_str: RICHLAND_COUNTY_SC
+  output:
+    # Richland County = Urban
+    sc_ccap_geography: URBAN
+    # Center A+ Urban FT Under 1 = $296/wk (highest possible rate)
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 3_552]
+
+- name: Case 23, rural county rate for highest quality center.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: A_PLUS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        county_str: ABBEVILLE_COUNTY_SC
+  output:
+    # Abbeville County = Rural (not in urban list)
+    sc_ccap_geography: RURAL
+    # Center A+ Rural FT Under 1 = $158/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 1_896]
+
+# ============================================================
+# QUALITY LEVEL EXTREMES
+# ============================================================
+
+- name: Case 24, highest quality A plus vs lowest quality C center urban.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: A_PLUS
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+        county_str: RICHLAND_COUNTY_SC
+  output:
+    # Center A+ Urban FT Under 1 = $296/wk
+    # Center C Urban FT Under 1 = $213/wk
+    # $83/wk quality premium
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 3_552, 2_556]
+
+# ============================================================
+# SURCHARGE STACKING EDGE CASES
+# ============================================================
+
+- name: Case 25, special needs plus foster care surcharges stack.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        is_in_foster_care: true
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Center C Rural FT Age 3 = $127 + $20 special needs + $30 foster = $177/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 2_124]
+    # Foster care -> $0 copay
+    sc_ccap_copay: 0
+    # Annual max = $177 * 52 / 12 * 12 = $177 * 52 = $9,204
+    # Benefit = min(20,000 - 0, 9,204) = 9,204
+    sc_ccap: 9_204
+
+# ============================================================
+# REGISTERED FAMILY HOME QUALITY LEVEL EDGE CASE
+# ============================================================
+
+- name: Case 26, registered family home uses separate quality enum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: REGISTERED_FAMILY_HOME
+        sc_ccap_registered_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Registered Family Home C Rural FT Under 1 = $121/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 1_452]
+    # Annual max = $121 * 52 = $6,292
+    # Benefit = min(10,000, 6,292) = 6,292
+    sc_ccap: 6_292
+
+# ============================================================
+# FAMILY SIZE EDGE CASES
+# ============================================================
+
+- name: Case 27, family size 16 only zero copay tier.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 28
+        weekly_hours_worked: 20
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+      person4:
+        age: 11
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: FFN
+      person5:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person8:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person10:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person11:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person12:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person13:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person14:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person15:
+        age: 17
+      person16:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16]
+        state_code: SC
+  output:
+    # Family size 16, capped at 16 -> family_size_16 fee scale: only $0 tier
+    # $0/wk copay regardless of income
+    sc_ccap_eligible: true
+
+# ============================================================
+# EXEMPT COPAY EDGE CASES
+# ============================================================
+
+- name: Case 28, TANF enrolled family gets zero copay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 25
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # TANF enrolled -> $0 copay regardless of income
+    sc_ccap_copay: 0
+    sc_ccap_eligible: true
+
+- name: Case 29, homeless family gets zero copay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 25
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        is_homeless: true
+  output:
+    # Homeless -> $0 copay
+    sc_ccap_copay: 0
+    sc_ccap_eligible: true
+
+# ============================================================
+# BENEFIT CAP AND EXPENSE INTERACTION
+# ============================================================
+
+- name: Case 30, benefit capped by actual expenses when less than max rate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: A_PLUS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        county_str: RICHLAND_COUNTY_SC
+  output:
+    # Center A+ Urban FT Under 1 = $296/wk -> annual max = $15,392
+    # Copay $0 (income 2,000/mo < 2,645 for fam size 2)
+    # Benefit = min(3,000 - 0, 15,392) = 3,000
+    sc_ccap: 3_000
+
+- name: Case 31, benefit capped by max rate when expenses exceed it.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # FFN HT Age 3 = $30/wk (Rural default)
+    # Annual max = $30 * 52 = $1,560
+    # Benefit = min(10,000 - 0, 1,560) = 1,560
+    sc_ccap: 1_560
+
+- name: Case 32, zero childcare expenses yields zero benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Expenses = $0 -> uncapped = max(0 - 0, 0) = 0
+    sc_ccap: 0
+
+- name: Case 33, copay exceeds expenses yields zero benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $20/wk copay tier for family size 2
+        employment_income: 53_772
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: C
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Very low expenses
+        spm_unit_pre_subsidy_childcare_expenses: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Monthly copay = $20 * 1 * 52/12 = $86.67
+    # Annual copay = $86.67 * 12 = $1,040
+    # Annual max rate = Center C Rural FT Age 3 = $127 * 52 = $6,604
+    # Uncapped = max(500 - 1,040, 0) = 0
+    sc_ccap: 0
+
+# ============================================================
+# MULTIPLE CHILDREN WITH DIFFERENT PROVIDERS AND TIME CATEGORIES
+# ============================================================
+
+- name: Case 34, multiple children different ages providers and schedules.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        sc_ccap_provider_type: CENTER
+        sc_ccap_quality_level: A_PLUS
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 15
+        sc_ccap_provider_type: FFN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true, true]
+    # person1 (adult, 0 hrs): HT; person2 (age 0, 35 hrs): FT; person3 (age 10, 15 hrs): HT
+    sc_ccap_time_category: [HALF_TIME, FULL_TIME, HALF_TIME]
+    # person1 (age 35): AGE_5_12_IN_SCHOOL (adults fall into last bucket)
+    sc_ccap_age_group: [AGE_5_12_IN_SCHOOL, UNDER_1, AGE_5_12_IN_SCHOOL]
+    # person2: Center A+ Rural FT Under 1 = $158/wk
+    # person3: FFN HT School Age = $24/wk
+    # MONTH var at YEAR period -> values * 12
+    sc_ccap_maximum_weekly_benefit: [0, 1_896, 288]
+    # Family size 3, monthly income = 36,000 / 12 = 3,000
+    # Fee scale family_size_3: $0-$3,331 -> $0/wk
+    # Annual max = ($158 + $24) * 52 = $9,464
+    # Benefit = min(15,000 - 0, 9,464) = 9,464
+    sc_ccap: 9_464

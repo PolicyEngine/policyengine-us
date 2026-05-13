@@ -1,0 +1,15 @@
+description: New Jersey counts these earned income sources under the Child Care Assistance Program. The CCAP application form (CC-1) reports earned income (wages and self-employment) only for the applicant and co-applicant (the parent(s) seeking assistance); there is no field to report earnings of minor children in the household. We therefore sum these sources only for tax-unit heads and spouses.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: New Jersey CCAP countable earned income sources (applicant/co-applicant only)
+  reference:
+    - title: CCDF State Plan for NJ FFY 2025-2027, Section 2.2.4c
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/CCDF_State_Plan_for_New_Jersey_FFY25-27.pdf#page=25
+    - title: NJ CCAP Application CC-1 (03/24) Section D (Income - Applicant / Co-Applicant)
+      href: https://chsofnj.org/wp-content/uploads/2024/04/New-Jersey-Cares-for-Kids-Application-1.pdf#page=3

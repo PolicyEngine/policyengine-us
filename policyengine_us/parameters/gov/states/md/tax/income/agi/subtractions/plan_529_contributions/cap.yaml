@@ -1,0 +1,23 @@
+description: Maryland caps the subtraction for 529 education savings plan contributions at this amount per beneficiary.
+metadata:
+  label: Maryland 529 plan contribution subtraction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Maryland Tax-General Article § 10-208(p)
+    href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-208&enession=2024RS
+  - title: Maryland 2025 Resident Tax Forms and Instructions - Subtractions
+    href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=15
+
+JOINT:
+  2021-01-01: 5_000
+SURVIVING_SPOUSE:
+  2021-01-01: 5_000
+SINGLE:
+  2021-01-01: 2_500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 2_500
+SEPARATE:
+  2021-01-01: 2_500

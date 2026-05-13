@@ -30,12 +30,7 @@ class mo_qualified_health_insurance_premiums(Variable):
         # this ratio is then used to scale the health_insurance_premium
         # amount that can be claimed
         # IRS Schedule A Line 1
-        tax_unit_health_expenses = add(
-            tax_unit,
-            period,
-            # Out of pocket expenses include health insurance premiums
-            ["medical_out_of_pocket_expenses"],
-        )
+        tax_unit_health_expenses = tax_unit("itemized_medical_expenses", period)
         med_expense_ratio = np.zeros_like(tax_unit_health_expenses)
         mask = tax_unit_health_expenses > 0
         med_expense_ratio[mask] = (

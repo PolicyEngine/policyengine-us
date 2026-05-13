@@ -1,0 +1,148 @@
+- name: Pregnant participant with one fetus receives package V-A.
+  period: 2024-01
+  input:
+    is_pregnant: true
+    current_pregnancies: 1
+  output:
+    wic_food_package: PREGNANT_SINGLETON
+
+- name: Pregnant participant with multiple fetuses receives package V-B.
+  period: 2024-01
+  input:
+    is_pregnant: true
+    current_pregnancies: 2
+  output:
+    wic_food_package: PREGNANT_MULTIPLE_FETUSES
+
+- name: Fully breastfeeding participant with multiple infants receives the multiples package.
+  period: 2024-01
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        is_wic_fully_breastfeeding: true
+        wic_breastfeeding_infant_count: 2
+        age: 34
+      child:
+        age: 0.5
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_food_package: [FULLY_BREASTFEEDING_MULTIPLES, INFANT_AVERAGE]
+
+- name: Breastfeeding participant defaults to the partially breastfeeding package.
+  period: 2024-01
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        age: 34
+      child:
+        age: 0.5
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_food_package: [PARTIALLY_BREASTFEEDING, INFANT_AVERAGE]
+
+- name: Partially breastfeeding participant with multiple infants receives package VII.
+  period: 2024-01
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        wic_breastfeeding_infant_count: 2
+        age: 34
+      child:
+        age: 0.5
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_food_package: [FULLY_BREASTFEEDING, INFANT_AVERAGE]
+
+- name: Pregnant participant breastfeeding a singleton infant receives package VII.
+  period: 2024-01
+  input:
+    people:
+      mother:
+        is_pregnant: true
+        current_pregnancies: 1
+        is_breastfeeding: true
+        age: 34
+      child:
+        age: 0.5
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_food_package: [FULLY_BREASTFEEDING, INFANT_AVERAGE]
+
+- name: Infant defaults to the average infant package when feeding detail is unknown.
+  period: 2024-01
+  input:
+    age: 0.5833333333
+  output:
+    wic_food_package: INFANT_AVERAGE
+
+- name: Formula-fed infant under four months receives package I-FF-A.
+  period: 2024-01
+  input:
+    age: 0.1666666667
+    wic_infant_feeding_category: FULLY_FORMULA_FED
+  output:
+    wic_food_package: INFANT_0_3_FULLY_FORMULA_FED
+
+- name: Partially breastfed infant aged six months or older receives package II-BF/FF.
+  period: 2024-01
+  input:
+    age: 0.5
+    wic_infant_feeding_category: PARTIALLY_BREASTFED
+  output:
+    wic_food_package: INFANT_6_11_PARTIALLY_BREASTFED
+
+- name: Fully breastfed infant aged six months or older receives package II-BF.
+  period: 2024-01
+  input:
+    age: 0.6666666667
+    wic_infant_feeding_category: FULLY_BREASTFED
+  output:
+    wic_food_package: INFANT_6_11_FULLY_BREASTFED
+
+- name: Child under age two receives package IV-A.
+  period: 2024-01
+  input:
+    age: 1.5
+  output:
+    wic_food_package: CHILD_12_23_MONTHS
+
+- name: Child aged two or older receives package IV-B.
+  period: 2024-01
+  input:
+    age: 3
+  output:
+    wic_food_package: CHILD_24_59_MONTHS
+
+- name: Formula-fed infant aged six months or older receives package II-FF.
+  period: 2024-01
+  input:
+    age: 0.5
+    wic_infant_feeding_category: FULLY_FORMULA_FED
+  output:
+    wic_food_package: INFANT_6_11_FULLY_FORMULA_FED

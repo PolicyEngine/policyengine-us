@@ -1,0 +1,370 @@
+# Integration tests for NH Child Care Scholarship Program (CCAP)
+# He-C 6910, NH DHHS
+#
+# 2025 reference values:
+# FPG family of 3: 15,650 + 5,500*2 = $26,650/yr = $2,220.83/mo
+# FPG family of 2: 15,650 + 5,500 = $21,150/yr = $1,762.50/mo
+# FPG family of 4: 15,650 + 5,500*3 = $32,150/yr = $2,679.17/mo
+# NH SMI (eff 2024-10-01): $146,582/yr
+# SMI family of 3: 146,582 * 0.84 = $123,128.88/yr
+# 85% SMI family of 3: $104,659.55/yr = $8,721.63/mo
+# SMI family of 2: 146,582 * 0.68 = $99,675.76/yr
+# 85% SMI family of 2: $84,724.40/yr = $7,060.37/mo
+# 100% FPG monthly (fam 3): $2,220.83
+# 138% FPG monthly (fam 3): $3,064.75
+
+- name: Case 1, basic eligible family, income below 100% FPG, $0 cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_400
+        # $20,400/yr = $1,700/mo < $1,762.50 (100% FPG for 2)
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 18_720
+        # $18,720/yr = $360/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Eligibility chain
+    nh_ccap_eligible_child: [false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+    # Cost share: $1,700/mo < $1,762.50 (100% FPG for 2) → Step 1 → $0/week
+    nh_ccap_cost_share: 0
+
+- name: Case 2, income between 100-138% FPG, $5 weekly cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        # $24,000/yr = $2,000/mo
+        # Family of 2: 100% FPG = $1,762.50; 138% FPG = $2,432.25
+        # $2,000 > $1,762.50 and < $2,432.25 → Step 2
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 25
+        nh_ccap_provider_type: LICENSED_FAMILY
+        pre_subsidy_childcare_expenses: 15_600
+        # $15,600/yr = $300/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+    # Cost share: Step 2 → $5/week
+    nh_ccap_cost_share: 5
+
+- name: Case 3, income above 138% FPG, 7% cost share calculation.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        # $60,000/yr = $5,000/mo > $3,064.75 (138% FPG for 3)
+        # Step 3: 7% * $5,000 / 4.33 = $80.77/week
+      person2:
+        age: 35
+        employment_income: 0
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 12
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 7_800
+        # $7,800/yr = $150/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+    # Cost share: 7% * $5,000 / (52/12) = $350 / 4.3333 = $80.77/week
+    nh_ccap_cost_share: 80.77
+
+- name: Case 4, two eligible children, cost share split equally.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # $24,000/yr = $2,000/mo
+        # Family of 4: 100% FPG = $2,679.17/mo
+        # $2,000 < $2,679.17 → Step 1 → $0
+      person2:
+        age: 35
+        employment_income: 0
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 20_800
+        # $400/week
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 10
+        nh_ccap_provider_type: LICENSED_FAMILY
+        pre_subsidy_childcare_expenses: 7_800
+        # $150/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, false, true, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+    # Cost share: $2,000/mo < $2,679.17 (100% FPG for 4) → $0/week
+    nh_ccap_cost_share: 0
+
+- name: Case 5, TANF enrolled bypasses income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 120_000
+        # Well above 85% SMI for family of 2
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # TANF enrolled → income eligible regardless
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+- name: Case 6, disabled child age 14, eligible via disability extension.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+      person2:
+        age: 14
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 20_800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Child is 14 but disabled → eligible via He-C 6910.07(e)
+    nh_ccap_eligible_child: [false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+
+- name: Case 7, positive benefit end-to-end, preschool licensed center, income below 100% FPG.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 20_400
+        # $20,400/yr = $1,700/mo < $1,762.50 (100% FPG for 2)
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 18_720
+        # $18,720/yr = $360/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+    nh_ccap_cost_share: 0
+    # Preschool, full-time, licensed center: $280/week
+    # min($360/wk charge, $280 rate) = $280
+    # Cost share: $0 → per-child: $0
+    # Weekly payment: $280 - $0 = $280
+    # Monthly: $280 * (52/12) = $1,213.33
+    nh_ccap: 1_213.33
+
+- name: Case 8, disabled child, disability supplement flows through to benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        # $24,000/yr = $2,000/mo
+        # Family of 3: 100% FPG = $2,220.83
+        # $2,000 < $2,220.83 → Step 1 → $0 cost share
+      person2:
+        age: 35
+        employment_income: 0
+      person3:
+        age: 5
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 20_800
+        # $20,800/yr = $400/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, false, true]
+    nh_ccap_income_eligible: true
+    nh_ccap_eligible: true
+    nh_ccap_cost_share: 0
+    # Preschool, full-time, licensed center: $280/week base rate
+    # min($400/wk charge, $280 base rate) = $280
+    # Cost share: $0 → per-child: $0
+    # base_payment = max($280 - $0, 0) = $280
+    # Disability supplement full-time: $100/week
+    # Weekly payment: $280 + $100 = $380
+    # Monthly: $380 * (52/12) = $1,646.67
+    nh_ccap: 1_646.67
+
+- name: Case 9, income above 85% SMI, not TANF enrolled, ineligible (original Case 7).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 108_000
+        # $108,000/yr = $9,000/mo
+        # Family of 3: 85% SMI = $8,721.63/mo
+        # $9,000 > $8,721.63 → ineligible
+      person2:
+        age: 35
+        employment_income: 0
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_eligible_child: [false, false, true]
+    nh_ccap_income_eligible: false
+    nh_ccap_eligible: false
+    nh_ccap: 0

@@ -1,0 +1,37 @@
+description: Delaware counts these income sources under the Purchase of Care program.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+    - social_security_retirement
+    - social_security_disability
+    - social_security_survivors
+    - ssi
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    # de_tanf — counted per DSSM 11003.9.1(5.B) but excluded to
+    # avoid circular dependency (CCAP → tanf → childcare_expenses → CCAP)
+    # The following are counted per DSSM 11003.9.1(4) but have no
+    # matching variables:
+    # - adoption_subsidy
+    # - strike_benefits
+    # - royalties
+    # - foster_care_payments (when child is in the assistance unit)
+
+metadata:
+  unit: list
+  period: year
+  label: Delaware Purchase of Care countable income sources
+  reference:
+    - title: 16 Del. Admin. Code 11003, Section 11003.9.1(4)
+      href: https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11003.shtml
+    - title: 24 Del. Reg. 704, Section 11003.9.1(4)
+      href: https://regulations.delaware.gov/register/january2021/final/24%20DE%20Reg%20704%2001-01-21.htm

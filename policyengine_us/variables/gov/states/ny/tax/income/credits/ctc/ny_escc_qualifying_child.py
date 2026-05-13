@@ -19,7 +19,7 @@ class ny_escc_qualifying_child(Variable):
         age = person("age", period)
         # NY ESCC allows both SSN and ITIN holders
         # (decoupled from federal CTC SSN requirement)
-        has_valid_id = person("has_itin", period)  # has_itin includes SSN
+        has_valid_id = person("has_tin", period)  # has_tin includes SSN
         age_eligible = age < p.post_2024.amount.thresholds[-1]
         meets_minimum_age = age >= p.minimum_age
         return has_valid_id & age_eligible & meets_minimum_age

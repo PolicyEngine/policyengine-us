@@ -1,0 +1,442 @@
+- name: Single filer with moderate rent and income gets credit
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        rent: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Credit = 20% of $15,000 - 4% of $50,000
+    # Credit = $3,000 - $2,000 = $1,000
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 1_000
+
+- name: Single filer with high rent hits maximum credit cap
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        rent: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Credit = 20% of $24,000 - 4% of $30,000
+    # Credit = $4,800 - $1,200 = $3,600, capped at $2,500
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 2_500
+
+- name: Single filer with income above threshold is not eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Income $80,000 > threshold $75,000
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Joint filers with income below threshold get credit
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        rent: 12_000
+      person2:
+        age: 33
+        employment_income: 40_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Joint income $100,000 < threshold $150,000
+    # Total rent = $24,000
+    # Credit = 20% of $24,000 - 4% of $100,000
+    # Credit = $4,800 - $4,000 = $800
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 800
+
+- name: Joint filers with income above threshold are not eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+        rent: 12_000
+      person2:
+        age: 33
+        employment_income: 60_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Joint income $160,000 > threshold $150,000
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Non-renter with no rent is not eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Head of household with moderate rent gets credit
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        rent: 18_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, child]
+        state_code: CT
+  output:
+    # HOH income $60,000 < threshold $75,000
+    # Credit = 20% of $18,000 - 4% of $60,000
+    # Credit = $3,600 - $2,400 = $1,200
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 1_200
+
+- name: Credit formula - AGI reduction exceeds rent portion results in zero credit
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 70_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Income $70,000 < threshold $75,000 - eligible
+    # Credit = 20% of $6,000 - 4% of $70,000
+    # Credit = $1,200 - $2,800 = -$1,600, floored at $0
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 0
+
+- name: Separate filer with income at threshold is eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 75_000
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # SEPARATE income exactly at $75,000 threshold - eligible
+    # Credit = 20% of $18,000 - 4% of $75,000
+    # Credit = $3,600 - $3,000 = $600
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 600
+
+- name: Non-CT resident gets zero credit
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        rent: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Zero income renter gets maximum 20% of rent
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        rent: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Credit = 20% of $10,000 - 4% of $0
+    # Credit = $2,000 - $0 = $2,000
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 2_000
+
+- name: Single filer with income exactly at threshold is eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 75_000
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Income exactly at $75,000 threshold - eligible (uses <=)
+    # Credit = 20% of $18,000 - 4% of $75,000
+    # Credit = $3,600 - $3,000 = $600
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 600
+
+- name: Single filer with income one dollar above threshold is not eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 75_001
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Income $75,001 > threshold $75,000 - not eligible
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Joint filer with income exactly at threshold is eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+        rent: 12_000
+      person2:
+        age: 33
+        employment_income: 50_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Joint income exactly at $150,000 threshold - eligible
+    # Credit = 20% of $24,000 - 4% of $150,000
+    # Credit = $4,800 - $6,000 = -$1,200, floored at $0
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 0
+
+- name: Joint filer with income one dollar above threshold is not eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 100_001
+        rent: 12_000
+      person2:
+        age: 33
+        employment_income: 50_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # Joint income $150,001 > threshold $150,000 - not eligible
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0
+
+- name: Surviving spouse with income below threshold is eligible
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        rent: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # SURVIVING_SPOUSE income $100,000 < threshold $150,000 - eligible
+    # Credit = 20% of $24,000 - 4% of $100,000
+    # Credit = $4,800 - $4,000 = $800
+    ct_hb5114_eligible: true
+    ct_hb5114_renters_credit: 800
+
+- name: Dependent filer is not eligible even with qualifying income and rent
+  absolute_error_margin: 1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ct.hb5114.ct_hb5114.ct_hb5114
+  input:
+    gov.contrib.states.ct.hb5114.in_effect: true
+    people:
+      person1:
+        age: 20
+        employment_income: 30_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        head_is_dependent_elsewhere: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Head is claimed as dependent elsewhere - not eligible
+    ct_hb5114_eligible: false
+    ct_hb5114_renters_credit: 0

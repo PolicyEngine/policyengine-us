@@ -1,0 +1,33 @@
+description: Minnesota HF4890 levies income taxes at these rates for head of household filers.
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota HF4890 head of household income tax rates
+  reference:
+    - title: Minnesota HF4890 (2026), Sec. 1, Subd. 2c(c) -- head of household rate schedule (5 brackets, 5.35%-10.15%)
+      href: https://www.revisor.mn.gov/bills/94/2026/0/HF/4890/versions/0/pdf/#page=2
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.0535
+  - threshold:
+      2026-01-01: 41_010
+    rate:
+      2026-01-01: 0.068
+  - threshold:
+      2026-01-01: 164_800
+    rate:
+      2026-01-01: 0.0785
+  - threshold:
+      2026-01-01: 270_060
+    rate:
+      2026-01-01: 0.0985
+  - threshold:
+      2026-01-01: 800_000
+    rate:
+      2026-01-01: 0.1015

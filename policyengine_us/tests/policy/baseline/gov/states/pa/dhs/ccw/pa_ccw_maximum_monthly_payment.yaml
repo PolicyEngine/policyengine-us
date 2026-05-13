@@ -1,0 +1,67 @@
+# Unit tests for pa_ccw_maximum_monthly_payment
+# Tests daily rate * days per month per eligible child
+# defined_for = "pa_ccw_eligible_child"
+
+- name: Case 1, center full time 20 days per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # Region 1, CENTER, PRE_SCHOOL, FT = $42.35/day
+    # 42.35 * 20 = $847
+    pa_ccw_maximum_monthly_payment: [0, 847]
+
+- name: Case 2, family part time 15 days per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: FAMILY
+        pa_ccw_age_group: OLD_TODDLER
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 15
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # Region 1, FAMILY, OLD_TODDLER, PT = $31.14/day
+    # 31.14 * 15 = $467.10
+    pa_ccw_maximum_monthly_payment: [0, 467.10]

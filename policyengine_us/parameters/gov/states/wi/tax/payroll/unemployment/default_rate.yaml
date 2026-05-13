@@ -1,0 +1,13 @@
+description: Default employer-side unemployment insurance tax rate for Wisconsin.
+values:
+  0000-01-01: 0.025
+
+metadata:
+  period: year
+  unit: /1
+  label: Wisconsin default unemployment tax rate
+  reference:
+    - title: Wisconsin Statutes Section 108.18
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/108/18
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=61

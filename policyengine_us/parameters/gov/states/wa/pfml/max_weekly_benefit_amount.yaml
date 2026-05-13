@@ -1,0 +1,20 @@
+description: Washington limits the weekly benefit to this amount under the Paid Family and Medical Leave program.
+
+values:
+  2020-01-01: 1_000
+  2021-01-01: 1_206
+  2022-01-01: 1_327
+  2023-01-01: 1_427
+  2024-01-01: 1_456
+  2025-01-01: 1_542
+  2026-01-01: 1_647
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: Washington PFML maximum weekly benefit amount
+  reference:
+    - title: RCW 50A.15.020(6)(a) Benefit—Amount and duration
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=50A.15.020
+    - title: Washington Paid Family and Medical Leave 2026 Paycheck Insert
+      href: https://paidleave.wa.gov/app/uploads/2025/12/Paycheck-insert-2026-1.pdf

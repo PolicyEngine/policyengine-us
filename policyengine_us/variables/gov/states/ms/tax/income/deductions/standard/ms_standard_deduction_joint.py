@@ -8,13 +8,13 @@ class ms_standard_deduction_joint(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
+    reference = (
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-17/",  # MS Code 27-7-17: deductions may be divided in any manner
+    )
 
     def formula(person, period, parameters):
-        # First get their filing status.
         filing_status = person.tax_unit("filing_status", period)
-
-        # Then get the MS Standard Deduction part of the parameter tree.
         p = parameters(period).gov.states.ms.tax.income.deductions.standard
 
-        is_head = person("is_tax_unit_head", period)
-        return p.amount[filing_status] * is_head
+        prorate_fraction = person("ms_prorate_fraction", period)
+        return p.amount[filing_status] * prorate_fraction

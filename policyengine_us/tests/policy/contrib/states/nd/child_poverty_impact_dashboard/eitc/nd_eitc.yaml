@@ -1,0 +1,53 @@
+- name: Case 1 - ND EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.nd.eitc.nd_eitc
+  input:
+    gov.contrib.states.nd.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ND
+    eitc: 1_000
+  output:
+    nd_eitc: 100
+    nd_refundable_credits: 100
+
+- name: Case 2 - ND EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.nd.eitc.nd_eitc
+  input:
+    gov.contrib.states.nd.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: ND
+    eitc: 2_500
+  output:
+    nd_eitc: 500
+    nd_refundable_credits: 500
+
+- name: Case 3 - ND EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.nd.eitc.nd_eitc
+  input:
+    gov.contrib.states.nd.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: ND
+    eitc: 1_000
+  output:
+    nd_eitc: 0
+    nd_refundable_credits: 0
+
+- name: Case 4 - ND EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.nd.eitc.nd_eitc
+  input:
+    gov.contrib.states.nd.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ND
+    eitc: 0
+  output:
+    nd_eitc: 0
+    nd_refundable_credits: 0
+
+- name: Case 5 - ND EITC is 0 for non-ND residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.nd.eitc.nd_eitc
+  input:
+    gov.contrib.states.nd.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    nd_eitc: 0

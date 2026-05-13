@@ -1,0 +1,388 @@
+- name: Case 1, income at 150 percent FPL has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_975
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 39,975 / 26,650 = 1.50
+    # 1.50 < 1.7501, so weekly family share = $0
+    # Monthly: $0 * 52 / 12 = $0
+    vt_ccfap_family_share: 0
+
+- name: Case 2, income at 200 percent FPL has 50 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 53_300
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 53,300 / 26,650 = 2.00
+    # 2.00 > 1.7501 threshold, so weekly family share = $50
+    # Monthly: $50 * 52 / 12 = $216.67
+    vt_ccfap_family_share: 216.67
+
+- name: Case 3, income at 300 percent FPL has 150 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 79_950
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 79,950 / 26,650 = 3.00
+    # 3.00 > 2.7501 threshold, so weekly family share = $150
+    # Monthly: $150 * 52 / 12 = $650.00
+    vt_ccfap_family_share: 650
+
+- name: Case 4, income at 575 percent FPL has maximum 425 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 153_237.50
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 153,237.50 / 26,650 = 5.75
+    # 5.75 > 5.5001 threshold, so weekly family share = $425
+    # Monthly: $425 * 52 / 12 = $1,841.67
+    vt_ccfap_family_share: 1_841.67
+
+- name: Case 5, Reach Up eligible family has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled:
+          2025-01: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Reach Up eligible = exempt from family share
+    vt_ccfap_family_share: 0
+
+- name: Case 6, foster child present has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Foster child present = exempt from family share
+    vt_ccfap_family_share: 0
+
+- name: Case 7, protective services child has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Protective services = exempt from family share
+    vt_ccfap_family_share: 0
+
+- name: Case 8, income at exactly 175 percent FPL has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_637.50
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 46,637.50 / 26,650 = 1.75
+    # 1.75 < 1.7501, so weekly family share = $0
+    # Monthly: $0
+    vt_ccfap_family_share: 0
+
+- name: Case 9, income just above 175.01 percent FPL triggers 50 dollar share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_640.17
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # FPG for family of 3 = 26,650
+    # FPL ratio = 46,640.17 / 26,650 = 1.75010...
+    # 1.7501+ >= 1.7501 threshold => weekly family share = $50
+    # Monthly: $50 * 52 / 12 = $216.67
+    vt_ccfap_family_share: 216.67
+
+- name: Case 10, zero income has zero family share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPL ratio = 0 / 21,150 = 0.0
+    # 0.0 < 1.7501 => weekly family share = $0
+    # Monthly: $0
+    vt_ccfap_family_share: 0
+
+- name: Case 11, income at 250 percent FPL has 100 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # FPL ratio = 52,875 / 21,150 = 2.50
+    # 2.50 >= 2.2501 but < 2.5001 => weekly family share = $100
+    # Monthly: $100 * 52 / 12 = $433.33
+    vt_ccfap_family_share: 433.33
+
+- name: Case 12, income at 400 percent FPL has 250 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_600
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # FPL ratio = 84,600 / 21,150 = 4.00
+    # 4.00 >= 3.7501 but < 4.0001 => weekly family share = $250
+    # Monthly: $250 * 52 / 12 = $1,083.33
+    vt_ccfap_family_share: 1_083.33
+
+- name: Case 13, income at 500 percent FPL has 350 dollar weekly share.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 105_750
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # FPG for family of 2 = 21,150
+    # FPL ratio = 105,750 / 21,150 = 5.00
+    # 5.00 >= 4.7501 but < 5.0001 => weekly family share = $350
+    # Monthly: $350 * 52 / 12 = $1,516.67
+    vt_ccfap_family_share: 1_516.67
+
+- name: Case 14, large family of 8 with low FPL ratio.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 33
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+      person6:
+        age: 6
+        is_tax_unit_dependent: true
+      person7:
+        age: 4
+        is_tax_unit_dependent: true
+      person8:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VT
+  output:
+    # FPG for family of 8 = 15,650 + 7 * 5,500 = 54,150
+    # FPL ratio = 60,000 / 54,150 = 1.108
+    # 1.108 < 1.7501 => weekly family share = $0
+    # Monthly: $0
+    vt_ccfap_family_share: 0

@@ -21,8 +21,9 @@ class ia_standard_deduction_joint(Variable):
         p = parameters(period).gov.states.ia.tax.income
 
         if p.deductions.standard.applies_federal:
-            fed_p = parameters(period).gov.irs.deductions
-            deduction = fed_p.standard.amount[filing_status]
+            # IA 1040 line 1d: "Standard deduction from federal 1040, line 12e"
+            # This includes the additional standard deduction for elderly/blind.
+            deduction = person.tax_unit("standard_deduction", period)
         else:
             deduction = p.deductions.standard.amount[filing_status]
 

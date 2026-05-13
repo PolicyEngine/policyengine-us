@@ -37,3 +37,14 @@
     mt_tanf_countable_income: 110
   output:
     mt_tanf: 0
+
+- name: Case 5, negative countable income caps benefit at payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    mt_tanf_eligible: true
+    mt_tanf_payment_standard: 725
+    mt_tanf_countable_income: -500
+  output:
+    # Benefit capped at payment standard, not $725 - (-$500) = $1,225
+    mt_tanf: 725

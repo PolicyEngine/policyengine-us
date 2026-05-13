@@ -1,0 +1,59 @@
+- name: Case 1, family of 3 returns Region 1 non-exempt MAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Region 1 non-exempt family-of-3: $1,171 (effective 2023-10-01)
+    ca_tanf_max_benefit_standard: 1_171
+
+- name: Case 2, family of 1.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_max_benefit_standard: 732
+
+- name: Case 3, non-CA household returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ca_tanf_max_benefit_standard: 0

@@ -1,0 +1,208 @@
+# California AB 2591 - Taxing Californians into Poverty Protection Act
+# Allows taxpayers to elect a standard deduction equal to the federal
+# poverty line for their household size.
+# Effective for taxable years beginning on or after July 1, 2027.
+# 2027 federal poverty guidelines (CONTIGUOUS_US):
+#   first person = $16,334
+#   additional person = $5,813
+#   1-person FPL  = $16,334
+#   2-person FPL  = $22,147
+#   4-person FPL  = $33,774
+
+- name: Single filer uses one-person FPL.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_standard_deduction: 16_334
+
+- name: Head of household with one child uses two-person FPL.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_standard_deduction: 22_147
+
+- name: Head of household with two children still uses two-person FPL.
+  # Bill R&TC 17073.5(b)(2) fixes HoH at the two-person FPL regardless of size.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_standard_deduction: 22_147
+
+- name: Joint filers with no children use two-person FPL.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head: true
+        employment_income: 80_000
+      person2:
+        age: 36
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_standard_deduction: 22_147
+
+- name: Joint filers with two children use four-person FPL.
+  # Bill R&TC 17073.5(b)(3) scales joint FPL with the number of persons in the household.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head: true
+        employment_income: 90_000
+      person2:
+        age: 36
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    ca_standard_deduction: 33_774
+
+- name: Married filing separately uses one-person FPL.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_standard_deduction: 16_334
+
+- name: Reform inactive leaves baseline CA standard deduction unchanged.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: false
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # 2025 indexed CA standard deduction value (still $5,706 in 2027 absent uprating)
+    ca_standard_deduction: 5_706
+
+- name: Non-California filer unaffected by the reform.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # ca_standard_deduction is defined_for=CA, so non-CA returns 0
+    ca_standard_deduction: 0

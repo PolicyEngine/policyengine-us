@@ -1,0 +1,67 @@
+description: Virginia sets this per-child monthly copayment based on the family's income as a share of the federal poverty guideline under the Child Care Subsidy Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Virginia CCSP per-child copayment scale
+  reference:
+    - title: Virginia Child Care Subsidy Program Guidance Manual Appendix B
+      href: https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=143
+    - title: Child Care Subsidy Program (CCSP) Copayment Scale (Effective July 1, 2025)
+      href: https://www.childcare.virginia.gov/home/showpublisheddocument/65775/638937831784030000
+
+brackets:
+  # 0% FPG (income = $0): $0 copay in both eras
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  # >$0 to 100% FPG: $0 (2023), $5 (2025-07-01)
+  # Use .inf in 2023 so this bracket is unreachable (0-100% stays $0)
+  - threshold:
+      2023-01-01: .inf
+      2025-07-01: 0.0001
+    amount:
+      2023-01-01: 0
+      2025-07-01: 5
+  # >100% FPG: $60 (2023), split into two brackets in 2025
+  - threshold:
+      2023-01-01: 1.0001
+    amount:
+      2023-01-01: 60
+      2025-07-01: 125
+  # >150% FPG: new bracket in 2025
+  - threshold:
+      2023-01-01: .inf
+      2025-07-01: 1.5001
+    amount:
+      2023-01-01: 0
+      2025-07-01: 175
+  # >200% FPG
+  - threshold:
+      2023-01-01: 2.0001
+    amount:
+      2023-01-01: 120
+      2025-07-01: 225
+  # >250% FPG: new bracket in 2025
+  - threshold:
+      2023-01-01: .inf
+      2025-07-01: 2.5001
+    amount:
+      2023-01-01: 0
+      2025-07-01: 275
+  # >300% FPG
+  - threshold:
+      2023-01-01: 3.0001
+    amount:
+      2023-01-01: 180
+      2025-07-01: 325
+  # >350% FPG: new bracket in 2025
+  - threshold:
+      2023-01-01: .inf
+      2025-07-01: 3.5001
+    amount:
+      2023-01-01: 0
+      2025-07-01: 375

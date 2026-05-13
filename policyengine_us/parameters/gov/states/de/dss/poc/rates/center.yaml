@@ -1,0 +1,26 @@
+description: Delaware provides these weekly reimbursement rates for child care centers under the Purchase of Care program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Delaware Purchase of Care center weekly rates
+  breakdown:
+    - de_poc_age_group
+  reference:
+    - title: Delaware DSS Child Care Services - Provider Rates
+      href: https://dhss.delaware.gov/dss/childcr/
+
+# Effective July 1, 2024
+INFANT:
+  2024-01-01: 325
+
+TODDLER:
+  2024-01-01: 290
+
+PRESCHOOL:
+  2024-01-01: 255
+
+SCHOOL_AGE_FULL_TIME:
+  2024-01-01: 190
+
+SCHOOL_AGE_PART_TIME:
+  2024-01-01: 135

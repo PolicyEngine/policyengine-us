@@ -1,0 +1,15 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: KY
+    ky_income_tax_before_non_refundable_credits_unit: 100
+    ky_personal_tax_credits_potential: 80
+    ky_family_size_tax_credit_potential: 40
+    ky_tuition_tax_credit_eligible: true
+    ky_tuition_tax_credit_potential: 30
+    ky_cdcc_potential: 20
+  output:
+    ky_personal_tax_credits: 80
+    ky_family_size_tax_credit: 20
+    ky_tuition_tax_credit: 0
+    ky_cdcc: 0

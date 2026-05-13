@@ -1,0 +1,23 @@
+description: Massachusetts caps the deduction for 529 education savings plan contributions at this amount.
+metadata:
+  label: Massachusetts 529 plan contribution deduction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Massachusetts General Laws Chapter 62 § 3(B)(a)(14)
+    href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+  - title: Massachusetts DOR 529 Deduction Information
+    href: https://www.mass.gov/info-details/529-plan-deduction
+
+JOINT:
+  2021-01-01: 2_000
+SURVIVING_SPOUSE:
+  2021-01-01: 2_000
+SINGLE:
+  2021-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 1_000
+SEPARATE:
+  2021-01-01: 1_000

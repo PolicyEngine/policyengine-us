@@ -9,13 +9,15 @@
 #   Step 3: Benefit = min(Gap, Payment Standard)
 #   Step 4: Final Benefit = Benefit - Unearned Income
 #
-# Income Standards (July 2021):
-#   Size 2: Need Standard = $741, Payment Standard = $408
-#   Size 3: Need Standard = $881, Payment Standard = $485
-#   Size 4: Need Standard = $1,021, Payment Standard = $562
+# Income Standards (July 2023):
+#   Size 2: Need Standard = $843, Payment Standard = $463.65
+#   Size 3: Need Standard = $1,003, Payment Standard = $551.65
+#   Size 4: Need Standard = $1,163, Payment Standard = $639.65
 #
-# NOTE: These tests model ONGOING recipients (is_tanf_enrolled: true)
+# NOTE: Most tests model ONGOING recipients (is_tanf_enrolled: true)
 #       who receive the 50% earned income disregard.
+#       Case 8 models an INITIAL applicant (is_tanf_enrolled: false)
+#       who receives the 20% earned income disregard.
 
 - name: Case 1, family of 3 with no income receives maximum benefit.
   period: 2024-01
@@ -33,7 +35,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_tanf_enrolled: true
     households:
       household:
@@ -41,14 +43,14 @@
         state_code: NE
   output:
     spm_unit_size: 3
-    ne_adc_need_standard: 881
-    ne_adc_payment_standard: 485
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 551.65
     ne_adc_countable_earned_income: 0
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 485
-    # Gap = $881 - $0 = $881
-    # Benefit = min($881, $485) = $485
+    ne_adc: 551.65
+    # Gap = $1,003 - $0 = $1,003
+    # Benefit = min($1,003, $551.65) = $551.65
 
 - name: Case 2, family of 3 with earned income receives partial benefit.
   period: 2024-01
@@ -66,7 +68,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 2_000
+        spm_unit_cash_assets: 2_000
         is_tanf_enrolled: true
     households:
       household:
@@ -74,15 +76,15 @@
         state_code: NE
   output:
     spm_unit_size: 3
-    ne_adc_need_standard: 881
-    ne_adc_payment_standard: 485
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 551.65
     ne_adc_countable_earned_income: 500
     # After 50% disregard: $1,000 * 0.50 = $500
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 381
-    # Gap = $881 - $500 = $381
-    # Benefit = min($381, $485) = $381
+    ne_adc: 503
+    # Gap = $1,003 - $500 = $503
+    # Benefit = min($503, $551.65) = $503
 
 - name: Case 3, family of 4 with unearned income.
   period: 2024-01
@@ -104,7 +106,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
         is_tanf_enrolled: true
     households:
       household:
@@ -112,15 +114,15 @@
         state_code: NE
   output:
     spm_unit_size: 4
-    ne_adc_need_standard: 1_021
-    ne_adc_payment_standard: 562
+    ne_adc_need_standard: 1_163
+    ne_adc_payment_standard: 639.65
     ne_adc_countable_earned_income: 0
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 62
-    # Gap = $1,021 - $0 = $1,021
-    # Benefit = min($1,021, $562) = $562
-    # Final = $562 - $500 = $62
+    ne_adc: 139.65
+    # Gap = $1,163 - $0 = $1,163
+    # Benefit = min($1,163, $639.65) = $639.65
+    # Final = $639.65 - $500 = $139.65
 
 - name: Case 4, family above income limit is ineligible.
   period: 2024-01
@@ -130,7 +132,7 @@
       person1:
         age: 30
         is_tax_unit_head_or_spouse: true
-        employment_income_before_lsr: 24_000  # $2,000/month
+        employment_income_before_lsr: 26_400  # $2,200/month
       person2:
         age: 10
       person3:
@@ -138,7 +140,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_tanf_enrolled: true
     households:
       household:
@@ -146,12 +148,12 @@
         state_code: NE
   output:
     spm_unit_size: 3
-    ne_adc_need_standard: 881
-    ne_adc_payment_standard: 485
-    ne_adc_countable_earned_income: 1_000
-    # After 50% disregard: $2,000 * 0.50 = $1,000
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 551.65
+    ne_adc_countable_earned_income: 1_100
+    # After 50% disregard: $2,200 * 0.50 = $1,100
     ne_adc_income_eligible: false
-    # Countable ($1,000) > Need Standard ($881)
+    # Countable ($1,100) > Need Standard ($1,003)
     ne_adc_eligible: false
     ne_adc: 0
 
@@ -169,7 +171,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_tanf_enrolled: true
     households:
       household:
@@ -177,15 +179,15 @@
         state_code: NE
   output:
     spm_unit_size: 2
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 463.65
     ne_adc_countable_earned_income: 700
     # After 50% disregard: $1,400 * 0.50 = $700
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 41
-    # Gap = $741 - $700 = $41
-    # Benefit = min($41, $408) = $41
+    ne_adc: 143
+    # Gap = $843 - $700 = $143
+    # Benefit = min($143, $463.65) = $143
 
 - name: Case 6, family with both earned and unearned income.
   period: 2024-01
@@ -204,7 +206,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 2_000
+        spm_unit_cash_assets: 2_000
         is_tanf_enrolled: true
     households:
       household:
@@ -212,16 +214,16 @@
         state_code: NE
   output:
     spm_unit_size: 3
-    ne_adc_need_standard: 881
-    ne_adc_payment_standard: 485
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 551.65
     ne_adc_countable_earned_income: 300
     # After 50% disregard: $600 * 0.50 = $300
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 285
-    # Gap = $881 - $300 = $581
-    # Benefit = min($581, $485) = $485
-    # Final = $485 - $200 = $285
+    ne_adc: 351.65
+    # Gap = $1,003 - $300 = $703
+    # Benefit = min($703, $551.65) = $551.65
+    # Final = $551.65 - $200 = $351.65
 
 - name: Case 7, small benefit after unearned income deduction.
   period: 2024-01
@@ -238,7 +240,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
         is_tanf_enrolled: true
     households:
       household:
@@ -246,13 +248,222 @@
         state_code: NE
   output:
     spm_unit_size: 2
-    ne_adc_need_standard: 741
-    ne_adc_payment_standard: 408
+    ne_adc_need_standard: 843
+    ne_adc_payment_standard: 463.65
     ne_adc_countable_earned_income: 330
     # After 50% disregard: $660 * 0.50 = $330
     ne_adc_income_eligible: true
     ne_adc_eligible: true
-    ne_adc: 8
-    # Gap = $741 - $330 = $411
-    # Benefit = min($411, $408) = $408
-    # Final = $408 - $400 = $8
+    ne_adc: 63.65
+    # Gap = $843 - $330 = $513
+    # Benefit = min($513, $463.65) = $463.65
+    # Final = $463.65 - $400 = $63.65
+
+# Historical period integration tests
+# These verify the full calculation pipeline at different historical periods.
+# Pattern: family of 3, no income, ongoing recipient (is_tanf_enrolled: true).
+# Benefit = Payment Standard = Need Standard * 0.55
+
+- name: Case 8, initial applicant with earned income receives benefit with 20% disregard.
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 7_200  # $600/month
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 1_003
+    ne_adc_payment_standard: 551.65
+    ne_adc_countable_earned_income: 480
+    # After 20% disregard: $600 * 0.80 = $480
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 523
+    # Gap = $1,003 - $480 = $523
+    # Benefit = min($523, $551.65) = $523
+
+- name: Case 9, family of 3 with no income in 2016 uses 2015 values.
+  period: 2016-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 793
+    ne_adc_payment_standard: 436
+    # $793 * 0.55 = $436.15
+    ne_adc_countable_earned_income: 0
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 436
+    # Gap = $793 - $0 = $793
+    # Benefit = min($793, $436.15) = $436.15
+
+- name: Case 10, family of 3 with no income in 2018 uses 2017 values.
+  period: 2018-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 816
+    ne_adc_payment_standard: 449
+    # $816 * 0.55 = $448.80
+    ne_adc_countable_earned_income: 0
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 449
+    # Gap = $816 - $0 = $816
+    # Benefit = min($816, $448.80) = $448.80
+
+- name: Case 11, family of 3 with no income in 2020 uses 2019 values.
+  period: 2020-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 849
+    ne_adc_payment_standard: 467
+    # $849 * 0.55 = $466.95
+    ne_adc_countable_earned_income: 0
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 467
+    # Gap = $849 - $0 = $849
+    # Benefit = min($849, $466.95) = $466.95
+
+- name: Case 12, family of 3 with no income in 2022 uses 2021 values.
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 881
+    ne_adc_payment_standard: 485
+    # $881 * 0.55 = $484.55
+    ne_adc_countable_earned_income: 0
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 485
+    # Gap = $881 - $0 = $881
+    # Benefit = min($881, $484.55) = $484.55
+
+- name: Case 13, family of 3 with no income in 2026 uses 2025 values.
+  period: 2026-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income_before_lsr: 0
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    spm_unit_size: 3
+    ne_adc_need_standard: 1_067
+    ne_adc_payment_standard: 587
+    # $1,067 * 0.55 = $586.85
+    ne_adc_countable_earned_income: 0
+    ne_adc_income_eligible: true
+    ne_adc_eligible: true
+    ne_adc: 587
+    # Gap = $1,067 - $0 = $1,067
+    # Benefit = min($1,067, $586.85) = $586.85

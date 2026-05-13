@@ -79,6 +79,43 @@ programs:
     parameter_prefix: gov.usda.school_meals
     verified_start_year: 2021
     notes: Nationwide rules
+    state_implementations:
+      - state: CA
+        name: California universal meals
+        effective: 2022-07-01
+        reference: AB 130 (2021); Cal. Educ. Code § 49501.5
+      - state: CO
+        name: Colorado Healthy School Meals for All
+        effective: 2023-07-01
+        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
+      - state: MA
+        name: Massachusetts universal meals
+        effective: 2023-07-01
+        reference: FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections
+      - state: ME
+        name: Maine School Meals for All
+        effective: 2022-07-01
+        reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
+      - state: MI
+        name: Michigan School Meals
+        effective: 2023-07-01
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
+      - state: MN
+        name: Minnesota Free School Meals for Kids
+        effective: 2023-07-01
+        reference: HF 5 (2023); Minn. Stat. § 124D.111
+      - state: NM
+        name: New Mexico Healthy Universal School Meals
+        effective: 2023-07-01
+        reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
+      - state: NY
+        name: New York Universal Free School Meals
+        effective: 2025-07-01
+        reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
+      - state: VT
+        name: Vermont Universal School Meals
+        effective: 2023-07-01
+        reference: Act 64 / H.165 (2023); 16 V.S.A. § 4017
 
   - id: summer_ebt
     name: Summer EBT
@@ -156,7 +193,7 @@ programs:
     full_name: Temporary Assistance for Needy Families
     category: Benefits
     agency: HHS
-    status: in_progress
+    status: complete
     coverage: US
     parameter_prefix: gov.hhs.tanf
     verified_start_year: 2021
@@ -192,9 +229,10 @@ programs:
         full_name: Transitional Aid to Families with Dependent Children
         variable: ma_tafdc
       - state: MT
-        status: in_progress
+        status: complete
         name: Montana TANF
         full_name: Montana Temporary Assistance for Needy Families
+        variable: mt_tanf
       - state: NC
         status: complete
         name: North Carolina TANF
@@ -376,9 +414,10 @@ programs:
         full_name: Alaska Temporary Assistance Program
         variable: ak_atap
       - state: IA
-        status: in_progress
+        status: complete
         name: Iowa FIP
         full_name: Iowa Family Investment Program
+        variable: ia_fip
       - state: LA
         status: complete
         name: Louisiana FITAP
@@ -421,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: CA, CO, IL, MA, DC, NC, TX
+    coverage: CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
     state_implementations:
       - state: CA
         status: complete
@@ -434,6 +473,10 @@ programs:
         full_name: Colorado Child Care Assistance Program
         variable: co_ccap_subsidy
         notes: CCCAP
+      - state: CT
+        status: in_progress
+        name: Care 4 Kids
+        full_name: Connecticut Care 4 Kids
       - state: IL
         status: complete
         name: CCAP
@@ -444,6 +487,25 @@ programs:
         status: complete
         name: Massachusetts CCFA
         full_name: Massachusetts Child Care Financial Assistance
+        variable: ma_ccfa
+      - state: MD
+        status: in_progress
+        name: Maryland CCS
+        full_name: Maryland Child Care Scholarship
+      - state: ME
+        status: complete
+        name: Maine CCAP
+        full_name: Maine Child Care Affordability Program
+        variable: me_ccap
+      - state: NH
+        status: complete
+        name: New Hampshire CCAP
+        full_name: New Hampshire Child Care Scholarship Program
+        variable: nh_ccap
+      - state: NJ
+        status: in_progress
+        name: New Jersey CCAP
+        full_name: New Jersey Child Care Assistance Program
       - state: DC
         status: complete
         name: DC CCSP
@@ -454,11 +516,43 @@ programs:
         name: North Carolina SCCA
         full_name: North Carolina Subsidized Child Care Assistance
         variable: nc_scca
+      - state: DE
+        status: complete
+        name: Delaware POC
+        full_name: Delaware Purchase of Care
+        variable: de_poc
+      - state: PA
+        status: complete
+        name: Pennsylvania CCW
+        full_name: Pennsylvania Child Care Works
+        variable: pa_ccw
+      - state: RI
+        status: complete
+        name: Rhode Island CCAP
+        full_name: Rhode Island Child Care Assistance Program
+        variable: ri_ccap
+      - state: SC
+        status: in_progress
+        name: South Carolina CCAP
+        full_name: South Carolina Child Care Assistance Program
       - state: TX
         status: complete
         name: Texas CCS
         full_name: Texas Child Care Services
         variable: tx_ccs
+      - state: VA
+        status: in_progress
+        name: Virginia CCSP
+        full_name: Virginia Child Care Subsidy Program
+      - state: VT
+        status: complete
+        name: Vermont CCFAP
+        full_name: Vermont Child Care Financial Assistance Program
+        variable: vt_ccfap
+      - state: WV
+        status: in_progress
+        name: West Virginia CCAP
+        full_name: West Virginia Child Care Assistance Program
 
   - id: head_start
     name: Head Start
@@ -466,11 +560,24 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: US
+    coverage: US, WA
     variable: head_start
     parameter_prefix: gov.hhs.head_start
     verified_start_year: 2022
     notes: State enrollment/spending data from FY2022 (Sep 2021); currently adding immigration rules
+    state_implementations:
+      - state: WA
+        status: complete
+        name: ECEAP
+        full_name: Early Childhood Education and Assistance Program (Washington)
+        variable: wa_eceap
+        parameter_prefix: gov.states.wa.dcyf.eceap
+      - state: WA
+        status: complete
+        name: Birth to Three ECEAP
+        full_name: Washington Birth to Three Early Childhood Education and Assistance Program
+        variable: wa_birth_to_three_eceap
+        parameter_prefix: gov.states.wa.dcyf.eceap.birth_to_three_eceap
 
   - id: liheap
     name: LIHEAP
@@ -478,7 +585,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL
+    coverage: OR, DC, Riverside County, MA, IL, TX
     state_implementations:
       - state: OR
         status: in_progress
@@ -499,6 +606,10 @@ programs:
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+      - state: TX
+        status: in_progress
+        name: Texas CEAP
+        full_name: Texas Comprehensive Energy Assistance Program
 
   # --- SSA programs ---
   - id: ssi
@@ -522,26 +633,131 @@ programs:
     coverage: All states except AZ, AR, TN, MS, WV, ND
     notes: SSI State Supplement programs exist in 45 states plus DC
     state_implementations:
+      - state: AK
+        status: complete
+        name: Alaska SSP
+        full_name: Alaska Adult Public Assistance
+        variable: ak_ssp
+      - state: AL
+        status: complete
+        name: Alabama SSP
+        full_name: Alabama State Supplementary Payment
+        variable: al_ssp
       - state: CA
         status: complete
         name: California SSP
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
+      - state: CT
+        status: complete
+        name: Connecticut SSP
+        full_name: Connecticut State Supplement Program
+        variable: ct_ssp
       - state: CO
         status: complete
         name: Colorado SSP
         full_name: Colorado State Supplementary Payment
         variable: co_state_supplement
+      - state: DC
+        status: complete
+        name: DC OSSP
+        full_name: DC Optional State Supplemental Payment
+        variable: dc_ossp
+      - state: DE
+        status: complete
+        name: Delaware SSP
+        full_name: Delaware State Supplementary Payment
+        variable: de_ssp
+      - state: FL
+        status: complete
+        name: Florida OSS
+        full_name: Florida Optional State Supplementation
+        variable: fl_oss
+      - state: GA
+        status: complete
+        name: Georgia SSP
+        full_name: Georgia State Supplementary Payment
+        variable: ga_ssp
+      - state: HI
+        status: in_progress
+        name: Hawaii OSS
+        full_name: Hawaii Optional State Supplementation
+      - state: IA
+        status: in_progress
+        name: Iowa SSP
+        full_name: Iowa State Supplemental Payment
+      - state: ID
+        status: complete
+        name: Idaho AABD
+        full_name: Idaho AABD cash assistance
+        variable: id_aabd
+      - state: IN
+        status: complete
+        name: Indiana SSP
+        full_name: Indiana State Supplementary Payment
+        variable: in_ssp
       - state: MA
         status: complete
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MI
+        status: complete
+        name: Michigan SSP
+        full_name: Michigan State Supplementary Payment
+        variable: mi_ssp
+        parameter_prefix: gov.states.mi.mdhhs.ssp
+      - state: ME
+        status: complete
+        name: Maine SSP
+        full_name: Maine State Supplemental Income Program
+        variable: me_ssp
+      - state: KS
+        status: complete
+        name: Kansas SSPP
+        full_name: Kansas State Supplemental Payment Program
+        variable: ks_sspp
+      - state: LA
+        status: complete
+        name: Louisiana OSS
+        full_name: Louisiana Optional State Supplement
+        variable: la_oss
+      - state: KY
+        status: complete
+        name: Kentucky SSP
+        full_name: Kentucky State Supplementary Payment
+        variable: ky_ssp
       - state: IL
         status: complete
         name: Illinois AABD
         full_name: Illinois Aid to the Aged, Blind or Disabled
         variable: il_aabd
+      - state: NM
+        status: complete
+        name: New Mexico SSI supplement
+        full_name: New Mexico SSI state supplement
+        variable: nm_ssi_state_supplement
+      - state: SC
+        status: complete
+        name: South Carolina SSI supplement
+        full_name: South Carolina SSI state supplement
+        variable: sc_ssi_state_supplement
+      - state: TX
+        status: complete
+        name: Texas SSI supplement
+        full_name: Texas SSI state supplement
+        variable: tx_ssi_state_supplement
+      - state: WA
+        status: partial
+        name: Washington SSP
+        full_name: Washington State Supplementary Payment
+        variable: wa_ssp
+        parameter_prefix: gov.states.wa.dshs.ssp
+        notes: >-
+          Models WAC 388-478-0055(2)(a) STANDARD and (2)(c) MEDICAL_INSTITUTION
+          tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
+          institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
+          PVL track per (2)(f); and foster child in BRS per (2)(g).
 
   - id: social_security
     name: Social Security
@@ -711,6 +927,16 @@ programs:
     variable: co_chp
     parameter_prefix: gov.states.co.hcpf.chp
     verified_start_year: 2023
+
+  - id: co_omnisalud
+    name: Colorado OmniSalud
+    full_name: Colorado OmniSalud
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_omnisalud
+    parameter_prefix: gov.states.co.hcpf.omnisalud
 
   - id: dc_power
     name: DC Power
@@ -909,6 +1135,17 @@ programs:
     coverage: TX
     variable: tx_fpp_benefit
     parameter_prefix: gov.states.tx.fpp
+
+  - id: pa_uc
+    name: Pennsylvania Unemployment Compensation
+    full_name: Pennsylvania Unemployment Compensation
+    category: Benefits
+    agency: PA Department of Labor & Industry
+    status: complete
+    coverage: PA
+    variable: pa_uc
+    parameter_prefix: gov.states.pa.dli.unemployment_compensation
+    verified_years: "2025"
 
   - id: tx_dart_benefit
     name: Texas DART

@@ -21,4 +21,7 @@ class il_liheap_eligible(Variable):
         rent_threshold = income * p.rent_rate
         rent_threshold_met = rent > rent_threshold
 
+        # IL does not impose a state citizenship/immigration requirement
+        # Per IL LIHEAP FY2025 State Plan; Illinois Legal Aid Online:
+        # "You may qualify for LIHEAP regardless of immigrant status"
         return ~heat_in_rent | rent_threshold_met

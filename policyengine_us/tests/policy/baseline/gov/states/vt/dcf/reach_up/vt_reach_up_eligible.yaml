@@ -114,7 +114,7 @@
       spm_unit:
         members: [person1, person2]
         vt_reach_up_income_eligible: true
-        spm_unit_assets: 10_000  # Above $9,000 limit
+        spm_unit_cash_assets: 10_000  # Above $9,000 limit
     tax_units:
       tax_unit:
         members: [person1, person2]

@@ -2,8 +2,8 @@
 # Countable = unearned - $20 (or earned - $85 - 50% remaining)
 # For 2024 individual FPL = $15,060:
 #   QMB: <= 100% = $1,255/month countable
-#   SLMB: 100-120% = $1,255.01-$1,506/month countable
-#   QI: 120-135% = $1,506.01-$1,694.25/month countable
+#   SLMB: > 100% and < 120% FPL
+#   QI: >= 120% and < 135% FPL
 
 - name: MSP category - QMB (income at 100% FPL)
   period: 2024-01
@@ -13,7 +13,7 @@
     # $12,000 unearned -> ($1,000 - $20) = $980/month countable
     # $980 < $1,255 (100% FPL) -> QMB
     ssi_unearned_income: 12_000
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
   output:
     msp_category: QMB
@@ -26,7 +26,7 @@
     # $16,500 unearned -> ($1,375 - $20) = $1,355/month countable
     # $1,255 < $1,355 < $1,506 (100-120% FPL) -> SLMB
     ssi_unearned_income: 16_500
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
   output:
     msp_category: SLMB
@@ -39,9 +39,23 @@
     # $19,440 unearned -> ($1,620 - $20) = $1,600/month countable
     # $1,506 < $1,600 < $1,694.25 (120-135% FPL) -> QI
     ssi_unearned_income: 19_440
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     # QI requires not being eligible for other Medicaid
+    is_medicaid_eligible: false
+  output:
+    msp_category: QI
+
+- name: MSP category - QI (income exactly at 120% FPL)
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $18,312 unearned -> ($1,526 - $20) = $1,506/month countable
+    # Exact 120% FPL belongs to QI, not SLMB
+    ssi_unearned_income: 18_312
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
     is_medicaid_eligible: false
   output:
     msp_category: QI
@@ -54,8 +68,22 @@
     # $21_840 unearned -> ($1,820 - $20) = $1,800/month countable
     # $1,800 > $1,694.25 (135% FPL) -> NONE
     ssi_unearned_income: 21_840
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
+  output:
+    msp_category: NONE
+
+- name: MSP category - NONE (income exactly at 135% FPL)
+  period: 2024-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    # $20,571 unearned -> ($1,714.25 - $20) = $1,694.25/month countable
+    # Exact 135% FPL is not QI-eligible
+    ssi_unearned_income: 20_571
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
+    is_medicaid_eligible: false
   output:
     msp_category: NONE
 
@@ -65,7 +93,7 @@
     age: 60
     is_medicare_eligible: false
     ssi_unearned_income: 10_000
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
   output:
     msp_category: NONE

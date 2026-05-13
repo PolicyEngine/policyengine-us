@@ -1,0 +1,113 @@
+# de_poc_copay: SPMUnit, float, MONTH
+# Copay = 7% of gross monthly income per family
+# Waived at/below 150% FPL (waiver_fpl_rate = 1.5)
+# Also waived below 40% FPL (excess burden), but 40% < 150% so 150% covers it
+#
+# 2025 FPG family of 2: 21_150/yr
+# 150% FPL family of 2: 21_150 * 1.5 = 31_725/yr = 2_643.75/mo
+
+- name: Case 1, income above 150% FPL pays 7% copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Monthly income: 36_000 / 12 = 3_000
+    # FPL ratio = 36_000 / 21_150 = 1.7021 > 1.5 -> copay applies
+    # Copay = 3_000 * 0.07 = 210
+    de_poc_copay: 210
+
+- name: Case 2, income at 150% FPL has waived copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_725
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # FPL ratio = 31_725 / 21_150 = 1.5 -> at threshold, waived
+    de_poc_copay: 0
+
+- name: Case 3, income below 150% FPL has waived copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # FPL ratio = 24_000 / 21_150 = 1.1348 <= 1.5 -> waived
+    de_poc_copay: 0
+
+- name: Case 4, zero income has zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_copay: 0
+
+- name: Case 5, income below 40% FPL has excess burden waiver.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # FPL ratio = 6_000 / 21_150 = 0.2837 < 0.40 -> excess burden waiver
+    # Also < 1.5 so covered by both waivers
+    de_poc_copay: 0

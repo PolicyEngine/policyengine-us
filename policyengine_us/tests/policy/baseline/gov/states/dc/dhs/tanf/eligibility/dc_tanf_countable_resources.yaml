@@ -1,0 +1,20 @@
+- name: DC counts liquid resources toward TANF.
+  period: 2025-01
+  input:
+    state_code: DC
+    bank_account_assets: 1_000
+    stock_assets: 500
+    bond_assets: 250
+  output:
+    dc_tanf_countable_resources: 1_750
+
+- name: DC countable TANF resources ignore real property and vehicles in the current model.
+  period: 2025-01
+  input:
+    state_code: DC
+    bank_account_assets: 500
+    assessed_property_value: 10_000
+    household_vehicles_owned: 2
+    household_vehicles_value: 12_000
+  output:
+    dc_tanf_countable_resources: 500

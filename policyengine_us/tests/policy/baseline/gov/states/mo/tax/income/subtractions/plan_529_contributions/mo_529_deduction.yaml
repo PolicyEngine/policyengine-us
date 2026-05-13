@@ -1,0 +1,41 @@
+- name: Case 1, single filer with contribution below cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 5_000
+  output:
+    mo_529_deduction: 5_000
+
+- name: Case 2, single filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 12_000
+  output:
+    # Capped at $8,000
+    mo_529_deduction: 8_000
+
+- name: Case 3, joint filer with contribution above cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MO
+    filing_status: JOINT
+    investment_in_529_plan_indv: 20_000
+  output:
+    # Capped at $16,000
+    mo_529_deduction: 16_000
+
+- name: Case 4, single filer with no contributions.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 0
+  output:
+    mo_529_deduction: 0

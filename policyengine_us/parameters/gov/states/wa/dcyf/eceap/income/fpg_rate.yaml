@@ -1,0 +1,16 @@
+description: Washington limits income to this fraction of the federal poverty guideline when determining ECEAP enrollment eligibility. Families below 110% FPL have priority enrollment under RCW 43.216.505; families between 110% and 130% FPL are allowed for enrollment on a space-available basis under RCW 43.216.512 with no risk factor required. PolicyEngine does not simulate space allocation, so this parameter holds the broader 130% ceiling.
+
+values:
+  2021-07-25: 1.3
+
+metadata:
+  unit: /1
+  period: year
+  label: Washington ECEAP income threshold as fraction of federal poverty guideline
+  reference:
+    - title: RCW 43.216.505 Eligible children (110% FPL priority enrollment)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505
+    - title: RCW 43.216.512 Expanded enrollment (110-130% FPL allowed enrollment, no risk factor required)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.512
+    - title: DCYF 2025 ECEAP Income Eligibility Limits - Federal Poverty Level
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/ECEAP-Federal-Poverty-Level-Chart.pdf

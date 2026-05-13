@@ -34,5 +34,5 @@ class ny_tanf_resources_eligible(Variable):
             p.resource_limit.higher.amount,
             p.resource_limit.lower.amount,
         )
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= resource_limit

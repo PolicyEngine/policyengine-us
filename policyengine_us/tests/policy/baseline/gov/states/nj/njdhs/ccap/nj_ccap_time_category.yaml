@@ -1,0 +1,83 @@
+# nj_ccap_time_category: Person, Enum, MONTH
+# NJ has binary FT/PT only (unlike RI which has 4 tiers).
+# Time authorization thresholds (from time_authorization/thresholds.yaml):
+#   0 hours -> PART_TIME (index 1)
+#   30+ hours -> FULL_TIME (index 0)
+
+- name: Case 1, full time 35 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: FULL_TIME
+
+- name: Case 2, full time exactly 30 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: FULL_TIME
+
+- name: Case 3, part time 29 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 29
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: PART_TIME
+
+- name: Case 4, part time 15 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: PART_TIME
+
+- name: Case 5, part time zero hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: PART_TIME
+
+- name: Case 6, full time 40 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_time_category: FULL_TIME

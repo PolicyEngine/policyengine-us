@@ -1,0 +1,85 @@
+- name: Case 1, aged individual age 65 meets all criteria.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 65
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: true
+
+- name: Case 2, disabled individual age 30.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 30
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: true
+
+- name: Case 3, child under 18 not eligible.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 17
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: false
+
+- name: Case 4, not aged blind or disabled.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: false
+    age: 30
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: false
+
+- name: Case 5, fails resource test.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 65
+    meets_ssi_resource_test: false
+  output:
+    ak_ssp_eligible: false
+
+- name: Case 6, exactly age 18 boundary.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 18
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: true
+
+- name: Case 7, all criteria met but age is zero.
+  period: 2011
+  input:
+    state_code: AK
+    is_ssi_aged_blind_disabled: true
+    age: 0
+    meets_ssi_resource_test: true
+  output:
+    ak_ssp_eligible: false
+
+- name: Case 8, excluded institutional setting is not eligible.
+  period: 2011
+  input:
+    people:
+      person1:
+        is_ssi_aged_blind_disabled: true
+        age: 65
+        meets_ssi_resource_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        ak_ssp_excluded_institutional_setting: true
+  output:
+    ak_ssp_eligible: [false]

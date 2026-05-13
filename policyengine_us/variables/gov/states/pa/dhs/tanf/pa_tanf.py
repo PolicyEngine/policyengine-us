@@ -28,7 +28,7 @@ class pa_tanf(Variable):
         gross_earned_income = add(spm_unit, period, ["tanf_gross_earned_income"])
         has_earned_income = gross_earned_income > 0
         wer_amount = where(
-            ~p.deduction_applies & has_earned_income,
+            (not p.deduction_applies) & has_earned_income,
             p.reimbursement,
             0,
         )

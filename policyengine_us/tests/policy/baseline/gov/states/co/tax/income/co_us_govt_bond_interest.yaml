@@ -1,0 +1,7 @@
+- name: CO includes US government bond interest in subtractions
+  period: 2024
+  input:
+    state_code: CO
+    us_govt_interest: 5_000
+  output:
+    co_subtractions: 5_000

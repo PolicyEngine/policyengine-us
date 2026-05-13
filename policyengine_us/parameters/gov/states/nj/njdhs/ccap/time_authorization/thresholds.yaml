@@ -1,0 +1,22 @@
+description: New Jersey sets these full-time and part-time care thresholds under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: New Jersey CCAP time authorization thresholds
+  reference:
+    - title: CC-230 Maximum Child Care Payment Rates notes
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=1
+    - title: CC-236 Copayment Schedule
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Copayment_Schedule.pdf#page=1
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 1
+  - threshold:
+      2024-01-01: 30
+    amount:
+      2024-01-01: 0

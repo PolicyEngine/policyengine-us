@@ -1,0 +1,101 @@
+# Unit tests for pa_ccw_stepparent_county_group
+# Tests county to stepparent deduction group mapping (returns int 1-4)
+# Uses county_str variable for lookup
+# 55 Pa. Code Appendix C
+
+- name: Case 1, Allegheny county is group 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: ALLEGHENY_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 1
+
+- name: Case 2, Cambria county is group 2.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: CAMBRIA_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 2
+
+- name: Case 3, Beaver county is group 3.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: BEAVER_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 3
+
+- name: Case 4, Chester county is group 4.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: CHESTER_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 4
+
+- name: Case 5, Philadelphia county is group 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: PHILADELPHIA_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 1
+
+- name: Case 6, Montgomery county is group 4.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        county_str: MONTGOMERY_COUNTY_PA
+  output:
+    pa_ccw_stepparent_county_group: 4
+
+- name: Case 7, default is group 1.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_ccw_stepparent_county_group: 1

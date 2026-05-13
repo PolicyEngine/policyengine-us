@@ -11,3 +11,30 @@
     school_meal_paid_daily_subsidy: 1
   output:
     school_meal_net_subsidy: (3 - 1) * 180
+
+- name: California high-income child gets FREE tier from state universal program with non-zero subsidy.
+  period: 2024
+  input:
+    state_code: CA
+    is_in_k12_school: true
+    school_meal_fpg_ratio: 4  # Above 185% FPG, would otherwise be PAID
+    meets_school_meal_categorical_eligibility: false
+  output:
+    state_has_universal_free_school_meals: true
+    school_meal_tier: FREE
+    # NSLP FREE-PAID: 4.25 - 0.40 = 3.85
+    # SBP FREE-PAID: 2.28 - 0.38 = 1.90
+    # Daily net: 3.85 + 1.90 = 5.75; annual: 5.75 * 180 = 1,035
+    school_meal_net_subsidy: 1_035
+
+- name: Texas high-income child stays in PAID tier with zero net subsidy.
+  period: 2024
+  input:
+    state_code: TX
+    is_in_k12_school: true
+    school_meal_fpg_ratio: 4  # Above 185% FPG
+    meets_school_meal_categorical_eligibility: false
+  output:
+    state_has_universal_free_school_meals: false
+    school_meal_tier: PAID
+    school_meal_net_subsidy: 0

@@ -20,4 +20,5 @@ class al_deductions(Variable):
             period,
             ["al_personal_exemption", "al_dependent_exemption"],
         )
-        return al_ded + federal_ded + exemptions
+        plan_529 = tax_unit("al_529_plan_deduction", period)
+        return al_ded + federal_ded + exemptions + plan_529

@@ -1,96 +1,139 @@
-- name: Zero gross earned income - eligible
-  period: 2024-01
+# Tests cover both the WAC 388-478-0035 gross earned income limit
+# and the WAC 388-450-0162 countable-income-under-payment-standard test.
+
+- name: Case 1, zero gross earned income.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 0
   output:
-    # Income limit for family of 3: $1,912
-    # Gross earned: $0 <= $1,912
     wa_tanf_income_eligible: true
 
-- name: Gross earned income below threshold - eligible
-  period: 2024-01
+- name: Case 2, gross earned income below threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 1_500
   output:
-    # Income limit for family of 3: $1,912
-    # Gross earned: $1,500 <= $1,912
+    # Countable earned = max($1,500 - $500, 0) x 0.5 = $500 < $706 PS → eligible
     wa_tanf_income_eligible: true
 
-- name: Gross earned income exactly at threshold - eligible
-  period: 2024-01
+- name: Case 3, gross earned at threshold, countable equals payment standard.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 1_912
   output:
-    # Income limit for family of 3: $1,912
-    # Gross earned: $1,912 <= $1,912
-    wa_tanf_income_eligible: true
+    # Gross earned ($1,912) at WAC 388-478-0035 limit → passes
+    # Countable earned = max($1,912 - $500, 0) x 0.5 = $706 = PS → fails WAC 388-450-0162
+    wa_tanf_income_eligible: false
 
-- name: Gross earned income one dollar over threshold - ineligible
-  period: 2024-01
+- name: Case 4, gross earned one dollar over threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 1_913
   output:
-    # Income limit for family of 3: $1,912
-    # Gross earned: $1,913 > $1,912
     wa_tanf_income_eligible: false
 
-- name: Gross earned income far over threshold - ineligible
-  period: 2024-01
+- name: Case 5, gross earned far over threshold.
+  period: 2025-01
   input:
     state_code: WA
     spm_unit_size: 3
     tanf_gross_earned_income: 3_000
   output:
-    # Income limit for family of 3: $1,912
-    # Gross earned: $3,000 > $1,912
     wa_tanf_income_eligible: false
 
-- name: Family size 1 - at threshold
-  period: 2024-01
+- name: Case 6, high unearned income fails payment standard test.
+  period: 2025-01
   input:
     state_code: WA
-    spm_unit_size: 1
-    tanf_gross_earned_income: 1_400
+    spm_unit_size: 3
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 1_000
   output:
-    # Income limit for family of 1: $1,400
-    # Gross earned: $1,400 <= $1,400
-    wa_tanf_income_eligible: true
+    # Countable = $1,000 > PS ($706) → fails WAC 388-450-0162
+    wa_tanf_income_eligible: false
 
-- name: Family size 10 - at maximum threshold
-  period: 2024-01
+- name: Case 7, moderate unearned income below payment standard.
+  period: 2025-01
   input:
     state_code: WA
-    spm_unit_size: 10
-    tanf_gross_earned_income: 3_824
+    spm_unit_size: 3
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 300
   output:
-    # Income limit for family of 10: $3,824
-    # Gross earned: $3,824 <= $3,824
+    # Countable = $300 < PS ($706) → eligible
     wa_tanf_income_eligible: true
 
-- name: Family size 15 - capped at size 10 limit
-  period: 2024-01
-  input:
-    state_code: WA
-    spm_unit_size: 15
-    tanf_gross_earned_income: 3_824
-  output:
-    # Income limit capped at family of 10: $3,824
-    # Gross earned: $3,824 <= $3,824
-    wa_tanf_income_eligible: true
-
-- name: Only calculate for WA
-  period: 2024-01
+- name: Case 8, only calculate for WA.
+  period: 2025-01
   input:
     state_code: MT
     spm_unit_size: 3
     tanf_gross_earned_income: 1_000
+  output:
+    wa_tanf_income_eligible: false
+
+- name: Case 9, 2024-01 at Jan 2024 gross earned limit.
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_412
+  output:
+    # Gross earned at limit; countable = $1,412 x 0.5 = $706 = PS → fails payment standard test
+    wa_tanf_income_eligible: false
+
+- name: Case 10, 2024-01 over Jan 2024 limit.
+  period: 2024-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_413
+  output:
+    wa_tanf_income_eligible: false
+
+- name: Case 11, 2018-01 at 2016 gross earned limit.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_042
+  output:
+    # Countable = $1,042 x 0.5 = $521 = PS → fails payment standard test
+    wa_tanf_income_eligible: false
+
+- name: Case 12, 2018-01 well below threshold.
+  period: 2018-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 500
+  output:
+    # Countable = $500 x 0.5 = $250 < PS ($521) → eligible
+    wa_tanf_income_eligible: true
+
+- name: Case 13, 2022-01 at July 2021 gross earned limit.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_308
+  output:
+    # Countable = $1,308 x 0.5 = $654 = PS → fails payment standard test
+    wa_tanf_income_eligible: false
+
+- name: Case 14, 2022-01 over July 2021 limit.
+  period: 2022-01
+  input:
+    state_code: WA
+    spm_unit_size: 3
+    tanf_gross_earned_income: 1_309
   output:
     wa_tanf_income_eligible: false

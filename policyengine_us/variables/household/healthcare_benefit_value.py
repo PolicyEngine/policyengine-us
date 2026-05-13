@@ -10,7 +10,7 @@ class healthcare_benefit_value(Variable):
     adds = [
         "medicaid_cost",
         "per_capita_chip",
-        "aca_ptc",
+        "assigned_aca_ptc",
         "co_omnisalud",
         "or_healthier_oregon_cost",
     ]

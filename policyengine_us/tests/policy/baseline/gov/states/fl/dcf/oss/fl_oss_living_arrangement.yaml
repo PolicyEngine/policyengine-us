@@ -1,0 +1,58 @@
+# Tests for fl_oss_living_arrangement variable.
+# FAC 65A-2.032/.033/.036 cover ALF, AFCH, and MHRTF only.
+# Medicaid facility residents are not an OSS coverage group.
+
+- name: Case 1, ALF community care type maps to ALF.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_living_arrangement: ALF
+
+- name: Case 2, AFCH community care type maps to AFCH.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: AFCH
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_living_arrangement: AFCH
+
+- name: Case 3, MHRTF community care type maps to MHRTF.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        age: 45
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_living_arrangement: MHRTF
+
+- name: Case 4, no facility defaults to NONE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_living_arrangement: NONE
