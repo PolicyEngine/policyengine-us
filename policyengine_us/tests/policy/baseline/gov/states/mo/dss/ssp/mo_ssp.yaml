@@ -142,7 +142,7 @@
     # defined_for = StateCode.MO filters output to zero.
     mo_ssp: 0
 
-- name: Case 8, person not actually receiving SSI gets zero.
+- name: Case 8, SNC applicant with no SSI but income below facility charge gets a grant.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -150,15 +150,17 @@
       person1:
         age: 70
         ssi: 0
+        social_security: 14_400  # $1,200/month annualized
         mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # SNC still uses SSI receipt as the modeled proxy for federal/state
-    # categorical and income eligibility.
-    mo_ssp: 0
+    # SNC need: $1,300 - $1,200 = $100, below the $156 RCF Level I cap.
+    # Plus $50 PNA (paid to all SNC tiers). $100 + $50 = $150.
+    mo_ssp: 150
 
 - name: Case 9, FY2024 SAB recipient with $0.50 SSI rounds to the nearest dollar.
   period: 2024-01

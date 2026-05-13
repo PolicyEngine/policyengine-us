@@ -32,22 +32,44 @@
     # receive SSI, but that application requirement is not modeled.
     mo_ssp_eligible: true
 
-- name: Case 2, adult in MO with no SSI receipt is not eligible.
+- name: Case 2, SNC applicant with income above the facility base charge is not eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 70
         ssi: 0
+        social_security: 18_000  # $1,500/month annualized
         mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # SNC still uses SSI receipt as the modeled proxy for federal/state
-    # categorical and income eligibility.
+    # SNC need test fails: $1,500 countable income exceeds $1,300 facility
+    # base charge, so no SNC grant is payable regardless of SSI receipt.
     mo_ssp_eligible: false
+
+- name: Case 2b, SNC applicant with no SSI but income below the facility charge is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400  # $1,200/month annualized
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC need test passes: $1,200 countable income is below the $1,300
+    # facility base charge. SSI receipt is not required — the facility-cost
+    # need test handles SNC income eligibility.
+    mo_ssp_eligible: true
 
 - name: Case 3, adult receiving SSI not in MO is not eligible.
   period: 2026-01
@@ -246,8 +268,9 @@
         members: [person1]
         state_code: MO
   output:
-    # SAB eligibility does not require positive SSI receipt, but positive SSI
-    # still satisfies the modeled SSI application/receipt proxy.
+    # SAB eligibility is independent of SSI receipt; nominal SSI does not
+    # affect this — the SAB income test uses ssi_countable_income against the
+    # consolidated standard.
     mo_ssp_eligible: true
 
 - name: Case 15, adult with valid eligibility outside Missouri is not eligible.

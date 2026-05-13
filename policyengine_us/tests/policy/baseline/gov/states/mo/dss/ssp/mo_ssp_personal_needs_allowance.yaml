@@ -65,7 +65,9 @@
         members: [person1]
         state_code: MO
   output:
-    # defined_for = mo_ssp_eligible filters output to zero when ssi == 0.
+    # defined_for = mo_ssp_eligible filters output to zero; SNC need test
+    # fails because the (defaulted-to-zero) facility base charge does not
+    # exceed the (zero) countable income.
     mo_ssp_personal_needs_allowance: 0
 
 - name: Case 5, SNF resident at PNA effective date gets PNA.

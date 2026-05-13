@@ -13,8 +13,9 @@ class mo_ssp_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # SAB applicants must apply for or receive SSI, but the grant can be
-        # paid even when SSI is zero. We don't track that application
+        # SAB applicants must apply for SSI but the grant is paid regardless
+        # of receipt; SNC eligibility turns on the facility-cost-vs-income
+        # need test, not SSI receipt. We don't track the SAB SSI-application
         # requirement, Missouri-specific resource limits, the closed
         # 1973-conversion State Pension cohort, or Supplemental Nursing Care
         # physician medical-need tests.
@@ -27,8 +28,6 @@ class mo_ssp_eligible(Variable):
             living_arrangement != categories.NONE
         )
         p = parameters(period).gov.states.mo.dss.ssp
-        receives_ssi = person("ssi", period) > 0
-        ssi_receipt_requirement_met = is_sab | receives_ssi
         countable_income = person("ssi_countable_income", period)
         sab_income_eligible = ~is_sab | (
             countable_income <= p.sab.consolidated_standard
@@ -36,10 +35,4 @@ class mo_ssp_eligible(Variable):
         snc_countable_income = person("mo_snc_countable_income", period)
         facility_base_charge = person("mo_snc_facility_base_charge", period)
         snc_need_eligible = ~is_snc | (snc_countable_income < facility_base_charge)
-        return (
-            in_category
-            & age_eligible
-            & ssi_receipt_requirement_met
-            & sab_income_eligible
-            & snc_need_eligible
-        )
+        return in_category & age_eligible & sab_income_eligible & snc_need_eligible
