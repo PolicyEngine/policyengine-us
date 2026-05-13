@@ -251,3 +251,54 @@
     # EITC childless minimum age is also 25, so the filer qualifies for the
     # standard 50% Colorado match of the federal EITC.
     co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 18 homeless filer qualifies
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: CO
+        is_homeless: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+  output:
+    # CO under-25 expansion homeless_or_foster_min_age path (CRS 39-22-123.5):
+    # age 18 + homeless qualifies for the same credit as the age-19 default
+    # path at this income level.
+    co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 18 foster youth qualifies
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+        was_in_foster_care: true
+    households:
+      household:
+        members: [head]
+        state_code: CO
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+  output:
+    co_eitc: 324.5

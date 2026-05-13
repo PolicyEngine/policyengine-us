@@ -10,6 +10,8 @@ class id_itemized_deductions(Variable):
     reference = (
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=8",
         "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_09-23-2021.pdf",
+        "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/",  # Idaho Code 63-3022 (subtractions/itemized framework)
+        "https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/",  # Idaho Form 39R - Additions and Subtractions instructions (foreign-tax addback rule)
     )
     defined_for = StateCode.ID
 

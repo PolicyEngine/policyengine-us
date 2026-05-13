@@ -20,9 +20,9 @@ def eitc_filing_status_eligible(
     """Apply the federal EITC separate-filer rule unless a state overrides it."""
 
     if separate_filer_eligible is None:
-        separate_filer_eligible = (
-            parameters.gov.irs.credits.eitc.eligibility.separate_filer(period)
-        )
+        separate_filer_eligible = parameters(
+            period
+        ).gov.irs.credits.eitc.eligibility.separate_filer
     filing_status = tax_unit("filing_status", period)
     return separate_filer_eligible | (
         filing_status != filing_status.possible_values.SEPARATE

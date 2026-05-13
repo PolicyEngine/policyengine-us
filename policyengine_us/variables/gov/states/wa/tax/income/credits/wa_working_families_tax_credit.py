@@ -108,17 +108,19 @@ class wa_working_families_tax_credit(Variable):
         eligible = eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
 
         # Parameters are based on EITC-eligible children.
-        eitc_child_count = max_(federal_child_count, child_count)
-        max_amount = p.amount.calc(eitc_child_count)
+        # WFTC child count is the larger of the federally-counted children
+        # (SSN-eligible) and Washington-counted children (TIN-eligible).
+        wftc_child_count = max_(federal_child_count, child_count)
+        max_amount = p.amount.calc(wftc_child_count)
         # WFTC phases out at a certain amount below the EITC maximum AGI.
         # NB: The Revised Code of Washington is ambiguous:
         # "below the federal phase-out income"
         # The legislative analysis clarifies that this refers to "federal maximum AGI"
         # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
         eitc_agi_limit = calculate_eitc_max_agi_limit(
-            tax_unit, period, frozen_eitc, eitc_child_count
+            tax_unit, period, frozen_eitc, wftc_child_count
         )
-        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(eitc_child_count)
+        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(wftc_child_count)
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
         # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
         # instructs DOR to revise it to get to the minimum amount by the EITC AGI limit.

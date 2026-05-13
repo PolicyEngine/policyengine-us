@@ -95,3 +95,57 @@
     # branch since the ITIN child is counted there.
     # Expected dc_base_eitc value calculated by tracing dc_eitc_without_qualifying_child.
     dc_base_eitc: 649
+
+- name: DC base EITC without-child branch - SSN filer at age 25 with low income qualifies
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: DC
+  output:
+    # SSN-eligible filer in the federal EITC childless age band (25-64); DC
+    # base EITC equals dc_eitc since the filer is SSN-qualifying.
+    dc_base_eitc: 612
+
+- name: DC base EITC without-child branch - SSN filer below age 25 does not qualify
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 24
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: DC
+  output:
+    # Below federal EITC childless minimum age 25 (2025); both base and full
+    # dc_eitc are zero for a non-ITIN, non-qualifying-child filer.
+    dc_base_eitc: 0

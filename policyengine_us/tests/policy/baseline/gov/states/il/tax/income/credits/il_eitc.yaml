@@ -89,3 +89,54 @@
         state_code: IL
   output:
     il_eitc: 680
+
+- name: Illinois EITC childless filer age 18 qualifies for the state EITC
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # 35 ILCS 5/212 (P.A. 102-0700) - IL EITC childless minimum age is 18
+    # from 2023 onward; age 18 single filer with earned income qualifies.
+    il_eitc: 122.4
+
+- name: Illinois EITC childless filer age 17 does not qualify
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 8_000
+        is_tax_unit_head: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # Below the IL childless minimum age of 18; not eligible.
+    il_eitc: 0

@@ -21,8 +21,9 @@ class il_eitc(Variable):
         qualifying_child = person("is_qualifying_child_dependent", period) & has_tin
         child_count = tax_unit.sum(qualifying_child)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
+        p = parameters(period).gov.states.il.tax.income.credits.eitc
         demographic_eligible = (child_count > 0) | tax_unit.any(
-            is_head_or_spouse & (age >= 18)
+            is_head_or_spouse & (age >= p.childless_min_age)
         )
         state_eitc = calculate_eitc_like_amount(
             tax_unit,

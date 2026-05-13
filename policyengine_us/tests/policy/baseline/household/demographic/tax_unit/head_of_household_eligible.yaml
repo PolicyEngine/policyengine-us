@@ -180,3 +180,27 @@
     # A qualifying relative alone is not sufficient for the treated-unmarried path,
     # so the separated filer does not qualify for HOH.
     head_of_household_eligible: false
+
+- name: Surviving spouse takes precedence over the separated-with-qualifying-child HoH path
+  period: 2024
+  input:
+    people:
+      head:
+        age: 38
+        is_tax_unit_head: true
+        is_separated: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        surviving_spouse_eligible: true
+    households:
+      household:
+        members: [head, child]
+  output:
+    # head_of_household_eligible returns false when surviving_spouse_eligible
+    # is true, even when the separated-with-qualifying-child path would
+    # otherwise grant HoH.
+    head_of_household_eligible: false

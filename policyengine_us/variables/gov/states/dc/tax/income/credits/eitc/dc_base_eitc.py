@@ -10,16 +10,14 @@ class dc_base_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "DC EITC under the federal-incorporation base path"
-    documentation = (
-        "The credit DC would grant under section 47-1806.04 alone, which "
-        "incorporates IRC section 32 by reference and therefore requires a "
-        "Social Security Number for the filer and each qualifying child. "
-        "This is the base value; the ITIN expansion under D.C. Law 23-149 "
-        "is the difference between dc_eitc and this variable."
-    )
     unit = USD
     definition_period = YEAR
-    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"
+    # SSN requirement flows from IRC section 32(c)(1)(F) and 32(m); D.C. Law
+    # 23-149 lifts that restriction for the ITIN-inclusive dc_eitc.
+    reference = (
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04",  # DC EITC base statute
+        "https://www.law.cornell.edu/uscode/text/26/32",  # IRC 32 SSN-rule incorporation
+    )
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
