@@ -1,0 +1,16 @@
+description: Utah limits the weekly benefit amount to this amount under the Unemployment Insurance program.
+
+values:
+  2024-01-01: 712
+  2025-01-01: 777
+  2026-01-01: 806
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: Utah UI maximum weekly benefit amount
+  reference:
+    - title: Utah Code § 35A-4-401(2)(b)(ii)
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S401.html
+    - title: Utah DWS Unemployment Insurance Benefit Schedule (Form 04-13-0126)
+      href: https://jobs.utah.gov/ui/UIShared/PDFs/BenefitCalculation.pdf#page=1

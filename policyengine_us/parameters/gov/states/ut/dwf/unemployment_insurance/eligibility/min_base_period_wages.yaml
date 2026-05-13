@@ -1,0 +1,14 @@
+description: Utah limits monetary eligibility to claimants with total base-period wages of at least this amount under the Unemployment Insurance program.
+
+values:
+  2024-01-01: 5_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah UI minimum base-period wages
+  reference:
+    - title: Utah Code § 35A-4-201(16)
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S201.html
+    - title: Utah DWS Unemployment Insurance Benefit Schedule (Form 04-13-0126)
+      href: https://jobs.utah.gov/ui/UIShared/PDFs/BenefitCalculation.pdf#page=1

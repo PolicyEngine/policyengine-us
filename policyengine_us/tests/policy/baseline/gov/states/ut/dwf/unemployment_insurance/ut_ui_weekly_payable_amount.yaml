@@ -1,0 +1,130 @@
+# Tests for Utah UI weekly payable amount.
+# Combines weekly benefit amount with the partial-benefit rules:
+#   - 30% earnings disregard: first 0.30 * WBA of weekly earnings is disregarded
+#     (Utah Code § 35A-4-401(3)(a); Utah Admin Code R994-401-301).
+#   - Excess earnings (above 0.30 * WBA) reduce WBA dollar-for-dollar.
+#   - Earnings >= WBA disqualify the week (Claimant Guide p. 11).
+#   - Weekly hours >= 40 disqualify the week (Claimant Guide p. 11; § 35A-4-207).
+# Result is floored to a whole dollar per § 35A-4-401(3)(b).
+#
+# All cases below use WBA = $395 (HQ = $10,400, base = $25,000, 4 quarters).
+# 30% disregard = 0.30 * $395 = $118.50.
+
+- name: Case 1, zero earnings yields full WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Earnings $0 < disregard $118.50 -> excess = 0.
+        # Payable = floor($395 - $0) = $395.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 395
+
+- name: Case 2, earnings below 30% disregard yield full WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 100
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Earnings $100 < disregard $118.50 -> excess = 0.
+        # Payable = floor($395 - $0) = $395.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 395
+
+- name: Case 3, earnings above disregard but below WBA produce partial reduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 200
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Earnings $200 > disregard $118.50.
+        # Excess = $200 - $118.50 = $81.50.
+        # Raw payable = floor($395 - $81.50) = floor($313.50) = $313.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 313
+
+- name: Case 4, earnings at or above WBA disqualify the week.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 400
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Earnings $400 >= WBA $395 -> disqualified.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 0
+
+- name: Case 5, weekly hours of 40 or more disqualify the week.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 40
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Earnings $0 < WBA, BUT hours 40 >= 40-hour threshold -> disqualified.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 0

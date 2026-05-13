@@ -1,0 +1,84 @@
+# Tests for Utah UI monetary eligibility.
+# A claimant is monetarily eligible only if ALL THREE base-period tests pass:
+#   1. Total base-period wages >= $5,500 (Utah Code § 35A-4-201(16)).
+#   2. Wages paid in at least 2 calendar quarters (Utah Admin Code R994-401-202).
+#   3. Total base-period wages >= 1.5 x high-quarter wages (§ 35A-4-403(1)(f)(i)).
+
+- name: Case 1, all three monetary tests pass.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 8_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $25,000 >= $5,500 minimum.
+        # Test 2: 4 quarters >= 2 required.
+        # Test 3: $25,000 >= 1.5 * $8,000 = $12,000.
+        # All tests pass -> monetarily eligible.
+        ut_ui_monetarily_eligible: true
+
+- name: Case 2, base wages below $5,500 floor fails minimum-wage test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_000
+        ut_ui_high_quarter_wages: 2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $5,000 < $5,500 minimum -> fails.
+        ut_ui_monetarily_eligible: false
+
+- name: Case 3, only one quarter of wages fails quarter-count test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 8_000
+        ut_ui_quarters_with_wages: 1
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 2: only 1 quarter with wages < 2 required -> fails.
+        ut_ui_monetarily_eligible: false
+
+- name: Case 4, base wages 1.4x high quarter fails ratio test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 14_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 3: $14,000 < 1.5 * $10,000 = $15,000 -> fails.
+        ut_ui_monetarily_eligible: false

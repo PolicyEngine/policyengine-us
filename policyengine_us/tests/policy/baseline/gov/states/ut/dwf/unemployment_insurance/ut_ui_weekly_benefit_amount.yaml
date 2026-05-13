@@ -1,0 +1,92 @@
+# Tests for Utah UI weekly benefit amount.
+# Formula: WBA = floor(high_quarter_wages / 26) - $5 (§ 35A-4-401(2)(a)(ii)).
+# Then capped at the annual max WBA (§ 35A-4-401(2)(b)(ii)):
+#   2024: $712; 2025: $777; 2026: $806.
+# WBA = 0 when claimant is not monetarily eligible.
+
+- name: Case 1, standard WBA from $10,000 high quarter.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $25,000 >= $5,500 and >= 1.5 * $10,000 = $15,000.
+        # WBA = floor($10,000 / 26) - $5 = $384 - $5 = $379.
+        # $379 below 2025 cap of $777, so no cap applies.
+        ut_ui_weekly_benefit_amount: 379
+
+- name: Case 2, WBA capped at 2024 max of $712.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 20_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $20,000 = $30,000.
+        # Raw WBA = floor($20,000 / 26) - $5 = $769 - $5 = $764.
+        # 2024 cap = $712, so WBA = $712.
+        ut_ui_weekly_benefit_amount: 712
+
+- name: Case 3, WBA capped at 2026 max of $806.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 80_000
+        ut_ui_high_quarter_wages: 25_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $80,000 >= 1.5 * $25,000 = $37,500.
+        # Raw WBA = floor($25,000 / 26) - $5 = $961 - $5 = $956.
+        # 2026 cap = $806, so WBA = $806.
+        ut_ui_weekly_benefit_amount: 806
+
+- name: Case 4, monetarily ineligible yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_000
+        ut_ui_high_quarter_wages: 2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # $5,000 < $5,500 minimum -> not monetarily eligible.
+        # WBA = 0 regardless of high-quarter calculation.
+        ut_ui_weekly_benefit_amount: 0

@@ -1,0 +1,231 @@
+# Integration tests for Utah Unemployment Insurance (UT UI).
+# End-to-end scenarios that exercise the headline ut_ui variable together
+# with the intermediate WBA, duration, MBA, and weekly-payable variables.
+# References:
+#   - Utah Code § 35A-4-401 (https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S401.html)
+#   - Utah Code § 35A-4-403 (https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S403.html)
+#   - Utah Admin Code R994-401-301 (partial benefits)
+#   - Utah DWS 2026 Benefit Schedule (Form 04-13-0126), Claimant Guide (Jan 2025)
+
+- name: Case 1, no base-period wages yields zero benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 0
+        ut_ui_high_quarter_wages: 0
+        ut_ui_quarters_with_wages: 0
+        ut_ui_weeks_unemployed: 0
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # All inputs zero -> fails $5,500 minimum -> not monetarily eligible.
+        ut_ui_monetarily_eligible: false
+        ut_ui_weekly_benefit_amount: 0
+        ut_ui_duration_weeks: 0
+        ut_ui_maximum_benefit_amount: 0
+        ut_ui_weekly_payable_amount: 0
+        ut_ui: 0
+
+- name: Case 2, full-year unemployment yields max benefit in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 80_000
+        ut_ui_high_quarter_wages: 25_000
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 26
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $80,000 >= 1.5 * $25,000 = $37,500.
+        ut_ui_monetarily_eligible: true
+        # Raw WBA = floor($25,000 / 26) - $5 = $961 - $5 = $956.
+        # 2024 cap = $712, so WBA = $712.
+        ut_ui_weekly_benefit_amount: 712
+        # Raw duration = floor(floor(0.27 * $80,000) / $712)
+        #              = floor($21,600 / $712) = floor(30.34) = 30, clamp 26.
+        ut_ui_duration_weeks: 26
+        # MBA = $712 * 26 = $18,512.
+        ut_ui_maximum_benefit_amount: 18_512
+        # Weekly payable = WBA when no earnings/hours.
+        ut_ui_weekly_payable_amount: 712
+        # Annual = $712 * 26 = $18,512; MBA cap = $18,512.
+        ut_ui: 18_512
+
+- name: Case 3, full-year unemployment hits 2026 max WBA cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 80_000
+        ut_ui_high_quarter_wages: 25_000
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 26
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible.
+        ut_ui_monetarily_eligible: true
+        # Raw WBA = floor($25,000 / 26) - $5 = $956.
+        # 2026 cap = $806, so WBA = $806.
+        ut_ui_weekly_benefit_amount: 806
+        # Raw duration = floor(floor(0.27 * $80,000) / $806)
+        #              = floor($21,600 / $806) = floor(26.80) = 26.
+        # At max -> 26 weeks.
+        ut_ui_duration_weeks: 26
+        # MBA = $806 * 26 = $20,956 (matches 2026 published max MBA).
+        ut_ui_maximum_benefit_amount: 20_956
+        ut_ui_weekly_payable_amount: 806
+        # Annual = $806 * 26 = $20,956.
+        ut_ui: 20_956
+
+- name: Case 4, minimum-eligibility base wages produce 10-week duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ut_ui_base_period_wages: 15_600
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 10
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible at the 1.5x boundary:
+        #   $15,600 >= $5,500 minimum.
+        #   $15,600 = 1.5 * $10,400.
+        ut_ui_monetarily_eligible: true
+        # WBA = floor($10,400 / 26) - $5 = $400 - $5 = $395.
+        ut_ui_weekly_benefit_amount: 395
+        # Raw duration = floor(floor(0.27 * $15,600) / $395)
+        #              = floor($4,212 / $395) = floor(10.66) = 10.
+        # At the 10-week floor.
+        ut_ui_duration_weeks: 10
+        # MBA = $395 * 10 = $3,950.
+        ut_ui_maximum_benefit_amount: 3_950
+        ut_ui_weekly_payable_amount: 395
+        # Annual = $395 * 10 = $3,950.
+        ut_ui: 3_950
+
+- name: Case 5, partial-week earnings reduce the weekly payable amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 15
+        ut_ui_gross_weekly_earnings: 200
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $25,000 >= 1.5 * $10,400 = $15,600.
+        ut_ui_monetarily_eligible: true
+        # WBA = $395.
+        ut_ui_weekly_benefit_amount: 395
+        # Duration = floor(floor(0.27 * $25,000) / $395) = floor(17.09) = 17.
+        ut_ui_duration_weeks: 17
+        # MBA = $395 * 17 = $6,715.
+        ut_ui_maximum_benefit_amount: 6_715
+        # 30% disregard = $118.50; excess = $200 - $118.50 = $81.50.
+        # Weekly payable = floor($395 - $81.50) = floor($313.50) = $313.
+        ut_ui_weekly_payable_amount: 313
+        # Annual = $313 * 15 = $4,695; well below MBA cap.
+        ut_ui: 4_695
+
+- name: Case 6, weekly hours of 40 or more produce zero benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 20
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 40
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible.
+        ut_ui_monetarily_eligible: true
+        # WBA = $395; duration = 17; MBA = $6,715.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+        ut_ui_maximum_benefit_amount: 6_715
+        # Hours 40 >= 40-hour threshold -> disqualified -> weekly payable = $0.
+        ut_ui_weekly_payable_amount: 0
+        # Annual = $0 * 20 = $0.
+        ut_ui: 0
+
+- name: Case 7, out-of-state household (Texas) yields zero Utah UI benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 26
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    people:
+      person1:
+        # ut_ui has defined_for = StateCode.UT -> zero for non-UT households,
+        # regardless of monetary inputs.
+        ut_ui: 0
