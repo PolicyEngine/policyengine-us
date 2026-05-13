@@ -2,10 +2,13 @@ description: Utah limits monetary eligibility to claimants with total base-perio
 
 # The floor is recomputed annually per Utah Code § 35A-4-201(16):
 # 8% of the insured average fiscal-year wage for the preceding fiscal year,
-# rounded up to the next higher multiple of $100. The 2024 entry mirrors the
-# adjacent 2025 value because DWS no longer publishes the 2024 schedule PDF.
+# rounded up to the next higher multiple of $100. The 2024 value is derived
+# from the 2024 max WBA ($712) per UC § 35A-4-201(16) (8% of insured average
+# fiscal year wage, rounded up to next $100) and § 35A-4-401(2)(b)(ii). DWS
+# no longer publishes the 2024 schedule PDF, but the value is recoverable
+# from the 2024 max WBA already encoded in `wba/max_amount.yaml`.
 values:
-  2024-01-01: 5_300
+  2024-01-01: 4_800
   2025-01-01: 5_300
   2026-01-01: 5_500
 
