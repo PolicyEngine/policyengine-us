@@ -1,0 +1,2618 @@
+- name: signature_1 (90 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: &id002
+        - head
+        - spouse
+      mu_child1:
+        members: &id003
+        - child1
+      mu_child2:
+        members: &id004
+        - child2
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_6 (33 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_8 (25 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_11 (19 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_18 (12 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_35 (7 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_72 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        wic: 723.15
+- name: signature_114 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        zip_code: '75201'
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        tax_unit_married: true
+        tax_unit_childcare_expenses: 6000
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 48000.0
+        cdcc: 1580.0
+        ctc: 4400.0
+        eitc: 3769.5
+        income_tax: -7169.5
+        income_tax_before_credits: 1580.0
+        state_cdcc: 679.4
+        state_ctc: 2000.0
+        state_eitc: 0.0
+        state_income_tax: 0.0
+        state_income_tax_before_refundable_credits: 0.0
+    households:
+      household:
+        state_code: 4
+        state_code_str: CA
+        state_name: 4
+- name: signature_126 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        social_security: 0
+        ssi: 0
+        rent: 18000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        social_security: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        pre_subsidy_electricity_expense: 1500
+        sewage_expense: 240
+        trash_expense: 240
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_134 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        ctc: 4400.0
+- name: signature_135 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3769.5
+        income_tax: -6589.5
+- name: signature_136 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        snap: 0.0
+- name: signature_138 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        other_medical_expenses: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        other_medical_expenses: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        other_medical_expenses: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        other_medical_expenses: 0
+    households:
+      household:
+        members: *id001
+        is_homeless: false
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_139 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        other_medical_expenses: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        other_medical_expenses: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        other_medical_expenses: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        other_medical_expenses: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_142 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        health_insurance_premiums: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        health_insurance_premiums: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        pre_subsidy_electricity_expense: 1500
+        mortgage_payments: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_143 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        spm_unit_pre_subsidy_childcare_expenses: 6000
+        pre_subsidy_electricity_expense: 1500
+        gas_expense: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 5775.84
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_144 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        spm_unit_pre_subsidy_childcare_expenses: 6000
+        pre_subsidy_electricity_expense: 1500
+        gas_expense: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 5775.84
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_147 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+        is_homeless: false
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_148 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_151 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        wic: 723.15
+- name: signature_152 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        health_insurance_premiums: 0
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        health_insurance_premiums: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+        health_insurance_premiums: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        pre_subsidy_electricity_expense: 1500
+        mortgage_payments: 0
+        trash_expense: 240
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_155 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: *id001
+        state_code_str: TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        snap_excess_shelter_expense_deduction: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+        basic_standard_deduction: 0
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        is_medicaid_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+      child1:
+        is_medicaid_eligible: false
+      child2:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 1282.14
+- name: signature_159 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        pre_subsidy_electricity_expense: 1500
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_160 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_161 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_162 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: true
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        is_parent: false
+        is_female: true
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_163 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: false
+        snap: 0.0
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_177 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
+- name: signature_179 (1 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        social_security: 0
+        ssi: 0
+        rent: 18000
+        weekly_hours_worked: 40
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        social_security: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 20
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_full_time_student: false
+        is_incapable_of_self_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        ssi: 0
+        rent: 0
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: *id001
+        is_homeless: false
+    spm_units:
+      spm_unit:
+        members: *id001
+        phone_expense: 600
+        water_expense: 480
+        pre_subsidy_electricity_expense: 1500
+        sewage_expense: 240
+        trash_expense: 240
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        is_snap_eligible: true
+        snap: 3713.94
+    people:
+      head:
+        is_wic_eligible: false
+        weekly_hours_worked: 40.0
+        wic: 0.0
+      spouse:
+        is_wic_eligible: false
+        weekly_hours_worked: 20.0
+        wic: 0.0
+      child1:
+        is_wic_eligible: false
+        weekly_hours_worked: 0.0
+        wic: 0.0
+      child2:
+        is_wic_eligible: true
+        weekly_hours_worked: 0.0
+        wic: 723.15
