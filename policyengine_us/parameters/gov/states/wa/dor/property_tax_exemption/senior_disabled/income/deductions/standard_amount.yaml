@@ -1,0 +1,18 @@
+description: Washington provides this standard deduction amount per claimant (and per spouse or domestic partner) under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+values:
+  2008-01-01: 0
+  2027-01-01: 7_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Washington senior/disabled property tax exemption standard deduction amount
+  reference:
+    - title: RCW 84.36.383(14)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.383
+    - title: ESSB 6162, Chapter 163, Laws of 2026, Sec. 102
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/6162-S.SL.pdf#page=9
+# Pre-2027: standard deduction option did not exist (value 0 means the
+# itemized basket is always taken). ESSB 6162 (2026) added an optional
+# standard deduction of $7,500 per claimant + $7,500 for the spouse or
+# domestic partner, effective for taxes levied for collection in 2027+.

@@ -1,0 +1,31 @@
+description: Weekly work-expense deduction amount used in Census Supplemental Poverty Measure calculations.
+values:
+  2009-01-01: 28.0500
+  2010-01-01: 25.5000
+  2011-01-01: 27.1575
+  2012-01-01: 33.0225
+  2013-01-01: 39.3975
+  2014-01-01: 39.2530
+  2015-01-01: 40.0945
+  2016-01-01: 38.4710
+  2017-01-01: 36.3460
+  2018-01-01: 37.1025
+  2019-01-01: 39.7205
+  2020-01-01: 39.6100
+  2021-01-01: 38.0630
+  2022-01-01: 31.0080
+  2023-01-01: 33.4050
+  2024-01-01: 34.9945
+
+metadata:
+  unit: currency-USD
+  period: year
+  uprating: gov.bls.cpi.cpi_u
+  label: Census SPM weekly work-expense deduction amount
+  reference:
+    - title: Supplemental Poverty Measure (SPM) Technical Documentation
+      href: https://www2.census.gov/programs-surveys/supplemental-poverty-measure/technical-documentation/spm_techdoc.pdf
+    - title: Poverty in the United States 2023
+      href: https://www2.census.gov/library/publications/2024/demo/p60-283.pdf
+    - title: Poverty in the United States 2024
+      href: https://www2.census.gov/library/publications/2025/demo/p60-287.pdf

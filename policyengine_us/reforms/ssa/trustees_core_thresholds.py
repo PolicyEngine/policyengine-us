@@ -14,19 +14,17 @@ TRUSTEES_CORE_THRESHOLD_ASSUMPTION: dict[str, Any] = {
     "name": "trustees-2025-core-thresholds-v1",
     "description": (
         "Best-public Trustees tax-side approximation: keep Social Security "
-        "benefit-tax thresholds fixed, but wage-index core ordinary federal "
-        "tax thresholds after 2034 using the active NAWI path."
+        "benefit-tax thresholds fixed, but wage-index all federal income tax "
+        "parameters that otherwise use IRS CPI uprating after 2034 using the "
+        "active NAWI path."
     ),
-    "source": "SSA 2025 Trustees Report V.C.7",
+    "source": "SSA 2025 Trustees Report V.C.7 and OACT email clarification, May 6, 2026",
     "start_year": 2035,
     "projection_base_year": 2026,
     "parameter_groups": [
-        "ordinary_income_brackets",
-        "standard_deduction",
-        "aged_blind_standard_deduction",
-        "capital_gains_thresholds",
-        "amt_thresholds",
+        "all_gov_irs_uprating_parameters",
     ],
+    "uprating_parameter": "gov.irs.uprating",
     "economic_assumption": TRUSTEES_2025_NAWI_ASSUMPTION["name"],
     "income_uprating_assumption": "trustees-2025-soi-income-nawi-v1",
     "not_default_current_law": True,
@@ -61,11 +59,6 @@ def _get_parameter_by_name(parameters, name: str):
     for part in name.split("."):
         current = getattr(current, part)
     return current
-
-
-def _nawi_growth_for_tax_year(parameters, year: int) -> float:
-    nawi = parameters.gov.ssa.nawi
-    return float(nawi(f"{year - 1}-01-01")) / float(nawi(f"{year - 2}-01-01"))
 
 
 def _iter_updatable_parameters(
@@ -112,13 +105,12 @@ def _apply_wage_growth_to_parameter(
     for year in range(projection_base_year + 1, start_year):
         values_by_year[year] = float(parameter(f"{year}-01-01"))
 
+    base_value = float(parameter(f"{start_year - 1}-01-01"))
+    base_nawi = float(parameters.gov.ssa.nawi(f"{start_year - 2}-01-01"))
     for year in range(start_year, end_year + 1):
-        if year - 1 in values_by_year:
-            previous_value = values_by_year[year - 1]
-        else:
-            previous_value = float(parameter(f"{year - 1}-01-01"))
+        nawi_ratio = float(parameters.gov.ssa.nawi(f"{year - 1}-01-01")) / base_nawi
         updated_value = _round_amount(
-            previous_value * _nawi_growth_for_tax_year(parameters, year),
+            base_value * nawi_ratio,
             rounding,
         )
         values_by_year[year] = updated_value
@@ -130,16 +122,9 @@ def _apply_wage_growth_to_parameter(
         )
 
 
-def _core_threshold_roots(parameters) -> list:
+def _federal_income_tax_roots(parameters) -> list:
     return [
-        parameters.gov.irs.income.bracket.thresholds,
-        parameters.gov.irs.deductions.standard.amount,
-        parameters.gov.irs.deductions.standard.aged_or_blind.amount,
-        parameters.gov.irs.capital_gains.thresholds,
-        parameters.gov.irs.income.amt.brackets,
-        parameters.gov.irs.income.amt.exemption.amount,
-        parameters.gov.irs.income.amt.exemption.phase_out.start,
-        parameters.gov.irs.income.amt.exemption.separate_limit,
+        parameters.gov.irs,
     ]
 
 
@@ -156,11 +141,12 @@ def create_trustees_core_thresholds_reform(
     end_year: int = 2100,
     projection_base_year: int = 2026,
 ) -> Reform:
-    """Return a Trustees-style long-run tax-threshold assumption reform.
+    """Return a Trustees-style long-run federal tax assumption reform.
 
     This is an explicit scenario assumption, not default current law. It leaves
-    Social Security benefit-tax thresholds unchanged and wage-indexes the core
-    IRS thresholds used by the CRFB long-run TOB analysis from ``start_year``.
+    Social Security benefit-tax thresholds unchanged and wage-indexes federal
+    IRS parameters that otherwise use CPI-linked IRS uprating from
+    ``start_year``.
     """
 
     def modify_parameters(parameters):
@@ -173,8 +159,13 @@ def create_trustees_core_thresholds_reform(
         )
 
         seen = set()
-        for root in _core_threshold_roots(parameters):
-            for parameter in _iter_updatable_parameters(root):
+        for root in _federal_income_tax_roots(parameters):
+            for parameter in _iter_updatable_parameters(
+                root,
+                uprating_parameter=TRUSTEES_CORE_THRESHOLD_ASSUMPTION[
+                    "uprating_parameter"
+                ],
+            ):
                 if parameter.name in seen:
                     continue
                 seen.add(parameter.name)

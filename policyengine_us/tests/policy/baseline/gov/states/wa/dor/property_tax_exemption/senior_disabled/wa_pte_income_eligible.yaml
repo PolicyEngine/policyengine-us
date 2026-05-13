@@ -1,0 +1,243 @@
+- name: Case 1, King County income at Tier 3 threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 84_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2024 Tier 3 threshold = $84,000; income = $84,000 -> eligible
+    wa_pte_income_eligible: true
+
+- name: Case 2, King County income above Tier 3 threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 85_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2024 Tier 3 threshold = $84,000; income = $85,000 -> ineligible
+    wa_pte_income_eligible: false
+
+- name: Case 3, Adams County income above Tier 3 threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: ADAMS_COUNTY_WA
+  output:
+    # Adams County 2024 Tier 3 threshold = $41,000; income = $50,000 -> ineligible
+    wa_pte_income_eligible: false
+
+- name: Case 4, same income eligible in King but ineligible in Adams.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2024 Tier 3 threshold = $84,000; income = $50,000 -> eligible
+    wa_pte_income_eligible: true
+
+- name: Case 5, King County income $1 below Tier 3 threshold is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 83_999
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T3 = $84,000; 83,999 < 84,000 -> eligible
+    wa_pte_income_eligible: true
+
+- name: Case 6, King County income $1 above Tier 3 threshold is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 84_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # 84,001 > 84,000 -> ineligible (verifies <= boundary)
+    wa_pte_income_eligible: false
+
+- name: Case 7, 2022 King County (2020-2023 era) income at Tier 3 is eligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 58_423
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2020-2023 era T3 = $58,423; income at threshold -> eligible
+    wa_pte_income_eligible: true
+
+- name: Case 8, 2022 King County (2020-2023 era) income above Tier 3 is ineligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2020-2023 era T3 = $58,423; $60,000 > T3 -> ineligible
+    wa_pte_income_eligible: false
+
+- name: Case 9, 2028 King County (2027-2029 era) income at Tier 3 is eligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 101_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2027-2029 era T3 = $101,000; income at threshold -> eligible
+    wa_pte_income_eligible: true
+
+- name: Case 10, 2028 King County (2027-2029 era) income above Tier 3 is ineligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 110_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2027-2029 era T3 = $101,000; $110,000 > T3 -> ineligible
+    wa_pte_income_eligible: false
+
+- name: Case 11, King County cotenant income pushes CDI over Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_000
+        wa_pte_cotenant_disposable_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # CDI = 60,000 + 30,000 = 90,000 > King 2024 T3 ($84,000) -> ineligible.
+    # Without the cotenant amount the tax unit would have qualified for Tier 3.
+    wa_pte_income_eligible: false
