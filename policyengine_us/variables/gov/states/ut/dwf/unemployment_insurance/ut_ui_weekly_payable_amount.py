@@ -27,8 +27,9 @@ class ut_ui_weekly_payable_amount(Variable):
         raw_payable = max_(np.floor(weekly_benefit_amount - excess_earnings), 0)
 
         # § 35A-4-401(3)(a): earnings at or above the WBA disqualify the
-        # week. Claimant Guide page 11 / § 35A-4-207: working at least the
-        # full-time hours threshold (40 hours) in a week also disqualifies.
+        # week. Claimant Guide page 11 (PDF file p. 13) / § 35A-4-207:
+        # working at least the full-time hours threshold (40 hours) in a
+        # week also disqualifies.
         disqualified = (gross_weekly_earnings >= weekly_benefit_amount) | (
             weekly_hours_worked >= p.benefit.partial.hours_threshold
         )
