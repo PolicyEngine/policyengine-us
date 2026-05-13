@@ -2,6 +2,7 @@
   absolute_error_margin: 0.001
   period: 2026
   input:
+    pays_aca_premium: true
     is_aca_ptc_eligible: true
     aca_magi_fraction: 1.25
     selected_marketplace_plan_category: SILVER
@@ -17,6 +18,7 @@
   absolute_error_margin: 0.001
   period: 2026
   input:
+    pays_aca_premium: true
     is_aca_ptc_eligible: true
     aca_magi_fraction: 1.75
     selected_marketplace_plan_category: SILVER
@@ -30,6 +32,7 @@
   absolute_error_margin: 0.001
   period: 2026
   input:
+    pays_aca_premium: true
     is_aca_ptc_eligible: true
     aca_magi_fraction: 2.25
     selected_marketplace_plan_category: SILVER
@@ -43,6 +46,7 @@
   absolute_error_margin: 0.001
   period: 2026
   input:
+    pays_aca_premium: true
     is_aca_ptc_eligible: true
     aca_magi_fraction: 2.75
     selected_marketplace_plan_category: SILVER
@@ -56,6 +60,7 @@
   absolute_error_margin: 0.001
   period: 2026
   input:
+    pays_aca_premium: true
     is_aca_ptc_eligible: true
     aca_magi_fraction: 0.75
     selected_marketplace_plan_category: SILVER
