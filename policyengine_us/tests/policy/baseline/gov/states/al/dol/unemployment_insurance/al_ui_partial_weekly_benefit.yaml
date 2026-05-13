@@ -1,0 +1,252 @@
+# Tests for Alabama UI partial weekly benefit (§ 25-4-72; Admin Code 480-4-3-.11).
+# Formula: partial_weekly_benefit = max(0, WBA - max(0, weekly_earnings - WBA/3))
+#   = WBA                                if weekly_earnings <= WBA/3
+#   = WBA - (weekly_earnings - WBA/3)    if WBA/3 < weekly_earnings < WBA
+#   = 0                                  if weekly_earnings >= WBA
+# Equivalently: a week is "partial" if earnings < WBA; the first 1/3 x WBA of
+# earnings is disregarded, and earnings above the disregard reduce the WBA
+# dollar-for-dollar.
+# Reference:
+#   https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-72/
+#   https://admincode.legislature.state.al.us/administrative-code/480-4-3-.11
+
+- name: Case 1, zero earnings - full WBA paid.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # WBA = 275 (at cap). 0 earnings -> full WBA paid.
+        al_ui_weekly_benefit_amount: 275
+        al_ui_partial_weekly_benefit: 275
+
+- name: Case 2, earnings below WBA/3 disregard - still full WBA paid.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # WBA/3 = 91.67; 80 is below the disregard.
+        al_ui_weekly_earnings: 80
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # earnings 80 <= WBA/3 = 91.67 -> all disregarded -> full WBA.
+        al_ui_partial_weekly_benefit: 275
+
+- name: Case 3, earnings exactly at WBA/3 - still full WBA paid.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # WBA/3 ≈ 91.67. Use 91.67 to test boundary.
+        al_ui_weekly_earnings: 91.67
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # earnings = 91.67 ~= WBA/3 -> excess ~= 0 -> full WBA.
+        al_ui_partial_weekly_benefit: 275
+
+- name: Case 4, earnings above WBA/3 - partial benefit reduced dollar-for-dollar.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # WBA/3 ≈ 91.67; earnings 150 -> excess ~= 58.33.
+        al_ui_weekly_earnings: 150
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # WBA - (earnings - WBA/3) = 275 - (150 - 91.67) = 275 - 58.33 = 216.67.
+        al_ui_partial_weekly_benefit: 216.67
+
+- name: Case 5, earnings just below WBA - very small partial benefit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # Earnings 270 < WBA 275 -> partial.
+        al_ui_weekly_earnings: 270
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # 275 - (270 - 91.67) = 275 - 178.33 = 96.67.
+        al_ui_partial_weekly_benefit: 96.67
+
+- name: Case 6, earnings exactly at WBA - no partial benefit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # Earnings = WBA -> NOT partial (week is "partial" only when earnings
+        # < WBA per USDOL Tbl 3-8). Returns 0.
+        al_ui_weekly_earnings: 275
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # earnings >= WBA -> partial benefit = 0.
+        al_ui_partial_weekly_benefit: 0
+
+- name: Case 7, earnings above WBA - no partial benefit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 500
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # earnings 500 > WBA 275 -> partial benefit = 0.
+        al_ui_partial_weekly_benefit: 0
+
+- name: Case 8, monetarily ineligible - WBA = 0 - partial benefit also $0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_000
+        al_ui_second_high_quarter_wages: 1_000
+        al_ui_base_period_wages: 3_000
+        al_ui_quarters_with_wages: 3
+        al_ui_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded WBA = 38.46 < 44.50 -> ineligible -> WBA = 0.
+        al_ui_weekly_benefit_amount: 0
+        al_ui_partial_weekly_benefit: 0
+
+- name: Case 9, negative weekly earnings (defensive) - treated as full WBA.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # Defensive case: a negative earnings value should not inflate the
+        # benefit beyond the WBA. max_(earnings - disregard, 0) -> 0;
+        # max_(WBA - 0, 0) -> WBA. The where(weekly_earnings < WBA, ...)
+        # branch is taken (negative < WBA) -> partial_amount returned.
+        al_ui_weekly_earnings: -50
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # Negative earnings clamped by max_() -> full WBA, not inflated.
+        al_ui_partial_weekly_benefit: 275
+
+- name: Case 10, earnings exactly one cent below WBA - tiny partial.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # WBA = 275; earnings 274.99 < 275 -> still partial.
+        al_ui_weekly_earnings: 274.99
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # WBA/3 = 91.6667; 275 - (274.99 - 91.6667) = 275 - 183.3233 = 91.6767.
+        al_ui_partial_weekly_benefit: 91.68

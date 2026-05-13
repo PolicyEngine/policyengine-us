@@ -1,0 +1,206 @@
+# Tests for Alabama UI maximum benefit weeks (§ 25-4-74(a)).
+# The duration is set by a single_amount bracket on the statewide average
+# unemployment rate (AAU):
+#   ≤6.5%       -> 14 weeks
+#   >6.5%-≤7.0% -> 15
+#   >7.0%-≤7.5% -> 16
+#   >7.5%-≤8.0% -> 17
+#   >8.0%-≤8.5% -> 18
+#   >8.5%-≤9.0% -> 19
+#   ≥9.5%       -> 20
+# The bracket is encoded with thresholds at 0, 0.0651, 0.0701, 0.0751, 0.0801,
+# 0.0851, 0.0901 -> 14/15/16/17/18/19/20 weeks. Each non-baseline rate is
+# pinned via a reform in `set_state_unemployment_rate.py`. The natural
+# baseline (2024 FRED ALUR ~ 2.9%) hits bracket 1 and is exercised in
+# integration.yaml.
+#
+# Reference:
+#   https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-74/
+
+- name: Case 1, UR at 6.5% (boundary of first bracket) - 14 weeks.
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_6_5pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.065 < 0.0651 -> first bracket -> 14 weeks (statute: ≤ 6.5%).
+        al_ui_max_weeks: 14
+
+- name: Case 2, UR at 7.0% - 15 weeks (top of second bracket).
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_7pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0651 <= 0.07 < 0.0701 -> bracket 2 -> 15 weeks (statute: ≤ 7.0%).
+        al_ui_max_weeks: 15
+
+- name: Case 3, UR at 7.5% - 16 weeks (top of third bracket).
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_7_5pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0701 <= 0.075 < 0.0751 -> bracket 3 -> 16 weeks.
+        al_ui_max_weeks: 16
+
+- name: Case 4, UR at 8.0% - 17 weeks.
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_8pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0751 <= 0.08 < 0.0801 -> bracket 4 -> 17 weeks.
+        al_ui_max_weeks: 17
+
+- name: Case 5, UR at 8.5% - 18 weeks.
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_8_5pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0801 <= 0.085 < 0.0851 -> bracket 5 -> 18 weeks.
+        al_ui_max_weeks: 18
+
+- name: Case 6, UR at 9.0% - 19 weeks.
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_9pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0851 <= 0.09 < 0.0901 -> bracket 6 -> 19 weeks.
+        al_ui_max_weeks: 19
+
+- name: Case 7, UR at 9.5% - 20 weeks (cap).
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_9_5pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.095 >= 0.0901 -> bracket 7 -> 20 weeks (statute caps at 20 weeks
+        # for AAU >= 9.5%).
+        al_ui_max_weeks: 20
+
+- name: Case 8, UR at 12% (well above 9.5%) - still 20 weeks (capped).
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_12pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Highest bracket: 20 weeks (cap).
+        al_ui_max_weeks: 20
+
+- name: Case 9, natural FRED UR for 2024 (~2.9%) - 14 weeks without reform.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 2024-01 UR = 0.029 from FRED ALUR -> first bracket -> 14 weeks.
+        al_ui_max_weeks: 14
+
+- name: Case 10, UR at 6.51% (just above 6.5% boundary) - 15 weeks.
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_6_51pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.0651 hits the second bracket threshold exactly -> 15 weeks.
+        # Confirms "above 6.5%" semantics: 0.065 -> 14, 0.0651 -> 15.
+        al_ui_max_weeks: 15
+
+- name: Case 11, UR at 15% (extreme high) - still 20 weeks (statute cap).
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.al.dol.unemployment_insurance.set_state_unemployment_rate.set_state_unemployment_rate_to_15pct
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 0.15 well above 0.0901 -> bracket 7 (cap) -> 20 weeks.
+        al_ui_max_weeks: 20

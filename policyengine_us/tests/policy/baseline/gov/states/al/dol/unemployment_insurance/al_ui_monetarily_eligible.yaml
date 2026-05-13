@@ -1,0 +1,180 @@
+# Tests for Alabama UI monetary eligibility (§§ 25-4-77(a)(4), 25-4-72(b)(2)).
+# A claimant is monetarily eligible only if ALL THREE tests pass:
+#   1. Wages paid in at least 2 calendar quarters of the base period
+#      (§ 25-4-77(a)(4)).
+#   2. Total base-period wages >= 1.5 x high-quarter wages
+#      (§ 25-4-77(a)(4)(a)).
+#   3. Unrounded WBA = (HQW + 2HQW) / 52 must exceed $44.50
+#      (§ 25-4-72(b)(2)).
+# References:
+#   https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-77/
+#   https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-72/
+
+- name: Case 1, all three tests pass - fully monetarily eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 5_000
+        al_ui_second_high_quarter_wages: 4_000
+        al_ui_base_period_wages: 15_000
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 4 quarters >= 2; BPW 15,000 >= 1.5 * 5,000 = 7,500;
+        # unrounded WBA = (5,000 + 4,000) / 52 = 173.08 > 44.50.
+        al_ui_monetarily_eligible: true
+
+- name: Case 2, fails quarters test - only 1 quarter with wages.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 8_000
+        al_ui_second_high_quarter_wages: 0
+        al_ui_base_period_wages: 8_000
+        al_ui_quarters_with_wages: 1
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Only 1 quarter < 2 required -> fails § 25-4-77(a)(4).
+        al_ui_monetarily_eligible: false
+
+- name: Case 3, fails 1.5x base-wages test.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 8_000
+        al_ui_second_high_quarter_wages: 1_000
+        # BPW < 1.5 * 8,000 = 12,000 -> fails test 2.
+        al_ui_base_period_wages: 10_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # BPW 10,000 < 1.5 * 8,000 = 12,000 -> fails § 25-4-77(a)(4)(a).
+        al_ui_monetarily_eligible: false
+
+- name: Case 4, fails unrounded-WBA floor - unrounded WBA below $44.50.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_000
+        al_ui_second_high_quarter_wages: 1_000
+        al_ui_base_period_wages: 3_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded WBA = (1,000 + 1,000) / 52 = 38.46 < 44.50 -> ineligible.
+        # (4 qtrs and BPW pass; only the WBA floor fails.)
+        al_ui_monetarily_eligible: false
+
+- name: Case 5, boundary - unrounded WBA exactly $44.50 fails (statute uses strictly greater).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_157
+        al_ui_second_high_quarter_wages: 1_157
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded WBA = (1,157 + 1,157) / 52 = 44.50.
+        # Statute § 25-4-72(b)(2): "not in excess of $44.50" -> ineligible.
+        al_ui_monetarily_eligible: false
+
+- name: Case 6, boundary - unrounded WBA just above $44.50 is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_200
+        al_ui_second_high_quarter_wages: 1_200
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded WBA = (1,200 + 1,200) / 52 = 46.15 > 44.50 -> passes floor.
+        # 3 qtrs >= 2; BPW 4,000 >= 1.5 * 1,200 = 1,800 -> all 3 tests pass.
+        al_ui_monetarily_eligible: true
+
+- name: Case 7, exactly 2 quarters and BPW exactly at 1.5x HQW - all tests pass.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 4_000
+        al_ui_second_high_quarter_wages: 2_000
+        # BPW = 1.5 * 4,000 = 6,000 (exactly at threshold; statute uses
+        # "equal to or exceeding" -> >= passes).
+        al_ui_base_period_wages: 6_000
+        al_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 2 qtrs = 2 required; BPW 6,000 = 1.5 * 4,000;
+        # unrounded WBA = (4,000 + 2,000) / 52 = 115.38 > 44.50.
+        al_ui_monetarily_eligible: true
+
+- name: Case 8, BPW one dollar below 1.5x HQW - fails test 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 4_000
+        al_ui_second_high_quarter_wages: 2_000
+        # 1.5 * 4,000 = 6,000; BPW = 5,999 just below.
+        al_ui_base_period_wages: 5_999
+        al_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # BPW 5,999 < 1.5 * 4,000 = 6,000 -> fails § 25-4-77(a)(4)(a).
+        al_ui_monetarily_eligible: false

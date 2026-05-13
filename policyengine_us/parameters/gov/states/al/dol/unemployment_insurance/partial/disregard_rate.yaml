@@ -1,0 +1,18 @@
+description: Alabama excludes this share of the weekly benefit amount from countable earnings before reducing partial unemployment benefits under the Unemployment Compensation program.
+
+values:
+  2020-01-01: 0.3333333333  # One-third of WBA per § 25-4-72; Admin Code 480-4-3-.11
+
+metadata:
+  unit: /1
+  period: year
+  label: Alabama UI partial unemployment earnings disregard rate
+  reference:
+    - title: Code of Alabama § 25-4-72
+      href: https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-72/
+    - title: Ala. Admin. Code 480-4-3-.11 — Claims for Partial Unemployment
+      href: https://admincode.legislature.state.al.us/administrative-code/480-4-3-.11
+    - title: U.S. DOL Comparison of State UI Laws 2023, Table 3-8
+      href: https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf#page=20
+    - title: NELP — New Alabama Unemployment Insurance Law Makes Work Pay
+      href: https://www.nelp.org/new-alabama-unemployment-insurance-law-makes-work-pay/
