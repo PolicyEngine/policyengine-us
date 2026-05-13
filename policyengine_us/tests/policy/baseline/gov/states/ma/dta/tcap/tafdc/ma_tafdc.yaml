@@ -60,10 +60,10 @@
     ma_tafdc_countable_earned_income: [1_800, 0]
     ma_tafdc_applicable_income_grant_amount: 1_800
     ma_tafdc_exceeds_eaedc: true
-    ma_tafdc_payment_standard: 8_256 #688*12
+    ma_tafdc_payment_standard: 9_036 #753*12
     ma_tafdc_eligible_dependent: [False, True]
     ma_tafdc_dependent_care_deduction: 0
-    ma_tafdc: 6_956 # 6959/12 = 580
+    ma_tafdc: 7_736 # (753 - 150 + 500/12)*12
     ma_eaedc_eligible: false
     ma_eaedc_immigration_status_eligible: true
     ma_eaedc_financial_eligible: false
