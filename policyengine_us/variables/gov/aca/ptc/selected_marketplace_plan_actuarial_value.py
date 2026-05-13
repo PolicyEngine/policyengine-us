@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.aca.ptc.selected_marketplace_plan_category import (
-    MarketplacePlanCategory,
-)
 
 
 class selected_marketplace_plan_actuarial_value(Variable):
@@ -15,4 +12,4 @@ class selected_marketplace_plan_actuarial_value(Variable):
     def formula(tax_unit, period, parameters):
         category = tax_unit("selected_marketplace_plan_category", period)
         p = parameters(period).gov.aca.metal_actuarial_value
-        return where(category == MarketplacePlanCategory.BRONZE, p.bronze, p.silver)
+        return where(category == category.possible_values.BRONZE, p.bronze, p.silver)

@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.aca.ptc.selected_marketplace_plan_category import (
-    MarketplacePlanCategory,
-)
 
 
 class marketplace_csr_eligible(Variable):
@@ -15,7 +12,7 @@ class marketplace_csr_eligible(Variable):
         person = tax_unit.members
         receives_aca = tax_unit.sum(person("person_receives_aca", period)) > 0
         category = tax_unit("selected_marketplace_plan_category", period)
-        silver_selected = category == MarketplacePlanCategory.SILVER
+        silver_selected = category == category.possible_values.SILVER
         magi_fraction = tax_unit("aca_magi_fraction", period)
         income_eligible = (
             magi_fraction <= parameters(period).gov.aca.csr.income_threshold.maximum
