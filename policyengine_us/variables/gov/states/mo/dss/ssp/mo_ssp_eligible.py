@@ -17,11 +17,15 @@ class mo_ssp_eligible(Variable):
         # paid even when SSI is zero. We don't track that application
         # requirement, Missouri-specific resource limits, the closed
         # 1973-conversion State Pension cohort, or Supplemental Nursing Care
-        # physician medical-need and facility-cost-versus-income tests.
+        # physician medical-need tests.
         in_category = person("mo_ssp_category_eligible", period)
         age_eligible = person("mo_ssp_age_eligible", period)
         living_arrangement = person("mo_ssp_living_arrangement", period)
-        is_sab = living_arrangement == living_arrangement.possible_values.SAB
+        categories = living_arrangement.possible_values
+        is_sab = living_arrangement == categories.SAB
+        is_snc = (living_arrangement != categories.SAB) & (
+            living_arrangement != categories.NONE
+        )
         p = parameters(period).gov.states.mo.dss.ssp
         receives_ssi = person("ssi", period) > 0
         ssi_receipt_requirement_met = is_sab | receives_ssi
@@ -29,9 +33,13 @@ class mo_ssp_eligible(Variable):
         sab_income_eligible = ~is_sab | (
             countable_income <= p.sab.consolidated_standard
         )
+        snc_countable_income = person("mo_snc_countable_income", period)
+        facility_base_charge = person("mo_snc_facility_base_charge", period)
+        snc_need_eligible = ~is_snc | (snc_countable_income < facility_base_charge)
         return (
             in_category
             & age_eligible
             & ssi_receipt_requirement_met
             & sab_income_eligible
+            & snc_need_eligible
         )

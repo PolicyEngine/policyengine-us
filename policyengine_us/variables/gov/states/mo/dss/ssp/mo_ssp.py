@@ -32,20 +32,25 @@ class mo_ssp(Variable):
         living_arrangement = person("mo_ssp_living_arrangement", period)
         categories = living_arrangement.possible_values
         snc = p.snc.max_grant
-        base = select(
+        snc_max_grant = select(
             [
-                living_arrangement == categories.SAB,
                 living_arrangement == categories.RCF_LEVEL_I,
                 (living_arrangement == categories.RCF_LEVEL_II_OR_ALF)
                 | (living_arrangement == categories.INTERMEDIATE_OR_SKILLED_NO_LOC),
                 living_arrangement == categories.SNF_OR_ICF_NON_MEDICAID,
             ],
             [
-                sab_grant,
                 snc.rcf_level_i,
                 snc.rcf_level_ii_or_alf,
                 snc.snf_or_icf_non_medicaid,
             ],
             default=0,
         )
+        facility_base_charge = person("mo_snc_facility_base_charge", period)
+        countable_income = person("mo_snc_countable_income", period)
+        snc_grant = min_(
+            max_(facility_base_charge - countable_income, 0),
+            snc_max_grant,
+        )
+        base = where(living_arrangement == categories.SAB, sab_grant, snc_grant)
         return base + person("mo_ssp_personal_needs_allowance", period)

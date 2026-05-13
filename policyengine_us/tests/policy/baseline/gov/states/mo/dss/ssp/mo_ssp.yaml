@@ -79,6 +79,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -96,6 +97,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -113,6 +115,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -130,6 +133,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -365,6 +369,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -382,6 +387,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -418,6 +424,7 @@
         age: 70
         ssi: 500
         mo_ssp_living_arrangement: INTERMEDIATE_OR_SKILLED_NO_LOC
+        mo_snc_facility_base_charge: 1_000
     households:
       household:
         members: [person1]
@@ -426,3 +433,46 @@
     # Intermediate or skilled facility without level-of-care determination
     # is paid the same SNC rate as RCF Level II / ALF = $292, plus PNA $50.
     mo_ssp: 342
+
+- name: Case 23, RCF Level I resident with OASDI and partial SSI has no SNC need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        social_security: 914 * 12
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $914 OASDI + $100 SSI = $1,014 income, above the $1,000 facility base
+    # charge, so the SNC need test fails.
+    ssi: 100
+    mo_ssp_eligible: false
+    mo_ssp: 0
+
+- name: Case 24, RCF Level I resident with OASDI and partial SSI has partial SNC need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        social_security: 914 * 12
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,100 facility base charge - $1,014 income = $86 SNC grant, plus $50 PNA.
+    ssi: 100
+    mo_ssp_eligible: true
+    mo_ssp: 136
