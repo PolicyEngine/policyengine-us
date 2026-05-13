@@ -1,0 +1,284 @@
+# Tests for Alabama UI weekly benefit amount (WBA) (§ 25-4-72(b)).
+# Formula:
+#   1. Compute unrounded WBA = (HQW + 2HQW) / 52.
+#   2. If unrounded WBA <= $44.50 -> WBA = 0 (monetary ineligibility).
+#   3. Otherwise apply Alabama rounding: fractional part > $0.50 rounds UP,
+#      <= $0.50 rounds DOWN (statutory half-down). § 25-4-72(b)(1).
+#   4. Cap at the statutory maximum (currently $275). § 25-4-72(b)(5).
+# Reference:
+#   https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-72/
+
+- name: Case 1, unrounded WBA exactly $44.50 - ineligible, returns $0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_157
+        al_ui_second_high_quarter_wages: 1_157
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = (1,157 + 1,157) / 52 = 44.50 -> "not in excess of $44.50"
+        # -> WBA = 0 per § 25-4-72(b)(2).
+        al_ui_weekly_benefit_amount: 0
+
+- name: Case 2, unrounded WBA just above $44.50 - rounded to nearest dollar.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 1_200
+        al_ui_second_high_quarter_wages: 1_200
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = (1,200 + 1,200) / 52 = 46.1538...
+        # Fractional 0.1538 < 0.50 -> rounds DOWN to 46.
+        al_ui_weekly_benefit_amount: 46
+
+- name: Case 3, WBA exactly at $275 cap - HQW + 2HQW = $14,300.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = 14,300 / 52 = 275.00 -> rounded 275; cap also 275.
+        al_ui_weekly_benefit_amount: 275
+
+- name: Case 4, WBA above cap - capped at $275.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = 20,000 / 52 = 384.62 -> rounded 385 -> capped at 275.
+        al_ui_weekly_benefit_amount: 275
+
+- name: Case 5, AL rounding ties round DOWN - unrounded $100.50 -> $100.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 100.50 * 52 = 5,226; split as 2,613 + 2,613.
+        al_ui_high_quarter_wages: 2_613
+        al_ui_second_high_quarter_wages: 2_613
+        al_ui_base_period_wages: 9_000
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = 5,226 / 52 = 100.50 -> fractional 0.50.
+        # § 25-4-72(b)(1): "fractional parts ... which are fifty cents ($.50)
+        # or less shall be dropped to the next lower multiple of one dollar"
+        # -> WBA = 100 (rounds DOWN at the tie).
+        al_ui_weekly_benefit_amount: 100
+
+- name: Case 6, AL rounding strictly above $0.50 rounds UP - unrounded $100.51 -> $101.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 100.51 * 52 = 5,226.52; provide quarters that sum to 5,227 so
+        # unrounded = 5,227 / 52 = 100.5192... > 100.50 -> rounds UP.
+        al_ui_high_quarter_wages: 2_614
+        al_ui_second_high_quarter_wages: 2_613
+        al_ui_base_period_wages: 9_000
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded = (2,614 + 2,613) / 52 = 5,227 / 52 = 100.5192.
+        # Fractional 0.5192 > 0.50 -> rounds UP to 101.
+        al_ui_weekly_benefit_amount: 101
+
+- name: Case 7, monetarily ineligible - only 1 quarter with wages - WBA is $0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 0
+        al_ui_base_period_wages: 10_000
+        al_ui_quarters_with_wages: 1
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Although the unrounded WBA (10,000 / 52 = 192.31) exceeds 44.50,
+        # the claimant fails § 25-4-77(a)(4) (only 1 quarter < 2 required)
+        # -> not monetarily eligible -> WBA = 0.
+        al_ui_weekly_benefit_amount: 0
+
+- name: Case 8, monetarily ineligible - BPW below 1.5x HQW - WBA is $0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 8_000
+        al_ui_second_high_quarter_wages: 1_000
+        # 1.5 * 8,000 = 12,000; BPW = 10,000 fails the 1.5x test.
+        al_ui_base_period_wages: 10_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Fails § 25-4-77(a)(4)(a) -> monetarily ineligible -> WBA = 0.
+        al_ui_weekly_benefit_amount: 0
+
+- name: Case 9, zero wages everywhere - no inputs - WBA is $0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 0
+        al_ui_second_high_quarter_wages: 0
+        al_ui_base_period_wages: 0
+        al_ui_quarters_with_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Zero quarters fails quarters test -> ineligible -> WBA = 0.
+        # Also confirms graceful handling of empty inputs (no crash, no NaN).
+        al_ui_monetarily_eligible: false
+        al_ui_weekly_benefit_amount: 0
+
+- name: Case 10, unrounded WBA just above $44.50 ($44.5192) - eligible, rounds to $45.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # (1,158 + 1,157) / 52 = 2,315 / 52 = 44.5192 > 44.50 -> eligible.
+        al_ui_high_quarter_wages: 1_158
+        al_ui_second_high_quarter_wages: 1_157
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Fractional 0.5192 > 0.50 -> rounds UP to 45 per § 25-4-72(b)(1).
+        al_ui_monetarily_eligible: true
+        al_ui_weekly_benefit_amount: 45
+
+- name: Case 11, unrounded WBA just above $275 ($275.48) - capped at $275.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # (7,163 + 7,162) / 52 = 14,325 / 52 = 275.4808.
+        # Rounding: ceil(275.4808 - 0.5) = ceil(274.9808) = 275.
+        # Cap at 275 -> still 275 (cap not actually binding here because
+        # rounding already produced 275).
+        al_ui_high_quarter_wages: 7_163
+        al_ui_second_high_quarter_wages: 7_162
+        al_ui_base_period_wages: 28_650
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+
+- name: Case 12, AL rounding ties round DOWN at $1.50 -> $1 (sub-threshold ineligible).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # (39 + 39) / 52 = 78 / 52 = 1.50.
+        al_ui_high_quarter_wages: 39
+        al_ui_second_high_quarter_wages: 39
+        al_ui_base_period_wages: 200
+        al_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Unrounded WBA 1.50 < 44.50 -> ineligible -> WBA = 0.
+        # Verifies graceful handling of very low wages without crash; the
+        # half-down rounding rule itself is exercised in Case 5.
+        al_ui_monetarily_eligible: false
+        al_ui_weekly_benefit_amount: 0

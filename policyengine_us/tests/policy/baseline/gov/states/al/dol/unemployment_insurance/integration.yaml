@@ -1,0 +1,337 @@
+# Integration tests for Alabama Unemployment Insurance (AL UI).
+# End-to-end scenarios verifying al_ui together with all intermediate
+# variables. Each case documents the full chain: monetary eligibility ->
+# WBA -> max_weeks -> MBA -> partial weekly benefit -> annual benefit.
+# References:
+#   Code of Alabama §§ 25-4-72, 25-4-74, 25-4-77:
+#     https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/
+#   Alabama UC Benefit Rights & Responsibilities (BRR) handbook:
+#     https://labor.alabama.gov/docs/guides/uc_brr.pdf
+#   USDOL Comparison of State UI Laws 2023:
+#     https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf
+
+- name: Case 1, maximum-benefit claimant - full WBA, full duration, no earnings.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 20
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Monetarily eligible: 4 quarters >= 2, BPW 40k >= 1.5 * 10k = 15k,
+        # unrounded WBA = 20k / 52 = 384.62 > 44.50.
+        al_ui_monetarily_eligible: true
+        # Unrounded WBA = 384.62; rounded then capped at 275.
+        al_ui_unrounded_wba: 384.62
+        al_ui_weekly_benefit_amount: 275
+        # UR (2024-01) = 0.029 -> max_weeks = 14.
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 275, 0.25 * 40,000) = min(3,850, 10,000) = 3,850.
+        al_ui_maximum_benefit_amount: 3_850
+        # No earnings -> full WBA per week.
+        al_ui_partial_weekly_benefit: 275
+        # payable_weeks = min(max(0, 20 - 1), 14) = 14.
+        # Annual = 275 * 14 = 3,850 (matches MBA).
+        al_ui: 3_850
+
+- name: Case 2, minimum-benefit claimant - unrounded WBA just above $44.50.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        al_ui_high_quarter_wages: 1_200
+        al_ui_second_high_quarter_wages: 1_200
+        al_ui_base_period_wages: 4_000
+        al_ui_quarters_with_wages: 3
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 14
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # 3 quarters >= 2; BPW 4,000 >= 1.5 * 1,200 = 1,800.
+        # Unrounded WBA = 2,400 / 52 = 46.15 > 44.50.
+        al_ui_monetarily_eligible: true
+        al_ui_unrounded_wba: 46.15
+        # 46.15 fractional < 0.5 -> rounds DOWN to 46.
+        al_ui_weekly_benefit_amount: 46
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 46, 0.25 * 4,000) = min(644, 1,000) = 644.
+        al_ui_maximum_benefit_amount: 644
+        al_ui_partial_weekly_benefit: 46
+        # payable_weeks = min(max(0, 14 - 1), 14) = 13.
+        # Annual = 46 * 13 = 598; MBA 644 not binding.
+        al_ui: 598
+
+- name: Case 3, monetarily ineligible - only 1 quarter with wages.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 0
+        al_ui_base_period_wages: 10_000
+        al_ui_quarters_with_wages: 1
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 14
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Only 1 quarter < 2 required -> ineligible per § 25-4-77(a)(4).
+        al_ui_monetarily_eligible: false
+        al_ui_weekly_benefit_amount: 0
+        al_ui_maximum_benefit_amount: 0
+        al_ui_partial_weekly_benefit: 0
+        al_ui: 0
+
+- name: Case 4, monetarily ineligible - BPW below 1.5x HQW.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        al_ui_high_quarter_wages: 8_000
+        al_ui_second_high_quarter_wages: 1_000
+        # 1.5 * 8,000 = 12,000; BPW 10,000 fails.
+        al_ui_base_period_wages: 10_000
+        al_ui_quarters_with_wages: 3
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 14
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Fails § 25-4-77(a)(4)(a) -> ineligible.
+        al_ui_monetarily_eligible: false
+        al_ui_weekly_benefit_amount: 0
+        al_ui: 0
+
+- name: Case 5, partial-week claimant - earnings between WBA/3 and WBA.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        al_ui_high_quarter_wages: 7_150
+        al_ui_second_high_quarter_wages: 7_150
+        al_ui_base_period_wages: 28_600
+        al_ui_quarters_with_wages: 4
+        # WBA/3 = 91.67; earnings 150 falls in partial range.
+        al_ui_weekly_earnings: 150
+        weeks_unemployed: 15
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_monetarily_eligible: true
+        al_ui_unrounded_wba: 275
+        al_ui_weekly_benefit_amount: 275
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 275, 0.25 * 28,600) = min(3,850, 7,150) = 3,850.
+        al_ui_maximum_benefit_amount: 3_850
+        # Partial weekly benefit = 275 - (150 - 91.67) = 216.67.
+        al_ui_partial_weekly_benefit: 216.67
+        # payable_weeks = min(max(0, 15 - 1), 14) = 14.
+        # Annual = 216.67 * 14 = 3,033.33 (below MBA 3,850).
+        al_ui: 3_033.33
+
+- name: Case 6, MBA capped by BPW/4 - low-wage but eligible long-claim.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        # WBA = 100 (unrounded = 100.50 -> half-down -> 100).
+        al_ui_high_quarter_wages: 2_613
+        al_ui_second_high_quarter_wages: 2_613
+        # BPW = 5,000 -> 0.25 * 5,000 = 1,250. 14 * 100 = 1,400.
+        # min(1,400, 1,250) = 1,250 -> BPW cap binds.
+        al_ui_base_period_wages: 5_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 15
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_monetarily_eligible: true
+        al_ui_unrounded_wba: 100.50
+        al_ui_weekly_benefit_amount: 100
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 100, 0.25 * 5,000) = min(1,400, 1,250) = 1,250.
+        al_ui_maximum_benefit_amount: 1_250
+        al_ui_partial_weekly_benefit: 100
+        # payable_weeks = min(max(0, 15 - 1), 14) = 14.
+        # Annual = 100 * 14 = 1,400 -> capped at MBA 1,250.
+        al_ui: 1_250
+
+- name: Case 7, short claim - waiting week subtracted, well below MBA cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        al_ui_high_quarter_wages: 5_200
+        al_ui_second_high_quarter_wages: 5_200
+        al_ui_base_period_wages: 18_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 6
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_monetarily_eligible: true
+        # Unrounded WBA = 10,400 / 52 = 200 exactly.
+        al_ui_unrounded_wba: 200
+        al_ui_weekly_benefit_amount: 200
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 200, 0.25 * 18,000) = min(2,800, 4,500) = 2,800.
+        al_ui_maximum_benefit_amount: 2_800
+        al_ui_partial_weekly_benefit: 200
+        # payable_weeks = min(max(0, 6 - 1), 14) = 5.
+        # Annual = 200 * 5 = 1,000 (well below MBA 2,800).
+        al_ui: 1_000
+
+- name: Case 8, two AL unemployed earners in one household - both receive al_ui.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 14
+      person2:
+        age: 33
+        al_ui_high_quarter_wages: 5_200
+        al_ui_second_high_quarter_wages: 5_200
+        al_ui_base_period_wages: 18_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # WBA = 275 capped; max_weeks 14; payable = min(14-1, 14) = 13.
+        # Annual = 275 * 13 = 3,575; MBA = 3,850 (not binding).
+        al_ui_weekly_benefit_amount: 275
+        al_ui: 3_575
+      person2:
+        # WBA = 200; max_weeks 14; payable = min(10-1, 14) = 9.
+        # Annual = 200 * 9 = 1,800; MBA = min(2800, 4500) = 2800 (not binding).
+        al_ui_weekly_benefit_amount: 200
+        al_ui: 1_800
+
+- name: Case 9, AL person with no UI inputs (all defaults) - $0 al_ui.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # No al_ui_* inputs supplied. All default to 0.
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # Quarters 0, BPW 0, unrounded WBA 0 -> ineligible -> $0.
+        al_ui_monetarily_eligible: false
+        al_ui: 0
+
+- name: Case 10, GA person (non-AL) with full inputs - al_ui is $0 (defined_for filter).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # Inputs supplied but defined_for=StateCode.AL filters them out for
+        # any non-AL household; al_ui must be 0 regardless of input values.
+        # Note: al_ui_* input variables are themselves defined_for=AL, so
+        # they return 0 for non-AL persons. The full chain therefore yields 0.
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    people:
+      person1:
+        # Non-AL state -> defined_for filter applies -> al_ui = 0.
+        al_ui: 0
+
+- name: Case 11, federal aggregator includes al_ui correctly.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 14
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # al_ui = 275 * 13 = 3,575; the federal aggregator
+        # unemployment_compensation adds al_ui (and ny_ui in the upstream
+        # version) so the federal total should equal al_ui here.
+        al_ui: 3_575
+        unemployment_compensation: 3_575
