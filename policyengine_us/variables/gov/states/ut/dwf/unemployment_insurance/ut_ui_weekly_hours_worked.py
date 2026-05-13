@@ -8,7 +8,7 @@ class ut_ui_weekly_hours_worked(Variable):
     unit = "hour"
     definition_period = YEAR
     default_value = 0
-    reference = "https://jobs.utah.gov/ui/jobseeker/claimantguide.pdf#page=11"
+    reference = "https://jobs.utah.gov/ui/jobseeker/claimantguide.pdf#page=13"
     # Hours worked during a claim week. A claimant who works at least the
     # full-time hours threshold (40 hours) in a week is not eligible for
     # benefits that week per Utah DWS Claimant Guide page 11 and the

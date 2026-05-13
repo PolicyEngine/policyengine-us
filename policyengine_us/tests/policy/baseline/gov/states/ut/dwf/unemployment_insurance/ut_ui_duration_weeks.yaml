@@ -96,7 +96,7 @@
   output:
     people:
       person1:
-        # $5,000 < $5,500 minimum -> not monetarily eligible -> WBA = 0.
+        # $5,000 < $5,300 minimum -> not monetarily eligible -> WBA = 0.
         # Duration = 0 (bypasses 10-week floor when WBA = 0).
         ut_ui_weekly_benefit_amount: 0
         ut_ui_duration_weeks: 0

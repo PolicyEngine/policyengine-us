@@ -27,7 +27,7 @@
   output:
     people:
       person1:
-        # All inputs zero -> fails $5,500 minimum -> not monetarily eligible.
+        # All inputs zero -> fails $5,300 minimum -> not monetarily eligible.
         ut_ui_monetarily_eligible: false
         ut_ui_weekly_benefit_amount: 0
         ut_ui_duration_weeks: 0
@@ -126,7 +126,7 @@
     people:
       person1:
         # Monetarily eligible at the 1.5x boundary:
-        #   $15,600 >= $5,500 minimum.
+        #   $15,600 >= $5,300 minimum.
         #   $15,600 = 1.5 * $10,400.
         ut_ui_monetarily_eligible: true
         # WBA = floor($10,400 / 26) - $5 = $400 - $5 = $395.

@@ -17,16 +17,16 @@
 #     https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R994-401-301
 #
 # ---------------------------------------------------------------------------
-# THRESHOLD BOUNDARIES — minimum base-period wages ($5,500)
+# THRESHOLD BOUNDARIES — minimum base-period wages ($5,300 in 2025)
 # ---------------------------------------------------------------------------
 
-- name: Case 1, base wages one dollar below $5,500 floor fails minimum test.
+- name: Case 1, base wages one dollar below $5,300 floor fails minimum test.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        ut_ui_base_period_wages: 5_499
+        ut_ui_base_period_wages: 5_299
         ut_ui_high_quarter_wages: 3_000
         ut_ui_quarters_with_wages: 4
     households:
@@ -36,17 +36,17 @@
   output:
     people:
       person1:
-        # Test 1: $5,499 < $5,500 minimum -> fails.
-        # (Tests 2 and 3 would pass: 4 quarters >= 2; 5499 >= 1.5*3000=4500.)
+        # Test 1: $5,299 < $5,300 minimum -> fails.
+        # (Tests 2 and 3 would pass: 4 quarters >= 2; 5299 >= 1.5*3000=4500.)
         ut_ui_monetarily_eligible: false
 
-- name: Case 2, base wages exactly at $5,500 floor pass the minimum test.
+- name: Case 2, base wages exactly at $5,300 floor pass the minimum test.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        ut_ui_base_period_wages: 5_500
+        ut_ui_base_period_wages: 5_300
         ut_ui_high_quarter_wages: 3_000
         ut_ui_quarters_with_wages: 4
     households:
@@ -56,19 +56,19 @@
   output:
     people:
       person1:
-        # Test 1: $5,500 >= $5,500 minimum (>=, not strict).
+        # Test 1: $5,300 >= $5,300 minimum (>=, not strict).
         # Test 2: 4 quarters >= 2.
-        # Test 3: $5,500 >= 1.5*$3,000 = $4,500.
+        # Test 3: $5,300 >= 1.5*$3,000 = $4,500.
         # All tests pass -> monetarily eligible.
         ut_ui_monetarily_eligible: true
 
-- name: Case 3, base wages one dollar above $5,500 floor pass the minimum test.
+- name: Case 3, base wages one dollar above $5,300 floor pass the minimum test.
   period: 2025
   input:
     people:
       person1:
         age: 35
-        ut_ui_base_period_wages: 5_501
+        ut_ui_base_period_wages: 5_301
         ut_ui_high_quarter_wages: 3_000
         ut_ui_quarters_with_wages: 4
     households:
@@ -78,7 +78,7 @@
   output:
     people:
       person1:
-        # Test 1: $5,501 >= $5,500 minimum.
+        # Test 1: $5,301 >= $5,300 minimum.
         # All tests pass -> monetarily eligible.
         ut_ui_monetarily_eligible: true
 
@@ -102,7 +102,7 @@
   output:
     people:
       person1:
-        # Test 1: $15,000 >= $5,500 minimum.
+        # Test 1: $15,000 >= $5,300 minimum.
         # Test 2: 4 quarters >= 2.
         # Test 3: $15,000 = 1.5 * $10,000 exactly (>=, not strict).
         # All tests pass -> monetarily eligible.
@@ -213,7 +213,7 @@
   output:
     people:
       person1:
-        # Monetarily eligible: $5,500 >= $5,500 min; 4 quarters >= 2;
+        # Monetarily eligible: $5,500 >= $5,300 min; 4 quarters >= 2;
         # $5,500 >= 1.5*$100 = $150.
         ut_ui_monetarily_eligible: true
         # Raw WBA = floor(100/26) - 5 = 3 - 5 = -2 -> max_(.,0) = 0.
@@ -377,7 +377,7 @@
   output:
     people:
       person1:
-        # Monetarily eligible: $9,630 >= $5,500 min; 4 quarters >= 2;
+        # Monetarily eligible: $9,630 >= $5,300 min; 4 quarters >= 2;
         # $9,630 >= 1.5 * $2,730 = $4,095.
         # WBA = floor($2,730/26) - 5 = $105 - $5 = $100.
         # Step 1: floor(0.27 * $9,630) = floor($2,600.10) = $2,600.

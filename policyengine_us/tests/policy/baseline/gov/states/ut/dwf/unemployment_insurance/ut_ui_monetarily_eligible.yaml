@@ -1,6 +1,7 @@
 # Tests for Utah UI monetary eligibility.
 # A claimant is monetarily eligible only if ALL THREE base-period tests pass:
-#   1. Total base-period wages >= $5,500 (Utah Code § 35A-4-201(16)).
+#   1. Total base-period wages >= the annual minimum ($5,300 in 2024-2025;
+#      $5,500 in 2026), per Utah Code § 35A-4-201(16).
 #   2. Wages paid in at least 2 calendar quarters (Utah Admin Code R994-401-202).
 #   3. Total base-period wages >= 1.5 x high-quarter wages (§ 35A-4-403(1)(f)(i)).
 
@@ -20,13 +21,13 @@
   output:
     people:
       person1:
-        # Test 1: $25,000 >= $5,500 minimum.
+        # Test 1: $25,000 >= $5,300 minimum.
         # Test 2: 4 quarters >= 2 required.
         # Test 3: $25,000 >= 1.5 * $8,000 = $12,000.
         # All tests pass -> monetarily eligible.
         ut_ui_monetarily_eligible: true
 
-- name: Case 2, base wages below $5,500 floor fails minimum-wage test.
+- name: Case 2, base wages below $5,300 floor fails minimum-wage test.
   period: 2025
   input:
     people:
@@ -42,7 +43,7 @@
   output:
     people:
       person1:
-        # Test 1: $5,000 < $5,500 minimum -> fails.
+        # Test 1: $5,000 < $5,300 minimum -> fails.
         ut_ui_monetarily_eligible: false
 
 - name: Case 3, only one quarter of wages fails quarter-count test.
