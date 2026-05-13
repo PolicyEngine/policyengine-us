@@ -1,3 +1,10 @@
+## [1.691.6] - 2026-05-13
+
+### Fixed
+
+- Applied the 2025 federal-AGI-based phaseout to the Maine non-military pension income deduction.
+
+
 ## [1.691.5] - 2026-05-13
 
 ### Fixed
