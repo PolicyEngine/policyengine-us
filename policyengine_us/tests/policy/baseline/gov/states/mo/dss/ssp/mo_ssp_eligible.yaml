@@ -14,6 +14,24 @@
   output:
     mo_ssp_eligible: true
 
+- name: Case 1b, blind adult with no SSI in MO with SAB arrangement is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB can be paid even when SSI is zero; the claimant must apply for or
+    # receive SSI, but that application requirement is not modeled.
+    mo_ssp_eligible: true
+
 - name: Case 2, adult in MO with no SSI receipt is not eligible.
   period: 2026-01
   input:
@@ -27,7 +45,8 @@
         members: [person1]
         state_code: MO
   output:
-    # ssi > 0 gate fails when person is not actually receiving SSI.
+    # SNC still uses SSI receipt as the modeled proxy for federal/state
+    # categorical and income eligibility.
     mo_ssp_eligible: false
 
 - name: Case 3, adult receiving SSI not in MO is not eligible.
@@ -225,7 +244,8 @@
         members: [person1]
         state_code: MO
   output:
-    # ssi > 0 gate passes for any positive SSI receipt.
+    # SAB eligibility does not require positive SSI receipt, but positive SSI
+    # still satisfies the modeled SSI application/receipt proxy.
     mo_ssp_eligible: true
 
 - name: Case 15, adult with valid eligibility outside Missouri is not eligible.

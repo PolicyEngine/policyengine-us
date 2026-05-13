@@ -10,7 +10,9 @@ class mo_ssp(Variable):
     defined_for = "mo_ssp_eligible"
     reference = (
         "https://revisor.mo.gov/main/OneSection.aspx?section=208.030",
-        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=2",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=209.040",
+        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-130",
+        "https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0415-000-00/0415-005-00/",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html",
     )
 
@@ -21,9 +23,11 @@ class mo_ssp(Variable):
         # 1973-conversion cohort.
         p = parameters(period).gov.states.mo.dss.ssp
         federal_ssi = person("ssi", period)
-        sab_grant = min_(
-            max_(p.sab.consolidated_standard - federal_ssi, 0),
-            p.sab.max_grant_cap,
+        sab_remainder = max_(p.sab.maximum_payment - federal_ssi, 0)
+        sab_grant = where(
+            (sab_remainder > 0) & (sab_remainder < 1),
+            1,
+            np.floor(sab_remainder + 0.5),
         )
         living_arrangement = person("mo_ssp_living_arrangement", period)
         categories = living_arrangement.possible_values

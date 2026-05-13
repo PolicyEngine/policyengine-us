@@ -1,4 +1,4 @@
-- name: Case 1, SAB recipient with low SSI receives BP rate minus SSI.
+- name: Case 1, SAB recipient with low SSI receives maximum payment minus SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -13,11 +13,10 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2026 BP rate $917, cap $762.
-    # max(917 - 200, 0) = 717; min(717, 762) = 717.
+    # FY2026 maximum SAB payment $917 - $200 SSI = $717.
     mo_ssp: 717
 
-- name: Case 2, SAB recipient with full federal SSI gets zero.
+- name: Case 2, SAB recipient with SSI above the maximum payment gets zero.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -32,10 +31,10 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2026 BP rate $917; max(917 - 967, 0) = 0; min(0, 762) = 0.
+    # FY2026 maximum SAB payment $917; max(917 - 967, 0) = 0.
     mo_ssp: 0
 
-- name: Case 3, SAB recipient with $1 SSI exceeds cap so cap binds.
+- name: Case 3, SAB recipient with $1 SSI receives maximum payment minus SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -43,15 +42,33 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # max(917 - 1, 0) = 916; min(916, 762) = 762 (cap binds).
-    mo_ssp: 762
+    # FY2026 maximum SAB payment $917 - $1 SSI = $916.
+    mo_ssp: 916
+
+- name: Case 3b, SAB applicant with no SSI receives the full maximum payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 maximum SAB payment $917 - $0 SSI = $917.
+    mo_ssp: 917
 
 - name: Case 4, SNC RCF Level I recipient receives flat amount plus PNA.
   period: 2026-01
@@ -135,10 +152,11 @@
         members: [person1]
         state_code: MO
   output:
-    # mo_ssp_eligible requires ssi > 0; ssi == 0 => not eligible.
+    # SNC still uses SSI receipt as the modeled proxy for federal/state
+    # categorical and income eligibility.
     mo_ssp: 0
 
-- name: Case 9, FY2024 SAB recipient with $0.50 SSI hits FY2024 cap.
+- name: Case 9, FY2024 SAB recipient with $0.50 SSI rounds to the nearest dollar.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -153,9 +171,8 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2024 BP rate $789, cap $654.
-    # max(789 - 0.5, 0) = 788.5; min(788.5, 654) = 654 (cap binds).
-    mo_ssp: 654
+    # FY2024 maximum SAB payment $789 - $0.50 SSI = $788.50, rounded to $789.
+    mo_ssp: 789
 
 - name: Case 10, child under 18 in SAB arrangement is not eligible.
   period: 2026-01
@@ -192,7 +209,7 @@
     # NONE arrangement is not category-eligible.
     mo_ssp: 0
 
-- name: Case 12, FY2025 SAB recipient with low SSI uses FY2025 BP rate.
+- name: Case 12, FY2025 SAB recipient with low SSI uses FY2025 maximum payment.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -207,11 +224,10 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2025 BP rate $828, cap $698.
-    # max(828 - 200, 0) = 628; min(628, 698) = 628.
+    # FY2025 maximum SAB payment $828 - $200 SSI = $628.
     mo_ssp: 628
 
-- name: Case 13, FY2025 SAB grant with nominal SSI hits cap.
+- name: Case 13, FY2025 SAB grant with nominal SSI uses maximum payment minus SSI.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -219,18 +235,17 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # FY2025 BP rate $828, cap $698.
-    # max(828 - 1, 0) = 827; min(827, 698) = 698 (cap binds).
-    mo_ssp: 698
+    # FY2025 maximum SAB payment $828 - $1 SSI = $827.
+    mo_ssp: 827
 
-- name: Case 14, FY2025 SAB grant with SSI 200 formula binds not cap.
+- name: Case 14, FY2025 SAB grant with SSI 200 uses maximum payment minus SSI.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -245,11 +260,10 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2025 BP rate $828, cap $698.
-    # max(828 - 200, 0) = 628; min(628, 698) = 628 (formula binds).
+    # FY2025 maximum SAB payment $828 - $200 SSI = $628.
     mo_ssp: 628
 
-- name: Case 15, FY2025 SAB grant with SSI exactly equal to BP rate is zero.
+- name: Case 15, FY2025 SAB grant with SSI exactly equal to maximum payment is zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -264,10 +278,10 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2025 BP rate $828; max(828 - 828, 0) = 0; min(0, 698) = 0.
+    # FY2025 maximum SAB payment $828; max(828 - 828, 0) = 0.
     mo_ssp: 0
 
-- name: Case 16, FY2025 SAB grant with SSI exceeding BP rate is zero.
+- name: Case 16, FY2025 SAB grant with SSI exceeding maximum payment is zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -282,7 +296,7 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2025 BP rate $828; max(828 - 1000, 0) = 0; min(0, 698) = 0.
+    # FY2025 maximum SAB payment $828; max(828 - 1000, 0) = 0.
     mo_ssp: 0
 
 - name: Case 17, negative self-employment income does not inflate SAB benefit.
@@ -293,7 +307,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        ssi: 12  # $1/month annualized
         self_employment_income: -60_000_000
         mo_ssp_living_arrangement: SAB
     households:
@@ -302,10 +316,10 @@
         state_code: MO
   output:
     # mo_ssp formula reads ssi only. Negative SE income cannot inflate output;
-    # benefit is bounded by min(max(BP - ssi, 0), cap) = min(827, 698) = 698.
-    mo_ssp: 698
+    # benefit is bounded by max(maximum payment - ssi, 0) = $827.
+    mo_ssp: 827
 
-- name: Case 18, FY2024 SAB grant with nominal SSI uses FY2024 cap.
+- name: Case 18, FY2024 SAB grant with nominal SSI uses maximum payment minus SSI.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -313,16 +327,34 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 12  # $1/month annualized; ssi > 0 required for eligibility
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # FY2024 BP rate $789, cap $654.
-    # max(789 - 1, 0) = 788; min(788, 654) = 654 (cap binds).
-    mo_ssp: 654
+    # FY2024 maximum SAB payment $789 - $1 SSI = $788.
+    mo_ssp: 788
+
+- name: Case 18b, FY2026 SAB grant with sub-dollar remainder uses minimum payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 11_000.4  # $916.70/month annualized
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.130 gives a $1 payment when the SAB remainder is positive
+    # but below 50 cents; $917 - $916.70 = $0.30, so payment is $1.
+    mo_ssp: 1
 
 - name: Case 19, SNF resident before PNA effective date receives base only.
   period: 2014-01

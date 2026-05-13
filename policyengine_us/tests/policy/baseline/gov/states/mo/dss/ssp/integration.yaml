@@ -23,7 +23,7 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2026 BP rate $917 - $200 SSI = $717; below cap $762.
+    # FY2026 maximum SAB payment $917 - $200 SSI = $717.
     mo_ssp_eligible: true
     mo_ssp: 717
     # SAB pathway: no PNA add-on.
@@ -151,7 +151,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # FY2025 BP rate $828 - $200 = $628 (below $698 cap) for blind spouse.
+    # FY2025 maximum SAB payment $828 - $200 = $628 for blind spouse.
     # Other spouse: ssi == 0 and arrangement NONE => not eligible => $0.
     mo_ssp_eligible: [true, false]
     mo_ssp: [628, 0]
