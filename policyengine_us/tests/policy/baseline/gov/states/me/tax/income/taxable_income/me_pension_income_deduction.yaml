@@ -122,7 +122,7 @@
     me_pension_income_deduction: 2_000
 
 # Locks in the 2025 income-based phaseout introduced by 36 M.R.S.
-# § 5122(2)(M-2)(2) (taxsim #883). Pre-fix the formula ignored federal AGI and
+# § 5122(2)(M-3) (taxsim #883). Pre-fix the formula ignored federal AGI and
 # returned the full $18,216 pre-phaseout deduction; post-fix the phaseout
 # fraction (285,348 - 187,500) / 100,000 = 0.97848 leaves ~$392 allowed.
 - name: Maine 2025 HoH pension income deduction phased out by federal AGI (taxsim #883)
@@ -159,7 +159,7 @@
     me_pension_income_deduction: 392
 
 # Confirms the phaseout does not apply to military retirement pay
-# (36 M.R.S. § 5122(2)(LL)).
+# (36 M.R.S. § 5122(2)(M-2)(1)(b) — deducted in full, not reduced by M-3).
 - name: Maine 2025 high-income single retiree with military retirement (not phased out)
   absolute_error_margin: 1
   period: 2025
