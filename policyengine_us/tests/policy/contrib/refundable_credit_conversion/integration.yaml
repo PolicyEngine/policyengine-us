@@ -1,15 +1,17 @@
 - name: Flat refundable credit flows into federal income tax refundable credits
-  # Filer + spouse with one young child and no earned income — baseline EITC
-  # and CTC are both zero, so income_tax_refundable_credits should equal the
-  # flat refundable credit exactly.
+  # Filer + spouse + young child with no earned income — baseline EITC
+  # and CTC are both zero, so income_tax_refundable_credits should equal
+  # the flat refundable credit exactly.
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
     gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 500
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 500
     gov.contrib.refundable_credit_conversion.credit.per_household: 200
-    gov.contrib.refundable_credit_conversion.credit.dependent_definition: 0
     people:
       filer:
         age: 35
@@ -22,10 +24,7 @@
         members: [filer, spouse, child]
         filing_status: JOINT
   output:
-    # 2 * 1_000 + 1 * 500 + 200 = 2_700
-    flat_refundable_credit: 2_700
-    # baseline EITC + refundable CTC are both zero on zero earned income,
-    # so the flat credit is the only refundable component
+    flat_refundable_credit: 2_700  # 2 * 1_000 + 1 * 500 + 200
     income_tax_refundable_credits: 2_700
 
 - name: Reform inactive (in_effect false) — flat credit stays zero

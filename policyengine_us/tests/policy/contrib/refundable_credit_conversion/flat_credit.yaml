@@ -3,9 +3,8 @@
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
     gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 500
-    gov.contrib.refundable_credit_conversion.credit.per_household: 0
     people:
       filer:
         age: 35
@@ -21,9 +20,8 @@
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
     gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 500
-    gov.contrib.refundable_credit_conversion.credit.per_household: 0
     people:
       filer:
         age: 35
@@ -36,15 +34,17 @@
   output:
     flat_refundable_credit: 2_000
 
-- name: MFJ with two children and household credit — full credit math
+- name: MFJ with two young children — taxpayer + CTC + household credits
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
     gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 500
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 500
     gov.contrib.refundable_credit_conversion.credit.per_household: 200
-    gov.contrib.refundable_credit_conversion.credit.dependent_definition: 0
     people:
       filer:
         age: 35
@@ -60,3 +60,20 @@
         filing_status: JOINT
   output:
     flat_refundable_credit: 3_200  # 2 * 1_000 + 2 * 500 + 200
+
+- name: Amount set but toggle off — component does not fire
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: false
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 5_000
+    people:
+      filer:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0

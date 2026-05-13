@@ -1,0 +1,7 @@
+description: Apply the per-taxpayer flat credit (each head of tax unit and spouse if filing jointly). When false, the per-taxpayer amount is ignored.
+metadata:
+  unit: bool
+  period: year
+  label: Apply per-taxpayer flat credit
+values:
+  0000-01-01: false

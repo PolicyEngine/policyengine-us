@@ -1,0 +1,7 @@
+description: Apply the per-tax-unit (household) flat credit. When false, the per-household amount is ignored.
+metadata:
+  unit: bool
+  period: year
+  label: Apply per-household flat credit
+values:
+  0000-01-01: false

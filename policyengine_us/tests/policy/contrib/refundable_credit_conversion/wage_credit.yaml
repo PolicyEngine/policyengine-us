@@ -3,9 +3,7 @@
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
-    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 0
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 0
-    gov.contrib.refundable_credit_conversion.credit.per_household: 0
+    gov.contrib.refundable_credit_conversion.wage_credit.use_wage_credit: true
     gov.contrib.refundable_credit_conversion.wage_credit.rate: 0.20
     gov.contrib.refundable_credit_conversion.wage_credit.cap: 5_000
     people:
@@ -20,17 +18,15 @@
         members: [filer, spouse]
         filing_status: JOINT
   output:
-    flat_refundable_credit: 1_600  # 0.20 * (3_000 + 5_000) = 1_600
+    flat_refundable_credit: 1_600  # 0.20 * (3_000 + min(10_000, 5_000)) = 1_600
 
-- name: Wage credit with zero rate produces no credit
+- name: Wage credit toggle off — rate and cap ignored
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
     gov.contrib.refundable_credit_conversion.in_effect: true
-    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 0
-    gov.contrib.refundable_credit_conversion.credit.per_dependent: 0
-    gov.contrib.refundable_credit_conversion.credit.per_household: 0
-    gov.contrib.refundable_credit_conversion.wage_credit.rate: 0
+    gov.contrib.refundable_credit_conversion.wage_credit.use_wage_credit: false
+    gov.contrib.refundable_credit_conversion.wage_credit.rate: 0.20
     gov.contrib.refundable_credit_conversion.wage_credit.cap: 5_000
     people:
       filer:
