@@ -13,7 +13,7 @@ class nj_property_tax_deduction_eligible(Variable):
 
         filing_status = tax_unit("filing_status", period)
         nj_agi = tax_unit("nj_agi", period)
-        income_eligible = nj_agi > p.filing_threshold[filing_status]
+        income_eligible = nj_agi >= p.filing_threshold[filing_status]
 
         pays_ptax = add(tax_unit, period, ["real_estate_taxes"]) > 0
         pays_rent = tax_unit("rents", period)

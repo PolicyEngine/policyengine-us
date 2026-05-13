@@ -45,3 +45,27 @@
     state_code: NJ
   output:
     nj_property_tax_deduction_eligible: true
+
+- name: 5 Income at exactly the joint filing threshold is eligible (boundary).
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    filing_status: JOINT
+    nj_agi: 20_000
+    real_estate_taxes: 30_000
+    rents: false
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: true
+
+- name: 6 Income at exactly the single filing threshold is eligible (boundary).
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    nj_agi: 10_000
+    real_estate_taxes: 30_000
+    rents: false
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: true
