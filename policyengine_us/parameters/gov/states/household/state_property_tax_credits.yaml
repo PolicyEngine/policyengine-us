@@ -5,6 +5,7 @@ values:
     - ct_property_tax_credit  # Connecticut Property Tax Credit
     # Exclude ca_renter_credit as it is for renters, not homeowners.
     - dc_ptc  # DC Property Tax Credit
+    - dc_senior_disabled_property_tax_relief  # DC senior disabled property tax relief
     # Exclude hi_tax_credit_for_low_income_household_renters as it is for renters, not homeowners.
     - ma_senior_circuit_breaker  # Massachusetts Senior Circuit Breaker Credit
     - me_property_tax_fairness_credit  # Maine Property Tax Fairness Credit

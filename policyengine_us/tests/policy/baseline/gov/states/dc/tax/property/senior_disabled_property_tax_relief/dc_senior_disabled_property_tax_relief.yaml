@@ -1,0 +1,71 @@
+- name: Case 1, senior homeowner receives half of property taxes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        takes_up_dc_ptc: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_senior_disabled_property_tax_relief: 2_000
+    state_property_tax_credit: 2_000
+
+- name: Case 2, disabled homeowner receives half of property taxes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        real_estate_taxes: 3_000
+        is_disabled: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_senior_disabled_property_tax_relief: 1_500
+
+- name: Case 3, ineligible homeowner receives no relief.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 40_000
+        real_estate_taxes: 4_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_senior_disabled_property_tax_relief: 0
