@@ -1,3 +1,10 @@
+## [1.691.4] - 2026-05-12
+
+### Fixed
+
+- Fix tax_unit_itemizes tied-federal-tax fallback to compare federal standard against federal itemized deductions, restoring TaxAct/TAXSIM behavior and resolving downstream CO/VT/LA state-tax discrepancies.
+
+
 ## [1.691.3] - 2026-05-12
 
 ### Changed
