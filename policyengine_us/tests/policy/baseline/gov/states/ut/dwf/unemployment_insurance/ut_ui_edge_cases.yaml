@@ -17,7 +17,8 @@
 #     https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R994-401-301
 #
 # ---------------------------------------------------------------------------
-# THRESHOLD BOUNDARIES — minimum base-period wages ($5,300 in 2024-2025; $5,500 in 2026)
+# THRESHOLD BOUNDARIES — minimum base-period wages
+# ($4,800 in 2024; $5,300 in 2025; $5,500 in 2026)
 # ---------------------------------------------------------------------------
 
 - name: Case 1, base wages one dollar below $5,300 floor fails minimum test.
@@ -680,17 +681,17 @@
 
 # ---------------------------------------------------------------------------
 # THRESHOLD BOUNDARIES — cross-year regression tests
-# (2024 floor: $5,300; 2026 floor: $5,500)
+# (2024 floor: $4,800; 2026 floor: $5,500)
 # ---------------------------------------------------------------------------
 
-- name: Case 28, 2024 base wages one dollar below $5,300 floor fail minimum test.
+- name: Case 28, 2024 base wages one dollar below $4,800 floor fail minimum test.
   period: 2024
   input:
     people:
       person1:
         age: 35
-        ut_ui_base_period_wages: 5_299
-        ut_ui_high_quarter_wages: 3_200
+        ut_ui_base_period_wages: 4_799
+        ut_ui_high_quarter_wages: 3_000
         ut_ui_quarters_with_wages: 4
     households:
       household:
@@ -699,17 +700,18 @@
   output:
     people:
       person1:
-        # Test 1: $5,299 < $5,300 (2024 minimum) -> fails.
+        # Test 1: $4,799 < $4,800 (2024 minimum) -> fails.
+        # (Tests 2 and 3 would pass: 4 quarters >= 2; 4,799 >= 1.5*3,000=4,500.)
         ut_ui_monetarily_eligible: false
 
-- name: Case 29, 2024 base wages exactly at $5,300 floor pass the minimum test.
+- name: Case 29, 2024 base wages exactly at $4,800 floor pass the minimum test.
   period: 2024
   input:
     people:
       person1:
         age: 35
-        ut_ui_base_period_wages: 5_300
-        ut_ui_high_quarter_wages: 3_200
+        ut_ui_base_period_wages: 4_800
+        ut_ui_high_quarter_wages: 3_000
         ut_ui_quarters_with_wages: 4
     households:
       household:
@@ -718,9 +720,9 @@
   output:
     people:
       person1:
-        # Test 1: $5,300 >= $5,300 (2024 minimum).
+        # Test 1: $4,800 >= $4,800 (2024 minimum).
         # Test 2: 4 quarters >= 2.
-        # Test 3: $5,300 >= 1.5*$3,200 = $4,800.
+        # Test 3: $4,800 >= 1.5*$3,000 = $4,500.
         # All tests pass -> monetarily eligible.
         ut_ui_monetarily_eligible: true
 
@@ -781,7 +783,7 @@
   output:
     people:
       person1:
-        # Test 1: $5,300 < $5,300 (2026 minimum is $5,500) -> fails.
+        # Test 1: $5,300 < $5,500 (2026 minimum) -> fails.
         # Regression guard: a collapse of the parameter into a single value
-        # across years would let this case pass under the 2024/2025 floor.
+        # across years would let this case pass under the 2025 floor.
         ut_ui_monetarily_eligible: false
