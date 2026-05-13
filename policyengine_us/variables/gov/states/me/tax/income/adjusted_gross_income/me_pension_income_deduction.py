@@ -6,10 +6,9 @@ class me_pension_income_deduction(Variable):
     entity = TaxUnit
     label = "Maine pension income deduction"
     unit = USD
-    documentation = "Maine pension income deduction, which subtracts from federal AGI to compute Maine AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_1s_fillable.pdf#page=2"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -32,17 +31,27 @@ class me_pension_income_deduction(Variable):
         is_spouse = person("is_tax_unit_spouse", period)
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
-        relevant = where(is_joint, is_head | is_spouse, is_head)
-        total_non_military = tax_unit.sum(where(relevant, non_military_deduction, 0))
-        total_military = tax_unit.sum(where(relevant, military_retirement_pay, 0))
+        non_military_head_only = tax_unit.sum(where(is_head, non_military_deduction, 0))
+        non_military_with_spouse = tax_unit.sum(
+            where(is_head | is_spouse, non_military_deduction, 0)
+        )
+        total_non_military = where(
+            is_joint, non_military_with_spouse, non_military_head_only
+        )
+        military_head_only = tax_unit.sum(where(is_head, military_retirement_pay, 0))
+        military_with_spouse = tax_unit.sum(
+            where(is_head | is_spouse, military_retirement_pay, 0)
+        )
+        total_military = where(is_joint, military_with_spouse, military_head_only)
 
         # Phaseout fraction (Worksheet for Phaseout of Non-Military Pension
-        # Income Deduction). Military retirement pay is not phased out per
-        # 36 M.R.S. § 5122(2)(LL).
+        # Income Deduction). Military retirement pay is fully deducted
+        # under 36 M.R.S. § 5122(2)(M-2)(1)(b) and is not reduced by the
+        # § 5122(2)(M-3) phaseout.
         agi = tax_unit("adjusted_gross_income", period)
         start = p.phaseout.start[filing_status]
-        length = p.phaseout.length[filing_status]
+        width = p.phaseout.width[filing_status]
         excess = max_(agi - start, 0)
-        phaseout_fraction = min_(excess / length, 1)
+        phaseout_fraction = min_(excess / width, 1)
         allowed_non_military = total_non_military * (1 - phaseout_fraction)
         return allowed_non_military + total_military

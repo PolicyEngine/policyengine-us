@@ -184,8 +184,77 @@
       spm_unit:
         members: [person1]
   output:
-    # Federal AGI = $300,000 (well above $125k single threshold + $100k length)
+    # Federal AGI ~ $390,000 (interest $300k + pension $50k + military $40k);
+    # well above $125k single threshold + $100k width.
     # Non-military pension deduction P5 = min(50_000, 48_216) = 48_216;
-    # phaseout fraction = 1 -> non-military allowed = 0
-    # Military retirement pay $40,000 not phased out
+    # phaseout fraction = 1 -> non-military allowed = 0.
+    # Military retirement pay $40,000 not phased out.
     me_pension_income_deduction: 40_000
+
+# Exercises the half-width $50K MFS ramp (only filing status with a
+# different phaseout width).
+- name: Maine 2025 MFS pension deduction with mid-phaseout AGI
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        social_security: 0
+        pension_income: 60_000
+        military_retirement_pay: 0
+        taxable_interest_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Federal AGI = $150,000; MFS threshold $125k, width $50k.
+    # Excess = $25,000; fraction = 0.5.
+    # Pre-phaseout P5 = min($60,000, $48,216) = $48,216.
+    # Allowed = $48,216 * 0.5 = $24,108.
+    me_pension_income_deduction: 24_108
+
+# Exercises the joint head+spouse aggregation under partial phaseout.
+- name: Maine 2025 joint filers with two pensions and mid-phaseout AGI
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        social_security: 0
+        pension_income: 30_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        social_security: 0
+        pension_income: 30_000
+        taxable_interest_income: 275_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Federal AGI = $275,000 (interest); JOINT threshold $250k, width $100k.
+    # Excess = $25,000; fraction = 0.25.
+    # Per-person non-military P5 = min($30,000, $48,216) = $30,000.
+    # Sum over head and spouse = $60,000.
+    # Allowed = $60,000 * (1 - 0.25) = $45,000.
+    me_pension_income_deduction: 45_000
