@@ -29,9 +29,9 @@
     ne_aabd_eligible: true
     ne_aabd_living_arrangement: INDEPENDENT
     # Independent budget (2021 rates frozen through 2025):
-    # standard size 1 ($564) + single shelter ($281) = $845.
-    ne_aabd_standard_of_need: 845
-    # Fill-the-gap: max(0, $845 - $967) = $0 because federal FBR exceeds NE budget.
+    # standard size 1 ($564) + actual shelter capped at $281 ($0 here) = $564.
+    ne_aabd_standard_of_need: 564
+    # Fill-the-gap: max(0, $564 - $967) = $0 because federal FBR exceeds NE budget.
     ne_aabd: 0
 
 - name: Case 2, independent couple in Nebraska both receiving SSI.
@@ -69,10 +69,10 @@
     ssi: [725, 725]
     ne_aabd_eligible: [true, true]
     # Independent budget for size 2 (2021 rates):
-    # standard size 2 ($887) + multiple shelter ($349) = $1,236.
-    # Per-spouse share: $1,236 / 2 = $618.
-    ne_aabd_standard_of_need: [618, 618]
-    # Fill-the-gap: max(0, $618 - $725) = $0 because couple FBR exceeds NE budget.
+    # standard size 2 ($887) + actual shelter capped at $349 ($0 here) = $887.
+    # Per-spouse share: $887 / 2 = $443.50.
+    ne_aabd_standard_of_need: [443.5, 443.5]
+    # Fill-the-gap: max(0, $443.50 - $725) = $0.
     ne_aabd: [0, 0]
 
 - name: Case 3, single SSI recipient in an Assisted Living Facility.
@@ -209,8 +209,9 @@
     ssi: 967
     ne_aabd_eligible: true
     ne_aabd_living_arrangement: INDEPENDENT
-    ne_aabd_standard_of_need: 845
-    # Fill-the-gap is bounded by the standard of need: max(0, $845 - $967) = $0.
+    # $0 shelter cost defaults: standard size 1 ($564) + actual shelter $0 = $564.
+    ne_aabd_standard_of_need: 564
+    # Fill-the-gap is bounded by the standard of need: max(0, $564 - $967) = $0.
     # The formula must NOT add the negative income excess back into the supplement.
     ne_aabd: 0
 
@@ -284,10 +285,10 @@
     # Federal SSI (2016) individual FBR = $733.
     ssi: 733
     ne_aabd_eligible: true
-    # 2016 falls under 2015 rates: standard size 1 ($491) + single shelter ($281) = $772.
-    ne_aabd_standard_of_need: 772
-    # Fill-the-gap: max(0, $772 - $733) = $39.
-    ne_aabd: 39
+    # 2016 falls under 2015 rates: standard size 1 ($491) + $0 actual shelter = $491.
+    ne_aabd_standard_of_need: 491
+    # Fill-the-gap: max(0, $491 - $733) = $0; no shelter cost in this case.
+    ne_aabd: 0
 
 - name: Case 8b, boundary period 2017-01 uses 2017 standard of need rates.
   period: 2017-01
@@ -316,10 +317,10 @@
     # Federal SSI (2017) individual FBR = $735.
     ssi: 735
     ne_aabd_eligible: true
-    # 2017 rates: standard size 1 ($505) + single shelter ($281) = $786.
-    ne_aabd_standard_of_need: 786
-    # Fill-the-gap: max(0, $786 - $735) = $51.
-    ne_aabd: 51
+    # 2017 rates: standard size 1 ($505) + $0 actual shelter = $505.
+    ne_aabd_standard_of_need: 505
+    # Fill-the-gap: max(0, $505 - $735) = $0; no shelter cost in this case.
+    ne_aabd: 0
 
 - name: Case 9, post-2021 rates remain frozen so 2025-01 matches 2021 values.
   period: 2025-01
@@ -345,8 +346,8 @@
         members: [person1]
         state_code: NE
   output:
-    # 2025 rates equal 2021 rates: standard size 1 ($564) + single shelter ($281) = $845.
-    ne_aabd_standard_of_need: 845
+    # 2025 rates equal 2021 rates: standard size 1 ($564) + $0 actual shelter = $564.
+    ne_aabd_standard_of_need: 564
 
 - name: Case 11, non-Nebraska resident with otherwise eligible facts gets zero benefit.
   period: 2025-01
@@ -409,9 +410,9 @@
         members: [person1, person2]
         state_code: NE
   output:
-    # Couple FBR (2025) = $1,450; couple budget (2021 frozen) = $887 + $349 = $1,236.
-    # Per spouse: standard_of_need = $1,236/2 = $618; federal_ssi = $725.
-    # Fill-the-gap: max(0, $618 - $725) = $0 each.
+    # Couple FBR (2025) = $1,450; couple budget (2021 frozen) = $887 + $0 actual shelter = $887.
+    # Per spouse: standard_of_need = $887/2 = $443.50; federal_ssi = $725.
+    # Fill-the-gap: max(0, $443.50 - $725) = $0 each.
     ne_aabd_couple_rate_applies: [true, true]
     ne_aabd: [0, 0]
 
@@ -517,8 +518,9 @@
     # $20 is fully excluded -> ssi = FBR = $967.
     ssi: 967
     ne_aabd_eligible: true
-    ne_aabd_standard_of_need: 845
-    # Fill-the-gap: max(0, $845 - $967) = $0.
+    # $0 shelter cost defaults: standard size 1 ($564) + $0 actual shelter = $564.
+    ne_aabd_standard_of_need: 564
+    # Fill-the-gap: max(0, $564 - $967) = $0.
     ne_aabd: 0
 
 - name: Case 16a, boundary period 2020-01 still uses 2017 standard of need rates.
@@ -547,10 +549,10 @@
   output:
     # Federal SSI (2020) individual FBR = $783.
     ssi: 783
-    # 2020 falls under 2017 NE rates: $505 + $281 = $786.
-    ne_aabd_standard_of_need: 786
-    # Fill-the-gap: max(0, $786 - $783) = $3.
-    ne_aabd: 3
+    # 2020 falls under 2017 NE rates: $505 + $0 actual shelter = $505.
+    ne_aabd_standard_of_need: 505
+    # Fill-the-gap: max(0, $505 - $783) = $0; no shelter cost in this case.
+    ne_aabd: 0
 
 - name: Case 16b, boundary period 2021-01 uses 2021 standard of need rates.
   period: 2021-01
@@ -578,10 +580,10 @@
   output:
     # Federal SSI (2021) individual FBR = $794.
     ssi: 794
-    # 2021 rates: $564 + $281 = $845.
-    ne_aabd_standard_of_need: 845
-    # Fill-the-gap: max(0, $845 - $794) = $51.
-    ne_aabd: 51
+    # 2021 rates: $564 + $0 actual shelter = $564.
+    ne_aabd_standard_of_need: 564
+    # Fill-the-gap: max(0, $564 - $794) = $0; no shelter cost in this case.
+    ne_aabd: 0
 
 - name: Case 17, negative employment income does not inflate the supplement.
   period: 2025-01
@@ -648,6 +650,151 @@
     # Federal SSI: $967 - ($50 - $20) = $937.
     ssi: 937
     ne_aabd_eligible: true
-    ne_aabd_standard_of_need: 845
-    # Fill-the-gap: max(0, $845 - $937 - 0) = $0.
+    # $0 shelter cost defaults: standard size 1 ($564) + $0 actual shelter = $564.
+    ne_aabd_standard_of_need: 564
+    # Fill-the-gap: max(0, $564 - $937 - 0) = $0.
     ne_aabd: 0
+
+- name: Case 20, independent single with below-cap shelter cost (2021).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        # $200/month rent = $2,400/year, below the $281 single shelter cap.
+        rent: 2_400
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2021) individual FBR = $794.
+    ssi: 794
+    ne_aabd_eligible: true
+    # Standard size 1 ($564) + actual shelter $200 (below $281 cap) = $764.
+    ne_aabd_standard_of_need: 764
+    # Fill-the-gap: max(0, $764 - $794) = $0.
+    ne_aabd: 0
+
+- name: Case 21, independent single with at-cap shelter cost (2021).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        # $281/month rent = $3,372/year, exactly at the single shelter cap.
+        rent: 3_372
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2021) individual FBR = $794.
+    ssi: 794
+    ne_aabd_eligible: true
+    # Standard size 1 ($564) + actual shelter $281 (= $281 cap) = $845.
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $794) = $51.
+    ne_aabd: 51
+
+- name: Case 22, independent single with above-cap shelter cost is capped at max (2021).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+        # $500/month rent = $6,000/year, above the $281 single shelter cap.
+        rent: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # Federal SSI (2021) individual FBR = $794.
+    ssi: 794
+    ne_aabd_eligible: true
+    # Standard size 1 ($564) + actual shelter capped at $281 = $845, not $564 + $500.
+    ne_aabd_standard_of_need: 845
+    # Fill-the-gap: max(0, $845 - $794) = $51.
+    ne_aabd: 51
+
+- name: Case 23, independent couple with above-cap shelter cost uses multiple cap (2021).
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+        # $400/month rent for the SPM unit = $4,800/year, above the $349 cap.
+        rent: 4_800
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Couple FBR (2021) = $1,191; each spouse gets $595.50.
+    ssi: [595.5, 595.5]
+    ne_aabd_eligible: [true, true]
+    # Combined budget: standard size 2 ($887) + actual shelter capped at $349 = $1,236.
+    # Per-spouse share: $1,236 / 2 = $618.
+    ne_aabd_standard_of_need: [618, 618]
+    # Fill-the-gap: max(0, $618 - $595.50) = $22.50 each.
+    ne_aabd: [22.5, 22.5]

@@ -19,18 +19,21 @@ class ne_aabd_standard_of_need(Variable):
         LA = living_arrangement.possible_values
         is_independent = living_arrangement == LA.INDEPENDENT
         couple_applies = person("ne_aabd_couple_rate_applies", period)
-        # For independent couples: combined 2-person standard plus the
-        # multiple-shelter allowance, split 50/50 between spouses. For
-        # individuals living independently: 1-person standard plus the
-        # single-shelter allowance.
+        # Per 469 NAC 3-006.02B1a / 3-006.02B3a(1)(a), the independent
+        # budget is the standard of need plus actual shelter expense up to
+        # the single (one person) or multiple (couple) shelter cap. Shelter
+        # includes rent and home ownership expenses (469 NAC 3-004.02).
         independent_size = where(couple_applies, 2, 1)
         independent_son = p.standard_of_need.independent[independent_size]
-        independent_shelter = where(
+        shelter_max = where(
             couple_applies,
             p.shelter_allowance.multiple,
             p.shelter_allowance.single,
         )
+        actual_shelter = person.spm_unit("housing_cost", period)
+        independent_shelter = min_(actual_shelter, shelter_max)
         independent_total = independent_son + independent_shelter
+        # Couples split the combined budget 50/50 between spouses.
         independent_amount = where(
             couple_applies,
             independent_total / 2,
