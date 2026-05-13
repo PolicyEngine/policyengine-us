@@ -269,8 +269,8 @@
         state_code: MO
   output:
     # SAB eligibility is independent of SSI receipt; nominal SSI does not
-    # affect this — the SAB income test uses ssi_countable_income against the
-    # consolidated standard.
+    # affect this — the SAB income test uses mo_sab_countable_income against
+    # the consolidated standard.
     mo_ssp_eligible: true
 
 - name: Case 15, adult with valid eligibility outside Missouri is not eligible.
@@ -305,9 +305,9 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2026 SAB monthly income limit $1,073; ssi_countable_income for blind
-    # earner with $30,000 annual employment income exceeds the limit after
-    # federal SSI exclusions, so SAB pathway fails.
+    # FY2026 SAB monthly income limit $1,073; mo_sab_countable_income for
+    # blind earner with $30,000 annual employment income exceeds the limit
+    # after SSI-style exclusions, so SAB pathway fails.
     mo_ssp_eligible: false
 
 - name: Case 17, SAB applicant with non-SSI income at or below the monthly limit is eligible.
@@ -325,6 +325,8 @@
         members: [person1]
         state_code: MO
   output:
-    # FY2026 SAB monthly income limit $1,073; $12,000 / 12 = $1,000 monthly
-    # earned income is within the limit so SAB pathway passes.
+    # FY2026 SAB monthly income limit $1,073; mo_sab_countable_income after
+    # SSI-style exclusions ($20 general + $65 earned + 50% remainder) on
+    # $1,000 monthly earned income is ~$458/month, within the limit, so SAB
+    # pathway passes.
     mo_ssp_eligible: true

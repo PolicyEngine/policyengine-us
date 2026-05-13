@@ -9,8 +9,9 @@ class mo_snc_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.MO
     documentation = (
-        "Approximates Supplemental Nursing Care income from modeled cash "
-        "income sources; Missouri-specific disregards are not modeled."
+        "Approximates Supplemental Nursing Care countable income from modeled "
+        "cash income sources; Missouri-specific exclusions, overhead expenses, "
+        "and supported employment disregards are not modeled."
     )
     reference = (
         "https://dssmanuals.mo.gov/supplemental-nursing-care/0610-000-00/0610-005-00/",
