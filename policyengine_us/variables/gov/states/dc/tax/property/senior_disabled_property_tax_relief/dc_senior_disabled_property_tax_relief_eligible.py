@@ -7,8 +7,7 @@ class dc_senior_disabled_property_tax_relief_eligible(Variable):
     label = "Eligible for the DC senior disabled property tax relief"
     definition_period = YEAR
     reference = (
-        "https://otr.cfo.dc.gov/page/"
-        "real-property-tax-reliefs-credits-and-deductions",
+        "https://otr.cfo.dc.gov/page/real-property-tax-reliefs-credits-and-deductions",
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-863",
     )
     defined_for = StateCode.DC
