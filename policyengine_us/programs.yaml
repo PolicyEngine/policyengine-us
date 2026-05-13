@@ -900,6 +900,17 @@ programs:
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
 
+  - id: ut_ui
+    name: Utah UI
+    full_name: Utah Unemployment Insurance
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: UT
+    verified_years: "2024-2026"
+    variable: ut_ui
+    parameter_prefix: gov.states.ut.dwf.unemployment_insurance
+
   - id: tx_fpp_benefit
     name: Texas FPP
     full_name: Texas Family Planning Program

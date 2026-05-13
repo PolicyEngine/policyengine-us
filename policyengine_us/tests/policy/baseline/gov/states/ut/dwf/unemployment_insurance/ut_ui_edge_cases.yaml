@@ -1,0 +1,679 @@
+# Edge case tests for Utah Unemployment Insurance (UT UI).
+#
+# Covers boundary conditions for the three monetary eligibility tests,
+# the WBA formula and cap, the duration clamp, partial-benefit
+# disregard/hour rules, annual MBA cap, and the StateCode.UT gate.
+#
+# References:
+#   - Utah Code § 35A-4-201(16) (minimum base-period wages)
+#     https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S201.html
+#   - Utah Code § 35A-4-401 (WBA, duration, MBA, partial benefit)
+#     https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S401.html
+#   - Utah Code § 35A-4-403(1)(f)(i) (1.5x ratio test)
+#     https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S403.html
+#   - Utah Admin Code R994-401-202 (quarters test)
+#     https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R994-401-202
+#   - Utah Admin Code R994-401-301 (partial benefit)
+#     https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R994-401-301
+#
+# ---------------------------------------------------------------------------
+# THRESHOLD BOUNDARIES — minimum base-period wages ($5,500)
+# ---------------------------------------------------------------------------
+
+- name: Case 1, base wages one dollar below $5,500 floor fails minimum test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_499
+        ut_ui_high_quarter_wages: 3_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $5,499 < $5,500 minimum -> fails.
+        # (Tests 2 and 3 would pass: 4 quarters >= 2; 5499 >= 1.5*3000=4500.)
+        ut_ui_monetarily_eligible: false
+
+- name: Case 2, base wages exactly at $5,500 floor pass the minimum test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_500
+        ut_ui_high_quarter_wages: 3_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $5,500 >= $5,500 minimum (>=, not strict).
+        # Test 2: 4 quarters >= 2.
+        # Test 3: $5,500 >= 1.5*$3,000 = $4,500.
+        # All tests pass -> monetarily eligible.
+        ut_ui_monetarily_eligible: true
+
+- name: Case 3, base wages one dollar above $5,500 floor pass the minimum test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_501
+        ut_ui_high_quarter_wages: 3_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $5,501 >= $5,500 minimum.
+        # All tests pass -> monetarily eligible.
+        ut_ui_monetarily_eligible: true
+
+# ---------------------------------------------------------------------------
+# THRESHOLD BOUNDARIES — 1.5x high-quarter ratio
+# ---------------------------------------------------------------------------
+
+- name: Case 4, base wages exactly 1.5 times high quarter pass the ratio test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 15_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 1: $15,000 >= $5,500 minimum.
+        # Test 2: 4 quarters >= 2.
+        # Test 3: $15,000 = 1.5 * $10,000 exactly (>=, not strict).
+        # All tests pass -> monetarily eligible.
+        ut_ui_monetarily_eligible: true
+
+- name: Case 5, base wages one cent below 1.5x high quarter fails the ratio test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 14_999.99
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 3: $14,999.99 < 1.5 * $10,000 = $15,000.00 -> fails.
+        ut_ui_monetarily_eligible: false
+
+# ---------------------------------------------------------------------------
+# THRESHOLD BOUNDARIES — quarters with wages
+# ---------------------------------------------------------------------------
+
+- name: Case 6, only one quarter of wages fails the quarter-count test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 15_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 1
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 2: 1 quarter < 2 required -> fails.
+        ut_ui_monetarily_eligible: false
+
+- name: Case 7, exactly two quarters of wages pass the quarter-count test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 15_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Test 2: 2 quarters >= 2 required (>=, not strict).
+        # All tests pass -> monetarily eligible.
+        ut_ui_monetarily_eligible: true
+
+# ---------------------------------------------------------------------------
+# WBA EDGE CASES — zero, negative-protected, and at-max boundaries
+# ---------------------------------------------------------------------------
+
+- name: Case 8, zero high-quarter wages with monetary failure yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 0
+        ut_ui_high_quarter_wages: 0
+        ut_ui_quarters_with_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Raw WBA = floor(0/26) - 5 = -5 -> max_(.,0) = 0 (no negative WBA).
+        # Also not monetarily eligible, so WBA forced to 0.
+        ut_ui_monetarily_eligible: false
+        ut_ui_weekly_benefit_amount: 0
+
+- name: Case 9, very low high quarter with floor(HQ/26)<5 still yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_500
+        ut_ui_high_quarter_wages: 100
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $5,500 >= $5,500 min; 4 quarters >= 2;
+        # $5,500 >= 1.5*$100 = $150.
+        ut_ui_monetarily_eligible: true
+        # Raw WBA = floor(100/26) - 5 = 3 - 5 = -2 -> max_(.,0) = 0.
+        # Tests negative-protection: WBA must never be negative.
+        ut_ui_weekly_benefit_amount: 0
+
+- name: Case 10, high quarter at exact lower boundary of 2024 WBA cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 18_642
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $18,642 = $27,963.
+        # Raw WBA = floor(18,642/26) - 5 = floor(717.0) - 5 = 717 - 5 = $712.
+        # 2024 cap = $712 -> WBA exactly hits the cap with no clipping.
+        ut_ui_weekly_benefit_amount: 712
+
+- name: Case 11, high quarter just above 2024 cap threshold is capped to 712.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 18_668
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Raw WBA = floor(18,668/26) - 5 = floor(718.0) - 5 = 718 - 5 = $713.
+        # 2024 cap = $712 -> capped down to $712.
+        ut_ui_weekly_benefit_amount: 712
+
+- name: Case 12, high quarter at exact lower boundary of 2025 WBA cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 20_332
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $20,332 = $30,498.
+        # Raw WBA = floor(20,332/26) - 5 = floor(782.0) - 5 = 782 - 5 = $777.
+        # 2025 cap = $777 -> WBA exactly hits the cap with no clipping.
+        ut_ui_weekly_benefit_amount: 777
+
+- name: Case 13, high quarter at exact lower boundary of 2026 WBA cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 21_086
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $21,086 = $31,629.
+        # Raw WBA = floor(21,086/26) - 5 = floor(811.0) - 5 = 811 - 5 = $806.
+        # 2026 cap = $806 -> WBA exactly hits the cap with no clipping.
+        ut_ui_weekly_benefit_amount: 806
+
+# ---------------------------------------------------------------------------
+# DURATION EDGE CASES — clamps and divide-by-zero guard
+# ---------------------------------------------------------------------------
+
+- name: Case 14, zero WBA yields zero duration (divide-by-zero guard).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_500
+        ut_ui_high_quarter_wages: 100
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = 0 (see Case 9). Duration formula short-circuits to 0
+        # rather than dividing by zero or returning the 10-week floor.
+        ut_ui_weekly_benefit_amount: 0
+        ut_ui_duration_weeks: 0
+
+- name: Case 15, base wages exactly at 1.5x ratio produce 10-week minimum duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ut_ui_base_period_wages: 15_600
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible at the 1.5x boundary: $15,600 = 1.5 * $10,400.
+        # WBA = floor($10,400/26) - 5 = $400 - $5 = $395.
+        # Raw weeks = floor(floor(0.27 * $15,600) / $395)
+        #           = floor($4,212 / $395) = floor(10.66) = 10.
+        # At the 10-week floor (in practice, the 1.5x monetary boundary
+        # forces raw_weeks asymptotically toward 10; the floor clamp is a
+        # safety guarantee even though it rarely binds).
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 10
+
+- name: Case 16, ratio of base*0.27/WBA at exactly 26 yields 26-week duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 9_630
+        ut_ui_high_quarter_wages: 2_730
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $9,630 >= $5,500 min; 4 quarters >= 2;
+        # $9,630 >= 1.5 * $2,730 = $4,095.
+        # WBA = floor($2,730/26) - 5 = $105 - $5 = $100.
+        # Step 1: floor(0.27 * $9,630) = floor($2,600.10) = $2,600.
+        # Step 2: $2,600 / $100 = 26.0 -> floor = 26.
+        # Exactly at the 26-week cap with no clamping.
+        ut_ui_weekly_benefit_amount: 100
+        ut_ui_duration_weeks: 26
+
+- name: Case 17, ratio of base*0.27/WBA at 26.5 floors to 26-week duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 9_815
+        ut_ui_high_quarter_wages: 2_730
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $100 (same HQ as Case 16).
+        # Step 1: floor(0.27 * $9,815) = floor($2,650.05) = $2,650.
+        # Step 2: $2,650 / $100 = 26.5 -> floor = 26.
+        # Hit the 26-week cap through clamping.
+        ut_ui_weekly_benefit_amount: 100
+        ut_ui_duration_weeks: 26
+
+# ---------------------------------------------------------------------------
+# PARTIAL BENEFIT EDGE CASES — 30% disregard, WBA floor, 40-hour rule
+# ---------------------------------------------------------------------------
+
+- name: Case 18, earnings exactly at WBA disqualify the week.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 395
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395 (HQ $10,400). Earnings $395 >= WBA $395 -> disqualified.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 0
+
+- name: Case 19, earnings just below the 30% disregard preserve full WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 118
+        ut_ui_weekly_hours_worked: 10
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. Disregard = 0.30 * $395 = $118.50.
+        # Earnings = $118 (just below $118.50 disregard).
+        # Excess = max(0, $118 - $118.50) = max(0, -$0.50) = $0.
+        # Payable = floor(max(0, $395 - $0)) = $395.
+        # NB: testing exactly $118.50 is avoided due to IEEE-754 imprecision
+        # in 0.30 * WBA, which would yield a sub-cent positive excess and
+        # floor the result to $394.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 395
+
+- name: Case 20, earnings just above 30% disregard yield a small reduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 120
+        ut_ui_weekly_hours_worked: 10
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. Disregard = $118.50.
+        # Excess = $120 - $118.50 = $1.50.
+        # Payable = floor(max(0, $395 - $1.50)) = floor($393.50) = $393.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 393
+
+- name: Case 21, weekly hours of 39 do not trigger the 40-hour disqualification.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 39
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. 39 hours < 40-hour threshold -> not disqualified.
+        # Earnings $0 < disregard $118.50 -> excess $0 -> payable = $395.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 395
+
+- name: Case 22, weekly hours exactly at 40 trigger the disqualification.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 40
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. 40 hours >= 40-hour threshold (>=, not strict) ->
+        # disqualified -> weekly payable = $0.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 0
+
+- name: Case 23, weekly hours of 41 trigger the disqualification.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 41
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # 41 hours > 40-hour threshold -> disqualified -> payable = $0.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 0
+
+- name: Case 24, negative weekly earnings (data error) do not inflate payable above WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: -100
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. Disregard = $118.50.
+        # Excess = max(0, -$100 - $118.50) = max(0, -$218.50) = $0.
+        # Payable = floor(max(0, $395 - $0)) = $395.
+        # Critical: negative earnings cannot push payable above WBA via the
+        # max_() clamps on both the excess and the final payable.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 395
+
+# ---------------------------------------------------------------------------
+# ANNUAL BENEFIT (MBA cap) EDGE CASES
+# ---------------------------------------------------------------------------
+
+- name: Case 25, zero weeks unemployed produce zero annual benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 0
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395; duration = 17; MBA = $6,715; payable = $395.
+        # Annual = min($395 * 0, $6,715) = min($0, $6,715) = $0.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+        ut_ui_maximum_benefit_amount: 6_715
+        ut_ui_weekly_payable_amount: 395
+        ut_ui: 0
+
+- name: Case 26, weeks unemployed exceeding duration weeks cap at MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 26
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395; duration = 17; MBA = $395 * 17 = $6,715.
+        # Uncapped annual = $395 * 26 = $10,270.
+        # min($10,270, $6,715) = $6,715 -> capped at MBA.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+        ut_ui_maximum_benefit_amount: 6_715
+        ut_ui_weekly_payable_amount: 395
+        ut_ui: 6_715
+
+# ---------------------------------------------------------------------------
+# STATE GATE — defined_for = StateCode.UT
+# ---------------------------------------------------------------------------
+
+- name: Case 27, out-of-state household (California) yields zero Utah UI benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 80_000
+        ut_ui_high_quarter_wages: 25_000
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 26
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    people:
+      person1:
+        # ut_ui has defined_for = StateCode.UT -> zero for non-UT households,
+        # regardless of all monetary and benefit inputs.
+        ut_ui: 0

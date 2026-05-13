@@ -1,0 +1,102 @@
+# Tests for Utah UI potential duration in weeks.
+# Formula (§ 35A-4-401(4)(b)):
+#   raw_weeks = floor(floor(0.27 * base_period_wages) / WBA)
+#   duration_weeks = clip(raw_weeks, 10, 26)
+# Duration is 0 when WBA = 0 (e.g., not monetarily eligible).
+
+- name: Case 1, high base wages clamped to 26-week maximum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $10,400 = $15,600.
+        # WBA = floor($10,400 / 26) - $5 = $400 - $5 = $395.
+        # Raw weeks = floor(floor(0.27 * $50,000) / $395)
+        #           = floor($13,500 / $395) = floor(34.18) = 34.
+        # Clamp to max 26 weeks.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 26
+
+- name: Case 2, minimum-eligibility base wages produce 10-week floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 15_600
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible at the 1.5x boundary: $15,600 = 1.5 * $10,400.
+        # WBA = $395.
+        # Raw weeks = floor(floor(0.27 * $15,600) / $395)
+        #           = floor($4,212 / $395) = floor(10.66) = 10.
+        # At the 10-week floor.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 10
+
+- name: Case 3, mid-range base wages produce 17-week duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $25,000 >= 1.5 * $10,400 = $15,600.
+        # WBA = $395.
+        # Raw weeks = floor(floor(0.27 * $25,000) / $395)
+        #           = floor($6,750 / $395) = floor(17.09) = 17.
+        # Between 10 and 26 -> no clamping.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+
+- name: Case 4, WBA equals zero yields zero duration.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_000
+        ut_ui_high_quarter_wages: 2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # $5,000 < $5,500 minimum -> not monetarily eligible -> WBA = 0.
+        # Duration = 0 (bypasses 10-week floor when WBA = 0).
+        ut_ui_weekly_benefit_amount: 0
+        ut_ui_duration_weeks: 0
