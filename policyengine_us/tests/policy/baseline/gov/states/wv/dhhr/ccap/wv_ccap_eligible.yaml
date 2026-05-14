@@ -60,7 +60,10 @@
     people:
       person1:
         age: 30
-        employment_income: 48_000
+        # Need income above 85% SMI for family of 2:
+        #   WV 4-person SMI (2024-10-01) = 90,661; 2-person factor = 0.68
+        #   85% SMI family of 2 = 90,661 * 0.68 * 0.85 = 52,401.86/yr
+        employment_income: 60_000
         weekly_hours_worked: 40
       person2:
         age: 5
@@ -77,7 +80,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Income 48,000 > 185% FPL (39,127.50) -> not income eligible
+    # 60,000 > 52,401.86 -> not income eligible
     wv_ccap_eligible: false
 
 - name: Case 4, parent not meeting activity hours means not eligible.
@@ -139,7 +142,7 @@
     # Child age 3 < 13 -> eligible child
     wv_ccap_eligible: true
 
-- name: Case 6, parent under 18 means not eligible.
+- name: Case 6, minor parent in qualifying activity remains eligible.
   period: 2025-01
   input:
     people:
@@ -162,5 +165,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Parent age 17 < 18 -> not parent age eligible
-    wv_ccap_eligible: false
+    # Manual §1.1.10, §4.5.3.6, §4.5.6 contemplate minor parents in
+    # qualifying activity. Parent age 17 working 25 hrs/wk meets the
+    # activity test; income well below 85% SMI; child age 1 eligible.
+    wv_ccap_eligible: true

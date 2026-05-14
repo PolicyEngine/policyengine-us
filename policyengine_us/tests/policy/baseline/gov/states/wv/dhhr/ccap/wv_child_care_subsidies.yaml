@@ -1,6 +1,6 @@
-- name: WV child care subsidies wrapper.
+- name: Case 1, WV child care subsidies wrapper.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:

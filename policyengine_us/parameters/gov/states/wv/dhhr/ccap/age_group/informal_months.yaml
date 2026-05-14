@@ -9,15 +9,16 @@ metadata:
     - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
       href: https://bfa.wv.gov/media/6831/download?inline
 
-# Maps age in months to WVCCAPInformalAgeGroup enum index:
-# 0 = UNDER_2 (0-23 months)
-# 1 = AGE_2_AND_OVER (24+ months)
+# Maps age in months to WVCCAPInformalAgeGroup enum index, matching
+# Appendix B's INFANT (0-24 months) and TODDLER+ (25+ months) bands:
+# 0 = UNDER_2 (0-24 months)
+# 1 = AGE_2_AND_OVER (25+ months)
 brackets:
   - threshold:
       2024-01-01: 0
     amount:
       2024-01-01: 0
   - threshold:
-      2024-01-01: 24
+      2024-01-01: 25
     amount:
       2024-01-01: 1

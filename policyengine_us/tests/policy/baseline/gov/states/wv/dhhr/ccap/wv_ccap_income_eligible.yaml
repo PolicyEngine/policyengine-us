@@ -1,9 +1,10 @@
 # WV CCAP Income Eligibility Tests
-# 2025 FPG (Contiguous US):
-#   first_person = 15_650, additional = 5_500
-#   Family of 2: 21_150
+# Single income test per CCDF Plan §2.2.4 / §2.2.5(a): 85% of state median income.
+# WV 4-person SMI (2024-10-01) = 90_661/yr
+# Family-size factors: 1p=0.52, 2p=0.68, 3p=0.84, 4p=1.00, 5p=1.16, 6p=1.32
+# 85% SMI family of 2 = 90_661 * 0.68 * 0.85 = 52_401.86/yr = 4_366.82/mo
 
-- name: Case 1, income below 185% FPL for initial applicant.
+- name: Case 1, income below 85% SMI eligible.
   period: 2025-01
   input:
     people:
@@ -23,18 +24,16 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # FPG family of 2: 21_150
-    # 185% FPL = 39_127.50
-    # monthly income = 2_000; monthly limit = 3_260.63
+    # monthly income = 2_000 <= 4_366.82 -> eligible
     wv_ccap_income_eligible: true
 
-- name: Case 2, income above 185% FPL for new applicant.
+- name: Case 2, income above 85% SMI ineligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 48_000
+        employment_income: 60_000
       person2:
         age: 5
     tax_units:
@@ -48,16 +47,17 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 4_000 > 185% FPL monthly = 3_260.63
+    # monthly income = 5_000 > 4_366.82 -> ineligible
     wv_ccap_income_eligible: false
 
-- name: Case 3, enrolled family at 170% FPL eligible under ongoing threshold.
+- name: Case 3, income at 85% SMI boundary eligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 36_000
+        # Just below 85% SMI for family of 2
+        employment_income: 52_000
       person2:
         age: 5
     tax_units:
@@ -66,14 +66,12 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        wv_ccap_enrolled: true
     households:
       household:
         members: [person1, person2]
         state_code: WV
   output:
-    # 185% FPL = 39_127.50; monthly = 3_260.63
-    # monthly income = 3_000 <= 3_260.63
+    # monthly income = 4_333.33 <= 4_366.82 -> eligible
     wv_ccap_income_eligible: true
 
 - name: Case 4, TANF recipients categorically eligible.
@@ -97,4 +95,8 @@
         members: [person1, person2]
         state_code: WV
   output:
+    # Income above SMI but TANF bypass applies per Manual §3.2.1.
+    # The bypass extends to TANF children-only cases (§3.2.1.4) that
+    # should still meet the income test — we don't currently model that
+    # distinction.
     wv_ccap_income_eligible: true

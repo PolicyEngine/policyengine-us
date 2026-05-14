@@ -13,20 +13,13 @@ class wv_ccap_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.wv.dhhr.ccap.eligibility
+        # We don't enforce a minimum parent-age floor: §1.1.10 recognizes
+        # emancipated minors, §1.1.13 treats them as separate families, and
+        # §4.5.3.6 / §4.5.6 explicitly contemplate minor parents in high
+        # school or home schooling. The activity requirement below carries
+        # the substantive caretaker check.
         has_eligible_child = add(spm_unit, period, ["wv_ccap_eligible_child"]) > 0
         income_eligible = spm_unit("wv_ccap_income_eligible", period)
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
         activity_eligible = spm_unit("wv_ccap_activity_eligible", period)
-        person = spm_unit.members
-        is_dependent = person("is_tax_unit_dependent", period.this_year)
-        age = person("age", period.this_year)
-        is_caretaker = ~is_dependent
-        parent_age_eligible = spm_unit.any(is_caretaker & (age >= p.min_parent_age))
-        return (
-            has_eligible_child
-            & income_eligible
-            & asset_eligible
-            & activity_eligible
-            & parent_age_eligible
-        )
+        return has_eligible_child & income_eligible & asset_eligible & activity_eligible

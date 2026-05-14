@@ -1,24 +1,26 @@
 # WV CCAP Edge Case Tests
+# Income test (single threshold) per CCDF Plan §2.2.4 / §2.2.5(a):
+#   85% of state median income.
+# WV 4-person SMI (2024-10-01) = 90_661/yr
+# Family-size factors: 1p=0.52, 2p=0.68, 3p=0.84, 4p=1.00, 5p=1.16, 6p=1.32
+# 85% SMI family of 2  = 90_661 * 0.68 * 0.85 = 52_401.86/yr = 4_366.82/mo
+# 85% SMI family of 3  = 90_661 * 0.84 * 0.85 = 64_731.81/yr = 5_394.32/mo
+# 85% SMI family of 11 = 90_661 * 1.47 * 0.85 = 113_280.92/yr = 9_440.08/mo
 # 2025 FPG (Contiguous US): first_person = 15_650, additional = 5_500
-# Family of 2: FPG = 21_150/yr = 1_762.50/mo
-# Family of 3: FPG = 26_650/yr = 2_220.83/mo
-# Family of 11: FPG = 70_650/yr = 5_887.50/mo
-# WV SMI 4-person base (2024-10-01): 90_661
-# Size adjustments: first=0.52, 2nd-6th=0.16, additional=0.03
+#   Family of 2 FPG = 21_150/yr = 1_762.50/mo; family of 3 = 26_650/yr.
 
 # ============================================================
-# Income threshold boundaries (initial applicant)
+# Income threshold boundaries (85% SMI)
 # ============================================================
 
-- name: Case 1, income at exactly 149% FPL initial applicant eligible.
+- name: Case 1, income well below 85% SMI eligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # 149% FPL for family of 2 = 21_150 * 1.49 = 31_513.50/yr
-        employment_income: 31_513
+        employment_income: 24_000
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -40,20 +42,18 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 31_513 / 12 = 2_626.08
-    # 150% FPL monthly = 21_150 * 1.50 / 12 = 2_643.75
-    # 2_626.08 <= 2_643.75 -> eligible
+    # monthly income = 2_000 <= 4_366.82 -> eligible
     wv_ccap_income_eligible: true
 
-- name: Case 2, income at exactly 150% FPL initial applicant eligible.
+- name: Case 2, income just below 85% SMI eligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # 150% FPL for family of 2 = 21_150 * 1.50 = 31_725/yr
-        employment_income: 31_725
+        # 85% SMI family of 2 = 52_401.86/yr
+        employment_income: 52_000
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -75,20 +75,18 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 31_725 / 12 = 2_643.75
-    # 150% FPL monthly = 21_150 * 1.50 / 12 = 2_643.75
-    # 2_643.75 <= 2_643.75 -> eligible (at boundary)
+    # monthly income = 4_333.33 <= 4_366.82 -> eligible (at boundary)
     wv_ccap_income_eligible: true
 
-- name: Case 3, income at 151% FPL initial applicant ineligible.
+- name: Case 3, income just above 85% SMI ineligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # 151% FPL for family of 2 = 21_150 * 1.51 = 31_936.50/yr
-        employment_income: 31_937
+        # Just above 85% SMI family of 2 (52_401.86/yr)
+        employment_income: 53_000
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -110,136 +108,21 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 31_937 / 12 = 2_661.42
-    # 150% FPL monthly = 21_150 * 1.50 / 12 = 2_643.75
-    # 2_661.42 > 2_643.75 -> ineligible (not enrolled)
+    # monthly income = 4_416.67 > 4_366.82 -> ineligible
     wv_ccap_income_eligible: false
 
 # ============================================================
-# Income threshold boundaries (ongoing/enrolled recipient)
+# Income above former two-tier FPL ceiling but below 85% SMI
 # ============================================================
 
-- name: Case 4, enrolled at 184% FPL ongoing eligible.
+- name: Case 4, income above the former 185% FPL ceiling but below 85% SMI.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # 184% FPL for family of 2 = 21_150 * 1.84 = 38_916/yr
-        employment_income: 38_916
-        immigration_status: CITIZEN
-      person2:
-        age: 3
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        wv_ccap_provider_type: CENTER
-        wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
-        pre_subsidy_childcare_expenses: 10_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        wv_ccap_enrolled: true
-        spm_unit_pre_subsidy_childcare_expenses: 10_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WV
-  output:
-    # monthly income = 38_916 / 12 = 3_243
-    # 185% FPL monthly = 21_150 * 1.85 / 12 = 3_260.63
-    # 3_243 <= 3_260.63 -> eligible
-    wv_ccap_income_eligible: true
-
-- name: Case 5, enrolled at exactly 185% FPL ongoing eligible.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        # 185% FPL for family of 2 = 21_150 * 1.85 = 39_127.50/yr
-        employment_income: 39_127
-        immigration_status: CITIZEN
-      person2:
-        age: 3
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        wv_ccap_provider_type: CENTER
-        wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
-        pre_subsidy_childcare_expenses: 10_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        wv_ccap_enrolled: true
-        spm_unit_pre_subsidy_childcare_expenses: 10_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WV
-  output:
-    # monthly income = 39_127 / 12 = 3_260.58
-    # 185% FPL monthly = 39_127.50 / 12 = 3_260.63
-    # 3_260.58 <= 3_260.63 -> eligible (at boundary)
-    wv_ccap_income_eligible: true
-
-- name: Case 6, enrolled at 186% FPL ongoing ineligible.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        # 186% FPL for family of 2 = 21_150 * 1.86 = 39_339/yr
-        employment_income: 39_339
-        immigration_status: CITIZEN
-      person2:
-        age: 3
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        wv_ccap_provider_type: CENTER
-        wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
-        pre_subsidy_childcare_expenses: 10_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        wv_ccap_enrolled: true
-        spm_unit_pre_subsidy_childcare_expenses: 10_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WV
-  output:
-    # monthly income = 39_339 / 12 = 3_278.25
-    # 185% FPL monthly = 39_127.50 / 12 = 3_260.63
-    # 3_278.25 > 3_260.63 -> ineligible
-    wv_ccap_income_eligible: false
-
-# ============================================================
-# 85% SMI cap boundary
-# ============================================================
-
-- name: Case 7, income below 85% SMI but above 150% FPL for initial applicant.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        # Above 185% FPL but under 85% SMI for family of 2
-        # 185% FPL = 39_127.50; 85% SMI family of 2 = 90_661 * (0.52+0.16) * 0.85 = 52_402.06
+        # 185% FPL family of 2 = 39_127.50/yr; 85% SMI family of 2 = 52_401.86/yr
         employment_income: 40_000
         immigration_status: CITIZEN
       person2:
@@ -257,31 +140,78 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 40_000 / 12 = 3_333.33
-    # 185% FPL monthly = 3_260.63
-    # 3_333.33 > 3_260.63 -> fails FPL test for initial applicant
-    wv_ccap_income_eligible: false
+    # monthly income = 3_333.33 <= 4_366.82 -> eligible.
+    # Demonstrates that 85% SMI is the operative income test.
+    wv_ccap_income_eligible: true
 
-- name: Case 8, enrolled income above 85% SMI ineligible despite passing FPL.
+- name: Case 5, income well above 85% SMI ineligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # For family of 1 (single parent, no child income):
-        # 85% SMI = 90_661 * 0.52 * 0.85 = 40_072.16/yr = 3_339.35/mo
-        # 185% FPL family of 2 = 39_127.50/yr = 3_260.63/mo
-        # Need income above 85% SMI but below 185% FPL
-        # Actually for family of 2, 85% SMI = 52_402.06 >> 185% FPL = 39_127.50
-        # So SMI is not the binding constraint for small families.
-        # Use family of 1 (single person SPM unit with a child):
-        # For family of 2: 85% SMI = 52_402.06 which is very high.
-        # Let's test with a large family where SMI becomes binding.
-        # Family of 11: 85% SMI = 90_661 * (0.52 + 0.16*5 + 0.03*5) * 0.85
-        #             = 90_661 * 1.47 * 0.85 = 113_280.91/yr = 9_440.08/mo
-        # 185% FPL family of 11 = 70_650 * 1.85 = 130_702.50/yr = 10_891.88/mo
-        # So for large families, SMI < 185% FPL and SMI is binding.
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # monthly income = 5_000 > 4_366.82 -> ineligible
+    wv_ccap_income_eligible: false
+
+- name: Case 6, income at 85% SMI exact boundary eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 85% SMI family of 2 = 52_401.86/yr = 4_366.82/mo;
+        # use 52_401 to land just under the boundary.
+        employment_income: 52_401
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # monthly income = 4_366.75 <= 4_366.82 -> eligible (at boundary)
+    wv_ccap_income_eligible: true
+
+# ============================================================
+# 85% SMI cap binds for large families
+# ============================================================
+
+- name: Case 7, large family income above 85% SMI ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 85% SMI family of 11 = 113_280.92/yr = 9_440.08/mo
         employment_income: 114_000
         immigration_status: CITIZEN
       person2:
@@ -329,18 +259,76 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
-        wv_ccap_enrolled: true
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
         state_code: WV
   output:
-    # monthly income = 114_000 / 12 = 9_500
-    # 185% FPL family of 11 = 70_650 * 1.85 / 12 = 10_891.88/mo -> passes
-    # 85% SMI family of 11 = 90_661 * (0.52 + 0.16*5 + 0.03*5) * 0.85 / 12
-    #   = 90_661 * 1.47 * 0.85 / 12 = 113_280.92 / 12 = 9_440.08/mo
-    # 9_500 > 9_440.08 -> fails SMI cap
+    # monthly income = 9_500 > 9_440.08 -> ineligible
     wv_ccap_income_eligible: false
+
+- name: Case 8, large family income below 85% SMI eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Below 85% SMI family of 11 (113_280.92/yr)
+        employment_income: 100_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 9
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 32
+        immigration_status: CITIZEN
+      person8:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person10:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person11:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    # monthly income = 8_333.33 <= 9_440.08 -> eligible
+    wv_ccap_income_eligible: true
 
 # ============================================================
 # Zero and very high income
@@ -656,7 +644,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        wv_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -701,7 +688,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        wv_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -1265,8 +1251,8 @@
     people:
       person1:
         age: 30
-        # Income above 185% FPL for family of 2 but TANF enrolled
-        employment_income: 40_000
+        # Above 85% SMI family of 2 (52_401.86/yr); TANF enrolled bypasses
+        employment_income: 60_000
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -1624,10 +1610,10 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # 18 months < 24 -> UNDER_2
+    # 18 months < 25 -> UNDER_2
     wv_ccap_informal_age_group: [AGE_2_AND_OVER, UNDER_2]
 
-- name: Case 49, informal age 2 and over group boundary.
+- name: Case 49, informal age 24 months still in infant band.
   period: 2025-01
   input:
     people:
@@ -1635,7 +1621,7 @@
         age: 30
         immigration_status: CITIZEN
       person2:
-        # Age 2.0 = 24 months -> AGE_2_AND_OVER (threshold at 24)
+        # Age 2.0 = 24 months; Appendix B INFANT covers 0-24 months
         age: 2.0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
@@ -1650,8 +1636,8 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # 24 months >= 24 -> AGE_2_AND_OVER
-    wv_ccap_informal_age_group: [AGE_2_AND_OVER, AGE_2_AND_OVER]
+    # 24 months < 25 -> UNDER_2 (matches Appendix B INFANT 0-24mo at $7.50)
+    wv_ccap_informal_age_group: [AGE_2_AND_OVER, UNDER_2]
 
 # ============================================================
 # Multiple children in one family

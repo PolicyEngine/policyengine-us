@@ -91,7 +91,7 @@
   output:
     wv_ccap_eligible_child: [false, false]
 
-- name: Case 5, non-dependent child ineligible.
+- name: Case 5, non-tax-dependent child still eligible (residency, not tax dependency, governs).
   period: 2025-01
   input:
     people:
@@ -112,4 +112,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    wv_ccap_eligible_child: [false, false]
+    # §3.2 requires the child to reside with the family, not to be a tax
+    # dependent. With the dependency filter removed, a co-resident child
+    # under 13 who is a citizen remains eligible.
+    wv_ccap_eligible_child: [false, true]

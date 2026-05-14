@@ -14,6 +14,14 @@ class wv_ccap_copay(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        # Simplified percent-of-income approximation of Appendix A. The
+        # actual schedule is a 176-cell daily-dollar table (11 family sizes
+        # x 16 FPL bands), with the fee charged per child up to 3 per
+        # Manual Sec 6.4.3. The current rate.yaml is derived from the
+        # 3-person column as a representative middle case; see that file
+        # for the divergence by family size. The 7% max_share cap and the
+        # under-40%-FPL waiver are encoded in the rate schedule itself;
+        # only the foster-child waiver needs an explicit override here.
         p = parameters(period).gov.states.wv.dhhr.ccap.copayment
         countable_income = spm_unit("wv_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)

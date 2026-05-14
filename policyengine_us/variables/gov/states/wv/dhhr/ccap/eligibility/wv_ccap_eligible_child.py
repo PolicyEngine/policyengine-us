@@ -19,8 +19,7 @@ class wv_ccap_eligible_child(Variable):
         age_eligible = where(
             is_disabled, age < p.special_needs_child_age_limit, age < p.child_age_limit
         )
-        is_dependent = person("is_tax_unit_dependent", period.this_year)
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )
-        return age_eligible & is_dependent & immigration_eligible
+        return age_eligible & immigration_eligible
