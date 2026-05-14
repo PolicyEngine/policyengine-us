@@ -1,3 +1,10 @@
+## [1.691.8] - 2026-05-14
+
+### Fixed
+
+- Fixed the AMT capital-gains calculation to read the regular-tax ordinary-income portion (Schedule D Tax Worksheet line 14 / line 21) for Form 6251 Part III line 27, so that filers whose AMTI minus exemption is below the 20% LTCG bracket threshold no longer overflow gains into the 20% bracket.
+
+
 ## [1.691.7] - 2026-05-14
 
 ### Changed
