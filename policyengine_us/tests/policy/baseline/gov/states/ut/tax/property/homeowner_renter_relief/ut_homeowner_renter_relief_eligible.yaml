@@ -1,0 +1,61 @@
+- name: Case 1, age-eligible renter.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true
+
+- name: Case 2, surviving spouse under the age threshold.
+  period: 2025
+  input:
+    age_head: 45
+    adjusted_gross_income: 15_000
+    filing_status: SURVIVING_SPOUSE
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true
+
+- name: Case 3, income above the limit.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 44_222
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 4, no rent or property tax paid.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 0
+    real_estate_taxes: 0
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 5, age 66 after the transition year.
+  period: 2026
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 6, age 67 after the transition year.
+  period: 2026
+  input:
+    age_head: 67
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true

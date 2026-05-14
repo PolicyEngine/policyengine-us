@@ -1,0 +1,90 @@
+- name: Case 1, renter credit based on gross rent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 10_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 1_140
+
+- name: Case 2, renter credit capped by maximum amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 10_000
+    rent: 20_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 1_412
+
+- name: Case 3, renter credit in a middle income bracket.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 25_058
+    rent: 10_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 550
+
+- name: Case 4, homeowner credit capped by the income schedule.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 35_084
+    rent: 0
+    real_estate_taxes: 600
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 429
+
+- name: Case 5, homeowner credit capped by property tax paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 10_000
+    rent: 0
+    real_estate_taxes: 900
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 900
+
+- name: Case 6, surviving spouse renter in the top eligible bracket.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 45
+    adjusted_gross_income: 39_797
+    filing_status: SURVIVING_SPOUSE
+    rent: 10_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 250
+
+- name: Case 7, renter and homeowner amounts can both apply.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    adjusted_gross_income: 10_000
+    rent: 10_000
+    real_estate_taxes: 600
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 1_550
+
+- name: Case 8, ineligible claimant receives no relief.
+  period: 2025
+  input:
+    age_head: 60
+    adjusted_gross_income: 10_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief: 0
