@@ -45,6 +45,7 @@
         # payable_weeks = min(max(0, 20 - 1), 14) = 14.
         # Annual = 275 * 14 = 3,850 (matches MBA).
         al_ui: 3_850
+        unemployment_compensation: 3_850
 
 - name: Case 2, minimum-benefit claimant - unrounded WBA just above $44.50.
   period: 2024
@@ -160,11 +161,11 @@
         al_ui_max_weeks: 14
         # MBA = min(14 * 275, 0.25 * 28,600) = min(3,850, 7,150) = 3,850.
         al_ui_maximum_benefit_amount: 3_850
-        # Partial weekly benefit = 275 - (150 - 91.67) = 216.67.
-        al_ui_partial_weekly_benefit: 216.67
+        # Partial weekly benefit = 275 - (150 - 91.67) = 216.67, rounded to $217.
+        al_ui_partial_weekly_benefit: 217
         # payable_weeks = min(max(0, 15 - 1), 14) = 14.
-        # Annual = 216.67 * 14 = 3,033.33 (below MBA 3,850).
-        al_ui: 3_033.33
+        # Annual = 217 * 14 = 3,038 (below MBA 3,850).
+        al_ui: 3_038
 
 - name: Case 6, MBA capped by BPW/4 - low-wage but eligible long-claim.
   period: 2024

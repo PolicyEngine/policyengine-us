@@ -21,4 +21,4 @@ class al_ui_partial_weekly_benefit(Variable):
         disregard = wba * p.disregard_rate
         countable_earnings = max_(weekly_earnings - disregard, 0)
         partial_amount = max_(wba - countable_earnings, 0)
-        return where(weekly_earnings < wba, partial_amount, 0)
+        return where(weekly_earnings < wba, np.round(partial_amount), 0)
