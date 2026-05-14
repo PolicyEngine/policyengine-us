@@ -1,7 +1,7 @@
 # Tests for Alabama UI partial weekly benefit (§ 25-4-72; Admin Code 480-4-3-.11).
 # Formula: partial_weekly_benefit = max(0, WBA - max(0, weekly_earnings - WBA/3))
 #   = WBA                                if weekly_earnings <= WBA/3
-#   = WBA - (weekly_earnings - WBA/3)    if WBA/3 < weekly_earnings < WBA
+#   = rounded(WBA - (weekly_earnings - WBA/3)) if WBA/3 < weekly_earnings < WBA
 #   = 0                                  if weekly_earnings >= WBA
 # Equivalently: a week is "partial" if earnings < WBA; the first 1/3 x WBA of
 # earnings is disregarded, and earnings above the disregard reduce the WBA
@@ -102,8 +102,8 @@
     people:
       person1:
         al_ui_weekly_benefit_amount: 275
-        # WBA - (earnings - WBA/3) = 275 - (150 - 91.67) = 275 - 58.33 = 216.67.
-        al_ui_partial_weekly_benefit: 216.67
+        # WBA - (earnings - WBA/3) = 275 - (150 - 91.67) = 216.67 -> rounded to $217.
+        al_ui_partial_weekly_benefit: 217
 
 - name: Case 5, earnings just below WBA - very small partial benefit.
   period: 2024
@@ -126,8 +126,8 @@
     people:
       person1:
         al_ui_weekly_benefit_amount: 275
-        # 275 - (270 - 91.67) = 275 - 178.33 = 96.67.
-        al_ui_partial_weekly_benefit: 96.67
+        # 275 - (270 - 91.67) = 96.67 -> rounded to $97.
+        al_ui_partial_weekly_benefit: 97
 
 - name: Case 6, earnings exactly at WBA - no partial benefit.
   period: 2024
@@ -248,5 +248,5 @@
     people:
       person1:
         al_ui_weekly_benefit_amount: 275
-        # WBA/3 = 91.6667; 275 - (274.99 - 91.6667) = 275 - 183.3233 = 91.6767.
-        al_ui_partial_weekly_benefit: 91.68
+        # WBA/3 = 91.6667; 275 - (274.99 - 91.6667) = 91.6767 -> rounded to $92.
+        al_ui_partial_weekly_benefit: 92
