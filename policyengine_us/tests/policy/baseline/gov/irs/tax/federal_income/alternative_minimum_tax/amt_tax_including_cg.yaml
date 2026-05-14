@@ -32,7 +32,10 @@
     dwks14: 0
     unrecaptured_section_1250_gain: 0
   output:
-    amt_tax_including_cg: 22_700
+    # AMTI - exemption = $100k; ordinary AMTI = $70k * 26% = $18,200.
+    # Preferential base = min($100k, $30k) = $30k, all in the 0% bracket
+    # (room = $44,625 single, ordinary regular income = $0).
+    amt_tax_including_cg: 18_200
 
 - name: AMT with capital gains in second bracket
   period: 2023
@@ -44,7 +47,11 @@
     dwks14: 0
     unrecaptured_section_1250_gain: 0
   output:
-    amt_tax_including_cg: 144_086
+    # Ordinary AMTI tax: 26% * $220,700 + 28% * $229,300 = $121,586.
+    # Preferential base $150k: 0% bracket consumes $44,625; remaining
+    # $105,375 at 15% = $15,806.25; nothing reaches the 20% bracket
+    # (room = $492,300 - $44,625 = $447,675).
+    amt_tax_including_cg: 137_392.25
 
 - name: AMT with unrecaptured section 1250 gains
   period: 2023
@@ -56,4 +63,9 @@
     dwks14: 0
     unrecaptured_section_1250_gain: 200_000
   output:
-    amt_tax_including_cg: 230_586
+    # Ordinary AMTI tax: 26% * $220,700 + 28% * $279,300 = $135,586.
+    # Preferential base $300k: 0% bracket consumes $44,625; remaining
+    # $255,375 at 15% = $38,306.25. The $200k unrecaptured section 1250
+    # gain stays in line 36 = $1M - ($500k + $300k) = $200k at 25% =
+    # $50,000.
+    amt_tax_including_cg: 223_892.25
