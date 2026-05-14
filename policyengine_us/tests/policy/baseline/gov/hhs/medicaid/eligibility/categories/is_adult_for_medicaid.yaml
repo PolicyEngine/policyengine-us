@@ -36,4 +36,45 @@
     medicaid_income_level: 1.38
   output:
     is_adult_for_medicaid: true
-    
+
+- name: MinnesotaCare range is above the Medicaid adult ceiling
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_income_level: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    is_adult_for_medicaid: [false]
+
+- name: Essential Plan range is above the Medicaid adult ceiling
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        medicaid_income_level: 2.3
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    is_adult_for_medicaid: [false]
+
+- name: Healthy DC Plan range is above the Medicaid adult ceiling after 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        medicaid_income_level: 1.7
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    is_adult_for_medicaid: [false]

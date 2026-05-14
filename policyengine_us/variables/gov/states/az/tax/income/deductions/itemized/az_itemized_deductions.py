@@ -30,7 +30,7 @@ class az_itemized_deductions(Variable):
         ]
         federal_deductions = add(tax_unit, period, deductions)
         # Arizona allows a complete deduction for medical and dental expenses
-        medical_expenses = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
+        medical_expenses = tax_unit("itemized_medical_expenses", period)
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming

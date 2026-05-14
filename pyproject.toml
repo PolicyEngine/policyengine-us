@@ -1,6 +1,6 @@
 [project]
 name = "policyengine-us"
-version = "1.665.0"
+version = "1.691.8"
 description = "Add your description here."
 readme = "README.md"
 authors = [
@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
     "microdf-python>=1.0.0",
     "pandas>=2.0",
-    "policyengine-core>=3.25.1",
+    "policyengine-core>=3.26.0",
     "spm-calculator>=0.2.0",
     "tables>=3.9",
     "tqdm>=4.67.1",
@@ -87,4 +87,3 @@ showcontent = true
 [tool.ruff.lint]
 select = ["E", "F"]
 ignore = ["E402", "E501", "E712", "E713", "E721", "E722", "E741", "F401", "F402", "F403", "F405", "F541", "F811", "F821", "F841"]
-

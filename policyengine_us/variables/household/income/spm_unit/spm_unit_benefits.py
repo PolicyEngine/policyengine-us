@@ -19,11 +19,16 @@ class spm_unit_benefits(Variable):
             "ak_ssp",
             "dc_ossp",  # DC benefits
             "id_aabd",  # Idaho benefits
+            "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
             "ks_sspp",  # Kansas benefits
             "hi_oss",
+            "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "wa_ssp",  # Washington benefits
+            "mi_ssp",  # Michigan benefits
+            "me_ssp",  # Maine benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.
@@ -40,9 +45,14 @@ class spm_unit_benefits(Variable):
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
-            "spm_unit_broadband_subsidy",
             "spm_unit_energy_subsidy",
             "tanf",
+            # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
+            # sit alongside the federal TANF aggregator entry; under default
+            # rules these three are mutually exclusive at the SPM-unit level
+            # so summing them does not double-count.
+            "wa_sfa",
+            "wa_rca",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
             "unemployment_compensation",

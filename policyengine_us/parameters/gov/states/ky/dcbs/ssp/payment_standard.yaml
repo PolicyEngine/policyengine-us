@@ -1,0 +1,124 @@
+description: Kentucky provides this amount as the monthly state supplementation payment standard under the State Supplementation program.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Kentucky SSP payment standard
+  breakdown:
+    - ky_ssp_category
+    - ky_ssp_claim_type
+    - ky_ssp_care_receivers
+  reference:
+    - title: 921 KAR 2:015 Section 9 — Standard of Need
+      href: https://apps.legislature.ky.gov/law/kar/titles/921/002/015/
+    - title: KRS 205.245
+      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=7671
+    - title: CHFS Division of Family Support Operation Manual, Volume V, MS 1200 — State Supplementation Standards (OMTL-690, R. 3/9/26)
+      href: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLV.pdf#page=5
+
+PCH:
+  INDIVIDUAL:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_610
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_610
+  COUPLE_BOTH_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_610
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_610
+  COUPLE_ONE_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_610
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_610
+CIS:
+  INDIVIDUAL:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_514
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_514
+  COUPLE_BOTH_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_514
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_514
+  COUPLE_ONE_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_514
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_514
+FCH:
+  INDIVIDUAL:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_166
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_166
+  COUPLE_BOTH_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_166
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_166
+  COUPLE_ONE_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_166
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_166
+CARETAKER:
+  INDIVIDUAL:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_056
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_056
+  # §9(1)(c): couple rates are reduced. Regulation states couple totals
+  # ($1,552 for one-care, $1,606 for both-care); stored here as per-person
+  # (total / 2) so the formula treats every category uniformly.
+  COUPLE_BOTH_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 776
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 803
+  COUPLE_ONE_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+      2026-01-01: 1_056
+    BOTH:
+      2000-01-01: 0
+      2026-01-01: 1_056
+NONE:
+  INDIVIDUAL:
+    ONE:
+      2000-01-01: 0
+    BOTH:
+      2000-01-01: 0
+  COUPLE_BOTH_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+    BOTH:
+      2000-01-01: 0
+  COUPLE_ONE_ELIGIBLE:
+    ONE:
+      2000-01-01: 0
+    BOTH:
+      2000-01-01: 0

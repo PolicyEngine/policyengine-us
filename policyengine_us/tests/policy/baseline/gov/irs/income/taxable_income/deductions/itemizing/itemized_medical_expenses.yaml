@@ -1,0 +1,13 @@
+- name: Itemized medical expenses sum medical out-of-pocket expenses.
+  period: 2025
+  input:
+    people:
+      person1:
+        other_medical_expenses: 1_200
+      person2:
+        other_medical_expenses: 300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    itemized_medical_expenses: 1_500

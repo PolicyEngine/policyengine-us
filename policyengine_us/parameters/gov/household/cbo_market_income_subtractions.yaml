@@ -1,0 +1,10 @@
+description: Components removed from PolicyEngine household market income to align with CBO.
+values:
+  0000-01-01:
+    - gi_cash_assistance
+    - ak_permanent_fund_dividend
+
+metadata:
+  unit: list
+  period: year
+  label: CBO market income subtractions

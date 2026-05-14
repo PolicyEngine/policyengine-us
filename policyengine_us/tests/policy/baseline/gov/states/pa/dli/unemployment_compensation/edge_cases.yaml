@@ -1,0 +1,594 @@
+# Edge case tests for Pennsylvania Unemployment Compensation (PA UC).
+# Covers boundary conditions the per-variable tests may not exercise:
+#   - Rate-table bracket edges ($1,712/$1,713, $1,737/$1,738).
+#   - 37% wages-outside test at exactly the threshold.
+#   - Part C qualifying-wages test at exactly the threshold.
+#   - Credit-weeks boundary at 26 and above (duration cap).
+#   - Dependent-allowance age and composition edges.
+#   - Partial benefit credit (PBC) boundaries (WBR $68 -> $21; WBR $73 -> $22).
+#   - Weekly payable boundaries (gross = 0, gross = WBR + PBC, gross > WBR + PBC,
+#     negative earnings).
+#   - Main pa_uc variable edges (weeks_unemployed = 0, > max_weeks; ineligible;
+#     non-PA residency).
+# Policy reference: 43 P.S. §§ 751-914; 54 Pa.B. 1863 (2025 Table Specified by Law).
+
+# ---------------------------------------------------------------------------
+# Rate-table boundary (REQ-006)
+# PolicyEngine single_amount brackets use inclusive thresholds (value >= threshold
+# gets that bracket's amount). So HQ of $1,712 is still in the $68 bracket;
+# $1,713 enters the next bracket ($69).
+# ---------------------------------------------------------------------------
+
+- name: Case 1, HQ $1,712 last dollar of first bracket yields WBR $68.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_712
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,688 <= $1,712 < $1,713 -> still in the $68 bracket.
+        pa_uc_weekly_benefit_rate: 68
+
+- name: Case 2, HQ $1,713 first dollar of second bracket yields WBR $69.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_713
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,713 is the threshold for the second bracket -> WBR $69.
+        pa_uc_weekly_benefit_rate: 69
+
+- name: Case 3, HQ $1,737 last dollar of second bracket yields WBR $69.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_737
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,713 <= $1,737 < $1,738 -> still in the $69 bracket.
+        pa_uc_weekly_benefit_rate: 69
+
+- name: Case 4, HQ $1,738 first dollar of third bracket yields WBR $70.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_738
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,738 is the threshold for the third bracket -> WBR $70.
+        pa_uc_weekly_benefit_rate: 70
+
+# ---------------------------------------------------------------------------
+# 37% wages-outside-high-quarter test at exact threshold (REQ-002)
+# Outside = base - HQ. Requirement: outside >= 0.37 * base, i.e.
+# HQ <= 0.63 * base. Pick base = 10_000 -> threshold HQ = 6_300.
+# ---------------------------------------------------------------------------
+
+- name: Case 5, wages-outside exactly at 37% threshold passes REQ-002.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_base_year_wages: 10_000
+        pa_uc_highest_quarter_wages: 6_300
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Outside = $10,000 - $6,300 = $3,700 == 0.37 * $10,000 -> passes (>=).
+        pa_uc_meets_wages_outside_high_quarter_test: true
+
+- name: Case 6, wages-outside one dollar below 37% threshold fails REQ-002.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_base_year_wages: 10_000
+        pa_uc_highest_quarter_wages: 6_301
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Outside = $10,000 - $6,301 = $3,699 < 0.37 * $10,000 = $3,700 -> fails.
+        pa_uc_meets_wages_outside_high_quarter_test: false
+
+# ---------------------------------------------------------------------------
+# Part C qualifying-wages test at exact threshold (REQ-004)
+# Rate table: HQ $1,688 -> Part C = $2,718.
+# ---------------------------------------------------------------------------
+
+- name: Case 7, base-year wages exactly at Part C threshold passes REQ-004.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_688
+        pa_uc_base_year_wages: 2_718
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Part C for HQ $1,688 = $2,718; $2,718 >= $2,718 -> passes.
+        pa_uc_meets_qualifying_wages_test: true
+
+- name: Case 8, base-year wages one dollar below Part C fails REQ-004.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_688
+        pa_uc_base_year_wages: 2_717
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $2,717 < $2,718 -> fails.
+        pa_uc_meets_qualifying_wages_test: false
+
+# ---------------------------------------------------------------------------
+# Credit-weeks duration cap (REQ-010)
+# Maximum weeks of benefits is min(credit_weeks, 26). Confirm that 27 credit
+# weeks still caps at 26 (existing tests cover 40 and 52; 27 is the nearest
+# boundary above the cap).
+# ---------------------------------------------------------------------------
+
+- name: Case 9, 27 credit weeks caps maximum_weeks at 26.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_credit_weeks: 27
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # min(27, 26) = 26.
+        pa_uc_maximum_weeks: 26
+
+# ---------------------------------------------------------------------------
+# Dependent-allowance age and composition edges (REQ-007)
+# Child under 18 is a dependent; child aged exactly 18 is NOT a dependent.
+# ---------------------------------------------------------------------------
+
+- name: Case 10, single claimant with child aged exactly 18 gets $0 allowance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Age 18 is NOT under 18 -> not a dependent child -> allowance $0.
+        pa_uc_dependent_allowance: 0
+
+- name: Case 11, single claimant with child aged 17 gets $5 first-child-no-spouse.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Age 17 < 18 -> dependent child; no spouse -> first slot $5.
+        pa_uc_dependent_allowance: 5
+
+# ---------------------------------------------------------------------------
+# Partial benefit credit boundaries (REQ-008)
+# PBC = ceil(max(0.30 * WBR, $6)).
+# WBR $68 -> max($20.40, $6) = $20.40 -> ceil $21 (non-integer rounding up).
+# WBR $73 -> max($21.90, $6) = $21.90 -> ceil $22 (intermediate non-integer).
+# ---------------------------------------------------------------------------
+
+- name: Case 12, WBR $68 minimum - PBC is 30% of WBR rounded up to $21.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_688
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $68 -> 30% = $20.40; max($20.40, $6) = $20.40; ceil -> $21.
+        pa_uc_weekly_benefit_rate: 68
+        pa_uc_partial_benefit_credit: 21
+
+- name: Case 13, WBR $73 intermediate - PBC is ceil of $21.90 = $22.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_813
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $73 -> 30% = $21.90; max($21.90, $6) = $21.90; ceil -> $22.
+        pa_uc_weekly_benefit_rate: 73
+        pa_uc_partial_benefit_credit: 22
+
+# ---------------------------------------------------------------------------
+# Weekly payable boundaries (REQ-009)
+# Formula: max(0, WBR - max(earnings - PBC, 0)) + dep_allowance_if_unemployed
+# where dep_allowance_if_unemployed is 0 when earnings >= WBR + PBC per § 4(u)
+# (claimant is not "unemployed" that week and receives no benefits).
+# Test at gross = WBR + PBC exactly, gross > WBR + PBC, and negative gross.
+# All cases below use HQ $7,625 -> WBR $300; PBC = ceil(0.30 * $300) = $90.
+# ---------------------------------------------------------------------------
+
+- name: Case 14, gross earnings exactly WBR + PBC = $390 - not unemployed, $0 paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 390
+        employment_income: 20_280
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # earnings_reduction = max($390 - $90, 0) = $300.
+        # payable_wbr = max($300 - $300, 0) = $0.
+        # earnings ($390) >= WBR + PBC ($390) -> § 4(u): not "unemployed",
+        # no dependent allowance paid. payable = $0.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_dependent_allowance: 8
+        pa_uc_weekly_payable: 0
+
+- name: Case 15, gross earnings above WBR + PBC - not unemployed, $0 paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: 500
+        employment_income: 26_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # earnings_reduction = max($500 - $90, 0) = $410.
+        # payable_wbr = max($300 - $410, 0) = $0.
+        # earnings ($500) >= WBR + PBC ($390) -> § 4(u): not "unemployed",
+        # no dependent allowance paid. payable = $0.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_dependent_allowance: 8
+        pa_uc_weekly_payable: 0
+
+- name: Case 16, negative gross earnings treated as fully unemployed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        pa_uc_gross_weekly_earnings: -100
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # earnings_reduction = max(-$100 - $90, 0) = $0 (floor at 0).
+        # base_benefit = max($300 - $0, 0) = $300.
+        # total = $300 + $0 = $300; cap = $300 -> $300.
+        # Confirms the formula is safe against negative earnings inputs.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_weekly_payable: 300
+
+# ---------------------------------------------------------------------------
+# Main variable pa_uc edges (REQ-012)
+# weeks_unemployed = 0 -> annual benefit $0.
+# Full-week claims beyond max_weeks still cap at the MBA. Partial-benefit
+# claims can continue beyond max_weeks until the MBA is exhausted, while
+# dependent allowances remain limited to weeks of entitlement.
+# Ineligible -> $0. Non-PA residents -> $0 via defined_for filter (this extends
+# integration Case 7 with a different non-PA state: NY).
+# ---------------------------------------------------------------------------
+
+- name: Case 17, eligible claimant with weeks_unemployed = 0 receives $0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 0
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Monetarily eligible but unemployed 0 weeks -> $393 * 0 = $0.
+        pa_uc_monetarily_eligible: true
+        pa_uc_weekly_payable: 393
+        pa_uc: 0
+
+- name: Case 18, fully unemployed 30 weeks still caps at the maximum benefit amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 30
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # MBA = $393 * 26 = $10,218, so additional weeks do not increase benefits.
+        pa_uc_maximum_weeks: 26
+        pa_uc_maximum_benefit_amount: 10_218
+        pa_uc_weekly_payable: 393
+        pa_uc: 10_218
+
+- name: Case 19, claimant failing all four tests receives $0 pa_uc.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_000
+        pa_uc_base_year_wages: 1_500
+        pa_uc_credit_weeks: 5
+        weeks_unemployed: 20
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # HQ $1,000 < $1,688 -> fails REQ-001.
+        # Credit weeks 5 < 18 -> fails REQ-003.
+        # Not monetarily eligible -> defined_for filters pa_uc to $0.
+        pa_uc_monetarily_eligible: false
+        pa_uc: 0
+
+- name: Case 20, non-PA resident (NY) with eligible wages receives $0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 10_000
+        pa_uc_base_year_wages: 28_000
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 26
+        pa_uc_gross_weekly_earnings: 0
+        employment_income: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Household is outside PA -> defined_for (StateCode.PA) filters pa_uc.
+        pa_uc: 0
+
+- name: Case 21, partial-benefit claims can extend beyond 26 weeks until MBA is exhausted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 7_625
+        pa_uc_base_year_wages: 30_500
+        pa_uc_credit_weeks: 26
+        weeks_unemployed: 30
+        pa_uc_gross_weekly_earnings: 100
+        employment_income: 5_200
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $300, PBC = $90, weekly base payable = $290.
+        # MBA = $300 * 26 = $7,800, so base benefits can continue beyond
+        # 26 weeks until that balance is exhausted.
+        # Dependent allowance remains limited to 26 payable weeks:
+        # $7,800 + ($8 * 26) = $8,008 total.
+        pa_uc_weekly_benefit_rate: 300
+        pa_uc_partial_benefit_credit: 90
+        pa_uc_dependent_allowance: 8
+        pa_uc_weekly_payable: 298
+        pa_uc_maximum_benefit_amount: 7_800
+        pa_uc: 8_008

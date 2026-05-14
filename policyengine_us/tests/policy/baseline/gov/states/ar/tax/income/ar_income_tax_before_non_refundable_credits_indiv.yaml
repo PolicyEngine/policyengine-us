@@ -48,7 +48,7 @@
     # 562.366 + round((25_000-24_301) * 0.049) = 596
     ar_income_tax_before_non_refundable_credits_indiv: 596
 
-- name: AR income tax rates - taxable income from $15,100 to $25,000 
+- name: AR income tax rates - taxable income from $15,100 to $25,000
   period: 2023
   absolute_error_margin: 1
   input:
@@ -58,7 +58,7 @@
     # 20_000 * 0.034 - 272.37 = 407.63
     ar_income_tax_before_non_refundable_credits_indiv: 407.63
 
-- name: AR income tax rates - taxable income from $25,000 to $89,600 
+- name: AR income tax rates - taxable income from $25,000 to $89,600
   period: 2023
   absolute_error_margin: 1
   input:
@@ -127,3 +127,141 @@
   output:
     # 100_000 * 0.039 - 89 = 3_811
     ar_income_tax_before_non_refundable_credits_indiv: 3_811
+
+# 2026 tests follow A.C.A. § 26-51-201(a)(4) as amended by HB1001 (2026 1st Extraordinary Session).
+# Bill schedules: (a)(4)(A) for net income <= $94,700, (a)(4)(B) for > $94,700, plus
+# the (a)(4)(C) bracket adjustment for $94,701 - $97,600.
+- name: AR HB1001 2026 - 0% bracket, no tax
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 5_000
+    state_code: AR
+  output:
+    # within $0 - $5,599 0% bracket
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: AR HB1001 2026 - 2% bracket
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 10_000
+    state_code: AR
+  output:
+    # ($10,000 - $5,600) * 0.02 = $88
+    ar_income_tax_before_non_refundable_credits_indiv: 88
+
+- name: AR HB1001 2026 - 3% bracket
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 15_000
+    state_code: AR
+  output:
+    # $112 + ($15,000 - $11,200) * 0.03 = $112 + $114 = $226
+    ar_income_tax_before_non_refundable_credits_indiv: 226
+
+- name: AR HB1001 2026 - 3.4% bracket
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+    # $112 + $144 + ($20,000 - $16,000) * 0.034 = $256 + $136 = $392
+    ar_income_tax_before_non_refundable_credits_indiv: 392
+
+- name: AR HB1001 2026 - top low-income bracket (3.7%)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 50_000
+    state_code: AR
+  output:
+    # $609.60 + ($50,000 - $26,400) * 0.037 = $609.60 + $873.20 = $1,482.80
+    ar_income_tax_before_non_refundable_credits_indiv: 1_482.80
+
+- name: AR HB1001 2026 - boundary at $94,700 under (a)(4)(A)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_700
+    state_code: AR
+  output:
+    # $609.60 + ($94,700 - $26,400) * 0.037 = $609.60 + $2,527.10 = $3,136.70
+    ar_income_tax_before_non_refundable_credits_indiv: 3_136.70
+
+- name: AR HB1001 2026 - bracket adjustment top ($94,701, $290 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 94_701
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($94,701 - $4,700) * 0.037 = $3,424.04
+    # (a)(4)(C) adjustment: -$290 -> $3,134.04
+    ar_income_tax_before_non_refundable_credits_indiv: 3_134.04
+
+- name: AR HB1001 2026 - bracket adjustment mid ($95,500, $220 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 95_500
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($95,500 - $4,700) * 0.037 = $3,453.60
+    # (a)(4)(C) row "$95,401-$95,500" adjustment: -$220 -> $3,233.60
+    ar_income_tax_before_non_refundable_credits_indiv: 3_233.60
+
+- name: AR HB1001 2026 - bracket adjustment mid ($96,500, $120 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 96_500
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($96,500 - $4,700) * 0.037 = $3,490.60
+    # (a)(4)(C) row "$96,401-$96,500" adjustment: -$120 -> $3,370.60
+    ar_income_tax_before_non_refundable_credits_indiv: 3_370.60
+
+- name: AR HB1001 2026 - bracket adjustment mid ($97,000, $70 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_000
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($97,000 - $4,700) * 0.037 = $3,509.10
+    # (a)(4)(C) row "$96,901-$97,000" adjustment: -$70 -> $3,439.10
+    ar_income_tax_before_non_refundable_credits_indiv: 3_439.10
+
+- name: AR HB1001 2026 - bracket adjustment bottom ($97,600, $10 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_600
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($97,600 - $4,700) * 0.037 = $3,531.30
+    # (a)(4)(C) adjustment: -$10 -> $3,521.30
+    ar_income_tax_before_non_refundable_credits_indiv: 3_521.30
+
+- name: AR HB1001 2026 - just past adjustment ($97,601, $0 adj)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 97_601
+    state_code: AR
+  output:
+    # (a)(4)(B): $94 + ($97,601 - $4,700) * 0.037 = $3,531.34
+    ar_income_tax_before_non_refundable_credits_indiv: 3_531.34
+
+- name: AR HB1001 2026 - high income (a)(4)(B)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 200_000
+    state_code: AR
+  output:
+    # $94 + ($200,000 - $4,700) * 0.037 = $7,320.10
+    ar_income_tax_before_non_refundable_credits_indiv: 7_320.10

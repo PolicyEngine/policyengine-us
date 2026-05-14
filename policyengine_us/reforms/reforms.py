@@ -14,7 +14,6 @@ from .cbo.payroll import (
 from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
-from .federal import create_reported_state_income_tax_reform
 from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
@@ -153,6 +152,9 @@ from .states.va.dependent_exemption.va_dependent_exemption_reform import (
 from .states.va.hb979.va_hb979_reform import (
     create_va_hb979_reform,
 )
+from .states.me.ld229 import (
+    create_me_ld229_reform,
+)
 from .states.ct.refundable_ctc import (
     create_ct_refundable_ctc_reform,
 )
@@ -208,6 +210,9 @@ from .states.hi.hb2306_cdcc import (
 )
 from .states.nc.eitc import (
     create_nc_eitc_reform,
+)
+from .states.nc.cdcc import (
+    create_nc_cdcc_reform,
 )
 from .states.mi.ctc import (
     create_mi_ctc_reform,
@@ -277,9 +282,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     abolish_payroll_tax = create_abolish_payroll_tax_reform(parameters, period)
-    reported_state_income_tax = create_reported_state_income_tax_reform(
-        parameters, period
-    )
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
@@ -397,6 +399,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     va_dependent_exemption = create_va_dependent_exemption_reform_fn(parameters, period)
     va_hb979 = create_va_hb979_reform(parameters, period)
+    me_ld229 = create_me_ld229_reform(parameters, period)
     ct_refundable_ctc = create_ct_refundable_ctc_reform(parameters, period)
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
@@ -424,6 +427,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
+    nc_cdcc = create_nc_cdcc_reform(parameters, period)
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
     al_eitc = create_al_eitc_reform(parameters, period)
@@ -457,7 +461,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_expansion,
         abolish_federal_income_tax,
         abolish_payroll_tax,
-        reported_state_income_tax,
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
@@ -516,6 +519,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         or_dependent_exemption_credit,
         va_dependent_exemption,
         va_hb979,
+        me_ld229,
         ct_refundable_ctc,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
@@ -535,6 +539,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,
+        nc_cdcc,
         mi_ctc,
         watca,
         al_eitc,

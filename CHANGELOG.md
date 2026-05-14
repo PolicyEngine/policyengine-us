@@ -1,3 +1,410 @@
+## [1.691.8] - 2026-05-14
+
+### Fixed
+
+- Fixed the AMT capital-gains calculation to read the regular-tax ordinary-income portion (Schedule D Tax Worksheet line 14 / line 21) for Form 6251 Part III line 27, so that filers whose AMTI minus exemption is below the 20% LTCG bracket threshold no longer overflow gains into the 20% bracket.
+
+
+## [1.691.7] - 2026-05-14
+
+### Changed
+
+- Apply Arkansas HB1001 (2026 1st Extraordinary Session) individual income tax rate cuts effective tax year 2026.
+
+### Fixed
+
+- Set explicit 2025 Maine property tax fairness credit benefit-base values to match the published Schedule PTFC/STFC line 8 table ($2,550 single / $3,300 HoH-one-child or joint-no-child / $4,050 joint or HoH-multi / $4,100 senior). IRS uprating with downwards $50 rounding produced values $50 short.
+
+
+## [1.691.6] - 2026-05-13
+
+### Fixed
+
+- Applied the 2025 federal-AGI-based phaseout to the Maine non-military pension income deduction.
+
+
+## [1.691.5] - 2026-05-13
+
+### Fixed
+
+- Adjust the Kentucky family size tax credit rate brackets at the 1.27 and 1.33 boundaries to account for KY's 0.5-cent rounding-up convention in the Schedule ITC table.
+
+
+## [1.691.4] - 2026-05-12
+
+### Fixed
+
+- Fix tax_unit_itemizes tied-federal-tax fallback to compare federal standard against federal itemized deductions, restoring TaxAct/TAXSIM behavior and resolving downstream CO/VT/LA state-tax discrepancies.
+
+
+## [1.691.3] - 2026-05-12
+
+### Changed
+
+- Remove the reported SNAP simulation switch and public SNAP/TANF-reported variables, and make SSI disability depend on modeled disability rather than reported SSI receipt.
+- Remove public reported-variable paths for WIC, school meals, state income tax, SALT, and SPM tax inputs; include ACP/EBB directly in net income, and rename remaining data-backed SPM housing and energy subsidy inputs without the reported suffix.
+- Make social_security_retirement the canonical input variable and remove the separate reported Social Security retirement variable and parameter.
+
+
+## [1.691.2] - 2026-05-12
+
+### Fixed
+
+- Updated the Maine Sales Tax Fairness Credit base amount and phase-out start for 2025.
+
+
+## [1.691.1] - 2026-05-12
+
+### Changed
+
+- Support legacy per-fuel expense inputs as fallbacks in DC, MA, and IL LIHEAP formulas.
+
+
+## [1.691.0] - 2026-05-12
+
+### Added
+
+- Add Washington Senior Citizens and Disabled Persons Property Tax Exemption Program, including ESSB 6162 (2026) provisions effective for taxes levied for collection in 2027 and thereafter.
+
+
+## [1.690.7] - 2026-05-10
+
+### Fixed
+
+- Fixed SNAP categorical eligibility so SSI only qualifies a multi-person SPM unit when all members receive SSI.
+
+
+## [1.690.6] - 2026-05-10
+
+### Fixed
+
+- Net Medicare Part B premiums in baseline SPM expenses against cycle-free Medicare Savings Program coverage, preserve reported premiums as an audit input, and stop treating reported health insurance premiums as pre-tax wage deductions in federal AGI.
+
+
+## [1.690.5] - 2026-05-10
+
+### Fixed
+
+- Fix New York and elderly/disabled SNAP BBCE gross income limits.
+
+
+## [1.690.4] - 2026-05-10
+
+### Fixed
+
+- Fix WIC income eligibility to use the July-June WIC income guideline year.
+
+
+## [1.690.3] - 2026-05-08
+
+### Fixed
+
+- Fix ACA Premium Tax Credit and Basic Health Program eligibility for lawfully present immigrants who are ineligible for Medicaid due to immigration status, including Medicaid five-year-bar cases.
+
+
+## [1.690.2] - 2026-05-08
+
+### Fixed
+
+- Fix SPM childcare earnings cap projection for datasets with multiple SPM units.
+
+
+## [1.690.1] - 2026-05-08
+
+### Changed
+
+- Made SPM geographic adjustments formulaic from congressional district and tenure instead of backing them out from stored thresholds.
+
+
+## [1.690.0] - 2026-05-07
+
+### Added
+
+- Add Census SPM weekly work-expense parameters and formulas for work and childcare expense caps.
+
+
+## [1.689.0] - 2026-05-07
+
+### Added
+
+- Add an SPM unit geographic adjustment input and use it to calculate SPM thresholds.
+
+
+## [1.688.1] - 2026-05-07
+
+### Fixed
+
+- Fix ACA family-tier premium calculations for older dependents in New York and Vermont.
+
+
+## [1.688.0] - 2026-05-06
+
+### Added
+
+- Added an explicit Trustees federal income tax parameter reform for long-run TOB analysis scenarios.
+
+
+## [1.687.0] - 2026-05-05
+
+### Added
+
+- Add TANF max benefit standard variables for AZ, CA, CT, FL, HI, KS, NY, and VT following CBPP/WRD research conventions for cross-state comparison.
+
+### Changed
+
+- Updated GitHub Actions workflows for Node 24-compatible action runtimes.
+
+
+## [1.686.1] - 2026-05-05
+
+### Fixed
+
+- Aligned CHIP spending and enrollment calibration to FY2024 for 2024 simulations.
+
+
+## [1.686.0] - 2026-05-05
+
+### Added
+
+- Implement Washington State Supplementary Payment for SSI recipients.
+
+
+## [1.685.0] - 2026-05-05
+
+### Added
+
+- State universal free school meal programs in CA, CO, MA, ME, MI, MN, NM, NY, and VT.
+
+
+## [1.684.0] - 2026-05-05
+
+### Added
+
+- Implement Washington's Early Childhood Education and Assistance Program (ECEAP), including the standard ECEAP eligibility for ages 3-5, Birth to Three ECEAP eligibility for children below age 3, and per-slot benefit values.
+
+
+## [1.683.0] - 2026-05-05
+
+### Added
+
+- Added an explicit Trustees core threshold reform for long-run TOB analysis scenarios.
+
+
+## [1.682.1] - 2026-05-05
+
+### Changed
+
+- Added runtime metadata with installed policyengine-core identity for bundle validation.
+
+
+## [1.682.0] - 2026-05-05
+
+### Added
+
+- Add CBO-style household income concepts and equivalized variants, including employer-sponsored insurance premiums in market income.
+
+
+## [1.681.0] - 2026-05-04
+
+### Added
+
+- Added New York TANF home energy, supplemental home energy, and shelter allowance components, and a Vermont Reach Up special housing allowance, so cross-state TANF benefit comparisons match CBPP and the Urban Welfare Rules Database.
+
+### Fixed
+
+- Fixed Hawaii TANF maximum benefit to apply the steady-state mandatory-work 20% Standard of Assistance reduction, updated Kansas TANF to the Group IV non-shared living standard (the most-populous-county convention) so headline benefit values align with cross-state research reporting, and corrected the Vermont Reach Up special housing allowance to pay only the lesser of (housing expenses in excess of the maximum housing allowance) or $90 per Rule 2244.3, replacing the previous flat $90 payout.
+
+
+## [1.680.0] - 2026-05-01
+
+### Added
+
+- Extended SNAP Heat and Eat always-apply-SUA treatment to 13 additional states and DC (CA, CT, DC, MA, MD, ME, MI, MT, NY, OR, PA, RI, VT, WA).
+
+
+## [1.679.0] - 2026-04-30
+
+### Added
+
+- Kentucky State Supplementary Payment (SSP) covering Personal Care Home, Community Integration Supplementation, Family Care Home, and Caretaker Services categories.
+- Implement Maine State Supplementary Payment (SSP).
+
+
+## [1.678.0] - 2026-04-30
+
+### Added
+
+- Washington State Family Assistance and Refugee Cash Assistance programs.
+  Fix Washington TANF immigration eligibility, add `years_since_us_entry` and `wa_show_all_cash_assistance_programs` variables.
+
+
+## [1.677.0] - 2026-04-30
+
+### Added
+
+- Add a Washington Paid Family and Medical Leave eligibility and maximum benefit calculator.
+
+### Fixed
+
+- Fix optional senior or disabled Medicaid countable income to apply state-specific disregards within the Medicaid pathway, including Connecticut's unearned-income-specific rule.
+
+
+## [1.676.5] - 2026-04-30
+
+### Fixed
+
+- Fix Medicaid MAGI household construction to use person-specific tax-filer and non-filer rules instead of a tax-unit proxy, including child/dependent filing-threshold income treatment.
+
+
+## [1.676.4] - 2026-04-30
+
+### Changed
+
+- Improve WIC benefit valuation by assigning detailed federal food packages, updating cash-value benefit amounts, and using WIC-specific countable income.
+
+
+## [1.676.3] - 2026-04-30
+
+### Fixed
+
+- Removed the one-time Rhode Island child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023 onward.
+
+
+## [1.676.2] - 2026-04-30
+
+### Fixed
+
+- Enforced the federal CHIP cost-sharing cap on modeled CHIP premiums.
+- Added rules-based Medicaid premium modeling for Michigan Healthy Michigan Plan contributions and Montana HELP premiums.
+
+
+## [1.676.1] - 2026-04-30
+
+### Fixed
+
+- Reconciled FLSA overtime regular-rate calculations with annual employment income.
+
+
+## [1.676.0] - 2026-04-29
+
+### Added
+
+- Added the Maine millionaire income tax surcharge, affordability payments, and 2026 Property Tax Fairness Credit cap increase.
+
+
+## [1.675.0] - 2026-04-29
+
+### Added
+
+- Pennsylvania Unemployment Compensation.
+
+
+## [1.674.1] - 2026-04-29
+
+### Fixed
+
+- Fix state benchmark tests affected by modeled Medicare enrollment inputs.
+
+
+## [1.674.0] - 2026-04-29
+
+### Added
+
+- Added Michigan State Supplementary Payment (SSP) program.
+
+
+## [1.673.1] - 2026-04-29
+
+### Fixed
+
+- Split medical expenses into program-specific variables and remove the generic medical out-of-pocket expense aggregate.
+
+
+## [1.672.0] - 2026-04-28
+
+### Added
+
+- Implement Louisiana Optional State Supplement (OSS).
+
+
+## [1.671.0] - 2026-04-28
+
+### Added
+
+- Connecticut, Nebraska, and North Dakota stillbirth tax provisions effective 2022.
+
+
+## [1.670.2] - 2026-04-27
+
+### Fixed
+
+- Fix Marketplace selected-plan and net premiums for unsubsidized households.
+
+
+## [1.670.1] - 2026-04-27
+
+### Fixed
+
+- Exclude children with employer-sponsored insurance from CHIP eligibility.
+
+
+## [1.670.0] - 2026-04-27
+
+### Added
+
+- Added Idaho conformity to the federal enhanced senior deduction through Idaho's qualified business income and federal Schedule 1-A deduction path starting in 2025.
+- Add Maine LD 229 income tax bracket expansion reform (3 to 5 brackets).
+
+
+## [1.669.0] - 2026-04-27
+
+### Added
+
+- Added Basic Health Program (ACA §1331) coverage modeling. Creates a shared `gov/hhs/basic_health_program` coverage path covering MN MinnesotaCare, NY Essential Plan, OR OHP Bridge (2025+), and DC Healthy DC Plan (2026+). BHP-eligible people are excluded from ACA Premium Tax Credit eligibility, so per-state PTC projections now zero out for BHP enrollees. Eligibility enforces the statutory 133–200% FPL band (250% FPL in NY from 2025). Moves the state adult/parent Medicaid income ceilings back to Medicaid-only levels in BHP states so people above the Medicaid line fall through to BHP rather than silently losing coverage. Refs #8112.
+
+
+## [1.668.0] - 2026-04-26
+
+### Added
+
+- - Added 2026 ACA lowest-cost bronze plan (`lcbp`) rating-area premiums and bronze companion variables.
+
+
+## [1.667.1] - 2026-04-25
+
+### Fixed
+
+- Fix farm operations income, business self-employment tax, and labor supply response inputs.
+
+
+## [1.667.0] - 2026-04-25
+
+### Added
+
+- Add shared CPS tax-unit construction helper rules.
+
+
+## [1.666.2] - 2026-04-24
+
+### Fixed
+
+- Backfilled Medicaid and CHIP income limit parameters to 2018 using official CMS sources, including thresholds stored with the 5 percentage-point MAGI disregard.
+
+
+## [1.666.1] - 2026-04-23
+
+### Fixed
+
+- Removed the one-time Connecticut child tax rebate from the ongoing state Child Tax Credits catalog, eliminating a phantom $250 per child value in taxsim state CTC output for 2023-2026.
+
+
+## [1.666.0] - 2026-04-23
+
+### Added
+
+- North Carolina Child and Dependent Care Credit contrib reform (refundable, 30% match of federal credit, 2026+).
+
+
 ## [1.665.0] - 2026-04-22
 
 ### Added

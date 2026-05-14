@@ -1,0 +1,18 @@
+description: Means-tested transfers included in CBO household income after transfers and taxes.
+values:
+  0000-01-01:
+    - medicaid
+    - chip
+    - snap
+    - spm_unit_capped_housing_subsidy
+    - ssi
+    - tanf
+    - free_school_meals
+    - reduced_price_school_meals
+    - spm_unit_energy_subsidy
+    - general_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: CBO means-tested transfers

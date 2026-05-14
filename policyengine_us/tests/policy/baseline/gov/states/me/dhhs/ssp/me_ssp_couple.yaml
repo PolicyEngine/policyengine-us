@@ -1,0 +1,308 @@
+- name: Case 1, code A two-eligible-spouse couple each gets half of $15.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Couple total $15 / 2 = $7.50 per person.
+    me_ssp_couple: [7.5, 7.5]
+
+- name: Case 2, code C couple each gets half of $12.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Couple total $12 / 2 = $6 per person.
+    me_ssp_couple: [6, 6]
+
+- name: Case 3, code D adult foster home couple each gets half of $273.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [136.5, 136.5]
+
+- name: Case 4, code E flat rate boarding home couple each gets half of $590.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [295, 295]
+
+- name: Case 5, code F adult family care home couple each gets half of $636.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [318, 318]
+
+- name: Case 6, code G cost reimbursed boarding home couple each gets half of $636.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [318, 318]
+
+- name: Case 7, code I Medicaid facility couple each gets half of $20 (federal Title XIX 2x rule).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [10, 10]
+
+- name: Case 8, code H residential care facility couple each gets half of $15.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [7.5, 7.5]
+
+- name: Case 9, NONE arrangement couple gets zero per person.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: NONE
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: 12_000
+        me_ssp_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_ssp_couple: [0, 0]
+
+- name: Case 10, SS-only code E couple with $100/mo per-person excess reduces share to $195.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$1,200 -> $100/month per-person excess.
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Per-person share $295 - $100 monthly excess = $195.
+    me_ssp_couple: [195, 195]
+
+- name: Case 11, SS-only code A couple with $20/mo excess fully absorbed by $40 per-person disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$240 -> $20/month per-person excess.
+        uncapped_ssi: -240
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: -240
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $20 - $40 disregard = $0 adjusted; fixed code A pays full $7.50 share.
+    me_ssp_couple: [7.5, 7.5]
+
+- name: Case 12, SS-only code A couple excess above $7.50 + $40 limit pays zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$1,200 -> $100/month per-person excess.
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: -1_200
+        me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $100 - $40 = $60 adjusted excess > $7.50 share -> $0.
+    me_ssp_couple: [0, 0]
+
+- name: Case 13, SS-only code I Medicaid facility couple with $5/mo per-person excess uses $40 disregard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Annual uncapped SSI = -$60 -> $5/month per-person excess.
+        uncapped_ssi: -60
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+      person2:
+        is_ssi_eligible: true
+        uncapped_ssi: -60
+        me_ssp_living_arrangement: MEDICAID_FACILITY
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # $5 - $40 = $0 adjusted excess; fixed code I pays full $10 share.
+    me_ssp_couple: [10, 10]

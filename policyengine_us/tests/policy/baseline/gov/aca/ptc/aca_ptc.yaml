@@ -21,6 +21,69 @@
   output:
     aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
 
+- name: Below-FPL lawfully present immigrant receives PTC in 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 10_000
+        aca_magi_fraction: 0.75
+        slcsp: 1_200
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]
+    aca_required_contribution_percentage: 0
+    aca_ptc: 1_200
+
+- name: Below-FPL lawfully present immigrant in New York BHP receives no PTC
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 10_000
+        aca_magi_fraction: 0.75
+        slcsp: 1_200
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    is_basic_health_program_eligible: [true]
+    is_aca_ptc_eligible: [false]
+    aca_ptc: 0
+
 - name: ACA PTC floors at zero when contribution exceeds plan cost
   absolute_error_margin: 0.01
   period: 2025
