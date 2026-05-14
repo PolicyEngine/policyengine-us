@@ -69,3 +69,90 @@
     # gain stays in line 36 = $1M - ($500k + $300k) = $200k at 25% =
     # $50,000.
     amt_tax_including_cg: 223_892.25
+
+# Boundary at the 0% LTCG threshold ($44,625 single 2023). All
+# preferential base falls inside the 0% bracket, so the entire
+# computation should collapse to ordinary AMTI * 26%.
+- name: All CG, preferential base exactly at the 0% bracket threshold
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 44_625
+    dwks10: 44_625
+    dwks13: 44_625
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    # L22 = L23 = $44,625; L24 = $0; nothing in 15% or 20%; L17 = $0.
+    amt_tax_including_cg: 0
+
+# Exercises the 15%/20% boundary: AMTI - exemption equals the single
+# 20% bracket threshold ($492,300). Everything above $44,625 is in
+# the 15% bracket, nothing in the 20% bracket.
+- name: All CG, preferential base exactly at the 20% bracket threshold
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 492_300
+    dwks10: 492_300
+    dwks13: 492_300
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    # 0% bracket consumes $44,625; remaining $447,675 at 15% =
+    # $67,151.25; nothing reaches 20%.
+    amt_tax_including_cg: 67_151.25
+
+# Exercises the actual 20% bracket (regression for the L27 fix —
+# pre-fix this case would have over-allocated to the 20% bracket).
+- name: All CG, preferential base above the 20% bracket threshold
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 600_000
+    dwks10: 600_000
+    dwks13: 600_000
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    # 0%: $44,625; 15%: $447,675 (= $492,300 - $44,625) * 15% =
+    # $67,151.25; 20%: $107,700 (= $600,000 - $44,625 - $447,675)
+    # * 20% = $21,540. Total $88,691.25.
+    amt_tax_including_cg: 88_691.25
+
+# Locks in the L27 fix specifically: with non-zero regular-tax
+# ordinary income, the 0% bracket room shrinks and the 15% bracket
+# starts higher. Pre-fix would have used LTCG amount instead of
+# ordinary income on L27 and shrunk the 15% window incorrectly.
+- name: Mixed preferential + regular ordinary income, AMTI below 20% threshold
+  period: 2023
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 300_000
+    dwks10: 100_000
+    dwks13: 100_000
+    dwks14: 50_000
+    unrecaptured_section_1250_gain: 0
+  output:
+    # Ordinary AMTI tax: 26% * $200,000 = $52,000.
+    # 0% room: max(0, $44,625 - $50,000) = $0 -> nothing at 0%.
+    # 15% room: $492,300 - $50,000 = $442,300; cap gain $100,000
+    # entirely at 15% = $15,000.
+    # Total: $52,000 + $15,000 = $67,000.
+    amt_tax_including_cg: 67_000
+
+# Joint filer using the joint 20% bracket threshold ($553,850 in
+# 2023). Same logic as the issue 8292 reproducer.
+- name: Joint filer with substantial cap gains below the joint 20% threshold
+  period: 2023
+  input:
+    filing_status: JOINT
+    amt_income_less_exemptions: 400_000
+    dwks10: 400_000
+    dwks13: 400_000
+    dwks14: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    # 0%: $89,250 (joint); 15%: $310,750 * 15% = $46,612.50;
+    # 20%: $0.
+    amt_tax_including_cg: 46_612.50
