@@ -9,4 +9,3 @@ class unemployment_compensation(Variable):
     documentation = "Income from unemployment compensation programs."
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.unemployment_compensation"
-    adds = ["ny_ui"]

@@ -1127,14 +1127,15 @@ programs:
     parameter_prefix: gov.states.ny.nyserda.drive_clean
 
   - id: ny_ui
-    name: NY UI
+    name: New York Unemployment Insurance
     full_name: New York Unemployment Insurance
-    category: state_benefits
-    agency: NYSDOL
+    category: Benefits
+    agency: New York State Department of Labor
     status: complete
-    coverage: "2020-2026"
+    coverage: NY
     variable: ny_ui
     parameter_prefix: gov.states.ny.dol.unemployment_insurance
+    verified_years: "2025-2026"
 
   - id: tx_fpp_benefit
     name: Texas FPP
