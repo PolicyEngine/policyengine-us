@@ -1,6 +1,8 @@
 import ast
 from pathlib import Path
 
+import pytest
+
 from policyengine_us import Simulation
 
 
@@ -138,4 +140,77 @@ def test_tanf_non_cash_asset_test_does_not_mutate_snap_assets():
     assert simulation.calculate("snap_assets", "2026-01").tolist() == [
         4_000,
         4_000,
+    ]
+
+
+def test_tanf_non_cash_asset_test_applies_texas_additional_vehicle_exemption():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2026": 30}},
+            person_b={"age": {"2026": 40}},
+            state="TX",
+        )
+    )
+    simulation.set_input("snap_assets", 2026, [4_000, 4_000])
+    simulation.set_input("household_vehicles_value", 2026, [31_200, 32_300])
+    simulation.set_input("household_vehicles_owned", 2026, [2, 2])
+
+    assert simulation.calculate(
+        "meets_tanf_non_cash_asset_test", "2026-01"
+    ).tolist() == [
+        True,
+        False,
+    ]
+
+
+def test_county_mixed_known_and_missing_fips_preserves_known_rows():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2025": 30}},
+            person_b={"age": {"2025": 40}},
+        )
+    )
+    simulation.set_input("state_code", 2025, ["NY", "CA"])
+    simulation.set_input("county_fips", 2025, ["36059", ""])
+
+    assert simulation.calculate("county_str", 2025).tolist() == [
+        "NASSAU_COUNTY_NY",
+        "ALAMEDA_COUNTY_CA",
+    ]
+
+
+def test_il_aabd_utility_allowance_uses_elementwise_caps():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2022": 30}},
+            person_b={"age": {"2022": 40}},
+            state="IL",
+        )
+    )
+    simulation.set_input("state_code", 2022, ["IL", "IL"])
+    simulation.set_input("county_str", 2022, ["COOK_COUNTY_IL", "BOND_COUNTY_IL"])
+    simulation.set_input("water_expense", 2022, [60, 0])
+    simulation.set_input("coal_expense", 2022, [0, 144])
+
+    assert simulation.calculate(
+        "il_aabd_utility_allowance", "2022-01"
+    ).tolist() == pytest.approx([3.8, 11.1])
+
+
+def test_co_ccap_unknown_county_fallback_is_row_specific():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2023": 30}},
+            person_b={"age": {"2023": 40}},
+            state="CO",
+        )
+    )
+    simulation.set_input("state_code", 2023, ["CO", "CO"])
+    simulation.set_input("county_str", 2023, ["BACA_COUNTY_CO", "UNKNOWN"])
+    simulation.set_input("co_ccap_countable_income", 2023, [30 * 12, 0])
+    simulation.set_input("spm_unit_fpg", 2023, [12 * 12, 12 * 12])
+
+    assert simulation.calculate("co_ccap_fpg_eligible", "2023-01").tolist() == [
+        False,
+        True,
     ]
