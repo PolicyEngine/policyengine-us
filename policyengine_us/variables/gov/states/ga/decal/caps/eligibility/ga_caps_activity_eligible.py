@@ -16,7 +16,11 @@ class ga_caps_activity_eligible(Variable):
         hours_worked = person("weekly_hours_worked", period.this_year)
         meets_work_requirement = hours_worked >= p.weekly_hours
         is_student = person("is_full_time_student", period.this_year)
-        individually_eligible = meets_work_requirement | is_student
-        all_heads_meet = spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
+        is_disabled = person("is_disabled", period.this_year)
+        # Per Policy Manual §6.8.1.8, a disabled parent who cannot provide care
+        # is exempt from the activity requirement; authorization is based on
+        # the non-disabled parent's activity.
+        individually_eligible = meets_work_requirement | is_student | is_disabled
+        all_heads_meet = ~spm_unit.any(is_head_or_spouse & ~individually_eligible)
         meets_ccdf = spm_unit("meets_ccdf_activity_test", period.this_year)
         return all_heads_meet | meets_ccdf

@@ -315,3 +315,56 @@
   output:
     # GA gate fails (10 < 24, not student), but federal CCDF fallback approves
     ga_caps_activity_eligible: true
+
+- name: Case 14, two-parent family with one disabled spouse passes GA gate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 30
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_disabled: true
+        is_full_time_student: false
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Per Policy Manual §6.8.1.8, disabled spouse is exempt from activity gate;
+    # non-disabled parent works 30 >= 24 -> family eligible without federal fallback.
+    ga_caps_activity_eligible: true
+
+- name: Case 15, single disabled parent passes GA gate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked: 0
+        is_disabled: true
+        is_full_time_student: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Single disabled head exempt from activity gate per §6.8.1.8
+    ga_caps_activity_eligible: true
