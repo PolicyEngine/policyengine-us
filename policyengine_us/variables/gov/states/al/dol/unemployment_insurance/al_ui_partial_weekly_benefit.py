@@ -8,7 +8,7 @@ class al_ui_partial_weekly_benefit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://admincode.legislature.state.al.us/administrative-code/480-4-3-.11",
+        "https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-73/",
         "https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf#page=20",
         "https://www.nelp.org/new-alabama-unemployment-insurance-law-makes-work-pay/",
     )

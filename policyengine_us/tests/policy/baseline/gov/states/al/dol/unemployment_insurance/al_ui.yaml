@@ -218,7 +218,34 @@
         al_ui_monetarily_eligible: false
         al_ui: 0
 
-- name: Case 9, negative weekly earnings (defensive) - full WBA paid each week.
+- name: Case 9, weekly earnings >= WBA - deemed employed, $0 annual benefit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+        # Weekly earnings >= WBA -> "deemed employed" per § 25-4-72 / USDOL Tbl 3-8.
+        al_ui_weekly_earnings: 300
+        weeks_unemployed: 11
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 275
+        # earnings (300) >= WBA (275) -> partial weekly benefit = 0.
+        al_ui_partial_weekly_benefit: 0
+        # Annual benefit = 0 (no compensable weeks).
+        al_ui: 0
+
+- name: Case 10, negative weekly earnings (defensive) - full WBA paid each week.
   period: 2024
   absolute_error_margin: 0.01
   input:
