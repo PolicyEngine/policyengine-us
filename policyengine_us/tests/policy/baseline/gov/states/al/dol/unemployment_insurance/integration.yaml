@@ -45,7 +45,6 @@
         # payable_weeks = min(max(0, 20 - 1), 14) = 14.
         # Annual = 275 * 14 = 3,850 (matches MBA).
         al_ui: 3_850
-        unemployment_compensation: 3_850
 
 - name: Case 2, minimum-benefit claimant - unrounded WBA just above $44.50.
   period: 2024
@@ -311,7 +310,7 @@
         # Non-AL state -> defined_for filter applies -> al_ui = 0.
         al_ui: 0
 
-- name: Case 11, federal aggregator includes al_ui correctly.
+- name: Case 11, waiting week reduces a 14-week claim.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -331,8 +330,5 @@
   output:
     people:
       person1:
-        # al_ui = 275 * 13 = 3,575; the federal aggregator
-        # unemployment_compensation adds al_ui (and ny_ui in the upstream
-        # version) so the federal total should equal al_ui here.
+        # al_ui = 275 * max(0, 14 - 1) = 3,575.
         al_ui: 3_575
-        unemployment_compensation: 3_575
