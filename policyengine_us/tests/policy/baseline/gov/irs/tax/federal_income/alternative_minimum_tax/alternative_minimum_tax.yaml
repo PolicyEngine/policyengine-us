@@ -115,3 +115,40 @@
     capital_gains_tax: 0
   output:
     alternative_minimum_tax: 1_000
+
+# Locks in the fix for taxsim #424 / issue #8292. Pre-fix, Form 6251
+# Part III Line 27 read `loss_limited_net_capital_gains` (the LTCG
+# amount) instead of `dwks14` (the regular-tax ordinary-income portion),
+# which shrank the 15% bracket window and overflowed gains into the 20%
+# bracket even though AMTI - exemption sat well below the $583,750 MFJ
+# 20% threshold. The reported $8,634 AMT add-on should be $0 for any
+# year the bug existed (2018-2025).
+- name: AMT add-on is zero for MFJ filer whose AMTI minus exemption is below the 20% cap gains threshold (taxsim #424)
+  absolute_error_margin: 50
+  period: 2024
+  input:
+    people:
+      head:
+        age: 56
+        qualified_dividend_income: 65_148.79
+        taxable_interest_income: 20_301.98
+        long_term_capital_gains: 390_720.38
+        taxable_pension_income: 33_581.32
+        is_tax_unit_head: true
+      spouse:
+        age: 20
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        tax_unit_itemizes: false
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    alternative_minimum_tax: 0
