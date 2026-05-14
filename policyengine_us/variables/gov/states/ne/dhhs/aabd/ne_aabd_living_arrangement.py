@@ -39,7 +39,7 @@ class ne_aabd_living_arrangement(Variable):
             federal_arrangement
             == federal_arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
         )
-        alternate = person("ne_aabd_alternate_living_arrangement", period.this_year)
+        alternate = person("ne_aabd_alternate_living_arrangement", period)
         return where(
             in_medical_facility,
             NEAABDLivingArrangement.LONG_TERM_CARE,

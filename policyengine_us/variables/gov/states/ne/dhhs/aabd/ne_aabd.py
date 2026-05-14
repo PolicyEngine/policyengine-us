@@ -19,11 +19,14 @@ class ne_aabd(Variable):
         # standard of need and the federal SSI benefit rate. NE's parameters
         # store the FULL standard of need (e.g., $1,236/mo for Assisted
         # Living 2021), so the formula subtracts the federal SSI rate to
-        # arrive at the state supplement portion. income_excess captures
-        # countable income above the FBR (rare for SSI recipients but
-        # possible for joint-claim couples with deemed income).
+        # arrive at the state supplement portion.
+        #
+        # 469 NAC 3-006.01A enumerates a closed list of "available net income"
+        # to subtract before the FBR: (a) non-spouse Essential Person income,
+        # (b) VA Aid & Attendance, (c) income allocated from another
+        # assistance unit, (d) residual ineligible-spouse income not used by
+        # SSI's deeming formula. We don't track any of these at the moment,
+        # so the budgetary-need offset is zero in the model.
         standard_of_need = person("ne_aabd_standard_of_need", period)
         federal_ssi = person("ssi_amount_if_eligible", period)
-        uncapped_ssi = person("uncapped_ssi", period)
-        income_excess = max_(0, -uncapped_ssi)
-        return max_(0, standard_of_need - federal_ssi - income_excess)
+        return max_(0, standard_of_need - federal_ssi)

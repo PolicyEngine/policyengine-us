@@ -8,7 +8,7 @@ class ne_aabd_alternate_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "Nebraska AABD alternate (non-Medicaid) living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.NE
     possible_values = NEAABDLivingArrangement
     default_value = NEAABDLivingArrangement.INDEPENDENT
