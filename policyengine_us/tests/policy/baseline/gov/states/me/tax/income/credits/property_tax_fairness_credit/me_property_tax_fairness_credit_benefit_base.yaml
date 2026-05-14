@@ -44,6 +44,34 @@
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
     ctc_qualifying_children: 0
-   
+
   output:
     me_property_tax_fairness_credit_benefit_base: 3_000
+
+# 2025 values per Maine Schedule PTFC/STFC line 8 table.
+- name: Case 6, single in 2025
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+  output:
+    me_property_tax_fairness_credit_benefit_base: 2_550
+
+- name: Case 7, joint with multiple children in 2025
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 2
+  output:
+    me_property_tax_fairness_credit_benefit_base: 4_050
+
+- name: Case 8, head of household with one child in 2025
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    ctc_qualifying_children: 1
+  output:
+    me_property_tax_fairness_credit_benefit_base: 3_300
