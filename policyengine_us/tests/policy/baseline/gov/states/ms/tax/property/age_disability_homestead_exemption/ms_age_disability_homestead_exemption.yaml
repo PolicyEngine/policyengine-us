@@ -1,0 +1,33 @@
+- name: Case 1, exemption is capped at the statutory amount.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 75_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_exemption: 7_500
+
+- name: Case 2, exemption is limited to assessed property value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_exemption: 5_000
