@@ -10,7 +10,7 @@ class md_paa_imputed_federal_ssi(Variable):
     defined_for = "md_paa_eligible"
     reference = (
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.03",
-        "https://www.law.cornell.edu/uscode/text/42/1382",
+        "https://www.law.cornell.edu/uscode/text/42/1382#e_1_A",
     )
 
     def formula(person, period, parameters):

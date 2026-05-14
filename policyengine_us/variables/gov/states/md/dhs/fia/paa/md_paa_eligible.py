@@ -21,7 +21,11 @@ class md_paa_eligible(Variable):
         # §300.5 / COMAR 07.03.07.03(G)(1) pending-application pathway,
         # which under COMAR additionally requires DHS to verify ABD
         # status before granting interim PAA — narrower than §300.5
-        # standing alone.
+        # standing alone. COMAR 07.03.07.03(A)(3) ("would-be SSI-eligible
+        # except for income") is captured through the same
+        # md_paa_pending_federal_benefit input — we don't auto-detect
+        # income-denied SSI applicants at the moment, so the caller must
+        # set the flag manually.
         receives_ssi = person("ssi", period) > 0
         ssdi = person("social_security_disability", period)
         receives_ssdi = ssdi > 0
