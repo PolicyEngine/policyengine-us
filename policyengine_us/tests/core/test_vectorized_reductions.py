@@ -179,6 +179,22 @@ def test_county_mixed_known_and_missing_fips_preserves_known_rows():
     ]
 
 
+def test_county_all_missing_fips_uses_state_fallback():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2025": 30}},
+            person_b={"age": {"2025": 40}},
+        )
+    )
+    simulation.set_input("state_code", 2025, ["NY", "CA"])
+    simulation.set_input("county_fips", 2025, ["", ""])
+
+    assert simulation.calculate("county_str", 2025).tolist() == [
+        "ALBANY_COUNTY_NY",
+        "ALAMEDA_COUNTY_CA",
+    ]
+
+
 def test_il_aabd_utility_allowance_uses_elementwise_caps():
     simulation = Simulation(
         situation=_two_person_two_household_situation(
