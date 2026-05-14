@@ -1,0 +1,34 @@
+- name: LA County 2BR FY2025 looks up the CSV value × 12 months
+  period: 2025
+  input:
+    county_fips: "06037"
+    bedrooms: 2
+  output:
+    # CSV value $2,750/mo × 12 = $33,000. Placeholder until
+    # tools/download_hud_fmr.py refreshes with HUD's published FY2025
+    # value.
+    hud_fair_market_rent: 33_000
+
+- name: Unmapped county returns zero
+  period: 2025
+  input:
+    county_fips: "99999"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 0
+
+- name: LA County 0BR FY2025
+  period: 2025
+  input:
+    county_fips: "06037"
+    bedrooms: 0
+  output:
+    hud_fair_market_rent: 22_800
+
+- name: LA County FY2024 (no data) returns zero
+  period: 2024
+  input:
+    county_fips: "06037"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 0

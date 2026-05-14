@@ -1,0 +1,1 @@
+Added the HUD Fair Market Rent CSV data store, a `hud_fair_market_rent` variable, and a `download_hud_fmr` helper script (Phase 1: county-level FY2025 with a placeholder seed row — full data refresh runs via the script with a free HUD API key).
