@@ -1,0 +1,59 @@
+- name: Case 1, family of 3 returns Region A standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # Region A family-of-3: $698 (effective 2014-07-01)
+    ct_tfa_max_benefit_standard: 698
+
+- name: Case 2, family of 1.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_tfa_max_benefit_standard: 443
+
+- name: Case 3, non-CT household returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ct_tfa_max_benefit_standard: 0

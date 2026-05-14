@@ -1,0 +1,35 @@
+description: South Carolina sets this share of state median income as each copay tier threshold under the Child Care Scholarship Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: South Carolina CCAP copay SMI tier ratios
+  reference:
+    - title: SC CCAP Fee Scale 2023-2024
+      href: https://www.scchildcare.org/media/n3qmcb5u/sc-child-care-scholarship-program-fee-scale-2023-2024.pdf#page=1
+    - title: SC CCDF State Plan FFY 2025-2027, Section 3.3.1
+      href: https://www.scchildcare.org/media/cr5dc51w/submitted-version-of-the-ccdf-ffy-2025-2027-for-south-carolina-as-of-7-1-24pdf.pdf#page=25
+
+brackets:
+  - threshold:
+      2022-10-01: 1
+    amount:
+      2022-10-01: 0.45
+  - threshold:
+      2022-10-01: 2
+    amount:
+      2022-10-01: 0.55
+  - threshold:
+      2022-10-01: 3
+    amount:
+      2022-10-01: 0.65
+  - threshold:
+      2022-10-01: 4
+    amount:
+      2022-10-01: 0.75
+  - threshold:
+      2022-10-01: 5
+    amount:
+      2022-10-01: 0.85

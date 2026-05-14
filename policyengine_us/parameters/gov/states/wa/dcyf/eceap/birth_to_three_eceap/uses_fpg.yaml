@@ -1,0 +1,13 @@
+description: Washington uses this indicator to determine whether the federal poverty guideline (vs state median income) is the income eligibility basis for the Birth to Three ECEAP. RCW 43.216.578 keeps the 130% FPL test until July 1, 2026, then transitions to the 50% SMI test.
+
+values:
+  2021-07-25: true
+  2026-07-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Washington Birth to Three ECEAP uses federal poverty guideline as income basis
+  reference:
+    - title: RCW 43.216.578 Birth to three ECEAP
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.578

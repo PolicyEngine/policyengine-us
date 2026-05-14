@@ -1,0 +1,26 @@
+- name: MFS 2021 filer in the corrected 37% bracket pays more than under the buggy $329,850 threshold
+  period: 2021
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 332_550
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  # Regression for a copy-paste bug in bracket.yaml that set the 2021
+  # SEPARATE bracket 6 threshold to 329,850 (the JOINT bracket 4 threshold).
+  # IRS Rev. Proc. 20-45 sets the correct 2021 SEPARATE 37% threshold
+  # at 314,150 (preserving monotonicity 311,025 -> 314,150 -> 323,925).
+  #
+  # With the correction, taxable income 320,000 (= 332,550 - 12,550 MFS
+  # standard deduction) crosses the 37% threshold at 314,150; the last
+  # 5,850 is taxed at 37% instead of 35%, adding exactly 117 in tax.
+  output:
+    income_tax_before_refundable_credits: 86_661.25

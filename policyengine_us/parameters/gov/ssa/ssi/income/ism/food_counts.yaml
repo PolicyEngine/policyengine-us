@@ -1,0 +1,20 @@
+description: SSA uses this indicator to determine whether food counts in SSI in-kind support and maintenance calculations.
+
+# NOTE: This parameter flips on 2024-10-01, but the consuming variables
+# (ssi_pmv_applies, ssi_in_kind_support_and_maintenance, etc.) are
+# YEAR-defined, so parameters(period) resolves to January 1 of the year.
+# In practice the change takes effect in 2025, not October 2024.
+# Converting the ISM chain to MONTH would fix this.
+values:
+  1975-01-01: true
+  2024-10-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: SSI ISM food counts
+  reference:
+    - title: 20 CFR § 416.1130 - Introduction to in-kind support and maintenance (as amended)
+      href: https://www.law.cornell.edu/cfr/text/20/416.1130
+    - title: 89 FR 21199 - Omitting Food from In-Kind Support and Maintenance Calculations
+      href: https://www.federalregister.gov/documents/2024/03/27/2024-06464/omitting-food-from-in-kind-support-and-maintenance-calculations

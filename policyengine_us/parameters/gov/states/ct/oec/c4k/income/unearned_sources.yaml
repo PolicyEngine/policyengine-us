@@ -1,0 +1,21 @@
+description: Connecticut counts these unearned income sources as countable income under the Care 4 Kids program. These sources are summed across all family members (adults and children) because RCSA 17b-749-05(b)(1)(A) counts "unearned income of all adult and child family members", and the child-earnings exclusion in 17b-749-05(b)(2)(E) applies only to earned income.
+values:
+  2020-01-01:
+    - social_security
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - rental_income
+    - veterans_benefits
+    - disability_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Connecticut C4K countable unearned income sources
+  reference:
+    - title: RCSA 17b-749-05(b)(1)
+      href: https://eregulations.ct.gov/eRegsPortal/Browse/RCSA/Title_17bSubtitle_17b-749Section_17b-749-05/
+    - title: Care 4 Kids Policies and Procedures (Former Regulations) 17b-749-05(b)
+      href: https://www.ctoec.org/care-4-kids-regulations/#17b-749-05

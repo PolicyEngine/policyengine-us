@@ -1,0 +1,53 @@
+- name: Florida tier 1 tax unit pays 15 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.45
+    households:
+      household:
+        members: [child]
+        state_code: FL
+  output:
+    fl_chip_premium: 180
+
+- name: Florida tier 2 tax unit pays 20 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: FL
+  output:
+    fl_chip_premium: 240
+
+- name: Florida tax unit below 134 percent FPL owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.30
+    households:
+      household:
+        members: [child]
+        state_code: FL
+  output:
+    fl_chip_premium: 0

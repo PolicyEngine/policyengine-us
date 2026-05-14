@@ -1,0 +1,86 @@
+- name: Texas CHIP enrollment fee is zero below 151% FPL.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_chip_premium: 0
+
+- name: Texas CHIP enrollment fee is 35 dollars between 151% and 186% FPL.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_chip_premium: 35
+
+- name: Texas CHIP enrollment fee is 50 dollars between 186% and 201% FPL.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.95
+    households:
+      household:
+        members: [child]
+        state_code: TX
+  output:
+    tx_chip_premium: 50
+
+- name: Texas tax unit with no CHIP-eligible members owes no enrollment fee.
+  period: 2024
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    tx_chip_premium: 0
+
+- name: Non-Texas household does not pay a Texas CHIP enrollment fee.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [child]
+        state_code: CA
+  output:
+    tx_chip_premium: 0

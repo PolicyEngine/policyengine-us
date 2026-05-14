@@ -16,6 +16,7 @@ class al_ssp_living_arrangement(Variable):
     entity = Person
     label = "Alabama SSP living arrangement"
     definition_period = MONTH
+    defined_for = StateCode.AL
     possible_values = ALSSPLivingArrangement
     default_value = ALSSPLivingArrangement.NONE
     reference = (

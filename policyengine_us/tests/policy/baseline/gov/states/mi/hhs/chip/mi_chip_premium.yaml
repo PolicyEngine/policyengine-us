@@ -1,0 +1,35 @@
+- name: Michigan MIChild tax unit pays 10 dollars monthly when CHIP-eligible.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.90
+    households:
+      household:
+        members: [child]
+        state_code: MI
+  output:
+    mi_chip_premium: 120
+
+- name: Michigan non-CHIP tax unit owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: false
+        is_chip_eligible_child: false
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.90
+    households:
+      household:
+        members: [child]
+        state_code: MI
+  output:
+    mi_chip_premium: 0

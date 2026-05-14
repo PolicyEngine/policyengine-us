@@ -1,0 +1,59 @@
+- name: Case 1, non-Washington worker with sufficient hours is ineligible.
+  period: 2026
+  input:
+    state_code: CA
+    weekly_hours_worked: 20
+  output:
+    # Benefit only available to Washington workers (defined_for StateCode.WA).
+    wa_pfml_eligible: false
+
+- name: Case 2, part-time Washington worker below the hours threshold is ineligible.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 15
+  output:
+    # annual_hours = 15 * 52 = 780 hours
+    # 780 < 820 threshold per RCW 50A.15.010, so ineligible.
+    wa_pfml_eligible: false
+
+- name: Case 3, Washington worker just above the hours threshold is eligible.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 16
+  output:
+    # annual_hours = 16 * 52 = 832 hours
+    # 832 >= 820 threshold per RCW 50A.15.010, so eligible.
+    wa_pfml_eligible: true
+
+- name: Case 4, Washington worker with zero hours is ineligible.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 0
+  output:
+    # annual_hours = 0 < 820, so ineligible.
+    wa_pfml_eligible: false
+
+- name: Case 5, qualifying-period hours override can make a worker eligible.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 0
+    wa_pfml_qualifying_period_hours_worked: 900
+  output:
+    # Override replaces the weekly-hours proxy for eligibility.
+    # 900 >= 820 threshold, so eligible.
+    wa_pfml_eligible: true
+
+- name: Case 6, qualifying-period hours override takes precedence over weekly-hours proxy.
+  period: 2026
+  input:
+    state_code: WA
+    weekly_hours_worked: 20
+    wa_pfml_qualifying_period_hours_worked: 800
+  output:
+    # Override replaces the weekly-hours proxy for eligibility.
+    # 800 < 820 threshold, so ineligible.
+    wa_pfml_eligible: false

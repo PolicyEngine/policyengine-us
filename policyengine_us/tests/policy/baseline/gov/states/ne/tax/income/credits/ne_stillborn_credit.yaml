@@ -1,0 +1,47 @@
+- name: No stillborn children, no credit
+  period: 2023
+  input:
+    state_code: NE
+    tax_unit_stillborn_children: 0
+  output:
+    ne_stillborn_credit: 0
+
+- name: One stillborn child, $2,000 refundable credit
+  period: 2023
+  input:
+    state_code: NE
+    tax_unit_stillborn_children: 1
+  output:
+    ne_stillborn_credit: 2_000
+
+- name: Two stillborn children, $4,000 credit
+  period: 2023
+  input:
+    state_code: NE
+    tax_unit_stillborn_children: 2
+  output:
+    ne_stillborn_credit: 4_000
+
+- name: Pre-effective year 2021, credit is zero
+  period: 2021
+  input:
+    state_code: NE
+    tax_unit_stillborn_children: 1
+  output:
+    ne_stillborn_credit: 0
+
+- name: Effective year 2022, $2,000 per stillborn child
+  period: 2022
+  input:
+    state_code: NE
+    tax_unit_stillborn_children: 1
+  output:
+    ne_stillborn_credit: 2_000
+
+- name: Non-NE filer with stillborn child receives no NE credit
+  period: 2023
+  input:
+    state_code: CA
+    tax_unit_stillborn_children: 1
+  output:
+    ne_stillborn_credit: 0

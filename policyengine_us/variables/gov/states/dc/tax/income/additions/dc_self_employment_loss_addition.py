@@ -14,7 +14,7 @@ class dc_self_employment_loss_addition(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        loss_person = max_(0, -person("self_employment_income", period))
+        loss_person = max_(0, -person("total_self_employment_income", period))
         loss_taxunit = person.tax_unit.sum(loss_person)
         # Cap at SE loss actually deducted in federal AGI via loss_ald.
         # loss_ald includes both SE and capital losses; isolate SE portion.

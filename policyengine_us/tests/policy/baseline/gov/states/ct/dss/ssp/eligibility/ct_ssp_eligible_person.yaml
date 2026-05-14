@@ -1,0 +1,239 @@
+- name: Case 1, aged SSI-eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928  # $994/mo
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_eligible_person: true
+
+- name: Case 2, disabled child is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Per CGS 17b-600: Only blind children are eligible; disabled children excluded
+    ct_ssp_eligible_person: false
+
+- name: Case 3, blind child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_blind: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_eligible_person: true
+
+- name: Case 4, person with resources over CT limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_700  # > $1,600 CT limit
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_eligible_person: false
+
+- name: Case 5, non-ABD person not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_ssp_eligible_person: false
+
+- name: Case 6, person exactly at age 65 threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Aged (65) -> categorically eligible through SSI aged pathway
+    ct_ssp_eligible_person: true
+
+- name: Case 7, person at age 64 not aged not disabled.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 64
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # 64 years old, not blind, not disabled -> not SSI-eligible -> ineligible
+    ct_ssp_eligible_person: false
+
+- name: Case 8, blind and disabled child is eligible via blind pathway.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        is_blind: true
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+
+        ct_ssp_has_therapeutic_diet: false
+        ssi: 11_928
+        employment_income: 0
+        rent: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    # Child who is both blind AND disabled -> blind pathway makes them eligible
+    # Per CGS 17b-600: Only blind children eligible; blind trumps disabled exclusion
+    ct_ssp_eligible_person: true

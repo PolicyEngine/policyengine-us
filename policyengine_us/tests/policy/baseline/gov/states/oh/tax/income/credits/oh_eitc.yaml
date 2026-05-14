@@ -3,22 +3,23 @@
   input:
     state_code: OH
     eitc: 0
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_eitc: 0
-
 - name: match
   period: 2021
   absolute_error_margin: 0.001
   input:
     state_code: OH
     eitc: 100
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_eitc: 30
-
 - name: Outside OH is ineligible
   period: 2021
   input:
     state_code: MA
     eitc: 100
+    oh_income_tax_before_non_refundable_credits: 1000000
   output:
     oh_eitc: 0

@@ -11,7 +11,7 @@ class dc_ccsp_immigration_status_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.dc.dhs.ccsp
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()
         return np.isin(
             immigration_status_str,

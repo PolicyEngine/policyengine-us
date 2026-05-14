@@ -20,5 +20,9 @@ class tip_income_deduction_occupation_requirement_met(Variable):
         treasury_tipped_occupation_code = person(
             "treasury_tipped_occupation_code", period
         )
-        is_sstb = person("business_is_sstb", period)
+        is_sstb_legacy = person("business_is_sstb", period)
+        has_sstb_self_employment_income = (
+            person("sstb_self_employment_income", period) > 0
+        )
+        is_sstb = is_sstb_legacy | has_sstb_self_employment_income
         return (treasury_tipped_occupation_code > 0) & ~is_sstb

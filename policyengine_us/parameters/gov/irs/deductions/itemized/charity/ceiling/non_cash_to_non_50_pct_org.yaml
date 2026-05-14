@@ -1,0 +1,16 @@
+description: >-
+  Ceiling (as a fraction of AGI) for noncash charitable contributions
+  to organizations other than 50-percent limit organizations.
+  Note: 170(b)(1)(D) sets a stricter 20% cap for capital gain property
+  to these organizations, which is not yet modeled separately.
+metadata:
+  unit: /1
+  period: year
+  label: Non-cash charitable deduction limit for non-50% limit organizations
+  reference:
+    - title: 26 U.S. Code 170(b)(1)(B) - General 30% limit for non-50% limit organizations
+      href: https://www.law.cornell.edu/uscode/text/26/170#b_1_B
+    - title: 26 U.S. Code 170(b)(1)(D) - 20% limit for capital gain property to non-50% limit organizations
+      href: https://www.law.cornell.edu/uscode/text/26/170#b_1_D
+values:
+  2013-01-01: 0.3

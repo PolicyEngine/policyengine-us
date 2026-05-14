@@ -103,3 +103,90 @@
         members: [person1, person2, person3]
   output:
     ssi_amount_if_eligible: [725, 725, 967]
+
+- name: Case D, another person's household one-third reduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person1]
+  output:
+    # Individual FBR = 967, VTR = 967 * 1/3 = 322.33
+    # Reduced FBR = 967 - 322.33 = 644.67
+    ssi_amount_if_eligible: 644.67
+
+- name: Case E, medical treatment facility individual.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_amount_if_eligible: 30
+
+- name: Case F, couple both in medical treatment facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 38
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Both in facility: each gets $30/month
+    ssi_amount_if_eligible: [30, 30]
+
+- name: Case G, another person's household with no shelter means no VTR (stays own household).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: false
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person1]
+  output:
+    # Not another person's household (no shelter), defaults to own household, full FBR
+    ssi_amount_if_eligible: 967
+
+- name: Case H, default inputs give own household with full FBR.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+  output:
+    ssi_amount_if_eligible: 967

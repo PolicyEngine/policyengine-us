@@ -139,3 +139,24 @@
   output:
     tip_income_deduction_occupation_requirement_met: false
     tip_income_deduction: 0
+
+- name: SSTB self-employment income blocks tip deduction even without legacy flag
+  period: 2025
+  input:
+    people:
+      worker:
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        tip_income: 5_000
+        treasury_tipped_occupation_code: 102
+        business_is_sstb: false
+        sstb_self_employment_income: 50_000
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 100_000
+        filing_status: SINGLE
+        members: [worker]
+  output:
+    tip_income_deduction_occupation_requirement_met: false
+    tip_income_deduction: 0

@@ -57,3 +57,105 @@
     qualified_business_income: 1_000
   output:
     qualified_business_income_deduction: 2_000
+
+- name: Deduction floor in effect with SSTB-only income
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        sstb_self_employment_income: 1_000
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        qbid_amount: 200
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        taxable_income_less_qbid: 600
+        adjusted_net_capital_gain: 0
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6
+  output:
+    qualified_business_income_deduction: 400
+
+# Integration test: doctor (SSTB) with rental property (non-SSTB) above threshold.
+# Demonstrates the §199A(d)(3) phaseout reaching only the SSTB component
+# while the non-SSTB business still receives the W-2 capped deduction.
+- name: Mixed SSTB and non-SSTB above threshold
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 400_000
+        self_employment_income: 50_000
+        sstb_self_employment_income: 50_000
+        w2_wages_from_qualified_business: 100_000
+        # Zero out QBI deductions so the test isolates SSTB / non-SSTB routing
+        # rather than SE-tax / health-insurance / pension ALD pro-rating.
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6
+  output:
+    # Single 2025 threshold $197,300, length $50,000.
+    # Taxable income is far above the phaseout, so applicable rate = 0.
+    # Non-SSTB QBI = $50,000; W-2 cap = 0.50 * $100,000 = $50,000.
+    #   Non-SSTB component = min(20% * $50k, $50k) = $10,000.
+    # SSTB QBI = $50,000; SSTB component fully phased out = $0.
+    qualified_business_income_deduction: 10_000
+
+- name: Pure SSTB below threshold gets full 20 percent deduction
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        business_is_qualified: false
+        sstb_self_employment_income: 30_000
+        # Zero out QBI deductions to isolate SSTB routing.
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6
+  output:
+    # Below the $197,300 single threshold so the SSTB phaseout does not apply.
+    # SSTB QBI component = 0.20 * $30,000 = $6,000.
+    qualified_business_income_deduction: 6_000

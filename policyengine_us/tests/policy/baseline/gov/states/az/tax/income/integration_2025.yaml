@@ -564,6 +564,7 @@
     tax_units:
       tax_unit:
         members: [spouse1, spouse2]
+        filing_status: JOINT
     households:
       household:
         members: [spouse1, spouse2]
@@ -573,8 +574,11 @@
     adjusted_gross_income: 17_000
     # Income $17,000 < $20,000 limit for 0-1 dependents - family credit eligible
     az_family_tax_credit_eligible: true
-    # Family tax credit: 2 people * $40 = $80 (max $240 for joint)
-    az_family_tax_credit: 80
+    az_income_tax_before_non_refundable_credits: 0
+    # Potential family tax credit: 2 people * $40 = $80 (max $240 for joint)
+    az_family_tax_credit_potential: 80
+    # Standard deduction exceeds income, so no non-refundable credit can be used.
+    az_family_tax_credit: 0
 
 - name: Joint filers 2025 with 2 dependents - family credit
   period: 2025
@@ -588,11 +592,14 @@
         employment_income: 10_000
       child1:
         age: 5
+        is_tax_unit_dependent: true
       child2:
         age: 8
+        is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [spouse1, spouse2, child1, child2]
+        filing_status: JOINT
     households:
       household:
         members: [spouse1, spouse2, child1, child2]
@@ -602,8 +609,11 @@
     adjusted_gross_income: 22_000
     # Income $22,000 < $23,600 limit for 2 dependents - eligible
     az_family_tax_credit_eligible: true
-    # Family tax credit: 4 people * $40 = $160
-    az_family_tax_credit: 160
+    az_income_tax_before_non_refundable_credits: 0
+    # Potential family tax credit: 4 people * $40 = $160
+    az_family_tax_credit_potential: 160
+    # Standard deduction exceeds income, so no non-refundable credit can be used.
+    az_family_tax_credit: 0
 
 - name: Joint filers 2025 over income limit - no family credit
   period: 2025
@@ -639,6 +649,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        filing_status: SINGLE
     households:
       household:
         members: [person1]
@@ -646,8 +657,11 @@
   output:
     # Income $9,500 < $10,000 limit for single filers
     az_family_tax_credit_eligible: true
-    # Single filer: 1 person * $40 = $40 (max $120)
-    az_family_tax_credit: 40
+    az_income_tax_before_non_refundable_credits: 0
+    # Potential family tax credit: 1 person * $40 = $40 (max $120)
+    az_family_tax_credit_potential: 40
+    # Standard deduction exceeds income, so no non-refundable credit can be used.
+    az_family_tax_credit: 0
 
 - name: Single filer 2025 over income limit - no family credit
   period: 2025
@@ -677,17 +691,23 @@
         employment_income: 26_000
       child1:
         age: 5
+        is_tax_unit_dependent: true
       child2:
         age: 8
+        is_tax_unit_dependent: true
       child3:
         age: 10
+        is_tax_unit_dependent: true
       child4:
         age: 12
+        is_tax_unit_dependent: true
       child5:
         age: 14
+        is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [parent, child1, child2, child3, child4, child5]
+        filing_status: HEAD_OF_HOUSEHOLD
     households:
       household:
         members: [parent, child1, child2, child3, child4, child5]
@@ -695,8 +715,13 @@
   output:
     # Income $26,000 < $26,575 limit for HOH with 5+ dependents
     az_family_tax_credit_eligible: true
-    # 6 people * $40 = $240, at max for HOH
-    az_family_tax_credit: 240
+    az_income_tax_before_non_refundable_credits: 59.375
+    az_dependent_tax_credit_potential: 500
+    az_dependent_tax_credit: 59.375
+    # Potential family tax credit is capped at $240 for HOH.
+    az_family_tax_credit_potential: 240
+    # Earlier non-refundable dependent credits consume the available liability first.
+    az_family_tax_credit: 0
 
 # =============================================================================
 # SECTION 6: Increased Excise Tax Credit Tests
@@ -1057,6 +1082,7 @@
       tax_unit:
         members: [spouse1, spouse2]
         charitable_deduction: 2_000
+        filing_status: JOINT
     households:
       household:
         members: [spouse1, spouse2]
@@ -1075,7 +1101,9 @@
     az_increased_excise_tax_credit: 50
     # Income under $20,000 limit for 0-1 dependents - family credit eligible
     az_family_tax_credit_eligible: true
-    az_family_tax_credit: 80
+    az_income_tax_before_non_refundable_credits: 0
+    az_family_tax_credit_potential: 80
+    az_family_tax_credit: 0
 
 - name: High income family - complete calculation
   period: 2025
@@ -1129,11 +1157,14 @@
         employment_income: 18_000
       child1:
         age: 4
+        is_tax_unit_dependent: true
       child2:
         age: 7
+        is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
+        filing_status: HEAD_OF_HOUSEHOLD
     households:
       household:
         members: [parent, child1, child2]
@@ -1143,12 +1174,16 @@
     adjusted_gross_income: 18_000
     # HOH standard deduction = $23,625
     az_base_standard_deduction: 23_625
-    # Dependent credit: 2 children under 17 * $100 = $200
-    az_dependent_tax_credit: 200
-    # Income $18,000 < $20,000 for HOH with 0-1 deps - family credit eligible
+    az_income_tax_before_non_refundable_credits: 0
+    # Potential dependent credit: 2 children under 17 * $100 = $200
+    az_dependent_tax_credit_potential: 200
+    # Standard deduction exceeds income, so the non-refundable dependent credit is unused.
+    az_dependent_tax_credit: 0
+    # Income $18,000 < $22,475 for HOH with 2 dependents - family credit eligible
     az_family_tax_credit_eligible: true
-    # 3 people * $40 = $120
-    az_family_tax_credit: 120
+    # Potential family tax credit: 3 people * $40 = $120
+    az_family_tax_credit_potential: 120
+    az_family_tax_credit: 0
     # Income $18,000 < $25,000 for HOH - excise credit eligible
     az_increased_excise_tax_credit_eligible: true
     # 3 people * $25 = $75

@@ -1,0 +1,79 @@
+- name: Case 1, refugee is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 2, asylee is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: ASYLEE
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 3, Cuban or Haitian entrant is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 4, deportation-withheld is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: DEPORTATION_WITHHELD
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 5, conditional entrant is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CONDITIONAL_ENTRANT
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 6, humanitarian parolee is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: PAROLED_ONE_YEAR
+  output:
+    wa_rca_immigration_status_eligible: true
+
+- name: Case 7, US citizen is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CITIZEN
+  output:
+    wa_rca_immigration_status_eligible: false
+
+- name: Case 8, lawful permanent resident is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    wa_rca_immigration_status_eligible: false
+
+- name: Case 9, undocumented immigrant is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: UNDOCUMENTED
+  output:
+    wa_rca_immigration_status_eligible: false
+
+- name: Case 10, DACA recipient is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: DACA
+  output:
+    wa_rca_immigration_status_eligible: false

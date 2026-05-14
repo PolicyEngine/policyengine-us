@@ -35,3 +35,13 @@
     nc_tanf_household_size: 0
   output:
     nc_tanf_income_eligible: false
+
+- name: Demographically eligible household with 0 household size is still ineligible.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_reduced_need_standard: 72 * 12
+    nc_tanf_household_size: 0
+    nc_demographic_tanf_eligible: true
+  output:
+    nc_tanf_income_eligible: false

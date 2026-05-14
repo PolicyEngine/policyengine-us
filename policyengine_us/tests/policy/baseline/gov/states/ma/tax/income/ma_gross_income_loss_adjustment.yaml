@@ -1,0 +1,7 @@
+- name: SSTB Schedule C losses reduce Massachusetts gross income
+  period: 2024
+  input:
+    sstb_self_employment_income: -10_000
+    state_code: MA
+  output:
+    ma_gross_income_loss_adjustment: -10_000

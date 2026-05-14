@@ -10,7 +10,7 @@ class ma_tafdc_immigration_status_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        immigration_status = spm_unit.members("immigration_status", period)
+        immigration_status = spm_unit.members("immigration_status", period.this_year)
         undocumented = (
             immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )

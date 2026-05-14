@@ -1,0 +1,120 @@
+- name: NY family bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 507
+    slcsp_family_tier_applies: true
+    lcbp_family_tier_multiplier: 2.85
+  output:
+    lcbp_family_tier_amount: 1_444.95
+
+- name: VT single parent with child bronze tier amount
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    lcbp_age_0: 824
+    slcsp_family_tier_applies: true
+    lcbp_family_tier_multiplier: 1.93
+  output:
+    lcbp_family_tier_amount: 1_590.32
+
+- name: NY high-income family bronze tier uses premium payers
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        monthly_age: 40
+        pays_aca_premium: true
+        is_aca_ptc_eligible: false
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code_str: NY
+        state_fips: 36
+        lcbp_age_0: 507
+  output:
+    lcbp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    lcbp_family_tier_multiplier: 1.7
+    lcbp_family_tier_amount: 861.9
+    lcbp: 861.9
+
+- name: NY bronze tier uses Age 29 child rate for 26-year-old dependent
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 26
+        monthly_age: 26
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        lcbp_age_0: 507
+  output:
+    is_aca_ny_age_29_dependent_child: [false, false, true]
+    lcbp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    lcbp_family_tier_multiplier: 2.9925
+    lcbp_family_tier_amount: 1_517.2
+    lcbp: 1_517.2
+
+- name: VT bronze tier includes adult dependent premium
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 60
+        monthly_age: 60
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+        lcbp_age_0: 824
+  output:
+    lcbp_family_tier_category: TWO_ADULTS
+    lcbp_family_tier_multiplier: 3
+    lcbp_family_tier_amount: 2_472
+    lcbp: 2_472

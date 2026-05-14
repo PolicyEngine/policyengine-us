@@ -83,7 +83,7 @@
       person:
         age: 40
         employment_income: 80_000
-        farm_income: -30_000
+        farm_operations_income: -30_000
     tax_units:
       tax_unit:
         members: [person]
@@ -155,7 +155,7 @@
         employment_income: 100_000
         self_employment_income: -20_000
         rental_income: -15_000
-        farm_income: -10_000
+        farm_operations_income: -10_000
     tax_units:
       tax_unit:
         members: [person]

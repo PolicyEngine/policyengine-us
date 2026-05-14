@@ -73,3 +73,78 @@
         state_fips: 13
   output:
     ga_income_tax: 0
+
+- name: Capital loss does not wipe out Georgia retirement exclusion earned income
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 69
+        employment_income: 10_000
+        short_term_capital_gains: -10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 13
+  output:
+    ga_retirement_exclusion: 5_000
+    ga_subtractions: 5_000
+    ga_agi: 2_000
+
+- name: Georgia retirement exclusion uses loss-limited capital losses
+  absolute_error_margin: 10
+  period: 2024
+  input:
+    people:
+      primary:
+        age: 69
+        employment_income: 123_105
+        taxable_interest_income: 8_156
+        long_term_capital_gains: 52_909
+        short_term_capital_gains: -248_110
+        taxable_private_pension_income: 13_440
+        is_tax_unit_head: true
+      spouse:
+        age: 63
+        taxable_interest_income: 8_156
+        long_term_capital_gains: 52_909
+        short_term_capital_gains: -248_110
+        taxable_private_pension_income: 13_440
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [primary, spouse]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [primary, spouse]
+    families:
+      family:
+        members: [primary, spouse]
+    spm_units:
+      spm_unit:
+        members: [primary, spouse]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [primary, spouse]
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 45_192
+    ga_agi: 118_105

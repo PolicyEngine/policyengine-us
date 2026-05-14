@@ -10,15 +10,19 @@
         ky_personal_tax_credits_joint: 50
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         ky_files_separately: true
+        ky_income_tax_before_non_refundable_credits_unit: 1000000
     households:
       household:
-        members: [person1,person2]
+        members:
+        - person1
+        - person2
         state_code: KY
   output:
     ky_personal_tax_credits: 140
-
 - name: separate
   period: 2022
   input:
@@ -31,12 +35,16 @@
         ky_personal_tax_credits_joint: 50
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members:
+        - person1
+        - person2
         ky_files_separately: false
+        ky_income_tax_before_non_refundable_credits_unit: 1000000
     households:
       household:
-        members: [person1,person2]
+        members:
+        - person1
+        - person2
         state_code: KY
   output:
     ky_personal_tax_credits: 90
-

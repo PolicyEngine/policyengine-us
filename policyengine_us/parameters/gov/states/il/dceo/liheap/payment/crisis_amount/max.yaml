@@ -1,11 +1,14 @@
-description: Illinois provides up to this winter crisis assistance amount for household under the Low Income Home Energy Assistance Program.
+description: Illinois provides this amount as the maximum winter crisis assistance under the Low Income Home Energy Assistance Program.
 values:
-  2023-10-01: 1_500
+  2023-10-01: 1_200
+  2024-10-01: 1_500
 
 metadata:
   period: year
   unit: currency-USD
   label: Illinois LIHEAP maximum winter crisis assistance
   reference:
-    - title: Illinois LIHEAP Profile - LIHEAP Clearinghouse
-      href: https://liheapch.acf.gov/profiles/Illinois.htm
+    - title: Illinois LIHEAP FY2024 State Plan, Section 4.12
+      href: https://liheapch.acf.gov/docs/2024/state-plans/IL_Plan_2024_rev1.pdf#page=28
+    - title: Illinois LIHEAP FY2025 State Plan, Section 4.12
+      href: https://dceo.illinois.gov/content/dam/soi/en/web/dceo/communityservices/utilitybillassistance/documents/py25-liheap-state-plan--submitted-detailed-model-plan-liheap-10.01.24.pdf#page=28

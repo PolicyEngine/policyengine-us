@@ -28,7 +28,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -74,7 +74,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -117,7 +117,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 800
+        spm_unit_cash_assets: 800
         childcare_expenses: 3_600  # $300/month annual
     tax_units:
       tax_unit:
@@ -166,7 +166,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_200
+        spm_unit_cash_assets: 1_200
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -206,7 +206,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000  # Exceeds $2,000 limit
+        spm_unit_cash_assets: 3_000  # Exceeds $2,000 limit
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -238,7 +238,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -289,7 +289,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        spm_unit_assets: 1_500
+        spm_unit_cash_assets: 1_500
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -342,7 +342,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        spm_unit_assets: 1_200
+        spm_unit_cash_assets: 1_200
         childcare_expenses: 6_000  # $500/month annual
     tax_units:
       tax_unit:
@@ -394,7 +394,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -442,7 +442,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -486,7 +486,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_500
+        spm_unit_cash_assets: 1_500
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -543,7 +543,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        spm_unit_assets: 1_800
+        spm_unit_cash_assets: 1_800
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]

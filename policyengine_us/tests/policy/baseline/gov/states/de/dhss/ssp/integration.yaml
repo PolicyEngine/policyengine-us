@@ -1,4 +1,4 @@
-- name: Case 1, eligible individual in residential care with no income reduction.
+- name: Case 1, eligible individual in a certified adult care setting with no income reduction.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -12,9 +12,9 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
-    # Eligibility: age 70 >= 18, SSI eligible, in residential care, DE resident
+    # Eligibility: age 70 >= 18, SSI eligible, in a certified adult care setting, DE resident
     de_ssp_eligible: true
     # Benefit: individual amount = $140, no reduction
     # supplement = max(0, 140 - max(0, -(0/12))) = max(0, 140 - 0) = $140
@@ -25,7 +25,7 @@
     # SPM benefits include both SSI and the Delaware SSP in this scenario.
     spm_unit_benefits: 433.5
 
-- name: Case 2, eligible couple both in residential care.
+- name: Case 2, eligible couple both in a certified adult care setting.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -47,16 +47,16 @@
       household:
         members: [person1, person2]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
-    # Both eligible: age >= 18, SSI eligible, in residential care
+    # Both eligible: age >= 18, SSI eligible, in a certified adult care setting
     de_ssp_eligible: [true, true]
     # Couple amount = $448 total, per person = $448/2 = $224
     # Each person: supplement = max(0, 224 - 0) = $224
     # Joint path: sum(224, 224) / 2 = $224 per person
     de_ssp: [224, 224]
 
-- name: Case 3, child age 17 in residential care is ineligible.
+- name: Case 3, child age 17 in a certified adult care setting is ineligible.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -70,14 +70,14 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     # Age 17 < 18 threshold: ineligible
     de_ssp_eligible: false
     # defined_for guard: ineligible person gets $0
     de_ssp: 0
 
-- name: Case 4, SSI-ineligible adult in residential care.
+- name: Case 4, SSI-ineligible adult in a certified adult care setting.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -91,13 +91,13 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     # Not SSI eligible: ineligible for SSP
     de_ssp_eligible: false
     de_ssp: 0
 
-- name: Case 5, eligible adult not in residential care.
+- name: Case 5, eligible adult not in a qualifying adult care setting.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -113,7 +113,7 @@
         state_code: DE
         de_ssp_living_arrangement: NONE
   output:
-    # Not in residential care: ineligible
+    # Not in a qualifying adult care setting: ineligible
     de_ssp_eligible: false
     de_ssp: 0
 
@@ -131,7 +131,7 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: true
     # individual amount = $140
@@ -162,7 +162,7 @@
       household:
         members: [person1, person2]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: [true, true]
     # per_person_amount = $448/2 = $224

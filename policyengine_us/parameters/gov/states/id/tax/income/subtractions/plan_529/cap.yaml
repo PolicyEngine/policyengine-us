@@ -1,0 +1,23 @@
+description: Idaho caps the 529 plan contributions subtraction at this amount by filing status.
+metadata:
+  label: Idaho 529 plan contribution subtraction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Idaho State Tax Commission - IDeal College Savings Program
+    href: https://tax.idaho.gov/taxes/income-tax/individual-income/popular-credits-and-deductions/ideal-college-savings-program/
+  - title: IDeal Idaho College Savings Program Tax Benefits
+    href: https://www.idsaves.org/home/features-and-benefits/tax-benefits.html
+
+JOINT:
+  2021-01-01: 12_000
+SURVIVING_SPOUSE:
+  2021-01-01: 12_000
+SINGLE:
+  2021-01-01: 6_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 6_000
+SEPARATE:
+  2021-01-01: 6_000

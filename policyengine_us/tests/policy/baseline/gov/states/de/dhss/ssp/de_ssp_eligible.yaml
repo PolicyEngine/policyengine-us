@@ -1,4 +1,4 @@
-- name: Case 1, SSI-eligible adult in residential care.
+- name: Case 1, SSI-eligible adult in a certified adult care setting.
   period: 2025-01
   input:
     people:
@@ -9,11 +9,11 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: true
 
-- name: Case 2, child in residential care is ineligible.
+- name: Case 2, child in a certified adult care setting is ineligible.
   period: 2025-01
   input:
     people:
@@ -24,11 +24,11 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: false
 
-- name: Case 3, adult not in residential care.
+- name: Case 3, adult not in a qualifying adult care setting.
   period: 2025-01
   input:
     people:
@@ -43,7 +43,7 @@
   output:
     de_ssp_eligible: false
 
-- name: Case 4, SSI-ineligible adult in residential care.
+- name: Case 4, SSI-ineligible adult in a certified adult care setting.
   period: 2025-01
   input:
     people:
@@ -54,11 +54,11 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: false
 
-- name: Case 5, non-DE resident.
+- name: Case 5, non-DE resident in a certified adult care setting.
   period: 2025-01
   input:
     people:
@@ -69,11 +69,11 @@
       household:
         members: [person1]
         state_code: PA
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: false
 
-- name: Case 6, adult exactly at age threshold.
+- name: Case 6, adult exactly at age threshold in a certified adult care setting.
   period: 2025-01
   input:
     people:
@@ -84,6 +84,6 @@
       household:
         members: [person1]
         state_code: DE
-        de_ssp_living_arrangement: RESIDENTIAL_CARE
+        de_ssp_living_arrangement: CERTIFIED_RESIDENTIAL_CARE_HOME
   output:
     de_ssp_eligible: true

@@ -14,7 +14,12 @@ class de_poc_activity_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         # Employment (DSSM 11003)
         has_employment = (person("employment_income", period) > 0) | (
-            person("self_employment_income", period) > 0
+            add(
+                person,
+                period,
+                ["self_employment_income", "sstb_self_employment_income"],
+            )
+            > 0
         )
         # Education / training (DSSM 11003)
         is_student = person("is_full_time_student", period.this_year)

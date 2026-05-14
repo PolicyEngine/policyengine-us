@@ -13,7 +13,7 @@ class is_snap_immigration_status_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()
 
         p = parameters(period).gov.usda.snap.eligibility

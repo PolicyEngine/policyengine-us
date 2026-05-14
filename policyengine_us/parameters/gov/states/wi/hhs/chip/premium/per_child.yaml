@@ -1,0 +1,51 @@
+description: Wisconsin charges this BadgerCare Plus monthly premium per CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line. The total for all children is also capped at 5 percent of the assistance group's income under the federal cost-sharing cap.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Wisconsin BadgerCare Plus monthly premium per child
+  reference:
+    - title: Wisconsin BadgerCare Plus Eligibility Handbook 48.1 - Premiums for Children
+      href: https://www.emhandbooks.wisconsin.gov/bcplus/policyfiles/6/48.1.htm
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 2.01
+    amount:
+      2021-01-01: 10
+  - threshold:
+      2021-01-01: 2.31
+    amount:
+      2021-01-01: 15
+  - threshold:
+      2021-01-01: 2.41
+    amount:
+      2021-01-01: 23
+  - threshold:
+      2021-01-01: 2.51
+    amount:
+      2021-01-01: 34
+  - threshold:
+      2021-01-01: 2.61
+    amount:
+      2021-01-01: 44
+  - threshold:
+      2021-01-01: 2.71
+    amount:
+      2021-01-01: 55
+  - threshold:
+      2021-01-01: 2.81
+    amount:
+      2021-01-01: 68
+  - threshold:
+      2021-01-01: 2.91
+    amount:
+      2021-01-01: 82
+  - threshold:
+      2021-01-01: 3.01
+    amount:
+      2021-01-01: 97.53
