@@ -22,7 +22,7 @@ class il_aabd_utility_allowance(Variable):
             [
                 where(
                     spm_unit(expense, period) > 0,
-                    min(
+                    min_(
                         spm_unit(expense, period),
                         p.utility[expense.replace("_expense", "")][area][capped_size],
                     ),

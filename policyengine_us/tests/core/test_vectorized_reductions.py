@@ -120,3 +120,22 @@ def test_numpy_any_all_outputs_specify_axis_or_stay_in_control_flow():
                 offenders.append(f"{path.relative_to(variables_dir)}:{node.lineno}")
 
     assert offenders == []
+
+
+def test_tanf_non_cash_asset_test_does_not_mutate_snap_assets():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2026": 30}},
+            person_b={"age": {"2026": 40}},
+            state="TX",
+        )
+    )
+    simulation.set_input("snap_assets", 2026, [4_000, 4_000])
+    simulation.set_input("household_vehicles_value", 2026, [24_000, 0])
+
+    simulation.calculate("meets_tanf_non_cash_asset_test", "2026-01")
+
+    assert simulation.calculate("snap_assets", "2026-01").tolist() == [
+        4_000,
+        4_000,
+    ]

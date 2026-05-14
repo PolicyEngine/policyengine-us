@@ -35,13 +35,26 @@ class county(Variable):
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
-        if not simulation.is_over_dataset and county_fips.all():
+        if not simulation.is_over_dataset:
             COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
 
             # Decode FIPS codes
             county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
-            county_name = county_fips_codes.loc[county_fips, "county_name"]
-            state_code = county_fips_codes.loc[county_fips, "state"]
-            return map_county_string_to_enum(county_name, state_code)
+            result = household("first_county_in_state", period)
+            county_fips = np.asarray(county_fips).astype(str)
+            known_fips = county_fips != ""
+            valid_fips = known_fips & np.isin(county_fips, county_fips_codes.index)
+            if valid_fips.any():
+                county_name = county_fips_codes.loc[
+                    county_fips[valid_fips],
+                    "county_name",
+                ]
+                state_code = county_fips_codes.loc[county_fips[valid_fips], "state"]
+                result = np.array(result, copy=True)
+                result[valid_fips] = map_county_string_to_enum(
+                    county_name,
+                    state_code,
+                ).to_numpy()
+            return result
 
         return household("first_county_in_state", period)
