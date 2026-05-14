@@ -1,0 +1,1 @@
+Fixed the Nebraska refundable Child Tax Credit child-care eligibility proxy to read `tax_unit_childcare_expenses` (populated by typical tax filers) instead of `pre_subsidy_childcare_expenses` (only populated by benefits-program calculations).
