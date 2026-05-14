@@ -30,6 +30,36 @@
   output:
     flat_refundable_credit: 2_700  # 2 * 1_000 + 1 * 500 + 200
 
+- name: Override appends flat credit to income_tax_refundable_credits
+  # Lightweight end-to-end check that the override of
+  # income_tax_refundable_credits actually splices flat_refundable_credit
+  # into the federal refundable list. We zero out every input that would
+  # produce a non-zero baseline refundable credit (no earnings, no
+  # qualifying children, no education expenses, no PTC eligibility) so
+  # baseline refundable credits collapse to zero — then the appended
+  # flat credit equals income_tax_refundable_credits exactly. This pins
+  # down the override; the test that was dropped in commit f1909275bd
+  # is restored in narrowed form to avoid the CI OOM that motivated the
+  # drop.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_household: 750
+    people:
+      filer:
+        age: 35
+        employment_income: 0
+        self_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 750
+    income_tax_refundable_credits: 750
+
 - name: Reform inactive (in_effect false) — flat credit stays zero
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
@@ -43,5 +73,87 @@
       tax_unit:
         members: [filer]
         filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0
+
+- name: HEAD_OF_HOUSEHOLD filer counts as one taxpayer
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    people:
+      filer:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    flat_refundable_credit: 1_000  # 1 * 1_000 — HoH is one taxpayer
+
+- name: SEPARATE (MFS) filer counts as one taxpayer
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    people:
+      filer:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SEPARATE
+  output:
+    flat_refundable_credit: 1_000  # MFS is one taxpayer
+
+- name: SURVIVING_SPOUSE filer counts as one taxpayer
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    people:
+      filer:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SURVIVING_SPOUSE
+  output:
+    flat_refundable_credit: 1_000  # SURVIVING_SPOUSE is one taxpayer
+
+- name: All toggles on with all amounts at zero — sanity case, returns zero
+  # Guards against NaN, sign flips, or divide-by-zero anomalies if all
+  # five component toggles are simultaneously enabled but every amount
+  # / rate / cap is zero. A future formula change that introduces a
+  # division should fail this case before it ships.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    people:
+      filer:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
   output:
     flat_refundable_credit: 0

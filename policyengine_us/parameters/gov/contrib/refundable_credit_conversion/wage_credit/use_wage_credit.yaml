@@ -1,7 +1,0 @@
-description: Apply the per-wage-earner refundable wage subsidy (rate times capped earnings, summed across earners in the tax unit). When false, the wage credit is zero regardless of the rate or cap parameters.
-metadata:
-  unit: bool
-  period: year
-  label: Apply per-wage-earner wage subsidy
-values:
-  0000-01-01: false

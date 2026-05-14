@@ -13,7 +13,9 @@ def create_refundable_credit_conversion() -> Reform:
         the CTC definition — e.g., children aged 17-18 or full-time
         students 19-23)
       * per-tax-unit (household)
-      * per-wage-earner wage subsidy (rate times capped earnings)
+      * per-earner earnings subsidy (rate times capped earnings per
+        worker, where earnings follow the EITC convention of wages
+        plus self-employment income)
 
     Each component has a boolean switch that gates whether it fires
     (e.g., `use_taxpayer_credit`); when false, that component
@@ -34,11 +36,7 @@ def create_refundable_credit_conversion() -> Reform:
         definition_period = YEAR
         label = "Refundable credit conversion flat credit"
         unit = USD
-        documentation = (
-            "Flat refundable credit composed of per-taxpayer, per-CTC-"
-            "qualifying-dependent, per-other-dependent, per-household, "
-            "and per-wage-earner components."
-        )
+        reference = "https://github.com/PolicyEngine/policyengine-us/pull/8219"
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.refundable_credit_conversion
@@ -56,23 +54,25 @@ def create_refundable_credit_conversion() -> Reform:
             # Per-CTC-qualifying dependent credit — uses the existing
             # ctc_qualifying_children variable so the same eligibility
             # rules as the baseline CTC apply (under 17, dependent, SSN,
-            # etc., per IRC §24(c)).
+            # etc., per IRC §24(c)). Hoisted out so the per-other-dependent
+            # branch can reuse it.
+            ctc_count = tax_unit("ctc_qualifying_children", period)
             if p.credit.use_ctc_dependent_credit:
-                ctc_count = tax_unit("ctc_qualifying_children", period)
                 ctc_dependent_amount = ctc_count * p.credit.per_ctc_dependent
             else:
                 ctc_dependent_amount = 0
 
             # Per-other-dependent credit — EITC-qualifying children who
             # are not CTC-qualifying (e.g., children aged 17-18, full-
-            # time students 19-23). Computed as the count difference
-            # since CTC-qualifying ⊆ EITC-qualifying in the typical case;
-            # max_ guards the rare configuration where a CTC kid lacks
-            # the EITC identification requirements.
+            # time students 19-23). Computed as a count difference, which
+            # is correct when CTC-qualifying ⊆ EITC-qualifying (the
+            # typical case); max_ guards the rare configuration where a
+            # CTC kid lacks the EITC identification requirements. Note
+            # this is a population-aggregate set difference, not a
+            # per-person classification.
             if p.credit.use_other_dependent_credit:
                 eitc_count = tax_unit("eitc_child_count", period)
-                ctc_count_inner = tax_unit("ctc_qualifying_children", period)
-                other_count = max_(eitc_count - ctc_count_inner, 0)
+                other_count = max_(eitc_count - ctc_count, 0)
                 other_dependent_amount = other_count * p.credit.per_other_dependent
             else:
                 other_dependent_amount = 0
@@ -82,21 +82,23 @@ def create_refundable_credit_conversion() -> Reform:
                 p.credit.per_household if p.credit.use_household_credit else 0
             )
 
-            # Per-wage-earner wage subsidy.
-            if p.wage_credit.use_wage_credit:
+            # Per-earner earnings subsidy (rate times capped earnings
+            # per worker, summed across the tax unit). Uses `earned_income`
+            # which follows the EITC convention of wages + self-employment.
+            if p.earnings_credit.use_earnings_credit:
                 earnings = person("earned_income", period)
-                capped_earnings = min_(max_(earnings, 0), p.wage_credit.cap)
-                person_wage_credit = capped_earnings * p.wage_credit.rate
-                wage_credit_amount = tax_unit.sum(person_wage_credit)
+                capped_earnings = min_(max_(earnings, 0), p.earnings_credit.cap)
+                person_earnings_credit = capped_earnings * p.earnings_credit.rate
+                earnings_credit_amount = tax_unit.sum(person_earnings_credit)
             else:
-                wage_credit_amount = 0
+                earnings_credit_amount = 0
 
             return (
                 taxpayer_amount
                 + ctc_dependent_amount
                 + other_dependent_amount
                 + household_amount
-                + wage_credit_amount
+                + earnings_credit_amount
             )
 
     class income_tax_refundable_credits(Variable):
@@ -145,4 +147,6 @@ def create_refundable_credit_conversion_reform(
         return None
 
 
-refundable_credit_conversion = create_refundable_credit_conversion()
+refundable_credit_conversion = create_refundable_credit_conversion_reform(
+    None, None, bypass=True
+)
