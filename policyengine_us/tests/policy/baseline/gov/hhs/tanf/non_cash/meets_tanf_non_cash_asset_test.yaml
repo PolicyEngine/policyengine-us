@@ -51,17 +51,26 @@
   output:
     meets_tanf_non_cash_asset_test: false
 
-- name: Texas BBCE ignores one vehicle up to $15,000
+- name: Texas BBCE ignores one vehicle up to $22,500 from September 2023
   period: 2026
   input:
     state_code_str: TX
     snap_assets: 4_000
-    household_vehicles_value: 15_000
+    household_vehicles_value: 22_500
   output:
     meets_tanf_non_cash_asset_test: true
 
-- name: Texas BBCE counts excess vehicle value above $15,000
+- name: Texas BBCE counts excess vehicle value above $22,500 from September 2023
   period: 2026
+  input:
+    state_code_str: TX
+    snap_assets: 4_000
+    household_vehicles_value: 24_000
+  output:
+    meets_tanf_non_cash_asset_test: false
+
+- name: Texas BBCE counted excess vehicle value above $15,000 before September 2023
+  period: 2022
   input:
     state_code_str: TX
     snap_assets: 4_000
