@@ -1,4 +1,4 @@
-description: Georgia taxes all taxable income at this flat rate when gov.states.ga.tax.income.main.flat_applies is true. This parameter is unused when flat_applies is false (Georgia is on the progressive bracket structure).
+description: Georgia taxes all taxable income at this flat rate when gov.states.ga.tax.income.main.flat_applies is true (otherwise the per-filing-status progressive bracket structure applies).
 # Georgia HB1015 (2023-2024) replaced the progressive bracket structure
 # with a flat rate beginning tax year 2024. Subsequent reductions are made
 # by amending O.C.G.A. section 48-7-20(a.1).
@@ -29,4 +29,4 @@ metadata:
     - title: 2025 IT-511 Individual Income Tax Booklet, Page 9
       href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=9
     - title: Georgia HB463 (2025-2026), Section 2-1 amending O.C.G.A. § 48-7-20(a.1)
-      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=2

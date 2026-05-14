@@ -20,6 +20,39 @@
   output:
     ga_standard_deduction: 30_000
 
+- name: GA HB463 - TY 2026 head of household gets the new $15,000 standard deduction
+  period: 2026
+  input:
+    employment_income: 50_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 35
+    state_code: GA
+  output:
+    ga_standard_deduction: 15_000
+
+- name: GA HB463 - TY 2026 separate filer gets the new $15,000 standard deduction
+  period: 2026
+  input:
+    employment_income: 40_000
+    filing_status: SEPARATE
+    age_head: 38
+    state_code: GA
+  output:
+    ga_standard_deduction: 15_000
+
+- name: GA HB463 - TY 2026 surviving spouse gets the $30,000 standard deduction (JOINT-tier conformity)
+  # Bill enumerates only (i) joint and (ii) single/HoH/separate. We map
+  # SURVIVING_SPOUSE to the joint tier consistent with federal qualifying-
+  # widow(er) treatment.
+  period: 2026
+  input:
+    employment_income: 60_000
+    filing_status: SURVIVING_SPOUSE
+    age_head: 40
+    state_code: GA
+  output:
+    ga_standard_deduction: 30_000
+
 - name: GA HB463 - TY 2026 dependent exemption is $5,000 per dependent
   period: 2026
   input:
@@ -43,6 +76,57 @@
     # HB463 Section 2-2: dependent exemption raised from $4,000 to $5,000.
     ga_exemptions: 5_000
 
+- name: GA HB463 - TY 2026 multi-dependent exemption scales linearly
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        is_tax_unit_head: true
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: GA
+  output:
+    # 3 dependents x $5,000 = $15,000 (plus filer exemption if any from p.taxpayer).
+    ga_exemptions: 15_000
+
+- name: GA HB463 - TY 2026 age-65+ retirement cap is still $65,000 (cap raise applies TY 2027+)
+  # Locks the 2026 vs 2027 boundary. The bill raises the cap to $70,000
+  # effective TY 2027, not TY 2026 — so a 2026 age-65+ filer with $70,000
+  # of taxable pension income is capped at $65,000.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 67
+        taxable_pension_income: 70_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 65_000
+
 - name: GA HB463 - TY 2027 retirement income exclusion for age 65+ raised to $70,000
   period: 2027
   input:
@@ -61,8 +145,7 @@
         state_code: GA
   output:
     # HB463 Section 2-3: age-65+ retirement exclusion cap raised from
-    # $65,000 to $70,000 effective TY 2027. Filer receives the full $70,000
-    # exclusion.
+    # $65,000 to $70,000 effective TY 2027.
     ga_retirement_exclusion: 70_000
 
 - name: GA HB463 - TY 2026 qualified overtime exclusion caps at $1,750
@@ -72,6 +155,8 @@
       head:
         age: 35
         is_tax_unit_head: true
+        is_paid_hourly: true
+        employment_income: 50_000
         fsla_overtime_premium: 3_000
     tax_units:
       tax_unit:
@@ -85,7 +170,111 @@
     # HB463 Section 2-4(16): qualified overtime exclusion capped at $1,750.
     ga_qualified_overtime_exclusion: 1_750
 
-- name: GA HB463 - TY 2029 overtime exclusion no longer subtracts from GA AGI (provision self-repealed)
+- name: GA HB463 - TY 2026 overtime below cap passes through uncapped
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_paid_hourly: true
+        employment_income: 40_000
+        fsla_overtime_premium: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 1_000
+
+- name: GA HB463 - TY 2026 zero overtime yields zero exclusion
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+        fsla_overtime_premium: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 0
+
+- name: GA HB463 - TY 2026 multi-worker overtime applies per-person cap then aggregates
+  # Two workers each with $3,000 of overtime — each capped at $1,750
+  # individually, summed to $3,500. Validates that the cap is applied
+  # BEFORE aggregation (per-employee), not after.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 38
+        is_tax_unit_head: true
+        is_paid_hourly: true
+        employment_income: 50_000
+        fsla_overtime_premium: 3_000
+      spouse:
+        age: 36
+        is_tax_unit_spouse: true
+        is_paid_hourly: true
+        employment_income: 50_000
+        fsla_overtime_premium: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: GA
+  output:
+    # 2 workers x $1,750 = $3,500.
+    ga_qualified_overtime_exclusion: 3_500
+
+- name: GA HB463 - TY 2028 last year overtime and tips still flow into ga_subtractions
+  # Contrast case for the 2029 self-repeal test below. TY 2028 is the last
+  # year both provisions apply, so the exclusions ARE summed into
+  # ga_subtractions. Sanity-check that the variables themselves return
+  # the expected $1,750 caps.
+  period: 2028
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_paid_hourly: true
+        employment_income: 50_000
+        fsla_overtime_premium: 3_000
+        tip_income: 4_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_qualified_overtime_exclusion: 1_750
+    ga_cash_tip_exclusion: 1_750
+
+- name: GA HB463 - TY 2029 overtime/tips exclusions self-repealed; no subtraction flows
+  # Both paragraphs stand repealed 12/31/2028; subtractions list drops both
+  # at 2029-01-01. The variables themselves may still compute non-zero
+  # values from the person-level inputs, but they should NOT contribute
+  # to ga_subtractions because they are no longer in the list.
   period: 2029
   input:
     people:
@@ -132,6 +321,52 @@
     # HB463 Section 2-4(17): cash tip exclusion capped at $1,750.
     ga_cash_tip_exclusion: 1_750
 
+- name: GA HB463 - TY 2026 tip income below cap passes through uncapped
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        tip_income: 1_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: GA
+  output:
+    ga_cash_tip_exclusion: 1_000
+
+- name: GA HB463 - TY 2026 multi-worker tips apply per-person cap then aggregate
+  period: 2026
+  input:
+    people:
+      head:
+        age: 38
+        is_tax_unit_head: true
+        tip_income: 4_000
+        tip_income_deduction_occupation_requirement_met: true
+      spouse:
+        age: 36
+        is_tax_unit_spouse: true
+        tip_income: 4_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: GA
+  output:
+    # 2 workers x $1,750 = $3,500.
+    ga_cash_tip_exclusion: 3_500
+
 - name: GA HB463 - TY 2026 cash tip exclusion is zero for non-tipped occupations
   period: 2026
   input:
@@ -153,3 +388,4 @@
     # Tips from occupations without a Treasury Tipped Occupation Code are
     # excluded under both federal and GA HB463 rules.
     ga_cash_tip_exclusion: 0
+

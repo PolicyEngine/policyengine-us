@@ -5,7 +5,7 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  reference: 
+  reference:
   - title: 2021 IT-511 Individual Income Tax Booklet - page 12 - FORM 500, LINE 11a
     href: https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download
   - title: 2022 IT-511 Individual Income Tax Booklet - - page 12 - FORM 500, LINE 11a
@@ -19,10 +19,20 @@ metadata:
   - title: 2025 IT-511 Individual Income Tax Booklet - page 16 - FORM 500, LINE 11
     href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=16
   - title: Georgia HB463 (2025-2026), Section 2-3 amending O.C.G.A. § 48-7-27(a)(1)(B)
-    href: https://www.legis.ga.gov/api/legislation/document/20252026/249080
+    href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=3
 # Georgia HB463 (2025-2026), Section 2-3 raises the JOINT standard deduction
 # from $24,000 to $30,000 and the SINGLE / HEAD_OF_HOUSEHOLD / SEPARATE
 # standard deduction from $12,000 to $15,000 effective tax year 2026.
+#
+# The bill's amended § 48-7-27(a)(1)(B) text enumerates only two filing-status
+# tiers — "(i) a married couple filing a joint return" and "(ii) a single
+# taxpayer, head of household, or married taxpayer filing a separate return."
+# SURVIVING_SPOUSE (qualifying widow/er) is not enumerated. We map
+# SURVIVING_SPOUSE to the JOINT tier ($30,000 in 2026) consistent with federal
+# practice — for the two years following a spouse's death, federal qualifying
+# widow(er)s use the joint standard deduction and joint rate schedule. The
+# pre-2024 historical entries for SURVIVING_SPOUSE (matching SINGLE/HoH)
+# predate this clarification and are preserved for backward compatibility.
 #
 # Bill also provides for prospective annual increases beginning 2027-01-01
 # (+$750 joint, +$375 single/HoH/separate per year, capped at $36,000 /

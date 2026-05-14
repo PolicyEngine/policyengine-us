@@ -1,4 +1,4 @@
-description: Georgia applies the flat-tax structure when this indicator is true; when false, the per-filing-status progressive bracket structure under gov.states.ga.tax.income.main.{single,joint,separate,head_of_household,surviving_spouse} applies instead.
+description: Georgia uses the flat-tax structure when true; otherwise the per-filing-status progressive bracket structure applies.
 
 values:
   2021-01-01: false
@@ -15,3 +15,5 @@ metadata:
       href: https://www.legis.ga.gov/legislation/66260
     - title: 2025 IT-511 Individual Income Tax Booklet, Page 9
       href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=9
+    - title: Georgia HB463 (2025-2026), Section 2-1 amending O.C.G.A. § 48-7-20(a.1)
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=2
