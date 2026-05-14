@@ -15,7 +15,6 @@
 
 - name: Case 1, income well below 85% SMI eligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -47,7 +46,6 @@
 
 - name: Case 2, income just below 85% SMI eligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -80,7 +78,6 @@
 
 - name: Case 3, income just above 85% SMI ineligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -117,7 +114,6 @@
 
 - name: Case 4, income above the former 185% FPL ceiling but below 85% SMI.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -146,7 +142,6 @@
 
 - name: Case 5, income well above 85% SMI ineligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -173,7 +168,6 @@
 
 - name: Case 6, income at 85% SMI exact boundary eligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -206,7 +200,6 @@
 
 - name: Case 7, large family income above 85% SMI ineligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -269,7 +262,6 @@
 
 - name: Case 8, large family income below 85% SMI eligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -1695,3 +1687,17 @@
     # -> 3.0% bracket (>= 0.7001)
     # copay = 1_666.67 * 0.03 = 50
     wv_ccap_copay: 50
+
+    # Person2 (FAMILY_HOME Tier II Infant, 5 days/wk, 6_000/yr):
+    #   monthly expenses = 500; days/mo = 5 * 52/12 = 21.667
+    #   daily_charge = 500/21.667 = 23.077; daily_benefit = min(33, 23.077) = 23.077
+    #   reimbursement = 23.077 * 21.667 = 500
+    # Person3 (CENTER Tier I School-Age, 3 days/wk, 4_000/yr):
+    #   monthly expenses = 333.33; days/mo = 3 * 52/12 = 13
+    #   daily_charge = 333.33/13 = 25.641; daily_benefit = min(32, 25.641) = 25.641
+    #   reimbursement = 25.641 * 13 = 333.33
+    # total reimbursement = 833.33
+    # monthly pre_subsidy = 10_000/12 = 833.33
+    # uncapped = max(833.33 - 50, 0) = 783.33
+    # benefit = min(783.33, 833.33) = 783.33
+    wv_ccap: 783.33

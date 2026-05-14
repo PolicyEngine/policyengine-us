@@ -42,5 +42,4 @@ class wv_ccap_daily_rate(Variable):
                 out_of_school_rate,
                 informal_rate,
             ],
-            default=center_rate,
         )

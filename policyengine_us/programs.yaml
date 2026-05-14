@@ -550,9 +550,11 @@ programs:
         full_name: Vermont Child Care Financial Assistance Program
         variable: vt_ccfap
       - state: WV
-        status: in_progress
+        status: complete
         name: West Virginia CCAP
         full_name: West Virginia Child Care Assistance Program
+        variable: wv_ccap
+        parameter_prefix: gov.states.wv.dhhr.ccap
 
   - id: head_start
     name: Head Start

@@ -15,6 +15,15 @@ values:
     - rental_income
     - veterans_benefits
     - military_retirement_pay
+    # TANF is countable per Manual Sec 5.2.4.3 but excluded here to avoid
+    # a circular dependency:
+    #   wv_ccap_countable_income -> tanf -> wv_works
+    #     -> wv_works_countable_earned_income (deducts childcare_expenses)
+    #     -> childcare_expenses -> wv_ccap -> wv_ccap_income_eligible
+    #     -> wv_ccap_countable_income
+    # The is_tanf_enrolled bypass in wv_ccap_income_eligible already
+    # makes TANF-active families categorically income-eligible.
+    # - tanf  # would belong here
 
 metadata:
   unit: list
