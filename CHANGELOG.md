@@ -1,3 +1,10 @@
+## [1.691.10] - 2026-05-14
+
+### Fixed
+
+- Fix asset stock variables being divided across months in SNAP categorical eligibility calculations.
+
+
 ## [1.691.9] - 2026-05-14
 
 ### Fixed
