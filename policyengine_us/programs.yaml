@@ -1126,6 +1126,17 @@ programs:
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
 
+  - id: ok_ui
+    name: Oklahoma UI
+    full_name: Oklahoma Unemployment Insurance
+    category: Benefits
+    agency: Oklahoma Employment Security Commission
+    status: complete
+    coverage: OK
+    variable: ok_ui
+    parameter_prefix: gov.states.ok.oesc.unemployment_insurance
+    verified_years: "2022-2026"
+
   - id: tx_fpp_benefit
     name: Texas FPP
     full_name: Texas Family Planning Program

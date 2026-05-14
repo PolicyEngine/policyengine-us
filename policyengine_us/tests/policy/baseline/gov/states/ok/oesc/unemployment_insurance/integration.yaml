@@ -33,6 +33,7 @@
         ok_ui_maximum_benefit_amount: 8_000
         # Annual: min($500 * 16, $8,000) = $8,000.
         ok_ui: 8_000
+        unemployment_compensation: 8_000
 
 - name: Case 2, ineligible claimant - wages too low in 2024.
   period: 2024
