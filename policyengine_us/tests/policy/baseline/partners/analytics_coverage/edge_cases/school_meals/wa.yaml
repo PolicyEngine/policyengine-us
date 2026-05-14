@@ -1,4 +1,4 @@
-- name: school_meals_just_below_free_threshold_130pct (wa)
+- name: school_meals_just_below_reduced_threshold_185pct (wa)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -12,7 +12,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 35500
+        employment_income: 50500
         is_ccdf_reason_for_care_eligible: false
       spouse:
         age: 28
@@ -68,7 +68,7 @@
       spm_unit:
         school_meal_daily_subsidy: 7.15
         school_meal_tier: 0
-- name: school_meals_just_above_free_threshold (wa)
+- name: school_meals_just_above_reduced_threshold_paid_tier (wa)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -82,7 +82,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 35600
+        employment_income: 50700
         is_ccdf_reason_for_care_eligible: false
       spouse:
         age: 28
@@ -125,146 +125,6 @@
     families:
       family:
         members: *id002
-    marital_units:
-      mu_couple:
-        members:
-        - head
-        - spouse
-      mu_child1:
-        members:
-        - child1
-  output:
-    spm_units:
-      spm_unit:
-        school_meal_daily_subsidy: 7.15
-        school_meal_tier: 0
-- name: school_meals_just_below_reduced_threshold_185pct (wa)
-  period: 2026
-  absolute_error_margin: 0.1
-  input:
-    people:
-      head:
-        age: 30
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 50500
-        is_ccdf_reason_for_care_eligible: false
-      spouse:
-        age: 28
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 0
-        is_ccdf_reason_for_care_eligible: false
-      child1:
-        age: 8
-        is_tax_unit_head: false
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: true
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 0
-        is_ccdf_reason_for_care_eligible: false
-    households:
-      household:
-        members: &id003
-        - head
-        - spouse
-        - child1
-        state_code_str: WA
-        zip_code: '98101'
-        county_str: KING_COUNTY_WA
-    spm_units:
-      spm_unit:
-        members: *id003
-    tax_units:
-      tax_unit:
-        members: *id003
-        tax_unit_is_joint: true
-    families:
-      family:
-        members: *id003
-    marital_units:
-      mu_couple:
-        members:
-        - head
-        - spouse
-      mu_child1:
-        members:
-        - child1
-  output:
-    spm_units:
-      spm_unit:
-        school_meal_daily_subsidy: 7.15
-        school_meal_tier: 0
-- name: school_meals_just_above_reduced_threshold_paid_tier (wa)
-  period: 2026
-  absolute_error_margin: 0.1
-  input:
-    people:
-      head:
-        age: 30
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 50700
-        is_ccdf_reason_for_care_eligible: false
-      spouse:
-        age: 28
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 0
-        is_ccdf_reason_for_care_eligible: false
-      child1:
-        age: 8
-        is_tax_unit_head: false
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: true
-        is_disabled: false
-        is_pregnant: false
-        is_breastfeeding: false
-        immigration_status_str: CITIZEN
-        employment_income: 0
-        is_ccdf_reason_for_care_eligible: false
-    households:
-      household:
-        members: &id004
-        - head
-        - spouse
-        - child1
-        state_code_str: WA
-        zip_code: '98101'
-        county_str: KING_COUNTY_WA
-    spm_units:
-      spm_unit:
-        members: *id004
-    tax_units:
-      tax_unit:
-        members: *id004
-        tax_unit_is_joint: true
-    families:
-      family:
-        members: *id004
     marital_units:
       mu_couple:
         members:

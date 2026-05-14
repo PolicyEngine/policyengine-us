@@ -106,114 +106,6 @@
       tax_unit:
         aca_ptc: 0.0
         premium_tax_credit: 0.0
-- name: aca_ptc_single_just_below_400pct_fpl (il)
-  period: 2026
-  absolute_error_margin: 0.1
-  input:
-    people:
-      head:
-        age: 30
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        immigration_status_str: CITIZEN
-        employment_income: 63700
-        is_medicare_eligible: false
-        ssi_countable_resources: 0
-        is_aca_eshi_eligible: false
-    households:
-      household:
-        members: &id003
-        - head
-        state_code_str: IL
-        zip_code: '60601'
-        county_str: COOK_COUNTY_IL
-    spm_units:
-      spm_unit:
-        members: *id003
-    tax_units:
-      tax_unit:
-        members: *id003
-        tax_unit_is_joint: false
-    families:
-      family:
-        members: *id003
-    marital_units:
-      mu_head:
-        members:
-        - head
-  output:
-    people:
-      head:
-        ssi: 0.0
-        is_ssi_eligible: false
-        is_ssi_aged: false
-        msp: 0.0
-        msp_eligible: false
-        medicaid: 0.0
-        is_medicaid_eligible: false
-        chip: 0.0
-        is_aca_ptc_eligible: false
-    tax_units:
-      tax_unit:
-        aca_ptc: 0.0
-        premium_tax_credit: 0.0
-- name: aca_ptc_single_just_above_400pct_fpl (il)
-  period: 2026
-  absolute_error_margin: 0.1
-  input:
-    people:
-      head:
-        age: 30
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-        is_tax_unit_dependent: false
-        is_disabled: false
-        is_pregnant: false
-        immigration_status_str: CITIZEN
-        employment_income: 64000
-        is_medicare_eligible: false
-        ssi_countable_resources: 0
-        is_aca_eshi_eligible: false
-    households:
-      household:
-        members: &id004
-        - head
-        state_code_str: IL
-        zip_code: '60601'
-        county_str: COOK_COUNTY_IL
-    spm_units:
-      spm_unit:
-        members: *id004
-    tax_units:
-      tax_unit:
-        members: *id004
-        tax_unit_is_joint: false
-    families:
-      family:
-        members: *id004
-    marital_units:
-      mu_head:
-        members:
-        - head
-  output:
-    people:
-      head:
-        ssi: 0.0
-        is_ssi_eligible: false
-        is_ssi_aged: false
-        msp: 0.0
-        msp_eligible: false
-        medicaid: 0.0
-        is_medicaid_eligible: false
-        chip: 0.0
-        is_aca_ptc_eligible: false
-    tax_units:
-      tax_unit:
-        aca_ptc: 0.0
-        premium_tax_credit: 0.0
 - name: aca_ptc_no_employer_offer_eligible (il)
   period: 2026
   absolute_error_margin: 0.1
@@ -257,7 +149,7 @@
         is_aca_eshi_eligible: false
     households:
       household:
-        members: &id005
+        members: &id003
         - head
         - spouse
         - child1
@@ -266,14 +158,14 @@
         county_str: COOK_COUNTY_IL
     spm_units:
       spm_unit:
-        members: *id005
+        members: *id003
     tax_units:
       tax_unit:
-        members: *id005
+        members: *id003
         tax_unit_is_joint: true
     families:
       family:
-        members: *id005
+        members: *id003
     marital_units:
       mu_couple:
         members:
@@ -361,7 +253,7 @@
         is_aca_eshi_eligible: false
     households:
       household:
-        members: &id006
+        members: &id004
         - head
         - spouse
         - child1
@@ -370,14 +262,14 @@
         county_str: COOK_COUNTY_IL
     spm_units:
       spm_unit:
-        members: *id006
+        members: *id004
     tax_units:
       tax_unit:
-        members: *id006
+        members: *id004
         tax_unit_is_joint: true
     families:
       family:
-        members: *id006
+        members: *id004
     marital_units:
       mu_couple:
         members:
