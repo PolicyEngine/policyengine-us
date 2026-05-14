@@ -1,0 +1,33 @@
+- name: Case 1, general exemption is capped at the statutory amount.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        assessed_property_value: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_school_district_homestead_exemption: 140_000
+
+- name: Case 2, general exemption is limited to assessed property value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_school_district_homestead_exemption: 100_000

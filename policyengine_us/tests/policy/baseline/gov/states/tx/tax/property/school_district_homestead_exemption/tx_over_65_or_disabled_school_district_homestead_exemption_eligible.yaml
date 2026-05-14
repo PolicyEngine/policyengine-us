@@ -1,0 +1,69 @@
+- name: Case 1, age 65 homeowner is eligible for the additional exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_over_65_or_disabled_school_district_homestead_exemption_eligible: true
+
+- name: Case 2, disabled homeowner under age 65 is eligible for the additional exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        assessed_property_value: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_over_65_or_disabled_school_district_homestead_exemption_eligible: true
+
+- name: Case 3, non-senior homeowner without disability is ineligible for the additional exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        assessed_property_value: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_over_65_or_disabled_school_district_homestead_exemption_eligible: false
+
+- name: Case 4, surviving spouse at the age threshold is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        assessed_property_value: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_over_65_or_disabled_school_district_homestead_exemption_eligible: true
