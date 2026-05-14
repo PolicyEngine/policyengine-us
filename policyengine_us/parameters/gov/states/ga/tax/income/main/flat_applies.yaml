@@ -1,0 +1,17 @@
+description: Georgia applies the flat-tax structure when this indicator is true; when false, the per-filing-status progressive bracket structure under gov.states.ga.tax.income.main.{single,joint,separate,head_of_household,surviving_spouse} applies instead.
+
+values:
+  2021-01-01: false
+  2024-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Georgia flat-tax structure in effect
+  reference:
+    - title: Official Code of Georgia Annotated | O.C.G.A. § 48-7-20(a.1)
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20/
+    - title: Georgia HB1015 (2023-2024), Section 1 - flat-tax transition
+      href: https://www.legis.ga.gov/legislation/66260
+    - title: 2025 IT-511 Individual Income Tax Booklet, Page 9
+      href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=9
