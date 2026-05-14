@@ -88,6 +88,16 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
+            # refundable_credit_conversion's override of
+            # income_tax_refundable_credits pulls every federal
+            # refundable credit (eitc / refundable_ctc / aotc / ptc /
+            # recovery rebate / refundable payroll tax credit) into the
+            # subprocess's variable graph. Bundled with the light catch-
+            # all this pushes peak memory past the runner cap right
+            # when taxsim's microsim YAMLs try to load, surfacing as
+            # "shutdown signal" mid-batch. Its own batch keeps the
+            # light batch under the cap.
+            "refundable_credit_conversion",
         }
 
         subdirs = sorted(
