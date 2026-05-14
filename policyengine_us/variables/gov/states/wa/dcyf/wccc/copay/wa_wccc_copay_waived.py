@@ -16,9 +16,14 @@ class wa_wccc_copay_waived(Variable):
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         is_in_school = person("is_in_k12_school", period.this_year)
-        # WAC 110-15-0075(5)(a) waives the copay for parents attending high
-        # school. The HSE-certificate path is not modeled at the moment.
-        is_teen_parent = is_head_or_spouse & is_in_school
+        age = person("age", period.this_year)
+        # WAC 110-15-0075(5)(a) waives the copay for parents age 21 or younger
+        # attending high school. The HSE-certificate path is not modeled at
+        # the moment.
+        p = parameters(period).gov.states.wa.dcyf.wccc.copay
+        is_teen_parent = (
+            is_head_or_spouse & is_in_school & (age <= p.teen_parent_age_limit)
+        )
         any_teen_parent = spm_unit.sum(is_teen_parent) > 0
         # WAC 110-15-0075(5)(c)(i) waives the copay for HGP families.
         # WAC 110-15-0075(5)(c)(ii) also waives it for WAC 110-15-0024

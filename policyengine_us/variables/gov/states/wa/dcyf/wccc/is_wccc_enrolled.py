@@ -6,4 +6,5 @@ class is_wccc_enrolled(Variable):
     entity = Person
     label = "Currently enrolled in Washington Working Connections Child Care"
     definition_period = MONTH
+    defined_for = StateCode.WA
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0005"

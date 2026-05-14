@@ -11,6 +11,9 @@ class wa_wccc_provider_type(Variable):
     value_type = Enum
     entity = Person
     possible_values = WAWCCCProviderType
+    # Default to CENTER since licensed centers are the most common WCCC
+    # provider type per DCYF subsidy caseload data. Users can override per
+    # household.
     default_value = WAWCCCProviderType.CENTER
     definition_period = MONTH
     label = "Washington WCCC child care provider type"

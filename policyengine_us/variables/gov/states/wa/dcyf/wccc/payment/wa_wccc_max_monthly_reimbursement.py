@@ -19,6 +19,12 @@ class wa_wccc_max_monthly_reimbursement(Variable):
     )
 
     def formula(person, period, parameters):
+        # We use the FULL_DAY monthly billing unit counts for every day_type
+        # at the moment. WAC 110-15-0190(3)(c)/(6)/(8)(b) defines distinct
+        # half-day / partial-day unit counts, but we don't track those
+        # separately; wa_wccc_day_type defaults to FULL_DAY, so microsim is
+        # unaffected. When day-type-specific units are added, also add the
+        # corresponding parameters (e.g., center_half_days).
         rates = parameters(period).gov.states.wa.dcyf.wccc.rates
         units = rates.monthly_units
         day_type = person("wa_wccc_day_type", period)
