@@ -1,0 +1,31 @@
+description: Pennsylvania provides this rebate amount under the Property Tax/Rent Rebate program.
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  type: single_amount
+  period: year
+  label: Pennsylvania Property Tax/Rent Rebate amount
+  reference:
+    - title: Pennsylvania Department of Revenue | Property Tax/Rent Rebate Program
+      href: https://www.pa.gov/agencies/revenue/ptrr
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 1_000
+  - threshold:
+      2025-01-01: 8_551
+    amount:
+      2025-01-01: 770
+  - threshold:
+      2025-01-01: 16_041
+    amount:
+      2025-01-01: 460
+  - threshold:
+      2025-01-01: 19_241
+    amount:
+      2025-01-01: 380
+  - threshold:
+      2025-01-01: 48_111
+    amount:
+      2025-01-01: 0
