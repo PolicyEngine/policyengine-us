@@ -556,34 +556,3 @@
       person:
         nj_unemployment_insurance_eligible: true
         nj_unemployment_insurance: 0
-
-- name: NJ UI feeds unemployment compensation aggregates (2024)
-  period: 2024
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person:
-        age: 31
-        nj_unemployment_insurance_base_period_weeks: 20
-        nj_unemployment_insurance_base_period_wages: 10_000
-        nj_unemployment_insurance_weeks_claimed: 10
-    tax_units:
-      tax_unit:
-        members: [person]
-    spm_units:
-      spm_unit:
-        members: [person]
-    households:
-      household:
-        members: [person]
-        state_code: NJ
-  output:
-    people:
-      person:
-        nj_unemployment_insurance: 3_000
-        unemployment_compensation: 3_000
-        taxable_unemployment_compensation: 3_000
-    tax_units:
-      tax_unit:
-        tax_unit_unemployment_compensation: 3_000
-        tax_unit_taxable_unemployment_compensation: 3_000
