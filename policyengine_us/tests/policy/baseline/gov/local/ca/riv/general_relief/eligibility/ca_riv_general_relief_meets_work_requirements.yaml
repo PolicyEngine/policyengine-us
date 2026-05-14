@@ -73,3 +73,21 @@
         members: [person1, person2, person3]
   output:
     ca_riv_general_relief_meets_work_requirements: [true, true, true]
+
+- name: Case 4, SSTB self-employment satisfies the work requirement.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 30
+        sstb_self_employment_income: 25_000
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_riv_general_relief_meets_work_requirements: true

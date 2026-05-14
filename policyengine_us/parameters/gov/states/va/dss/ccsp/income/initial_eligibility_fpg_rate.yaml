@@ -1,0 +1,20 @@
+description: Virginia limits initial income eligibility to this share of the federal poverty guideline by locality group under the Child Care Subsidy Program.
+
+metadata:
+  unit: /1
+  period: year
+  label: Virginia CCSP initial eligibility FPG rate by locality group
+  breakdown:
+    - va_ccsp_locality_group
+  reference:
+    - title: 8VAC20-790-40(C)(1)
+      href: https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section40/
+    - title: Virginia Child Care Subsidy Program Guidance Manual Appendix A
+      href: https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=142
+
+GROUP_I:
+  2023-01-01: 1.5
+GROUP_II:
+  2023-01-01: 1.6
+GROUP_III:
+  2023-01-01: 1.85

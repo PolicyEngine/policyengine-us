@@ -1,13 +1,41 @@
-- name: Always SUA
-  period: 2024
+- name: Colorado uses the SUA as a Heat and Eat state (effective 2024-10-01).
+  period: 2025
   input:
     state_code: CO
   output:
     snap_state_using_standard_utility_allowance: true
 
-- name: Not always SUA
+- name: California is a Heat and Eat state.
   period: 2024
   input:
     state_code: CA
+  output:
+    snap_state_using_standard_utility_allowance: true
+
+- name: New York is a Heat and Eat state.
+  period: 2024
+  input:
+    state_code: NY
+  output:
+    snap_state_using_standard_utility_allowance: true
+
+- name: Pennsylvania is a Heat and Eat state.
+  period: 2024
+  input:
+    state_code: PA
+  output:
+    snap_state_using_standard_utility_allowance: true
+
+- name: Texas is not a Heat and Eat state.
+  period: 2024
+  input:
+    state_code: TX
+  output:
+    snap_state_using_standard_utility_allowance: false
+
+- name: Colorado was not yet a Heat and Eat state before October 2024.
+  period: 2024-01
+  input:
+    state_code: CO
   output:
     snap_state_using_standard_utility_allowance: false

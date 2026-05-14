@@ -49,3 +49,63 @@
     age_spouse: 65
   output:
     me_property_tax_fairness_credit_base_cap: 1_960
+
+- name: Under-65 filer property tax fairness credit remains capped at $1,000 before 2026
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 2_000
+    age_head: 64
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_000
+
+- name: Under-65 filer property tax fairness credit is capped at $1,500 starting in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 2_000
+    age_head: 64
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_500
+
+- name: Age 65+ filer property tax fairness credit cap unchanged at $2,000 in 2026
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    me_property_tax_fairness_credit_countable_rent_property_tax: 3_000
+    age_head: 65
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 2_000
+
+# Verifies the 2025 senior benefit base of $4,100 is correctly applied.
+# At $60K income (4% income rate = $2,400), uncapped credit = $4,100 - $2,400
+# = $1,700, which is below the $2,000 senior cap, so the output exposes
+# the benefit-base value directly.
+- name: Age 65+ filer 2025 senior benefit base = $4,100 (Schedule PTFC/STFC line 8)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+    me_property_tax_fairness_credit_countable_rent_property_tax: 5_000
+    age_head: 66
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_700

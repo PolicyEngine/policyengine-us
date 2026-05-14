@@ -26,7 +26,7 @@
   output:
     # Federal EITC = $500
     # SC EITC = min($500 * 1.25, $200) = min($625, $200) = $200
-    sc_eitc: 200
+    sc_eitc_potential: 200
 
 - name: SC EITC below cap (2026)
   period: 2026
@@ -47,7 +47,7 @@
   output:
     # Federal EITC = $100
     # SC EITC = min($100 * 1.25, $200) = min($125, $200) = $125
-    sc_eitc: 125
+    sc_eitc_potential: 125
 
 - name: SC EITC has no cap before 2026
   period: 2025
@@ -68,7 +68,7 @@
   output:
     # Federal EITC = $500
     # SC EITC = $500 * 1.25 = $625 (no cap in 2025)
-    sc_eitc: 625
+    sc_eitc_potential: 625
 
 # SCIAD Tests
 

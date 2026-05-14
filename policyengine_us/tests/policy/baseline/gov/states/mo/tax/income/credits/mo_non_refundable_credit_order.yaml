@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2023
+  input:
+    state_code: MO
+    mo_income_tax_before_credits: 100
+    mo_wftc_potential: 80
+  output:
+    mo_wftc: 80

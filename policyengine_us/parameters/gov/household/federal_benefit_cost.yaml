@@ -1,0 +1,8 @@
+description: Variables summed into `federal_benefit_cost` — the federal share of benefit expenditures attributed to each person. Extends as programs gain statutory federal/state cost attribution.
+values:
+  2015-01-01:
+    - medicaid_federal_cost
+    - chip_federal_cost
+metadata:
+  unit: list
+  label: Federal benefit cost sources

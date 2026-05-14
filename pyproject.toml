@@ -1,17 +1,19 @@
 [project]
 name = "policyengine-us"
-version = "1.633.2"
+version = "1.691.10"
 description = "Add your description here."
 readme = "README.md"
 authors = [
     { name = "PolicyEngine", email = "hello@policyengine.org" }
 ]
-requires-python = ">=3.11,<3.15"
+requires-python = ">=3.9,<3.15"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: POSIX",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -21,7 +23,8 @@ classifiers = [
 dependencies = [
     "microdf-python>=1.0.0",
     "pandas>=2.0",
-    "policyengine-core>=3.23.5",
+    "policyengine-core>=3.26.0",
+    "spm-calculator>=0.2.0",
     "tables>=3.9",
     "tqdm>=4.67.1",
 ]
@@ -46,6 +49,7 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
+
 
 [tool.towncrier]
 package = "policyengine_us"
@@ -83,4 +87,3 @@ showcontent = true
 [tool.ruff.lint]
 select = ["E", "F"]
 ignore = ["E402", "E501", "E712", "E713", "E721", "E722", "E741", "F401", "F402", "F403", "F405", "F541", "F811", "F821", "F841"]
-

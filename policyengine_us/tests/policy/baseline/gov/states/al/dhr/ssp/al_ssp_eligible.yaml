@@ -3,7 +3,9 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 1
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
+    al_receives_elderly_disabled_medicaid_waiver: true
+    al_meets_snf_criteria: true
     state_code: AL
   output:
     al_ssp_eligible: true
@@ -12,7 +14,7 @@
   period: 2025-01
   input:
     is_ssi_eligible: true
-    al_ssp_living_arrangement: NONE
+    al_ssp_payment_category: NONE
     state_code: AL
   output:
     al_ssp_eligible: false
@@ -21,7 +23,7 @@
   period: 2025-01
   input:
     is_ssi_eligible: false
-    al_ssp_living_arrangement: IHC_LEVEL_B
+    al_ssp_payment_category: IHC_LEVEL_B
     state_code: AL
   output:
     al_ssp_eligible: false
@@ -30,7 +32,7 @@
   period: 2025-01
   input:
     is_ssi_eligible: false
-    al_ssp_living_arrangement: NONE
+    al_ssp_payment_category: NONE
     state_code: AL
   output:
     al_ssp_eligible: false
@@ -40,7 +42,9 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 1
-    al_ssp_living_arrangement: FOSTER_CARE
+    al_ssp_payment_category: FOSTER_CARE
+    al_receives_elderly_disabled_medicaid_waiver: true
+    al_meets_snf_criteria: true
     state_code: AL
   output:
     al_ssp_eligible: true
@@ -50,7 +54,7 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 1
-    al_ssp_living_arrangement: CEREBRAL_PALSY
+    al_ssp_payment_category: CEREBRAL_PALSY
     state_code: AL
   output:
     al_ssp_eligible: false
@@ -60,7 +64,7 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 1
-    al_ssp_living_arrangement: FCMP_NURSING_CARE
+    al_ssp_payment_category: FCMP_NURSING_CARE
     state_code: AL
   output:
     al_ssp_eligible: true
@@ -70,7 +74,7 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 1
-    al_ssp_living_arrangement: NURSING_CARE
+    al_ssp_payment_category: NURSING_CARE
     state_code: AL
   output:
     al_ssp_eligible: true
@@ -80,7 +84,9 @@
   input:
     is_ssi_eligible: true
     uncapped_ssi: 0
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
+    al_receives_elderly_disabled_medicaid_waiver: true
+    al_meets_snf_criteria: true
     state_code: AL
   output:
     al_ssp_eligible: false
@@ -91,7 +97,7 @@
     is_ssi_eligible: false
     uncapped_ssi: 0
     al_ssp_grandfathered: true
-    al_ssp_living_arrangement: CEREBRAL_PALSY
+    al_ssp_payment_category: CEREBRAL_PALSY
     state_code: AL
   output:
     al_ssp_eligible: true
@@ -102,16 +108,50 @@
     is_ssi_eligible: false
     uncapped_ssi: 0
     al_ssp_grandfathered: true
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
     state_code: AL
   output:
     al_ssp_eligible: true
+
+- name: SSI eligible in IHC Level A without waiver is not eligible
+  period: 2025-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: 1
+    al_ssp_payment_category: IHC_LEVEL_A
+    al_meets_snf_criteria: true
+    state_code: AL
+  output:
+    al_ssp_eligible: false
+
+- name: SSI eligible in Foster Care without SNF criteria is not eligible
+  period: 2025-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: 1
+    al_ssp_payment_category: FOSTER_CARE
+    al_receives_elderly_disabled_medicaid_waiver: true
+    state_code: AL
+  output:
+    al_ssp_eligible: false
 
 - name: Wrong state
   period: 2025-01
   input:
     is_ssi_eligible: true
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
     state_code: CO
   output:
     al_ssp_eligible: false
+
+- name: Legacy living arrangement input still supports eligibility
+  period: 2025-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: 1
+    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_receives_elderly_disabled_medicaid_waiver: true
+    al_meets_snf_criteria: true
+    state_code: AL
+  output:
+    al_ssp_eligible: true

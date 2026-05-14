@@ -1,0 +1,21 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2023
+  input:
+    state_code: OH
+    oh_income_tax_before_non_refundable_credits: 100
+    oh_eitc_potential: 80
+    oh_cdcc_potential: 40
+    oh_senior_citizen_credit_potential: 30
+    oh_retirement_credit_potential: 20
+    oh_non_public_school_credits_potential: 10
+    oh_exemption_credit_potential: 5
+    oh_joint_filing_credit_eligible: true
+    oh_joint_filing_credit_potential: 3
+  output:
+    oh_eitc: 80
+    oh_cdcc: 20
+    oh_senior_citizen_credit: 0
+    oh_retirement_credit: 0
+    oh_non_public_school_credits: 0
+    oh_exemption_credit: 0
+    oh_joint_filing_credit: 0

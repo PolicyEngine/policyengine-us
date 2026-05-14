@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class sc_eitc(Variable):
@@ -14,8 +17,14 @@ class sc_eitc(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("eitc", period)
-        p = parameters(period).gov.states.sc.tax.income.credits.eitc
-        uncapped = np.round(federal_eitc * p.rate, 1)
-        # Apply cap (infinite before 2026, $200 from 2026+)
-        return min_(uncapped, p.max)
+        ordered_credits = parameters(
+            period
+        ).gov.states.sc.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "sc_income_tax_before_non_refundable_credits",
+            "sc_eitc",
+            "sc_eitc_potential",
+        )

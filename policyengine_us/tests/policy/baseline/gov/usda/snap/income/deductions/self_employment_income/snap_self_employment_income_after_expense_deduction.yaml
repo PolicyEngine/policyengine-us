@@ -5,3 +5,12 @@
     snap_self_employment_expense_deduction: 300
   output:
     snap_self_employment_income_after_expense_deduction: 200
+
+- name: SSTB income uses the pre-response amount after SNAP deduction
+  period: 2022
+  input:
+    sstb_self_employment_income_before_lsr: 500
+    sstb_self_employment_income_behavioral_response: 200
+    snap_self_employment_expense_deduction: 300
+  output:
+    snap_self_employment_income_after_expense_deduction: 200

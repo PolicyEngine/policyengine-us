@@ -98,8 +98,10 @@
         members: [parent, child]
         state_code_str: NY
   output:
-    # NY TANF for family of 2 with no income
-    tanf: 3_024
+    # NY TANF for family of 2 with no income, annual.
+    # Need standard (no shelter) = basic $252 + home energy $22.50
+    # + supplemental energy $17 = $291.50/month → $3,498/year.
+    tanf: 3_498
 
 - name: TANF abolition test with full household
   period: 2023

@@ -27,13 +27,14 @@
         age: 50
         is_ssi_aged_blind_disabled: true
         ssi_claim_is_joint: false
+        ak_ssp_living_arrangement: INDEPENDENT
       person2:
         age: 48
+        ak_ssp_living_arrangement: INDEPENDENT
     households:
       household:
         members: [person1, person2]
         state_code: AK
-        ak_ssp_living_arrangement: INDEPENDENT
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -70,13 +71,14 @@
         age: 50
         is_ssi_aged_blind_disabled: true
         ssi_claim_is_joint: false
+        ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
       person2:
         age: 48
+        ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     households:
       household:
         members: [person1, person2]
         state_code: AK
-        ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     marital_units:
       marital_unit:
         members: [person1, person2]

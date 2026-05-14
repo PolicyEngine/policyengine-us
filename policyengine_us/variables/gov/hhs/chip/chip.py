@@ -8,5 +8,5 @@ class chip(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
-    defined_for = "is_chip_eligible"
+    defined_for = "chip_enrolled"
     adds = ["per_capita_chip"]

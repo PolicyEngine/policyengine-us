@@ -1,0 +1,61 @@
+description: Maine limits the non-military pension income deduction for filers with federal adjusted gross income above this amount, based on filing status, under the Maine state income tax.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine pension income deduction phaseout start
+  reference:
+    - title: 36 M.R.S. § 5122(2)(M-3) — Phaseout of pension income deduction applicable amount
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5122.html
+    - title: 36 M.R.S. § 5403(11) — Income deduction for retirement plan benefits; applicable amount (annual inflation adjustments)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5403.html
+    - title: 2025 Form 1040ME General Instructions, Important Changes for 2025
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=3
+    - title: 2025 Form 1040ME Schedule 1S, Worksheet for Phaseout of Non-Military Pension Income Deduction
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_1s_fillable.pdf#page=2
+  breakdown:
+    - filing_status
+SINGLE:
+  values:
+    2014-01-01: .inf
+    2025-01-01: 125_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2014-01-01: .inf
+    2025-01-01: 125_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2014-01-01: .inf
+    2025-01-01: 187_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+JOINT:
+  values:
+    2014-01-01: .inf
+    2025-01-01: 250_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2014-01-01: .inf
+    2025-01-01: 250_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

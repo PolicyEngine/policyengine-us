@@ -1,17 +1,26 @@
-- name: Indiv over Joint
-  period: 2021
-  input:
-    mt_income_tax_before_refundable_credits_indiv: 6_000
-    mt_income_tax_before_refundable_credits_joint: 2_000
-    state_code: MT
-  output: 
-    mt_income_tax_before_refundable_credits_unit: 2_000
-
-- name: Indiv udner Joint
+- name: MFSS era picks minimum (indiv lower)
   period: 2021
   input:
     mt_income_tax_before_refundable_credits_indiv: 1_300
     mt_income_tax_before_refundable_credits_joint: 2_000
     state_code: MT
-  output: 
+  output:
     mt_income_tax_before_refundable_credits_unit: 1_300
+
+- name: MFSS era picks minimum (joint lower)
+  period: 2021
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 6_000
+    mt_income_tax_before_refundable_credits_joint: 2_000
+    state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits_unit: 2_000
+
+- name: Post-MFSS repeal (2024) always picks joint
+  period: 2024
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 0
+    mt_income_tax_before_refundable_credits_joint: 3_500
+    state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits_unit: 3_500

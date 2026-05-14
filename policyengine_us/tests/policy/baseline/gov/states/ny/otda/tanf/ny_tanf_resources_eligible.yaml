@@ -3,7 +3,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # $3,750 limit for households with member 60+ or disabled (post-October 2022)
     ny_tanf_resources_eligible: true
@@ -13,7 +13,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 4_000
+    spm_unit_cash_assets: 4_000
   output:
     ny_tanf_resources_eligible: false
 
@@ -22,7 +22,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # $2,500 limit for non-elderly households (post-October 2022)
     ny_tanf_resources_eligible: false
@@ -32,7 +32,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 1_500
+    spm_unit_cash_assets: 1_500
   output:
     ny_tanf_resources_eligible: true
 
@@ -43,7 +43,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # $3,000 limit for households with member 60+ (pre-October 2022)
     ny_tanf_resources_eligible: true
@@ -53,7 +53,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 3_001
+    spm_unit_cash_assets: 3_001
   output:
     ny_tanf_resources_eligible: false
 
@@ -62,7 +62,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 2_000
+    spm_unit_cash_assets: 2_000
   output:
     # $2,000 limit for non-elderly households (pre-October 2022)
     ny_tanf_resources_eligible: true
@@ -72,7 +72,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 2_001
+    spm_unit_cash_assets: 2_001
   output:
     ny_tanf_resources_eligible: false
 
@@ -83,7 +83,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 2_500
+    spm_unit_cash_assets: 2_500
   output:
     # resources <= $2,500 limit
     ny_tanf_resources_eligible: true
@@ -93,7 +93,7 @@
   input:
     state_code: NY
     age: 59
-    spm_unit_assets: 2_501
+    spm_unit_cash_assets: 2_501
   output:
     ny_tanf_resources_eligible: false
 
@@ -102,7 +102,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 3_750
+    spm_unit_cash_assets: 3_750
   output:
     # resources <= $3,750 limit
     ny_tanf_resources_eligible: true
@@ -112,7 +112,7 @@
   input:
     state_code: NY
     age: 61
-    spm_unit_assets: 3_751
+    spm_unit_cash_assets: 3_751
   output:
     ny_tanf_resources_eligible: false
 
@@ -121,7 +121,7 @@
   input:
     state_code: NY
     age: 60
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # age >= 60, so uses $3,750 elderly limit
     ny_tanf_resources_eligible: true
@@ -134,7 +134,7 @@
     state_code: NY
     age: 40
     is_disabled: true
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # Disabled member qualifies for $3,750 limit per 22-ADM-11
     ny_tanf_resources_eligible: true
@@ -145,7 +145,7 @@
     state_code: NY
     age: 40
     is_disabled: true
-    spm_unit_assets: 3_751
+    spm_unit_cash_assets: 3_751
   output:
     ny_tanf_resources_eligible: false
 
@@ -155,7 +155,7 @@
     state_code: NY
     age: 40
     is_disabled: false
-    spm_unit_assets: 3_000
+    spm_unit_cash_assets: 3_000
   output:
     # No elderly or disabled member, uses $2,500 limit
     ny_tanf_resources_eligible: false
@@ -166,7 +166,7 @@
     state_code: NY
     age: 40
     is_disabled: true
-    spm_unit_assets: 2_500
+    spm_unit_cash_assets: 2_500
   output:
     # Pre-reform: disability did NOT qualify for higher limit
     # Uses $2,000 limit, $2,500 > $2,000 → ineligible

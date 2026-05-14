@@ -15,7 +15,7 @@ class ca_snap_immigration_status_eligible(Variable):
     def formula(person, period, parameters):
         # California delays OBBBA implementation to April 1, 2026 per ACL 25-92.
         p = parameters(period).gov.states.ca.cdss.snap.eligibility
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()
         return np.isin(
             immigration_status_str,

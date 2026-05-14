@@ -1,0 +1,409 @@
+- name: Case 1, disabled-only person at 2023-01 ineligible (before WSR 23-14-065 effective date 2023-07-01).
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Disabled-category in_effect=false until 2023-07-01.
+    # 2023-01 -> NONE (not aged, not blind, no ineligible spouse).
+    wa_ssp_payment_category: NONE
+    wa_ssp: [0]
+
+- name: Case 2, disabled-only person at 2024-01 receives STANDARD 38.25 (post-WSR 23-14-065).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Disabled-category in_effect flipped on 2023-07-01 -> STANDARD.
+    # 2024-01 is before 2024-04-01 standard rate cut, so still 38.25 (2021-01-01 entry).
+    wa_ssp_payment_category: STANDARD
+    wa_ssp: [38.25]
+
+- name: Case 3, aged SSI recipient at 2014-01 receives 40 STANDARD (post-2013-12-01 rate cut).
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2014-01 is after WSR 13-22-037 (eff. 2013-12-01) -> standard cut from 46 to 40.
+    wa_ssp: [40]
+
+- name: Case 4, aged SSI recipient at 2013-01 still receives original 46 STANDARD (pre-2013-12-01 cut).
+  period: 2013-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # January 2013 is well before WSR 13-22-037 (eff. 2013-12-01) -> 46 still applies.
+    wa_ssp: [46]
+
+- name: Case 5, medical institution resident at 2018-01 receives 27.28 (pre-2019-01-01 increase).
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2018-01 is before WSR 18-24-032 (eff. 2019-01-01) -> medical rate = 27.28.
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    wa_ssp: [27.28]
+
+- name: Case 6, medical institution resident at 2023-01 still receives 40 (pre-WSR 23-14-065 increase to 70).
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2023-01 is before WSR 23-14-065 (eff. 2023-07-01) -> medical rate still 40.
+    wa_ssp: [40]
+
+- name: Case 7, person who is both aged and blind still receives a single STANDARD payment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Aged AND blind both flag the STANDARD category, but the formula uses OR (`|`)
+    # so the person lands in STANDARD exactly once (no double payment).
+    wa_ssp_payment_category: STANDARD
+    wa_ssp: [35.50]
+
+- name: Case 8, blind person also in a medical institution receives MEDICAL_INSTITUTION rate (priority over STANDARD).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Both `in_medical_institution` and `in_standard_category` are true.
+    # `select()` lists MEDICAL_INSTITUTION first, so it wins -> 75.78 (2025 COLA), not 35.50.
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    wa_ssp: [75.78]
+
+- name: Case 9, married couple both SSI-eligible aged each receives STANDARD individually (no has_ineligible_spouse path).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+      person2:
+        age: 68
+        is_ssi_eligible: true
+        ssi: 12
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # ssi_eligible_count == 2, so has_ineligible_spouse is FALSE for both spouses.
+    # Both still qualify for STANDARD via the `aged` branch (no marriage add-on).
+    wa_ssp_payment_category: [STANDARD, STANDARD]
+    wa_ssp: [35.50, 35.50]
+
+- name: Case 10, couple where eligible aged spouse also has ineligible spouse path - still STANDARD via `aged` branch.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+      person2:
+        age: 50
+        is_ssi_eligible: false
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Branch verification: person1 qualifies for STANDARD via BOTH `aged` AND
+    # `has_ineligible_spouse`. The `|` ensures STANDARD (not double-paid).
+    # person2 is not SSI-eligible -> NONE.
+    wa_ssp_payment_category: [STANDARD, NONE]
+    wa_ssp: [35.50, 0]
+
+- name: Case 11, categorically eligible aged person with zero SSI receipt receives NONE.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # is_ssi_eligible=true but ssi==0 -> base_eligible = false -> NONE
+    # (per ssp_pr_checklist: WA SSP requires actual SSI receipt, not categorical eligibility alone).
+    wa_ssp_payment_category: NONE
+    wa_ssp: [0]
+
+- name: Case 12, non-Washington resident with otherwise full eligibility receives 0 (defined_for guard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # defined_for = StateCode.WA on both wa_ssp and wa_ssp_payment_category.
+    # Non-WA state -> formula not run -> default values.
+    wa_ssp: [0]
+
+- name: Case 13, medical institution resident at 2007-01 receives 23.68 (original 2006-08-28 rate).
+  period: 2007-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2007-01 is before WSR 07-22-022 (eff. 2007-11-26) -> medical rate = 23.68.
+    wa_ssp: [23.68]
+
+- name: Case 14, medical institution resident at 2008-01 receives 25.45 (post-WSR 07-22-022, pre-WSR 08-16-067).
+  period: 2008-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2008-01 is between WSR 07-22-022 (2007-11-26) and WSR 08-16-067 (2008-09-01).
+    # Medical institution rate = 25.45.
+    wa_ssp: [25.45]
+
+- name: Case 15, medical institution resident at 2009-01 receives 27.28 (post-WSR 08-16-067).
+  period: 2009-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2009-01 is after WSR 08-16-067 (eff. 2008-09-01) -> medical rate = 27.28.
+    wa_ssp: [27.28]
+
+- name: Case 16, couple both SSI-eligible and both in medical institution each receive MED_INST rate (no couple reduction, no ineligible-spouse path).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 68
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Both SSI-eligible (ssi_recipient_count == 2) -> has_ineligible_spouse is FALSE
+    # for both. Both in MEDICAL_TREATMENT_FACILITY -> MEDICAL_INSTITUTION category.
+    # 2024-01 medical institution rate = 73.20 (post-2024-01-01 COLA, WA Apple
+    # Health institutional PNA $103.20 minus $30 federal SSI institutional PNA).
+    # No couple reduction in WAC 388-478-0055 -- each spouse gets the per-person rate.
+    wa_ssp_payment_category: [MEDICAL_INSTITUTION, MEDICAL_INSTITUTION]
+    wa_ssp: [73.20, 73.20]
+
+- name: Case 17, disabled-only person in medical institution at 2024-01 maps to MEDICAL_INSTITUTION (priority over STANDARD).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        ssi: 12
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 2024-01 is post-2023-07-01 disabled-flip AND post-2023-07-01 MED rate raise to $70
+    # AND post-2024-01-01 COLA -> medical rate = 73.20.
+    # MEDICAL_INSTITUTION wins over STANDARD via select() priority order.
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    wa_ssp: [73.20]

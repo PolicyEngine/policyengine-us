@@ -16,7 +16,11 @@ class il_ccap_parent_meets_working_requirements(Variable):
             add(
                 person,
                 period,
-                ["employment_income", "self_employment_income"],
+                [
+                    "employment_income",
+                    "self_employment_income",
+                    "sstb_self_employment_income",
+                ],
             )
             > 0
         )

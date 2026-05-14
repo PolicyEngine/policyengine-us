@@ -1,0 +1,204 @@
+# Tests for Pennsylvania Unemployment Compensation Weekly Benefit Rate (WBR)
+# WBR is looked up in the Table Specified by Law (54 Pa.B. 1863, 2025 table)
+# based on the claimant's highest quarter wages in the base year.
+# Below $1,688 high-quarter wages -> WBR $0 (REQ-001 fail).
+# Minimum WBR $68, maximum WBR $605 (2025).
+# Reference: § 404(e)(1); 54 Pa.B. 1863.
+
+- name: Case 1, high-quarter wages below minimum of $1,688 produce $0 WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,500 is below the $1,688 minimum threshold of the Table; no WBR.
+        pa_uc_weekly_benefit_rate: 0
+
+- name: Case 2, high-quarter wages $1,687 (one dollar below minimum) yield $0 WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_687
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,687 < $1,688 (lowest bracket); no WBR.
+        pa_uc_weekly_benefit_rate: 0
+
+- name: Case 3, high-quarter wages $1,700 land in the lowest bracket with WBR $68.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_700
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,688 <= $1,700 <= $1,712 -> WBR $68 (minimum).
+        pa_uc_weekly_benefit_rate: 68
+
+- name: Case 4, high-quarter wages exactly at the minimum threshold $1,688 yield WBR $68.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_688
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # First bracket starts at $1,688 -> WBR $68.
+        pa_uc_weekly_benefit_rate: 68
+
+- name: Case 5, high-quarter wages $5,000 yield WBR $197 (bracket $4,988 to $5,012).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $4,988 <= $5,000 < $5,013 -> WBR $197.
+        pa_uc_weekly_benefit_rate: 197
+
+- name: Case 6, high-quarter wages $8,000 yield WBR $315 (bracket $7,988 to $8,012).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $7,988 <= $8,000 < $8,013 -> WBR $315.
+        pa_uc_weekly_benefit_rate: 315
+
+- name: Case 7, high-quarter wages $10,000 yield WBR $393 (bracket $9,988 to $10,012).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $9,988 <= $10,000 < $10,013 -> WBR $393.
+        pa_uc_weekly_benefit_rate: 393
+
+- name: Case 8, high-quarter wages $12,000 yield WBR $472 (bracket $11,988 to $12,012).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $11,988 <= $12,000 < $12,013 -> WBR $472.
+        pa_uc_weekly_benefit_rate: 472
+
+- name: Case 9, high-quarter wages $15,387 yield WBR $604 (one dollar below cap).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 15_387
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $15,363 <= $15,387 < $15,388 -> WBR $604.
+        pa_uc_weekly_benefit_rate: 604
+
+- name: Case 10, high-quarter wages $15,388 reach the cap of $605.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 15_388
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $15,388 is the last bracket (open-ended) -> WBR $605 (cap).
+        pa_uc_weekly_benefit_rate: 605
+
+- name: Case 11, high-quarter wages $50,000 are capped at the maximum WBR of $605.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # Any value at or above $15,388 -> WBR $605 (cap).
+        pa_uc_weekly_benefit_rate: 605

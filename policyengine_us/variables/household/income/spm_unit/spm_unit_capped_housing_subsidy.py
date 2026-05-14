@@ -13,5 +13,5 @@ class spm_unit_capped_housing_subsidy(Variable):
             return 0
         disabled_programs = parameters(period).simulation.disabled_programs
         if "spm_unit_capped_housing_subsidy" in disabled_programs:
-            return spm_unit("spm_unit_capped_housing_subsidy_reported", period)
+            return spm_unit("spm_unit_capped_housing_subsidy_data", period)
         return 0

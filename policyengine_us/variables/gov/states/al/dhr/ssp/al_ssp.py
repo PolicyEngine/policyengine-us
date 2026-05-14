@@ -12,5 +12,5 @@ class al_ssp(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.dhr.ssp
-        living_arrangement = person("al_ssp_living_arrangement", period)
-        return p.amount[living_arrangement]
+        payment_category = person("al_ssp_payment_category", period)
+        return p.amount[payment_category]

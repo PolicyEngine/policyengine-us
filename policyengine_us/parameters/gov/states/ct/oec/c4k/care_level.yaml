@@ -1,0 +1,29 @@
+description: Connecticut determines the care level based on authorized hours per week under the Care 4 Kids program.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Connecticut C4K care level by hours per week
+  reference:
+    - title: C4K Weekly Payment Rates Jul 2025-Jun 2026
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/12/Care-4-Kids-Weekly-Payment-Rates-jul-june.2026.pdf#page=1
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 3  # QUARTER_TIME
+  - threshold:
+      2020-01-01: 16
+    amount:
+      2020-01-01: 2  # HALF_TIME
+  - threshold:
+      2020-01-01: 35
+    amount:
+      2020-01-01: 1  # FULL_TIME
+  - threshold:
+      2020-01-01: 51
+    amount:
+      2020-01-01: 0  # FULL_TIME_PLUS

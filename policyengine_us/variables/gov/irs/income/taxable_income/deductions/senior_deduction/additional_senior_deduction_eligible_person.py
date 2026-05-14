@@ -6,15 +6,17 @@ class additional_senior_deduction_eligible_person(Variable):
     entity = Person
     definition_period = YEAR
     label = "Person is eligible for the additional senior deduction"
-    reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
+    reference = "https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=88"
 
     def formula(person, period, parameters):
         ssn_card_type = person("ssn_card_type", period)
         ssn_card_str = ssn_card_type.decode_to_str()
         p = parameters(period).gov.irs.deductions.senior_deduction
         eligible_ssn_card_type = np.isin(ssn_card_str, p.eligible_ssn_card_type)
+        filing_status = person.tax_unit("filing_status", period)
+        not_separate = filing_status != filing_status.possible_values.SEPARATE
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         p_irs = parameters(period).gov.irs.deductions.standard.aged_or_blind
         aged = age >= p_irs.age_threshold
-        return eligible_ssn_card_type & head_or_spouse & aged
+        return eligible_ssn_card_type & not_separate & head_or_spouse & aged

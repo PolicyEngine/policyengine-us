@@ -19,5 +19,5 @@ class ia_fip_resources_eligible(Variable):
             p.recipient_limit,
             p.applicant_limit,
         )
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
         return resources <= limit

@@ -1,15 +1,16 @@
 - name: UT EITC unit test 1
   period: 2022
   input:
-    eitc: 1_000
+    eitc: 1000
     state_code: UT
+    ut_income_tax_before_non_refundable_credits: 1000000
   output:
     ut_eitc: 150
-
 - name: No federal EITC
   period: 2022
   input:
     eitc: 0
     state_code: UT
+    ut_income_tax_before_non_refundable_credits: 1000000
   output:
     ut_eitc: 0

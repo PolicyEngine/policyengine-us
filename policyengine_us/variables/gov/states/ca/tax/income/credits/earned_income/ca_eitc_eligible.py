@@ -28,4 +28,13 @@ class ca_eitc_eligible(Variable):
             eitc_investment_income <= p.eligibility.max_investment_income
         )
 
-        return meets_age_requirements & meets_investment_income_requirements
+        # FTB 3514 (Steps 7-8): federal AGI must also be below the CalEITC
+        # earnings threshold (p.phase_out.final.end).
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        meets_agi_requirements = federal_agi < p.phase_out.final.end
+
+        return (
+            meets_age_requirements
+            & meets_investment_income_requirements
+            & meets_agi_requirements
+        )

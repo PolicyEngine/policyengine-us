@@ -1,0 +1,12 @@
+description: The Department of Health and Human Services limits cost-sharing to this share of family income under the Children's Health Insurance Program.
+
+values:
+  2001-01-01: 0.05
+
+metadata:
+  unit: /1
+  period: year
+  label: CHIP cumulative cost-sharing cap rate
+  reference:
+    - title: 42 CFR 457.560(a)
+      href: https://www.ecfr.gov/current/title-42/part-457/section-457.560
