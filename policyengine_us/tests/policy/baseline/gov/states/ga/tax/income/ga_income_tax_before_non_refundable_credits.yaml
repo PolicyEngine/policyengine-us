@@ -72,3 +72,24 @@
   output:
     # 50,000 * 0.0539 = 2,695
     ga_income_tax_before_non_refundable_credits: 2_695
+
+- name: GA HB463 - single filer 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 50_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    # HB463 Section 2-1: flat rate drops to 4.99% in TY 2026.
+    # 50,000 * 0.0499 = 2,495
+    ga_income_tax_before_non_refundable_credits: 2_495
+
+- name: GA HB463 - joint filer 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 100_000
+    filing_status: JOINT
+    state_code: GA
+  output:
+    # 100,000 * 0.0499 = 4,990
+    ga_income_tax_before_non_refundable_credits: 4_990

@@ -1,21 +1,40 @@
-description: Georgia subtracts these sources from adjusted gross income.  
+description: Georgia subtracts these sources from adjusted gross income.
+# Georgia HB463 (2025-2026), Section 2-4 adds qualified overtime
+# compensation (O.C.G.A. section 48-7-27(a)(16)) and cash tips
+# (O.C.G.A. section 48-7-27(a)(17)) to Georgia AGI subtractions for tax
+# years 2026 through 2028. Both provisions self-repeal December 31, 2028,
+# so a 2029-01-01 entry removes both variables from the list.
 values:
   2021-01-01:
-    - us_govt_interest  
-    - ga_retirement_exclusion  
-    - taxable_social_security  
+    - us_govt_interest
+    - ga_retirement_exclusion
+    - taxable_social_security
     - ga_investment_in_529_plan_deduction
   2022-01-01:
-    - us_govt_interest  
-    - ga_retirement_exclusion  
-    - ga_military_retirement_exclusion  
-    - taxable_social_security  
+    - us_govt_interest
+    - ga_retirement_exclusion
+    - ga_military_retirement_exclusion
+    - taxable_social_security
     - ga_investment_in_529_plan_deduction
-    
+  2026-01-01:
+    - us_govt_interest
+    - ga_retirement_exclusion
+    - ga_military_retirement_exclusion
+    - taxable_social_security
+    - ga_investment_in_529_plan_deduction
+    - ga_qualified_overtime_exclusion
+    - ga_cash_tip_exclusion
+  2029-01-01:
+    - us_govt_interest
+    - ga_retirement_exclusion
+    - ga_military_retirement_exclusion
+    - taxable_social_security
+    - ga_investment_in_529_plan_deduction
+
 metadata:
   unit: list
-  label: Georgia adjusted gross income subtractions  
-  period: year  
+  label: Georgia adjusted gross income subtractions
+  period: year
   reference:
     - title: 2022 Form 500 Instructions
       href: https://apps.dor.ga.gov/FillableForms/PDFViewer/Index?form=2022GA500
@@ -25,3 +44,5 @@ metadata:
       href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-27/
     - title: 2025 IT-511 Individual Income Tax Booklet - Subtractions
       href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=21
+    - title: Georgia HB463 (2025-2026), Section 2-4 adding O.C.G.A. § 48-7-27(a)(16) and (a)(17)
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080
