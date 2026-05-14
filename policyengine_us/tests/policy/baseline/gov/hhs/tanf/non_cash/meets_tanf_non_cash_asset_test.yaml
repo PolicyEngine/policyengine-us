@@ -3,19 +3,19 @@
   output:
     meets_tanf_non_cash_asset_test: true
 
-- name: Texas asset test is $5,000, monthly assets below limit
+- name: Texas asset test is $5,000, asset stock below limit
   period: 2022
   input:
     state_code_str: TX
-    snap_assets: 16_000 # $1,333.33 monthly
+    snap_assets: 4_000
   output:
     meets_tanf_non_cash_asset_test: true
 
-- name: Texas asset test is $5,000, monthly assets above limit
+- name: Texas asset test is $5,000, asset stock above limit
   period: 2025
   input:
     state_code_str: TX
-    snap_assets: 61_200 # $5,100 monthly
+    snap_assets: 5_100
   output:
     meets_tanf_non_cash_asset_test: false
 
@@ -31,7 +31,7 @@
   period: 2024
   input:
     state_code_str: IN
-    snap_assets: 48_000 # $4,000 monthly
+    snap_assets: 4_000
   output:
     meets_tanf_non_cash_asset_test: true
 
@@ -39,6 +39,41 @@
   period: 2024
   input:
     state_code_str: IN
-    snap_assets: 72_000 # $6,000 monthly
+    snap_assets: 6_000
   output:
     meets_tanf_non_cash_asset_test: false
+
+- name: Texas asset test uses annual asset stock in monthly formula
+  period: 2026
+  input:
+    state_code_str: TX
+    snap_assets: 15_000
+  output:
+    meets_tanf_non_cash_asset_test: false
+
+- name: Texas BBCE ignores one vehicle up to $15,000
+  period: 2026
+  input:
+    state_code_str: TX
+    snap_assets: 4_000
+    household_vehicles_value: 15_000
+  output:
+    meets_tanf_non_cash_asset_test: true
+
+- name: Texas BBCE counts excess vehicle value above $15,000
+  period: 2026
+  input:
+    state_code_str: TX
+    snap_assets: 4_000
+    household_vehicles_value: 18_000
+  output:
+    meets_tanf_non_cash_asset_test: false
+
+- name: Non-Texas BBCE asset tests do not use the Texas vehicle rule
+  period: 2026
+  input:
+    state_code_str: IN
+    snap_assets: 4_000
+    household_vehicles_value: 18_000
+  output:
+    meets_tanf_non_cash_asset_test: true

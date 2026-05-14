@@ -10,6 +10,7 @@ class bank_account_assets(Variable):
         "Imputed from SIPP TVAL_BANK."
     )
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
     reference = "https://secure.ssa.gov/poms.nsf/lnx/0501140200"

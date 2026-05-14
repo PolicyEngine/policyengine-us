@@ -1,0 +1,14 @@
+description: Texas excludes up to this value for one vehicle from the TANF non-cash asset test used for SNAP broad-based categorical eligibility.
+
+values:
+  2015-10-01: 15_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Texas TANF non-cash vehicle exemption for SNAP BBCE
+  reference:
+    - title: USDA Broad-based Categorical Eligibility
+      href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
+    - title: USDA ERS SNAP Policy Database (bbce_asset/bbce_a_amt columns, Jan 1996 - Dec 2020)
+      href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
