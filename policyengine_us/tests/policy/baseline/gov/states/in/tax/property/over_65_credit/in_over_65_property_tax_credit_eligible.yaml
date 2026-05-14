@@ -1,0 +1,92 @@
+- name: Case 1, senior homeowner under the single income limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 61_680
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: true
+
+- name: Case 2, filer below the age threshold.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 64
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: false
+
+- name: Case 3, joint filers above the income limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 66
+        real_estate_taxes: 2_000
+      person2:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 71_961
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: false
+
+- name: Case 4, senior without real estate taxes.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: false
+
+- name: Case 5, surviving spouse at the surviving spouse age threshold.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: true
