@@ -1,0 +1,70 @@
+- name: Case 1, senior homeowner is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 1_000
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption_eligible: true
+
+- name: Case 2, homeowner below the age threshold is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        real_estate_taxes: 1_000
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption_eligible: false
+
+- name: Case 3, senior renter is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption_eligible: false
+
+- name: Case 4, senior homeowner outside Alabama is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    al_senior_homestead_exemption_eligible: false
