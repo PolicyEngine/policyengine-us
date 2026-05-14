@@ -1,0 +1,123 @@
+# Tests for Pennsylvania UC Partial Benefit Credit (PBC) (REQ-008).
+# PBC = max(30% * WBR, $6), rounded UP to the next higher multiple of $1.
+# Reference: § 4(m.3), 43 P.S. § 753(m.3).
+
+- name: Case 1, WBR $68 - PBC is 30% of WBR rounded up.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_700
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $68.
+        # 30% of $68 = $20.40; max($20.40, $6) = $20.40; ceil -> $21.
+        pa_uc_weekly_benefit_rate: 68
+        pa_uc_partial_benefit_credit: 21
+
+- name: Case 2, WBR $100 - PBC is exactly 30% when already an integer.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 2_520
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR = $100 (bracket $2,513-$2,537).
+        # 30% of $100 = $30; max($30, $6) = $30; already integer -> $30.
+        pa_uc_weekly_benefit_rate: 100
+        pa_uc_partial_benefit_credit: 30
+
+- name: Case 3, WBR $197 - PBC ceil of 30% of WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $197.
+        # 30% of $197 = $59.10; max($59.10, $6) = $59.10; ceil -> $60.
+        pa_uc_weekly_benefit_rate: 197
+        pa_uc_partial_benefit_credit: 60
+
+- name: Case 4, WBR $605 (cap) - PBC is $182.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $605 (cap).
+        # 30% of $605 = $181.50; max($181.50, $6) = $181.50; ceil -> $182.
+        pa_uc_weekly_benefit_rate: 605
+        pa_uc_partial_benefit_credit: 182
+
+- name: Case 5, WBR $315 - PBC ceil of 30%.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pa_uc_highest_quarter_wages: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $315.
+        # 30% of $315 = $94.50; max($94.50, $6) = $94.50; ceil -> $95.
+        pa_uc_weekly_benefit_rate: 315
+        pa_uc_partial_benefit_credit: 95
+
+- name: Case 6, WBR $472 - PBC ceil of 30%.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        pa_uc_highest_quarter_wages: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # WBR $472.
+        # 30% of $472 = $141.60; max($141.60, $6) = $141.60; ceil -> $142.
+        pa_uc_weekly_benefit_rate: 472
+        pa_uc_partial_benefit_credit: 142

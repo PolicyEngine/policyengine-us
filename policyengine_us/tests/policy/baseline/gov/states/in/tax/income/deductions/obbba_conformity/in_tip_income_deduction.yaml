@@ -1,0 +1,52 @@
+- name: Indiana tip income deduction in 2026 with tips
+  period: 2026
+  input:
+    state_code: IN
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    employment_income: 50_000
+  output:
+    in_tip_income_deduction: 10_000
+
+- name: Indiana tip income deduction zero with no tips
+  period: 2026
+  input:
+    state_code: IN
+    tip_income: 0
+    employment_income: 50_000
+  output:
+    in_tip_income_deduction: 0
+
+- name: Indiana tip income deduction not in in_deductions before 2026
+  period: 2025
+  input:
+    state_code: IN
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    employment_income: 50_000
+  output:
+    in_tip_income_deduction: 10_000
+    in_deductions: 0
+
+- name: Integration - OBBBA deductions flow through in_deductions in 2026
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    state_code: IN
+    treasury_tipped_occupation_code: 102
+    tip_income: 5_000
+    employment_income: 50_000
+  output:
+    in_tip_income_deduction: 5_000
+    in_deductions: 5_000
+
+- name: Indiana tip income deduction not in in_deductions after 2026 (sunset)
+  period: 2027
+  input:
+    state_code: IN
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    employment_income: 50_000
+  output:
+    in_tip_income_deduction: 10_000
+    in_deductions: 0

@@ -1,0 +1,88 @@
+# Tests for Pennsylvania UC high-quarter minimum test (REQ-001).
+# Claimant's highest-quarterly base-year wages must be at least $1,688 (2025).
+# Reference: § 404(e)(1) Table Specified by Law; 54 Pa.B. 1863.
+
+- name: Case 1, high-quarter wages $1,687 (one dollar below threshold) fail the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_687
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,687 < $1,688 minimum -> test fails.
+        pa_uc_meets_high_quarter_test: false
+
+- name: Case 2, high-quarter wages exactly at threshold $1,688 pass the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_688
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,688 >= $1,688 minimum -> test passes.
+        pa_uc_meets_high_quarter_test: true
+
+- name: Case 3, high-quarter wages $1,700 clear the threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 1_700
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $1,700 > $1,688 minimum -> test passes.
+        pa_uc_meets_high_quarter_test: true
+
+- name: Case 4, zero high-quarter wages fail the test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        pa_uc_highest_quarter_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $0 < $1,688 minimum -> test fails.
+        pa_uc_meets_high_quarter_test: false
+
+- name: Case 5, high earner clears the threshold easily.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pa_uc_highest_quarter_wages: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    people:
+      person1:
+        # $25,000 >> $1,688 minimum -> test passes.
+        pa_uc_meets_high_quarter_test: true

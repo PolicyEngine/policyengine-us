@@ -1,0 +1,77 @@
+- name: Case 1, eligible individual receives flat $22 supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Individual amount = $22/month
+    in_ssp_sapn: 22
+
+- name: Case 2, eligible couple both in Medicaid facility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        in_ssp_sapn_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Couple amount = $44/month ($22 per person)
+    # Each person gets $22
+    in_ssp_sapn: [22, 22]
+
+- name: Case 3, ineligible person gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # defined_for = in_ssp_sapn_eligible, which is false
+    in_ssp_sapn: 0
+
+- name: Case 4, couple with asymmetric eligibility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: true
+        ssi_claim_is_joint: false
+      person2:
+        in_ssp_sapn_eligible: false
+        ssi_claim_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Only person1 is eligible; not a joint claim
+    # person1: individual amount = $22
+    # person2: ineligible = $0
+    in_ssp_sapn: [22, 0]

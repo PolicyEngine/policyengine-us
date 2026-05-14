@@ -1,0 +1,68 @@
+# Tests for il_tanf_county_group — maps county to Group I, II, or III
+# Source: SSA POMS SI CHI00830.403
+
+- name: Case 1, Cook County is Group I.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: COOK_COUNTY_IL
+  output:
+    il_tanf_county_group: GROUP_I
+
+- name: Case 2, Sangamon County is Group II.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: SANGAMON_COUNTY_IL
+  output:
+    il_tanf_county_group: GROUP_II
+
+- name: Case 3, Alexander County is Group III.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county: ALEXANDER_COUNTY_IL
+  output:
+    il_tanf_county_group: GROUP_III

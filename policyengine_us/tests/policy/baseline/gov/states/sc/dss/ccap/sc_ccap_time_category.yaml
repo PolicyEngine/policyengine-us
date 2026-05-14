@@ -1,0 +1,80 @@
+# SC CCAP time category tests
+# sc_ccap_time_category is Person, derived from childcare_hours_per_week
+
+- name: Case 1, full time at 30 hours per week.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [FULL_TIME]
+
+- name: Case 2, half time at 20 hours per week.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [HALF_TIME]
+
+- name: Case 3, full time at exactly 25 hours per week.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 25
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [FULL_TIME]
+
+- name: Case 4, half time at 24 hours per week.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 24
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [HALF_TIME]
+
+- name: Case 5, full time at 40 hours per week.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [FULL_TIME]
+
+- name: Case 6, zero hours defaults to half time.
+  period: 2025
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_time_category: [HALF_TIME]

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class oh_eitc(Variable):
@@ -14,6 +17,14 @@ class oh_eitc(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("eitc", period)
-        match = parameters(period).gov.states.oh.tax.income.credits.eitc.rate
-        return federal_eitc * match
+        ordered_credits = parameters(
+            period
+        ).gov.states.oh.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "oh_income_tax_before_non_refundable_credits",
+            "oh_eitc",
+            "oh_eitc_potential",
+        )

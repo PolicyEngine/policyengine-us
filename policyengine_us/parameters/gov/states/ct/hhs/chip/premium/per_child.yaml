@@ -1,0 +1,21 @@
+description: Connecticut charges this HUSKY B monthly premium per child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Connecticut HUSKY B monthly premium per child
+  reference:
+    - title: Connecticut HUSKY Health Monthly Income Chart (effective March 1, 2025)
+      href: https://portal.ct.gov/-/media/hh/pdf/husky-health-monthly-income-chart-march-1-2025.pdf
+    - title: Connecticut HUSKY B program overview
+      href: https://portal.ct.gov/dss/archived-folder/health-programs-overview/husky-b
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 2.54
+    amount:
+      2021-01-01: 30

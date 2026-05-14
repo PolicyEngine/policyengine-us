@@ -1,117 +1,131 @@
-description: The following states always use the standard utility allowance under the SNAP program.
+description: The following states always use the Standard Utility Allowance under the Supplemental Nutrition Assistance Program.
 AK:
-  2020-10-01: false
+  2015-10-01: false
 AL:
-  2020-10-01: false
+  2015-10-01: false
 AR:
-  2020-10-01: false
+  2015-10-01: false
 AZ:
-  2020-10-01: false
+  2015-10-01: false
 CA:
-  2020-10-01: false
+  2015-10-01: true
 CO:
-  2020-10-01: false
+  2015-10-01: false
   2024-10-01: true
 CT:
-  2020-10-01: false
+  2015-10-01: true
 DC:
-  2020-10-01: false
+  2015-10-01: true
 DE:
-  2020-10-01: false
+  2015-10-01: false
 FL:
-  2020-10-01: false
+  2015-10-01: false
 GA:
-  2020-10-01: false
+  2015-10-01: false
 GU:
-  2020-10-01: false
+  2015-10-01: false
 HI:
-  2020-10-01: false
+  2015-10-01: false
 IA:
-  2020-10-01: false
+  2015-10-01: false
 ID:
-  2020-10-01: false
+  2015-10-01: false
 IL:
-  2020-10-01: false
+  2015-10-01: false
 IN:
-  2020-10-01: false
+  2015-10-01: false
 KS:
-  2020-10-01: false
+  2015-10-01: false
 KY:
-  2020-10-01: false
+  2015-10-01: false
 LA:
-  2020-10-01: false
+  2015-10-01: false
 MA:
-  2020-10-01: false
+  2015-10-01: true
 MD:
-  2020-10-01: false
+  2015-10-01: false
+  2025-04-01: true
 ME:
-  2020-10-01: false
+  2015-10-01: true
 MI:
-  2020-10-01: false
+  2015-10-01: false
+  2017-08-01: true
 MN:
-  2020-10-01: false
+  2015-10-01: false
 MO:
-  2020-10-01: false
+  2015-10-01: false
 MS:
-  2020-10-01: false
+  2015-10-01: false
 MT:
-  2020-10-01: false
+  2015-10-01: true
 NC:
-  2020-10-01: false
+  2015-10-01: false
 ND:
-  2020-10-01: false
+  2015-10-01: false
 NE:
-  2020-10-01: false
+  2015-10-01: false
 NH:
-  2020-10-01: false
+  2015-10-01: false
 NJ:
-  2020-10-01: false
+  2015-10-01: false
 NM:
-  2020-10-01: false
+  2015-10-01: false
 NV:
-  2020-10-01: false
+  2015-10-01: false
 NY:
-  2020-10-01: false
+  2015-10-01: true
 OH:
-  2020-10-01: false
+  2015-10-01: false
 OK:
-  2020-10-01: false
+  2015-10-01: false
 OR:
-  2020-10-01: false
+  2015-10-01: true
 PA:
-  2020-10-01: false
+  2015-10-01: true
 RI:
-  2020-10-01: false
+  2015-10-01: true
 SC:
-  2020-10-01: false
+  2015-10-01: false
 SD:
-  2020-10-01: false
+  2015-10-01: false
 TN:
-  2020-10-01: false
+  2015-10-01: false
 TX:
-  2020-10-01: false
+  2015-10-01: false
 UT:
-  2020-10-01: false
+  2015-10-01: false
 VA:
-  2020-10-01: false
+  2015-10-01: false
 VI:
-  2020-10-01: false
+  2015-10-01: false
 VT:
-  2020-10-01: false
+  2015-10-01: true
 WA:
-  2020-10-01: false
+  2015-10-01: true
 WI:
-  2020-10-01: false
+  2015-10-01: false
 WV:
-  2020-10-01: false
+  2015-10-01: false
 WY:
-  2020-10-01: false
+  2015-10-01: false
 metadata:
   unit: bool
   period: month
-  label: SNAP States using SUA
+  label: SNAP states always using the standard utility allowance
   breakdown:
     - state_code
   reference:
-    - title: Energy EBT | E-EBT Rules Stakeholder Feedback Session
-      href: https://docs.google.com/presentation/d/1LjJz-Ycx1-acefOcEJNtMxVRGfYMLEQgbRxGtEeyYgI/edit#slide=id.g2685f7479b2_0_0
+    - title: 7 CFR § 273.9(d)(6)(iii)(E) - Standard utility allowances
+      href: https://www.ecfr.gov/current/title-7/subtitle-B/chapter-II/subchapter-C/part-273/subpart-D/section-273.9#p-273.9(d)(6)(iii)
+    - title: Agricultural Act of 2014 (Pub. L. 113-79) § 4006(b) - Minimum LIHEAP benefit for SUA eligibility
+      href: https://www.congress.gov/113/plaws/publ79/PLAW-113publ79.pdf#page=139
+    - title: LIHEAP Clearinghouse - A New Framework for Heat and Eat (2014)
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/HeatEat.pdf
+    - title: Maryland DHS Action Transmittal AT 26-08 - H.R. 1 (2025) Treatment of Energy Assistance Payments (supersedes IM 25-15 Heat and Eat, effective April 1, 2025)
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2026/26-08%20AT%20H.R.%201%202025%20Treatment%20of%20Energy%20Assistance%20Payments%20combined.pdf
+    - title: Michigan DHHS Bridges Policy Bulletin BPB 2017-016 - FAP LIHEAP Payments (effective August 1, 2017)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BPB/2017-016.pdf
+    - title: Michigan DHHS Bridges Eligibility Manual BEM 554 - FAP Allowable Expenses and Expense Budgeting
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/554.pdf#page=24
+    - title: Maine 10-144 C.M.R. Ch. 301 § 555-5 - Food Supplement Program Deductions
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-301-SS-555-5

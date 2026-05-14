@@ -1,0 +1,11 @@
+description: The Working Americans' Tax Cut Act limits eligibility for the alternative maximum tax to filers with MAGI below this multiple of the cost of living exemption amount.
+metadata:
+  label: WATCA cost of living exemption income limit multiple
+  period: year
+  unit: /1
+  reference:
+    - title: Working Americans' Tax Cut Act Section 1A(b)(1)
+      href: https://www.vanhollen.senate.gov/imo/media/doc/working_americans_tax_cut_act_bill_text.pdf#page=2
+
+values:
+  2026-01-01: 1.75

@@ -67,3 +67,13 @@
     me_sales_and_property_tax_fairness_credit_income: 50_000
   output:
     me_sales_tax_fairness_credit: 0
+
+- name: 2025 ME STFC matches Schedule PTFC/STFC line 17 table for MFJ with 2 deps at income ~$52.6K
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 2
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 52_630
+  output:
+    me_sales_tax_fairness_credit: 240

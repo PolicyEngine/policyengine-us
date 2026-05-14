@@ -1,0 +1,53 @@
+- name: Household health costs are zero when health benefits are excluded from net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: false
+    chip_premium: 360
+  output:
+    household_health_costs: 0
+
+- name: Household health costs pick up chip_premium when health benefits are included in net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip_premium: 360
+  output:
+    household_health_costs: 360
+
+- name: Household health costs include Marketplace net premium when health benefits are included in net income.
+  period: 2024
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip_premium: 360
+    marketplace_net_premium: 2_000
+  output:
+    household_health_costs: 2_360
+
+- name: Household health costs include computed unsubsidized Marketplace net premium.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person]
+        aca_magi_fraction: 5
+        slcsp: 10_000
+        selected_marketplace_plan_benchmark_ratio: 0.8
+    households:
+      household:
+        members: [person]
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+    selected_marketplace_plan_premium_proxy: 8_000
+    marketplace_net_premium: 8_000
+    household_health_costs: 8_000

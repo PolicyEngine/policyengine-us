@@ -1,0 +1,60 @@
+- name: Mississippi FY2026 eFMAP is 83.83% (FMAP 76.90% + 30% of 23.10%, below 85% cap)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: MS
+    is_chip_eligible: true
+  output:
+    chip_federal_share: 0.8383
+
+- name: California eFMAP is 65% (FMAP 50% + 30% of 50%)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: CA
+    is_chip_eligible: true
+  output:
+    chip_federal_share: 0.65
+
+- name: DC eFMAP is 79% (FMAP 70% + 30% of 30%)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: DC
+    is_chip_eligible: true
+  output:
+    chip_federal_share: 0.79
+
+- name: Alabama FY2026 eFMAP matches FR notice value 80.84%
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AL
+    is_chip_eligible: true
+  output:
+    chip_federal_share: 0.80841
+
+- name: Non-CHIP-eligible person has zero federal share
+  period: 2026
+  input:
+    state_code: CA
+    is_chip_eligible: false
+  output:
+    chip_federal_share: 0
+
+- name: CHIP-eligible non-enroller has zero federal share (takeup gate)
+  period: 2026
+  input:
+    state_code: CA
+    is_chip_eligible: true
+    chip_take_up_seed: 0.99
+  output:
+    chip_federal_share: 0
+
+- name: Pre-FY2018 period returns zero eFMAP (sentinel prevents backward extrapolation)
+  period: 2016
+  input:
+    state_code: MS
+    is_chip_eligible: true
+  output:
+    chip_federal_share: 0

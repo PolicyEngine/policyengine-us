@@ -30,3 +30,14 @@
     state_code: MO
   output:
     mo_business_income_deduction: 0
+
+- name: 2023 SSTB-only qualified business income
+  period: 2023
+  input:
+    sstb_self_employment_income: 10_000
+    self_employment_tax_ald_person: 0
+    self_employed_health_insurance_ald_person: 0
+    self_employed_pension_contribution_ald_person: 0
+    state_code: MO
+  output:
+    mo_business_income_deduction: 2_000

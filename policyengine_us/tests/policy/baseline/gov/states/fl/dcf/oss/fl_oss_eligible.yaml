@@ -1,0 +1,115 @@
+# Tests for fl_oss_eligible variable.
+# Eligibility requires: is_ssi_eligible AND facility type != NONE AND
+# (uncapped_ssi > 0 [Group 1 SSI recipient] OR income <= income_standard [Group 2])
+
+- name: Case 1, SSI recipient in ALF (Redesign) is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        # uncapped_ssi is YEAR-defined; $967 annual = $80.58/month output.
+        # >0 means person receives SSI (Group 1).
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+
+- name: Case 2, person not SSI eligible is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 40
+        is_ssi_eligible: false
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+
+- name: Case 3, wrong state is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    fl_oss_eligible: [false]
+
+- name: Case 4, no facility placement (NONE) is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: NONE
+        fl_oss_program_track: NONE
+        age: 70
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+
+- name: Case 5, Group 2 non-SSI recipient with income below income standard is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        # uncapped_ssi <= 0 means not an SSI recipient (income too high for SSI).
+        # But if income <= OSS income standard, Group 2 applies.
+        uncapped_ssi: -100
+        # ssi_countable_income is YEAR-defined.
+        # Redesign income standard (I) 2025 = $991.40 + $54 = $1,045.40/month
+        # = $12,544.80/year. Set income below that.
+        ssi_countable_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+
+- name: Case 6, Group 2 non-SSI recipient with income above income standard is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        uncapped_ssi: -500
+        # Income well above income standard of $12,544.80/year.
+        ssi_countable_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]

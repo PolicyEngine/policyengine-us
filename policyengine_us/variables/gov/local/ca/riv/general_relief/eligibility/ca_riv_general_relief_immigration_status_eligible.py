@@ -10,6 +10,6 @@ class ca_riv_general_relief_immigration_status_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.local.ca.riv.general_relief
-        immigration_status = person("immigration_status", period)
+        immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()
         return np.isin(immigration_status_str, p.qualified_immigration_status)

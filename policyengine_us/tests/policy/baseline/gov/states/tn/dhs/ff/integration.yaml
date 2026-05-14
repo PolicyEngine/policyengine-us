@@ -160,14 +160,14 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 10_000
+        spm_unit_cash_assets: 3_000
     households:
       household:
         members: [person1, person2]
         state_code: TN
+        household_vehicles_value: 6_600
   output:
-    # Assets: $10,000
-    # Countable resources: $10,000 - $4,600 = $5,400 > $2,000
+    # Countable resources: $3,000 liquid assets + ($6,600 - $4,600 vehicle exclusion) = $5,000 > $2,000
     # Ineligible
     tn_ff: 0
 

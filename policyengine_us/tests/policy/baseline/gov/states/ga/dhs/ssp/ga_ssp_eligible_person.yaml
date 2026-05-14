@@ -1,0 +1,217 @@
+- name: Case 1, SSI-only nursing-home resident in a Medicaid facility.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true]
+
+- name: Case 2, Medicaid facility resident without nursing-home or hospice status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false]
+
+- name: Case 3, nursing-home resident without Medicaid-majority facility status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: false
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false]
+
+- name: Case 4, Georgia nursing-home resident without federal institutional SSI status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: false
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false]
+
+# Income test: Georgia SSP applies to recipients who actually remain at the
+# federal institutional SSI rate, not merely to people who could otherwise meet
+# disability/resource criteria.
+- name: Case 5, Georgia nursing-home resident with income too high for SSI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: -1_000
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false]
+
+- name: Case 6, SSI-only nursing-home resident with Medicaid paying majority.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true]
+
+- name: Case 6b, SSI-eligible person who declines SSI is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        takes_up_ssi_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false]
+
+- name: Case 7, nursing-home resident with zero SSI payment is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    # uncapped_ssi = 0 means income exactly equals benefit amount, no SSI payment
+    ga_ssp_eligible_person: [false]
+
+# Couple tests
+- name: Case 8, couple both eligible in nursing-home or hospice settings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true, true]
+
+- name: Case 10, couple both SSI-eligible but both with income too high.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: -500
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        uncapped_ssi: -2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false, false]
+
+- name: Case 11, couple both outside Georgia nursing-home or hospice settings.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [false, false]
+
+- name: Case 12, couple one outside Georgia setting and one outside federal institutional status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: false
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_ssi_eligible: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # person1 fails SSI-eligible, person2 fails facility
+    ga_ssp_eligible_person: [false, false]

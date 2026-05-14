@@ -1,0 +1,41 @@
+description: South Carolina sets this weekly per-child copay amount for each fee scale tier under the Child Care Scholarship Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: week
+  label: South Carolina CCAP weekly copay by tier
+  reference:
+    - title: SC CCAP Fee Scale 2023-2024
+      href: https://www.scchildcare.org/media/n3qmcb5u/sc-child-care-scholarship-program-fee-scale-2023-2024.pdf#page=1
+    - title: SC CCAP Fee Scale 2024-2025, Appendix 2
+      href: https://www.scchildcare.org/media/ubhdm1at/1-13-2025_policy-manual.pdf#page=182
+    - title: SC CCAP Fee Scale 2025-2026
+      href: https://www.scchildcare.org/media/ih2mrjw5/fee-scale-2025-2026.pdf#page=1
+
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 0
+  - threshold:
+      2022-10-01: 1
+    amount:
+      2022-10-01: 6
+  - threshold:
+      2022-10-01: 2
+    amount:
+      2022-10-01: 11
+  - threshold:
+      2022-10-01: 3
+    amount:
+      2022-10-01: 14
+  - threshold:
+      2022-10-01: 4
+    amount:
+      2022-10-01: 17
+  - threshold:
+      2022-10-01: 5
+    amount:
+      2022-10-01: 20

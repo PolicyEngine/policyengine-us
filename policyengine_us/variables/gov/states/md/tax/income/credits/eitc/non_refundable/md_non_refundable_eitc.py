@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class md_non_refundable_eitc(Variable):
@@ -11,7 +14,15 @@ class md_non_refundable_eitc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
     defined_for = StateCode.MD
 
-    adds = [
-        "md_married_or_has_child_non_refundable_eitc",
-        "md_unmarried_childless_non_refundable_eitc",
-    ]
+    def formula(tax_unit, period, parameters):
+        ordered_credits = parameters(
+            period
+        ).gov.states.md.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "md_income_tax_before_credits",
+            "md_non_refundable_eitc",
+            "md_non_refundable_eitc_potential",
+        )

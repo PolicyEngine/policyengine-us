@@ -14,7 +14,7 @@ class hi_tanf_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         gross_income_eligible = spm_unit("hi_tanf_gross_income_eligible", period)
         # NOTE: Hawaii disregards assets since April 18, 2013

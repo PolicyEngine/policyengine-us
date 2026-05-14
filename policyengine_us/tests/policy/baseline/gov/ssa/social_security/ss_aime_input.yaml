@@ -1,0 +1,17 @@
+- name: Direct AIME input overrides computation
+  period: 2024
+  input:
+    age: 62
+    ss_aime_input: 3_500
+  output:
+    ss_aime: 3_500
+
+- name: Zero AIME input falls through to computation
+  period: 2024
+  input:
+    age: 62
+    ss_aime_input: 0
+    employment_income: 60_000
+  output:
+    # With only one year of earnings, AIME = $60,000 / 420
+    ss_aime: 142.857

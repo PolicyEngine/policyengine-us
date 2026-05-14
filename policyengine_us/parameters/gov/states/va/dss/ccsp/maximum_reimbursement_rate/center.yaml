@@ -1,0 +1,112 @@
+description: Virginia sets this daily maximum reimbursement rate for child care centers under the Child Care Subsidy Program.
+
+metadata:
+  period: day
+  unit: currency-USD
+  label: Virginia CCSP center daily maximum reimbursement rate
+  breakdown:
+    - va_ccsp_ready_region
+    - va_ccsp_care_age_group
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+BLUE_RIDGE:
+  INFANT:
+    2023-08-01: 70
+  TODDLER:
+    2023-08-01: 61
+  TWO_YEAR_OLD:
+    2023-08-01: 47
+  PRESCHOOL:
+    2023-08-01: 42
+  SCHOOL_AGE:
+    2023-08-01: 30
+CAPITAL_AREA:
+  INFANT:
+    2023-08-01: 94
+  TODDLER:
+    2023-08-01: 81
+  TWO_YEAR_OLD:
+    2023-08-01: 62
+  PRESCHOOL:
+    2023-08-01: 59
+  SCHOOL_AGE:
+    2023-08-01: 52
+CENTRAL:
+  INFANT:
+    2023-08-01: 69
+  TODDLER:
+    2023-08-01: 60
+  TWO_YEAR_OLD:
+    2023-08-01: 47
+  PRESCHOOL:
+    2023-08-01: 41
+  SCHOOL_AGE:
+    2023-08-01: 29
+CHESAPEAKE_BAY:
+  INFANT:
+    2023-08-01: 68
+  TODDLER:
+    2023-08-01: 59
+  TWO_YEAR_OLD:
+    2023-08-01: 45
+  PRESCHOOL:
+    2023-08-01: 41
+  SCHOOL_AGE:
+    2023-08-01: 29
+NORTH_CENTRAL:
+  INFANT:
+    2023-08-01: 83
+  TODDLER:
+    2023-08-01: 72
+  TWO_YEAR_OLD:
+    2023-08-01: 55
+  PRESCHOOL:
+    2023-08-01: 50
+  SCHOOL_AGE:
+    2023-08-01: 35
+SOUTHEASTERN:
+  INFANT:
+    2023-08-01: 71
+  TODDLER:
+    2023-08-01: 61
+  TWO_YEAR_OLD:
+    2023-08-01: 47
+  PRESCHOOL:
+    2023-08-01: 42
+  SCHOOL_AGE:
+    2023-08-01: 30
+SOUTHSIDE:
+  INFANT:
+    2023-08-01: 64
+  TODDLER:
+    2023-08-01: 56
+  TWO_YEAR_OLD:
+    2023-08-01: 43
+  PRESCHOOL:
+    2023-08-01: 39
+  SCHOOL_AGE:
+    2023-08-01: 28
+SOUTHWEST:
+  INFANT:
+    2023-08-01: 63
+  TODDLER:
+    2023-08-01: 55
+  TWO_YEAR_OLD:
+    2023-08-01: 42
+  PRESCHOOL:
+    2023-08-01: 38
+  SCHOOL_AGE:
+    2023-08-01: 27
+WEST:
+  INFANT:
+    2023-08-01: 67
+  TODDLER:
+    2023-08-01: 58
+  TWO_YEAR_OLD:
+    2023-08-01: 45
+  PRESCHOOL:
+    2023-08-01: 41
+  SCHOOL_AGE:
+    2023-08-01: 29

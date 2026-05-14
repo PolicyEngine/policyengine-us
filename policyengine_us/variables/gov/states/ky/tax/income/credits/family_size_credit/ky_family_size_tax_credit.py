@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ky_family_size_tax_credit(Variable):
@@ -11,9 +14,14 @@ class ky_family_size_tax_credit(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        rate = tax_unit("ky_family_size_tax_credit_rate", period)
-        income = tax_unit("ky_income_tax_before_non_refundable_credits_unit", period)
-        personal_credits = tax_unit("ky_personal_tax_credits", period)
-        reduced_income = max_(income - personal_credits, 0)
-
-        return rate * reduced_income
+        ordered_credits = parameters(
+            period
+        ).gov.states.ky.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "ky_income_tax_before_non_refundable_credits_unit",
+            "ky_family_size_tax_credit",
+            "ky_family_size_tax_credit_potential",
+        )

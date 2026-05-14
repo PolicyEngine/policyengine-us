@@ -18,5 +18,7 @@ class tx_ccs_eligible_child(Variable):
         age_limit = where(is_disabled, p.disabled_child, p.child)
         age_eligible = age < age_limit
         is_dependent = person("is_tax_unit_dependent", period)
-        immigration_status_eligible = person("is_citizen_or_legal_immigrant", period)
+        immigration_status_eligible = person(
+            "is_citizen_or_legal_immigrant", period.this_year
+        )
         return age_eligible & is_dependent & immigration_status_eligible

@@ -1,0 +1,21 @@
+description: The Office of Refugee Resettlement provides Refugee Cash Assistance for this many years from the date of US entry or status grant.
+
+# The original Refugee Act of 1980 set a 36-month window. Subsequent ORR
+# Director notices issued under 45 CFR 400.211 have adjusted the window;
+# the current ORR-set window has been 12 months (1 year) for all
+# PolicyEngine-modeled periods. Historical step-downs are approximated
+# here at a coarse granularity sufficient for current-period
+# calculations; the operative value for 2024 and later is 1 year.
+values:
+  1980-01-01: 3
+  1991-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: ORR refugee assistance window
+  reference:
+    - title: 45 CFR 400.211 - Time-eligibility for refugee cash assistance
+      href: https://www.ecfr.gov/current/title-45/subtitle-B/chapter-IV/part-400/subpart-J/section-400.211
+    - title: 8 USC 1522 - Authorization for Refugee Assistance
+      href: https://www.law.cornell.edu/uscode/text/8/1522

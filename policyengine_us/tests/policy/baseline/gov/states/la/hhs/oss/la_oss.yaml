@@ -1,0 +1,225 @@
+# Unit tests for Louisiana Optional State Supplement (OSS) benefit amount.
+# Formula (monthly): la_oss = min(max(PNA - ssi - ssi_countable_income, 0), max_payment)
+# Both ssi and ssi_countable_income are YEAR-period; reading at MONTH yields annual / 12.
+#
+# Pre-July-2025: PNA = $38, max payment = $8. Federal SSI institutional FBR = $30.
+# From July 1, 2025: PNA = $45, max payment = $15.
+#
+# Test inputs pass annual ssi and ssi_countable_income directly so that the
+# SSI formula chain doesn't recompute them. SSI institutional rate is $30/mo
+# = $360/yr; SSI = max(FBR - countable, 0) when SSI is being received.
+#
+# Reference: LDH J-300, Z-700; SSA 2011 State Assistance Programs - Louisiana, Table 1.
+
+- name: Case 1, eligible individual receiving full institutional SSI with no other income (2024-01).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 360  # full institutional FBR ($30/month)
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: max(38 - 30 - 0, 0) = 8, capped at 8.
+    la_oss: 8
+
+- name: Case 2, not eligible receives zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 3, eligible individual post-July-2025 (2026-01 has new PNA and max in effect).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 360  # full institutional FBR ($30/month)
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: max(45 - 30 - 0, 0) = 15, capped at 15.
+    la_oss: 15
+
+- name: Case 4, partial SSI recipient with low countable income still gets full state cap (2024-01).
+  # Annual countable 60 -> 5/month; SSI reduced to 25/month (FBR 30 - countable 5).
+  # Formula: 38 - 25 - 5 = 8, capped at 8.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 300  # 25/month (reduced by countable income)
+        ssi_countable_income: 60
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 8
+
+- name: Case 5, non-SSI recipient with countable income above PNA receives zero (2024-01).
+  # Annual countable 1200 -> 100/month; SSI = 0 (countable > FBR).
+  # Formula: max(38 - 0 - 100, 0) = 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 6, non-SSI recipient with countable income at FBR receives full cap (2024-01).
+  # Annual countable 360 -> 30/month (= FBR boundary); SSI = 0.
+  # Formula: 38 - 0 - 30 = 8, capped at 8.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 8
+
+- name: Case 7, non-SSI recipient with countable income just above FBR receives partial supplement (2024-01).
+  # Annual countable 372 -> 31/month; SSI = 0.
+  # Formula: 38 - 0 - 31 = 7.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 372
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 7
+
+- name: Case 8, non-SSI recipient with countable income at PNA receives zero (2024-01).
+  # Annual countable 456 -> 38/month (= PNA boundary); SSI = 0.
+  # Formula: 38 - 0 - 38 = 0.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 456
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 9, extreme negative countable income clips to maximum payment (2024-01).
+  # Verifies the rate cap engages so a very negative ssi_countable_income
+  # can never inflate the supplement above the max payment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: -1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: min(max(38 - 0 - (-monthly), 0), 8) = 8.
+    la_oss: 8
+
+- name: Case 10, pre-July-2025 monthly period uses old PNA and max (2025-01).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 360
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 8
+
+- name: Case 11, eligible with extreme negative countable income post-July-2025 clips to new max (2026-01).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: -1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # Monthly: min(max(45 - 0 - (-monthly), 0), 15) = 15.
+    la_oss: 15
+
+- name: Case 12, post-July-2025 non-SSI recipient with countable income at new PNA receives zero (2026-01).
+  # Annual countable 540 -> 45/month (= new PNA); SSI = 0.
+  # Formula: 45 - 0 - 45 = 0.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 540
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 0
+
+- name: Case 13, post-July-2025 non-SSI recipient with countable income at FBR receives new cap (2026-01).
+  # Annual countable 360 -> 30/month (= FBR); SSI = 0.
+  # Formula: 45 - 0 - 30 = 15, capped at 15.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        la_oss_eligible: true
+        ssi: 0
+        ssi_countable_income: 360
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_oss: 15

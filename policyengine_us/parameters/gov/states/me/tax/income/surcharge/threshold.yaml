@@ -1,0 +1,67 @@
+description: Maine limits its income tax surcharge to taxable income above this threshold under Maine's individual income tax.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine income tax surcharge threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: 36 MRS §5111, sub-§7 — Surcharge thresholds by filing status
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
+    - title: 36 MRS §5403, sub-§12 — Annual indexing of surcharge thresholds
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5403.html
+    - title: H.P. 1491, L.D. 2212, Part DDDD, Sec. DDDD-1, sub-§7 (threshold values)
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=220
+    - title: H.P. 1491, L.D. 2212, Part DDDD, Sec. DDDD-5 (annual indexing)
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=221
+# PolicyEngine uprates these thresholds via gov.irs.uprating as a proxy
+# for Maine §5403, sub-§12 (Chained CPI 12-month period ending June 30,
+# divided by the same 12-month period ending June 30, 2025) because there
+# is no Maine-specific Chained CPI uprating parameter today. Maine
+# Revenue Services publishes annually-uprated thresholds; we will swap
+# the proxy values for MRS-published amounts when they are released.
+SINGLE:
+  values:
+    0000-01-01: .inf
+    2026-01-01: 1_000_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    0000-01-01: .inf
+    2026-01-01: 750_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    0000-01-01: .inf
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+JOINT:
+  values:
+    0000-01-01: .inf
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    0000-01-01: .inf
+    2026-01-01: 1_500_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

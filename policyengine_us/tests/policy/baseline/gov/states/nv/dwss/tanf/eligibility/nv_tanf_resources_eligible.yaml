@@ -5,7 +5,7 @@
   period: 2025-01
   input:
     state_code: NV
-    spm_unit_assets: 0
+    spm_unit_cash_assets: 0
   output:
     nv_tanf_resources_eligible: true
 
@@ -13,7 +13,7 @@
   period: 2025-01
   input:
     state_code: NV
-    spm_unit_assets: 10_000
+    spm_unit_cash_assets: 10_000
   output:
     nv_tanf_resources_eligible: true
 
@@ -21,6 +21,6 @@
   period: 2025-01
   input:
     state_code: NV
-    spm_unit_assets: 10_001
+    spm_unit_cash_assets: 10_001
   output:
     nv_tanf_resources_eligible: false

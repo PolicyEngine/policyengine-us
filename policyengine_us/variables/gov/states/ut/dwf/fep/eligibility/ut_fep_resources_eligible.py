@@ -13,6 +13,7 @@ class ut_fep_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ut.dwf.fep.resources.limit
-        # Use federal spm_unit_assets variable directly
-        assets = spm_unit("spm_unit_assets", period.this_year)
+        # Count liquid financial assets explicitly; other excluded resources
+        # are not yet modeled separately here.
+        assets = spm_unit("spm_unit_cash_assets", period.this_year)
         return assets <= p.amount

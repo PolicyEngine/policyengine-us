@@ -1,0 +1,162 @@
+# Unit tests for pa_ccw_eligible
+# Tests overall SPMUnit eligibility combining:
+# - has eligible child (age + citizenship + dependent)
+# - income eligible (adjusted income vs FPG limits)
+# - asset eligible (federal CCDF $1M)
+# - activity eligible (work hours)
+# - not receiving TANF cash (55 Pa. Code § 3042.15(a))
+
+- name: Case 1, basic eligible family.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_ccw_eligible: true
+
+- name: Case 2, TANF enrolled family ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # 55 Pa. Code § 3042.15(a) - TANF recipients not eligible
+    pa_ccw_eligible: false
+
+- name: Case 3, no eligible children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 20
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # No child under 13 (person2 is 20)
+    pa_ccw_eligible: false
+
+- name: Case 4, income over limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_ccw_eligible: false
+
+- name: Case 5, non-PA household.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    pa_ccw_eligible: false
+
+- name: Case 6, activity ineligible parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 5
+        is_full_time_student: false
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Works 5 hrs < 10 (training combo) -> activity ineligible
+    pa_ccw_eligible: false

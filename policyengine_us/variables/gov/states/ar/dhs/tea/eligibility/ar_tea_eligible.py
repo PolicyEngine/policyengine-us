@@ -17,7 +17,7 @@ class ar_tea_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         # Must have at least one U.S. citizen or qualified immigrant
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         return (
             income_eligible

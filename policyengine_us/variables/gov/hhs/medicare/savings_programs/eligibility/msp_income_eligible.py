@@ -8,7 +8,8 @@ class msp_income_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
-        "https://www.law.cornell.edu/cfr/text/42/435.121",
+        "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://www.law.cornell.edu/cfr/text/42/435.125",
     )
 
     def formula(person, period, parameters):
@@ -21,4 +22,4 @@ class msp_income_eligible(Variable):
         # Use QI threshold (135% FPL) as the outer bound
         qi_income_limit = fpg * p.fpl_limit
 
-        return countable_income <= qi_income_limit
+        return countable_income < qi_income_limit

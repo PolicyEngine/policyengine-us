@@ -1,0 +1,72 @@
+- name: Case 1, default Independent Living input passes through to category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # ssi_federal_living_arrangement defaults to OWN_HOUSEHOLD;
+        # mi_ssp_living_arrangement defaults to INDEPENDENT_LIVING.
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_payment_category: INDEPENDENT_LIVING
+
+- name: Case 2, federal MEDICAL_TREATMENT_FACILITY overrides input to INSTITUTION.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+        # Even if user sets a different MI category, federal classification wins.
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_payment_category: INSTITUTION
+
+- name: Case 3, federal ANOTHER_PERSONS_HOUSEHOLD overrides input to HOUSEHOLD_OF_ANOTHER.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_payment_category: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 4, MI-specific Personal Care input passes through when federal LA does not override.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi_federal_living_arrangement: OWN_HOUSEHOLD
+        mi_ssp_living_arrangement: PERSONAL_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_payment_category: PERSONAL_CARE
+
+- name: Case 5, federal CHILD_IN_PARENTAL_HOUSEHOLD does not override input.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 12
+        ssi_federal_living_arrangement: CHILD_IN_PARENTAL_HOUSEHOLD
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_payment_category: INDEPENDENT_LIVING

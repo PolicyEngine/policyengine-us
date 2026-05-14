@@ -14,4 +14,5 @@ class dc_tanf(Variable):
         standard_payment = spm_unit("dc_tanf_standard_payment", period)
         countable_income = spm_unit("dc_tanf_countable_income", period)
         benefit = max_(standard_payment - countable_income, 0)
-        return min_(benefit, standard_payment)
+        sanction_rate = spm_unit("dc_tanf_work_sanction_rate", period)
+        return benefit * (1 - sanction_rate)

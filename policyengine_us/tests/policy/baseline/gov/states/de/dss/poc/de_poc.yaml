@@ -1,0 +1,227 @@
+# de_poc: SPMUnit, float, MONTH
+# Benefit = min(actual_expenses - copay, max_reimbursement), floored at 0
+# max_reimbursement = sum of weekly rates for eligible children * 52 / 12
+
+- name: Case 1, basic eligible family with center care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Copay: 36_000 / 21_150 = 1.7021 > 1.5 -> 7% copay
+    # Annual copay = 36_000 * 0.07 = 2_520
+    # Max weekly = $255 (center preschool), annual = 255 * 52 = 13_260
+    # Uncapped = max(12_000 - 2_520, 0) = 9_480
+    # Annual benefit = min(9_480, 13_260) = 9_480
+    # Monthly = 9_480 / 12 = 790
+    de_poc: 790
+
+- name: Case 2, ineligible family gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Income 48_000 / 12 = 4_000 > 200% FPL of 3_525.00 -> ineligible
+    de_poc: 0
+
+- name: Case 3, benefit capped at max reimbursement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # FPL ratio = 20_000 / 21_150 = 0.9456 <= 1.5 -> copay waived
+    # Max weekly = $325 (center infant), annual = 325 * 52 = 16_900
+    # Uncapped = max(25_000 - 0, 0) = 25_000
+    # Annual benefit = min(25_000, 16_900) = 16_900
+    # Monthly = 16_900 / 12 = 1_408.33
+    de_poc: 1_408.33
+
+- name: Case 4, zero childcare expenses gives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc: 0
+
+- name: Case 5, copay exceeds expenses gives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 3
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Annual copay = 36_000 * 0.07 = 2_520
+    # Uncapped = max(2_000 - 2_520, 0) = 0
+    de_poc: 0
+
+- name: Case 6, negative income does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_200
+        self_employment_income: -60_000_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Negative income -> copay 0 (waived below 150% FPL)
+    # Max weekly = $255 (center preschool), annual = 255 * 52 = 13_260
+    # Uncapped = max(10_000 - 0, 0) = 10_000
+    # Annual benefit = min(10_000, 13_260) = 10_000
+    # Monthly = 10_000 / 12 = 833.33
+    # Benefit capped at max, not inflated by negative income
+    de_poc: 833.33
+
+- name: Case 7, non-DE household gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    de_poc: 0

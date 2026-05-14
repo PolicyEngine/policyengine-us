@@ -1,0 +1,557 @@
+# RI CCAP Integration Tests
+# 2025 FPG (Contiguous US):
+#   first_person = 15_650, additional = 5_500
+#   Family of 2: 21_150
+#   Family of 3: 26_650
+#   Family of 4: 32_150
+
+- name: Case 1, basic eligible family with licensed center care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 13_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    # Child age 4 < 13 -> age eligible
+    # Citizen -> immigration eligible
+    # Dependent -> eligible child
+    ri_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21_150
+    # Income 40,000, 261% FPL = 21_150 * 2.61 = 55_201.50
+    # 40,000 <= 55,201.50 -> income eligible
+    ri_ccap_income_eligible: true
+
+    # Assets default 0 <= 1,000,000 -> asset eligible
+    is_ccdf_asset_eligible: true
+
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 40,000 / 21,150 = 1.8913 -> 7% copay
+
+    # annual copay = 40,000 * 0.07 = 2,800
+    # monthly copay = 2,800 / 12 = 233.33
+    ri_ccap_copay: 233.33
+
+    # === Provider rates ===
+    # Center age: 4 years, not in school -> PRESCHOOL
+    ri_ccap_center_age_group: [PRESCHOOL, PRESCHOOL]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; Child: 35 hrs/wk -> FULL_TIME
+    ri_ccap_time_category: [QUARTER_TIME, FULL_TIME]
+    # Center FT Star 3 Preschool = $255
+    ri_ccap_maximum_weekly_benefit: [0, 255]
+
+    # === Benefit ===
+    # max annual = 255 * 52 = 13,260
+    # uncapped = max(13,000 - 2,800, 0) = 10,200
+    # annual benefit = min(10,200, 13,260) = 10,200
+    # monthly = 10,200 / 12 = 850
+    ri_ccap: 850
+
+- name: Case 2, low income family with zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_2
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    ri_ccap_eligible_child: [false, true, true]
+
+    # FPG family of 3: 26,650
+    # 18,000 <= 26,650 * 2.61 = 69,556.50 -> eligible
+    ri_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 18,000 / 26,650 = 0.6754 -> 0% copay
+
+    ri_ccap_copay: 0
+
+    # === Provider rates ===
+    # child1 (age 1): INFANT_TODDLER center group, FT Star 2 = $284
+    # child2 (age 5, not in school): PRESCHOOL center group, FT Star 2 = $247
+    ri_ccap_center_age_group: [PRESCHOOL, INFANT_TODDLER, PRESCHOOL]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; Children: FT
+    ri_ccap_time_category: [QUARTER_TIME, FULL_TIME, FULL_TIME]
+    ri_ccap_maximum_weekly_benefit: [0, 284, 247]
+
+    # === Benefit ===
+    # max annual per child: 284*52 = 14,768 + 247*52 = 12,844 = 27,612
+    # uncapped = max(25,000 - 0, 0) = 25,000
+    # annual benefit = min(25,000, 27,612) = 25,000
+    # monthly = 25,000 / 12 = 2,083.33
+    ri_ccap: 2_083.33
+
+- name: Case 3, enrolled family at transitional FPL level.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 72_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_in_k12_school: false
+        childcare_hours_per_week: 25
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    ri_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21,150
+    # 261% = 55,201.50, 300% = 63,450
+    # 72,000 > 55,201.50 but enrolled, so use 300%
+    # 72,000 > 63,450 -> ineligible even for transitional
+    ri_ccap_income_eligible: false
+
+    is_ccdf_asset_eligible: true
+    ri_ccap_eligible: false
+
+    # === Benefit ===
+    # Not eligible -> 0
+    ri_ccap: 0
+
+- name: Case 4, enrolled family within transitional range.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 25
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ri_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    ri_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21,150
+    # 300% = 63,450
+    # enrolled: 60,000 <= 63,450 -> eligible
+    ri_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 60,000 / 21,150 = 2.8369 -> 7% copay
+
+    # annual copay = 60,000 * 0.07 = 4,200
+    # monthly copay = 4,200 / 12 = 350
+    ri_ccap_copay: 350
+
+    # === Provider rates ===
+    # age 3, not in school -> PRESCHOOL family group
+    ri_ccap_family_age_group: [PRESCHOOL, PRESCHOOL]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; Child: 25 hrs -> THREE_QUARTER_TIME
+    ri_ccap_time_category: [QUARTER_TIME, THREE_QUARTER_TIME]
+    # Family 3QT Star 4 Preschool = $188.33
+    ri_ccap_maximum_weekly_benefit: [0, 188.33]
+
+    # === Benefit ===
+    # max annual = 188.33 * 52 = 9,793.16
+    # uncapped = max(10,000 - 4,200, 0) = 5,800
+    # annual benefit = min(5,800, 9,793.16) = 5,800
+    # monthly = 5,800 / 12 = 483.33
+    ri_ccap: 483.33
+
+- name: Case 5, housing insecure family with license exempt care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 35_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+        childcare_hours_per_week: 15
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+        is_homeless: true
+  output:
+    # === Eligibility ===
+    ri_ccap_eligible_child: [false, true]
+    is_ccdf_immigration_eligible_child: [true, true]
+
+    # FPG family of 2: 21,150
+    # 35,000 <= 55,201.50 (261%) -> eligible
+    ri_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # Housing insecure -> $0 copay
+    ri_ccap_copay: 0
+
+    # === Provider rates ===
+    # Parent: not in school -> PRESCHOOL; Child age 2 -> INFANT_TODDLER
+    ri_ccap_family_age_group: [PRESCHOOL, INFANT_TODDLER]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; Child: 15 hrs -> HALF_TIME
+    ri_ccap_time_category: [QUARTER_TIME, HALF_TIME]
+    # Exempt HT Step 2 Infant/Toddler = $50.98
+    ri_ccap_maximum_weekly_benefit: [0, 50.98]
+
+    # === Benefit ===
+    # max annual = 50.98 * 52 = 2,650.96
+    # uncapped = max(3,000 - 0, 0) = 3,000
+    # annual benefit = min(3,000, 2,650.96) = 2,650.96
+    # monthly = 2,650.96 / 12 = 220.91
+    ri_ccap: 220.91
+
+- name: Case 6, disabled teenager with family day care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 45_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 20
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    # age 15 < 18 (disabled threshold) -> age eligible
+    ri_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21,150
+    # 45,000 <= 55,201.50 -> income eligible
+    ri_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 45,000 / 21,150 = 2.1277 -> 7% copay
+
+    # annual copay = 45,000 * 0.07 = 3,150
+    # monthly copay = 3,150 / 12 = 262.50
+    ri_ccap_copay: 262.50
+
+    # === Provider rates ===
+    # Parent: not in school -> PRESCHOOL; Child age 15, in school -> SCHOOL_AGE
+    ri_ccap_family_age_group: [PRESCHOOL, SCHOOL_AGE]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; Child: 20 hrs -> THREE_QUARTER_TIME
+    ri_ccap_time_category: [QUARTER_TIME, THREE_QUARTER_TIME]
+    # Family 3QT Star 3 School Age = $161.54
+    ri_ccap_maximum_weekly_benefit: [0, 161.54]
+
+    # === Benefit ===
+    # max annual = 161.54 * 52 = 8,400.08
+    # uncapped = max(8,000 - 3,150, 0) = 4,850
+    # annual benefit = min(4,850, 8,400.08) = 4,850
+    # monthly = 4,850 / 12 = 404.17
+    ri_ccap: 404.17
+
+- name: Case 7, two children with different provider types.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_4
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 10
+        ri_ccap_provider_type: LICENSE_EXEMPT
+        ri_ccap_step_rating: STEP_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    ri_ccap_eligible_child: [false, true, true]
+
+    # FPG family of 3: 26,650
+    # 30,000 <= 69,556.50 -> eligible
+    ri_ccap_income_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 30,000 / 26,650 = 1.1257 -> 2% copay
+
+    # annual copay = 30,000 * 0.02 = 600
+    # monthly copay = 600 / 12 = 50
+    ri_ccap_copay: 50
+
+    # === Provider rates ===
+    # child1 (age 1): Center FT Star 4 Infant/Toddler = $303
+    # child2 (age 8, in school): Exempt HT Step 1 School Age = $29.40
+    ri_ccap_center_age_group: [PRESCHOOL, INFANT_TODDLER, SCHOOL_AGE]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; child1: 35 hrs -> FULL_TIME; child2: 10 hrs -> HALF_TIME
+    ri_ccap_time_category: [QUARTER_TIME, FULL_TIME, HALF_TIME]
+    ri_ccap_maximum_weekly_benefit: [0, 303, 29.40]
+
+    # === Benefit ===
+    # max annual = (303 + 29.40) * 52 = 332.40 * 52 = 17,284.80
+    # uncapped = max(15,000 - 600, 0) = 14,400
+    # annual benefit = min(14,400, 17,284.80) = 14,400
+    # monthly = 14,400 / 12 = 1,200
+    ri_ccap: 1_200
+
+- name: Case 8, activity ineligible parent gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 15
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 13_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Parent works 15 hrs/wk < 20 minimum, not a student
+    ri_ccap_activity_eligible: false
+    ri_ccap_eligible: false
+    ri_ccap: 0
+
+- name: Case 9, non-RI family gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_CENTER
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 13_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ri_ccap: 0
+
+- name: Case 10, zero income family at licensed family care gets full subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        ri_ccap_provider_type: LICENSED_FAMILY
+        ri_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # === Eligibility ===
+    # Age 4 < 13, dependent, citizen -> eligible child
+    ri_ccap_eligible_child: [false, true]
+
+    # FPG family of 2: 21,150
+    # $0 income <= 55,201.50 (261% FPL) -> eligible
+    ri_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    # weekly_hours_worked defaults to 40 >= 20 -> activity eligible
+    ri_ccap_activity_eligible: true
+    ri_ccap_eligible: true
+
+    # === Copay ===
+    # FPL ratio = 0 / 21,150 = 0 -> 0% copay rate
+
+    # copay = 0 * 0 = 0
+    ri_ccap_copay: 0
+
+    # === Provider rates ===
+    # Age 4 at licensed family -> PRESCHOOL (age >= 3, not in school)
+    ri_ccap_family_age_group: [PRESCHOOL, PRESCHOOL]
+    # Parent: 0 hrs/wk -> QUARTER_TIME; child: 35 hrs/wk -> FULL_TIME
+    ri_ccap_time_category: [QUARTER_TIME, FULL_TIME]
+    # Family FT Star 3 Preschool = $239.54/wk
+    ri_ccap_maximum_weekly_benefit: [0, 239.54]
+
+    # === Benefit ===
+    # max annual = 239.54 * 52 = 12,456.08
+    # uncapped = max(15,000 - 0, 0) = 15,000
+    # annual benefit = min(15,000, 12,456.08) = 12,456.08
+    # monthly = 12,456.08 / 12 = 1,038.01
+    ri_ccap: 1_038.01

@@ -18,7 +18,7 @@ class la_fitap_eligible(Variable):
 
         # Per LAC 67:III.1223: Must be US citizen or qualified alien
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Per LAC 67:III.1229: Countable income <= flat grant

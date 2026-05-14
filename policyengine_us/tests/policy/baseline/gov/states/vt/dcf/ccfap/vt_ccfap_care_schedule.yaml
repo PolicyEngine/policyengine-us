@@ -1,0 +1,156 @@
+- name: Case 1, part time at 20 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [PART_TIME]
+
+- name: Case 2, part time at exactly 25 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 5
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [PART_TIME]
+
+- name: Case 3, full time at 26 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 5.2
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [FULL_TIME]
+
+- name: Case 4, full time at 40 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [FULL_TIME]
+
+- name: Case 5, full time at exactly 50 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 10
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [FULL_TIME]
+
+- name: Case 6, extended care at 51 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 10.2
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [EXTENDED_CARE]
+
+- name: Case 7, extended care at 60 hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 6
+        childcare_hours_per_day: 10
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [EXTENDED_CARE]
+
+- name: Case 8, minimal part time at 1 hour per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 1
+        childcare_hours_per_day: 1
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_care_schedule: [PART_TIME]
+
+- name: Case 9, zero childcare hours per week.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 0
+        childcare_hours_per_day: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0 hours <= 25 = part time
+    vt_ccfap_care_schedule: [PART_TIME]
+
+- name: Case 10, fractional hours just above 25 boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 5.1
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 5 * 5.1 = 25.5 hours > 25 = full time
+    vt_ccfap_care_schedule: [FULL_TIME]
+
+- name: Case 11, fractional hours just above 50 boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 10.1
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 5 * 10.1 = 50.5 hours > 50 = extended care
+    vt_ccfap_care_schedule: [EXTENDED_CARE]

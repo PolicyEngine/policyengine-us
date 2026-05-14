@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class oh_cdcc(Variable):
@@ -14,22 +17,14 @@ class oh_cdcc(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.credits.cdcc
-
-        agi = tax_unit("oh_modified_agi", period)
-        # ORC § 5747.054(A): filers with AGI below the low-income threshold
-        # receive credit "without regard to any limitation imposed by section 26
-        # of the Internal Revenue Code", i.e. cdcc_potential.
-        # Filers in the middle bracket use cdcc (limited by IRC § 26).
-        low_income = agi < p.low_income_threshold
-        us_cdcc = where(
-            low_income,
-            tax_unit("cdcc_potential", period),
-            tax_unit("cdcc", period),
+        ordered_credits = parameters(
+            period
+        ).gov.states.oh.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "oh_income_tax_before_non_refundable_credits",
+            "oh_cdcc",
+            "oh_cdcc_potential",
         )
-
-        rate = p.match.calc(agi)
-        # qualify for full CDCC amount when AGI < 20_000
-        # qualify for 25% of CDCC when 20000 <= AGI < 40_000
-        # not qualify when AGI >= 40_000
-        return rate * us_cdcc

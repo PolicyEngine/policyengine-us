@@ -123,3 +123,41 @@
         state_code: CA
   output:
     ca_eitc_eligible: false
+
+- name: Ineligible for EITC because federal AGI exceeds CalEITC threshold (FTB 3514)
+  period: 2024
+  input:
+    people:
+      person_1:
+        age: 40
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        eitc_relevant_investment_income: 0
+        adjusted_gross_income: 32_000
+    households:
+      household:
+        members: [person_1]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+
+- name: Eligible for EITC when federal AGI is below CalEITC threshold
+  period: 2024
+  input:
+    people:
+      person_1:
+        age: 40
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        eitc_relevant_investment_income: 0
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person_1]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true

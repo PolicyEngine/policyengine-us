@@ -1,0 +1,85 @@
+- name: Federal MTR in 12% bracket
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 30_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.12
+
+- name: Federal MTR in 22% bracket
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.22
+
+- name: Federal MTR in 32% bracket
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 250_000
+    state_fips: 48  # TX
+  output:
+    federal_marginal_tax_rate: 0.32
+
+- name: Federal MTR for married couple filing jointly
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+        employment_income: 120_000
+      spouse:
+        age: 38
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [filer, spouse]
+    households:
+      household:
+        members: [filer, spouse]
+        state_fips: 48  # TX
+  output:
+    # Joint filers: $170k combined, 22% bracket; default marginal_tax_rate_adults=2
+    federal_marginal_tax_rate: [0.22, 0.22]
+
+- name: Federal MTR in two tax-unit household
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    simulation.marginal_tax_rate_adults: 2
+    people:
+      person1:
+        age: 43
+        employment_income: 100_000
+      person2:
+        age: 30
+        employment_income: 40_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 48  # TX
+  output:
+    # person1 at $100k in 22% bracket, person2 at $40k in 12% bracket
+    federal_marginal_tax_rate: [0.22, 0.12]

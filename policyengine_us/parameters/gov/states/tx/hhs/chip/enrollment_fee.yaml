@@ -1,0 +1,25 @@
+description: Texas charges this annual Children's Health Insurance Program enrollment fee per household, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: Texas CHIP enrollment fee
+  reference:
+    - title: Texas Works Handbook, D-1820 Enrollment Fees
+      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/d-1820-enrollment-fees
+    - title: Texas Uniform Managed Care Manual, Chapter 6.3 CHIP Cost Sharing
+      href: https://www.hhs.texas.gov/sites/default/files/documents/laws-regulations/handbooks/umcm/6-3.pdf
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.51
+    amount:
+      2021-01-01: 35
+  - threshold:
+      2021-01-01: 1.86
+    amount:
+      2021-01-01: 50

@@ -63,3 +63,25 @@
         va_income_tax_before_non_refundable_credits: 0
   output:
     va_spouse_tax_adjustment: 0
+
+- name: Elderly head with income below age deduction - not eligible for STA (issue 6958)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 11_752.73
+      spouse:
+        age: 40
+        employment_income: 55_728.48
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    va_spouse_tax_adjustment: 0
+    va_income_tax: 1_402.22

@@ -63,3 +63,104 @@
     was_in_foster_care: true
   output:
     is_head_start_categorically_eligible: true
+
+- name: Eligible via SSI only
+  period: 2024
+  input:
+    tanf: 0
+    ssi: 500
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Eligible via SNAP only
+  period: 2024
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 200
+    is_homeless: false
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Eligible via homelessness only
+  period: 2024
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: true
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Case 7, foster care child does not make sibling eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        was_in_foster_care: true
+        ssi: 0
+      person2:
+        was_in_foster_care: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        is_homeless: false
+  output:
+    is_head_start_categorically_eligible: [true, false]
+
+- name: Case 8, parent SSI makes child eligible via family aggregation.
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi: 10_000
+      person2:
+        ssi: 0
+        was_in_foster_care: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        is_homeless: false
+  output:
+    # Parent's SSI aggregated at spm_unit, both members eligible
+    is_head_start_categorically_eligible: [true, true]
+
+- name: Case 9, TX household at 140% FPL eligible via computed snap.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 28_616
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 140% FPL for 2-person household in 2024
+    # Computed SNAP > 0 at this income, making family categorically eligible
+    is_head_start_categorically_eligible: [true, true]

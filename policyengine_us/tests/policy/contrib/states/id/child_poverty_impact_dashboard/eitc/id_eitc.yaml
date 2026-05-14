@@ -1,0 +1,53 @@
+- name: Case 1 - ID EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ID
+    eitc: 1_000
+  output:
+    id_eitc: 100
+    id_refundable_credits: 100
+
+- name: Case 2 - ID EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: ID
+    eitc: 2_500
+  output:
+    id_eitc: 500
+    id_refundable_credits: 500
+
+- name: Case 3 - ID EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: ID
+    eitc: 1_000
+  output:
+    id_eitc: 0
+    id_refundable_credits: 0
+
+- name: Case 4 - ID EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ID
+    eitc: 0
+  output:
+    id_eitc: 0
+    id_refundable_credits: 0
+
+- name: Case 5 - ID EITC is 0 for non-ID residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    id_eitc: 0

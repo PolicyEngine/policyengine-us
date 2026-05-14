@@ -1,0 +1,23 @@
+description: Alabama caps the 529 plan contributions deduction at this amount by filing status.
+metadata:
+  label: Alabama 529 plan contribution deduction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Alabama Code Section 16-33C-16
+    href: https://law.justia.com/codes/alabama/title-16/chapter-33c/section-16-33c-16/
+  - title: CollegeCounts 529 Tax Benefits
+    href: https://collegecounts529.com/tax-benefits/
+
+JOINT:
+  2021-01-01: 10_000
+SURVIVING_SPOUSE:
+  2021-01-01: 10_000
+SINGLE:
+  2021-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 5_000
+SEPARATE:
+  2021-01-01: 5_000

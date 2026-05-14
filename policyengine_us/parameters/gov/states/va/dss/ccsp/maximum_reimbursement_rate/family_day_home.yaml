@@ -1,0 +1,40 @@
+description: Virginia sets this daily maximum reimbursement rate for family day homes under the Child Care Subsidy Program.
+# The VDOE Maximum Reimbursement Rates FY 2024 table publishes FDH rates by
+# region and by age group, but within each Ready Region every FDH age-group
+# column holds the same dollar value (e.g. Blue Ridge FDH Full Day is $53
+# for Infant / Toddler / 2-year-old / Preschool / School-Age; Capital Area
+# is $62 for every age). FDH rates therefore vary by region only, so this
+# parameter is correctly indexed by `va_ccsp_ready_region` alone and does
+# not require a `va_ccsp_care_age_group` breakdown. The center rate does
+# vary by age group and is indexed on both dimensions in `center.yaml`.
+
+metadata:
+  period: day
+  unit: currency-USD
+  label: Virginia CCSP family day home daily maximum reimbursement rate
+  breakdown:
+    - va_ccsp_ready_region
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+    - title: FY 2024 CCSP Maximum Reimbursement Rates (PDF, page 2, Family Day Home columns)
+      href: https://data.virginia.gov/dataset/611027f1-99ee-42ec-94a9-7ec9a8153ef5/resource/e60334ca-53dc-4094-b16d-001851976f43/download/maximum-reimbursement-rates-by-localityeffective-832023.pdf
+
+BLUE_RIDGE:
+  2023-08-01: 53
+CAPITAL_AREA:
+  2023-08-01: 62
+CENTRAL:
+  2023-08-01: 53
+CHESAPEAKE_BAY:
+  2023-08-01: 51
+NORTH_CENTRAL:
+  2023-08-01: 53
+SOUTHEASTERN:
+  2023-08-01: 54
+SOUTHSIDE:
+  2023-08-01: 49
+SOUTHWEST:
+  2023-08-01: 48
+WEST:
+  2023-08-01: 51

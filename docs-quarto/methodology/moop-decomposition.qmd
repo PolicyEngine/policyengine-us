@@ -1,0 +1,83 @@
+---
+title: "Medical out-of-pocket expense decomposition"
+subtitle: "Layering rules-based premium computations on CPS-imputed medical costs"
+---
+
+## Why a decomposition
+
+The Supplemental Poverty Measure subtracts medical out-of-pocket expenses (MOOP) from household resources. PolicyEngine US imports MOOP from the Current Population Survey's reported private health insurance premiums and other medical expenses. Imputed MOOP is accurate on average for the year the CPS was collected, but it does not respond to policy reform. If a user eliminates the ACA premium tax credit, simulated PTC goes to zero while imputed MOOP stays at the pre-reform value, understating the true cost to households.
+
+The fix is to decompose MOOP into a **rules-based** part (variables computable from statute) and imputed other components for costs the model cannot yet calculate directly. Reforms move the rules-based part; the imputed other components cover copays, over-the-counter costs, non-modeled employer premiums, etc.
+
+## What's shipped today
+
+The SPM-unit-level wrapper now combines explicit premium and non-premium
+pieces:
+
+```python
+spm_unit_medical_out_of_pocket_expenses = (
+    spm_unit_health_insurance_premiums
+    + spm_unit_non_premium_medical_out_of_pocket_expenses
+)
+```
+
+| Component | How it flows | Double-count risk |
+|---|---|---|
+| Other health insurance premiums | In via `other_health_insurance_premiums` from data construction | No once data are built with baseline modeled premiums removed |
+| Medicare Part B | Computed by `medicare_part_b_premium` (base + IRMAA) | No |
+| CHIP premium (`chip_premium`) | Computed by state schedules | No once data are built with baseline modeled premiums removed |
+| Medicaid premium (`medicaid_premium`) | Computed by state schedules | No once data are built with baseline modeled premiums removed |
+| Marketplace net premium (`marketplace_net_premium`) | Computed from selected plan premium minus used PTC | No once data are built with baseline modeled premiums removed |
+| Other medical expenses and OTC health expenses | In via `other_medical_expenses` and `over_the_counter_health_expenses` | No |
+
+The old generic `medical_out_of_pocket_expenses` input is removed. Program
+rules outside SPM use their own statutory medical-expense wrappers rather than
+the SPM MOOP definition.
+
+## The target architecture
+
+Once the CPS-imputation side strips each premium's baseline share from the reported aggregate, the wrapper is cleanly layered:
+
+```
+spm_unit_MOOP = other_health_insurance_premiums
+              + computed_chip_premium
+              + computed_medicare_part_b_premium
+              + computed_marketplace_net_premium
+              + computed_medicaid_premium
+              + other_medical_expenses
+              + over_the_counter_health_expenses
+```
+
+with
+
+```
+other_health_insurance_premiums =
+    reported_non_medicare_premiums − baseline_computed_premium_sum
+```
+
+where `baseline_computed_premium_sum` is evaluated under the CPS reference year's rules during data construction. Baseline totals reconcile to CPS-reported premiums; reforms propagate through the computed pieces.
+
+## Components computable today
+
+| Component | Variable | Entity | Status |
+|---|---|---|---|
+| CHIP premium | `chip_premium` | TaxUnit | 17 states encoded with the federal 5 % income cap applied to modeled premiums (see [CHIP](../programs/chip.qmd)) |
+| Medicare Part B | `medicare_part_b_premium` | Person | Rules-based (base + IRMAA tiers) |
+| Marketplace net premium | `marketplace_net_premium` | TaxUnit | `SLCSP × benchmark_ratio − used_PTC`; benchmark ratio imputed per-household via CPS back-out |
+| Medicaid expansion premium | `medicaid_premium` | TaxUnit | IN HIP POWER Account, Michigan Healthy Michigan contributions, and Montana HELP premiums; historical MI/MT schedules end when those programs eliminated premiums |
+
+## Why Marketplace net premium is layered differently
+
+CPS private-premium reports conflate Marketplace, employer, and direct-purchase coverage in a single aggregate. `selected_marketplace_plan_benchmark_ratio` is populated per tax unit via back-out from the reported premium. Data construction then subtracts baseline `marketplace_net_premium` from reported non-Medicare premiums so SPM can add the modeled Marketplace premium without double counting.
+
+## Gaps
+
+- **Copays** — the federal 5 % of income CHIP cost-sharing cap (42 CFR 457.560) binds on premiums + copays combined. `chip_premium` applies the cap to modeled premiums and enrollment fees, but CHIP copayments remain unmodeled.
+- **Employer plan employee share** — stays in `other_health_insurance_premiums`; employer plans aren't statutory and can't be computed from rules without a separate employer-plan model.
+
+## See also
+
+- [CHIP](../programs/chip.qmd) — state-by-state premium schedules.
+- GitHub issue [#8089](https://github.com/PolicyEngine/policyengine-us/issues/8089) — umbrella architecture issue.
+- GitHub issue [#8101](https://github.com/PolicyEngine/policyengine-us/issues/8101) — copay modeling and the 5 % cap.
+- GitHub issue [#8102](https://github.com/PolicyEngine/policyengine-us/issues/8102) — Medicaid expansion premium encoding.

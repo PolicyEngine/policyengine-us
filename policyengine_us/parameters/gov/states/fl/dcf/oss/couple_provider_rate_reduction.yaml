@@ -1,0 +1,17 @@
+description: Florida deducts this amount from the couple provider rate under the Optional State Supplementation program.
+values:
+  2011-01-01: 0
+  2023-01-01: 73
+  2025-01-01: 97
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Florida OSS couple provider rate reduction
+  reference:
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Florida, Table 1 (shows "b" for couple amounts = treated as two individuals, i.e., reduction = $0)
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/fl.html
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2024-07-01 — back-calculation 2×$938.40-$1,803.80 = $73 for Jan 2023 Redesign; 2×$1,099-$2,125 = $73 for Jan 2023 Protected)
+      href: https://www.myflfamilies.com/sites/default/files/2024-06/Appendix%20A-12.pdf
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2025-01-01 — back-calculation 2×$991.40-$1,885.80 = $97 for Jan 2025 Redesign; 2×$1,152-$2,207 = $97 for Jan 2025 Protected)
+      href: https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf

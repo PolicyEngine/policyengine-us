@@ -39,3 +39,63 @@
     is_computer_scientist: true
   output:
     fsla_overtime_premium: 5105.4545
+
+- name: Overtime income premium calculation uses hourly wage for hourly workers when compatible with annual income
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 57200
+    hourly_wage: 20
+    is_paid_hourly: true
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 5200
+
+- name: Overtime income premium calculation uses annual income implied rate when hourly wage understates annual income
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 100000
+    hourly_wage: 20
+    is_paid_hourly: true
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 9090.9091
+
+- name: Overtime income premium calculation caps hourly wage at annual income implied rate
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 65000
+    hourly_wage: 25
+    is_paid_hourly: true
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 5909.0909
+
+- name: Overtime income premium falls back when hourly wage is unavailable
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 30000
+    hourly_wage: 0
+    is_paid_hourly: true
+    has_never_worked: false
+    is_military: false
+    is_executive_administrative_professional: true
+    is_farmer_fisher: false
+    is_computer_scientist: false
+  output:
+    fsla_overtime_premium: 2727.2727
