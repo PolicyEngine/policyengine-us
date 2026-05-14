@@ -1,1 +1,1 @@
-Correct effective date of the MA TAFDC 10% grant increase to 2025-04-01 (FY25 budget). The FY24 increase scheduled for April 2024 was cancelled by Governor Healey's 9C mid-year budget cuts in January 2024.
+Backdate Massachusetts TAFDC and EAEDC standard assistance amounts to include FY25 (April 2025) 10% increase. The FY24 raise scheduled for April 2024 was rescinded by 9C cuts in January 2024; the actual increase came from the FY25 budget.
