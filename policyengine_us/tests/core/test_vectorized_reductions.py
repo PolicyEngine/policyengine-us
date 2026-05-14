@@ -1,3 +1,6 @@
+import ast
+from pathlib import Path
+
 from policyengine_us import Simulation
 
 
@@ -62,3 +65,58 @@ def test_medicaid_medically_needy_category_reduces_per_person():
         False,
         True,
     ]
+
+
+def test_has_qdiv_or_ltcg_reduces_per_tax_unit_not_across_simulation():
+    simulation = Simulation(
+        situation=_two_person_two_household_situation(
+            person_a={"age": {"2026": 30}},
+            person_b={
+                "age": {"2026": 40},
+                "qualified_dividend_income": {"2026": 100},
+            },
+        )
+    )
+
+    assert simulation.calculate("has_qdiv_or_ltcg", 2026).tolist() == [
+        False,
+        True,
+    ]
+
+
+def test_numpy_any_all_outputs_specify_axis_or_stay_in_control_flow():
+    variables_dir = Path(__file__).parents[2] / "variables"
+    offenders = []
+
+    for path in variables_dir.rglob("*.py"):
+        tree = ast.parse(path.read_text())
+        parents = {}
+        for parent in ast.walk(tree):
+            for child in ast.iter_child_nodes(parent):
+                parents[child] = parent
+
+        for node in ast.walk(tree):
+            if not (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr in {"any", "all"}
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "np"
+            ):
+                continue
+
+            if any(keyword.arg == "axis" for keyword in node.keywords):
+                continue
+
+            parent = parents.get(node)
+            in_control_flow_test = False
+            while parent is not None:
+                if isinstance(parent, (ast.If, ast.While)):
+                    in_control_flow_test = node in ast.walk(parent.test)
+                    break
+                parent = parents.get(parent)
+
+            if not in_control_flow_test:
+                offenders.append(f"{path.relative_to(variables_dir)}:{node.lineno}")
+
+    assert offenders == []
