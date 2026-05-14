@@ -15,4 +15,4 @@ class ga_caps_provider_type(Variable):
     definition_period = MONTH
     label = "Georgia CAPS child care provider type"
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_C-CAPS_Reimbursement_Rates.pdf#page=2"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=1"

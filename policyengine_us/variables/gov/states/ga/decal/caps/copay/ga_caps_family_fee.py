@@ -9,8 +9,8 @@ class ga_caps_family_fee(Variable):
     definition_period = MONTH
     defined_for = StateCode.GA
     reference = (
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_D-CAPS_Family_Fee_702.pdf#page=2",
-        "https://www.acf.hhs.gov/sites/default/files/documents/occ/georgia_2025_2027_ccdf_state_plan.pdf#page=117",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixD-Family%20Fee%20Assessment%20Chart.pdf",
+        "https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=49",
     )
 
     def formula(spm_unit, period, parameters):

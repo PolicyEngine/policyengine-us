@@ -325,3 +325,101 @@
   output:
     # Zone 3, Family, School Age, Full-time = $94/week
     ga_caps_maximum_weekly_benefit: [0, 94]
+
+- name: Case 15, Zone 1 center part-time infant 3 days per week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: PART_TIME
+        childcare_days_per_week: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # Zone 1, Center, Infant, Part-time = $65/day
+    # Weekly = 65 * 3 = $195
+    ga_caps_maximum_weekly_benefit: [0, 195]
+
+- name: Case 16, Zone 1 center part-time infant 5 days per week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: PART_TIME
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # Zone 1, Center, Infant, Part-time = $65/day
+    # Weekly = 65 * 5 = $325
+    ga_caps_maximum_weekly_benefit: [0, 325]
+
+- name: Case 17, Zone 3 informal part-time school-age 2 days per week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        ga_caps_provider_type: INFORMAL
+        ga_caps_care_type: PART_TIME
+        childcare_days_per_week: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: APPLING_COUNTY_GA
+  output:
+    # Zone 3, Informal, School Age, Part-time = $35/day
+    # Weekly = 35 * 2 = $70
+    ga_caps_maximum_weekly_benefit: [0, 70]
+
+- name: Case 18, Zone 2 family before-after school toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        ga_caps_provider_type: FAMILY
+        ga_caps_care_type: BEFORE_AFTER_SCHOOL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: CHATHAM_COUNTY_GA
+  output:
+    # Zone 2, Family, Toddler, Before-After-School = $58/week (not daily)
+    ga_caps_maximum_weekly_benefit: [0, 58]

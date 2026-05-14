@@ -16,4 +16,6 @@ class ga_caps_quality_rating(Variable):
     definition_period = MONTH
     label = "Georgia CAPS provider Quality Rated designation"
     defined_for = StateCode.GA
-    reference = "https://www.acf.hhs.gov/sites/default/files/documents/occ/georgia_2025_2027_ccdf_state_plan.pdf#page=110"
+    reference = (
+        "https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=69"
+    )

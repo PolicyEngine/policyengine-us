@@ -1,6 +1,8 @@
 # GA CAPS activity eligibility
 # Parent must average 24 hours/week in approved activities
-# (employment or full-time student)
+# (employment or full-time student).
+# All cases pin meets_ccdf_activity_test: false to isolate the GA-specific
+# 24-hour rule from the federal CCDF fallback (added in ga_caps_activity_eligible.py).
 
 - name: Case 1, single parent working 24 hours meets requirement.
   period: 2026-01
@@ -14,6 +16,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2]
@@ -34,6 +37,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2]
@@ -54,6 +58,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2]
@@ -79,6 +84,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2, person3]
@@ -105,6 +111,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2, person3]
@@ -131,9 +138,180 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
     households:
       household:
         members: [person1, person2, person3]
         state_code: GA
   output:
+    ga_caps_activity_eligible: true
+
+- name: Case 7, single parent working exactly 25 hours just above threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 25
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # 25 >= 24 -> eligible
+    ga_caps_activity_eligible: true
+
+- name: Case 8, single parent working zero hours and not a student.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # 0 < 24 and not a student -> ineligible
+    ga_caps_activity_eligible: false
+
+- name: Case 9, two parents both full-time students.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 21
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person3:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Both are students -> both individually eligible
+    ga_caps_activity_eligible: true
+
+- name: Case 10, two parents both below 24 hours and not students.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+        is_full_time_student: false
+      person2:
+        age: 28
+        weekly_hours_worked: 15
+        is_full_time_student: false
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Both below 24 hrs and not students -> ineligible
+    ga_caps_activity_eligible: false
+
+- name: Case 11, single parent working 40 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # 40 >= 24 -> eligible
+    ga_caps_activity_eligible: true
+
+- name: Case 12, child hours do not matter for activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 24
+      person2:
+        age: 10
+        weekly_hours_worked: 0
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Only heads/spouses checked; child's hours irrelevant
+    ga_caps_activity_eligible: true
+
+- name: Case 13, federal CCDF fallback approves when GA 24-hour rule fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 10
+        is_full_time_student: false
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # GA gate fails (10 < 24, not student), but federal CCDF fallback approves
     ga_caps_activity_eligible: true

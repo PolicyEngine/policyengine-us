@@ -16,7 +16,7 @@ class ga_caps_age_group(Variable):
     definition_period = MONTH
     defined_for = "ga_caps_eligible_child"
     label = "Georgia CAPS child age group"
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_C-CAPS_Reimbursement_Rates.pdf#page=2"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=1"
 
     def formula(person, period, parameters):
         age = person("age", period.this_year)

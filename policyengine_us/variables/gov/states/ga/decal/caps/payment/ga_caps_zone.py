@@ -15,7 +15,7 @@ class ga_caps_zone(Variable):
     definition_period = MONTH
     defined_for = StateCode.GA
     label = "Georgia CAPS geographic zone"
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_C-CAPS_Reimbursement_Rates.pdf#page=2"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=2"
 
     def formula(household, period, parameters):
         county = household("county_str", period)

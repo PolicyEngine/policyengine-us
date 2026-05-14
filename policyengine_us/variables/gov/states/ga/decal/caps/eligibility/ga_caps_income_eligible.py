@@ -8,8 +8,8 @@ class ga_caps_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.GA
     reference = (
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/04-CAPS_Policy-Chapter_8.pdf#page=2",
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_A-CAPS_702_Income_Limits.pdf#page=2",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=48",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf",
     )
 
     def formula(spm_unit, period, parameters):

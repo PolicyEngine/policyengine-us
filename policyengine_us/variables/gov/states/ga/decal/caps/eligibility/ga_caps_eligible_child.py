@@ -8,8 +8,8 @@ class ga_caps_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.GA
     reference = (
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/02-CAPS_Policy-Chapter_6.pdf#page=3",
-        "https://www.acf.hhs.gov/sites/default/files/documents/occ/georgia_2025_2027_ccdf_state_plan.pdf#page=49",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=29",
+        "https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=16",
     )
 
     def formula(person, period, parameters):

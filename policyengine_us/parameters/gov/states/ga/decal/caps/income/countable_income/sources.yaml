@@ -12,9 +12,10 @@ values:
     - rental_income
     - dividend_income
     - pension_income
-    - military_retirement_pay
-    # The following are counted per CAPS Policy Manual Ch.8 but have
+    - military_basic_pay
+    # The following are counted per CAPS Policy Manual §8.4 but have
     # no matching variables:
+    # - military_allotments
     # - lottery_payments
     # - commissions (included in employment_income)
     # - cash_bonuses (included in employment_income)
@@ -24,5 +25,5 @@ metadata:
   period: year
   label: Georgia CAPS countable income sources
   reference:
-    - title: Georgia CAPS Policy Manual, Chapter 8 (Income)
-      href: https://caps.decal.ga.gov/assets/downloads/CAPS/04-CAPS_Policy-Chapter_8.pdf#page=3
+    - title: Georgia CAPS Policy Manual, Section 8.4 (Applicable Income)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=48

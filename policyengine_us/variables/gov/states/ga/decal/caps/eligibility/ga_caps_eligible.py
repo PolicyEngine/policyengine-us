@@ -7,7 +7,7 @@ class ga_caps_eligible(Variable):
     label = "Eligible for Georgia CAPS"
     definition_period = MONTH
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/02-CAPS_Policy-Chapter_6.pdf#page=3"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=29"
 
     def formula(spm_unit, period, parameters):
         has_eligible_child = add(spm_unit, period, ["ga_caps_eligible_child"]) > 0

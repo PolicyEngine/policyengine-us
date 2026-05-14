@@ -11,7 +11,7 @@ class ga_caps_maximum_weekly_benefit(Variable):
     label = "Georgia CAPS maximum weekly benefit per child"
     definition_period = MONTH
     defined_for = "ga_caps_eligible_child"
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/Appendix_C-CAPS_Reimbursement_Rates.pdf#page=2"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=1"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.rates
