@@ -21,11 +21,11 @@ class ga_caps(Variable):
         person = spm_unit.members
 
         max_weekly = person("ga_caps_maximum_weekly_benefit", period)
-        published_weekly = person("ga_caps_provider_published_rate", period)
-        per_child_weekly = min_(max_weekly, published_weekly)
+        sum_max_weekly = spm_unit.sum(max_weekly)
+        sum_max_monthly = sum_max_weekly * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
 
-        total_weekly_base = spm_unit.sum(per_child_weekly)
-        base_monthly = total_weekly_base * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
+        expenses_monthly = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
+        base_monthly = min_(expenses_monthly, sum_max_monthly)
 
         family_fee = spm_unit("ga_caps_family_fee", period)
         net_base = max_(base_monthly - family_fee, 0)
@@ -41,10 +41,10 @@ class ga_caps(Variable):
             default=0,
         )
         bonus_rate = p.quality_rated.bonus_rate.calc(star_count)
-        weighted_bonus = spm_unit.sum(per_child_weekly * bonus_rate)
+        weighted_bonus = spm_unit.sum(max_weekly * bonus_rate)
         effective_bonus_rate = where(
-            total_weekly_base > 0,
-            weighted_bonus / total_weekly_base,
+            sum_max_weekly > 0,
+            weighted_bonus / sum_max_weekly,
             0,
         )
         return net_base * (1 + effective_bonus_rate)

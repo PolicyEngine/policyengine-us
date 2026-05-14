@@ -1,8 +1,5 @@
 # GA CAPS benefit
-# Per-child weekly subsidy = min(state max rate, provider published rate).
-# When ga_caps_provider_published_rate is not provided, it defaults to an
-# even share of spm_unit_pre_subsidy_childcare_expenses across eligible children.
-# Subsidy = max(sum(per_child_weekly) * 52/12 - family_fee, 0) * (1 + weighted_quality_bonus_rate)
+# Subsidy = max(min(expenses, sum_of_max_rates) - fee, 0) * (1 + weighted_quality_bonus_rate)
 #
 # 2026 FPG (Contiguous US):
 #   first_person = 15,960, additional = 5,680
@@ -308,15 +305,13 @@
     # weekly fee = floor(15,000 * 0.05 / 52) = floor(14.42) = $14
     # monthly fee = 14 * 52 / 12 = $60.67
     ga_caps_family_fee: 60.67
-    # pre_subsidy_weekly_per_child = 12,000 / 52 / 2 = $115.38
-    # person2 (infant family FT, max $145): min($145, $115.38) = $115.38
-    # person3 (school B/A, max $68): min($68, $115.38) = $68
-    # total_weekly_base = $115.38 + $68 = $183.38
-    # base_monthly = $183.38 * 52/12 = $794.65
-    # net_base = max($794.65 - $60.67, 0) = $733.98
+    # sum_max_weekly = 145 + 68 = $213
+    # sum_max_monthly = $213 * 52/12 = $923.00
+    # expenses_monthly = 12,000 / 12 = $1,000
+    # base = min($1,000, $923) = $923
+    # net_base = max($923 - $60.67, 0) = $862.33
     # no quality bonus (NONE rating)
-    # subsidy = $733.98
-    ga_caps: 733.98
+    ga_caps: 862.33
 
 - name: Case 8, zero income family gets maximum subsidy up to expenses.
   period: 2026-01

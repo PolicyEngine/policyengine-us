@@ -282,16 +282,14 @@
     ga_caps_family_fee: 82.33
 
     # === Benefit ===
-    # pre_subsidy_weekly_per_child = 10,000 / 52 / 2 = $96.15
-    # person2 (infant FT, max $130): min($130, $96.15) = $96.15
-    # person3 (school B/A, max $53): min($53, $96.15) = $53
-    # total_weekly_base = $96.15 + $53 = $149.15
-    # base_monthly = $149.15 * 52/12 = $646.32
-    # net_base = max($646.32 - $82.33, 0) = $563.99
-    # weighted_bonus = $96.15 * 0.05 + $53 * 0.05 = $7.46
-    # weighted_bonus_rate = $7.46 / $149.15 = 0.05
-    # subsidy = $563.99 * 1.05 = $592.19
-    ga_caps: 592.19
+    # sum_max_weekly = 130 + 53 = $183
+    # sum_max_monthly = $183 * 52/12 = $793.00
+    # expenses_monthly = 10,000 / 12 = $833.33
+    # base = min($833.33, $793) = $793.00
+    # net_base = max($793 - $82.33, 0) = $710.67
+    # weighted_bonus_rate = (130*0.05 + 53*0.05) / 183 = 0.05
+    # subsidy = $710.67 * 1.05 = $746.20
+    ga_caps: 746.20
 
 - name: Case 6, disabled teenager with family care in Zone 2.
   period: 2026-01
@@ -466,17 +464,14 @@
     ga_caps_family_fee: 424.67
 
     # === Benefit ===
-    # pre_subsidy_weekly_per_child = 20,000 / 52 / 3 = $128.21
-    # person3: min($84, $128.21) = $84
-    # person4: min($180, $128.21) = $128.21
-    # person5: min($260, $128.21) = $128.21
-    # total_weekly_base = $84 + $128.21 + $128.21 = $340.42
-    # base_monthly = $340.42 * 52/12 = $1,475.16
-    # net_base = max($1,475.16 - $424.67, 0) = $1,050.49
-    # weighted_bonus = $84*0 + $128.21*0.05 + $128.21*0.05 = $12.82
-    # weighted_bonus_rate = $12.82 / $340.42 = 0.0377
-    # subsidy = $1,050.49 * 1.0377 = $1,090.10
-    ga_caps: 1_090.10
+    # sum_max_weekly = 84 + 180 + 260 = $524
+    # sum_max_monthly = $524 * 52/12 = $2,270.67
+    # expenses_monthly = 20,000 / 12 = $1,666.67
+    # base = min($1,666.67, $2,270.67) = $1,666.67
+    # net_base = max($1,666.67 - $424.67, 0) = $1,242.00
+    # weighted_bonus_rate = (84*0 + 180*0.05 + 260*0.05) / 524 = 0.04198
+    # subsidy = $1,242.00 * 1.04198 = $1,294.14
+    ga_caps: 1_294.14
 
 - name: Case 9, enrolled family between 50 and 85 percent SMI.
   period: 2026-01
