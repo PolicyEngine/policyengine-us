@@ -26,8 +26,8 @@
   output:
     ma_tafdc_payment_standard: 1_316
 
-- name: Case 4, not in public housing, 2 people, FY24 increase in effect.
-  period: 2025-01
+- name: Case 4, not in public housing, 2 people, FY25 increase in effect.
+  period: 2026-01
   input:
     spm_unit_size: 2
     is_in_public_housing: false
@@ -35,8 +35,8 @@
   output:
     ma_tafdc_payment_standard: 753
 
-- name: Case 5, in public housing, 2 people, FY24 increase in effect.
-  period: 2025-01
+- name: Case 5, in public housing, 2 people, FY25 increase in effect.
+  period: 2026-01
   input:
     spm_unit_size: 2
     is_in_public_housing: true

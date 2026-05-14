@@ -163,10 +163,10 @@
     ma_tafdc_countable_earned_income: [1_800, 0]
     ma_tafdc_applicable_income_grant_amount: 1_800
     ma_tafdc_eligible: true
-    ma_tafdc_payment_standard: 9_036 #753*12
+    ma_tafdc_payment_standard: 8_841 # 688*3 + 753*9 (FY25 raise effective 2025-04-01)
     ma_tafdc_eligible_dependent: [False, True]
     ma_tafdc_dependent_care_deduction: 0
-    ma_tafdc: 7_736 # (753 - 150 + 500/12)*12
+    ma_tafdc: 7_541 # 579.67*3 + 644.67*9
     ma_eaedc_eligible: false
     ma_eaedc_immigration_status_eligible: true
     ma_eaedc_financial_eligible: false
@@ -209,10 +209,10 @@
     ma_tafdc_countable_earned_income: [150, 0]
     ma_tafdc_applicable_income_grant_amount: 150
     ma_tafdc_eligible: true
-    ma_tafdc_payment_standard: 753
+    ma_tafdc_payment_standard: 688
     ma_tafdc_eligible_dependent: [False, True]
     ma_tafdc_dependent_care_deduction: 0
-    ma_tafdc: 645      # 753 - 150 + 41.7 = 644.7
+    ma_tafdc: 580      # In 2025-05: 688 - 300 + 41.7 = 429.7
     ma_eaedc_eligible: true
     ma_eaedc_immigration_status_eligible: true
     ma_eaedc_financial_eligible: true

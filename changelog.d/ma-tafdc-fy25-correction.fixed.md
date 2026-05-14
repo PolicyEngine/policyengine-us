@@ -1,0 +1,1 @@
+Correct effective date of the MA TAFDC 10% grant increase to 2025-04-01 (FY25 budget). The FY24 increase scheduled for April 2024 was cancelled by Governor Healey's 9C mid-year budget cuts in January 2024.
