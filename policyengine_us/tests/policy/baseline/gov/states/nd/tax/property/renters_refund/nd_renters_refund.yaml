@@ -1,0 +1,53 @@
+- name: Case 1, refund follows the state example.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 520
+
+- name: Case 2, refund is capped.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 600
+
+- name: Case 3, ineligible filer gets no refund.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 0
