@@ -1,3 +1,28 @@
+## [1.691.7] - 2026-05-14
+
+### Changed
+
+- Apply Arkansas HB1001 (2026 1st Extraordinary Session) individual income tax rate cuts effective tax year 2026.
+
+### Fixed
+
+- Set explicit 2025 Maine property tax fairness credit benefit-base values to match the published Schedule PTFC/STFC line 8 table ($2,550 single / $3,300 HoH-one-child or joint-no-child / $4,050 joint or HoH-multi / $4,100 senior). IRS uprating with downwards $50 rounding produced values $50 short.
+
+
+## [1.691.6] - 2026-05-13
+
+### Fixed
+
+- Applied the 2025 federal-AGI-based phaseout to the Maine non-military pension income deduction.
+
+
+## [1.691.5] - 2026-05-13
+
+### Fixed
+
+- Adjust the Kentucky family size tax credit rate brackets at the 1.27 and 1.33 boundaries to account for KY's 0.5-cent rounding-up convention in the Schedule ITC table.
+
+
 ## [1.691.4] - 2026-05-12
 
 ### Fixed
