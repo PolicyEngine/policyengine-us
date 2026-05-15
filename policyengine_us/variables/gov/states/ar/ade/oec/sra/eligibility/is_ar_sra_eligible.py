@@ -18,7 +18,7 @@ class is_ar_sra_eligible(Variable):
             return False
         has_eligible_child = add(spm_unit, period, ["is_ar_sra_child_eligible"]) > 0
         income_ok = spm_unit("is_ar_sra_income_eligible", period)
-        asset_ok = spm_unit("is_ar_sra_asset_eligible", period)
+        asset_ok = spm_unit("is_ccdf_asset_eligible", period.this_year)
         li_active = spm_unit("is_ar_sra_li_activity_eligible", period)
         ess_active = spm_unit("is_ar_sra_ess_eligible", period)
         activity_ok = li_active | ess_active

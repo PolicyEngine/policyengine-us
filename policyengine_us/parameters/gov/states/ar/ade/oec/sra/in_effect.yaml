@@ -1,7 +1,12 @@
 description: Arkansas operates the School Readiness Assistance child care subsidy program if this is true.
+# The SRA program legally launched 2025-10-01, but the Oct 2025 rate schedule
+# (higher rates plus a one-month Quality Enhancement Payment) was replaced on
+# 2025-11-01 by the rate sheet currently encoded. We gate the program to the
+# Nov 1, 2025 rate-aligned period; the Oct 2025 transitional month is not
+# modeled because its rates and QEP supplement are not in the parameter tree.
 values:
   1900-01-01: false
-  2025-10-01: true
+  2025-11-01: true
 
 metadata:
   unit: bool
