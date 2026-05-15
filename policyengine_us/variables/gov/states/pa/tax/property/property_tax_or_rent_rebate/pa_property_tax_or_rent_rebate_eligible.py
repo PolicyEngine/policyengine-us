@@ -16,18 +16,28 @@ class pa_property_tax_or_rent_rebate_eligible(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period)
-        age_eligible = tax_unit.any((age >= p.age_threshold) & head_or_spouse)
-        widow_eligible = (
+        is_surviving_spouse = person("is_surviving_spouse", period)
+        status_surviving_spouse = (
             filing_status == filing_status.possible_values.SURVIVING_SPOUSE
-        ) & tax_unit.any(
+        )
+        age_eligible = tax_unit.any((age >= p.age_threshold) & head_or_spouse)
+        widow_age_eligible = tax_unit.any(
             (age >= p.widow_age_threshold) & head_or_spouse,
         )
+        widow_eligible = tax_unit.any(
+            (age >= p.widow_age_threshold)
+            & is_surviving_spouse
+            & head_or_spouse,
+        ) | (status_surviving_spouse & widow_age_eligible)
         disabled_eligible = tax_unit.any(
             (age >= p.disability_age_threshold) & is_disabled & head_or_spouse,
         )
+        income = tax_unit("pa_property_tax_or_rent_rebate_income", period)
+        rent_rebate_base = p.rent_rate * add(tax_unit, period, ["rent"])
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
 
         return (
             (age_eligible | widow_eligible | disabled_eligible)
-            & (tax_unit("adjusted_gross_income", period) <= p.income_limit)
-            & (add(tax_unit, period, ["rent", "real_estate_taxes"]) > 0)
+            & (income <= p.income_limit)
+            & ((rent_rebate_base + property_tax) > 0)
         )

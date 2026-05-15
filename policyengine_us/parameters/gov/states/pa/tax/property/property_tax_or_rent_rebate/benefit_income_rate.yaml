@@ -1,10 +1,10 @@
-description: Pennsylvania limits income to this amount under the Property Tax/Rent Rebate program.
+description: Pennsylvania counts this share of Social Security, SSI, and Railroad Retirement Tier 1 benefits under the Property Tax/Rent Rebate program.
 values:
-  2025-01-01: 48_110
+  2025-01-01: 0.5
 metadata:
-  unit: currency-USD
+  unit: /1
   period: year
-  label: Pennsylvania Property Tax/Rent Rebate income limit
+  label: Pennsylvania Property Tax/Rent Rebate benefit income rate
   reference:
     - title: 2025 PA-1000 Pennsylvania Property Tax or Rent Rebate Program Instruction Booklet
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf

@@ -12,6 +12,7 @@ class pa_property_tax_or_rent_rebate(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.pa.tax.property.property_tax_or_rent_rebate
-        income = tax_unit("adjusted_gross_income", period)
-        rent_and_property_tax = add(tax_unit, period, ["rent", "real_estate_taxes"])
-        return min_(p.amount.calc(income), rent_and_property_tax)
+        income = tax_unit("pa_property_tax_or_rent_rebate_income", period)
+        rent_rebate_base = p.rent_rate * add(tax_unit, period, ["rent"])
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        return min_(p.amount.calc(income), property_tax + rent_rebate_base)
