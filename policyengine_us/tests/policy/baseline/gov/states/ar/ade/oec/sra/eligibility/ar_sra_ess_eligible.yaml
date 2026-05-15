@@ -1,0 +1,122 @@
+# ESS eligibility: family must have exited TEA within the 24-month window
+# AND not currently receiving TEA AND meet the year-specific activity hour
+# threshold (20 hr/wk Yr1, 25 hr/wk Yr2).
+
+- name: Case 1, post-TEA family 6 months out with 20 hours per week is ESS-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 20
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_tea_recipient: true
+        months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 2, family currently receiving TEA is not ESS-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+        # Force ar_tea > 0 by setting a recipient flag below
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_tea_recipient: true
+        months_since_tea_exit: 6
+        ar_tea: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
+
+- name: Case 3, post-TEA family 30 months out is past the 24-month window and not ESS-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_tea_recipient: true
+        months_since_tea_exit: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
+
+- name: Case 4, family that never received TEA is not ESS-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_tea_recipient: false
+        months_since_tea_exit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
+
+- name: Case 5, ESS Year 2 family with 25 hours per week is ESS-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        was_tea_recipient: true
+        months_since_tea_exit: 18
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true

@@ -1,0 +1,97 @@
+# Daily state payment per child = daily_base_rate * state_share.
+#
+# Arkansas SMI (2025-10-01, FFY 2026, 4-person): $90,280/year
+# 2-person SPM: SMI = $61,390.40 annual
+
+- name: Case 1, Toddler Statewide FT at LE_40 SMI pays full base rate (no-copay).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 30% SMI -> LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / REGULAR / FT base = $35.00; share = 1.00
+    # daily state payment = $35.00 * 1.00 = $35.00
+    ar_sra_daily_state_payment: [0, 35.00]
+
+- name: Case 2, School-Aged Statewide FT at LE_40 SMI has positive copay (share 0.80).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 30% SMI -> LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / School-Aged / REGULAR / FT base = $28.00; share = 0.80
+    # daily state payment = $28.00 * 0.80 = $22.40
+    ar_sra_daily_state_payment: [0, 22.40]
+
+- name: Case 3, Infant Benton/Washington FT at GT_60 SMI gets reduced share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 75% SMI -> GT_60 tier
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: BENTON_COUNTY_AR
+  output:
+    # Benton/Washington / Infant / REGULAR / FT base = $38.00; share = 0.70
+    # daily state payment = $38.00 * 0.70 = $26.60
+    ar_sra_daily_state_payment: [0, 26.60]

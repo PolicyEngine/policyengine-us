@@ -1,0 +1,232 @@
+description: Arkansas provides these daily base reimbursement rates by zone, age category, care type, and time category under the School Readiness Assistance program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Arkansas SRA daily base rates
+  breakdown:
+    - ar_sra_zone
+    - ar_sra_age_category
+    - ar_sra_care_type
+    - ar_sra_time_category
+  reference:
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Full Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Part Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Part_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Benton/Washington Full Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Benton-Washington_Co_Full_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Benton/Washington Part Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Benton-Washington_Co_Part_Time_20251101_OEC.pdf
+
+BENTON_WASHINGTON:
+  INFANT:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 38.00
+      PART_TIME:
+        2025-11-01: 19.00
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 41.80
+      # Part-Time has no Night/Weekend row; uses regular Part-Time rate
+      PART_TIME:
+        2025-11-01: 19.00
+    SN1:
+      FULL_TIME:
+        2025-11-01: 38.00
+      PART_TIME:
+        2025-11-01: 19.00
+    SN2:
+      FULL_TIME:
+        2025-11-01: 53.20
+      PART_TIME:
+        2025-11-01: 26.60
+    SN3:
+      FULL_TIME:
+        2025-11-01: 53.20
+      PART_TIME:
+        2025-11-01: 26.60
+  TODDLER:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 37.00
+      PART_TIME:
+        2025-11-01: 18.50
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 40.70
+      PART_TIME:
+        2025-11-01: 18.50
+    SN1:
+      FULL_TIME:
+        2025-11-01: 37.00
+      PART_TIME:
+        2025-11-01: 18.50
+    SN2:
+      FULL_TIME:
+        2025-11-01: 51.80
+      PART_TIME:
+        2025-11-01: 25.90
+    SN3:
+      FULL_TIME:
+        2025-11-01: 51.80
+      PART_TIME:
+        2025-11-01: 25.90
+  PRESCHOOL:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 33.00
+      PART_TIME:
+        2025-11-01: 16.50
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 36.30
+      PART_TIME:
+        2025-11-01: 16.50
+    SN1:
+      FULL_TIME:
+        2025-11-01: 33.00
+      PART_TIME:
+        2025-11-01: 16.50
+    SN2:
+      FULL_TIME:
+        2025-11-01: 46.20
+      PART_TIME:
+        2025-11-01: 23.10
+    SN3:
+      FULL_TIME:
+        2025-11-01: 46.20
+      PART_TIME:
+        2025-11-01: 23.10
+  SCHOOL_AGED:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 28.00
+      PART_TIME:
+        2025-11-01: 14.00
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 30.80
+      PART_TIME:
+        2025-11-01: 14.00
+    SN1:
+      FULL_TIME:
+        2025-11-01: 28.00
+      PART_TIME:
+        2025-11-01: 14.00
+    SN2:
+      FULL_TIME:
+        2025-11-01: 39.20
+      PART_TIME:
+        2025-11-01: 19.60
+    SN3:
+      FULL_TIME:
+        2025-11-01: 39.20
+      PART_TIME:
+        2025-11-01: 19.60
+
+STATEWIDE:
+  INFANT:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 36.00
+      PART_TIME:
+        2025-11-01: 18.00
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 39.60
+      PART_TIME:
+        2025-11-01: 18.00
+    SN1:
+      FULL_TIME:
+        2025-11-01: 36.00
+      PART_TIME:
+        2025-11-01: 18.00
+    SN2:
+      FULL_TIME:
+        2025-11-01: 50.40
+      PART_TIME:
+        2025-11-01: 25.20
+    SN3:
+      FULL_TIME:
+        2025-11-01: 50.40
+      PART_TIME:
+        2025-11-01: 25.20
+  TODDLER:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 35.00
+      PART_TIME:
+        2025-11-01: 17.50
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 38.50
+      PART_TIME:
+        2025-11-01: 17.50
+    SN1:
+      FULL_TIME:
+        2025-11-01: 35.00
+      PART_TIME:
+        2025-11-01: 17.50
+    SN2:
+      FULL_TIME:
+        2025-11-01: 49.00
+      PART_TIME:
+        2025-11-01: 24.50
+    SN3:
+      FULL_TIME:
+        2025-11-01: 49.00
+      PART_TIME:
+        2025-11-01: 24.50
+  PRESCHOOL:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 33.00
+      PART_TIME:
+        2025-11-01: 16.50
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 36.30
+      PART_TIME:
+        2025-11-01: 16.50
+    SN1:
+      FULL_TIME:
+        2025-11-01: 33.00
+      PART_TIME:
+        2025-11-01: 16.50
+    SN2:
+      FULL_TIME:
+        2025-11-01: 46.20
+      PART_TIME:
+        2025-11-01: 23.10
+    SN3:
+      FULL_TIME:
+        2025-11-01: 46.20
+      PART_TIME:
+        2025-11-01: 23.10
+  SCHOOL_AGED:
+    REGULAR:
+      FULL_TIME:
+        2025-11-01: 28.00
+      PART_TIME:
+        2025-11-01: 14.00
+    NIGHT_WEEKEND:
+      FULL_TIME:
+        2025-11-01: 30.80
+      PART_TIME:
+        2025-11-01: 14.00
+    SN1:
+      FULL_TIME:
+        2025-11-01: 28.00
+      PART_TIME:
+        2025-11-01: 14.00
+    SN2:
+      FULL_TIME:
+        2025-11-01: 39.20
+      PART_TIME:
+        2025-11-01: 19.60
+    SN3:
+      FULL_TIME:
+        2025-11-01: 39.20
+      PART_TIME:
+        2025-11-01: 19.60

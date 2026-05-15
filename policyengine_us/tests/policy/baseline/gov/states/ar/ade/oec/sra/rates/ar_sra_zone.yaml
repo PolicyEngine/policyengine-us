@@ -1,0 +1,26 @@
+# SRA rate zones: Benton and Washington Counties (Northwest Arkansas)
+# vs. STATEWIDE for every other AR county.
+
+- name: Case 1, Benton County is in the BENTON_WASHINGTON zone.
+  period: 2026-01
+  input:
+    county_str: BENTON_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: BENTON_WASHINGTON
+
+- name: Case 2, Washington County is in the BENTON_WASHINGTON zone.
+  period: 2026-01
+  input:
+    county_str: WASHINGTON_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: BENTON_WASHINGTON
+
+- name: Case 3, Pulaski County (Little Rock) is in the STATEWIDE zone.
+  period: 2026-01
+  input:
+    county_str: PULASKI_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: STATEWIDE

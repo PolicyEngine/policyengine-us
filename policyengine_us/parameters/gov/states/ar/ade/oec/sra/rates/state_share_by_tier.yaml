@@ -1,0 +1,79 @@
+description: Arkansas pays this share of the daily base rate by age category, time category, and family income tier (% SMI) under the School Readiness Assistance program.
+metadata:
+  period: day
+  unit: /1
+  label: Arkansas SRA state-share rate by income tier
+  breakdown:
+    - ar_sra_age_category
+    - ar_sra_time_category
+    - ar_sra_income_tier
+  reference:
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Full Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Part Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Part_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Benton/Washington Full Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Benton-Washington_Co_Full_Time_20251101_OEC.pdf
+    - title: SRA Sliding Fee Scale with Rates and Copays - Benton/Washington Part Time (Nov 1, 2025)
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Benton-Washington_Co_Part_Time_20251101_OEC.pdf
+
+INFANT:
+  FULL_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.80
+    GT_60:
+      2025-11-01: 0.70
+  PART_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.70
+    GT_60:
+      2025-11-01: 0.60
+TODDLER:
+  FULL_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.80
+    GT_60:
+      2025-11-01: 0.70
+  PART_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.60
+    GT_60:
+      2025-11-01: 0.50
+PRESCHOOL:
+  FULL_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.70
+    GT_60:
+      2025-11-01: 0.60
+  PART_TIME:
+    LE_40:
+      2025-11-01: 1.00
+    GT_40_LE_60:
+      2025-11-01: 0.60
+    GT_60:
+      2025-11-01: 0.50
+SCHOOL_AGED:
+  FULL_TIME:
+    LE_40:
+      2025-11-01: 0.80
+    GT_40_LE_60:
+      2025-11-01: 0.50
+    GT_60:
+      2025-11-01: 0.30
+  PART_TIME:
+    LE_40:
+      2025-11-01: 0.70
+    GT_40_LE_60:
+      2025-11-01: 0.50
+    GT_60:
+      2025-11-01: 0.30

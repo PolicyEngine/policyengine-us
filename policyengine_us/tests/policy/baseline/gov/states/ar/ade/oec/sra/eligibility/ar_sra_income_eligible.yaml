@@ -1,0 +1,112 @@
+# Arkansas SMI for FFY 2026 is uprated automatically in PolicyEngine.
+# AR base amount at 2026-01-01 (after uprating): $95,201.95
+# Household-size adjustment for 2 persons: 0.52 + 0.16 = 0.68
+# SMI(2) annual = 95,201.95 * 0.68 = $64,737.33
+# 85% income limit annual = $64,737.33 * 0.85 = $55,026.73
+
+- name: Case 1, family income at 84.9 percent SMI is income-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.849 = $54,961.99 (below 85% SMI)
+        employment_income: 54_961
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true
+
+- name: Case 2, family income just at 85 percent SMI is income-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.85 = $55,026.73; use 55,026.72 to avoid float32
+        # round-trip precision loss during MONTH/YEAR conversion.
+        employment_income: 55_026.72
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true
+
+- name: Case 3, family income at 85.1 percent SMI is not income-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.851 = $55,091.46 (above 85% SMI)
+        employment_income: 55_092
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: false
+
+- name: Case 4, family with zero income is income-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true

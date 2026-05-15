@@ -1,0 +1,88 @@
+# Income tiers (% SMI):
+#   LE_40: <= 40% SMI
+#   GT_40_LE_60: > 40%, <= 60% SMI
+#   GT_60: > 60% SMI
+#
+# Arkansas SMI (uprated at 2026-01-01): $95,201.95
+# 2-person SPM (parent + child): SMI = 95,201.95 * 0.68 = $64,737.33 annual
+
+- name: Case 1, family at 30 percent SMI is in the LE_40 tier.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.30 = $19,421.20
+        employment_income: 19_421
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_income_tier: LE_40
+
+- name: Case 2, family at 50 percent SMI is in the GT_40_LE_60 tier.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.50 = $32,368.67
+        employment_income: 32_369
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_income_tier: GT_40_LE_60
+
+- name: Case 3, family at 75 percent SMI is in the GT_60 tier.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.75 = $48,553.00
+        employment_income: 48_553
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_income_tier: GT_60

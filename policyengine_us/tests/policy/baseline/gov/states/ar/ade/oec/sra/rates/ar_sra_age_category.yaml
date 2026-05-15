@@ -1,0 +1,60 @@
+# Age category bracket thresholds (months):
+#   <=17 months -> INFANT
+#   18-35 months -> TODDLER
+#   36-71 months -> PRESCHOOL
+#   72+ months -> SCHOOL_AGED
+#
+# Test inputs use age in years. The formula multiplies by MONTHS_IN_YEAR
+# to compare against month-based bracket thresholds.
+
+- name: Case 1, eight-month-old child (0.667 years) is in the INFANT category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0.667
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: INFANT
+
+- name: Case 2, two-year-old child (24 months) is in the TODDLER category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: TODDLER
+
+- name: Case 3, four-year-old child (48 months) is in the PRESCHOOL category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: PRESCHOOL
+
+- name: Case 4, seven-year-old child (84 months) is in the SCHOOL_AGED category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 7
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: SCHOOL_AGED

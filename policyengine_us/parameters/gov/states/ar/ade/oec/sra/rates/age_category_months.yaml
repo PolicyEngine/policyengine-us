@@ -1,0 +1,32 @@
+description: Arkansas classifies children into these age categories by age in months for School Readiness Assistance rate lookup. Returned values match the integer index of the ar_sra_age_category enum (0=INFANT, 1=TODDLER, 2=PRESCHOOL, 3=SCHOOL_AGED).
+# Age-category month boundaries are undocumented in Arkansas sources;
+# these peer-state defaults (Infant <=17 mo, Toddler 18-35 mo, Preschool
+# 36-71 mo, School-Aged 72+ mo) are flagged for future verification.
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0  # INFANT (0-17 months)
+  - threshold:
+      2025-10-01: 18
+    amount:
+      2025-10-01: 1  # TODDLER (18-35 months)
+  - threshold:
+      2025-10-01: 36
+    amount:
+      2025-10-01: 2  # PRESCHOOL (36-71 months)
+  - threshold:
+      2025-10-01: 72
+    amount:
+      2025-10-01: 3  # SCHOOL_AGED (72+ months)
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Arkansas SRA age category month thresholds
+  reference:
+    - title: FSU Procedural Manual (June 2023), Section 4.1
+      href: https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=13

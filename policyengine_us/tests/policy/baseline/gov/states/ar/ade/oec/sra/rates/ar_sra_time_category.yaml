@@ -1,0 +1,67 @@
+# Time category: >=30 hr/wk -> FULL_TIME, otherwise PART_TIME.
+# Threshold parameter: gov.states.ar.ade.oec.sra.rates.full_time_hours_threshold = 30
+
+- name: Case 1, 30 hours per week is FULL_TIME at the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: FULL_TIME
+
+- name: Case 2, 35 hours per week is FULL_TIME.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: FULL_TIME
+
+- name: Case 3, 25 hours per week is PART_TIME.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 25
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: PART_TIME
+
+- name: Case 4, 29 hours per week is PART_TIME just below the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 29
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: PART_TIME
+
+- name: Case 5, 0 hours per week is PART_TIME.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: PART_TIME
