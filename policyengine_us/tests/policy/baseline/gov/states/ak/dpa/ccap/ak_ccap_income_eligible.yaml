@@ -1,0 +1,90 @@
+# ak_ccap_income_eligible: SPMUnit, bool, MONTH
+# countable_income <= ak_ccap_smi_threshold (85% of monthly Alaska SMI).
+# Boundary: <= per "does not exceed" in Manual 4070-2.
+#
+# 2024-10-01 AK base = 121_634.
+# Family of 3 monthly 85% SMI = 121_634 * 0.84 * 0.85 / 12 = 7_237.22
+# -> annual income at threshold = 7_237.22 * 12 = 86_846.68
+
+- name: Case 1, family of 3 below 85% SMI is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000/mo well below threshold
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # 5_000/mo <= 7_237.22 -> eligible
+    ak_ccap_income_eligible: true
+
+- name: Case 2, family of 3 exactly at 85% SMI is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 86_846.68  # annual = 7_237.22/mo
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # 7_237.22 <= 7_237.22 -> eligible (boundary inclusive)
+    ak_ccap_income_eligible: true
+
+- name: Case 3, family of 3 above 85% SMI is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000  # 7_500/mo > 7_237.22
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: false
+
+- name: Case 4, zero income is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: true

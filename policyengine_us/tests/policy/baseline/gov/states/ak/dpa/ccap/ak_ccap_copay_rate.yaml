@@ -1,0 +1,256 @@
+# ak_ccap_copay_rate: SPMUnit, float (rate), MONTH
+# Sliding scale by countable_income / monthly_full_SMI (Manual §4080, FICS).
+# Bands (cumulative):
+#   0    to 0.01  -> 0%       (waived for very low income)
+#   0.01 to 0.09  -> 1%
+#   0.09 to 0.18  -> 2%
+#   0.18 to 0.26  -> 3%
+#   0.26 to 0.35  -> 4%
+#   0.35 to 0.43  -> 5%
+#   0.43 to 0.52  -> 6%
+#   0.52 to 0.61  -> 7%
+#   0.61 to 0.73  -> 8%
+#   >= 0.73       -> 9% (cap)
+#
+# 2024-10-01 AK base = 121_634. Family of 3 annual SMI = 102_172.56; monthly = 8_514.38.
+
+- name: Case 1, zero income gets waived 0% copay.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # SMI ratio = 0 -> 0%
+    ak_ccap_copay_rate: 0
+
+- name: Case 2, low income lands in 1% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # 500/mo
+        # SMI ratio = 500 / (121_634 * 0.68 / 12) = 500 / 6_892.59 = 0.0726 -> 1% band
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.01
+
+- name: Case 3, mid income family of 3 lands in 5% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_000  # 3_250/mo
+        # Family of 3 monthly SMI = 102_172.56 / 12 = 8_514.38
+        # ratio = 3_250 / 8_514.38 = 0.3817 -> 5% band (>= 0.35, < 0.43)
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.05
+
+- name: Case 4, high income family near 85% SMI lands in 9% cap band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000  # ~6_666.67/mo
+        # Family of 3 monthly SMI = 8_514.38
+        # ratio = 6_666.67 / 8_514.38 = 0.7830 -> 9% band (>= 0.73)
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.09
+
+- name: Case 5, family of 4 in 2% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 18_000  # 1_500/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # Monthly SMI fam of 4 = 121_634 / 12 = 10_136.17
+        # ratio = 1_500 / 10_136.17 = 0.148 -> 2% band (>= 0.09, < 0.18)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.02
+
+- name: Case 6, family of 4 in 7% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 66_000  # 5_500/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # ratio = 5_500 / 10_136.17 = 0.5426 -> 7% band (>= 0.52, < 0.61)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.07
+
+- name: Case 7, family of 4 in 3% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000  # 2_083.33/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # Family of 4 monthly SMI = 10_136.17
+        # ratio = 2_083.33 / 10_136.17 = 0.2055 -> 3% band (>= 0.18, < 0.26)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.03
+
+- name: Case 8, family of 4 in 4% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # 3_000/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # ratio = 3_000 / 10_136.17 = 0.2960 -> 4% band (>= 0.26, < 0.35)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.04
+
+- name: Case 9, family of 4 in 6% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 57_000  # 4_750/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # ratio = 4_750 / 10_136.17 = 0.4686 -> 6% band (>= 0.43, < 0.52)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.06
+
+- name: Case 10, family of 4 in 8% band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000  # 6_666.67/mo
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+        # ratio = 6_666.67 / 10_136.17 = 0.6577 -> 8% band (>= 0.61, < 0.73)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.08

@@ -1,0 +1,148 @@
+# ak_ccap_countable_income: SPMUnit, float (USD), MONTH
+# max(0, earned + unearned - child_support_paid)
+# Earned income from minors (age < 18) is excluded per Manual 4080-1.
+# Unearned income counts for all members regardless of age.
+
+- name: Case 1, adult earned income only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # yearly
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 36_000 / 12 = 3_000/month
+    ak_ccap_countable_income: 3_000
+
+- name: Case 2, earned plus unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # yearly
+        child_support_received: 6_000  # yearly
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 3, minor child's earned income is excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000  # yearly
+      teen:
+        age: 16
+        employment_income: 6_000  # yearly -- excluded (age < 18)
+      young_child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, teen, young_child]
+    households:
+      household:
+        members: [parent, teen, young_child]
+        state_code: AK
+  output:
+    # Only parent earnings count: 36_000 / 12 = 3_000/month
+    ak_ccap_countable_income: 3_000
+
+- name: Case 4, minor child unearned income counts.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000  # yearly
+      child:
+        age: 10
+        social_security: 6_000  # yearly -- unearned counts for all ages
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 5, child support paid is deducted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # yearly
+        child_support_expense: 6_000  # yearly deducted
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # (36_000 - 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 6, child support deduction does not produce negative income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # yearly
+        child_support_expense: 24_000  # exceeds income
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # max(0, 1_000 - 2_000) = 0
+    ak_ccap_countable_income: 0
+
+- name: Case 7, zero income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0

@@ -1,0 +1,117 @@
+# ak_ccap_age_group: Person, Enum, MONTH
+# Age group boundaries (from age_group/months.yaml bracket parameter):
+#   0 months -> INFANT (index 0)
+#   13 months -> TODDLER (index 1)
+#   36 months -> PRESCHOOL (index 2)
+#   60 months -> SCHOOL_AGE (index 3)
+# Use age * MONTHS_IN_YEAR (not monthly_age) per NH CCAP lesson.
+
+- name: Case 1, newborn is infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 0 months -> INFANT
+    ak_ccap_age_group: INFANT
+
+- name: Case 2, child at 1 year is toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 1 year = 12 months < 13 -> INFANT
+    ak_ccap_age_group: INFANT
+
+- name: Case 3, child at 2 years is toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 2 years = 24 months >= 13, < 36 -> TODDLER
+    ak_ccap_age_group: TODDLER
+
+- name: Case 4, child at 3 years is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 3 years = 36 months >= 36, < 60 -> PRESCHOOL
+    ak_ccap_age_group: PRESCHOOL
+
+- name: Case 5, child at 4 years is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 4 years = 48 months >= 36, < 60 -> PRESCHOOL
+    ak_ccap_age_group: PRESCHOOL
+
+- name: Case 6, child at 5 years is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 5 years = 60 months >= 60 -> SCHOOL_AGE
+    ak_ccap_age_group: SCHOOL_AGE
+
+- name: Case 7, child at 8 years is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_age_group: SCHOOL_AGE
+
+- name: Case 8, child at 12 years is still school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_age_group: SCHOOL_AGE

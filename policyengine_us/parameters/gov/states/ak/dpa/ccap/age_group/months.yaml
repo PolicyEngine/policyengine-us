@@ -1,0 +1,28 @@
+description: Alaska sets these age group boundaries (in months) for the Child Care Assistance Program rate schedule. Brackets map a child's age in months to an age-group index — INFANT (0-12 months), TODDLER (13-35 months), PRESCHOOL (36-59 months), SCHOOL_AGE (60+ months).
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Alaska CCAP age group by age in months
+  reference:
+    - title: Child Care Assistance Program Rate Schedule (Revised December 1, 2021), Age Groups
+      href: https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf#page=1
+
+brackets:
+  - threshold:
+      2022-02-21: 0
+    amount:
+      2022-02-21: 0
+  - threshold:
+      2022-02-21: 13
+    amount:
+      2022-02-21: 1
+  - threshold:
+      2022-02-21: 36
+    amount:
+      2022-02-21: 2
+  - threshold:
+      2022-02-21: 60
+    amount:
+      2022-02-21: 3

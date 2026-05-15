@@ -1,0 +1,70 @@
+# ak_ccap_pass_category: SPMUnit, Enum, MONTH
+# Returns which PASS branch (if any) applies. PASS_II is checked first so a
+# transitioning family is identified as PASS II even when they would also
+# qualify for PASS III.
+
+- name: Case 1, post-ATAP family is PASS II.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        was_atap_recipient: true
+        months_since_atap_exit: 6
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_pass_category: PASS_II
+
+- name: Case 2, low-income family with no ATAP history is PASS III.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        was_atap_recipient: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_pass_category: PASS_III
+
+- name: Case 3, ineligible family.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 500_000  # well above 85% SMI
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_pass_category: NONE

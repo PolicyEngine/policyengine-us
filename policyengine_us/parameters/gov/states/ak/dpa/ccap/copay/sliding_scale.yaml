@@ -1,0 +1,54 @@
+description: Alaska sets these Child Care Assistance Program family copay percentages based on the family's income as a share of Alaska State Median Income. Each bracket maps a starting SMI ratio to the copay rate expressed as a share of monthly family income. Families above 85% SMI are ineligible; the copay is capped at 9% of income.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Alaska CCAP copay as share of income by SMI band
+  reference:
+    - title: Family Income and Contribution Schedule (Revised February 21, 2022)
+      href: https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1
+    - title: CCAP Policies and Procedures Manual, Section 4080 Family Contribution (printed p.176)
+      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203
+
+brackets:
+  - threshold:
+      2022-02-21: 0
+    amount:
+      2022-02-21: 0
+  - threshold:
+      2022-02-21: 0.01
+    amount:
+      2022-02-21: 0.01
+  - threshold:
+      2022-02-21: 0.09
+    amount:
+      2022-02-21: 0.02
+  - threshold:
+      2022-02-21: 0.18
+    amount:
+      2022-02-21: 0.03
+  - threshold:
+      2022-02-21: 0.26
+    amount:
+      2022-02-21: 0.04
+  - threshold:
+      2022-02-21: 0.35
+    amount:
+      2022-02-21: 0.05
+  - threshold:
+      2022-02-21: 0.43
+    amount:
+      2022-02-21: 0.06
+  - threshold:
+      2022-02-21: 0.52
+    amount:
+      2022-02-21: 0.07
+  - threshold:
+      2022-02-21: 0.61
+    amount:
+      2022-02-21: 0.08
+  - threshold:
+      2022-02-21: 0.73
+    amount:
+      2022-02-21: 0.09

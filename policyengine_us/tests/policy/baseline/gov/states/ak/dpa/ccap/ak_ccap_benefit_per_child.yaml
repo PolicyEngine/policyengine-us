@@ -1,0 +1,75 @@
+# ak_ccap_benefit_per_child: Person, float (USD), MONTH
+# benefit = min(charged_rate, max_state_rate + special_needs_supplement).
+# Default ak_ccap_charged_rate equals max_state_rate, so by default the
+# supplement does not appear in the benefit_per_child unless the household
+# supplies a higher charged_rate.
+
+- name: Case 1, default eligible child receives max state rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Default charged = max state rate (1_019); min(1_019, 1_019 + 0) = 1_019
+    ak_ccap_benefit_per_child: 1_019
+
+- name: Case 2, charged rate below max state rate yields charged.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 700
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # min(700, 1_019 + 0) = 700
+    ak_ccap_benefit_per_child: 700
+
+- name: Case 3, disabled child with high charged rate captures supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 3_500  # higher than 3 x base
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Base = 1_019, supplement = 2 * 1_019 = 2_038, max combined = 3_057
+    # min(3_500, 3_057) = 3_057
+    ak_ccap_benefit_per_child: 3_057

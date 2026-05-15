@@ -1,0 +1,113 @@
+# ak_ccap_child_age_eligible: Person, bool, MONTH
+# Age-only check (no immigration). Child must be:
+#   under 13 (general) OR under 13 if special needs (same threshold today,
+#   but parameters are separate so they can diverge in the future).
+# Manual Section 4070-2 Eligible Child.
+
+- name: Case 1, child age 4 is age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: true
+
+- name: Case 2, child age 12 is age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: true
+
+- name: Case 3, child exactly age 13 is not age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Manual 4070-2: "younger than 13" -> at age 13 ineligible
+    ak_ccap_child_age_eligible: false
+
+- name: Case 4, child age 14 is not age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 14
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: false
+
+- name: Case 5, disabled child age 12 is age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: true
+
+- name: Case 6, disabled child age 13 is not age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Special-needs threshold is also 13 in current regulation
+    ak_ccap_child_age_eligible: false
+
+- name: Case 7, adult is not age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: false
+
+- name: Case 8, newborn is age eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_age_eligible: true

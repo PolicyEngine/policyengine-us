@@ -1,0 +1,77 @@
+# ak_ccap_smi_threshold: SPMUnit, float (USD), MONTH
+# 85% of monthly Alaska SMI for the family size.
+#
+# HHS SMI:
+#   AK 4-person base: 2024-10-01 = 121_634; 2025-10-01 = 128_650
+#   Size multipliers: 0.52 + 0.16 each addl person (cap at 6).
+#     Family of 1: 0.52; Family of 2: 0.68; Family of 3: 0.84; Family of 4: 1.00
+
+- name: Case 1, family of 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # 2024-10-01 AK base = 121_634
+    # Annual SMI = 121_634 * 0.68 = 82_711.12
+    # Monthly threshold = 82_711.12 * 0.85 / 12 = 5_858.70
+    ak_ccap_smi_threshold: 5_858.70
+
+- name: Case 2, family of 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # 121_634 * 0.84 = 102_172.56
+    # 102_172.56 * 0.85 / 12 = 7_237.22
+    ak_ccap_smi_threshold: 7_237.22
+
+- name: Case 3, family of 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    # 121_634 * 1.0 = 121_634
+    # 121_634 * 0.85 / 12 = 8_615.74
+    ak_ccap_smi_threshold: 8_615.74

@@ -1,0 +1,80 @@
+# ak_ccap_smi_band: SPMUnit, float (ratio), MONTH
+# Computes countable_income / monthly_full_SMI.
+# Used as input to the copay sliding scale.
+#
+# HHS SMI parameter (gov/hhs/smi):
+#   AK 4-person base: 2024-10-01 = 121_634; 2025-10-01 = 128_650
+#   Size multipliers: 0.52 (1p) + 0.16 per addl (cap at 6).
+#     Family of 2: 0.68; Family of 3: 0.84; Family of 4: 1.00
+#
+# For 2025-01: uses 2024-10-01 base = 121_634
+#   Family of 3 annual SMI = 121_634 * 0.84 = 102_172.56
+#   Monthly SMI = 8_514.38
+#   Family of 4 annual = 121_634; monthly = 10_136.17
+
+- name: Case 1, zero income gives band 0.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_smi_band: 0
+
+- name: Case 2, family of 3 at half SMI.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 51_086  # ~50% SMI: 102_172.56 * 0.5 = 51_086.28
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # 51_086 / 102_172.56 = 0.5
+    ak_ccap_smi_band: 0.5
+
+- name: Case 3, family of 4 at SMI cap.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 121_634  # 100% SMI for fam of 4
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    # countable / SMI = 121_634 / 121_634 = 1.0
+    ak_ccap_smi_band: 1.0

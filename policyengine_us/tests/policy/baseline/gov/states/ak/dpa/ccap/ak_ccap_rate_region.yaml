@@ -1,0 +1,88 @@
+# ak_ccap_rate_region: SPMUnit, Enum (AKCCAPRateRegion), MONTH
+# Maps the household's county_str to one of the 29 rate regions
+# from the CCAP Provider Rate Schedule. Defaults to ANCHORAGE.
+
+- name: Case 1, Anchorage county maps to ANCHORAGE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    ak_ccap_rate_region: ANCHORAGE
+
+- name: Case 2, Fairbanks North Star county maps to FAIRBANKS_NORTH_STAR.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: FAIRBANKS_NORTH_STAR_BOROUGH_AK
+  output:
+    ak_ccap_rate_region: FAIRBANKS_NORTH_STAR
+
+- name: Case 3, Matanuska-Susitna county maps to MATANUSKA_SUSITNA.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: MATANUSKA_SUSITNA_BOROUGH_AK
+  output:
+    ak_ccap_rate_region: MATANUSKA_SUSITNA
+
+- name: Case 4, Kodiak Island county maps to KODIAK_ISLAND.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KODIAK_ISLAND_BOROUGH_AK
+  output:
+    ak_ccap_rate_region: KODIAK_ISLAND
+
+- name: Case 5, rural Yukon-Koyukuk census area maps to YUKON_KOYUKUK.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: YUKON_KOYUKUK_CENSUS_AREA_AK
+  output:
+    ak_ccap_rate_region: YUKON_KOYUKUK

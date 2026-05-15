@@ -1,0 +1,312 @@
+# Alaska CCAP integration tests (PASS II + PASS III).
+#
+# References:
+#   - CCAP Policies and Procedures Manual, Sections 4070 / 4080
+#     https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=173
+#   - Family Income and Contribution Schedule (Rev Feb 21, 2022)
+#     https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf
+#   - Child Care Assistance Program Rate Schedule (Rev Dec 1, 2021)
+#     https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf
+#
+# HHS SMI for AK (2024-10-01 base = 121_634):
+#   Family of 2 (multiplier 0.68): annual 82_711.12  / monthly 6_892.59
+#   Family of 3 (multiplier 0.84): annual 102_172.56 / monthly 8_514.38
+#   Family of 4 (multiplier 1.00): annual 121_634    / monthly 10_136.17
+#
+# 85% SMI thresholds (monthly):
+#   Family of 2: 82_711.12 * 0.85 / 12 = 5_858.70
+#   Family of 3: 102_172.56 * 0.85 / 12 = 7_237.22
+#   Family of 4: 121_634    * 0.85 / 12 = 8_615.74
+
+- name: Case 1, single parent one preschooler Anchorage licensed center.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # === Eligibility ===
+    ak_ccap_child_eligible: [false, true]
+    ak_ccap_income_eligible: true
+    ak_ccap_eligible: true
+    ak_ccap_pass_category: PASS_III
+
+    # === Countable income (MONTH; YEAR input/12) ===
+    # 24_000 / 12 = 2_000
+    ak_ccap_countable_income: 2_000
+
+    # === Copay ===
+    # Family of 2 monthly SMI = 6_892.59
+    # SMI ratio = 2_000 / 6_892.59 = 0.2902 -> 4% band (>= 0.26, < 0.35)
+    ak_ccap_copay_rate: 0.04
+    # copay = 2_000 * 0.04 = 80
+    ak_ccap_copay: 80
+
+    # === Per-child rate ===
+    # Anchorage licensed center FT_MONTH preschool = 1_019
+    ak_ccap_max_provider_rate_per_child: [0, 1_019]
+
+    # === Benefit ===
+    # 1_019 - 80 = 939
+    ak_ccap: 939
+
+- name: Case 2, two parent family Fairbanks mixed care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 36_000  # 3_000/mo
+      parent2:
+        age: 33
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      child1:
+        age: 0
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+      child2:
+        age: 8
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_HOME
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: AK
+        county_str: FAIRBANKS_NORTH_STAR_BOROUGH_AK
+  output:
+    # === Eligibility ===
+    ak_ccap_child_eligible: [false, false, true, true]
+    ak_ccap_eligible: true
+
+    # === Activity ===
+    # parent1: works -> eligible; parent2: full-time student -> eligible
+    # All parents qualify -> activity passes
+
+    # === Copay ===
+    # Family of 4 monthly SMI = 10_136.17
+    # SMI ratio = 3_000 / 10_136.17 = 0.296 -> 4% band (>= 0.26, < 0.35)
+    ak_ccap_copay_rate: 0.04
+    # copay = 3_000 * 0.04 = 120
+    ak_ccap_copay: 120
+
+    # === Per-child rates ===
+    # Fairbanks licensed center FT_MONTH infant     = 1_342 (child1)
+    # Fairbanks licensed home   FT_MONTH school age = 728   (child2)
+    ak_ccap_max_provider_rate_per_child: [0, 0, 1_342, 728]
+
+    # === Benefit ===
+    # Total per-child = 1_342 + 728 = 2_070
+    # Benefit = 2_070 - 120 = 1_950
+    ak_ccap: 1_950
+
+- name: Case 3, post-ATAP family within 12-month window is PASS II.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 28
+        immigration_status: CITIZEN
+        employment_income: 30_000  # 2_500/mo
+      child:
+        age: 6
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        was_atap_recipient: true
+        months_since_atap_exit: 6
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    ak_ccap_child_eligible: [false, true]
+    ak_ccap_eligible: true
+    ak_ccap_pass_category: PASS_II
+    # SMI ratio = 2_500 / 6_892.59 = 0.3627 -> 5% band (>= 0.35, < 0.43)
+    ak_ccap_copay_rate: 0.05
+    ak_ccap_copay: 125
+    # Anchorage center FT_MONTH school age = 884
+    # Benefit = 884 - 125 = 759
+    ak_ccap: 759
+
+- name: Case 4, income just over 85% SMI is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 86_847  # ~7_237.25/mo, just over 7_237.22 threshold
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Family of 2: 85% SMI monthly threshold = 5_858.04
+    # 7_237.25 > 5_858.04 -> ineligible
+    ak_ccap_income_eligible: false
+    ak_ccap_eligible: false
+    ak_ccap: 0
+
+- name: Case 5, special needs child gets supplement on top of standard child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      child_standard:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+      child_sn:
+        age: 8
+        is_disabled: true
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        # Provide a high charged rate so the SN supplement flows through.
+        ak_ccap_charged_rate: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent, child_standard, child_sn]
+    households:
+      household:
+        members: [parent, child_standard, child_sn]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    ak_ccap_child_eligible: [false, true, true]
+    ak_ccap_eligible: true
+
+    # SN supplement applies only to disabled child
+    # Anchorage center FT_MONTH preschool = 1_019; school age = 884
+    # SN child base = 884; supplement = 2 * 884 = 1_768; max combined = 2_652
+    ak_ccap_special_needs_supplement: [0, 0, 1_768]
+
+    # benefit_per_child:
+    #   standard child: min(1_019, 1_019 + 0) = 1_019
+    #   SN child:       min(3_000, 884 + 1_768) = min(3_000, 2_652) = 2_652
+    ak_ccap_benefit_per_child: [0, 1_019, 2_652]
+
+    # Family of 3 monthly SMI = 8_514.38
+    # ratio = 2_000 / 8_514.38 = 0.2349 -> 3% band (>= 0.18, < 0.26)
+    ak_ccap_copay_rate: 0.03
+    ak_ccap_copay: 60
+
+    # Total benefit = (1_019 + 2_652) - 60 = 3_611
+    ak_ccap: 3_611
+
+- name: Case 6, Anchorage with Licensed Group Home falls back to 0 rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_GROUP_HOME
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Per Provider Rate Schedule p.1, Anchorage has no licensed group homes.
+    # Family is still eligible (one CCAP-eligible child) but the rate is 0,
+    # so the benefit cannot exceed -copay; clipped to 0.
+    ak_ccap_child_eligible: [false, true]
+    ak_ccap_eligible: true
+    ak_ccap_max_provider_rate_per_child: [0, 0]
+    ak_ccap: 0
+
+- name: Case 7, 17-year-old in family does not count as eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 36_000  # 3_000/mo
+      teen:
+        age: 17
+        immigration_status: CITIZEN
+      child:
+        age: 8
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # 17yo counts toward family size for the SMI calculation but is not an
+    # eligible child for benefit (age >= 13). Only the 8yo gets a benefit.
+    ak_ccap_child_eligible: [false, false, true]
+    ak_ccap_eligible: true
+
+    # Family of 3 monthly SMI = 8_514.38
+    # ratio = 3_000 / 8_514.38 = 0.3523 -> 5% band (>= 0.35, < 0.43)
+    ak_ccap_copay_rate: 0.05
+    ak_ccap_copay: 150
+
+    # Anchorage center FT_MONTH school age = 884
+    # Benefit = 884 - 150 = 734
+    ak_ccap: 734

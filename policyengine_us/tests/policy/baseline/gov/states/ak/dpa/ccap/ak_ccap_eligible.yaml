@@ -1,0 +1,70 @@
+# ak_ccap_eligible: SPMUnit, bool, MONTH
+# True if either PASS II (post-ATAP transitional) or PASS III (general low-income)
+# is satisfied.
+
+- name: Case 1, PASS III eligible family.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # PASS III: eligible child + income + activity + asset; OR pass_2 = true
+    ak_ccap_eligible: true
+
+- name: Case 2, PASS II eligible family (recent ATAP exit).
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        was_atap_recipient: true
+        months_since_atap_exit: 6  # within 12-month window
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # PASS II OR PASS III both satisfied
+    ak_ccap_eligible: true
+
+- name: Case 3, neither PASS II nor PASS III (income too high, no ATAP).
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 200_000  # above 85% SMI
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_eligible: false
