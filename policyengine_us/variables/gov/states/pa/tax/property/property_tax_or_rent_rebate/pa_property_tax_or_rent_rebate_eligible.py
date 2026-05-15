@@ -25,9 +25,7 @@ class pa_property_tax_or_rent_rebate_eligible(Variable):
             (age >= p.widow_age_threshold) & head_or_spouse,
         )
         widow_eligible = tax_unit.any(
-            (age >= p.widow_age_threshold)
-            & is_surviving_spouse
-            & head_or_spouse,
+            (age >= p.widow_age_threshold) & is_surviving_spouse & head_or_spouse,
         ) | (status_surviving_spouse & widow_age_eligible)
         disabled_eligible = tax_unit.any(
             (age >= p.disability_age_threshold) & is_disabled & head_or_spouse,

@@ -14,9 +14,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
         p = parameters(period).gov.states.pa.tax.property.property_tax_or_rent_rebate
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         above_the_line_deductions = tax_unit("above_the_line_deductions", period)
-        taxable_social_security = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
+        taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
         half_counted_benefits = add(
             tax_unit,
             period,
