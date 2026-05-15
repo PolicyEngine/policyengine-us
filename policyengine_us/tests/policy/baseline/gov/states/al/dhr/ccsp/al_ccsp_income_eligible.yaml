@@ -163,3 +163,94 @@
     # 6,667/mo > 6,262/mo (85% SMI) -> SMI cap fails even though < 200% FPL? actually 80,000 = 256% FPL.
     # Either way, SMI cap fails.
     al_ccsp_income_eligible: false
+
+- name: Family at exactly 180 percent FPL initial path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_160  # 180% FPL fam of 4 = 31,200 * 1.8
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 56,160 == 180% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    al_ccsp_income_eligible: true
+
+- name: Family at exactly 200 percent FPL continuing path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 62_400  # 200% FPL fam of 4 = 31,200 * 2.0
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 62,400 == 200% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    # 62,400/yr < 75,146/yr (85% SMI) -> SMI cap passes.
+    al_ccsp_income_eligible: true
+
+- name: Family just over 85 percent SMI is income ineligible at continuing tier.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 75_146  # 85% SMI fam of 4 = 88,407 * 0.85 = 75,145.95; 75,146 is just over
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 75,146 > 75,145.95 (85% SMI cap) -> SMI cap fails by less than $1.
+    al_ccsp_income_eligible: false

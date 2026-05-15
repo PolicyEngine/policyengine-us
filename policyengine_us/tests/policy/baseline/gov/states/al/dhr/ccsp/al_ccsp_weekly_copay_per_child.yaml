@@ -1,0 +1,133 @@
+# AL CCSP weekly per-child parental fee tests (SPMUnit, MONTH).
+# Initial tier (al_ccsp_enrolled=false) uses the 9-band initial fee schedule.
+# Continuing tier (al_ccsp_enrolled=true) uses the 2-band continuing fee schedule.
+#
+# 2024 FPG (Contiguous US), family of 4: $31,200/yr = $2,600/mo.
+#   80%  FPL fam of 4 = $24,960/yr ($2,080/mo)
+#   150% FPL fam of 4 = $46,800/yr ($3,900/mo)
+#   185% FPL fam of 4 = $57,720/yr ($4,810/mo)
+#   195% FPL fam of 4 = $60,840/yr ($5,070/mo)
+
+- name: Initial tier at 150 percent FPL has $30 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_800  # 150% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 3,900 / 2,600 = 1.5 -> initial tier band [1.4001, 1.5001) -> $30/wk
+    al_ccsp_weekly_copay_per_child: 30
+
+- name: Initial tier at 80 percent FPL has zero weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_960  # 80% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 2,080 / 2,600 = 0.8 -> initial tier band [0, 1.0001) -> $0/wk
+    al_ccsp_weekly_copay_per_child: 0
+
+- name: Continuing tier at 185 percent FPL has $42 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 57_720  # 185% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,810 / 2,600 = 1.85 -> continuing tier band [1.8001, 1.9001) -> $42/wk
+    al_ccsp_weekly_copay_per_child: 42
+
+- name: Continuing tier at 195 percent FPL has $45 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_840  # 195% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 5,070 / 2,600 = 1.95 -> continuing tier band [1.9001, ...) -> $45/wk
+    al_ccsp_weekly_copay_per_child: 45
