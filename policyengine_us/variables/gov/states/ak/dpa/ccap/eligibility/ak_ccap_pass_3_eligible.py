@@ -8,7 +8,7 @@ class ak_ccap_pass_3_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.AK
     reference = (
-        "https://www.akleg.gov/basis/aac.asp#7.41.300",
+        "https://www.akleg.gov/basis/aac.asp",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=173",
     )
 

@@ -9,7 +9,7 @@ class ak_ccap_special_needs_supplement(Variable):
     definition_period = MONTH
     defined_for = StateCode.AK
     reference = (
-        "https://www.akleg.gov/basis/aac.asp#7.41.060",
+        "https://www.akleg.gov/basis/aac.asp",
         "https://health.alaska.gov/en/services/alaska-inclusive-child-care/",
     )
 

@@ -14,8 +14,11 @@ class ak_ccap_benefit_per_child(Variable):
         charged = person("ak_ccap_charged_rate", period)
         max_state_rate = person("ak_ccap_max_provider_rate_per_child", period)
         sn_supplement = person("ak_ccap_special_needs_supplement", period)
-        max_allowed = max_state_rate + sn_supplement
-        # When we don't track the provider's charged rate (charged = 0),
-        # assume the family is charged at least the state maximum so the
-        # subsidy equals the state max. When charged > 0, cap at charged.
-        return where(charged > 0, min_(charged, max_allowed), max_allowed)
+        # Manual §4140 (p.306): the special-needs supplement is paid "in
+        # addition to" the base reimbursement rate, so it sits outside the
+        # min(charged, max_state_rate) cap. When we don't track the
+        # provider's charged rate (charged = 0), assume the family is
+        # charged at least the state maximum so the base equals the state
+        # max. When charged > 0, cap the base at charged.
+        base = where(charged > 0, min_(charged, max_state_rate), max_state_rate)
+        return base + sn_supplement

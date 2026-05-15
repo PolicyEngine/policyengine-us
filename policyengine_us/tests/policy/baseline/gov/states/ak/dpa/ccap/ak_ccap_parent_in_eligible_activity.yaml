@@ -1,0 +1,194 @@
+# ak_ccap_parent_in_eligible_activity: SPMUnit, bool, MONTH
+# True if every tax-unit head/spouse in the SPMUnit individually meets the
+# Alaska CCAP activity test (positive employment income, positive
+# self-employment income, positive weekly hours worked, or full-time student),
+# OR if meets_ccdf_activity_test (federal fallback) is true.
+
+- name: Case 1, single working parent qualifies via employment income.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: true
+
+- name: Case 2, single non-working non-student parent fails activity test.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: false
+
+- name: Case 3, two-parent family with both parents working qualifies.
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      parent2:
+        age: 30
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: true
+
+- name: Case 4, two-parent family with only one working parent fails (all parents must qualify).
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      parent2:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: false
+
+- name: Case 5, single full-time student parent qualifies.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: true
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: true
+
+- name: Case 6, single self-employed parent qualifies via self-employment income.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 0
+        self_employment_income: 18_000
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: true
+
+- name: Case 7, non-working parent qualifies via meets_ccdf_activity_test fallback.
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_ccap_parent_in_eligible_activity: true

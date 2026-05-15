@@ -10,8 +10,8 @@ class ak_ccap_smi_threshold(Variable):
     unit = USD
     defined_for = StateCode.AK
     reference = (
-        "https://www.akleg.gov/basis/aac.asp#7.41.335",
-        "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf",
+        "https://www.akleg.gov/basis/aac.asp",
+        "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):

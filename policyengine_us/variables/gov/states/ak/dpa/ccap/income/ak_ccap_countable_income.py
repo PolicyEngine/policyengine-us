@@ -10,7 +10,8 @@ class ak_ccap_countable_income(Variable):
     defined_for = StateCode.AK
     reference = (
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
-        "https://www.akleg.gov/basis/aac.asp#7.41.335",
+        "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=242",
+        "https://www.akleg.gov/basis/aac.asp",
     )
 
     def formula(spm_unit, period, parameters):

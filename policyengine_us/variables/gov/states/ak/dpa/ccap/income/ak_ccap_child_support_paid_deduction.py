@@ -9,4 +9,4 @@ class ak_ccap_child_support_paid_deduction(Variable):
     unit = USD
     defined_for = StateCode.AK
     adds = ["child_support_expense"]
-    reference = "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203"
+    reference = "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=242"

@@ -9,7 +9,7 @@ class ak_ccap(Variable):
     definition_period = MONTH
     defined_for = "ak_ccap_eligible"
     reference = (
-        "https://www.akleg.gov/basis/aac.asp#7.41.012",
+        "https://www.akleg.gov/basis/aac.asp",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
     )
 

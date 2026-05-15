@@ -8,7 +8,7 @@ class ak_ccap_copay_rate(Variable):
     definition_period = MONTH
     unit = "/1"
     defined_for = StateCode.AK
-    reference = "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf"
+    reference = "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ak.dpa.ccap.copay

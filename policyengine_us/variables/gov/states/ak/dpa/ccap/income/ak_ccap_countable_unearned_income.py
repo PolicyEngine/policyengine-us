@@ -10,7 +10,7 @@ class ak_ccap_countable_unearned_income(Variable):
     defined_for = StateCode.AK
     reference = (
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=231",
-        "https://www.akleg.gov/basis/aac.asp#7.41.335",
+        "https://www.akleg.gov/basis/aac.asp",
     )
 
     def formula(spm_unit, period, parameters):
