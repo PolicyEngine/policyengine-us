@@ -18,5 +18,5 @@ class al_ccsp_provider_type(Variable):
     defined_for = StateCode.AL
     reference = (
         "Alabama DHR Provider Rate Chart",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf",
+        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=2",
     )

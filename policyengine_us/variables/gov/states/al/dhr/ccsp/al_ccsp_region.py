@@ -23,7 +23,7 @@ class al_ccsp_region(Variable):
     defined_for = StateCode.AL
     reference = (
         "Alabama DHR Provider Rate Chart, Regions and Counties Served",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf",
+        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=1",
     )
 
     def formula(household, period, parameters):

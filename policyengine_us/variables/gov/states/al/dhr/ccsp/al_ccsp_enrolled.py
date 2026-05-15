@@ -8,6 +8,6 @@ class al_ccsp_enrolled(Variable):
     label = "Whether the family is currently enrolled in Alabama CCSP"
     defined_for = StateCode.AL
     reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 2.2.4",
+        "Alabama CCDF State Plan 2025-2027, Section 2.5.5(c)(iii)",
         "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=39",
     )

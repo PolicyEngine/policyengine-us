@@ -17,7 +17,7 @@ class al_ccsp_age_category(Variable):
     defined_for = StateCode.AL
     reference = (
         "Alabama DHR Provider Rate Chart, Key to Care Level",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf",
+        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=2",
     )
 
     def formula(person, period, parameters):

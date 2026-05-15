@@ -201,3 +201,87 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_maximum_weekly_rate: [0, 146]
+
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_1 full-time is 141 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 141]
+
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_2 full-time is 144 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 144]
+
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_4 full-time is 149 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 149]
