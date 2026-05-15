@@ -1701,3 +1701,31 @@
     # uncapped = max(833.33 - 50, 0) = 783.33
     # benefit = min(783.33, 833.33) = 783.33
     wv_ccap: 783.33
+
+# ============================================================
+# Child-only SPM unit cannot pass activity test
+# ============================================================
+
+- name: Case 51, child-only SPM unit fails activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # No head/spouse caretaker present -> activity test must fail,
+    # otherwise child-only units would pass on income + assets alone.
+    wv_ccap_activity_eligible: false
+    wv_ccap_eligible: false
