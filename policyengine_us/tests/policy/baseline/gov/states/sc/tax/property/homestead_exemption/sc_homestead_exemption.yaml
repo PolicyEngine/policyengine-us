@@ -4,7 +4,7 @@
     people:
       person1:
         age: 65
-        assessed_property_value: 200_000
+        assessed_property_value: 8_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -13,7 +13,7 @@
         members: [person1]
         state_code: SC
   output:
-    sc_homestead_exemption: 50_000
+    sc_homestead_exemption: 2_000
 
 - name: Case 2, exemption is limited to assessed property value.
   period: 2025
@@ -21,7 +21,7 @@
     people:
       person1:
         age: 65
-        assessed_property_value: 40_000
+        assessed_property_value: 1_600
     tax_units:
       tax_unit:
         members: [person1]
@@ -30,4 +30,4 @@
         members: [person1]
         state_code: SC
   output:
-    sc_homestead_exemption: 40_000
+    sc_homestead_exemption: 1_600
