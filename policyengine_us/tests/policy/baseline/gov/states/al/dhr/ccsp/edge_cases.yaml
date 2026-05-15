@@ -1,0 +1,442 @@
+# AL CCSP edge case tests
+# Boundary conditions, multi-dimension rate coverage, and unusual configurations.
+
+# -- Age boundary tests --
+
+- name: Child exactly age 13 not disabled is ineligible (strict less-than).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible_child: [false, false]
+
+- name: Disabled child exactly age 19 is ineligible (strict less-than).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible_child: [false, false]
+
+# -- Activity boundary tests --
+
+- name: Parent working 14 hours per week is activity ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 14
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_activity_eligible: false
+
+# -- Asset boundary test --
+
+- name: Assets exactly 1 million dollars is asset eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible: true
+
+# -- Care hours boundary tests (full-time / part-time) --
+
+- name: Care hours exactly 25 is part-time (half rate).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 25  # boundary <= 25 = part-time
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM CENTER PRESCHOOL BASE = $138 -> half = $69
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 69]
+
+- name: Care hours exactly 26 is full-time.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 26  # > 25 -> full-time
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 138]
+
+# -- Multi-region rate coverage --
+
+- name: GFDC rate in Huntsville Preschool STAR_3 is 133 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: GFDC
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 133]
+
+- name: FDC rate in Mobile School_Age STAR_5 is 138 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        al_ccsp_provider_type: FDC
+        al_ccsp_quality_tier: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MOBILE_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 138]
+
+- name: CENTER Talladega INFANT_TODDLER BASE is 111 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: TALLADEGA_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 111]
+
+- name: CENTER Montgomery PRESCHOOL STAR_5 is 127 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MONTGOMERY_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 127]
+
+# -- Copay band boundary tests --
+
+- name: Family at exactly 100 percent FPL has zero copay.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_440  # 100% FPL fam of 2
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # At exactly 100% FPL (ratio 1.0), the $0 band applies (next threshold is 1.0001).
+    al_ccsp_copay: 0
+
+- name: Family at exactly 110 percent FPL pays 18 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_484  # 110% FPL fam of 2 = 22,484/yr
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # 110% FPL ratio = 1.10 -> 101-110 band ($18/wk).
+    # $18 * 4.333 = $77.99/mo
+    al_ccsp_copay: 77.99
+
+- name: Family at 120 percent FPL pays 21 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_528  # 120% FPL fam of 2
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # 120% FPL -> 111-120 band ($21/wk). $21 * 4.333 = $90.99/mo
+    al_ccsp_copay: 90.99
+
+# -- Zero family income --
+
+- name: Zero income working-zero parent fails activity test but eligible-child still true.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible_child: [false, true]
+    al_ccsp_activity_eligible: false
+    al_ccsp_eligible: false
+
+# -- Region masking for non-AL households (no crash) --
+
+- name: Non-AL family has zero benefit even with childcare expenses.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    al_ccsp: 0
+    al_ccsp_eligible: false

@@ -1,0 +1,203 @@
+# AL CCSP maximum weekly provider rate tests (Person, MONTH, USD)
+# Looked up by provider_type x region x age_category x quality_tier.
+# Full-time when childcare_hours_per_week > 25; otherwise rate is halved (part-time multiplier 0.5).
+# INFORMAL provider has a flat $40/wk cap regardless of region/age/quality.
+# defined_for: al_ccsp_eligible_child (Person, MONTH).
+
+- name: CENTER BIRMINGHAM PRESCHOOL STAR_3 full-time is 146 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 146]
+
+- name: CENTER HUNTSVILLE INFANT_TODDLER BASE full-time is 138 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 138]
+
+- name: GFDC HUNTSVILLE SCHOOL_AGE STAR_5 full-time is 137 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        al_ccsp_provider_type: GFDC
+        al_ccsp_quality_tier: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 137]
+
+- name: FDC MOBILE INFANT_TODDLER BASE full-time is 125 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        al_ccsp_provider_type: FDC
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: MOBILE_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 125]
+
+- name: Part-time care halves full-time rate.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20  # <= 25 -> part-time
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM, PRESCHOOL STAR_3 = $146 -> half = $73
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 73]
+
+- name: INFORMAL provider capped at 40 per week regardless of region.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: INFORMAL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 40]
+
+- name: Adult gets zero rate (not an eligible child).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        childcare_hours_per_week: 30
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 146]

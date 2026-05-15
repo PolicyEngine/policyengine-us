@@ -1,0 +1,30 @@
+description: Alabama assigns a Child Care Subsidy Program age category from the child's age in months.
+# 0 = INFANT_TODDLER (birth to 36 months)
+# 1 = PRESCHOOL (36 months to 5 years)
+# 2 = SCHOOL_AGE (5 years and older)
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Alabama CCSP age category by age in months
+  reference:
+    - title: Alabama DHR Child Care Subsidy Program Provider Rate Chart, Key to Care Level
+      href: https://www.alacourt.gov/docs/ALDayCareRates.pdf
+    - title: Alabama CCDF State Plan 2025-2027, Section 2.2
+      href: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=20
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 36
+    amount:
+      2024-01-01: 1
+  - threshold:
+      2024-01-01: 60
+    amount:
+      2024-01-01: 2

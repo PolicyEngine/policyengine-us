@@ -1,0 +1,51 @@
+description: Alabama sets this weekly per-child fee for initially-eligible families under the Child Care Subsidy Program, indexed to the family's share of the federal poverty guideline.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: week
+  label: Alabama CCSP initial weekly per-child fee by FPL ratio
+  reference:
+    - title: Alabama Child Care Fact Sheet (Initial Eligibility Monthly Income Scale and Parental Fee Chart)
+      href: https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf
+    - title: Alabama CCDF State Plan 2025-2027, Section 3.2.1
+      href: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=42
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 1.0001
+    amount:
+      2024-01-01: 18
+  - threshold:
+      2024-01-01: 1.1001
+    amount:
+      2024-01-01: 21
+  - threshold:
+      2024-01-01: 1.2001
+    amount:
+      2024-01-01: 24
+  - threshold:
+      2024-01-01: 1.3001
+    amount:
+      2024-01-01: 27
+  - threshold:
+      2024-01-01: 1.4001
+    amount:
+      2024-01-01: 30
+  - threshold:
+      2024-01-01: 1.5001
+    amount:
+      2024-01-01: 33
+  - threshold:
+      2024-01-01: 1.6001
+    amount:
+      2024-01-01: 36
+  - threshold:
+      2024-01-01: 1.7001
+    amount:
+      2024-01-01: 39

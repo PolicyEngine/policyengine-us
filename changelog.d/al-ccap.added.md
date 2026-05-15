@@ -1,1 +1,1 @@
-Added Alabama Child Care Assistance Program (CCAP).
+Added Alabama Child Care Subsidy Program (CCSP).

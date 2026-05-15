@@ -1,0 +1,33 @@
+description: Alabama counts these income sources under the Child Care Subsidy Program.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    - social_security
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - ssi
+    - al_ssp
+    - interest_income
+    - dividend_income
+    - alimony_income
+    - veterans_benefits
+    # TANF is excluded from the adds list to break a CCSP <-> TANF
+    # circular dependency through childcare_expenses. Operationally,
+    # families enrolled in TANF rarely reach the CCSP income test
+    # because TANF payment standards fall well below 180% FPL.
+    # - tanf
+    # Section 2.2.4(c) also lists inheritance and college work-study,
+    # but no matching variables exist in policyengine-us at this time.
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama CCSP countable income sources
+  reference:
+    - title: Alabama CCDF State Plan 2025-2027, Section 2.2.4(c)
+      href: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=26
+    - title: Alabama Child Care Fact Sheet
+      href: https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf

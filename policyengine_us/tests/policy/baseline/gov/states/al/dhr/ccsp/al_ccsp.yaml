@@ -1,0 +1,156 @@
+# AL CCSP benefit tests (SPMUnit, MONTH, USD)
+# per_child_weekly_subsidy = max(0, min(weekly_charge, max_weekly_rate) - weekly_copay_per_child)
+# monthly_subsidy = per_child_weekly_subsidy * 4.333 * eligible_child
+# al_ccsp = sum over SPMUnit members.
+
+- name: Ineligible family gets zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000  # > 85% SMI fam of 4
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp: 0
+
+- name: Low-income family at zero copay receives full max rate.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # ~ 86% FPL fam of 2 -> 0% copay band
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # BIRMINGHAM CENTER PRESCHOOL BASE = $138/wk
+    # Weekly charge = 10,000 / 52 = $192.31
+    # min($192.31, $138) = $138
+    # copay = $0
+    # weekly subsidy = $138
+    # monthly subsidy = $138 * 4.333 = $597.95
+    al_ccsp: 597.95
+
+- name: Family at 150 percent FPL with copay.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_660  # 150% FPL fam of 2 = 2,555/mo
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # BIRMINGHAM CENTER PRESCHOOL BASE = $138/wk
+    # weekly charge = 10,000 / 52 = $192.31; min(192.31, 138) = $138
+    # copay = $30/wk; weekly subsidy = $138 - $30 = $108
+    # monthly subsidy = $108 * 4.333 = $467.96
+    al_ccsp: 467.96
+
+- name: Provider charge below max rate caps subsidy at charge minus copay.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # zero copay tier
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+        pre_subsidy_childcare_expenses: 5_200  # $100/wk charge
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 5_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # weekly charge = $100; max rate = $138; min = $100; copay = $0
+    # monthly subsidy = $100 * 4.333 = $433.30
+    al_ccsp: 433.3
