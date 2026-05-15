@@ -227,18 +227,19 @@
     # SN child base = 884; supplement = 2 * 884 = 1_768; max combined = 2_652
     ak_ccap_special_needs_supplement: [0, 0, 1_768]
 
-    # benefit_per_child:
-    #   standard child: min(1_019, 1_019 + 0) = 1_019
-    #   SN child:       min(3_000, 884 + 1_768) = min(3_000, 2_652) = 2_652
+    # benefit_per_child = min(charged, max_state_rate) + supplement
+    #   standard child: min(1_019, 1_019) + 0 = 1_019
+    #   SN child:       min(3_000, 884) + 1_768 = 884 + 1_768 = 2_652
     ak_ccap_benefit_per_child: [0, 1_019, 2_652]
 
     # Family of 3 monthly SMI = 8_514.38
-    # ratio = 2_000 / 8_514.38 = 0.2349 -> 3% band (>= 0.18, < 0.26)
-    ak_ccap_copay_rate: 0.03
-    ak_ccap_copay: 60
+    # Countable income ≈ 2_251 (earnings + SSI for disabled child, per §4080-3.1.b)
+    # ratio ≈ 0.264 -> 4% band (>= 0.26, < 0.34)
+    ak_ccap_copay_rate: 0.04
+    ak_ccap_copay: 90.04
 
-    # Total benefit = (1_019 + 2_652) - 60 = 3_611
-    ak_ccap: 3_611
+    # Total benefit = (1_019 + 2_652) - 90.04 ≈ 3_580.96
+    ak_ccap: 3_580.96
 
 - name: Case 6, Anchorage with Licensed Group Home falls back to 0 rate.
   period: 2025-01

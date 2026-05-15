@@ -9,7 +9,7 @@ class ak_ccap_pass_2_eligible(Variable):
     defined_for = StateCode.AK
     reference = (
         "https://www.akleg.gov/basis/aac.asp",
-        "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=21",
+        "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=144",
     )
 
     def formula(spm_unit, period, parameters):

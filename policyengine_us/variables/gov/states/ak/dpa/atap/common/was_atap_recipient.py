@@ -7,4 +7,5 @@ class was_atap_recipient(Variable):
     label = "Was an Alaska Temporary Assistance Program (ATAP) recipient"
     definition_period = YEAR
     defined_for = StateCode.AK
-    reference = "https://www.akleg.gov/basis/aac.asp#7.41.012"
+    # 7 AAC 45 (Alaska Temporary Assistance Program regulations)
+    reference = "https://www.akleg.gov/basis/aac.asp"

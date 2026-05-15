@@ -213,9 +213,7 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # SMI ratio = 2_000 / 6_892.59 = 0.2902 -> 4% band
-    # copay = 2_000 * 0.04 = 80
-    # base = 1_019; supplement = 2*1_019 = 2_038; cap = 3_057
-    # benefit_per_child = min(3_500, 3_057) = 3_057
-    # Total = 3_057 - 80 = 2_977
-    ak_ccap: 2_977
+    # SMI ratio ≈ 0.2915 -> 4% band (SSI received by disabled child is small but counted)
+    # benefit_per_child = min(3_500, 1_019) + 2_038 = 3_057 (supplement outside cap)
+    # Total = 3_057 - copay ≈ 2_976.62
+    ak_ccap: 2_976.62

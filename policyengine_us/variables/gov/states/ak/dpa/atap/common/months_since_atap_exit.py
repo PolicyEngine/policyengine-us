@@ -7,4 +7,5 @@ class months_since_atap_exit(Variable):
     label = "Months since Alaska Temporary Assistance Program (ATAP) case closed"
     definition_period = MONTH
     defined_for = StateCode.AK
-    reference = "https://www.akleg.gov/basis/aac.asp#7.41.012"
+    # 7 AAC 45 (Alaska Temporary Assistance Program regulations)
+    reference = "https://www.akleg.gov/basis/aac.asp"

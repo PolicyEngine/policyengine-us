@@ -1,8 +1,8 @@
 # ak_ccap_benefit_per_child: Person, float (USD), MONTH
-# benefit = min(charged_rate, max_state_rate + special_needs_supplement).
-# Default ak_ccap_charged_rate equals max_state_rate, so by default the
-# supplement does not appear in the benefit_per_child unless the household
-# supplies a higher charged_rate.
+# benefit = min(charged_rate, max_state_rate) + special_needs_supplement.
+# The supplement sits OUTSIDE the min(charged, max_state_rate) cap per
+# Manual §28321-28324 (Alaska IN! Special Needs Supplements are not
+# subject to the monthly maximum state payment amount) and §4370-1.
 
 - name: Case 1, default eligible child receives max state rate.
   period: 2025-01
@@ -23,7 +23,7 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Default charged = max state rate (1_019); min(1_019, 1_019 + 0) = 1_019
+    # Default charged = max state rate (1_019); min(1_019, 1_019) + 0 = 1_019
     ak_ccap_benefit_per_child: 1_019
 
 - name: Case 2, charged rate below max state rate yields charged.
@@ -46,7 +46,7 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # min(700, 1_019 + 0) = 700
+    # min(700, 1_019) + 0 = 700
     ak_ccap_benefit_per_child: 700
 
 - name: Case 3, disabled child with high charged rate captures supplement.
@@ -70,6 +70,32 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Base = 1_019, supplement = 2 * 1_019 = 2_038, max combined = 3_057
-    # min(3_500, 3_057) = 3_057
+    # Base = min(3_500, 1_019) = 1_019; supplement = 2 * 1_019 = 2_038
+    # Total = 1_019 + 2_038 = 3_057
     ak_ccap_benefit_per_child: 3_057
+
+- name: Case 4, disabled school-age child with charged between max and max*multiplier distinguishes new formula from old.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 1_500  # max (884) < charged (1_500) < max * 3 (2_652)
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Anchorage SCHOOL_AGE FT_MONTH max state rate = 884
+    # New (correct) formula: min(1_500, 884) + (3-1)*884 = 884 + 1_768 = 2_652
+    # Old (buggy)   formula: min(1_500, 884 + 1_768) = min(1_500, 2_652) = 1_500
+    ak_ccap_benefit_per_child: 2_652

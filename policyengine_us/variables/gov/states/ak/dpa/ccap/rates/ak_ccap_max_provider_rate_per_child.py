@@ -11,7 +11,7 @@ class ak_ccap_max_provider_rate_per_child(Variable):
     label = "Alaska CCAP maximum provider reimbursement rate per child"
     definition_period = MONTH
     defined_for = "ak_ccap_child_eligible"
-    reference = "https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf#page=2"
+    reference = "https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf#page=1"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ak.dpa.ccap.rates
