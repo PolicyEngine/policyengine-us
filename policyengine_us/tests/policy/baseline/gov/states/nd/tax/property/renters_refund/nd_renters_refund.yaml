@@ -51,3 +51,21 @@
         state_code: ND
   output:
     nd_renters_refund: 0
+
+- name: Case 4, qualifying refund is floored at the minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 220
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 5
