@@ -1,3 +1,10 @@
+## [1.691.12] - 2026-05-16
+
+### Fixed
+
+- Extend the CRFB non-refundable Social Security credit reform so it continues feeding into non-refundable credits after 2035.
+
+
 ## [1.691.11] - 2026-05-16
 
 ### Fixed
