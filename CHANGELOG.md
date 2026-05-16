@@ -1,3 +1,11 @@
+## [1.691.11] - 2026-05-16
+
+### Fixed
+
+- Subtract Form 4952 investment-income elections from net capital gain for the federal capital-gains tax.
+- Update the 2026 Social Security payroll cap to the official SSA contribution and benefit base.
+
+
 ## [1.691.10] - 2026-05-14
 
 ### Fixed
