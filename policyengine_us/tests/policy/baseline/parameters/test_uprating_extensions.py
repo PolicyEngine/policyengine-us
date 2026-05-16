@@ -83,8 +83,8 @@ def test_ssa_nawi_and_payroll_cap_extend_to_2100():
         assert payroll_cap(f"{year}-01-01") == expected_cap
 
 
-def test_social_security_payroll_cap_formula_matches_known_projection():
-    """Test the known 2025 cap against the statutory NAWI-indexing formula."""
+def test_social_security_payroll_cap_formula_matches_known_values():
+    """Test known caps against the statutory NAWI-indexing formula."""
     parameters = PARAMETERS
 
     payroll_cap = parameters.gov.irs.payroll.social_security.cap
@@ -95,6 +95,13 @@ def test_social_security_payroll_cap_formula_matches_known_projection():
     )
 
     assert expected_2025_cap == payroll_cap("2025-01-01")
+
+    expected_2026_cap = round_social_security_payroll_cap(
+        payroll_cap("1994-01-01") * nawi("2024-01-01") / nawi("1992-01-01")
+    )
+
+    assert expected_2026_cap == 184_500
+    assert expected_2026_cap == payroll_cap("2026-01-01")
 
 
 def test_uprating_growth_rates_are_reasonable():
