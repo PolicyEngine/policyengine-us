@@ -45,6 +45,8 @@ class spm_unit_benefits(Variable):
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
+            "child_support_received",
+            "workers_compensation",
             "spm_unit_energy_subsidy",
             "tanf",
             # Washington (WA) cash-assistance programs. wa_sfa and wa_rca

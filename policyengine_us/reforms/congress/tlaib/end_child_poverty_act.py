@@ -128,6 +128,8 @@ def create_end_child_poverty_act() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
+                "child_support_received",
+                "workers_compensation",
                 # Broadband subsidies.
                 "acp",
                 "ebb",

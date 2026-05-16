@@ -122,6 +122,8 @@ def create_ecpa_only() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
+                "child_support_received",
+                "workers_compensation",
                 # Broadband subsidies.
                 "acp",
                 "ebb",
