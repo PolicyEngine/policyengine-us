@@ -1,0 +1,27 @@
+- name: Household benefits include Census SPM cash support leaves.
+  period: 2024
+  input:
+    age: 30
+    child_support_received: 1
+    workers_compensation: 2
+    educational_assistance: 3
+    financial_assistance: 4
+    survivor_benefits: 5
+    social_security: 0
+    ssi: 0
+    tanf: 0
+    unemployment_compensation: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    head_start: 0
+    early_head_start: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_state_benefits: 0
+    household_health_benefits: 0
+  output:
+    household_benefits: 1 + 2 + 3 + 4 + 5
