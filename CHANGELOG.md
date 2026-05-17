@@ -1,3 +1,10 @@
+## [1.693.1] - 2026-05-17
+
+### Changed
+
+- Compute the Supplemental Poverty Measure capped housing subsidy from housing assistance, the SPM threshold housing portion, and HUD tenant payment.
+
+
 ## [1.693.0] - 2026-05-17
 
 ### Added
