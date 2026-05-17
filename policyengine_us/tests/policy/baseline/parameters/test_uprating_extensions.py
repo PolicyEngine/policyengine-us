@@ -2,6 +2,7 @@
 
 from policyengine_us.system import system
 from policyengine_us.parameters.uprating_extensions import (
+    round_social_security_amount,
     round_social_security_payroll_cap,
 )
 
@@ -102,6 +103,119 @@ def test_social_security_payroll_cap_formula_matches_known_values():
 
     assert expected_2026_cap == 184_500
     assert expected_2026_cap == payroll_cap("2026-01-01")
+
+
+def test_social_security_parameters_include_latest_official_2026_values():
+    """Test announced 2026 SSA values before forecasts resume."""
+    parameters = PARAMETERS
+
+    assert parameters.gov.ssa.uprating("2025-01-01") == 308.729
+    assert parameters.gov.ssa.uprating("2026-01-01") == 317.265
+    assert parameters.gov.ssa.social_security.wage_base("2026-01-01") == 184_500
+    assert parameters.gov.ssa.sga.non_blind("2026-01-01") == 1_690
+    assert parameters.gov.ssa.sga.blind("2026-01-01") == 2_830
+    assert (
+        parameters.gov.ssa.social_security.quarters_of_coverage_threshold("2026-01-01")
+        == 1_890
+    )
+    assert (
+        parameters.gov.ssa.social_security.earnings_test.exempt_amount_under_fra(
+            "2026-01-01"
+        )
+        == 24_480
+    )
+    assert (
+        parameters.gov.ssa.social_security.earnings_test.exempt_amount_year_of_fra(
+            "2026-01-01"
+        )
+        == 65_160
+    )
+
+    pia = parameters.gov.ssa.social_security.pia.formula_factors("2026-01-01")
+    assert pia.thresholds[1] == 1_286
+    assert pia.thresholds[2] == 7_749
+
+
+def test_social_security_wage_indexed_parameters_follow_statutory_rounding():
+    """Wage-indexed benefit parameters should use lagged NAWI and statutory rounding."""
+    parameters = PARAMETERS
+    nawi = parameters.gov.ssa.nawi
+    social_security = parameters.gov.ssa.social_security
+
+    for year in [2027, 2036, 2050, 2100]:
+        date = f"{year}-01-01"
+        prior_date = f"{year - 1}-01-01"
+        determination_nawi = nawi(f"{year - 2}-01-01")
+
+        assert social_security.wage_base(
+            date
+        ) == parameters.gov.irs.payroll.social_security.cap(date)
+
+        expected_qc_threshold = max(
+            social_security.quarters_of_coverage_threshold(prior_date),
+            round_social_security_amount(
+                250 * determination_nawi / nawi("1976-01-01"),
+                10,
+            ),
+        )
+        assert (
+            social_security.quarters_of_coverage_threshold(date)
+            == expected_qc_threshold
+        )
+
+        expected_under_fra = max(
+            social_security.earnings_test.exempt_amount_under_fra(prior_date),
+            12
+            * round_social_security_amount(
+                670 * determination_nawi / nawi("1992-01-01"),
+                10,
+            ),
+        )
+        assert (
+            social_security.earnings_test.exempt_amount_under_fra(date)
+            == expected_under_fra
+        )
+
+        expected_year_of_fra = max(
+            social_security.earnings_test.exempt_amount_year_of_fra(prior_date),
+            12
+            * round_social_security_amount(
+                2_500 * determination_nawi / nawi("2000-01-01"),
+                10,
+            ),
+        )
+        assert (
+            social_security.earnings_test.exempt_amount_year_of_fra(date)
+            == expected_year_of_fra
+        )
+
+        pia = social_security.pia.formula_factors(date)
+        assert pia.thresholds[1] == round_social_security_amount(
+            180 * determination_nawi / nawi("1977-01-01"),
+            1,
+        )
+        assert pia.thresholds[2] == round_social_security_amount(
+            1_085 * determination_nawi / nawi("1977-01-01"),
+            1,
+        )
+
+        expected_non_blind_sga = max(
+            parameters.gov.ssa.sga.non_blind(prior_date),
+            round_social_security_amount(
+                700 * determination_nawi / nawi("1998-01-01"),
+                10,
+            ),
+        )
+        assert parameters.gov.ssa.sga.non_blind(date) == expected_non_blind_sga
+
+        expected_blind_sga = max(
+            parameters.gov.ssa.sga.blind(prior_date),
+            round_social_security_amount(
+                1_170 * determination_nawi / nawi("1998-01-01"),
+                10,
+            ),
+        )
+        assert parameters.gov.ssa.sga.blind(date) == expected_blind_sga
 
 
 def test_uprating_growth_rates_are_reasonable():
