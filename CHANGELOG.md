@@ -1,3 +1,10 @@
+## [1.692.1] - 2026-05-17
+
+### Changed
+
+- Gate housing assistance on a take-up input and use HUD Fair Market Rent as the national payment-standard fallback.
+
+
 ## [1.692.0] - 2026-05-17
 
 ### Added
