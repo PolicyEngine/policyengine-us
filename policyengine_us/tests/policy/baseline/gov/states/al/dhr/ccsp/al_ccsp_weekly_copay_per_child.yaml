@@ -1,6 +1,7 @@
 # AL CCSP weekly per-child parental fee tests (SPMUnit, MONTH).
-# Initial tier (al_ccsp_enrolled=false) uses the 9-band initial fee schedule.
-# Continuing tier (al_ccsp_enrolled=true) uses the 2-band continuing fee schedule.
+# Unified 11-band fee schedule indexed by FPL ratio (0-200% FPL).
+# Initial applicants must be at or below 180% FPL; continuing recipients may
+# remain enrolled up to 200% FPL. Both tiers use the same fee schedule.
 #
 # 2024 FPG (Contiguous US), family of 4: $31,200/yr = $2,600/mo.
 #   80%  FPL fam of 4 = $24,960/yr ($2,080/mo)
@@ -8,7 +9,7 @@
 #   185% FPL fam of 4 = $57,720/yr ($4,810/mo)
 #   195% FPL fam of 4 = $60,840/yr ($5,070/mo)
 
-- name: Initial tier at 150 percent FPL has $30 weekly per-child fee.
+- name: Family at 150 percent FPL has $30 weekly per-child fee.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -36,10 +37,10 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # FPL ratio = 3,900 / 2,600 = 1.5 -> initial tier band [1.4001, 1.5001) -> $30/wk
+    # FPL ratio = 3,900 / 2,600 = 1.5 -> band [1.4001, 1.5001) -> $30/wk
     al_ccsp_weekly_copay_per_child: 30
 
-- name: Initial tier at 80 percent FPL has zero weekly per-child fee.
+- name: Family at 80 percent FPL has zero weekly per-child fee.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -67,10 +68,10 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # FPL ratio = 2,080 / 2,600 = 0.8 -> initial tier band [0, 1.0001) -> $0/wk
+    # FPL ratio = 2,080 / 2,600 = 0.8 -> band [0, 1.0001) -> $0/wk
     al_ccsp_weekly_copay_per_child: 0
 
-- name: Continuing tier at 185 percent FPL has $42 weekly per-child fee.
+- name: Enrolled family at 185 percent FPL has $42 weekly per-child fee.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -98,10 +99,10 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # FPL ratio = 4,810 / 2,600 = 1.85 -> continuing tier band [1.8001, 1.9001) -> $42/wk
+    # FPL ratio = 4,810 / 2,600 = 1.85 -> band [1.8001, 1.9001) -> $42/wk
     al_ccsp_weekly_copay_per_child: 42
 
-- name: Continuing tier at 195 percent FPL has $45 weekly per-child fee.
+- name: Enrolled family at 195 percent FPL has $45 weekly per-child fee.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -129,5 +130,5 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # FPL ratio = 5,070 / 2,600 = 1.95 -> continuing tier band [1.9001, ...) -> $45/wk
+    # FPL ratio = 5,070 / 2,600 = 1.95 -> band [1.9001, ...) -> $45/wk
     al_ccsp_weekly_copay_per_child: 45

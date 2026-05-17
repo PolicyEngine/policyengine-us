@@ -1,5 +1,5 @@
 # AL CCSP eligible child tests (Person, MONTH)
-# Combines: child_age_limit (<13) or disabled_child_age_limit (<19 if disabled),
+# Combines: age.child_limit (<13) or age.disabled_child_limit (<19 if disabled),
 #           is_ccdf_immigration_eligible_child, is_tax_unit_dependent.
 
 - name: Child age 4 citizen dependent is eligible.
@@ -213,3 +213,43 @@
         state_code: GA
   output:
     al_ccsp_eligible_child: [false, false]
+
+- name: Multi-child family with mixed ages and immigration statuses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Parent (age 30, not a child)
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Eligible: age 4, citizen, dependent
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        # Ineligible by age: age 14 >= 13
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        # Ineligible by immigration: age 6 but undocumented
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # Parent: not under age 13 -> false
+    # person2: age 4 + citizen + dependent -> true
+    # person3: age 14 fails age check -> false
+    # person4: undocumented fails immigration check -> false
+    al_ccsp_eligible_child: [false, true, false, false]

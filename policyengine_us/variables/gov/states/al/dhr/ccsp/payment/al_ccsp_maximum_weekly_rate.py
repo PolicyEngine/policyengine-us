@@ -13,7 +13,7 @@ class al_ccsp_maximum_weekly_rate(Variable):
     defined_for = "al_ccsp_eligible_child"
     reference = (
         "Alabama DHR Provider Rate Chart",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=1",
+        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1",
     )
 
     def formula(person, period, parameters):

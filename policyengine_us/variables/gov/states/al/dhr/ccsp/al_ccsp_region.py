@@ -17,13 +17,13 @@ class al_ccsp_region(Variable):
     value_type = Enum
     entity = Household
     possible_values = ALCCSPRegion
-    default_value = ALCCSPRegion.MONTGOMERY
+    default_value = ALCCSPRegion.BIRMINGHAM
     definition_period = YEAR
     label = "Alabama CCSP rate-setting region"
     defined_for = StateCode.AL
     reference = (
         "Alabama DHR Provider Rate Chart, Regions and Counties Served",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=1",
+        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1",
     )
 
     def formula(household, period, parameters):
@@ -57,5 +57,5 @@ class al_ccsp_region(Variable):
                 ALCCSPRegion.DOTHAN,
                 ALCCSPRegion.OPELIKA,
             ],
-            default=ALCCSPRegion.MONTGOMERY,
+            default=ALCCSPRegion.BIRMINGHAM,
         )

@@ -7,7 +7,7 @@
 #   FS 4: $31,200/yr ($2,600/mo); 150% FPL = 3,900/mo; 180% = 4,680/mo;
 #         190% = 4,940/mo; 200% = 5,200/mo
 # AL SMI FS 4 (2023-10-01): $88,407/yr. 85% SMI FS 4: $75,145.95/yr (6,262.16/mo).
-# Weekly -> monthly multiplier: 4.333 (regulatory literal).
+# Weekly -> monthly multiplier: WEEKS_IN_YEAR / MONTHS_IN_YEAR = 52/12 ≈ 4.3333.
 
 - name: Two-parent family at 150 FPL with center care in Birmingham STAR_3.
   period: 2024-01
@@ -47,16 +47,16 @@
     al_ccsp_eligible_child: [false, false, true]
     al_ccsp_income_eligible: true
     al_ccsp_eligible: true
-    # 150% FPL -> $30/wk per child -> $30 * 4.333 = $129.99/mo copay
-    al_ccsp_copay: 129.99
-    # BIRMINGHAM CENTER PRESCHOOL STAR_3 full-time = $146/wk
-    al_ccsp_maximum_weekly_rate: [0, 0, 146]
-    # weekly charge = 10,000 / 52 = $192.31; min($192.31, $146) = $146
-    # weekly subsidy = $146 - $30 = $116
-    # monthly = $116 * 4.333 = $502.63
-    al_ccsp: 502.63
+    # 150% FPL -> $30/wk per child -> $30 * (52/12) = $130/mo copay
+    al_ccsp_copay: 130
+    # BIRMINGHAM CENTER PRESCHOOL STAR_3 full-time = $191/wk
+    al_ccsp_maximum_weekly_rate: [0, 0, 191]
+    # weekly charge = 10,000 / 52 = $192.31; min($192.31, $191) = $191
+    # weekly subsidy = $191 - $30 = $161
+    # monthly = $161 * (52/12) = $697.67
+    al_ccsp: 697.67
 
-- name: Single parent at 60 FPL continuing tier with FDC in Mobile BASE.
+- name: Single parent at 60 FPL enrolled with FDC in Mobile BASE.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -92,11 +92,11 @@
     al_ccsp_eligible: true
     # <= 100% FPL -> $0/wk copay
     al_ccsp_copay: 0
-    # MOBILE FDC INFANT_TODDLER BASE full-time = $125/wk
-    al_ccsp_maximum_weekly_rate: [0, 125]
-    # weekly charge = 8,000 / 52 = $153.85; min($153.85, $125) = $125
-    # monthly = $125 * 4.333 = $541.63
-    al_ccsp: 541.63
+    # MOBILE FDC INFANT_TODDLER BASE full-time = $134/wk
+    al_ccsp_maximum_weekly_rate: [0, 134]
+    # weekly charge = 8,000 / 52 = $153.85; min($153.85, $134) = $134
+    # monthly = $134 * (52/12) = $580.67
+    al_ccsp: 580.67
 
 - name: Family at 190 FPL initial tier is ineligible.
   period: 2024-01
@@ -179,14 +179,14 @@
   output:
     al_ccsp_eligible: true
     # FPL ratio = 49,058 / 25,820 = 1.90 -> 181-190 band -> $42/wk
-    # $42 * 4.333 = $181.99/mo
-    al_ccsp_copay: 181.99
-    # BIRMINGHAM CENTER PRESCHOOL BASE = $138/wk
-    al_ccsp_maximum_weekly_rate: [0, 0, 138]
-    # weekly charge = 10,000 / 52 = $192.31; min($192.31, $138) = $138
-    # weekly subsidy = $138 - $42 = $96
-    # monthly = $96 * 4.333 = $415.97
-    al_ccsp: 415.97
+    # $42 * (52/12) = $182/mo
+    al_ccsp_copay: 182
+    # BIRMINGHAM CENTER PRESCHOOL BASE = $180/wk
+    al_ccsp_maximum_weekly_rate: [0, 0, 180]
+    # weekly charge = 10,000 / 52 = $192.31; min($192.31, $180) = $180
+    # weekly subsidy = $180 - $42 = $138
+    # monthly = $138 * (52/12) = $598
+    al_ccsp: 598
 
 - name: Foster child waives income test and copay.
   period: 2024-01
@@ -223,10 +223,10 @@
     al_ccsp_eligible: true
     al_ccsp_protective_services: true
     al_ccsp_copay: 0
-    # BIRMINGHAM CENTER SCHOOL_AGE BASE = $115/wk
-    al_ccsp_maximum_weekly_rate: [0, 115]
-    # weekly subsidy = $115; monthly = $115 * 4.333 = $498.30
-    al_ccsp: 498.3
+    # BIRMINGHAM CENTER SCHOOL_AGE BASE = $150/wk
+    al_ccsp_maximum_weekly_rate: [0, 150]
+    # weekly subsidy = $150; monthly = $150 * (52/12) = $650
+    al_ccsp: 650
 
 - name: Disabled child waives copay.
   period: 2024-01
@@ -262,9 +262,9 @@
   output:
     al_ccsp_eligible: true
     al_ccsp_copay: 0
-    # BIRMINGHAM CENTER SCHOOL_AGE BASE = $115/wk (age 5)
-    # weekly subsidy = $115 - $0 = $115; monthly = $115 * 4.333 = $498.30
-    al_ccsp: 498.3
+    # BIRMINGHAM CENTER SCHOOL_AGE BASE = $150/wk (age 5)
+    # weekly subsidy = $150 - $0 = $150; monthly = $150 * (52/12) = $650
+    al_ccsp: 650
 
 - name: Family above 85 SMI is ineligible even with low FPL ratio (large household).
   period: 2024-01
@@ -350,15 +350,15 @@
   output:
     al_ccsp_eligible_child: [false, true, true]
     al_ccsp_eligible: true
-    # 150% FPL -> $30/wk per child * 2 children * 4.333 = $259.98/mo
-    al_ccsp_copay: 259.98
-    # BIRMINGHAM CENTER PRESCHOOL BASE = $138; CENTER INFANT_TODDLER BASE = $150
-    al_ccsp_maximum_weekly_rate: [0, 138, 150]
+    # 150% FPL -> $30/wk per child * 2 children * (52/12) = $260/mo
+    al_ccsp_copay: 260
+    # BIRMINGHAM CENTER PRESCHOOL BASE = $180; CENTER INFANT_TODDLER BASE = $195
+    al_ccsp_maximum_weekly_rate: [0, 180, 195]
     # weekly charge per child = 7,000 / 52 = $134.62
-    # child 1 (age 4): min($134.62, $138) = $134.62; subsidy = $134.62 - $30 = $104.62
-    # child 2 (age 2): min($134.62, $150) = $134.62; subsidy = $134.62 - $30 = $104.62
-    # total weekly subsidy = $209.24; monthly = $209.24 * 4.333 = $906.64
-    al_ccsp: 906.64
+    # child 1 (age 4): min($134.62, $180) = $134.62; subsidy = $134.62 - $30 = $104.62
+    # child 2 (age 2): min($134.62, $195) = $134.62; subsidy = $134.62 - $30 = $104.62
+    # total weekly subsidy = $209.24; monthly = $209.24 * (52/12) = $906.71
+    al_ccsp: 906.71
 
 - name: Part-time care halves provider rate.
   period: 2024-01
@@ -392,14 +392,14 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_eligible: true
-    # BIRMINGHAM CENTER PRESCHOOL BASE full-time = $138; part-time = $69
-    al_ccsp_maximum_weekly_rate: [0, 69]
-    # weekly charge = 5,000 / 52 = $96.15; min(96.15, 69) = $69
+    # BIRMINGHAM CENTER PRESCHOOL BASE full-time = $180; part-time = $90
+    al_ccsp_maximum_weekly_rate: [0, 90]
+    # weekly charge = 5,000 / 52 = $96.15; min(96.15, 90) = $90
     # copay = $0 (<=100% FPL)
-    # monthly = $69 * 4.333 = $298.98
-    al_ccsp: 298.98
+    # monthly = $90 * (52/12) = $390
+    al_ccsp: 390
 
-- name: INFORMAL provider capped at 40 per week.
+- name: INFORMAL provider capped at 50 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -430,7 +430,7 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_eligible: true
-    al_ccsp_maximum_weekly_rate: [0, 40]
-    # weekly charge = $96.15; min($96.15, $40) = $40
-    # copay = $0; monthly = $40 * 4.333 = $173.32
-    al_ccsp: 173.32
+    al_ccsp_maximum_weekly_rate: [0, 50]
+    # weekly charge = $96.15; min($96.15, $50) = $50
+    # copay = $0; monthly = $50 * (52/12) = $216.67
+    al_ccsp: 216.67

@@ -64,6 +64,6 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    # Monthly al_ccsp = $597.95 (BIRMINGHAM CENTER PRESCHOOL BASE $138 * 4.333)
-    # Annual = 12 * $597.95 = $7,175.40
-    al_child_care_subsidies: 7175.4
+    # Monthly al_ccsp = $780 (BIRMINGHAM CENTER PRESCHOOL BASE $180 * 52/12)
+    # Annual = 12 * $780 = $9,360
+    al_child_care_subsidies: 9360

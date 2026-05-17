@@ -1,0 +1,120 @@
+# AL CCSP copay waiver tests (SPMUnit, MONTH, bool).
+# Per CCDF State Plan §3.3.1, copay is waived for families that include:
+#   (iv) a disabled child (under disabled_child_limit, age 19)
+#   (v)  a child enrolled in Head Start / Early Head Start
+#   (vi) a foster child
+# Homelessness alone is NOT a waiver (§3.3.1(iii) is unchecked).
+
+- name: Case 1, family with disabled child waives copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_waived: true
+
+- name: Case 2, family with Head Start enrolled child waives copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_enrolled_in_head_start: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_waived: true
+
+- name: Case 3, family with foster child waives copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_waived: true
+
+- name: Case 4, family with no waiver triggers does not waive copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_waived: false
+
+- name: Case 5, disabled adult (non-dependent) does not trigger waiver.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_waived: false

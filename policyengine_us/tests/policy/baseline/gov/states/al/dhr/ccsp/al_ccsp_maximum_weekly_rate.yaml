@@ -1,10 +1,10 @@
 # AL CCSP maximum weekly provider rate tests (Person, MONTH, USD)
 # Looked up by provider_type x region x age_category x quality_tier.
 # Full-time when childcare_hours_per_week > 25; otherwise rate is halved (part-time multiplier 0.5).
-# INFORMAL provider has a flat $40/wk cap regardless of region/age/quality.
+# INFORMAL provider has a flat $50/wk cap regardless of region/age/quality.
 # defined_for: al_ccsp_eligible_child (Person, MONTH).
 
-- name: CENTER BIRMINGHAM PRESCHOOL STAR_3 full-time is 146 per week.
+- name: CENTER BIRMINGHAM PRESCHOOL STAR_3 full-time is 191 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -30,9 +30,9 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 146]
+    al_ccsp_maximum_weekly_rate: [0, 191]
 
-- name: CENTER HUNTSVILLE INFANT_TODDLER BASE full-time is 138 per week.
+- name: CENTER HUNTSVILLE INFANT_TODDLER BASE full-time is 165 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -58,9 +58,9 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 138]
+    al_ccsp_maximum_weekly_rate: [0, 165]
 
-- name: GFDC HUNTSVILLE SCHOOL_AGE STAR_5 full-time is 137 per week.
+- name: GFDC HUNTSVILLE SCHOOL_AGE STAR_5 full-time is 151 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -86,9 +86,9 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 137]
+    al_ccsp_maximum_weekly_rate: [0, 151]
 
-- name: FDC MOBILE INFANT_TODDLER BASE full-time is 125 per week.
+- name: FDC MOBILE INFANT_TODDLER BASE full-time is 134 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -114,7 +114,7 @@
         state_code: AL
         county_str: MOBILE_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 125]
+    al_ccsp_maximum_weekly_rate: [0, 134]
 
 - name: Part-time care halves full-time rate.
   period: 2024-01
@@ -140,11 +140,11 @@
       household:
         members: [person1, person2]
         state_code: AL
-        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM, PRESCHOOL STAR_3 = $146 -> half = $73
+        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM, PRESCHOOL STAR_3 = $191 -> half = $95.5
   output:
-    al_ccsp_maximum_weekly_rate: [0, 73]
+    al_ccsp_maximum_weekly_rate: [0, 95.5]
 
-- name: INFORMAL provider capped at 40 per week regardless of region.
+- name: INFORMAL provider capped at 50 per week regardless of region.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -169,7 +169,7 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 40]
+    al_ccsp_maximum_weekly_rate: [0, 50]
 
 - name: Adult gets zero rate (not an eligible child).
   period: 2024-01
@@ -200,9 +200,9 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 146]
+    al_ccsp_maximum_weekly_rate: [0, 191]
 
-- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_1 full-time is 141 per week.
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_1 full-time is 168 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -228,9 +228,9 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 141]
+    al_ccsp_maximum_weekly_rate: [0, 168]
 
-- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_2 full-time is 144 per week.
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_2 full-time is 172 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -256,9 +256,9 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 144]
+    al_ccsp_maximum_weekly_rate: [0, 172]
 
-- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_4 full-time is 149 per week.
+- name: CENTER HUNTSVILLE INFANT_TODDLER STAR_4 full-time is 179 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -284,4 +284,4 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 149]
+    al_ccsp_maximum_weekly_rate: [0, 179]

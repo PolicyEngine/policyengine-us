@@ -13,13 +13,13 @@ class al_ccsp_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.al.dhr.ccsp.eligibility
+        p = parameters(period).gov.states.al.dhr.ccsp.age
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
         age_eligible = where(
             is_disabled,
-            age < p.disabled_child_age_limit,
-            age < p.child_age_limit,
+            age < p.disabled_child_limit,
+            age < p.child_limit,
         )
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year

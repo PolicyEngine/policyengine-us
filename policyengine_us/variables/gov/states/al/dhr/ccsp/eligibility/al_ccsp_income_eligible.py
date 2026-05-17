@@ -13,23 +13,19 @@ class al_ccsp_income_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.al.dhr.ccsp.eligibility
+        p = parameters(period).gov.states.al.dhr.ccsp.income.limit
         monthly_income = spm_unit("al_ccsp_countable_income", period)
-        annual_income = monthly_income * MONTHS_IN_YEAR
 
-        # FPL test: 180% initial, 200% continuing (NJ pattern).
-        fpg = spm_unit("spm_unit_fpg", period.this_year)
+        monthly_fpg = spm_unit("spm_unit_fpg", period)
         enrolled = spm_unit("al_ccsp_enrolled", period)
         fpl_limit_ratio = where(
             enrolled,
-            p.income_limit_fpl_continuing,
-            p.income_limit_fpl_initial,
+            p.fpl_continuing,
+            p.fpl_initial,
         )
-        fpl_eligible = annual_income <= fpg * fpl_limit_ratio
+        fpl_eligible = monthly_income <= monthly_fpg * fpl_limit_ratio
 
-        # Federal CCDF 85% SMI hard cap applies in both initial and
-        # continuing tiers.
-        smi = spm_unit("hhs_smi", period.this_year)
-        smi_eligible = annual_income <= smi * p.income_limit_smi_cap
+        monthly_smi = spm_unit("hhs_smi", period)
+        smi_eligible = monthly_income <= monthly_smi * p.smi_cap
 
         return fpl_eligible & smi_eligible

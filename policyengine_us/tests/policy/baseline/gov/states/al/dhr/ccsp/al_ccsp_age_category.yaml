@@ -1,5 +1,5 @@
 # AL CCSP age category tests (Person, MONTH, Enum)
-# Bracket on age-in-months -> {INFANT_TODDLER (0-35mo), PRESCHOOL (36-59mo), SCHOOL_AGE (60mo+)}.
+# Bracket on age-in-months -> {INFANT_TODDLER (0-36mo), PRESCHOOL (37-59mo), SCHOOL_AGE (60mo+)}.
 
 - name: Infant age 0 is INFANT_TODDLER.
   period: 2024-01
@@ -27,7 +27,7 @@
   output:
     al_ccsp_age_category: INFANT_TODDLER
 
-- name: Child age 3 is PRESCHOOL.
+- name: Child age 3 (exactly 36 months) is INFANT_TODDLER.
   period: 2024-01
   input:
     people:
@@ -38,7 +38,8 @@
         members: [person1]
         state_code: AL
   output:
-    al_ccsp_age_category: PRESCHOOL
+    # 36 months is below the PRESCHOOL threshold of 37 months.
+    al_ccsp_age_category: INFANT_TODDLER
 
 - name: Child age 4 is PRESCHOOL.
   period: 2024-01

@@ -20,5 +20,5 @@ class al_ccsp_quality_tier(Variable):
     defined_for = StateCode.AL
     reference = (
         "Alabama DHR Provider Rate Chart (Base + 1-5 Star)",
-        "https://www.alacourt.gov/docs/ALDayCareRates.pdf#page=2",
+        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=2",
     )

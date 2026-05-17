@@ -133,9 +133,9 @@
       household:
         members: [person1, person2]
         state_code: AL
-        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM CENTER PRESCHOOL BASE = $138 -> half = $69
+        county_str: JEFFERSON_COUNTY_AL  # BIRMINGHAM CENTER PRESCHOOL BASE = $180 -> half = $90
   output:
-    al_ccsp_maximum_weekly_rate: [0, 69]
+    al_ccsp_maximum_weekly_rate: [0, 90]
 
 - name: Care hours exactly 26 is full-time.
   period: 2024-01
@@ -163,11 +163,11 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 138]
+    al_ccsp_maximum_weekly_rate: [0, 180]
 
 # -- Multi-region rate coverage --
 
-- name: GFDC rate in Huntsville Preschool STAR_3 is 133 per week.
+- name: GFDC rate in Huntsville Preschool STAR_3 is 154 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -193,7 +193,7 @@
         state_code: AL
         county_str: MADISON_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 133]
+    al_ccsp_maximum_weekly_rate: [0, 154]
 
 - name: FDC rate in Mobile School_Age STAR_5 is 138 per week.
   period: 2024-01
@@ -223,7 +223,7 @@
   output:
     al_ccsp_maximum_weekly_rate: [0, 138]
 
-- name: CENTER Talladega INFANT_TODDLER BASE is 111 per week.
+- name: CENTER Talladega INFANT_TODDLER BASE is 120 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -249,9 +249,9 @@
         state_code: AL
         county_str: TALLADEGA_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 111]
+    al_ccsp_maximum_weekly_rate: [0, 120]
 
-- name: CENTER Montgomery PRESCHOOL STAR_5 is 127 per week.
+- name: CENTER Montgomery PRESCHOOL STAR_5 is 149 per week.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -277,7 +277,7 @@
         state_code: AL
         county_str: MONTGOMERY_COUNTY_AL
   output:
-    al_ccsp_maximum_weekly_rate: [0, 127]
+    al_ccsp_maximum_weekly_rate: [0, 149]
 
 # -- Copay band boundary tests --
 

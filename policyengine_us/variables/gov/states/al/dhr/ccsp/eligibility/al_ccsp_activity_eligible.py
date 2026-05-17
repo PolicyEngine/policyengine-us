@@ -13,11 +13,11 @@ class al_ccsp_activity_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.al.dhr.ccsp.eligibility
+        p = parameters(period).gov.states.al.dhr.ccsp.activity
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         hours_worked = person("weekly_hours_worked", period.this_year)
-        meets_work_requirement = hours_worked >= p.activity_hours_minimum
+        meets_work_requirement = hours_worked >= p.hours_minimum
         is_student = person("is_full_time_student", period.this_year)
         # Disabled-parent activity exemption per SC/VA precedent; not
         # explicit in §2.2.2 but a CCDF best practice.
