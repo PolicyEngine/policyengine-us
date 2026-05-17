@@ -25,4 +25,7 @@ class al_ccsp_activity_eligible(Variable):
         individually_eligible = meets_work_requirement | is_student | is_disabled
         has_head_or_spouse = spm_unit.sum(is_head_or_spouse) >= 1
         all_covered = spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
-        return has_head_or_spouse & all_covered
+        # Fallback input for approved activities not individually modeled
+        # (job search, education/training, SNAP E&T, temporary leave, etc.).
+        fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
+        return (has_head_or_spouse & all_covered) | fallback

@@ -2,8 +2,8 @@
 # Per CCDF State Plan §3.3.1, copay is waived for families that include:
 #   (iv) a disabled child (under disabled_child_limit, age 19)
 #   (v)  a child enrolled in Head Start / Early Head Start
-#   (vi) a foster child
-# Homelessness alone is NOT a waiver (§3.3.1(iii) is unchecked).
+#   (vi) a child authorized under the Protective Service category
+#        (foster, kinship, or homelessness per §2.2.2(f)).
 
 - name: Case 1, family with disabled child waives copay.
   period: 2024-01
@@ -118,3 +118,26 @@
         state_code: AL
   output:
     al_ccsp_copay_waived: false
+
+- name: Case 6, homeless household waives copay via Protective Service category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        is_homeless: true
+  output:
+    al_ccsp_copay_waived: true

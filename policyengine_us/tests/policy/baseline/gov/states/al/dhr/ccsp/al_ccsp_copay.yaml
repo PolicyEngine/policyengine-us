@@ -304,7 +304,7 @@
   output:
     al_ccsp_copay: 0
 
-- name: Homeless household alone does NOT waive copay.
+- name: Homeless household waives copay via Protective Service category.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -332,9 +332,10 @@
         county_str: JEFFERSON_COUNTY_AL
         is_homeless: true
   output:
-    # Homelessness alone is NOT a copay waiver in AL.
-    # Fee is still owed: 150% FPL -> $30/wk -> $30 * 4.333 = $130.00/mo
-    al_ccsp_copay: 129.99
+    # Homeless families fall under the Protective Service category per
+    # §2.2.2(f); §3.3.1(vi) waives copay for children authorized under
+    # that category.
+    al_ccsp_copay: 0
 
 - name: Three children, only one truly eligible, copay counts only the eligible one.
   period: 2024-01

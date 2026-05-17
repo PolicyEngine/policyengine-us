@@ -144,7 +144,7 @@
   output:
     al_ccsp_maximum_weekly_rate: [0, 95.5]
 
-- name: INFORMAL provider capped at 50 per week regardless of region.
+- name: INFORMAL provider full-time capped at 50 per week regardless of region.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -170,6 +170,35 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_maximum_weekly_rate: [0, 50]
+
+- name: INFORMAL provider part-time capped at 25 per week (half of informal cap).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20  # <= 25 -> part-time
+        al_ccsp_provider_type: INFORMAL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # Part-time = 1/2 of applicable full-time rate; for INFORMAL the
+    # applicable full-time rate is the $50 cap, so part-time = $25.
+    al_ccsp_maximum_weekly_rate: [0, 25]
 
 - name: Adult gets zero rate (not an eligible child).
   period: 2024-01

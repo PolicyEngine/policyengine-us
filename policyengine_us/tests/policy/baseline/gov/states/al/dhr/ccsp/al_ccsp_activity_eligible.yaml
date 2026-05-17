@@ -208,3 +208,59 @@
         state_code: AL
   output:
     al_ccsp_activity_eligible: true
+
+- name: Parent with zero modeled activity but meets_ccdf_activity_test true is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Would fail the modeled activity test (0 work hours, not student,
+        # not disabled), but the SPMUnit-level fallback flag is set to
+        # capture an approved unmodeled activity (e.g., job training,
+        # education hours, SNAP E&T, temporary leave).
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_activity_eligible: true
+
+- name: Parent with zero modeled activity and meets_ccdf_activity_test false is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_activity_eligible: false

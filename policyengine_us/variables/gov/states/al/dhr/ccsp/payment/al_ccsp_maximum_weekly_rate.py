@@ -23,16 +23,14 @@ class al_ccsp_maximum_weekly_rate(Variable):
         age_category = person("al_ccsp_age_category", period)
         quality_tier = person("al_ccsp_quality_tier", period)
 
-        # Look up the full-time rate across the four-dimension matrix.
-        # INFORMAL providers are handled separately by a flat weekly cap
-        # rather than the matrix; the select() default below carries the
-        # informal cap through when the provider type does not match.
         rates = p.maximum_weekly_full_time
         center_rate = rates.CENTER[region][age_category][quality_tier]
         gfdc_rate = rates.GFDC[region][age_category][quality_tier]
         fdc_rate = rates.FDC[region][age_category][quality_tier]
 
-        matrix_rate = select(
+        # INFORMAL providers use the flat informal_weekly_cap as their
+        # full-time rate; the matrix is not consulted for them.
+        full_time_rate = select(
             [
                 provider_type == ALCCSPProviderType.CENTER,
                 provider_type == ALCCSPProviderType.GFDC,
@@ -42,16 +40,13 @@ class al_ccsp_maximum_weekly_rate(Variable):
             default=p.informal_weekly_cap,
         )
 
-        # Part-time (≤25 hours/week) pays half the full-time rate. The
-        # informal cap is interpreted as a weekly maximum that applies
-        # without halving — providers either bill within the cap or not.
+        # Part-time (≤25 hours/week) pays half the applicable full-time
+        # rate, including for INFORMAL providers (so the part-time cap is
+        # half of informal_weekly_cap).
         hours = person("childcare_hours_per_week", period.this_year)
         is_part_time = hours <= p.full_time_hours_threshold
-        part_time_rate = matrix_rate * p.part_time_multiplier
-        full_time_rate = where(is_part_time, part_time_rate, matrix_rate)
-
         return where(
-            provider_type == ALCCSPProviderType.INFORMAL,
-            p.informal_weekly_cap,
+            is_part_time,
+            full_time_rate * p.part_time_multiplier,
             full_time_rate,
         )

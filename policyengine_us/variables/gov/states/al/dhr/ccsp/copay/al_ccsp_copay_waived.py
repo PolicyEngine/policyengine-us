@@ -13,6 +13,11 @@ class al_ccsp_copay_waived(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        # Per §3.3.1, AL waives copay for:
+        #   (iv) families with a disabled child
+        #   (v)  families with a Head Start / EHS child
+        #   (vi) children authorized under the Protective Service category
+        #        (foster, kinship, homelessness, etc. per §2.2.2(f)).
         p_age = parameters(period).gov.states.al.dhr.ccsp.age
         person = spm_unit.members
         is_disabled = person("is_disabled", period.this_year)
@@ -22,5 +27,5 @@ class al_ccsp_copay_waived(Variable):
             is_disabled & is_dependent & (age < p_age.disabled_child_limit)
         )
         has_head_start_child = add(spm_unit, period, ["is_enrolled_in_head_start"]) > 0
-        has_foster_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
-        return has_disabled_child | has_head_start_child | has_foster_child
+        protective_services = spm_unit("al_ccsp_protective_services", period)
+        return has_disabled_child | has_head_start_child | protective_services
