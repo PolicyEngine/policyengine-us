@@ -1,3 +1,10 @@
+## [1.691.13] - 2026-05-17
+
+### Changed
+
+- Include child support received and workers' compensation in SPM resources, and keep SPM housing and energy subsidies on canonical input variables.
+
+
 ## [1.691.12] - 2026-05-16
 
 ### Fixed
