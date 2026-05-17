@@ -57,3 +57,31 @@
     # Eligibility
     hud_income_level: ESPECIALLY_LOW
     housing_assistance: 5_988
+
+- name: Housing assistance for a reported recipient outside LA uses FMR-backed payment standard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        pre_subsidy_rent: 24_000
+    households:
+      household:
+        county_fips: "06001"
+        bedrooms: 2
+        tenant_pays_utilities: false
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+  output:
+    pha_payment_standard: 32_184
+    hud_annual_income: 12_000
+    hud_ttp: 3_600
+    hud_max_subsidy: 28_584
+    hud_gross_rent: 24_000
+    hud_hap: 20_400
+    housing_assistance: 20_400
