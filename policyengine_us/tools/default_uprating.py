@@ -39,7 +39,6 @@ INPUT_VARIABLES = [
     "taxable_unemployment_compensation",
     "employment_income_last_year",
     "taxable_sep_distributions",
-    "spm_unit_capped_housing_subsidy_data",
     "miscellaneous_income",
     "short_term_capital_gains",
     "qualified_dividend_income",
@@ -70,7 +69,6 @@ INPUT_VARIABLES = [
     "non_qualified_dividend_income",
     "excess_withheld_payroll_tax",
     "health_insurance_premiums",
-    "spm_unit_energy_subsidy_data",
     "real_estate_taxes",
     "estate_income",
     "misc_deduction",
@@ -100,7 +98,11 @@ INPUT_VARIABLES = [
 
 def add_default_uprating(system):
     for variable in system.variables.values():
-        if (variable.name in INPUT_VARIABLES) and (variable.uprating is None):
+        if (
+            (variable.name in INPUT_VARIABLES)
+            and (variable.uprating is None)
+            and variable.is_input_variable()
+        ):
             variable.uprating = (
                 "calibration.gov.cbo.income_by_source.adjusted_gross_income"
             )
