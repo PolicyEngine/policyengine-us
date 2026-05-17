@@ -4,10 +4,40 @@
     county_fips: "06037"
     bedrooms: 2
   output:
-    # CSV value $2,750/mo × 12 = $33,000. Placeholder until
-    # tools/download_hud_fmr.py refreshes with HUD's published FY2025
-    # value.
-    hud_fair_market_rent: 33_000
+    # CSV value $2,625/mo × 12 = $31,500.
+    hud_fair_market_rent: 31_500
+
+- name: Alameda County 2BR FY2025 derives county FIPS from HUD FMR area code
+  period: 2025
+  input:
+    county_fips: "06001"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 32_184
+
+- name: Fairfield County 2BR FY2025 uses the median HUD FMR-area fallback
+  period: 2025
+  input:
+    county_fips: "09001"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 26_844
+
+- name: American Samoa county 2BR FY2025 expands the territory pseudo-area
+  period: 2025
+  input:
+    county_fips: "60010"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 12_144
+
+- name: Northern Mariana Islands county 2BR FY2025 expands the territory pseudo-area
+  period: 2025
+  input:
+    county_fips: "69110"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 11_952
 
 - name: Unmapped county returns zero
   period: 2025
@@ -23,12 +53,21 @@
     county_fips: "06037"
     bedrooms: 0
   output:
-    hud_fair_market_rent: 22_800
+    hud_fair_market_rent: 22_272
 
-- name: LA County FY2024 (no data) returns zero
+- name: LA County FY2024 falls back to nearest bundled FMR year
   period: 2024
   input:
     county_fips: "06037"
     bedrooms: 2
   output:
-    hud_fair_market_rent: 0
+    hud_fair_market_rent: 31_500
+
+- name: LA County 5BR FY2025 adds 15 percent to 4BR FMR
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    bedrooms: 5
+  output:
+    hud_fair_market_rent: 51_032.4

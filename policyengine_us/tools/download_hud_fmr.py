@@ -11,7 +11,7 @@ Usage:
 The output CSV matches the schema documented in
 ``policyengine_us/parameters/gov/hud/fmr/README.md``. Re-running for a new
 year appends rather than overwriting; the script de-duplicates on
-``(state, county_fips, year, bedrooms)``.
+``(state, hud_fmr_area_code, year, bedrooms)``.
 """
 
 import argparse
@@ -48,11 +48,11 @@ def list_states(token: str) -> list[str]:
 
 
 def state_rows(state_code: str, year: int, token: str) -> pd.DataFrame:
-    """Return one row per (county_fips, bedrooms) for the state and year."""
-    payload = get(f"{API_ROOT}/data/{state_code}?year={year}", token)
+    """Return one row per (HUD FMR area code, bedrooms) for the state and year."""
+    payload = get(f"{API_ROOT}/statedata/{state_code}?year={year}", token)
     rows = []
     for county in payload.get("data", {}).get("counties", []):
-        fips = str(county.get("fips_code", "")).zfill(5)
+        fips = str(county.get("fips_code") or county.get("code") or "").zfill(5)
         for bedrooms, key in BEDROOM_FIELDS.items():
             value = county.get(key)
             if value is None:
@@ -60,7 +60,7 @@ def state_rows(state_code: str, year: int, token: str) -> pd.DataFrame:
             rows.append(
                 {
                     "state": state_code,
-                    "county_fips": fips,
+                    "hud_fmr_area_code": fips,
                     "year": year,
                     "bedrooms": bedrooms,
                     "value": float(value),
@@ -83,11 +83,11 @@ def fetch_year(year: int, token: str) -> pd.DataFrame:
 def merge_with_existing(new: pd.DataFrame, output: Path) -> pd.DataFrame:
     if not output.exists():
         return new
-    existing = pd.read_csv(output, dtype={"county_fips": str})
+    existing = pd.read_csv(output, dtype={"hud_fmr_area_code": str})
     combined = pd.concat([existing, new], ignore_index=True)
     return combined.drop_duplicates(
-        subset=["state", "county_fips", "year", "bedrooms"], keep="last"
-    ).sort_values(["state", "county_fips", "year", "bedrooms"])
+        subset=["state", "hud_fmr_area_code", "year", "bedrooms"], keep="last"
+    ).sort_values(["state", "hud_fmr_area_code", "year", "bedrooms"])
 
 
 def main() -> int:

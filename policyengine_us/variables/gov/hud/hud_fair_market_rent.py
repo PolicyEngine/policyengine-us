@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.parameters.gov.hud.fmr import fair_market_rents
+from policyengine_us.parameters.gov.hud.fmr import fair_market_rents, nearest_fmr_year
+
+
+EXTRA_BEDROOM_FMR_INCREMENT = 0.15
 
 
 class hud_fair_market_rent(Variable):
@@ -13,11 +16,13 @@ class hud_fair_market_rent(Variable):
     def formula(household, period, parameters):
         county_fips = household("county_fips", period)
         bedrooms = household("bedrooms", period)
-        year = period.start.year
+        lookup_bedrooms = np.clip(bedrooms.astype(int), 0, 4)
+        extra_bedrooms = max_(bedrooms - 4, 0)
+        year = nearest_fmr_year(period.start.year)
         df = pd.DataFrame(
             {
                 "county_fips": county_fips,
-                "bedrooms": bedrooms.astype(int),
+                "bedrooms": lookup_bedrooms,
                 "year": year,
             }
         )
@@ -27,4 +32,6 @@ class hud_fair_market_rent(Variable):
             on=["county_fips", "bedrooms", "year"],
             how="left",
         )
-        return matched["value"].fillna(0).to_numpy() * MONTHS_IN_YEAR
+        monthly_fmr = matched["value"].fillna(0).to_numpy()
+        bedroom_adjustment = 1 + EXTRA_BEDROOM_FMR_INCREMENT * extra_bedrooms
+        return monthly_fmr * bedroom_adjustment * MONTHS_IN_YEAR

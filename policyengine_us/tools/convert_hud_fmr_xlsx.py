@@ -81,28 +81,34 @@ def reshape(df: pd.DataFrame, year: int) -> pd.DataFrame:
             continue
         slice_ = df[[state_col, county_col, col]].dropna()
         slice_ = slice_.rename(
-            columns={state_col: "state", county_col: "county_fips", col: "value"}
+            columns={
+                state_col: "state",
+                county_col: "hud_fmr_area_code",
+                col: "value",
+            }
         )
         slice_["bedrooms"] = bedrooms
         slice_["year"] = year
         rows.append(slice_)
     out = pd.concat(rows, ignore_index=True)
-    out["county_fips"] = out["county_fips"].astype(int).astype(str).str.zfill(5)
+    out["hud_fmr_area_code"] = (
+        out["hud_fmr_area_code"].astype(int).astype(str).str.zfill(5)
+    )
     out["value"] = out["value"].astype(float)
-    return out[["state", "county_fips", "year", "bedrooms", "value"]].sort_values(
-        ["state", "county_fips", "year", "bedrooms"]
+    return out[["state", "hud_fmr_area_code", "year", "bedrooms", "value"]].sort_values(
+        ["state", "hud_fmr_area_code", "year", "bedrooms"]
     )
 
 
 def merge_with_existing(new: pd.DataFrame, output: Path) -> pd.DataFrame:
     if not output.exists():
         return new
-    existing = pd.read_csv(output, dtype={"county_fips": str})
-    existing["county_fips"] = existing["county_fips"].str.zfill(5)
+    existing = pd.read_csv(output, dtype={"hud_fmr_area_code": str})
+    existing["hud_fmr_area_code"] = existing["hud_fmr_area_code"].str.zfill(5)
     combined = pd.concat([existing, new], ignore_index=True)
     return combined.drop_duplicates(
-        subset=["state", "county_fips", "year", "bedrooms"], keep="last"
-    ).sort_values(["state", "county_fips", "year", "bedrooms"])
+        subset=["state", "hud_fmr_area_code", "year", "bedrooms"], keep="last"
+    ).sort_values(["state", "hud_fmr_area_code", "year", "bedrooms"])
 
 
 def main() -> int:

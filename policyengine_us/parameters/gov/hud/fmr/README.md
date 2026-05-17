@@ -2,29 +2,33 @@
 
 ## What
 
-`fair_market_rents.csv` holds HUD's published Fair Market Rents at the county
-level, indexed by `(state, county_fips, year, bedrooms)`. FMRs are the
+`fair_market_rents.csv` holds HUD's published Fair Market Rents at the FMR-area
+level, indexed by `(state, hud_fmr_area_code, year, bedrooms)`. FMRs are the
 40th-percentile gross-rent estimates HUD uses to cap rents under the Housing
 Choice Voucher program, set Low-Income Housing Tax Credit rent limits, and
 size other federal housing subsidies (24 CFR Part 888).
 
-The model variable `hud_fair_market_rent` reads from this CSV.
+The model variable `hud_fair_market_rent` reads from this CSV and normalizes
+HUD FMR-area codes to PolicyEngine's five-digit `county_fips` input. When
+several HUD FMR areas map to one county and no direct county row exists, the
+loader uses the median FMR-area value as a lossy county-level fallback.
 
 ## Scope today (Phase 1)
 
-- **Year**: FY2025 only.
-- **Geography**: county-level FMR area only (no SAFMR ZIP-level resolution
-  yet — that lands in Phase 1B).
-- **Seed data**: a handful of placeholder rows (LA County) so the variable
-  and tests have something to bind to. Run `tools/download_hud_fmr.py` to
-  populate the full ~3,000-row county file from HUD's published data.
+- **Year**: FY2025 only. The variable imputes unsupported years with the
+  nearest bundled FMR year until more years are added.
+- **Geography**: county-level lookup from HUD FMR areas (no SAFMR ZIP-level
+  resolution yet — that lands in Phase 1B). Where HUD publishes one pseudo-area
+  for a territory, that pseudo-area is expanded to the territory's county FIPS
+  codes.
+- **Data**: full FY2025 county-level HUD file.
 
 ## Schema
 
 | column | type | meaning |
 |---|---|---|
 | `state` | str | two-letter state abbreviation |
-| `county_fips` | str | 5-digit county FIPS code (zero-padded) |
+| `hud_fmr_area_code` | str | HUD FMR-area code from the county-level source file |
 | `year` | int | HUD fiscal year |
 | `bedrooms` | int | 0 (efficiency) through 4 |
 | `value` | float | monthly FMR in current-year dollars |
