@@ -10,7 +10,7 @@ class ak_ccap_copay(Variable):
     defined_for = StateCode.AK
     reference = "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period):
         countable = spm_unit("ak_ccap_countable_income", period)
         rate = spm_unit("ak_ccap_copay_rate", period)
         return countable * rate

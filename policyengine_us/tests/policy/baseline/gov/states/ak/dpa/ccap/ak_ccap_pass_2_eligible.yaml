@@ -1,6 +1,6 @@
 # ak_ccap_pass_2_eligible: SPMUnit, bool, MONTH
 # PASS II (post-ATAP transitional) requires all PASS III conditions plus:
-#   was_atap_recipient & months_since_atap_exit < 12.
+#   ak_was_atap_recipient & ak_months_since_atap_exit < 12.
 
 - name: Case 1, recent post-ATAP family within 6-month window.
   period: 2025-01
@@ -16,8 +16,8 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: true
-        months_since_atap_exit: 6
+        ak_was_atap_recipient: true
+        ak_months_since_atap_exit: 6
     households:
       household:
         members: [parent, child]
@@ -39,8 +39,8 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: false
-        months_since_atap_exit: 0
+        ak_was_atap_recipient: false
+        ak_months_since_atap_exit: 0
     households:
       household:
         members: [parent, child]
@@ -62,14 +62,14 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: true
-        months_since_atap_exit: 13
+        ak_was_atap_recipient: true
+        ak_months_since_atap_exit: 13
     households:
       household:
         members: [parent, child]
         state_code: AK
   output:
-    # months_since_atap_exit (13) >= pass_2_transition_months (12)
+    # ak_months_since_atap_exit (13) >= pass_2_transition_months (12)
     ak_ccap_pass_2_eligible: false
 
 - name: Case 4, post-ATAP exit at exactly 12 months is outside window.
@@ -86,8 +86,8 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: true
-        months_since_atap_exit: 12
+        ak_was_atap_recipient: true
+        ak_months_since_atap_exit: 12
     households:
       household:
         members: [parent, child]

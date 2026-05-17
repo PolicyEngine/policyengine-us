@@ -9,12 +9,12 @@ class ak_ccap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.AK
     reference = (
+        "https://casetext.com/regulation/alaska-administrative-code/title-7-health-and-social-services/part-1-administration/chapter-41-child-care-assistance-program/section-7-aac-41335-family-income",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=242",
-        "https://www.akleg.gov/basis/aac.asp",
     )
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period):
         earned = spm_unit("ak_ccap_countable_earned_income", period)
         unearned = spm_unit("ak_ccap_countable_unearned_income", period)
         child_support_paid = spm_unit("ak_ccap_child_support_paid_deduction", period)

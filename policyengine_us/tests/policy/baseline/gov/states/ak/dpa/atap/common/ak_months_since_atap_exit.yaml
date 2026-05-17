@@ -1,9 +1,9 @@
-# was_atap_recipient: SPMUnit, bool, YEAR (input)
-# Indicates whether the SPM unit was an Alaska ATAP (TANF) recipient.
-# Used to gate PASS II transitional CCAP eligibility.
+# ak_months_since_atap_exit: SPMUnit, int, MONTH (input)
+# Months elapsed since the SPM unit's ATAP case closed.
+# Used with pass_2_transition_months (12) to gate PASS II eligibility.
 
-- name: Case 1, default value is false.
-  period: 2025
+- name: Case 1, default value is zero.
+  period: 2025-01
   input:
     people:
       person1:
@@ -16,10 +16,10 @@
         members: [person1]
         state_code: AK
   output:
-    was_atap_recipient: false
+    ak_months_since_atap_exit: 0
 
-- name: Case 2, explicitly true.
-  period: 2025
+- name: Case 2, six months since exit (within window).
+  period: 2025-01
   input:
     people:
       person1:
@@ -27,16 +27,16 @@
     spm_units:
       spm_unit:
         members: [person1]
-        was_atap_recipient: true
+        ak_months_since_atap_exit: 6
     households:
       household:
         members: [person1]
         state_code: AK
   output:
-    was_atap_recipient: true
+    ak_months_since_atap_exit: 6
 
-- name: Case 3, explicitly false.
-  period: 2025
+- name: Case 3, beyond 12-month window.
+  period: 2025-01
   input:
     people:
       person1:
@@ -44,10 +44,10 @@
     spm_units:
       spm_unit:
         members: [person1]
-        was_atap_recipient: false
+        ak_months_since_atap_exit: 18
     households:
       household:
         members: [person1]
         state_code: AK
   output:
-    was_atap_recipient: false
+    ak_months_since_atap_exit: 18

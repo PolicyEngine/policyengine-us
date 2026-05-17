@@ -9,7 +9,7 @@ class ak_ccap_special_needs_supplement(Variable):
     definition_period = MONTH
     defined_for = StateCode.AK
     reference = (
-        "https://www.akleg.gov/basis/aac.asp",
+        "https://casetext.com/regulation/alaska-administrative-code/title-7-health-and-social-services/part-1-administration/chapter-41-child-care-assistance-program/section-7-aac-41060-children-with-special-needs",
         "https://health.alaska.gov/en/services/alaska-inclusive-child-care/",
     )
 

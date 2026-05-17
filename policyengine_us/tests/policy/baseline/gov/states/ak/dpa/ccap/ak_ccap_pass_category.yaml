@@ -17,8 +17,8 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: true
-        months_since_atap_exit: 6
+        ak_was_atap_recipient: true
+        ak_months_since_atap_exit: 6
     households:
       household:
         members: [parent, child]
@@ -40,7 +40,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        was_atap_recipient: false
+        ak_was_atap_recipient: false
     households:
       household:
         members: [parent, child]
