@@ -1,7 +1,5 @@
-# SRA program is in effect from 2025-10-01 forward.
+# SRA program is in effect from 2025-11-01 forward.
 # The in_effect parameter gates ar_sra_eligible at the top level.
-# This test verifies the gate by constructing an otherwise-eligible
-# household in different periods.
 
 - name: Case 1, period 2025-01 is before SRA effective date so household is not eligible.
   period: 2025-01
@@ -31,35 +29,7 @@
   output:
     is_ar_sra_eligible: false
 
-- name: Case 2, period 2026-01 is the SRA effective date and household is eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked: 35
-        employment_income: 20_000
-        immigration_status: CITIZEN
-      person2:
-        age: 4
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 40
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AR
-        county_str: PULASKI_COUNTY_AR
-  output:
-    is_ar_sra_eligible: true
-
-- name: Case 3, period 2026-01 is well within the SRA era and household is eligible.
+- name: Case 2, period 2026-01 is within the SRA era so household is eligible.
   period: 2026-01
   input:
     people:

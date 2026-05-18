@@ -303,3 +303,74 @@
         state_code: AR
   output:
     is_ar_sra_ess_eligible: false
+
+- name: Case 14, Year-1 full-time college student adult with 0 hours satisfies activity via student OR-clause.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_college_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 15, Year-2 full-time college student adult with 0 hours satisfies activity via student OR-clause.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_college_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 18
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 16, was_tea is true but months_since_tea_exit is 0 falls outside the ESS window.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 0
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false

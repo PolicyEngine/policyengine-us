@@ -128,7 +128,7 @@
   output:
     is_ar_sra_li_activity_eligible: true
 
-- name: Case 7, two-parent household with one working and one full-time student is eligible.
+- name: Case 7, two-parent household with one working and one full-time college student is eligible.
   period: 2026-01
   input:
     people:
@@ -138,7 +138,7 @@
       person2:
         age: 28
         weekly_hours_worked: 0
-        is_full_time_student: true
+        is_full_time_college_student: true
       person3:
         age: 4
         is_tax_unit_dependent: true

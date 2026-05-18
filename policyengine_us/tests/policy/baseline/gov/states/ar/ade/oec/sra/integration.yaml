@@ -688,3 +688,74 @@
     #   total uncapped subsidy = $1,232
     #   ar_sra = $1,232 + $181.61 = $1,413.61
     ar_sra: 1413.61
+
+- name: Case 19, eligible family with zero pre-subsidy expenses gets zero subsidy (clamp guard).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # GT_40_LE_60 tier
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # total_expense = 0; the min_(uncapped_subsidy + cap_savings, total_expense)
+    # clamp keeps the subsidy from inflating beyond actual cost.
+    ar_sra: 0
+
+- name: Case 20, negative self-employment income clamps countable income at 0 (regression guard).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # Self-employment loss; total countable income would be negative.
+        self_employment_income: -20_000
+        employment_income: 5_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Negative income -> LE_40 tier (share=1.00, copay=0) -> cap_savings=0.
+    # Toddler Statewide FT LE_40: monthly state payment = $35 * 22 = $770.
+    ar_sra: 770

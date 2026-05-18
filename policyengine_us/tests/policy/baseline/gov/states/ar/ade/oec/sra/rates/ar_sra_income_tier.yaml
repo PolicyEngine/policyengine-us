@@ -194,3 +194,57 @@
         state_code: AR
   output:
     ar_sra_income_tier: GT_60
+
+- name: Case 8, family at exactly 40 percent SMI is in the LE_40 tier (boundary is inclusive).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.40 = $25,894.93
+        employment_income: 25_894.93
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_income_tier: LE_40
+
+- name: Case 9, family at exactly 60 percent SMI is in the GT_40_LE_60 tier (boundary is inclusive).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.60 = $38,842.40
+        employment_income: 38_842.40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_income_tier: GT_40_LE_60

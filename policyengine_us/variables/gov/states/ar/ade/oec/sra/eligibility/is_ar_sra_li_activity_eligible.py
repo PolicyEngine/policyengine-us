@@ -14,7 +14,12 @@ class is_ar_sra_li_activity_eligible(Variable):
         person = spm_unit.members
         is_adult = person("age", period.this_year) >= p.adult_age_threshold
         hours = person("weekly_hours_worked", period.this_year)
-        is_student = person("is_full_time_student", period.this_year)
+        # FSU §4.1.5.4: school converts to work-equivalent via 2.5 hr per
+        # semester credit. Full-time college (12+ credits) implies 30+ hr
+        # equivalent, satisfying LI's 30 hr/wk threshold. We don't extend
+        # the proxy to K-12 students because the conversion rule applies to
+        # post-secondary credit hours.
+        is_student = person("is_full_time_college_student", period.this_year)
         meets_activity = (hours >= p.activity_hours_li) | is_student
         # All adults must meet the activity test.
         has_adult = spm_unit.sum(is_adult) > 0
