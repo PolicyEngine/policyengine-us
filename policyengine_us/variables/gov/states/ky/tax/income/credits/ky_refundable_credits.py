@@ -8,3 +8,4 @@ class ky_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
+    adds = "gov.states.ky.tax.income.credits.refundable"
