@@ -2,8 +2,8 @@ from policyengine_us.model_api import *
 
 
 class ALCCSPAgeCategory(Enum):
-    INFANT_TODDLER = "Infant/Toddler (0-36 months)"
-    PRESCHOOL = "Preschool (37-59 months)"
+    INFANT_TODDLER = "Infant/Toddler (under 36 months)"
+    PRESCHOOL = "Preschool (36-59 months)"
     SCHOOL_AGE = "School Age (60+ months)"
 
 

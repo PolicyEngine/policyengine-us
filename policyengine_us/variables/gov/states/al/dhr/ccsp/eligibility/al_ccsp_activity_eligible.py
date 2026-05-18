@@ -7,7 +7,7 @@ class al_ccsp_activity_eligible(Variable):
     label = "Eligible for Alabama CCSP based on parental activity requirements"
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=21"
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=22"
 
     def formula(spm_unit, period, parameters):
         # Alabama §2.2.2(d)(ii) applies the activity test to the parent(s)
