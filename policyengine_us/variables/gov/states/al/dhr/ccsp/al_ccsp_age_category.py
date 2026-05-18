@@ -19,6 +19,5 @@ class al_ccsp_age_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.age_category
-        # Convert annual age (years) to months for bracket lookup.
         age_months = person("age", period.this_year) * MONTHS_IN_YEAR
         return p.months.calc(age_months)

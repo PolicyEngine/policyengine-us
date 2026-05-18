@@ -338,7 +338,7 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     # At exactly 100% FPL (ratio 1.0), the $0 band applies (next threshold is 1.0001).
-    al_ccsp_copay: 0
+    al_ccsp_weekly_copay_per_child: 0
 
 - name: Family at exactly 110 percent FPL pays 18 per week.
   period: 2024-01
@@ -370,8 +370,7 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     # 110% FPL ratio = 1.10 -> 101-110 band ($18/wk).
-    # $18 * 4.333 = $77.99/mo
-    al_ccsp_copay: 77.99
+    al_ccsp_weekly_copay_per_child: 18
 
 - name: Family at 120 percent FPL pays 21 per week.
   period: 2024-01
@@ -402,8 +401,8 @@
         state_code: AL
         county_str: JEFFERSON_COUNTY_AL
   output:
-    # 120% FPL -> 111-120 band ($21/wk). $21 * 4.333 = $90.99/mo
-    al_ccsp_copay: 90.99
+    # 120% FPL -> 111-120 band ($21/wk).
+    al_ccsp_weekly_copay_per_child: 21
 
 # -- Zero family income --
 
@@ -509,7 +508,6 @@
     al_ccsp_income_eligible: true
     # fpl_ratio is floored at 0 -> lowest fee bracket (0)
     al_ccsp_weekly_copay_per_child: 0
-    al_ccsp_copay: 0
     # Weekly expense ($20K/52 = $384.62) capped at Birmingham CENTER
     # PRESCHOOL BASE max rate ($180). Subsidy = $180 - $0 copay = $180/wk.
     # Monthly: $180 * (52/12) = $780.

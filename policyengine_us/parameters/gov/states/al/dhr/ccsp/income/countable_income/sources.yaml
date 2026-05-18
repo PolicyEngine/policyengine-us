@@ -13,7 +13,7 @@ values:
     - interest_income
     - dividend_income
     - alimony_income
-    - veterans_benefits 
+    - veterans_benefits
     # - tanf exclude as of now to avoid circular reference error
     # Section 2.2.4(c) also lists inheritance and college work-study,
     # but no matching variables exist in policyengine-us at this time.

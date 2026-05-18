@@ -48,8 +48,8 @@
     al_ccsp_eligible_child: [false, false, true]
     al_ccsp_income_eligible: true
     al_ccsp_eligible: true
-    # 150% FPL -> $30/wk per child -> $30 * (52/12) = $130/mo copay
-    al_ccsp_copay: 130
+    # 150% FPL -> $30/wk per child
+    al_ccsp_weekly_copay_per_child: 30
     # BIRMINGHAM CENTER PRESCHOOL STAR_3 full-time = $191/wk
     al_ccsp_maximum_weekly_rate: [0, 0, 191]
     # weekly charge = 10,000 / 52 = $192.31; min($192.31, $191) = $191
@@ -92,7 +92,7 @@
     al_ccsp_eligible_child: [false, true]
     al_ccsp_eligible: true
     # <= 100% FPL -> $0/wk copay
-    al_ccsp_copay: 0
+    al_ccsp_weekly_copay_per_child: 0
     # MOBILE FDC INFANT_TODDLER BASE full-time = $134/wk
     al_ccsp_maximum_weekly_rate: [0, 134]
     # weekly charge = 8,000 / 52 = $153.85; min($153.85, $134) = $134
@@ -180,8 +180,7 @@
   output:
     al_ccsp_eligible: true
     # FPL ratio = 47,234 / 24,860 = 1.90 -> 181-190 band -> $42/wk
-    # $42 * (52/12) = $182/mo
-    al_ccsp_copay: 182
+    al_ccsp_weekly_copay_per_child: 42
     # BIRMINGHAM CENTER PRESCHOOL BASE = $180/wk
     al_ccsp_maximum_weekly_rate: [0, 0, 180]
     # weekly charge = 10,000 / 52 = $192.31; min($192.31, $180) = $180
@@ -223,7 +222,7 @@
   output:
     al_ccsp_eligible: true
     al_ccsp_protective_services: true
-    al_ccsp_copay: 0
+    al_ccsp_weekly_copay_per_child: 0
     # BIRMINGHAM CENTER SCHOOL_AGE BASE = $150/wk
     al_ccsp_maximum_weekly_rate: [0, 150]
     # weekly subsidy = $150; monthly = $150 * (52/12) = $650
@@ -262,7 +261,7 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_eligible: true
-    al_ccsp_copay: 0
+    al_ccsp_weekly_copay_per_child: 0
     # BIRMINGHAM CENTER SCHOOL_AGE BASE = $150/wk (age 5)
     # weekly subsidy = $150 - $0 = $150; monthly = $150 * (52/12) = $650
     al_ccsp: 650
@@ -351,8 +350,8 @@
   output:
     al_ccsp_eligible_child: [false, true, true]
     al_ccsp_eligible: true
-    # 150% FPL -> $30/wk per child * 2 children * (52/12) = $260/mo
-    al_ccsp_copay: 260
+    # 150% FPL -> $30/wk per child (2 children both pay)
+    al_ccsp_weekly_copay_per_child: 30
     # BIRMINGHAM CENTER PRESCHOOL BASE = $180; CENTER INFANT_TODDLER BASE = $195
     al_ccsp_maximum_weekly_rate: [0, 180, 195]
     # weekly charge per child = 7,000 / 52 = $134.62

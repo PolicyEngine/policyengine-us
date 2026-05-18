@@ -22,11 +22,9 @@ class al_ccsp(Variable):
         weekly_copay = spm_unit("al_ccsp_weekly_copay_per_child", period)
         per_child_weekly_copay_broadcast = spm_unit.project(weekly_copay)
 
-        # Per-child weekly pre-subsidy charge from annual expenses.
         annual_expense = person("pre_subsidy_childcare_expenses", period.this_year)
         weekly_expense = annual_expense / WEEKS_IN_YEAR
 
-        # Subsidy = max(0, min(charge, max_rate) - per-child copay).
         capped_charge = min_(weekly_expense, weekly_rate)
         per_child_weekly_subsidy = max_(
             capped_charge - per_child_weekly_copay_broadcast, 0
