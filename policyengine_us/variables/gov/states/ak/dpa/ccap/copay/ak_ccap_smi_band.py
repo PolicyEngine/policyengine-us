@@ -11,11 +11,10 @@ class ak_ccap_smi_band(Variable):
     reference = "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
-        # Uses the FICS-published AK monthly 100% SMI by family size so the
-        # copay band aligns with the same SMI scale that
-        # `ak_ccap_smi_threshold` uses for eligibility.
-        p = parameters(period).gov.states.ak.dpa.ccap.income
+        # Uses the federal hhs_smi (which equals the Alaska FICS table
+        # for AK at every family size) so the copay band aligns with the
+        # same SMI scale that `ak_ccap_smi_threshold` uses for eligibility.
         countable = spm_unit("ak_ccap_countable_income", period)
-        size = spm_unit("spm_unit_size", period.this_year)
-        monthly_smi = p.smi.amount.calc(size)
+        annual_smi = spm_unit("hhs_smi", period.this_year)
+        monthly_smi = annual_smi / MONTHS_IN_YEAR
         return where(monthly_smi > 0, countable / monthly_smi, 0)

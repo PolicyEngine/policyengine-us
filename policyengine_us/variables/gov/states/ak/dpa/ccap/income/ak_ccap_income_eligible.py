@@ -12,7 +12,8 @@ class ak_ccap_income_eligible(Variable):
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=173",
     )
 
-    def formula(spm_unit, period):
+    def formula(spm_unit, period, parameters):
         countable = spm_unit("ak_ccap_countable_income", period)
-        threshold = spm_unit("ak_ccap_smi_threshold", period)
-        return countable <= threshold
+        smi = spm_unit("hhs_smi", period)
+        smi_rate = parameters(period).gov.states.ak.dpa.ccap.income.smi_rate
+        return countable <= smi * smi_rate

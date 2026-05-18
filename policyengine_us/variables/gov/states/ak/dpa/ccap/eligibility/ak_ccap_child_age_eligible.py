@@ -9,7 +9,6 @@ class ak_ccap_child_age_eligible(Variable):
     defined_for = StateCode.AK
     reference = (
         "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=910",
-        "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=858",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=173",
     )
 

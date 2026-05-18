@@ -14,7 +14,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [person1]
@@ -36,7 +36,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
         ak_ccap_charged_rate: 700
     spm_units:
       spm_unit:
@@ -60,7 +60,7 @@
         immigration_status: CITIZEN
         is_disabled: true
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
         ak_ccap_charged_rate: 3_500  # higher than 3 x base
     spm_units:
       spm_unit:
@@ -85,7 +85,7 @@
         immigration_status: CITIZEN
         is_disabled: true
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
         ak_ccap_charged_rate: 1_500  # max (884) < charged (1_500) < max * 2 (1_768)
     spm_units:
       spm_unit:

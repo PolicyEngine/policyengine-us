@@ -13,6 +13,8 @@ class ak_ccap_eligible(Variable):
     )
 
     def formula(spm_unit, period):
-        pass_2 = spm_unit("ak_ccap_pass_2_eligible", period)
-        pass_3 = spm_unit("ak_ccap_pass_3_eligible", period)
-        return pass_2 | pass_3
+        has_eligible_child = add(spm_unit, period, ["ak_ccap_child_eligible"]) > 0
+        income_eligible = spm_unit("ak_ccap_income_eligible", period)
+        asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
+        activity_eligible = spm_unit("ak_ccap_parent_in_eligible_activity", period)
+        return has_eligible_child & income_eligible & asset_eligible & activity_eligible

@@ -15,7 +15,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -47,7 +47,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -78,12 +78,12 @@
         age: 2
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
       child2:
         age: 8
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_HOME
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
@@ -117,7 +117,7 @@
         age: 13  # at threshold -> ineligible
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, teen]
@@ -130,7 +130,7 @@
     ak_ccap_eligible: false
     ak_ccap: 0
 
-- name: Case 5, post-ATAP family within transition window is PASS II eligible.
+- name: Case 5, ATAP-enrolled family has $0 copay (PASS I rule).
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -138,17 +138,16 @@
       parent:
         age: 28
         immigration_status: CITIZEN
-        employment_income: 18_000  # 1_500/mo
+        employment_income: 0  # qualifies for ATAP
       child:
         age: 3
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_HOME
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child]
-        ak_was_atap_recipient: true
-        ak_months_since_atap_exit: 6
+        weekly_hours_worked: 30  # activity test
         spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
@@ -156,13 +155,11 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2 monthly SMI = 5_897
-    # Income ratio = 1_500 / 5_897 = 0.2544 -> 3% band (>= 0.18, < 0.26)
-    # copay = 1_500 * 0.03 = 45
+    # ATAP-enrolled (ak_atap > 0) -> copay waived to 0
     # Anchorage licensed_home FT_MONTH preschool = 700
-    # Benefit = min(10_000, 700) - 45 = 655
-    ak_ccap_pass_category: PASS_II
-    ak_ccap: 655
+    # Benefit = min(10_000, 700) - 0 = 700
+    ak_ccap_copay: 0
+    ak_ccap: 700
 
 - name: Case 6, negative countable income does not inflate benefit.
   period: 2025-01
@@ -177,7 +174,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -207,7 +204,7 @@
         is_disabled: true
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
         ak_ccap_charged_rate: 3_500  # high enough to capture supplement
     spm_units:
       spm_unit:
@@ -238,7 +235,7 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -263,12 +260,12 @@
         age: 4
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
       child_undocumented:
         age: 3
         immigration_status: UNDOCUMENTED
         ak_ccap_provider_type: LICENSED_CENTER
-        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_care_schedule: FT_MONTH
     spm_units:
       spm_unit:
         members: [parent, child_citizen, child_undocumented]

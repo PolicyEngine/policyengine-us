@@ -14,16 +14,16 @@ class ak_ccap_parent_in_eligible_activity(Variable):
         # activity. We don't track job search, training, jury duty, or CC24
         # incapacity at the moment — fall back to the federal CCDF activity
         # test (meets_ccdf_activity_test) so units flagged there are
-        # treated as meeting the AK requirement.
+        # treated as meeting the AK requirement. We also don't check the
+        # self-employment minimum-wage threshold at the moment.
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        emp_income = person("employment_income", period)
-        se_income = person("self_employment_income", period)
+        has_earning = (
+            add(person, period, ["employment_income", "self_employment_income"]) > 0
+        )
         hours_worked = person("weekly_hours_worked", period.this_year)
         is_student = person("is_full_time_student", period.this_year)
-        individually_eligible = (
-            (emp_income > 0) | (se_income > 0) | (hours_worked > 0) | is_student
-        )
+        individually_eligible = has_earning | (hours_worked > 0) | is_student
         n_parents = spm_unit.sum(is_head_or_spouse)
         n_failing_parents = spm_unit.sum(is_head_or_spouse & ~individually_eligible)
         all_parents_qualify = (n_parents >= 1) & (n_failing_parents == 0)

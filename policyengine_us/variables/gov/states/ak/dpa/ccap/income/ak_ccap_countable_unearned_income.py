@@ -13,6 +13,4 @@ class ak_ccap_countable_unearned_income(Variable):
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=231",
     )
 
-    def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ak.dpa.ccap.income.countable_income
-        return add(spm_unit, period, p.unearned_sources)
+    adds = "gov.states.ak.dpa.ccap.income.countable_income.unearned_sources"
