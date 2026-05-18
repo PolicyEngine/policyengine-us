@@ -48,6 +48,32 @@
   output:
     al_ccsp_eligible_child: [false, true]
 
+- name: Child age 4 citizen non-dependent is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+      child_tax_unit:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible_child: [false, false]
+
 - name: Child age 13 not disabled is ineligible.
   period: 2024-01
   input:

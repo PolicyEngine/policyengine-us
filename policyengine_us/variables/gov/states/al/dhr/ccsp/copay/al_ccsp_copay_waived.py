@@ -19,8 +19,9 @@ class al_ccsp_copay_waived(Variable):
         person = spm_unit.members
         is_disabled = person("is_disabled", period.this_year)
         age = person("age", period.this_year)
+        is_dependent = person("is_tax_unit_dependent", period.this_year)
         has_disabled_child = spm_unit.any(
-            is_disabled & (age < p_age.disabled_child_limit)
+            is_disabled & (age < p_age.disabled_child_limit) & is_dependent
         )
         has_head_start_child = add(spm_unit, period, ["is_enrolled_in_head_start"]) > 0
         protective_services = spm_unit("al_ccsp_protective_services", period)
