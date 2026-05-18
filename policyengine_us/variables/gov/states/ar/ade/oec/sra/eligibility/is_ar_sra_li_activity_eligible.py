@@ -12,7 +12,7 @@ class is_ar_sra_li_activity_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.eligibility
         person = spm_unit.members
-        is_adult = person("age", period.this_year) >= 18
+        is_adult = person("age", period.this_year) >= p.adult_age_threshold
         hours = person("weekly_hours_worked", period.this_year)
         is_student = person("is_full_time_student", period.this_year)
         meets_activity = (hours >= p.activity_hours_li) | is_student

@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class ar_sra(Variable):
     value_type = float
     entity = SPMUnit
-    unit = USD
     label = "Arkansas School Readiness Assistance benefit amount"
+    unit = USD
     definition_period = MONTH
     defined_for = "is_ar_sra_eligible"
     reference = (
         "https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf",
-        "https://dese.ade.arkansas.gov/Files/R_&_R__Nov_2025_(English)_(1)_OEC.pdf#page=1",
+        "https://dese.ade.arkansas.gov/Files/2025-2027_CCDF_State_Plan_Final_4.26.24.1REV_OEC.pdf#page=39",
     )
 
     def formula(spm_unit, period, parameters):
@@ -18,16 +18,22 @@ class ar_sra(Variable):
         is_eligible_child = person("is_ar_sra_child_eligible", period)
         daily_state_payment = person("ar_sra_daily_state_payment", period)
         daily_copay = person("ar_sra_daily_copay", period)
-        # `childcare_attending_days_per_month` is YEAR-defined but stores
-        # a monthly count (e.g., 22 days/mo); read at this_year to skip the
-        # YEAR→MONTH auto-divide.
         attending_days = person("childcare_attending_days_per_month", period.this_year)
         monthly_max_state_payment = daily_state_payment * attending_days
         monthly_copay = daily_copay * attending_days
-        # YEAR-defined expense auto-divides to monthly at MONTH period.
         monthly_expense = person("pre_subsidy_childcare_expenses", period)
-        subsidy = min_(
+        uncapped_subsidy = min_(
             max_(monthly_expense - monthly_copay, 0),
             monthly_max_state_payment,
         )
-        return spm_unit.sum(subsidy * is_eligible_child)
+        total_uncapped_subsidy = spm_unit.sum(uncapped_subsidy * is_eligible_child)
+        # CCDF State Plan §3.1.1 caps the family copay at 4% of gross income
+        # per family, regardless of the number of children. When rate-sheet
+        # copays sum above the cap, the state covers the gap.
+        p = parameters(period).gov.states.ar.ade.oec.sra.rates
+        total_uncapped_copay = spm_unit.sum(monthly_copay * is_eligible_child)
+        copay_ceiling = p.max_copay_share_of_gross_income * spm_unit(
+            "ar_sra_countable_income", period
+        )
+        cap_savings = max_(total_uncapped_copay - copay_ceiling, 0)
+        return total_uncapped_subsidy + cap_savings

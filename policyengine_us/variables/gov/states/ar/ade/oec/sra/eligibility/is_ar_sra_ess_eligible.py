@@ -18,11 +18,19 @@ class is_ar_sra_ess_eligible(Variable):
         in_track = was_tea & (ar_tea == 0) & within_window
         in_year_1 = months_since <= p.ess_year_1_window_months
         person = spm_unit.members
-        is_adult = person("age", period.this_year) >= 18
+        is_adult = person("age", period.this_year) >= p.adult_age_threshold
         hours = person("weekly_hours_worked", period.this_year)
         adult_hours = where(is_adult, hours, 0)
         max_adult_hours = spm_unit.max(adult_hours)
         year_1_active = max_adult_hours >= p.activity_hours_ess_year_1
-        year_2_active = max_adult_hours >= p.activity_hours_ess_year_2
+        # FSU §4.1.5.2 / R&R Nov 2025: Year-2 activity can be satisfied by
+        # 25+ hr/wk work, school/training, or a combination. We don't track
+        # AR TEA's net-income trigger at the moment, so the Year-1 alt path
+        # ("earnings make family TEA-income-ineligible") is unmodeled.
+        adult_is_student = is_adult & person("is_full_time_student", period.this_year)
+        any_adult_student = spm_unit.sum(adult_is_student) > 0
+        year_2_active = (
+            max_adult_hours >= p.activity_hours_ess_year_2
+        ) | any_adult_student
         activity_ok = where(in_year_1, year_1_active, year_2_active)
         return in_track & activity_ok

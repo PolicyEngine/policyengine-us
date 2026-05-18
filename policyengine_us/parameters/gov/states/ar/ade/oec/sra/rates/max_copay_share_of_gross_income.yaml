@@ -1,0 +1,14 @@
+description: Arkansas caps the total family copay at this share of gross monthly income under the School Readiness Assistance program.
+# CCDF rules cap copays at 7% of gross family income; Arkansas's CCDF State
+# Plan §3.1.1 self-certifies a stricter 4% maximum. The cap applies per
+# family, regardless of the number of children participating in CCDF.
+values:
+  2025-11-01: 0.04
+
+metadata:
+  unit: /1
+  period: year
+  label: Arkansas SRA maximum family copay share of gross income
+  reference:
+    - title: Arkansas CCDF Plan 2025-2027, Section 3.1.1 Family Co-payment
+      href: https://dese.ade.arkansas.gov/Files/2025-2027_CCDF_State_Plan_Final_4.26.24.1REV_OEC.pdf#page=39

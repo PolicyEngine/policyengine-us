@@ -58,3 +58,81 @@
         state_code: AR
   output:
     ar_sra_age_category: SCHOOL_AGED
+
+- name: Case 5, 17-month-old (1.417 years) is the last INFANT month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.417
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: INFANT
+
+- name: Case 6, 18-month-old (1.5 years) is the first TODDLER month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: TODDLER
+
+- name: Case 7, 35-month-old (2.917 years) is the last TODDLER month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.917
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: TODDLER
+
+- name: Case 8, 36-month-old (3 years) is the first PRESCHOOL month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: PRESCHOOL
+
+- name: Case 9, 71-month-old (5.917 years) is the last PRESCHOOL month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5.917
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: PRESCHOOL
+
+- name: Case 10, 72-month-old (6 years) is the first SCHOOL_AGED month.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_age_category: SCHOOL_AGED

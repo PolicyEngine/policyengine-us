@@ -151,3 +151,22 @@
         state_code: AR
   output:
     is_ar_sra_li_activity_eligible: true
+
+- name: Case 8, household with only children (no adult) is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: false

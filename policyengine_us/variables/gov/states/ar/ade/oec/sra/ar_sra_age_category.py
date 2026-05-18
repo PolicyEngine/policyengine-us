@@ -20,9 +20,5 @@ class ar_sra_age_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.rates.age_category_months
-        # `age` is YEAR-defined; `period.this_year` returns age in years (float).
-        # Multiply by 12 to compare against month-based thresholds.
         age_months = person("age", period.this_year) * MONTHS_IN_YEAR
-        # The bracket returns the integer enum index (0=INFANT, 1=TODDLER,
-        # 2=PRESCHOOL, 3=SCHOOL_AGED); PolicyEngine maps it to the enum.
         return p.calc(age_months)

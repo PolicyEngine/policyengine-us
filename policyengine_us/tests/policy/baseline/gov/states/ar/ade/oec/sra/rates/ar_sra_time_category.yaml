@@ -1,12 +1,13 @@
-# Time category: >=30 hr/wk -> FULL_TIME, otherwise PART_TIME.
-# Threshold parameter: gov.states.ar.ade.oec.sra.rates.full_time_hours_threshold = 30
+# Time category: >=35 hr/wk -> FULL_TIME, otherwise PART_TIME.
+# Threshold parameter: gov.states.ar.ade.oec.sra.rates.full_time_hours_threshold = 35
+# (approximates FSU §5.4.6 "7+ hours per day" as 5 days * 7 = 35 hr/week.)
 
-- name: Case 1, 30 hours per week is FULL_TIME at the threshold.
+- name: Case 1, 35 hours per week is FULL_TIME at the threshold.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 30
+        childcare_hours_per_week: 35
     households:
       household:
         members: [person1]
@@ -14,12 +15,12 @@
   output:
     ar_sra_time_category: FULL_TIME
 
-- name: Case 2, 35 hours per week is FULL_TIME.
+- name: Case 2, 40 hours per week is FULL_TIME.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 35
+        childcare_hours_per_week: 40
     households:
       household:
         members: [person1]
@@ -40,12 +41,12 @@
   output:
     ar_sra_time_category: PART_TIME
 
-- name: Case 4, 29 hours per week is PART_TIME just below the threshold.
+- name: Case 4, 34 hours per week is PART_TIME just below the threshold.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 29
+        childcare_hours_per_week: 34
     households:
       household:
         members: [person1]

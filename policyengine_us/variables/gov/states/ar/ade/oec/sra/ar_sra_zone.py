@@ -20,9 +20,8 @@ class ar_sra_zone(Variable):
     )
 
     def formula(household, period, parameters):
-        # `defined_for = StateCode.AR` filters output but does NOT short-circuit
-        # vectorized execution, so non-AR county strings would still flow into
-        # this lookup. Guard by checking state first.
+        # Belt-and-suspenders: defined_for filters output but doesn't gate
+        # the lookup, so guard county_str against non-AR rows.
         state = household("state_code_str", period.this_year)
         county = household("county_str", period.this_year)
         in_benton_washington = (state == "AR") & (

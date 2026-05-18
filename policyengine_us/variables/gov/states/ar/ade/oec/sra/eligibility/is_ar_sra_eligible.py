@@ -14,12 +14,15 @@ class is_ar_sra_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra
-        if not p.in_effect:
-            return False
         has_eligible_child = add(spm_unit, period, ["is_ar_sra_child_eligible"]) > 0
         income_ok = spm_unit("is_ar_sra_income_eligible", period)
         asset_ok = spm_unit("is_ccdf_asset_eligible", period.this_year)
         li_active = spm_unit("is_ar_sra_li_activity_eligible", period)
         ess_active = spm_unit("is_ar_sra_ess_eligible", period)
-        activity_ok = li_active | ess_active
-        return has_eligible_child & income_ok & asset_ok & activity_ok
+        return (
+            p.in_effect
+            & has_eligible_child
+            & income_ok
+            & asset_ok
+            & (li_active | ess_active)
+        )

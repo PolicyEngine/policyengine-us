@@ -224,3 +224,55 @@
         state_code: AR
   output:
     ar_sra_daily_base_rate: 36.30
+
+- name: Case 14, Statewide infant Night/Weekend part time mirrors REGULAR PT (18.00 — modeling fallback).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 20
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    # PT NIGHT_WEEKEND has no source rate; fallback to PT REGULAR per base_rate.yaml.
+    ar_sra_daily_base_rate: 18.00
+
+- name: Case 15, Benton/Washington infant SN2 full time base rate is 53.20.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 40
+        ar_sra_care_type: SN2
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 53.20
+
+- name: Case 16, Benton/Washington toddler Night/Weekend full time base rate is 40.70.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_week: 40
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 40.70

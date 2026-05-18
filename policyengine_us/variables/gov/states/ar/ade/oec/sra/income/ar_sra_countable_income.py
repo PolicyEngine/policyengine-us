@@ -14,14 +14,11 @@ class ar_sra_countable_income(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ar.ade.oec.sra.income
-        # FSU Manual Section 4.3.2: SSI and Social Security of children under
-        # 18 are excluded from countable income. Sum each listed source per
-        # person and mask out child contributions before aggregating to the
-        # SPM unit.
+        p = parameters(period).gov.states.ar.ade.oec.sra
+        # FSU Manual §4.3.2 excludes SSI and Social Security of children
+        # from countable income; mask per-person contributions by adult
+        # status before aggregating to the SPM unit.
         person = spm_unit.members
-        # `age` is YEAR-defined; period.this_year reverses auto-division so
-        # this returns age in years for monthly periods.
-        is_adult = person("age", period.this_year) >= 18
-        per_person_income = sum(person(source, period) for source in p.sources)
+        is_adult = person("age", period.this_year) >= p.eligibility.adult_age_threshold
+        per_person_income = sum(person(source, period) for source in p.income.sources)
         return spm_unit.sum(per_person_income * is_adult)
