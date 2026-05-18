@@ -1,3 +1,17 @@
+## [1.693.6] - 2026-05-18
+
+### Fixed
+
+- Restricted the New Mexico net capital gains 40% deduction to zero from 2025-01-01 per HB0037 (2024), which amended NMSA 7-2-34(A)(2) to apply the 40% element only to gains from the sale of a business. The capped element (up to $1,000) continues to apply.
+
+
+## [1.693.5] - 2026-05-18
+
+### Fixed
+
+- Backdate Massachusetts TAFDC and EAEDC standard assistance amounts to include FY25 (April 2025) 10% increase. The FY24 raise scheduled for April 2024 was rescinded by 9C cuts in January 2024; the actual increase came from the FY25 budget.
+
+
 ## [1.693.4] - 2026-05-18
 
 ### Fixed
