@@ -1,4 +1,4 @@
-description: Alaska uses these unearned income sources for countable income under the Child Care Assistance Program.
+description: Alaska uses these unearned income sources for countable income under the Child Care Assistance Program. We don't include TANF (Manual §4080-3 ¶6.i) at the moment to avoid a circular dependency — `ak_atap` depends on `childcare_expenses` (via its childcare deduction), which depends on `ak_ccap`. We also don't include adoption assistance (Manual §4080-3 ¶6.c) or foster care payments (Manual §4080-3 ¶6.d) at the moment because we don't track those income types as variables.
 values:
   2022-02-21:
     - child_support_received
@@ -9,6 +9,11 @@ values:
     - veterans_benefits
     - rental_income
     - pension_income
+    - workers_compensation
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - strike_benefits
 
 metadata:
   unit: list
@@ -17,5 +22,7 @@ metadata:
   reference:
     - title: CCAP Policies and Procedures Manual, Section 4080-3 Unearned Income (printed p.204)
       href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=231
+    - title: CCAP Policies and Procedures Manual, Section 4080-3 ¶6 Other Sources of Unearned Income — covers workers' compensation (g), capital gains (h), strike benefits (l), dividends (p), interest (q) (printed p.208)
+      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=235
     - title: 7 AAC 41.335 Family income (Alaska Administrative Code)
       href: https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=907

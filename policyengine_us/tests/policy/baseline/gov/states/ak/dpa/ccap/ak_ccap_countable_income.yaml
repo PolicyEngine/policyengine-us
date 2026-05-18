@@ -146,3 +146,44 @@
         state_code: AK
   output:
     ak_ccap_countable_income: 0
+
+- name: Case 8, newly added unearned sources are counted (workers_comp, capital_gains).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        workers_compensation: 12_000  # /yr -> 1_000/mo
+        capital_gains: 6_000  # /yr -> 500/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 1_000 + 500 = 1_500/month (TANF excluded to avoid circular dependency
+    # with ak_atap, which depends on childcare_expenses -> ak_ccap)
+    ak_ccap_countable_income: 1_500
+
+- name: Case 9, additional new unearned sources (interest, dividend).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        interest_income: 1_200  # /yr -> 100/mo
+        dividend_income: 2_400  # /yr -> 200/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 100 + 200 = 300/month
+    ak_ccap_countable_income: 300

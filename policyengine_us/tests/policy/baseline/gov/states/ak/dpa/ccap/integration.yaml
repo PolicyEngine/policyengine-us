@@ -8,15 +8,15 @@
 #   - Child Care Assistance Program Rate Schedule (Rev Dec 1, 2021)
 #     https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf
 #
-# HHS SMI for AK (2024-10-01 base = 121_634):
-#   Family of 2 (multiplier 0.68): annual 82_711.12  / monthly 6_892.59
-#   Family of 3 (multiplier 0.84): annual 102_172.56 / monthly 8_514.38
-#   Family of 4 (multiplier 1.00): annual 121_634    / monthly 10_136.17
+# AK FICS monthly 100% SMI by family size:
+#   Family of 2: 7_285
+#   Family of 3: 8_673
+#   Family of 4: 10_060
 #
 # 85% SMI thresholds (monthly):
-#   Family of 2: 82_711.12 * 0.85 / 12 = 5_858.70
-#   Family of 3: 102_172.56 * 0.85 / 12 = 7_237.22
-#   Family of 4: 121_634    * 0.85 / 12 = 8_615.74
+#   Family of 2: 7_285 * 0.85 = 6_192.25
+#   Family of 3: 8_673 * 0.85 = 7_372.05
+#   Family of 4: 10_060 * 0.85 = 8_551.00
 
 - name: Case 1, single parent one preschooler Anchorage licensed center.
   period: 2025-01
@@ -35,6 +35,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [person1, person2]
@@ -52,8 +53,8 @@
     ak_ccap_countable_income: 2_000
 
     # === Copay ===
-    # Family of 2 monthly SMI = 6_892.59
-    # SMI ratio = 2_000 / 6_892.59 = 0.2902 -> 4% band (>= 0.26, < 0.35)
+    # Family of 2 monthly SMI = 7_285
+    # SMI ratio = 2_000 / 7_285 = 0.2745 -> 4% band (>= 0.26, < 0.35)
     ak_ccap_copay_rate: 0.04
     # copay = 2_000 * 0.04 = 80
     ak_ccap_copay: 80
@@ -93,6 +94,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent1, parent2, child1, child2]
@@ -108,8 +110,8 @@
     # All parents qualify -> activity passes
 
     # === Copay ===
-    # Family of 4 monthly SMI = 10_136.17
-    # SMI ratio = 3_000 / 10_136.17 = 0.296 -> 4% band (>= 0.26, < 0.35)
+    # Family of 4 monthly SMI = 10_060
+    # SMI ratio = 3_000 / 10_060 = 0.2982 -> 4% band (>= 0.26, < 0.35)
     ak_ccap_copay_rate: 0.04
     # copay = 3_000 * 0.04 = 120
     ak_ccap_copay: 120
@@ -143,6 +145,7 @@
         members: [parent, child]
         ak_was_atap_recipient: true
         ak_months_since_atap_exit: 6
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child]
@@ -152,12 +155,12 @@
     ak_ccap_child_eligible: [false, true]
     ak_ccap_eligible: true
     ak_ccap_pass_category: PASS_II
-    # SMI ratio = 2_500 / 6_892.59 = 0.3627 -> 5% band (>= 0.35, < 0.43)
-    ak_ccap_copay_rate: 0.05
-    ak_ccap_copay: 125
+    # SMI ratio = 2_500 / 7_285 = 0.3432 -> 4% band (>= 0.26, < 0.35)
+    ak_ccap_copay_rate: 0.04
+    ak_ccap_copay: 100
     # Anchorage center FT_MONTH school age = 884
-    # Benefit = 884 - 125 = 759
-    ak_ccap: 759
+    # Benefit = 884 - 100 = 784
+    ak_ccap: 784
 
 - name: Case 4, income just over 85% SMI is ineligible.
   period: 2025-01
@@ -167,7 +170,7 @@
       parent:
         age: 30
         immigration_status: CITIZEN
-        employment_income: 86_847  # ~7_237.25/mo, just over 7_237.22 threshold
+        employment_income: 86_847  # ~7_237.25/mo, well over 6_192.25 threshold
       child:
         age: 4
         immigration_status: CITIZEN
@@ -182,8 +185,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2: 85% SMI monthly threshold = 5_858.70
-    # 7_237.25 > 5_858.70 -> ineligible
+    # Family of 2: 85% SMI monthly threshold = 6_192.25
+    # 7_237.25 > 6_192.25 -> ineligible
     ak_ccap_income_eligible: false
     ak_ccap_eligible: false
     ak_ccap: 0
@@ -213,6 +216,7 @@
     spm_units:
       spm_unit:
         members: [parent, child_standard, child_sn]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child_standard, child_sn]
@@ -224,22 +228,23 @@
 
     # SN supplement applies only to disabled child
     # Anchorage center FT_MONTH preschool = 1_019; school age = 884
-    # SN child base = 884; supplement = 2 * 884 = 1_768; max combined = 2_652
-    ak_ccap_special_needs_supplement: [0, 0, 1_768]
+    # SN child base = 884; supplement = 1 * 884 = 884; max combined = 1_768
+    ak_ccap_special_needs_supplement: [0, 0, 884]
 
     # benefit_per_child = min(charged, max_state_rate) + supplement
     #   standard child: min(1_019, 1_019) + 0 = 1_019
-    #   SN child:       min(3_000, 884) + 1_768 = 884 + 1_768 = 2_652
-    ak_ccap_benefit_per_child: [0, 1_019, 2_652]
+    #   SN child:       min(3_000, 884) + 884 = 884 + 884 = 1_768
+    ak_ccap_benefit_per_child: [0, 1_019, 1_768]
 
-    # Family of 3 monthly SMI = 8_514.38
+    # Family of 3 monthly SMI = 8_673
     # Countable income ≈ 2_251 (earnings + SSI for disabled child, per §4080-3.1.b)
-    # ratio ≈ 0.264 -> 4% band (>= 0.26, < 0.35)
-    ak_ccap_copay_rate: 0.04
-    ak_ccap_copay: 90.04
+    # ratio ≈ 0.2596 -> 3% band (>= 0.18, < 0.26)
+    ak_ccap_copay_rate: 0.03
+    ak_ccap_copay: 67.53
 
-    # Total benefit = (1_019 + 2_652) - 90.04 ≈ 3_580.96
-    ak_ccap: 3_580.96
+    # Total per-child = 1_019 + 1_768 = 2_787; expense cap not binding (10_000/mo)
+    # Total benefit = min(10_000, 2_787) - 67.53 = 2_787 - 67.53 ≈ 2_719.47
+    ak_ccap: 2_719.47
 
 - name: Case 6, Anchorage with Licensed Group Home falls back to 0 rate.
   period: 2025-01
@@ -292,6 +297,7 @@
     spm_units:
       spm_unit:
         members: [parent, teen, child]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, teen, child]
@@ -303,11 +309,11 @@
     ak_ccap_child_eligible: [false, false, true]
     ak_ccap_eligible: true
 
-    # Family of 3 monthly SMI = 8_514.38
-    # ratio = 3_000 / 8_514.38 = 0.3523 -> 5% band (>= 0.35, < 0.43)
-    ak_ccap_copay_rate: 0.05
-    ak_ccap_copay: 150
+    # Family of 3 monthly SMI = 8_673
+    # ratio = 3_000 / 8_673 = 0.3459 -> 4% band (>= 0.26, < 0.35)
+    ak_ccap_copay_rate: 0.04
+    ak_ccap_copay: 120
 
     # Anchorage center FT_MONTH school age = 884
-    # Benefit = 884 - 150 = 734
-    ak_ccap: 734
+    # Benefit = 884 - 120 = 764
+    ak_ccap: 764

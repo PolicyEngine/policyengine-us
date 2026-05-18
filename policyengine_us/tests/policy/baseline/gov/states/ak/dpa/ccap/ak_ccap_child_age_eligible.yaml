@@ -1,7 +1,8 @@
 # ak_ccap_child_age_eligible: Person, bool, MONTH
-# Age-only check (no immigration). Child must be:
-#   under 13 (general) OR under 13 if special needs (same threshold today,
-#   but parameters are separate so they can diverge in the future).
+# Age-only check (no immigration). Child must be under 13.
+# 7 AAC 41.060(a) caps the special-needs age limit at the same under-13
+# threshold as the general child eligibility, so disabled children use the
+# same age gate.
 # Manual Section 4070-2 Eligible Child.
 
 - name: Case 1, child age 4 is age eligible.

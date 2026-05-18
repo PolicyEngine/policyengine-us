@@ -1,0 +1,80 @@
+# ak_ccap_countable_earned_income: SPMUnit, float (USD), MONTH
+# Sums earned income across SPMUnit members aged >= adult threshold (18).
+# Manual §4080-1 excludes earnings from children (age < 18).
+
+- name: Case 1, single adult earnings counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # /yr
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 36_000 / 12 = 3_000/month
+    ak_ccap_countable_earned_income: 3_000
+
+- name: Case 2, minor's earnings excluded; adult's earnings counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income: 24_000  # /yr
+      minor:
+        age: 16
+        employment_income: 6_000  # /yr -- excluded
+    spm_units:
+      spm_unit:
+        members: [adult, minor]
+    households:
+      household:
+        members: [adult, minor]
+        state_code: AK
+  output:
+    # 24_000 / 12 = 2_000/month (minor excluded)
+    ak_ccap_countable_earned_income: 2_000
+
+- name: Case 3, adult self-employment income counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 18_000  # /yr
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 18_000 / 12 = 1_500/month
+    ak_ccap_countable_earned_income: 1_500
+
+- name: Case 4, zero earnings returns zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_earned_income: 0

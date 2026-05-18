@@ -1,6 +1,7 @@
 # ak_ccap_special_needs_supplement: Person, float (USD), MONTH
-# Alaska IN! supplemental rate per 7 AAC 41.060. Up to 3x standard rate; the
-# supplement above the standard rate is (multiplier - 1) * base = 2 * base.
+# Alaska IN! supplemental rate per 7 AAC 41.060(b). Up to 2x standard rate
+# (combined cap); the supplement above the standard rate is
+# (multiplier - 1) * base = 1 * base.
 # Applies only when is_disabled AND ak_ccap_child_eligible.
 
 - name: Case 1, non-disabled eligible child receives no supplement.
@@ -46,8 +47,8 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     # Base rate Anchorage center preschool FT_MONTH = 1_019
-    # Supplement = (3 - 1) * 1_019 = 2_038
-    ak_ccap_special_needs_supplement: 2_038
+    # Supplement = (2 - 1) * 1_019 = 1_019
+    ak_ccap_special_needs_supplement: 1_019
 
 - name: Case 3, disabled but age-ineligible child gets no supplement.
   period: 2025-01
@@ -115,9 +116,9 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Authorized = min(500, 1_019) = 500; supplement = (3 - 1) * 500 = 1_000
-    # Not (3 - 1) * 1_019 = 2_038 — supplement scales with authorized, not max.
-    ak_ccap_special_needs_supplement: 1_000
+    # Authorized = min(500, 1_019) = 500; supplement = (2 - 1) * 500 = 500
+    # Not (2 - 1) * 1_019 = 1_019 — supplement scales with authorized, not max.
+    ak_ccap_special_needs_supplement: 500
 
 - name: Case 6, disabled but undocumented child gets no supplement.
   period: 2025-01

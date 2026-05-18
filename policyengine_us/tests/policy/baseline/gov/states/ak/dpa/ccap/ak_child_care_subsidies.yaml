@@ -19,6 +19,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child]

@@ -202,6 +202,7 @@
         age: 0
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_unit: FT_DAY
+        childcare_attending_days_per_month: 1  # rate is per day; verify base rate
     spm_units:
       spm_unit:
         members: [person1]
@@ -212,6 +213,7 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     # FT_DAY Anchorage: INFANT=69, TODDLER=70, PRESCHOOL=62, SCHOOL_AGE=54
+    # FT_DAY base rate × 1 day = 69
     ak_ccap_max_provider_rate_per_child: 69
 
 - name: Case 11, licensed center Anchorage school age FT day.
@@ -223,6 +225,7 @@
         age: 8
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_unit: FT_DAY
+        childcare_attending_days_per_month: 1
     spm_units:
       spm_unit:
         members: [person1]
@@ -232,7 +235,7 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # FT_DAY Anchorage SCHOOL_AGE = 54
+    # FT_DAY Anchorage SCHOOL_AGE = 54; × 1 day = 54
     ak_ccap_max_provider_rate_per_child: 54
 
 - name: Case 12, licensed center Anchorage toddler PT day.
@@ -244,6 +247,7 @@
         age: 2
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_unit: PT_DAY
+        childcare_attending_days_per_month: 1
     spm_units:
       spm_unit:
         members: [person1]
@@ -254,6 +258,7 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     # PT_DAY Anchorage: INFANT=40, TODDLER=43, PRESCHOOL=35, SCHOOL_AGE=27
+    # PT_DAY base × 1 day = 43
     ak_ccap_max_provider_rate_per_child: 43
 
 - name: Case 13, licensed center Anchorage preschool PT day.
@@ -265,6 +270,7 @@
         age: 4
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_unit: PT_DAY
+        childcare_attending_days_per_month: 1
     spm_units:
       spm_unit:
         members: [person1]
@@ -274,7 +280,7 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # PT_DAY Anchorage PRESCHOOL = 35
+    # PT_DAY Anchorage PRESCHOOL = 35; × 1 day = 35
     ak_ccap_max_provider_rate_per_child: 35
 
 - name: Case 14, licensed home Fairbanks toddler FT_DAY (non-Anchorage care unit coverage).
@@ -286,6 +292,7 @@
         age: 2
         ak_ccap_provider_type: LICENSED_HOME
         ak_ccap_care_unit: FT_DAY
+        childcare_attending_days_per_month: 1
     spm_units:
       spm_unit:
         members: [person1]
@@ -295,7 +302,7 @@
         state_code: AK
         county_str: FAIRBANKS_NORTH_STAR_BOROUGH_AK
   output:
-    # FT_DAY Fairbanks TODDLER licensed_home = 56
+    # FT_DAY Fairbanks TODDLER licensed_home = 56; × 1 day = 56
     ak_ccap_max_provider_rate_per_child: 56
 
 - name: Case 15, approved relative Bethel infant (rural non-zero rate).
@@ -339,3 +346,91 @@
   output:
     # FT_MONTH Aleutians East INFANT licensed_group_home = 1_208
     ak_ccap_max_provider_rate_per_child: 1_208
+
+- name: Case 17, FT_DAY Anchorage preschool with 20 attending days scales rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_DAY
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # FT_DAY Anchorage PRESCHOOL = 62; × 20 days = 1_240
+    ak_ccap_max_provider_rate_per_child: 1_240
+
+- name: Case 18, PT_DAY Anchorage school age with 10 attending days scales rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: PT_DAY
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # PT_DAY Anchorage SCHOOL_AGE = 27; × 10 days = 270
+    ak_ccap_max_provider_rate_per_child: 270
+
+- name: Case 19, FT_DAY with zero attending days returns zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_DAY
+        childcare_attending_days_per_month: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # FT_DAY base × 0 days = 0
+    ak_ccap_max_provider_rate_per_child: 0
+
+- name: Case 20, FT_MONTH unchanged by attending_days (monthly rate ignores days).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        childcare_attending_days_per_month: 20  # ignored for monthly care_unit
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # FT_MONTH Anchorage PRESCHOOL = 1_019 (unchanged)
+    ak_ccap_max_provider_rate_per_child: 1_019

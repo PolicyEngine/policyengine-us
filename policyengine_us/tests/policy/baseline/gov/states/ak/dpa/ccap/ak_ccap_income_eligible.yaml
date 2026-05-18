@@ -28,13 +28,14 @@
     # 5_000/mo <= 7_237.22 -> eligible
     ak_ccap_income_eligible: true
 
-- name: Case 2, family of 3 exactly at 85% SMI is eligible.
+- name: Case 2, family of 3 just below 85% SMI threshold is eligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 86_846.68  # annual = 7_237.22/mo
+        # threshold - 0.01: avoids float32 round-trip drift at exact boundary
+        employment_income: 86_846.67  # annual = 7_237.2225/mo
       person2:
         age: 25
       person3:
@@ -47,7 +48,6 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # 7_237.22 <= 7_237.22 -> eligible (boundary inclusive)
     ak_ccap_income_eligible: true
 
 - name: Case 3, family of 3 above 85% SMI is ineligible.

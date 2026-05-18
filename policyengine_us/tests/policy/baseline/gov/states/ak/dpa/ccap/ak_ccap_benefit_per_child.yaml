@@ -3,6 +3,7 @@
 # The supplement sits OUTSIDE the min(charged, max_state_rate) cap per
 # Manual §28321-28324 (Alaska IN! Special Needs Supplements are not
 # subject to the monthly maximum state payment amount) and §4370-1.
+# Supplement multiplier = 2 (7 AAC 41.060(b)); supplement = base × 1.
 
 - name: Case 1, default eligible child receives max state rate.
   period: 2025-01
@@ -70,9 +71,9 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Base = min(3_500, 1_019) = 1_019; supplement = 2 * 1_019 = 2_038
-    # Total = 1_019 + 2_038 = 3_057
-    ak_ccap_benefit_per_child: 3_057
+    # Base = min(3_500, 1_019) = 1_019; supplement = 1 * 1_019 = 1_019
+    # Total = 1_019 + 1_019 = 2_038
+    ak_ccap_benefit_per_child: 2_038
 
 - name: Case 4, disabled school-age child with charged between max and max*multiplier distinguishes new formula from old.
   period: 2025-01
@@ -85,7 +86,7 @@
         is_disabled: true
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_unit: FT_MONTH
-        ak_ccap_charged_rate: 1_500  # max (884) < charged (1_500) < max * 3 (2_652)
+        ak_ccap_charged_rate: 1_500  # max (884) < charged (1_500) < max * 2 (1_768)
     spm_units:
       spm_unit:
         members: [person1]
@@ -96,6 +97,6 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     # Anchorage SCHOOL_AGE FT_MONTH max state rate = 884
-    # New (correct) formula: min(1_500, 884) + (3-1)*884 = 884 + 1_768 = 2_652
-    # Old (buggy)   formula: min(1_500, 884 + 1_768) = min(1_500, 2_652) = 1_500
-    ak_ccap_benefit_per_child: 2_652
+    # New (correct) formula: min(1_500, 884) + (2-1)*884 = 884 + 884 = 1_768
+    # Old (buggy)   formula: min(1_500, 884 + 884) = min(1_500, 1_768) = 1_500
+    ak_ccap_benefit_per_child: 1_768

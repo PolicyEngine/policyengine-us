@@ -8,3 +8,4 @@ class ak_ccap_charged_rate(Variable):
     label = "Alaska CCAP provider charged rate per child"
     definition_period = MONTH
     defined_for = StateCode.AK
+    reference = "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=598"

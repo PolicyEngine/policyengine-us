@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
 
 
 class ak_ccap_smi_threshold(Variable):
@@ -15,8 +14,12 @@ class ak_ccap_smi_threshold(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        # Alaska CCAP uses the FICS-published AK SMI scale (derived from
+        # 2015-2019 ACS estimates), not the federal HHS SMI table. The
+        # threshold is 85% of the FICS monthly 100% SMI for the family
+        # size; the FICS table goes up to size 13, so larger families use
+        # the size-13 amount.
         p = parameters(period).gov.states.ak.dpa.ccap.income
         size = spm_unit("spm_unit_size", period.this_year)
-        state = spm_unit.household("state_code_str", period.this_year)
-        annual_smi = smi(size, state, period.this_year, parameters)
-        return annual_smi * p.smi_rate / MONTHS_IN_YEAR
+        monthly_smi = p.smi.amount.calc(size)
+        return monthly_smi * p.smi_rate

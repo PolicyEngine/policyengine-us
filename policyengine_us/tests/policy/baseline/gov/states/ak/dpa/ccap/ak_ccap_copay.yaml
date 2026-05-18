@@ -41,7 +41,8 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # SMI ratio = 3_250 / 8_514.38 = 0.3817 -> 5% band
+    # Family of 3 monthly SMI = 8_673
+    # SMI ratio = 3_250 / 8_673 = 0.3748 -> 5% band (>= 0.35, < 0.43)
     # copay = 3_250 * 0.05 = 162.50
     ak_ccap_copay: 162.50
 
@@ -67,6 +68,7 @@
         members: [person1, person2, person3, person4]
         state_code: AK
   output:
-    # SMI ratio = 5_500 / 10_136.17 = 0.5426 -> 7% band
+    # Family of 4 monthly SMI = 10_060
+    # SMI ratio = 5_500 / 10_060 = 0.5467 -> 7% band (>= 0.52, < 0.61)
     # copay = 5_500 * 0.07 = 385.00
     ak_ccap_copay: 385.00

@@ -1,0 +1,65 @@
+description: Alaska provides this amount as the monthly State Median Income by family size under the Child Care Assistance Program. Values come from the Family Income and Contribution Schedule (FICS), which is derived from a 5-year American Community Survey rolling average and is revised when new ACS estimates and the state's CCDF plan are released.
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  label: Alaska CCAP monthly State Median Income by family size
+  reference:
+    - title: Alaska Family Income and Contribution Schedule (FICS), rev. Feb 21, 2022
+      href: https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1
+    - title: CCAP Policies and Procedures Manual, Section 4080-1 Income Eligibility (printed p.203)
+      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=230
+brackets:
+  - threshold:
+      2022-02-21: 1
+    amount:
+      2022-02-21: 5_897
+  - threshold:
+      2022-02-21: 2
+    amount:
+      2022-02-21: 7_285
+  - threshold:
+      2022-02-21: 3
+    amount:
+      2022-02-21: 8_673
+  - threshold:
+      2022-02-21: 4
+    amount:
+      2022-02-21: 10_060
+  - threshold:
+      2022-02-21: 5
+    amount:
+      2022-02-21: 11_448
+  - threshold:
+      2022-02-21: 6
+    amount:
+      2022-02-21: 11_708
+  - threshold:
+      2022-02-21: 7
+    amount:
+      2022-02-21: 11_968
+  - threshold:
+      2022-02-21: 8
+    amount:
+      2022-02-21: 12_228
+  - threshold:
+      2022-02-21: 9
+    amount:
+      2022-02-21: 12_488
+  - threshold:
+      2022-02-21: 10
+    amount:
+      2022-02-21: 12_748
+  - threshold:
+      2022-02-21: 11
+    amount:
+      2022-02-21: 13_008
+  - threshold:
+      2022-02-21: 12
+    amount:
+      2022-02-21: 13_268
+  - threshold:
+      2022-02-21: 13
+    amount:
+      2022-02-21: 13_528

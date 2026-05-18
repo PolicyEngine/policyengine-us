@@ -12,9 +12,9 @@ class ak_ccap_parent_in_eligible_activity(Variable):
     def formula(spm_unit, period):
         # Manual §4070-3 D requires EACH parent to be engaged in an eligible
         # activity. We don't track job search, training, jury duty, or CC24
-        # incapacity at the moment — those parents won't appear as
-        # individually eligible. Use observed work, self-employment, hours
-        # worked, or full-time student status as the signal.
+        # incapacity at the moment — fall back to the federal CCDF activity
+        # test (meets_ccdf_activity_test) so units flagged there are
+        # treated as meeting the AK requirement.
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         emp_income = person("employment_income", period.this_year)
@@ -26,4 +26,6 @@ class ak_ccap_parent_in_eligible_activity(Variable):
         )
         n_parents = spm_unit.sum(is_head_or_spouse)
         n_failing_parents = spm_unit.sum(is_head_or_spouse & ~individually_eligible)
-        return (n_parents >= 1) & (n_failing_parents == 0)
+        all_parents_qualify = (n_parents >= 1) & (n_failing_parents == 0)
+        fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
+        return all_parents_qualify | fallback

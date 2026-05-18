@@ -14,8 +14,19 @@ class ak_ccap_countable_earned_income(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ak.dpa.ccap.income.countable_income
+        # Manual §4080-2 J.4 prorates annual self-employment income over
+        # 12 months when self-employment income exceeds 185% of the federal
+        # poverty guideline for the family size, and over the "months of
+        # normal season of work" otherwise. We don't model the seasonal
+        # branch at the moment because PolicyEngine treats
+        # `self_employment_income` as annualized; the standard period
+        # conversion from annual to monthly approximates the >185% FPG
+        # branch.
+        p_income = parameters(period).gov.states.ak.dpa.ccap.income.countable_income
+        adult_age = parameters(period).gov.states.ak.dpa.ccap.age_threshold.adult
         person = spm_unit.members
-        is_adult = person("age", period.this_year) >= 18
-        earned_per_person = sum(person(source, period) for source in p.earned_sources)
+        is_adult = person("age", period.this_year) >= adult_age
+        earned_per_person = sum(
+            person(source, period) for source in p_income.earned_sources
+        )
         return spm_unit.sum(earned_per_person * is_adult)

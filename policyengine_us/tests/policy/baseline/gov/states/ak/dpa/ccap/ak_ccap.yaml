@@ -19,17 +19,19 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child]
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2: monthly SMI = 121_634 * 0.68 / 12 = 6_892.59
-    # Income ratio = 2_000 / 6_892.59 = 0.2902 -> 4% band (>= 0.26, < 0.35)
+    # Family of 2 monthly SMI = 7_285
+    # Income ratio = 2_000 / 7_285 = 0.2745 -> 4% band (>= 0.26, < 0.35)
     # copay = 2_000 * 0.04 = 80
     # Anchorage center preschool FT_MONTH = 1_019
-    # Benefit = max(0, 1_019 - 80) = 939
+    # Expenses = 10_000/mo (does not bind cap)
+    # Benefit = max(0, min(10_000, 1_019) - 80) = 939
     ak_ccap: 939
 
 - name: Case 2, ineligible family above 85% SMI gets zero.
@@ -85,14 +87,15 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent1, parent2, child1, child2]
         state_code: AK
         county_str: MATANUSKA_SUSITNA_BOROUGH_AK
   output:
-    # Family of 4 monthly SMI = 121_634 / 12 = 10_136.17
-    # Income ratio = 2_500 / 10_136.17 = 0.2466 -> 3% band (>= 0.18, < 0.26)
+    # Family of 4 monthly SMI = 10_060
+    # Income ratio = 2_500 / 10_060 = 0.2485 -> 3% band (>= 0.18, < 0.26)
     # copay = 2_500 * 0.03 = 75
     # Mat-Su licensed center FT_MONTH toddler = 760 (child1)
     # Mat-Su licensed home   FT_MONTH school age = 652 (child2)
@@ -146,17 +149,18 @@
         members: [parent, child]
         ak_was_atap_recipient: true
         ak_months_since_atap_exit: 6
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child]
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2 monthly SMI = 6_892.59
-    # Income ratio = 1_500 / 6_892.59 = 0.2176 -> 3% band (>= 0.18, < 0.26)
+    # Family of 2 monthly SMI = 7_285
+    # Income ratio = 1_500 / 7_285 = 0.2059 -> 3% band (>= 0.18, < 0.26)
     # copay = 1_500 * 0.03 = 45
     # Anchorage licensed_home FT_MONTH preschool = 700
-    # Benefit = 700 - 45 = 655
+    # Benefit = min(10_000, 700) - 45 = 655
     ak_ccap_pass_category: PASS_II
     ak_ccap: 655
 
@@ -177,6 +181,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child]
@@ -185,7 +190,7 @@
   output:
     # Countable income clipped to 0 by max_() in countable_income;
     # copay rate at 0 SMI ratio = 0; copay = 0
-    # Benefit = 1_019 - 0 = 1_019 (not 60M+)
+    # Benefit = min(10_000, 1_019) - 0 = 1_019 (not 60M+)
     ak_ccap: 1_019
 
 - name: Case 7, special-needs child gets supplement when charged rate is high.
@@ -207,6 +212,7 @@
     spm_units:
       spm_unit:
         members: [parent, child_sn]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child_sn]
@@ -214,9 +220,9 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     # SMI ratio ≈ 0.2915 -> 4% band (SSI received by disabled child is small but counted)
-    # benefit_per_child = min(3_500, 1_019) + 2_038 = 3_057 (supplement outside cap)
-    # Total = 3_057 - copay ≈ 2_976.62
-    ak_ccap: 2_976.62
+    # benefit_per_child = min(3_500, 1_019) + 1_019 = 2_038 (supplement outside cap, mult=2)
+    # Total = min(10_000, 2_038) - copay ≈ 1_957.62
+    ak_ccap: 1_957.62
 
 - name: Case 8, non-AK household returns zero (defined_for).
   period: 2025-01
@@ -265,6 +271,7 @@
     spm_units:
       spm_unit:
         members: [parent, child_citizen, child_undocumented]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
     households:
       household:
         members: [parent, child_citizen, child_undocumented]
@@ -274,7 +281,7 @@
     # Only citizen child counts as eligible
     ak_ccap_child_eligible: [false, true, false]
     ak_ccap_eligible: true
-    # Anchorage center FT_MONTH preschool = 1_019; family of 3 SMI = 8_514.38
-    # SMI ratio = 2_000 / 8_514.38 = 0.235 -> 3% band; copay = 60
-    # Benefit = 1_019 - 60 = 959
+    # Anchorage center FT_MONTH preschool = 1_019; family of 3 monthly SMI = 8_673
+    # SMI ratio = 2_000 / 8_673 = 0.2306 -> 3% band; copay = 60
+    # Benefit = min(10_000, 1_019) - 60 = 959
     ak_ccap: 959

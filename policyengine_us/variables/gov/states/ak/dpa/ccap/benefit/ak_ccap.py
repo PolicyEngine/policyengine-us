@@ -11,9 +11,22 @@ class ak_ccap(Variable):
     reference = (
         "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=846",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
+        "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=596",
     )
 
     def formula(spm_unit, period):
+        # Manual §4370 describes the subsidy as
+        # `min(provider charged rate, state max rate) - copay`.
+        # In microsim we don't observe per-provider charged rates, so we
+        # approximate the regulatory min(charged, max) with min(actual
+        # childcare expenses the household pays, state max). This matches
+        # the MA CCFA / CO CCAP / RI CCAP convention. We use
+        # `spm_unit_pre_subsidy_childcare_expenses` (not `childcare_expenses`)
+        # to avoid a cycle with state TANF programs.
         total_per_child = add(spm_unit, period, ["ak_ccap_benefit_per_child"])
+        pre_subsidy_childcare_expenses = spm_unit(
+            "spm_unit_pre_subsidy_childcare_expenses", period
+        )
         copay = spm_unit("ak_ccap_copay", period)
-        return max_(0, total_per_child - copay)
+        capped = min_(pre_subsidy_childcare_expenses, total_per_child)
+        return max_(0, capped - copay)

@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
 
 
 class ak_ccap_smi_band(Variable):
@@ -12,9 +11,11 @@ class ak_ccap_smi_band(Variable):
     reference = "https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
+        # Uses the FICS-published AK monthly 100% SMI by family size so the
+        # copay band aligns with the same SMI scale that
+        # `ak_ccap_smi_threshold` uses for eligibility.
+        p = parameters(period).gov.states.ak.dpa.ccap.income
         countable = spm_unit("ak_ccap_countable_income", period)
         size = spm_unit("spm_unit_size", period.this_year)
-        state = spm_unit.household("state_code_str", period.this_year)
-        annual_smi = smi(size, state, period.this_year, parameters)
-        monthly_smi = annual_smi / MONTHS_IN_YEAR
+        monthly_smi = p.smi.amount.calc(size)
         return where(monthly_smi > 0, countable / monthly_smi, 0)
