@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import instant
 from policyengine_core.periods import period as period_
 
 
@@ -7,7 +6,7 @@ def create_refundable_credit_conversion() -> Reform:
     """Refundable credit conversion reform.
 
     Adds a flat refundable credit composed of independently toggleable
-    components to the federal refundable credit list (`gov.irs.credits.refundable`):
+    components to the federal refundable credit list:
 
       * per-taxpayer (each head of tax unit and spouse if MFJ)
       * per-CTC-qualifying dependent
@@ -23,12 +22,12 @@ def create_refundable_credit_conversion() -> Reform:
     (e.g., `use_taxpayer_credit`); when false, that component
     contributes zero regardless of its amount.
 
-    The reform appends `flat_refundable_credit` to the
-    `gov.irs.credits.refundable` parameter (a list of variable names
-    summed into the federal refundable-credits total). Existing list
-    contents are preserved at every historical transition. The base
-    `income_tax_refundable_credits` variable is unmodified; it picks up
-    the appended credit through its existing `adds` attribute.
+    The reform overrides `income_tax_refundable_credits` to append
+    `flat_refundable_credit` to whatever list the baseline
+    `gov.irs.credits.refundable` parameter resolves to for the period.
+    The list (and its dynamic membership — e.g., CDCC only in 2021) is
+    preserved by reading the parameter at simulation time and adding the
+    new credit to it.
 
     Eliminations of baseline credits and deductions (CTC, EITC, standard
     deduction, itemized deductions, above-the-line deductions, Head of
@@ -49,7 +48,6 @@ def create_refundable_credit_conversion() -> Reform:
 
             person = tax_unit.members
 
-            # Per-taxpayer credit (each head of tax unit and spouse if MFJ).
             if p.credit.use_taxpayer_credit:
                 is_filer = person("is_tax_unit_head_or_spouse", period)
                 taxpayer_count = tax_unit.sum(is_filer)
@@ -57,10 +55,10 @@ def create_refundable_credit_conversion() -> Reform:
             else:
                 taxpayer_amount = 0
 
-            # Per-CTC-qualifying dependent credit (reuses the baseline
-            # `ctc_qualifying_children` variable; same eligibility rules
-            # as the federal CTC per IRC §24(c)). Hoisted so the
-            # per-other-dependent branch can reuse the same count.
+            # Reuses the baseline `ctc_qualifying_children` variable so
+            # the same eligibility rules as the federal CTC apply (per
+            # IRC §24(c)). Hoisted so the per-other-dependent branch can
+            # reuse the same count.
             ctc_count = tax_unit("ctc_qualifying_children", period)
             if p.credit.use_ctc_dependent_credit:
                 ctc_dependent_amount = ctc_count * p.credit.per_ctc_dependent
@@ -84,9 +82,8 @@ def create_refundable_credit_conversion() -> Reform:
                 p.credit.per_household if p.credit.use_household_credit else 0
             )
 
-            # Per-earner earnings subsidy (rate * capped earnings per
-            # worker, summed across the tax unit). Uses `earned_income`
-            # which follows the EITC convention of wages + self-employment.
+            # Per-earner earnings subsidy. Uses `earned_income` which
+            # follows the EITC convention of wages + self-employment.
             if p.earnings_credit.use_earnings_credit:
                 earnings = person("earned_income", period)
                 capped_earnings = min_(max_(earnings, 0), p.earnings_credit.cap)
@@ -103,27 +100,22 @@ def create_refundable_credit_conversion() -> Reform:
                 + earnings_credit_amount
             )
 
-    def modify_parameters(parameters):
-        # Append `flat_refundable_credit` to every existing transition of
-        # `gov.irs.credits.refundable`. Snapshotting first avoids mutating
-        # the list while we iterate it.
-        refundable = parameters.gov.irs.credits.refundable
-        transitions = [
-            (entry.instant_str, list(entry.value)) for entry in refundable.values_list
-        ]
-        for instant_str, value in transitions:
-            if "flat_refundable_credit" in value:
-                continue
-            refundable.update(
-                start=instant(instant_str),
-                value=value + ["flat_refundable_credit"],
-            )
-        return parameters
+    class income_tax_refundable_credits(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "federal refundable income tax credits"
+        unit = USD
+
+        def formula(tax_unit, period, parameters):
+            base = list(parameters(period).gov.irs.credits.refundable)
+            credits = base + ["flat_refundable_credit"]
+            return add(tax_unit, period, credits)
 
     class reform(Reform):
         def apply(self):
             self.update_variable(flat_refundable_credit)
-            self.modify_parameters(modify_parameters)
+            self.update_variable(income_tax_refundable_credits)
 
     return reform
 

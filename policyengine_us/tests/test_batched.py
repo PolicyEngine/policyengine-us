@@ -88,16 +88,15 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
-            # refundable_credit_conversion's modify_parameters appends
-            # flat_refundable_credit to gov.irs.credits.refundable. The
-            # baseline income_tax_refundable_credits variable (adds =
-            # "gov.irs.credits.refundable") then pulls every refundable
-            # credit (eitc / refundable_ctc / aotc / recovery rebate /
-            # refundable payroll tax credit / cdcc in 2021) into the
-            # subprocess's variable graph when integration.yaml asserts
-            # on it. Bundled with the catch-all this pushes peak memory
-            # past the runner cap mid-batch, surfacing as "shutdown
-            # signal". Its own batch keeps the light batch under the cap.
+            # refundable_credit_conversion's override of
+            # income_tax_refundable_credits pulls every federal
+            # refundable credit (eitc / refundable_ctc / aotc /
+            # recovery rebate / refundable payroll tax credit /
+            # cdcc-in-2021) into the subprocess's variable graph when
+            # integration.yaml asserts on it. Bundled with the catch-all
+            # this pushes peak memory past the runner cap, surfacing as
+            # "shutdown signal" mid-batch. Its own batch keeps the
+            # light batch under the cap.
             "refundable_credit_conversion",
         }
 
