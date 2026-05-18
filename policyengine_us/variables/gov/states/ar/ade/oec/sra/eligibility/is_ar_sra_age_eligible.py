@@ -7,10 +7,7 @@ class is_ar_sra_age_eligible(Variable):
     label = "Age-eligible for Arkansas SRA"
     definition_period = MONTH
     defined_for = StateCode.AR
-    reference = (
-        "https://www.publichealthlawcenter.org/sites/default/files/Arkansas%20Title%20016%20Division%2022%20Rule%208.pdf#page=11",
-        "https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=13",
-    )
+    reference = "https://www.publichealthlawcenter.org/sites/default/files/Arkansas%20Title%20016%20Division%2022%20Rule%208.pdf#page=11"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.eligibility

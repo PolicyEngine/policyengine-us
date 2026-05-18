@@ -1,7 +1,9 @@
 description: Arkansas sets these age thresholds in months for age categories under the School Readiness Assistance program.
-# Age-category month boundaries are undocumented in Arkansas sources;
-# these peer-state defaults (Infant <=17 mo, Toddler 18-35 mo, Preschool
-# 36-71 mo, School-Aged 72+ mo) are flagged for future verification.
+# The rate sheets group rates by Infant / Toddler / Preschool / School-Aged
+# but do NOT specify month boundaries within those labels. The encoded
+# month boundaries (Infant <=17 mo, Toddler 18-35 mo, Preschool 36-71 mo,
+# School-Aged 72+ mo) are peer-state conventions, not Arkansas sources,
+# and are flagged for future verification with OEC.
 
 brackets:
   - threshold:
@@ -28,5 +30,5 @@ metadata:
   period: year
   label: Arkansas SRA age category month thresholds
   reference:
-    - title: FSU Procedural Manual (June 2023), Section 4.1
-      href: https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=13
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Full Time (Nov 1, 2025) - age category labels
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf

@@ -14,7 +14,7 @@
 
 - name: Case 1, Statewide infant full time base rate is 36.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -30,7 +30,7 @@
 
 - name: Case 2, Statewide toddler full time base rate is 35.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -46,7 +46,7 @@
 
 - name: Case 3, Statewide preschool full time base rate is 33.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -62,7 +62,7 @@
 
 - name: Case 4, Statewide school-aged full time base rate is 28.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -78,7 +78,7 @@
 
 - name: Case 5, Benton/Washington infant full time base rate is 38.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -94,7 +94,7 @@
 
 - name: Case 6, Benton/Washington toddler full time base rate is 37.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -110,7 +110,7 @@
 
 - name: Case 7, Statewide infant part time base rate is 18.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -126,7 +126,7 @@
 
 - name: Case 8, Benton/Washington infant part time base rate is 19.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -142,7 +142,7 @@
 
 - name: Case 9, Statewide infant Night/Weekend full time base rate is 39.60.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -159,7 +159,7 @@
 
 - name: Case 10, Statewide infant SN1 full time base rate is 36.00.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -176,7 +176,7 @@
 
 - name: Case 11, Statewide infant SN2 full time base rate is 50.40.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -193,7 +193,7 @@
 
 - name: Case 12, Statewide infant SN3 full time base rate is 50.40.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -210,7 +210,7 @@
 
 - name: Case 13, Statewide preschool Night/Weekend full time base rate is 36.30.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

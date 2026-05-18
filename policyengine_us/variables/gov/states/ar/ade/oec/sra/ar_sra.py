@@ -18,9 +18,13 @@ class ar_sra(Variable):
         is_eligible_child = person("is_ar_sra_child_eligible", period)
         daily_state_payment = person("ar_sra_daily_state_payment", period)
         daily_copay = person("ar_sra_daily_copay", period)
+        # `childcare_attending_days_per_month` is YEAR-defined but stores
+        # a monthly count (e.g., 22 days/mo); read at this_year to skip the
+        # YEAR→MONTH auto-divide.
         attending_days = person("childcare_attending_days_per_month", period.this_year)
         monthly_max_state_payment = daily_state_payment * attending_days
         monthly_copay = daily_copay * attending_days
+        # YEAR-defined expense auto-divides to monthly at MONTH period.
         monthly_expense = person("pre_subsidy_childcare_expenses", period)
         subsidy = min_(
             max_(monthly_expense - monthly_copay, 0),

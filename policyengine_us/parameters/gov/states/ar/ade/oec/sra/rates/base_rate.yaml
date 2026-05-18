@@ -1,4 +1,7 @@
 description: Arkansas provides these daily base reimbursement rates under the School Readiness Assistance program.
+# Source rate sheets have no Part-Time Night/Weekend row. PT NIGHT_WEEKEND
+# cells below mirror PT REGULAR as a fallback so the (zone × age × care_type
+# × time) lookup is complete; this is a modeling choice, not a source value.
 metadata:
   period: day
   unit: currency-USD
@@ -28,7 +31,6 @@ BENTON_WASHINGTON:
     NIGHT_WEEKEND:
       FULL_TIME:
         2025-11-01: 41.80
-      # Part-Time has no Night/Weekend row; uses regular Part-Time rate
       PART_TIME:
         2025-11-01: 19.00
     SN1:

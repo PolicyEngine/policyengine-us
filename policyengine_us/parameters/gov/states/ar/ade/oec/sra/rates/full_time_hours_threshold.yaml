@@ -1,7 +1,8 @@
 description: Arkansas sets this weekly hours threshold for full-time child care under the School Readiness Assistance program.
-# The full-time vs part-time hour cut-point is undocumented in Arkansas
-# sources; this 30-hour default mirrors peer-state conventions (NH uses
-# 31+ hours for FT; RI uses 30/45) and is flagged for future verification.
+# Arkansas rate sheets distinguish Full Time vs Part Time as billing
+# categories but do NOT define the numeric hours cut-point. The encoded
+# 30-hour threshold mirrors peer-state conventions (NH uses 31+ for FT;
+# RI uses 30/45) and is flagged for future verification with OEC.
 values:
   2025-10-01: 30
 
@@ -10,7 +11,7 @@ metadata:
   period: year
   label: Arkansas SRA full-time weekly hours threshold
   reference:
-    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Full Time (Nov 1, 2025)
+    - title: SRA Sliding Fee Scale - Statewide Full Time (Nov 1, 2025) - establishes Full Time category
       href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf
-    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Part Time (Nov 1, 2025)
+    - title: SRA Sliding Fee Scale - Statewide Part Time (Nov 1, 2025) - establishes Part Time category
       href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Part_Time_20251101_OEC.pdf
