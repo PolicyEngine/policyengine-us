@@ -374,3 +374,78 @@
         state_code: AR
   output:
     is_ar_sra_ess_eligible: false
+
+- name: Case 17, ESS Year-1 alt path (FSU 4.1.5.1) - earnings exceed TEA income limit, work hours below the 20 hr threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 15
+        # AR TEA income limit for 2-person SPM is well under $30k/year;
+        # $30k earnings make the family TEA-income-ineligible.
+        employment_income: 30_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 18, ESS Year-1 work-hours fallback - 15 hr/wk plus TEA-income-eligible (low income) fails the activity test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 15
+        # Zero income keeps the family TEA-income-eligible.
+        employment_income: 0
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
+
+- name: Case 19, ESS Year-2 alt path does NOT include TEA-income-ineligibility - Year-2 requires 25 hr/wk or full-time student.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 15
+        employment_income: 30_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 18
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
