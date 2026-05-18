@@ -61,6 +61,31 @@
   output:
     flat_refundable_credit: 3_200  # 2 * 1_000 + 2 * 500 + 200
 
+- name: Household credit alone — flat per-tax-unit amount, not per-person
+  # Isolation test for use_household_credit. With only this toggle on, the
+  # credit equals per_household regardless of household size or filing
+  # status. A regression that made it per-person or per-taxpayer would
+  # fail this case (MFJ would otherwise return 1,000 instead of 500).
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_household: 500
+    people:
+      filer:
+        age: 35
+      spouse:
+        age: 33
+      child:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 500
+
 - name: Amount set but toggle off — component does not fire
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
