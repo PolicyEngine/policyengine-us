@@ -2,6 +2,7 @@
 
 from policyengine_us.system import system
 from policyengine_us.parameters.uprating_extensions import (
+    LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
     round_social_security_payroll_cap,
 )
 
@@ -54,6 +55,115 @@ def test_all_uprating_factors_extend_to_2100():
         assert abs(growth_rate_1 - growth_rate_2) < 0.001, (
             f"{name} growth rate should be consistent: {growth_rate_1:.5f} vs {growth_rate_2:.5f}"
         )
+
+
+def test_cbo_income_by_source_anchors_extend_to_2100():
+    """CBO income-source anchors should not flatten after the budget window."""
+    income_by_source = PARAMETERS.calibration.gov.cbo.income_by_source
+
+    for parameter_name in LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS:
+        parameter = getattr(income_by_source, parameter_name)
+        values = [parameter(f"{year}-01-01") for year in [2036, 2050, 2075, 2100]]
+
+        for value in values:
+            assert value > 0, f"{parameter_name} should stay positive"
+        for previous, current in zip(values, values[1:]):
+            assert current != previous, f"{parameter_name} should extend after 2036"
+
+
+def test_cms_moop_per_capita_extends_to_2100():
+    """Health expense input upraters should not flatten after 2035."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.moop_per_capita
+
+    assert parameter("2036-01-01") > parameter("2035-01-01")
+    assert parameter("2100-01-01") > parameter("2036-01-01")
+
+
+def test_soi_income_upraters_extend_without_trustees_reform():
+    """SOI income upraters should inherit baseline long-run CBO extensions."""
+    soi = PARAMETERS.calibration.gov.irs.soi
+
+    for parameter_name in [
+        "employment_income",
+        "self_employment_income",
+        "qualified_dividend_income",
+        "taxable_interest_income",
+        "taxable_pension_income",
+        "tax_exempt_pension_income",
+        "social_security",
+    ]:
+        parameter = getattr(soi, parameter_name)
+        assert parameter("2037-01-01") > parameter("2036-01-01")
+        assert parameter("2100-01-01") > parameter("2036-01-01")
+
+
+def test_retirement_distribution_inputs_use_pension_upraters():
+    """Retirement account components should age with pension income, not AGI."""
+    taxable_uprater = "calibration.gov.irs.soi.taxable_pension_income"
+    tax_exempt_uprater = "calibration.gov.irs.soi.tax_exempt_pension_income"
+
+    for variable_name in [
+        "csrs_retirement_pay",
+        "keogh_distributions",
+        "military_retirement_pay",
+        "military_retirement_pay_survivors",
+        "pension_survivors",
+        "retirement_benefits_from_ss_exempt_employment",
+        "taxable_ira_distributions",
+        "taxable_401k_distributions",
+        "taxable_403b_distributions",
+        "taxable_federal_pension_income",
+        "taxable_public_pension_income",
+        "taxable_sep_distributions",
+        "taxable_private_pension_income",
+    ]:
+        assert system.variables[variable_name].uprating == taxable_uprater
+
+    for variable_name in [
+        "tax_exempt_ira_distributions",
+        "tax_exempt_401k_distributions",
+        "tax_exempt_403b_distributions",
+        "tax_exempt_public_pension_income",
+        "tax_exempt_sep_distributions",
+        "tax_exempt_private_pension_income",
+    ]:
+        assert system.variables[variable_name].uprating == tax_exempt_uprater
+
+
+def test_float_dollar_inputs_have_long_run_upraters():
+    """Every float USD input should have a resolvable non-flat 2100 uprater."""
+    missing = []
+    unresolvable = []
+    flat = []
+
+    for variable in system.variables.values():
+        if not (
+            variable.is_input_variable()
+            and variable.value_type is float
+            and variable.unit == "currency-USD"
+        ):
+            continue
+
+        if variable.uprating is None:
+            missing.append(variable.name)
+            continue
+
+        parameter = PARAMETERS
+        try:
+            for path_part in variable.uprating.split("."):
+                parameter = getattr(parameter, path_part)
+            value_2036 = float(parameter("2036-01-01"))
+            value_2100 = float(parameter("2100-01-01"))
+        except (AttributeError, TypeError, ValueError):
+            unresolvable.append((variable.name, variable.uprating))
+            continue
+
+        if value_2036 == value_2100:
+            flat.append((variable.name, variable.uprating))
+
+    assert missing == []
+    assert unresolvable == []
+    assert flat == []
 
 
 def test_ssa_nawi_and_payroll_cap_extend_to_2100():
