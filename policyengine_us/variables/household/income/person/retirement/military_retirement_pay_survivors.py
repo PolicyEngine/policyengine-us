@@ -7,3 +7,4 @@ class military_retirement_pay_survivors(Variable):
     label = "Military retirement income paid to surviving spouses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"
