@@ -2,13 +2,14 @@
 # Initial path: monthly income <= 180% FPL AND <= 85% SMI.
 # Continuing path (al_ccsp_enrolled=True): monthly income <= 200% FPL AND <= 85% SMI.
 #
-# 2024 FPG (Contiguous US): first_person $15,060, additional $5,380.
-#   Family of 2: $20,440/yr ($1,703.33/mo)
-#   Family of 3: $25,820/yr ($2,151.67/mo)
-#   Family of 4: $31,200/yr ($2,600/mo)
-# 180% FPL (FS 3): $46,476/yr ($3,873/mo)
-# 180% FPL (FS 4): $56,160/yr ($4,680/mo)
-# 200% FPL (FS 4): $62,400/yr ($5,200/mo)
+# AL CCSP uses the prior year's HHS FPG (Fact Sheet 2024 -> 2023 FPG).
+# 2023 FPG (Contiguous US): first_person $14,580, additional $5,140.
+#   Family of 2: $19,720/yr ($1,643.33/mo)
+#   Family of 3: $24,860/yr ($2,071.67/mo)
+#   Family of 4: $30,000/yr ($2,500/mo)
+# 180% FPL (FS 3): $44,748/yr ($3,729/mo)
+# 180% FPL (FS 4): $54,000/yr ($4,500/mo)
+# 200% FPL (FS 4): $60,000/yr ($5,000/mo)
 # AL SMI FS 4 (2023-10-01 -> applies 2024): $88,407. 85% SMI FS 4: $75,145.95/yr ($6,262.16/mo).
 
 - name: Family at 150 percent FPL initial path is income eligible.
@@ -17,7 +18,7 @@
     people:
       person1:
         age: 30
-        employment_income: 46_800  # 150% FPL fam of 4 = 46,800/yr = 3,900/mo
+        employment_income: 45_000  # 150% FPL fam of 4 = 45,000/yr = 3,750/mo
       person2:
         age: 28
       person3:
@@ -38,8 +39,8 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 3,900/mo <= 4,680/mo (180% FPL) -> initial-eligible
-    # 3,900/mo <= 6,262/mo (85% SMI) -> SMI-eligible
+    # 3,750/mo <= 4,500/mo (180% FPL) -> initial-eligible
+    # 3,750/mo <= 6,262/mo (85% SMI) -> SMI-eligible
     al_ccsp_income_eligible: true
 
 - name: Family at 190 percent FPL initial path is income ineligible.
@@ -48,7 +49,7 @@
     people:
       person1:
         age: 30
-        employment_income: 59_280  # 190% FPL fam of 4 = 59,280/yr = 4,940/mo
+        employment_income: 57_000  # 190% FPL fam of 4 = 57,000/yr = 4,750/mo
       person2:
         age: 28
       person3:
@@ -69,7 +70,7 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 4,940/mo > 4,680/mo (180% FPL) -> initial path fails
+    # 4,750/mo > 4,500/mo (180% FPL) -> initial path fails
     al_ccsp_income_eligible: false
 
 - name: Family at 190 percent FPL continuing path is income eligible.
@@ -78,7 +79,7 @@
     people:
       person1:
         age: 30
-        employment_income: 59_280  # 190% FPL fam of 4
+        employment_income: 57_000  # 190% FPL fam of 4
       person2:
         age: 28
       person3:
@@ -99,8 +100,8 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 4,940/mo <= 5,200/mo (200% FPL) -> continuing-eligible
-    # 4,940/mo <= 6,262/mo (85% SMI) -> SMI-eligible
+    # 4,750/mo <= 5,000/mo (200% FPL) -> continuing-eligible
+    # 4,750/mo <= 6,262/mo (85% SMI) -> SMI-eligible
     al_ccsp_income_eligible: true
 
 - name: Family above 200 percent FPL continuing path is income ineligible.
@@ -109,7 +110,7 @@
     people:
       person1:
         age: 30
-        employment_income: 65_000  # ~208% FPL fam of 4 = 5,417/mo
+        employment_income: 63_000  # 210% FPL fam of 4 = 5,250/mo
       person2:
         age: 28
       person3:
@@ -130,7 +131,7 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 5,417/mo > 5,200/mo (200% FPL) -> continuing path fails
+    # 5,250/mo > 5,000/mo (200% FPL) -> continuing path fails
     al_ccsp_income_eligible: false
 
 - name: Family above 85 percent SMI is income ineligible even at continuing tier.
@@ -170,7 +171,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_160  # 180% FPL fam of 4 = 31,200 * 1.8
+        employment_income: 54_000  # 180% FPL fam of 4 = 30,000 * 1.8
       person2:
         age: 28
       person3:
@@ -191,7 +192,7 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 56,160 == 180% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    # 54,000 == 180% FPL exactly -> formula uses <=, so still eligible at the boundary.
     al_ccsp_income_eligible: true
 
 - name: Family at exactly 200 percent FPL continuing path is income eligible.
@@ -200,7 +201,7 @@
     people:
       person1:
         age: 30
-        employment_income: 62_400  # 200% FPL fam of 4 = 31,200 * 2.0
+        employment_income: 60_000  # 200% FPL fam of 4 = 30,000 * 2.0
       person2:
         age: 28
       person3:
@@ -221,8 +222,8 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 62,400 == 200% FPL exactly -> formula uses <=, so still eligible at the boundary.
-    # 62,400/yr < 75,146/yr (85% SMI) -> SMI cap passes.
+    # 60,000 == 200% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    # 60,000/yr < 75,146/yr (85% SMI) -> SMI cap passes.
     al_ccsp_income_eligible: true
 
 - name: Family just over 85 percent SMI is income ineligible at continuing tier.

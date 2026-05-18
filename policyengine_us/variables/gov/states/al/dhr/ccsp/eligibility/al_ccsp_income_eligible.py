@@ -13,7 +13,12 @@ class al_ccsp_income_eligible(Variable):
         p = parameters(period).gov.states.al.dhr.ccsp.income.limit
         monthly_income = spm_unit("al_ccsp_countable_income", period)
 
-        monthly_fpg = spm_unit("spm_unit_fpg", period)
+        # Alabama's published income tables (Child Care Fact Sheet) use the
+        # prior calendar year's HHS poverty guidelines throughout the
+        # benefit year, since HHS publishes the new guidelines mid-January.
+        prior_year = period.start.year - 1
+        annual_fpg = spm_unit("spm_unit_fpg", str(prior_year))
+        monthly_fpg = annual_fpg / MONTHS_IN_YEAR
         enrolled = spm_unit("al_ccsp_enrolled", period)
         fpl_limit_ratio = where(
             enrolled,

@@ -51,7 +51,7 @@
     people:
       person1:
         age: 30
-        employment_income: 18_000  # ~ 86% FPL fam of 2 -> 0% copay band
+        employment_income: 18_000  # ~91% 2023 FPG fam of 2 -> 0% copay band
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:
@@ -90,7 +90,7 @@
     people:
       person1:
         age: 30
-        employment_income: 30_660  # 150% FPL fam of 2 = 2,555/mo
+        employment_income: 29_580  # 150% 2023 FPG fam of 2 = 19,720 * 1.5
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -162,7 +162,7 @@
     people:
       person1:
         age: 30
-        employment_income: 18_000  # ~58% FPL fam of 4 -> zero copay band
+        employment_income: 18_000  # ~60% 2023 FPG fam of 4 -> zero copay band
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:

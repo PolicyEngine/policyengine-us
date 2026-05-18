@@ -15,7 +15,10 @@ class al_ccsp_weekly_copay_per_child(Variable):
         # Floor income at 0 so self-employment / farm losses land in the
         # $0 copay band rather than producing a negative FPL ratio.
         monthly_income = max_(spm_unit("al_ccsp_countable_income", period), 0)
-        monthly_fpg = spm_unit("spm_unit_fpg", period)
+        # Use the prior calendar year's HHS poverty guidelines to match
+        # Alabama's Child Care Fact Sheet operational thresholds.
+        prior_year = period.start.year - 1
+        monthly_fpg = spm_unit("spm_unit_fpg", str(prior_year)) / MONTHS_IN_YEAR
         fpl_ratio = where(monthly_fpg > 0, monthly_income / monthly_fpg, 0)
         fee = p.fee_by_fpl.calc(fpl_ratio)
         copay_waived = spm_unit("al_ccsp_copay_waived", period)

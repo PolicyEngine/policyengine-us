@@ -315,7 +315,7 @@
     people:
       person1:
         age: 30
-        employment_income: 20_440  # 100% FPL fam of 2
+        employment_income: 19_720  # 100% 2023 FPG fam of 2
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:
@@ -347,7 +347,7 @@
     people:
       person1:
         age: 30
-        employment_income: 22_484  # 110% FPL fam of 2 = 22,484/yr
+        employment_income: 21_692  # 110% 2023 FPG fam of 2 = 19,720 * 1.10
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:
@@ -380,7 +380,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24_528  # 120% FPL fam of 2
+        employment_income: 23_664  # 120% 2023 FPG fam of 2 = 19,720 * 1.20
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:

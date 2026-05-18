@@ -3,9 +3,12 @@
 # Waivers (zero copay): disabled child, Head Start enrollment, protective services (foster).
 # Homelessness alone does NOT waive copay (per State Plan §3.3.1(iii)).
 #
-# 2024 FPG (Contiguous US): first $15,060, additional $5,380.
-#   FS 2: $20,440/yr ($1,703.33/mo)
-#   FS 4: $31,200/yr ($2,600/mo)
+# AL uses the prior year's HHS FPG (Fact Sheet 2024 -> 2023 FPG).
+# 2023 FPG (Contiguous US): first $14,580, additional $5,140.
+#   FS 2: $19,720/yr ($1,643.33/mo)
+#   FS 3: $24,860/yr ($2,071.67/mo)
+#   FS 4: $30,000/yr ($2,500/mo)
+#   FS 5: $35,140/yr ($2,928.33/mo)
 # Initial fee scale (effective 2024-01-01), weekly per child:
 #   0-100% FPL  -> $0
 #   101-110     -> $18
@@ -27,7 +30,7 @@
     people:
       person1:
         age: 30
-        employment_income: 16_352  # 80% FPL fam of 2 = 16,352/yr -> 1,363/mo
+        employment_income: 15_776  # 80% 2023 FPG fam of 2 = 15,776/yr -> 1,315/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -57,7 +60,7 @@
     people:
       person1:
         age: 30
-        employment_income: 30_660  # 150% FPL fam of 2 = 30,660/yr -> 2,555/mo
+        employment_income: 29_580  # 150% 2023 FPG fam of 2 = 29,580/yr -> 2,465/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -88,7 +91,7 @@
     people:
       person1:
         age: 30
-        employment_income: 35_770  # 175% FPL fam of 2 = 35,770/yr -> 2,981/mo
+        employment_income: 34_510  # 175% 2023 FPG fam of 2 = 34,510/yr -> 2,876/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -119,7 +122,7 @@
     people:
       person1:
         age: 30
-        employment_income: 37_814  # 185% FPL fam of 2 = 37,814/yr -> 3,151/mo
+        employment_income: 36_482  # 185% 2023 FPG fam of 2 = 36,482/yr -> 3,040/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -151,7 +154,7 @@
     people:
       person1:
         age: 30
-        employment_income: 39_858  # 195% FPL fam of 2 = 39,858/yr -> 3,322/mo
+        employment_income: 38_454  # 195% 2023 FPG fam of 2 = 38,454/yr -> 3,205/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -183,7 +186,7 @@
     people:
       person1:
         age: 30
-        employment_income: 38_730  # 150% FPL fam of 3 = 38,730/yr -> 3,228/mo
+        employment_income: 37_290  # 150% 2023 FPG fam of 3 = 37,290/yr -> 3,108/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -311,7 +314,7 @@
     people:
       person1:
         age: 30
-        employment_income: 30_660  # 150% FPL fam of 2
+        employment_income: 29_580  # 150% 2023 FPG fam of 2
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -344,7 +347,7 @@
     people:
       person1:
         age: 30
-        employment_income: 46_800  # 150% FPL fam of 4 = $46,800/yr -> $3,900/mo
+        employment_income: 45_000  # 150% 2023 FPG fam of 4 = $45,000/yr -> $3,750/mo
       person2:
         # Truly eligible: age 4, citizen, dependent, in care
         age: 4
@@ -393,7 +396,7 @@
     people:
       person1:
         age: 30
-        employment_income: 38_730  # 150% FPL fam of 3 = $38,730/yr -> $3,228/mo
+        employment_income: 37_290  # 150% 2023 FPG fam of 3 = $37,290/yr -> $3,108/mo
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -431,7 +434,7 @@
     people:
       person1:
         age: 30
-        employment_income: 30_660  # 150% FPL fam of 2
+        employment_income: 29_580  # 150% 2023 FPG fam of 2
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -499,7 +502,7 @@
     people:
       person1:
         age: 30
-        employment_income: 54_870  # 150% FPL fam of 5 = $54,870/yr
+        employment_income: 52_710  # 150% 2023 FPG fam of 5 = $52,710/yr
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -546,7 +549,7 @@
     people:
       person1:
         age: 30
-        employment_income: 54_870  # 150% FPL fam of 5 = $54,870/yr
+        employment_income: 52_710  # 150% 2023 FPG fam of 5 = $52,710/yr
       person2:
         # Second parent
         age: 28

@@ -1,11 +1,12 @@
 # AL CCSP integration tests
 # Cross-cuts eligibility, copay, rate lookup, and benefit calculation.
 #
-# 2024 FPG (Contiguous US): first $15,060, additional $5,380.
-#   FS 2: $20,440/yr ($1,703.33/mo); 150% FPL = 2,555/mo; 180% = 3,066/mo
-#   FS 3: $25,820/yr ($2,151.67/mo)
-#   FS 4: $31,200/yr ($2,600/mo); 150% FPL = 3,900/mo; 180% = 4,680/mo;
-#         190% = 4,940/mo; 200% = 5,200/mo
+# AL CCSP uses the prior calendar year's HHS FPG (Fact Sheet 2024 -> 2023 FPG).
+# 2023 FPG (Contiguous US): first $14,580, additional $5,140.
+#   FS 2: $19,720/yr ($1,643.33/mo); 150% FPL = 2,465/mo; 180% = 2,958/mo
+#   FS 3: $24,860/yr ($2,071.67/mo)
+#   FS 4: $30,000/yr ($2,500/mo); 150% FPL = 3,750/mo; 180% = 4,500/mo;
+#         190% = 4,750/mo; 200% = 5,000/mo
 # AL SMI FS 4 (2023-10-01): $88,407/yr. 85% SMI FS 4: $75,145.95/yr (6,262.16/mo).
 # Weekly -> monthly multiplier: WEEKS_IN_YEAR / MONTHS_IN_YEAR = 52/12 ≈ 4.3333.
 
@@ -16,7 +17,7 @@
     people:
       person1:
         age: 30
-        employment_income: 38_730  # 150% FPL fam of 3 = 3,228/mo
+        employment_income: 37_290  # 150% 2023 FPG fam of 3 = 24,860 * 1.5
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -63,7 +64,7 @@
     people:
       person1:
         age: 25
-        employment_income: 12_264  # ~60% FPL fam of 2 = 1,022/mo
+        employment_income: 12_264  # ~62% 2023 FPG fam of 2 = 1,022/mo
         immigration_status: CITIZEN
         weekly_hours_worked: 30
       person2:
@@ -105,7 +106,7 @@
     people:
       person1:
         age: 30
-        employment_income: 59_280  # 190% FPL fam of 4
+        employment_income: 57_000  # 190% 2023 FPG fam of 4 = 30,000 * 1.9
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -149,7 +150,7 @@
     people:
       person1:
         age: 30
-        employment_income: 49_058  # 190% FPL fam of 3 = 49,058/yr
+        employment_income: 47_234  # 190% 2023 FPG fam of 3 = 24,860 * 1.9
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -178,7 +179,7 @@
         county_str: JEFFERSON_COUNTY_AL
   output:
     al_ccsp_eligible: true
-    # FPL ratio = 49,058 / 25,820 = 1.90 -> 181-190 band -> $42/wk
+    # FPL ratio = 47,234 / 24,860 = 1.90 -> 181-190 band -> $42/wk
     # $42 * (52/12) = $182/mo
     al_ccsp_copay: 182
     # BIRMINGHAM CENTER PRESCHOOL BASE = $180/wk
@@ -235,7 +236,7 @@
     people:
       person1:
         age: 35
-        employment_income: 30_660  # 150% FPL fam of 2 (would normally have $30/wk copay)
+        employment_income: 29_580  # 150% 2023 FPG fam of 2 (would normally have $30/wk copay)
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -316,7 +317,7 @@
     people:
       person1:
         age: 30
-        employment_income: 38_730  # 150% FPL fam of 3 = 3,228/mo
+        employment_income: 37_290  # 150% 2023 FPG fam of 3 = 24,860 * 1.5
         immigration_status: CITIZEN
         weekly_hours_worked: 40
       person2:
@@ -444,6 +445,8 @@
     people:
       person1:
         age: 30
+        # 2025-01 uses prior-year (2024) FPG for fam of 3 = 25,820;
+        # 150% = 38,730.
         employment_income: 38_730
         immigration_status: CITIZEN
         weekly_hours_worked: 40
