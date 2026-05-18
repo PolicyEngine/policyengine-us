@@ -1,7 +1,13 @@
 description: Alabama uses this age in months threshold to assign care level categories under the Child Care Subsidy Program.
-# 0 = INFANT_TODDLER (birth through 36 months)
-# 1 = PRESCHOOL (37-59 months)
-# 2 = SCHOOL_AGE (5 years through age 12, or through age 18 if disabled)
+# 0 = INFANT_TODDLER (under 36 months)
+# 1 = PRESCHOOL (36-59 months)
+# 2 = SCHOOL_AGE (60+ months)
+# The Provider Rate Chart lists 0-36 / 37-59 / 60+ months, but
+# PolicyEngine's age variable is annual; integer survey ages would
+# round all 3-year-olds (36-47 months actual) down to 36 months.
+# Setting the PRESCHOOL threshold at 36 months maps a child reported
+# as age 3 to PRESCHOOL, matching how Alabama operationally treats
+# 3-year-olds.
 
 metadata:
   type: single_amount
@@ -19,7 +25,7 @@ brackets:
     amount:
       2022-04-11: 0
   - threshold:
-      2022-04-11: 37
+      2022-04-11: 36
     amount:
       2022-04-11: 1
   - threshold:
