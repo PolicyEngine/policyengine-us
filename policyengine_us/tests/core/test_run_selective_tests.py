@@ -18,6 +18,17 @@ def test_changed_yaml_tests_are_selected_directly():
     assert "policyengine_us/tests/run_selective_tests.py" not in test_paths
 
 
+def test_runner_unit_test_is_not_treated_as_infrastructure():
+    runner = SelectiveTestRunner()
+
+    assert runner.is_test_infrastructure_file(
+        "policyengine_us/tests/run_selective_tests.py"
+    )
+    assert not runner.is_test_infrastructure_file(
+        "policyengine_us/tests/core/test_run_selective_tests.py"
+    )
+
+
 def test_limit_test_paths_prefers_directly_changed_tests_for_broad_changes():
     runner = SelectiveTestRunner()
     runner.max_test_targets = 1
@@ -90,3 +101,28 @@ def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
         "policyengine_us/tests/policy/contrib/ssa",
         "policyengine_us/tests/policy/contrib/ssa/test_trustees_core_thresholds.py",
     }
+
+
+def test_limit_test_paths_ignores_deleted_direct_tests():
+    runner = SelectiveTestRunner()
+
+    deleted_test = (
+        "policyengine_us/tests/policy/baseline/gov/ssa/social_security/"
+        "social_security_retirement_reported.yaml"
+    )
+    existing_test = (
+        "policyengine_us/tests/policy/baseline/gov/ssa/social_security/"
+        "social_security_retirement.yaml"
+    )
+    changed_files = {
+        deleted_test,
+        existing_test,
+        "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert deleted_test not in limited_paths
+    assert existing_test in limited_paths

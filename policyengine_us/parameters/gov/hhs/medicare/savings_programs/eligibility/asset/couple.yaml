@@ -1,5 +1,18 @@
 description: The Department of Health and Human Services limits resources to this amount for couples under the Medicare Savings Programs.
 values:
+  0000-01-01: 9_910
+  2011-01-01: 10_020
+  2012-01-01: 10_410
+  2013-01-01: 10_620
+  2014-01-01: 10_750
+  2015-01-01: 10_930
+  2017-01-01: 11_090
+  2018-01-01: 11_340
+  2019-01-01: 11_600
+  2020-01-01: 11_800
+  2021-01-01: 11_960
+  2022-01-01: 12_600
+  2023-01-01: 13_630
   2024-01-01: 14_130
   2025-01-01: 14_470
   2026-01-01: 14_910
@@ -13,3 +26,7 @@ metadata:
       href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
     - title: SSA POMS SI 01715.010 - Resource Eligibility
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010
+    - title: "CMS SMDL #10-003: 2010 Medicare Savings Program resource standards"
+      href: https://downloads.cms.gov/cmsgov/archived-downloads/smdl/downloads/smd10003.pdf
+    - title: Missouri DSS Historical QMB Resource Limits
+      href: https://dss.mo.gov/fsd/iman/medasst/0865-010-15.html

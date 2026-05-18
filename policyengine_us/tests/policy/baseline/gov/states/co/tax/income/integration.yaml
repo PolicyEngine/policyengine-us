@@ -337,3 +337,49 @@
     # Child age 14: FATC $2,455 (age 6-16 category)
     # At $10k income (below thresholds), full credit amounts
     co_family_affordability_credit: [0, 3_273, 2_455, 2_455]
+
+# Locks in the fix for #8210 / taxsim #870. Pre-fix the tied-federal-tax
+# fallback in tax_unit_itemizes compared CO's federal standard deduction
+# against $0 of CO-specific itemized deductions, returning False. The household
+# was treated as taking the standard deduction, giving co_taxable_income $17,742
+# and co_income_tax +$780. Post-fix: itemizes, co_income_tax matches TaxAct
+# (-$4,397) within ~$65, residual is a separate CO add-back issue.
+- name: 2025 CO joint with property tax + mortgage itemizes when federal tax tied (taxsim #870)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 20_000
+        taxable_interest_income: 29_241.51
+        is_tax_unit_spouse: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: CO
+  output:
+    tax_unit_itemizes: true
+    co_taxable_income: 1_474
+    co_income_tax: -4_332

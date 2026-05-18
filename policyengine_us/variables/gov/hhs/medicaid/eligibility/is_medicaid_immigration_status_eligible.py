@@ -9,6 +9,7 @@ class is_medicaid_immigration_status_eligible(Variable):
     reference = [
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
         "https://www.law.cornell.edu/uscode/text/8/1641",
+        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim",
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants/",
     ]
 
@@ -17,9 +18,17 @@ class is_medicaid_immigration_status_eligible(Variable):
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()
 
-        # Check if immigration status is in the eligible list
         eligible_immigration_status = np.isin(
             immigration_status_str, p.eligible_immigration_statuses
+        )
+        citizen = immigration_status == immigration_status.possible_values.CITIZEN
+        bar_exempt_status = np.isin(
+            immigration_status_str, p.bar_exempt_immigration_statuses
+        )
+        years_since_entry = person("years_since_us_entry", period.this_year)
+        past_five_year_bar = years_since_entry >= p.five_year_bar_years
+        federally_eligible_status = citizen | (
+            eligible_immigration_status & (bar_exempt_status | past_five_year_bar)
         )
 
         # Special handling for undocumented immigrants in states that cover them
@@ -35,7 +44,7 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         return (
-            eligible_immigration_status
+            federally_eligible_status
             | undocumented_eligible
             | ca_eligible_regardless_of_immigration_status
         )
