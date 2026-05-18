@@ -16,9 +16,7 @@ class ar_sra_age_category(Variable):
     definition_period = MONTH
     defined_for = StateCode.AR
     label = "Arkansas SRA child age category"
-    reference = (
-        "https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf",
-    )
+    reference = "https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.rates.age_category_months
