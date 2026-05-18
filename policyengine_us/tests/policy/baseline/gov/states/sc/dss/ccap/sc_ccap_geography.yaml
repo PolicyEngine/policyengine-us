@@ -1,0 +1,59 @@
+# SC CCAP geography tests
+# sc_ccap_geography is Household (enum: URBAN, RURAL)
+# Based on county mapping to Appendix 4 designations
+
+- name: Case 1, Richland County is urban.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+        county_fips: "45079"
+  output:
+    sc_ccap_geography: [URBAN]
+
+- name: Case 2, Abbeville County is rural.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+        county_fips: "45001"
+  output:
+    sc_ccap_geography: [RURAL]
+
+- name: Case 3, Charleston County is urban.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+        county_fips: "45019"
+  output:
+    sc_ccap_geography: [URBAN]
+
+- name: Case 4, Chester County is rural.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+        county_fips: "45023"
+  output:
+    sc_ccap_geography: [RURAL]

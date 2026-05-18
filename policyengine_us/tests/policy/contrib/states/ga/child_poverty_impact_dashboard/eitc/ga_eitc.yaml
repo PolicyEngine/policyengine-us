@@ -1,0 +1,53 @@
+- name: Case 1 - GA EITC with 10% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ga.eitc.ga_eitc
+  input:
+    gov.contrib.states.ga.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: GA
+    eitc: 1_000
+  output:
+    ga_eitc: 100
+    ga_refundable_credits: 100
+
+- name: Case 2 - GA EITC with 20% match
+  period: 2024
+  reforms: policyengine_us.reforms.states.ga.eitc.ga_eitc
+  input:
+    gov.contrib.states.ga.child_poverty_impact_dashboard.eitc.match: 0.2
+    state_code: GA
+    eitc: 2_500
+  output:
+    ga_eitc: 500
+    ga_refundable_credits: 500
+
+- name: Case 3 - GA EITC is 0 when match is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ga.eitc.ga_eitc
+  input:
+    gov.contrib.states.ga.child_poverty_impact_dashboard.eitc.match: 0
+    state_code: GA
+    eitc: 1_000
+  output:
+    ga_eitc: 0
+    ga_refundable_credits: 0
+
+- name: Case 4 - GA EITC is 0 when federal EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.ga.eitc.ga_eitc
+  input:
+    gov.contrib.states.ga.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: GA
+    eitc: 0
+  output:
+    ga_eitc: 0
+    ga_refundable_credits: 0
+
+- name: Case 5 - GA EITC is 0 for non-GA residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.ga.eitc.ga_eitc
+  input:
+    gov.contrib.states.ga.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: CA
+    eitc: 1_000
+  output:
+    ga_eitc: 0

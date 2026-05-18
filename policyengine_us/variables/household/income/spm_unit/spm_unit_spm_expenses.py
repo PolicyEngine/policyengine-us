@@ -8,8 +8,13 @@ class spm_unit_spm_expenses(Variable):
     definition_period = YEAR
     unit = USD
 
-    adds = [
-        "child_support_expense",
-        "medical_out_of_pocket_expenses",
-        "spm_unit_capped_work_childcare_expenses",
-    ]
+    def formula(spm_unit, period, parameters):
+        return add(
+            spm_unit,
+            period,
+            [
+                "child_support_expense",
+                "spm_unit_medical_out_of_pocket_expenses",
+                "spm_unit_capped_work_childcare_expenses",
+            ],
+        )

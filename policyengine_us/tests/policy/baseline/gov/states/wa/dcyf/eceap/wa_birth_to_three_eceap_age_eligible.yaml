@@ -1,0 +1,47 @@
+- name: Age 0, below Birth to Three ECEAP age limit.
+  period: 2025
+  input:
+    age: 0
+    state_code: WA
+  output:
+    wa_birth_to_three_eceap_age_eligible: true
+
+- name: Age 1, below Birth to Three ECEAP age limit.
+  period: 2025
+  input:
+    age: 1
+    state_code: WA
+  output:
+    wa_birth_to_three_eceap_age_eligible: true
+
+- name: Age 2, below Birth to Three ECEAP age limit.
+  period: 2025
+  input:
+    age: 2
+    state_code: WA
+  output:
+    wa_birth_to_three_eceap_age_eligible: true
+
+- name: Age 3, at Birth to Three ECEAP age limit (not eligible).
+  period: 2025
+  input:
+    age: 3
+    state_code: WA
+  output:
+    wa_birth_to_three_eceap_age_eligible: false
+
+- name: Age 4, above Birth to Three ECEAP age limit.
+  period: 2025
+  input:
+    age: 4
+    state_code: WA
+  output:
+    wa_birth_to_three_eceap_age_eligible: false
+
+- name: Age 1 in Oregon, not eligible due to residency.
+  period: 2025
+  input:
+    age: 1
+    state_code: OR
+  output:
+    wa_birth_to_three_eceap_age_eligible: false

@@ -1,0 +1,108 @@
+# Tests for fl_oss_max_oss variable.
+# Max OSS caps by track and individual/couple status.
+
+- name: Case 1, Redesign individual max OSS Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Max OSS (Redesign, I) = $184.40/month (frozen).
+    # Annual = $184.40 * 12 = $2,212.80.
+    # Monthly output = $2,212.80 / 12 = $184.40.
+    fl_oss_max_oss: [184.40]
+
+- name: Case 2, Protected individual max OSS Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Max OSS (Protected, I) = $345/month (frozen).
+    # Annual = $345 * 12 = $4,140.
+    # Monthly output = $4,140 / 12 = $345.
+    fl_oss_max_oss: [345]
+
+- name: Case 3, Redesign couple max OSS Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Max OSS (Redesign, C) = $368.80/month (= 2 * $184.40; 2024-06 Appendix A-12).
+    # Per person = $368.80 / 2 = $184.40/month (same as individual cap).
+    fl_oss_max_oss: [184.40, 184.40]
+
+- name: Case 4, Protected couple max OSS Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Max OSS (Protected, C) = $690/month (frozen).
+    # Per person = $690 / 2 = $345/month.
+    # Annual per person = $345 * 12 = $4,140.
+    # Monthly output = $4,140 / 12 = $345.
+    fl_oss_max_oss: [345, 345]

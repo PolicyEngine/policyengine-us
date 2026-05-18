@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class oh_senior_citizen_credit(Variable):
@@ -14,19 +17,14 @@ class oh_senior_citizen_credit(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.credits.senior_citizen
-        person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        head_has_not_taken_lump_sum_distribution = (
-            ~person("oh_has_taken_oh_lump_sum_credits", period) * head
+        ordered_credits = parameters(
+            period
+        ).gov.states.oh.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "oh_income_tax_before_non_refundable_credits",
+            "oh_senior_citizen_credit",
+            "oh_senior_citizen_credit_potential",
         )
-        age_head = tax_unit("age_head", period)
-        elderly_head = age_head >= p.age_threshold
-        eligible_head = (
-            tax_unit.any(head_has_not_taken_lump_sum_distribution) & elderly_head
-        )
-        agi = tax_unit("oh_modified_agi", period)
-        exemptions = tax_unit("oh_personal_exemptions", period)
-        applicable_income = max_(agi - exemptions, 0)
-        credit_amount = p.amount.calc(applicable_income)
-        return eligible_head * credit_amount

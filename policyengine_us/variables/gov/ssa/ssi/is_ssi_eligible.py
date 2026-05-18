@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class is_ssi_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Is SSI eligible person"
+    label = "Is SSI eligible person"  # without income test
     definition_period = YEAR
 
     def formula(person, period, parameters):

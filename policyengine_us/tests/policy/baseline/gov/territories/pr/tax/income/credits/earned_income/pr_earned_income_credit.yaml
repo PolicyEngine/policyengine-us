@@ -120,7 +120,7 @@
   period: 2024
   input:
     people:
-      person1: 
+      person1:
         pr_gross_income_person: 50_000
         is_tax_unit_head_or_spouse: true
       person2:
@@ -148,5 +148,53 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
         state_code: PR
-  output: 
+  output:
     pr_earned_income_credit: 0
+
+- name: Eligible HEAD_OF_HOUSEHOLD filer gets the individual phase-out threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 17_660
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc_child_count: 0
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  # Previously, HoH fell through the `select` (only covered SINGLE and
+  # JOINT) to a default phase-out threshold of 0, which eliminated any
+  # credit. After the fix, HoH uses the `single` threshold and receives
+  # the same max credit (1,656) as a SINGLE filer with identical income.
+  output:
+    pr_earned_income_credit: 1_656
+
+- name: Eligible SURVIVING_SPOUSE filer gets the joint phase-out threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        pr_gross_income_person: 19_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        eitc_child_count: 0
+        pr_earned_income_credit_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  # SURVIVING_SPOUSE uses the joint threshold (consistent with US
+  # federal convention for two years post-bereavement). At
+  # pr_gross_income 19_000 the phase-out has not begun
+  # (joint threshold = 19_870), so the full max credit applies.
+  output:
+    pr_earned_income_credit: 1_656

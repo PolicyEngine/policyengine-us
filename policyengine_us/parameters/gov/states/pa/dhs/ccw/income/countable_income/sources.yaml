@@ -1,0 +1,30 @@
+description: Pennsylvania counts these income sources under the Child Care Works program.
+values:
+  2023-12-16:
+    - employment_income
+    - self_employment_income
+    - social_security
+    - social_security_disability
+    - social_security_survivors
+    - ssi
+    - pension_income
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - child_support_received
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    # Not modeled: railroad retirement (F), state blind pension (G),
+    # public assistance/retirement (H), royalties (Q), lump sums >$100 (R),
+    # lottery >$100 (S), room/board net income (U)
+
+metadata:
+  unit: list
+  period: year
+  label: Pennsylvania CCW countable income sources
+  reference:
+    - title: 55 Pa. Code Chapter 3042 Appendix A Part I
+      href: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter3042/055_3042.pdf#page=59

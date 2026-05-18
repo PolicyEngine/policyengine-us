@@ -12,7 +12,16 @@ class ca_riv_general_relief_meets_work_requirements(Variable):
         p = parameters(period).gov.local.ca.riv.general_relief.work_exempted_age
         # Person who is actively searching for jobs also qualify for work requirements
         is_working = (
-            add(person, period, ["employment_income", "self_employment_income"]) > 0
+            add(
+                person,
+                period,
+                [
+                    "employment_income",
+                    "self_employment_income",
+                    "sstb_self_employment_income",
+                ],
+            )
+            > 0
         )
         # Check if person is a qualifying secondary school student
         age = person("monthly_age", period)

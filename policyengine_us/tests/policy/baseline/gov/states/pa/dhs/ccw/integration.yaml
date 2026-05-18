@@ -1,0 +1,432 @@
+# PA Child Care Works (CCW) Integration Tests
+#
+# 2025 FPG (Contiguous US):
+#   first_person = 15_650, additional = 5_500
+#   Family of 2: 21_150 -> 200% = 42_300, 235% = 49_702.50
+#   Family of 3: 26_650 -> 200% = 53_300, 235% = 62_627.50
+#
+# MCCA rates: region(int) x provider(enum) x age(enum) x time(hours/day>=5 FT)
+# Copay formula:
+#   rate = 5% if adjusted_income <= 100% FPIG, else 7%
+#   weekly = max(round(adjusted_income * rate / 52), $5)
+#   monthly = weekly * 52 / 12
+# Benefit = min(expenses - copay, MCCA max monthly)
+# Min dept payment = $5/week = $21.67/month
+
+- name: Case 1, eligible low income family with positive benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    # === Child Eligibility ===
+    # Child: age 3 < 13, citizen, dependent -> eligible
+    pa_ccw_eligible_child: [false, true]
+
+    # === Income Eligibility ===
+    # Adjusted income = 24,000 (no deductions)
+    # FPG family of 2: 21_150
+    # 200% FPIG = 42_300
+    # 24,000 <= 42_300 -> income eligible
+    pa_ccw_income_eligible: true
+
+    # Assets default 0 <= 1_000_000
+    is_ccdf_asset_eligible: true
+
+    pa_ccw_eligible: true
+
+    # === Copay ===
+    # Adjusted income 24,000, FPG fam 2 = 21,150
+    # 24,000 > 21,150 -> rate = 7%
+    # round(24,000 * 0.07 / 52) = round(32.31) = 32
+    # max(32, 5) = $32/week
+    # Monthly: 32 * 52 / 12 = 138.67
+    pa_ccw_copay: 138.67
+
+    # === MCCA Rate ===
+    # Region 1, CENTER, PRE_SCHOOL, FT (8hrs >= 5) = $42.35/day
+    pa_ccw_market_rate: [0, 42.35]
+
+    # === Max Monthly Payment ===
+    # 42.35 * 20 days = $847/mo
+    pa_ccw_maximum_monthly_payment: [0, 847]
+
+    # === Benefit ===
+    # Monthly expenses: 12,000 / 12 = 1,000
+    # Uncapped: max(1,000 - 138.67, 0) = 861.33
+    # MCCA max: 847
+    # Benefit: min(861.33, 847) = 847
+    # 847 >= 21.67 (min dept payment) -> OK
+    pa_ccw: 847
+
+- name: Case 2, enrolled family at redetermination level.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: FAMILY
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 7
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pa_ccw_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        pa_ccw_region: 5
+  output:
+    # === Eligibility ===
+    pa_ccw_eligible_child: [false, false, true]
+
+    # Adjusted income = 60,000 (no deductions)
+    # FPG family of 3: 26,650
+    # Enrolled -> min(235% FPIG = 62,627.50, 85% SMI)
+    # 60,000 <= 62,627.50 -> eligible
+    pa_ccw_income_eligible: true
+    pa_ccw_eligible: true
+
+    # === Copay ===
+    # Adjusted income 60,000, FPG fam 3 = 26,650
+    # 60,000 > 26,650 -> rate = 7%
+    # round(60,000 * 0.07 / 52) = round(80.77) = 81
+    # max(81, 5) = $81/week
+    # Monthly: 81 * 52 / 12 = 351
+    pa_ccw_copay: 351
+
+    # === MCCA Rate ===
+    # Region 5, FAMILY, PRE_SCHOOL, FT (7hrs >= 5) = $45.37/day
+    pa_ccw_market_rate: [0, 0, 45.37]
+
+    # === Max Monthly Payment ===
+    # 45.37 * 22 = $998.14/mo
+    pa_ccw_maximum_monthly_payment: [0, 0, 998.14]
+
+    # === Benefit ===
+    # Monthly expenses: 10,000 / 12 = 833.33
+    # Uncapped: max(833.33 - 351, 0) = 482.33
+    # MCCA max: 998.14
+    # Benefit: min(482.33, 998.14) = 482.33
+    # 482.33 >= 21.67 -> OK
+    pa_ccw: 482.33
+
+- name: Case 3, income over 200 percent FPIG new applicant ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw_eligible_child: [false, true]
+
+    # Adjusted income = 54,000
+    # 200% FPIG for family of 2: 42,300
+    # 54,000 > 42,300 -> NOT eligible
+    pa_ccw_income_eligible: false
+    pa_ccw_eligible: false
+    pa_ccw: 0
+
+- name: Case 4, two children with different provider types and copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: OLD_TODDLER
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: FAMILY
+        pa_ccw_age_group: SCHOOL_AGE
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw_eligible_child: [false, true, true]
+    pa_ccw_income_eligible: true
+    pa_ccw_eligible: true
+
+    # === Copay ===
+    # Adjusted income 36,000, FPG fam 3 = 26,650
+    # 36,000 > 26,650 -> rate = 7%
+    # round(36,000 * 0.07 / 52) = round(48.46) = 48
+    # max(48, 5) = $48/week
+    # Monthly: 48 * 52 / 12 = 208
+    pa_ccw_copay: 208
+
+    # === MCCA Rates ===
+    # child1: Region 1, CENTER, OLD_TODDLER, FT (8hrs) = $46.38/day
+    # child2: Region 1, FAMILY, SCHOOL_AGE, PT (4hrs) = $27.91/day
+    pa_ccw_market_rate: [0, 46.38, 27.91]
+
+    # === Max Monthly Payments ===
+    # child1: 46.38 * 20 = $927.60
+    # child2: 27.91 * 20 = $558.20
+    pa_ccw_maximum_monthly_payment: [0, 927.60, 558.20]
+
+    # === Benefit ===
+    # Monthly expenses: 20,000 / 12 = 1,666.67
+    # Uncapped: max(1,666.67 - 208, 0) = 1,458.67
+    # MCCA max: 927.60 + 558.20 = 1,485.80
+    # Benefit: min(1,458.67, 1,485.80) = 1,458.67
+    pa_ccw: 1_458.67
+
+- name: Case 5, MCCA rate lookup high-rate region 17.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: INFANT
+        childcare_hours_per_day: 9
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 17
+  output:
+    pa_ccw_eligible_child: [false, true]
+    pa_ccw_income_eligible: true
+    pa_ccw_eligible: true
+
+    # === Copay ===
+    # Adjusted income 30,000, FPG fam 2 = 21,150
+    # 30,000 > 21,150 -> rate = 7%
+    # round(30,000 * 0.07 / 52) = round(40.38) = 40
+    # max(40, 5) = $40/week
+    # Monthly: 40 * 52 / 12 = 173.33
+    pa_ccw_copay: 173.33
+
+    # === MCCA Rate ===
+    # Region 17, CENTER, INFANT, FT = $77.45/day
+    pa_ccw_market_rate: [0, 77.45]
+
+    # === Max Monthly Payment ===
+    # 77.45 * 22 = $1,703.90/mo
+    pa_ccw_maximum_monthly_payment: [0, 1_703.90]
+
+    # === Benefit ===
+    # Monthly expenses: 18,000 / 12 = 1,500
+    # Uncapped: max(1,500 - 173.33, 0) = 1,326.67
+    # MCCA max: 1,703.90
+    # Benefit: min(1,326.67, 1,703.90) = 1,326.67
+    pa_ccw: 1_326.67
+
+- name: Case 6, stepparent deduction reduces adjusted income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 42_000
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person3:
+        age: 7
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: SCHOOL_AGE
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pa_ccw_has_stepparent: true
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+        county_str: CHESTER_COUNTY_PA
+        pa_ccw_region: 5
+  output:
+    pa_ccw_eligible_child: [false, false, true]
+
+    # === Stepparent Deduction ===
+    # Chester County -> Group 4, family size 3: $614/month
+    pa_ccw_stepparent_deduction: 614
+
+    # === Adjusted Income ===
+    # Gross annual: 42,000 + 12,000 = 54,000
+    # Gross monthly: 4,500
+    # Stepparent deduction: 614
+    # Adjusted monthly: 4,500 - 614 = 3,886
+    # Annual: 3,886 * 12 = 46,632
+    # Test period is monthly, YEAR variable auto-divides by 12: 46,632 / 12 = 3,886
+    pa_ccw_adjusted_income: 3_886
+
+    # FPG family of 3: 26,650
+    # 200% = 53,300
+    # 46,632 <= 53,300 -> income eligible
+    pa_ccw_income_eligible: true
+    pa_ccw_eligible: true
+
+    # === Copay ===
+    # Adjusted income 46,632, FPG fam 3 = 26,650
+    # 46,632 > 26,650 -> rate = 7%
+    # round(46,632 * 0.07 / 52) = round(62.78) = 63
+    # max(63, 5) = $63/week
+    # Monthly: 63 * 52 / 12 = 273
+    pa_ccw_copay: 273
+
+    # === MCCA Rate ===
+    # Region 5, CENTER, SCHOOL_AGE, PT (4hrs < 5) = $35.97/day
+    pa_ccw_market_rate: [0, 0, 35.97]
+
+    # === Max Monthly Payment ===
+    # 35.97 * 20 = $719.40
+    pa_ccw_maximum_monthly_payment: [0, 0, 719.40]
+
+    # === Benefit ===
+    # Monthly expenses: 8,000 / 12 = 666.67
+    # Uncapped: max(666.67 - 273, 0) = 393.67
+    # MCCA max: 719.40
+    # Benefit: min(393.67, 719.40) = 393.67
+    pa_ccw: 393.67
+
+- name: Case 7, TANF enrolled family ineligible per 3042.15(a).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        pa_ccw_provider_type: CENTER
+        pa_ccw_age_group: PRE_SCHOOL
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+        pa_ccw_region: 1
+  output:
+    pa_ccw_eligible_child: [false, true]
+
+    # Income is fine: adjusted 12,000 <= 42,300
+    pa_ccw_income_eligible: true
+
+    # But TANF enrolled -> NOT eligible per 55 Pa. Code § 3042.15(a)
+    pa_ccw_eligible: false
+    pa_ccw: 0

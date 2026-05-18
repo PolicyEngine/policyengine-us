@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class va_non_refundable_eitc(Variable):
@@ -11,7 +14,14 @@ class va_non_refundable_eitc(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        # Either claims refundable or non-refundable, but not both.
-        claims = ~tax_unit("va_claims_refundable_eitc", period)
-        amount_if_claimed = tax_unit("va_non_refundable_eitc_if_claimed", period)
-        return claims * amount_if_claimed
+        ordered_credits = parameters(
+            period
+        ).gov.states.va.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "va_income_tax_before_non_refundable_credits",
+            "va_non_refundable_eitc",
+            "va_non_refundable_eitc_potential",
+        )

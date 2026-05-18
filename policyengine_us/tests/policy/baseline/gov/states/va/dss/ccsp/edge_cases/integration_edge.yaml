@@ -1,0 +1,390 @@
+# Virginia CCSP edge case integration tests
+# Full pipeline verification with boundary conditions
+#
+# 2024 FPG: first_person = 15,060, additional = 5,380
+#   Family of 2: 20,440   Family of 3: 25,820
+# 2024 VA SMI base: 121,130 (effective 2023-10-01)
+# SMI size adj: first_person=0.52, second_to_sixth=0.16
+#   Size 2: 121,130*0.68 = 82,368.40
+# 85% SMI size 2: 70,013.14
+#
+# Current copay: $0/$0/$60/$60/$120/$120/$180/$180
+# Income cap: 7%, max children: 3
+
+- name: Case 1, Group I boundary income $1 below 150% FPG with young child SMI fallback.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_659
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # === Child eligibility ===
+    va_ccsp_child_eligible: [false, true]
+
+    # === Income ===
+    # Countable: 30,659/12 = 2,554.92/month
+    va_ccsp_countable_income: 2_554.92
+
+    # Group I: 150% FPG = 30,660
+    # Young child (age 4 < 6): also check 85% SMI = 70,013.14
+    # Use max(30,660, 70,013.14) = 70,013.14
+    # 30,659 <= 70,013.14 -> eligible
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # === Copay ===
+    # Monthly FPG: 20,440/12 = 1,703.33
+    # FPG ratio: 2,554.92/1,703.33 = 1.5000 -> $60/child
+    # 1 child, scale total = $60
+    # Income cap: 30,659 * 0.07/12 = 178.84
+    # Copay: min(60, 178.84) = $60
+    va_ccsp_copay: 60
+
+    # === Benefit ===
+    # Monthly expenses: 12,000/12 = 1,000
+    # Benefit: max(1,000 - 60, 0) = $940
+    va_ccsp: 940
+
+- name: Case 2, Group I $1 above 150% FPG with older child, no SMI fallback.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_661
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_ccsp_child_eligible: [false, true]
+
+    # Group I: 150% FPG = 30,660
+    # No young child -> no SMI fallback
+    # 30,661 > 30,660 -> ineligible
+    va_ccsp_income_eligible: false
+    va_ccsp_eligible: false
+
+    # Ineligible -> $0
+    va_ccsp: 0
+
+- name: Case 3, enrolled family at exact 85% SMI boundary.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_013
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_child_eligible: [false, true]
+
+    # === Income ===
+    # Countable: 70,013/12 = 5,834.42/month
+    va_ccsp_countable_income: 5_834.42
+
+    # Enrolled -> 85% SMI = 70,013.14
+    # 70,013 <= 70,013.14 -> eligible
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # === Copay ===
+    # FPG ratio: 5,834.42/1,703.33 = 3.4253 -> $180/child
+    # 1 child * $180 = $180
+    # Income cap: 70,013 * 0.07/12 = 408.41
+    # Copay: min(180, 408.41) = $180
+    va_ccsp_copay: 180
+
+    # === Benefit ===
+    # Monthly expenses: 18,000/12 = 1,500
+    # Benefit: max(1,500 - 180, 0) = $1,320
+    va_ccsp: 1_320
+
+- name: Case 4, 4 children copay capped at 3 with income cap binding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 72_000
+        immigration_status: CITIZEN
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person5:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: VA
+  output:
+    # === Child eligibility ===
+    # All 4 children: ages 11,8,5,3 all < 13, citizen -> eligible
+    va_ccsp_child_eligible: [false, true, true, true, true]
+
+    # === Income ===
+    # Countable: 72,000/12 = 6,000/month
+    va_ccsp_countable_income: 6_000
+
+    # Enrolled -> 85% SMI
+    # FPG size 5: 36,580
+    # SMI size 5: 121,130 * 1.16 = 140,510.80
+    # 85% SMI = 119,434.18
+    # 72,000 <= 119,434.18 -> eligible
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # === Copay ===
+    # Monthly FPG size 5: 36,580/12 = 3,048.33
+    # FPG ratio: 6,000/3,048.33 = 1.9683 -> $60/child (still in 100-200% bracket)
+    # 4 eligible children, capped at 3
+    # Scale total: $60 * 3 = $180
+    # Income cap: 72,000 * 0.07/12 = 420
+    # Copay: min(180, 420) = $180
+    va_ccsp_copay: 180
+
+    # === Benefit ===
+    # Monthly expenses: 30,000/12 = 2,500
+    # Benefit: max(2,500 - 180, 0) = $2,320
+    va_ccsp: 2_320
+
+- name: Case 5, young child age 5 vs age 6 sibling difference.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_ccsp_child_eligible: [false, true, true]
+
+    # === Income ===
+    # Countable: 48,000/12 = 4,000/month
+    va_ccsp_countable_income: 4_000
+
+    # Group I: 150% FPG size 3 = 25,820 * 1.5 = 38,730
+    # Has young child (age 5 < 6): 85% SMI
+    # SMI size 3: 121,130 * 0.84 = 101,749.20
+    # 85% SMI = 86,486.82
+    # Use max(38,730, 86,486.82) = 86,486.82
+    # 48,000 <= 86,486.82 -> eligible
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # === Copay ===
+    # Monthly FPG size 3: 25,820/12 = 2,151.67
+    # FPG ratio: 4,000/2,151.67 = 1.8590 -> $60/child
+    # 2 children, scale total = $60 * 2 = $120
+    # Income cap: 48,000 * 0.07/12 = 280
+    # Copay: min(120, 280) = $120
+    va_ccsp_copay: 120
+
+    # === Benefit ===
+    # Monthly expenses: 18,000/12 = 1,500
+    # Benefit: max(1,500 - 120, 0) = $1,380
+    va_ccsp: 1_380
+
+- name: Case 6, disabled child age 15 still eligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Disabled child age 15 < 18 -> eligible child
+    va_ccsp_child_eligible: [false, true]
+
+    va_ccsp_countable_income: 2_000
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # Monthly FPG: 20,440/12 = 1,703.33
+    # FPG ratio: 2,000/1,703.33 = 1.1741 -> $60/child
+    # 1 child * $60 = $60
+    # Income cap: 24,000 * 0.07/12 = 140
+    # Copay: min(60, 140) = $60
+    va_ccsp_copay: 60
+
+    # Monthly expenses: 12,000/12 = 1,000
+    # Benefit before MRR: max(1,000 - 60, 0) = $940
+    # Default county ACCOMACK -> SOUTHEASTERN region
+    # MRR: SCHOOL_AGE CENTER SOUTHEASTERN = $30/day * 23 days = $690
+    # Benefit: min(940, 690) = $690
+    va_ccsp: 690
+
+- name: Case 7, TANF-enrolled family waives income test for high-income family.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+        va_ccsp_locality_group: GROUP_I
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    va_ccsp_child_eligible: [false, true]
+
+    # === Income ===
+    va_ccsp_countable_income: 10_000
+
+    # Group I: 150% FPG = 30,660
+    # Young child exception: 85% SMI = 70,013.14
+    # max(30,660, 70,013.14) = 70,013.14
+    # 120,000 > 70,013.14 -> income test fails
+    # BUT TANF enrolled -> income waived
+    va_ccsp_income_test_waived: true
+    va_ccsp_income_eligible: true
+    va_ccsp_eligible: true
+
+    # === Copay ===
+    # TANF recipients are exempt from copayments
+    # (Guidance Manual Section 3.5, working_references.md)
+    va_ccsp_copay: 0
+
+    # Monthly expenses: 18,000/12 = 1,500
+    # Benefit: max(1,500 - 0, 0) = $1,500
+    va_ccsp: 1_500

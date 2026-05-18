@@ -15,10 +15,8 @@ class mi_fip_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mi.mdhhs.fip
 
-        # Get total household assets
-        # Using spm_unit_assets as a proxy for countable assets
-        # Full implementation would apply specific asset exclusions per BEM 400
-        # Note: spm_unit_assets is a YEAR variable, so we access it with this_year
-        assets = spm_unit("spm_unit_assets", period.this_year)
+        # Count liquid financial assets explicitly. BEM 400 excludes several
+        # non-liquid resources that are not yet modeled separately here.
+        assets = spm_unit("spm_unit_cash_assets", period.this_year)
 
         return assets <= p.resources.limit

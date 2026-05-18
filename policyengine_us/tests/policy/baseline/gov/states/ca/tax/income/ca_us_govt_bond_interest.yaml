@@ -1,0 +1,7 @@
+- name: CA includes US government bond interest in AGI subtractions
+  period: 2024
+  input:
+    state_code: CA
+    us_govt_interest: 5_000
+  output:
+    ca_agi_subtractions: 5_000

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class az_dependent_tax_credit(Variable):
@@ -11,16 +14,14 @@ class az_dependent_tax_credit(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = parameters(period).gov.states.az.tax.income.credits.dependent_credit
-        dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period)
-        dependent_amount = p.amount.calc(age) * dependent
-        amount = tax_unit.sum(dependent_amount)
-        income = tax_unit("adjusted_gross_income", period)
-        filing_status = tax_unit("filing_status", period)
-        reduction_start = p.reduction.start[filing_status]
-        excess = max_(income - reduction_start, 0)
-        increments = np.ceil(excess / p.reduction.increment)
-        reduction_percentage = min_(increments * p.reduction.percentage, 1)
-        return amount * (1 - reduction_percentage)
+        ordered_credits = parameters(
+            period
+        ).gov.states.az.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "az_income_tax_before_non_refundable_credits",
+            "az_dependent_tax_credit",
+            "az_dependent_tax_credit_potential",
+        )

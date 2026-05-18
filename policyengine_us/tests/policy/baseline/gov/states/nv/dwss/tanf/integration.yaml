@@ -10,7 +10,7 @@
 # - Benefit = Payment Allowance - Countable Income
 
 - name: Single person household (size 1, pregnant)
-  period: 2025
+  period: 2024
   input:
     people:
       person1:
@@ -38,7 +38,7 @@
     nv_tanf: 3_048
 
 - name: Family of 3 with no income
-  period: 2025
+  period: 2024
   input:
     people:
       person1:
@@ -81,7 +81,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 15_000
+        spm_unit_cash_assets: 15_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -188,7 +188,7 @@
     nv_tanf: 2_112
 
 - name: Single parent household (size 2)
-  period: 2025
+  period: 2024
   input:
     people:
       person1:
@@ -215,7 +215,7 @@
     nv_tanf: 3_840
 
 - name: Large household (size 10) uses increment formula
-  period: 2025
+  period: 2024
   input:
     people:
       person1:
@@ -294,3 +294,123 @@
     nv_tanf_eligible: true
     # Benefit: $4,632 - $9,480 = -$4,848, capped at $0
     nv_tanf: 0
+
+# 2025 tests — need standard updated effective 2025-04-01
+# Annual need standard = 3 months old rate + 9 months new rate
+
+- name: Single person household 2025 (size 1, pregnant)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_tanf_payment_standard: 3_048
+    # Need standard (size 1): $759 x 3 + $979 x 9 = $11,088/year
+    nv_tanf_need_standard: 11_088
+    nv_tanf_eligible: true
+    nv_tanf: 3_048
+
+- name: Family of 3 with no income 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_tanf_payment_standard: 4_632
+    # Need standard (size 3): $1,299 x 3 + $1,666 x 9 = $18,891/year
+    nv_tanf_need_standard: 18_891
+    nv_tanf_eligible: true
+    nv_tanf: 4_632
+
+- name: Single parent household 2025 (size 2)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_tanf_payment_standard: 3_840
+    # Need standard (size 2): $1,029 x 3 + $1,322 x 9 = $14,985/year
+    nv_tanf_need_standard: 14_985
+    nv_tanf_eligible: true
+    nv_tanf: 3_840
+
+- name: Large household 2025 (size 10) uses increment formula
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: NV
+  output:
+    nv_tanf_payment_standard: 10_176
+    # Need standard: ($2,649 + 2 x $270) x 3 + ($3,385 + 2 x $344) x 9 = $46,224/year
+    nv_tanf_need_standard: 46_224
+    nv_tanf_eligible: true
+    nv_tanf: 10_176

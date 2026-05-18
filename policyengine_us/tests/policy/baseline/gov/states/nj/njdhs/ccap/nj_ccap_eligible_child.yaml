@@ -1,0 +1,156 @@
+# nj_ccap_eligible_child: Person, bool, MONTH
+# Child must be: age < 13 (or < 19 if special needs), dependent, immigration eligible
+# Age threshold params: child = 13, special_needs = 19
+
+- name: Case 1, child age 4 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: true
+
+- name: Case 2, child age 12 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: true
+
+- name: Case 3, child age 13 is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false
+
+- name: Case 4, child age 14 is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false
+
+- name: Case 5, disabled child age 13 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: true
+
+- name: Case 6, disabled child age 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: true
+
+- name: Case 7, disabled child age 19 is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false
+
+- name: Case 8, non-dependent child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false
+
+- name: Case 9, undocumented child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false
+
+- name: Case 10, adult age 30 is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_eligible_child: false

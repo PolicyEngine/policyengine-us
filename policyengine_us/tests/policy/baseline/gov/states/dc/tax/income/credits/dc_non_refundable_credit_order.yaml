@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: DC
+    dc_income_tax_before_credits: 100
+    dc_cdcc_potential: 80
+  output:
+    dc_cdcc: 80

@@ -11,11 +11,13 @@ class pha_payment_standard(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/24/982.503"
 
     def formula(household, period, parameters):
-        # Only Los Angeles County for now.
+        # Use actual local payment standards where encoded, otherwise fall
+        # back to HUD Fair Market Rent as a national proxy.
         # https://www.lacda.org/docs/librariesprovider25/section-8-program/shared-document---payment-standard---vash/hcv-ehv-vash-payment-standards.pdf
         household_bedrooms = household("bedrooms", period)
         is_sro = household("is_sro", period)
         in_la = household("in_la", period)
+        hud_fair_market_rent = household("hud_fair_market_rent", period)
         la_amount = select(
             [
                 is_sro,
@@ -31,4 +33,5 @@ class pha_payment_standard(Variable):
             [1_380, 1_840, 2_096, 2_666, 3_465, 3_804, 4_374, 4_945, 5_515],
             default=6_086,  # 8 bedrooms
         )
-        return in_la * la_amount * MONTHS_IN_YEAR
+        la_payment_standard = la_amount * MONTHS_IN_YEAR
+        return where(in_la, la_payment_standard, hud_fair_market_rent)

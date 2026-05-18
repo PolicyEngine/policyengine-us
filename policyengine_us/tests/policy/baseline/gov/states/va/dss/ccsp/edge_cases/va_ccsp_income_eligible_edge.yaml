@@ -1,0 +1,569 @@
+# Virginia CCSP income eligibility edge case tests
+# Focus: exact threshold boundaries for each locality group,
+#   enrolled vs not enrolled, young child SMI exception boundary
+#
+# 2024 FPG (contiguous US): first_person = 15,060, additional = 5,380
+#   Family of 2: 20,440
+#
+# 2024 VA SMI base (effective 2023-10-01): 121,130
+#   Size 2: 121,130 * 0.68 = 82,368.40
+#   85% SMI size 2: 70,013.14
+#
+# Group I: 150% FPG size 2 = 20,440 * 1.50 = 30,660
+# Group II: 160% FPG size 2 = 20,440 * 1.60 = 32,704
+# Group III: 185% FPG size 2 = 20,440 * 1.85 = 37,814
+#
+# Income is tested as annual (SPMUnit MONTH reads YEAR income / 12).
+# Threshold comparison is also monthly: annual_threshold / 12.
+# So we test with annual income vs annual threshold equivalents.
+
+# === GROUP I BOUNDARY (150% FPG) ===
+
+- name: Case 1, Group I income $1 below 150% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 30_659
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 150% FPG = 30,660
+    # 30,659 <= 30,660 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 2, Group I income exactly at 150% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 30_660
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 150% FPG = 30,660
+    # 30,660 <= 30,660 -> eligible (at threshold = eligible)
+    va_ccsp_income_eligible: true
+
+- name: Case 3, Group I income $1 above 150% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 30_661
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 150% FPG = 30,660
+    # 30,661 > 30,660 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === GROUP II BOUNDARY (160% FPG) ===
+
+- name: Case 4, Group II income exactly at 160% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 32_704
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_II
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 160% FPG = 32,704
+    # 32,704 <= 32,704 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 5, Group II income $1 above 160% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 32_705
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_II
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 160% FPG = 32,704
+    # 32,705 > 32,704 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === GROUP III BOUNDARY (185% FPG) ===
+
+- name: Case 6, Group III income $1 below 185% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 37_813
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 185% FPG = 37,814
+    # 37,813 <= 37,814 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 7, Group III income $1 above 185% FPG threshold.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 37_815
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 185% FPG = 37,814
+    # 37,815 > 37,814 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === ENROLLED 85% SMI BOUNDARY ===
+
+- name: Case 8, enrolled family income just below 85% SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # SMI size 2: 121,130 * 0.68 = 82,368.40
+        # 85% SMI = 82,368.40 * 0.85 = 70,013.14
+        # Monthly: 82,368.40/12 * 0.85 = 5,834.43
+        # Annual 70,013 -> monthly 5,834.42 <= 5,834.43 -> eligible
+        employment_income: 70_013
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Enrolled -> 85% SMI = 70,013.14
+    # 70,013 <= 70,013.14 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 9, enrolled family income $1 above 85% SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 70_014
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 85% SMI = 70,013.14
+    # 70,014 > 70,013.14 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === YOUNG CHILD SMI EXCEPTION BOUNDARY ===
+
+- name: Case 10, young child age 5 triggers SMI exception.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 48_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Group I: 150% FPG = 30,660
+    # Young child (age 5 < 6): also check 85% SMI = 70,013.14
+    # Use max(30,660, 70,013.14) = 70,013.14
+    # 48,000 <= 70,013.14 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 11, child age 6 does NOT trigger SMI exception.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 48_000
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Group I: 150% FPG = 30,660
+    # Child age 6 not < 6: no SMI exception
+    # 48,000 > 30,660 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === ENROLLED OVERRIDES LOCALITY GROUP ===
+
+- name: Case 12, enrolled family in Group I uses SMI not FPG.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 60_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_enrolled: true
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Enrolled -> exit limit = 85% SMI = 70,013.14
+    # (Not Group I 150% FPG = 30,660 -- enrolled uses SMI)
+    # 60,000 <= 70,013.14 -> eligible
+    va_ccsp_income_eligible: true
+
+# === ZERO INCOME ===
+
+- name: Case 13, zero income always eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_I
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 0 <= any threshold -> eligible
+    va_ccsp_income_eligible: true
+
+# === TANF CATEGORICAL ELIGIBILITY ===
+
+- name: Case 14, TANF-enrolled household waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 200_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        va_ccsp_locality_group: GROUP_III
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Income far above any threshold but TANF -> waived
+    va_ccsp_income_eligible: true
+
+# === FAIRFAX/ALEXANDRIA EXCEPTION (250% FPG capped at 85% SMI) ===
+
+- name: Case 15, Fairfax family eligible at 250% FPG.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # Fairfax: 250% FPG = 20,440 * 2.5 = 51,100
+    # 85% SMI = 70,013.14
+    # Limit: min(51,100, 70,013.14) = 51,100
+    # 50,000 <= 51,100 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 16, Fairfax family above 250% FPG ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 51_101
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # Fairfax: 250% FPG = 51,100
+    # 51,101 > 51,100 -> ineligible
+    va_ccsp_income_eligible: false
+
+- name: Case 17, Alexandria family eligible under 250% FPG exception.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 45_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county: ALEXANDRIA_CITY_VA
+  output:
+    # Alexandria: 250% FPG = 51,100
+    # 45,000 <= 51,100 -> eligible
+    va_ccsp_income_eligible: true
+
+- name: Case 18, non-Fairfax Group III family at same income ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 45_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county: STAFFORD_COUNTY_VA
+  output:
+    # Stafford is Group III but NOT Fairfax/Alexandria
+    # 185% FPG = 37,814
+    # 45,000 > 37,814 -> ineligible
+    va_ccsp_income_eligible: false
+
+# === MEDICAID/WIC INCOME WAIVER ===
+
+- name: Case 19, Medicaid recipient waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 200_000
+        receives_medicaid: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Income far above any threshold but Medicaid -> waived
+    va_ccsp_income_eligible: true
+
+- name: Case 20, WIC recipient waives income test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        employment_income: 200_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        receives_wic: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Child on WIC -> income test waived for unit
+    va_ccsp_income_eligible: true

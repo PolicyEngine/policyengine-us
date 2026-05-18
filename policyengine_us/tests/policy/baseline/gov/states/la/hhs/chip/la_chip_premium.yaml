@@ -1,0 +1,35 @@
+- name: Louisiana regular LaCHIP tax unit owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: LA
+  output:
+    la_chip_premium: 0
+
+- name: Louisiana Affordable Plan tax unit pays 50 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.30
+    households:
+      household:
+        members: [child]
+        state_code: LA
+  output:
+    la_chip_premium: 600

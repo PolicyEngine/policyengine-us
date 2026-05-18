@@ -1,0 +1,24 @@
+- name: Default provider type is licensed center.
+  period: 2025-01
+  input:
+    people:
+      person1: {}
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_provider_type: [LICENSED_CENTER]
+
+- name: Registered home when set explicitly.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        vt_ccfap_provider_type: REGISTERED_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_provider_type: [REGISTERED_HOME]

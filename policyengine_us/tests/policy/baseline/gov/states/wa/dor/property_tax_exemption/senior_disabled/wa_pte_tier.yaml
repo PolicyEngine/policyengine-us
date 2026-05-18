@@ -1,0 +1,319 @@
+- name: Case 1, King County income at Tier 1 threshold returns Tier 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King County 2024: T1=$60k, T2=$72k, T3=$84k
+    # income $60k <= T1 -> Tier 1
+    wa_pte_tier: 1
+
+- name: Case 2, King County income between Tier 1 and Tier 2 returns Tier 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 72_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # income $72k > T1 ($60k) and <= T2 ($72k) -> Tier 2
+    wa_pte_tier: 2
+
+- name: Case 3, King County income between Tier 2 and Tier 3 returns Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 80_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # income $80k > T2 ($72k) and <= T3 ($84k) -> Tier 3
+    wa_pte_tier: 3
+
+- name: Case 4, King County income above Tier 3 returns 0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # income $100k > T3 ($84k) -> not in any tier
+    wa_pte_tier: 0
+
+- name: Case 5, ineligible household (renter) still receives a tier label by income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # wa_pte_tier only checks income vs thresholds, not ownership.
+    # 40k <= T1 60k -> Tier 1 even for renter; ownership is enforced
+    # downstream by wa_pte_eligible.
+    wa_pte_tier: 1
+
+- name: Case 6, King County income $1 above Tier 1 threshold returns Tier 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 60_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T1 = 60,000; 60,001 > T1 and <= T2 (72,000) -> Tier 2
+    wa_pte_tier: 2
+
+- name: Case 7, King County income $1 above Tier 3 returns Tier 0.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 84_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # 84,001 > T3 (84,000) -> not in any tier
+    wa_pte_tier: 0
+
+- name: Case 8, Adams County 2024 low thresholds - $50k income above Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: ADAMS_COUNTY_WA
+  output:
+    # Adams 2024: T1=$30,300, T2=$36,000, T3=$41,000
+    # 50,000 > T3 41,000 -> Tier 0 (proves county lookup picks up Adams not King)
+    wa_pte_tier: 0
+
+- name: Case 9, 2019 King County pre-2020 flat thresholds - $40k = Tier 3.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Pre-2020 statewide flat: T1=$30k, T2=$35k, T3=$40k
+    # 40,000 > T2 (35,000) and <= T3 (40,000) -> Tier 3
+    wa_pte_tier: 3
+
+- name: Case 10, 2024 King County 50/60/70 percent MHI - $40k = Tier 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024: T1=$60k, T2=$72k, T3=$84k
+    # 40,000 <= T1 -> Tier 1 (same income, different year/thresholds)
+    wa_pte_tier: 1
+
+- name: Case 11, married couple combined AGI determines tier.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 80_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Combined AGI 80k: > T2 (72k) and <= T3 (84k) -> Tier 3
+    wa_pte_tier: 3
+
+- name: Case 12, King County income $1 below Tier 1 threshold returns Tier 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 59_999
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T1 = $60,000. 59,999 < T1 -> Tier 1. Completes the Tier 1
+    # boundary triple together with Case 1 (at T1) and Case 6 (T1+1 -> Tier 2).
+    wa_pte_tier: 1
+
+- name: Case 13, King County income $1 below Tier 2 threshold returns Tier 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 71_999
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T2 = $72,000. 71,999 > T1 (60,000) and < T2 -> Tier 2.
+    # Opens the Tier 2 boundary triple (T2-1, T2, T2+1).
+    wa_pte_tier: 2
+
+- name: Case 14, King County income $1 above Tier 2 threshold returns Tier 3.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 72_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # King 2024 T2 = $72,000. 72,001 > T2 and <= T3 ($84,000) -> Tier 3.
+    # Completes the Tier 2 boundary triple together with Case 13 (T2-1) and
+    # Case 2 (at T2).
+    wa_pte_tier: 3

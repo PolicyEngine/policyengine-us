@@ -39,4 +39,34 @@
     ut_income_tax_exempt: false 
     ut_income_tax_before_non_refundable_credits: 628.28
     ut_non_refundable_credits: 624.50
-    ut_income_tax: 3.78 
+    ut_income_tax: 3.78
+
+- name: Single filer with employment income in 2026
+  # Tests SB60: Income tax rate reduced from 4.5% to 4.45%
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 100_000
+        ssi: 0
+        ma_state_supplement: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Taxable income: $100,000
+    # Tax before credits: $100,000 * 0.0445 = $4,450
+    ut_income_tax_before_credits: 4_450 

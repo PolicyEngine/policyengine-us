@@ -1,0 +1,135 @@
+- name: 2024 Maine single standard deduction matches federal (pre-OBBBA)
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 23
+  output:
+    me_standard_deduction: 14_600
+
+- name: 2025 Maine single standard deduction is $15,000 (not the OBBBA $15,750)
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 54
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 23
+  output:
+    me_standard_deduction: 15_000
+
+- name: 2025 Maine MFJ standard deduction is $30,000 (not the OBBBA $31,500)
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 23
+  output:
+    me_standard_deduction: 30_000
+
+- name: 2025 Maine HOH standard deduction is $22,500 (not the OBBBA $23,625)
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 23
+  output:
+    me_standard_deduction: 22_500
+
+- name: 2025 Maine single age 65+ gets $15,000 base plus $2,000 additional
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 23
+  output:
+    me_standard_deduction: 17_000
+
+- name: 2025 Maine MFJ with both aged gets $30,000 plus 2 x $1,600
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+      person2:
+        age: 67
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 23
+  output:
+    me_standard_deduction: 33_200
+
+- name: Maine standard deduction is $0 outside of Maine
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 36
+  output:
+    me_standard_deduction: 0

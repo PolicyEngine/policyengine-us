@@ -40,3 +40,16 @@
   output:
     # max(0, 30 - 50) = 0
     ct_tfa_countable_unearned_income: 0
+
+# --- Historical period: child support deduction was $50 in 2020 ---
+
+- name: Case 5, 2020 child support deduction at cap.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    tanf_gross_unearned_income: 100
+    child_support_received: 720  # $60/month > $50 cap
+    state_code: CT
+  output:
+    # 100 - min(60, 50) = 100 - 50 = 50
+    ct_tfa_countable_unearned_income: 50

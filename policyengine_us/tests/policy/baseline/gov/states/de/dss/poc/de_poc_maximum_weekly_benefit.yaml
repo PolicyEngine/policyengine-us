@@ -1,0 +1,228 @@
+# de_poc_maximum_weekly_benefit: Person, float, MONTH
+# Looks up weekly rate from rate table by provider type and age group
+# For disabled children, uses special needs rate table
+#
+# Weekly rates (2024):
+#   Center:      INFANT=$325, TODDLER=$290, PRESCHOOL=$255,
+#                SCHOOL_AGE_FT=$190, SCHOOL_AGE_PT=$135
+#   Family Home: INFANT=$222.50, TODDLER=$200, PRESCHOOL=$200,
+#                SCHOOL_AGE_FT=$160, SCHOOL_AGE_PT=$100
+
+- name: Case 1, center infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Center INFANT weekly rate = $325.00
+    de_poc_maximum_weekly_benefit: [0, 325]
+
+- name: Case 2, family home toddler rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family Home TODDLER weekly rate = $200.00
+    de_poc_maximum_weekly_benefit: [0, 200]
+
+- name: Case 3, center preschool rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Center PRESCHOOL weekly rate = $255.00
+    de_poc_maximum_weekly_benefit: [0, 255]
+
+- name: Case 4, center school age full-time rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 6
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Center SCHOOL_AGE_FULL_TIME weekly rate = $190.00
+    de_poc_maximum_weekly_benefit: [0, 190]
+
+- name: Case 5, family home school age part-time rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 3
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family Home SCHOOL_AGE_PART_TIME weekly rate = $100.00
+    de_poc_maximum_weekly_benefit: [0, 100]
+
+- name: Case 6, disabled child gets special needs rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Center INFANT special needs = $341.25
+    de_poc_maximum_weekly_benefit: [0, 341.25]
+
+- name: Case 7, disabled child family home preschool with special needs rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        de_poc_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Family Home PRESCHOOL special needs = $216.25
+    de_poc_maximum_weekly_benefit: [0, 216.25]
+
+- name: Case 8, ineligible child gets zero weekly benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+        childcare_hours_per_day: 6
+        de_poc_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Age 14, not disabled -> not eligible child -> 0
+    de_poc_maximum_weekly_benefit: [0, 0]

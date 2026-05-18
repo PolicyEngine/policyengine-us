@@ -1,0 +1,76 @@
+- name: Case 1, household in TX with income below 150% FPG is eligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 2, household in TX with income above both 150% FPG and 60% SMI is ineligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    # 150% FPG for HH of 4 = $46,800; 60% SMI ~ $56,680
+    # Income must exceed both limits to be ineligible
+    irs_gross_income: 60_000
+    spm_unit_size: 4
+    state_code: TX
+    is_snap_eligible: false
+  output:
+    tx_ceap_eligible: false
+
+- name: Case 3, household in TX with zero income is eligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 4, household not in TX is ineligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 10_000
+    spm_unit_size: 1
+    state_code: CA
+  output:
+    tx_ceap_eligible: false
+
+- name: Case 5, household at exactly 50% FPG is eligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    # 50% FPG for HH of 1 = $7,580 (FPG 2024 = $15,060 * 0.5)
+    irs_gross_income: 7_580
+    spm_unit_size: 1
+    state_code: TX
+  output:
+    tx_ceap_eligible: true
+
+- name: Case 6, household in FY 2025 with income above 150% FPG but below 60% SMI is ineligible.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    # In FY 2025, only 150% FPG applies (SMI threshold removed)
+    irs_gross_income: 50_000
+    spm_unit_size: 4
+    state_code: TX
+    is_snap_eligible: false
+  output:
+    tx_ceap_eligible: false
+
+- name: Case 7, SNAP-eligible household above income limit is categorically eligible.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 80_000
+    spm_unit_size: 1
+    state_code: TX
+    is_snap_eligible: true
+  output:
+    tx_ceap_eligible: true

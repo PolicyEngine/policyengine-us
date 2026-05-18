@@ -1,0 +1,13 @@
+description: Florida sets this amount as the offset added to the federal SSI benefit rate to determine the Protected provider rate under the Optional State Supplementation program.
+values:
+  2023-01-01: 185
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Florida OSS Protected provider rate offset
+  reference:
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2024-07-01 — Protected provider rate $1,099 at Jan 2023, $1,128 at Jan 2024 / Jul 2024; SSI FBR $914 at Jan 2023, $943 at Jan 2024)
+      href: https://www.myflfamilies.com/sites/default/files/2024-06/Appendix%20A-12.pdf
+    - title: FL DCF Appendix A-12, Optional State Supplementation Payment Standards (effective 2025-01-01 — Protected provider rate $1,152 at Jan 2025; SSI FBR $967)
+      href: https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf

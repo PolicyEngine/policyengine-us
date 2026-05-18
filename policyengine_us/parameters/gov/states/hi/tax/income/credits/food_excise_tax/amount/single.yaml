@@ -7,7 +7,7 @@ metadata:
   reference:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.85, (b)
       href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=44
-    - title: Hawaii Tax Form N-311 2022 
+    - title: Hawaii Tax Form N-311 2022
       href: https://files.hawaii.gov/tax/forms/2022/n311_i.pdf#page=1
     - title: Hawaii Tax Form N-311 2021 page 1
       href: https://www.dochub.com/jsfiller-desk14/?mode=cors&lang=en&ref=https://www.dochub.com&projectId=1317406362&loader=tips&MEDIUM_PDFJS=true&PAGE_REARRANGE_V2_MVP=true&isPageRearrangeV2MVP=true&jsf-page-rearrange-v2=true&jsf-new-header=false#ede2dc134a0b435eb2449575bffabfdb
@@ -15,38 +15,53 @@ metadata:
       href: https://files.hawaii.gov/tax/forms/2023/n311_i.pdf#page=1
     - title: 2025 Hawaii Form N-311 Instructions
       href: https://files.hawaii.gov/tax/forms/current/n311_i.pdf#page=1
+    - title: Act 163 (SLH 2023) Section 4 - Sunset provision
+      # Act 163 is enacted law (Session Laws of Hawaii 2023).
+      href: https://www.capitol.hawaii.gov/slh/Years/SLH2023/SLH2023_Act163.pdf
+    - title: Hawaii Tax Information Release No. 2023-04 - Act 163 Tax Law Changes
+      href: https://files.hawaii.gov/tax/news/announce/ann23-04.pdf
 brackets:
   - threshold:
       2021-01-01: -.inf
     amount:
       2021-01-01: 110
       2023-01-01: 220
+      2028-01-01: 110
   - threshold:
       2021-01-01: 5_000
       2023-01-01: 15_000
+      2028-01-01: 5_000
     amount:
       2021-01-01: 100
       2023-01-01: 200
+      2028-01-01: 100
   - threshold:
       2021-01-01: 10_000
       2023-01-01: 20_000
+      2028-01-01: 10_000
     amount:
       2021-01-01: 85
       2023-01-01: 170
+      2028-01-01: 85
   - threshold:
       2021-01-01: 15_000
       2023-01-01: 25_000
+      2028-01-01: 15_000
     amount:
       2021-01-01: 70
       2023-01-01: 140
+      2028-01-01: 70
   - threshold:
       2021-01-01: 20_000
       2023-01-01: 30_000
+      2028-01-01: 20_000
     amount:
       2021-01-01: 55
       2023-01-01: 110
+      2028-01-01: 55
   - threshold:
       2021-01-01: 30_000
       2023-01-01: 40_000
+      2028-01-01: 30_000
     amount:
       2021-01-01: 0

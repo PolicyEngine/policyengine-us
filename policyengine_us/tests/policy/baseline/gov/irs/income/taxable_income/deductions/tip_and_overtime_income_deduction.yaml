@@ -1,6 +1,7 @@
 - name: Tip and overtime income are exempt
   period: 2026
   input:
+    treasury_tipped_occupation_code: 102
     tip_income: 200
     fsla_overtime_premium: 300
     standard_deduction: 0
@@ -22,10 +23,12 @@
       person1:
         ssn_card_type: CITIZEN
         tip_income: 200
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 300
       person2:
         ssn_card_type: OTHER_NON_CITIZEN
         tip_income: 600
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 900
     tax_units:
       tax_unit:
@@ -51,10 +54,12 @@
       person1:
         ssn_card_type: NONE
         tip_income: 200
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 300
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 600
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 900
     tax_units:
       tax_unit:
@@ -80,10 +85,12 @@
       person1:
         ssn_card_type: CITIZEN
         tip_income: 200
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 300
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 600
+        treasury_tipped_occupation_code: 102
         fsla_overtime_premium: 900
     tax_units:
       tax_unit:
@@ -247,9 +254,11 @@
       person1:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 300
+        treasury_tipped_occupation_code: 102
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 900
+        treasury_tipped_occupation_code: 102
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -274,9 +283,11 @@
       person1:
         ssn_card_type: NONE
         tip_income: 300
+        treasury_tipped_occupation_code: 102
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 900
+        treasury_tipped_occupation_code: 102
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -301,9 +312,11 @@
       person1:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 300
+        treasury_tipped_occupation_code: 102
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 900
+        treasury_tipped_occupation_code: 102
       person3:
         ssn_card_type: NONE
         is_tax_unit_dependent: true
@@ -331,9 +344,11 @@
       person1:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 300
+        treasury_tipped_occupation_code: 102
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 900
+        treasury_tipped_occupation_code: 102
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -358,9 +373,11 @@
       person1:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 300
+        treasury_tipped_occupation_code: 102
       person2:
         ssn_card_type: NON_CITIZEN_VALID_EAD
         tip_income: 900
+        treasury_tipped_occupation_code: 102
     tax_units:
       tax_unit:
         members: [person1, person2]

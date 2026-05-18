@@ -1,0 +1,60 @@
+- name: Default is independent
+  period: 2011
+  input:
+    state_code: AK
+  output:
+    ak_ssp_living_arrangement: INDEPENDENT
+
+- name: Medicaid facility from federal inputs
+  period: 2011
+  input:
+    state_code: AK
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ak_ssp_living_arrangement: MEDICAID_FACILITY
+
+- name: Medical facility without Medicaid paying is not Medicaid facility
+  period: 2011
+  input:
+    state_code: AK
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ak_ssp_living_arrangement: INDEPENDENT
+
+- name: Assisted living from federal input
+  period: 2011
+  input:
+    state_code: AK
+    ak_resides_in_assisted_living_home: true
+  output:
+    ak_ssp_living_arrangement: ASSISTED_LIVING
+
+- name: Household of another from federal inputs
+  period: 2011
+  input:
+    state_code: AK
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ak_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: In another household without shelter and meals stays independent
+  period: 2011
+  input:
+    state_code: AK
+    ssi_lives_in_another_persons_household: true
+  output:
+    ak_ssp_living_arrangement: INDEPENDENT
+
+- name: Medicaid facility takes priority over assisted living
+  period: 2011
+  input:
+    state_code: AK
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    ak_resides_in_assisted_living_home: true
+  output:
+    ak_ssp_living_arrangement: MEDICAID_FACILITY

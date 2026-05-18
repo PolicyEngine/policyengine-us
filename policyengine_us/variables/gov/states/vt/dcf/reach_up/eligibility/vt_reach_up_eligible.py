@@ -17,7 +17,7 @@ class vt_reach_up_eligible(Variable):
         # for full-time students, effective Jan 1, 2024. Not modeled.
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         income_eligible = spm_unit("vt_reach_up_income_eligible", period)
         resources_eligible = spm_unit("vt_reach_up_resources_eligible", period)

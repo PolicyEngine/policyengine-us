@@ -1,0 +1,43 @@
+- name: Marketplace net premium equals plan cost minus used PTC.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 6_000
+    used_aca_ptc: 4_000
+  output:
+    marketplace_net_premium: 2_000
+
+- name: Marketplace net premium is zero when the household does not take up coverage.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 0
+    used_aca_ptc: 0
+  output:
+    marketplace_net_premium: 0
+
+- name: Marketplace net premium floors at zero when PTC exceeds plan cost.
+  period: 2024
+  input:
+    selected_marketplace_plan_premium_proxy: 2_000
+    used_aca_ptc: 3_000
+  output:
+    marketplace_net_premium: 0
+
+- name: High-income Marketplace household pays the full selected plan premium when PTC-ineligible.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    aca_magi_fraction: 5
+    is_medicaid_eligible: false
+    is_chip_eligible: false
+    is_basic_health_program_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    slcsp: 10_000
+    selected_marketplace_plan_benchmark_ratio: 0.8
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+    selected_marketplace_plan_premium_proxy: 8_000
+    used_aca_ptc: 0
+    marketplace_net_premium: 8_000

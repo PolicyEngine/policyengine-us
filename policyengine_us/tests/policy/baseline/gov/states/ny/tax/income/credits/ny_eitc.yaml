@@ -28,3 +28,100 @@
     ny_income_tax_before_credits: 0
   output:
     ny_eitc: 30
+
+# 2021 decoupling tests (Tax Law 607(a), Part WWW Ch.58 Laws of 2020)
+# NY does not conform to ARPA changes for TY 2021.
+
+- name: 2021 childless filer age 22 gets no NY EITC (under pre-ARPA min age 25)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 22
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_eitc: 0
+
+- name: 2021 childless filer age 67 gets no NY EITC (over pre-ARPA max age 64)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 67
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_eitc: 0
+
+- name: 2021 childless filer age 30 gets reduced NY EITC (pre-ARPA max $538)
+  # Pre-ARPA 2020 childless EITC: phase-in 7.65%, max $538,
+  # phase-out start $8,790, phase-out rate 7.65%
+  # At $10K: phased_in = min(10000 * 0.0765, 538) = $538
+  # reduction = (10000 - 8790) * 0.0765 = $92.57
+  # federal_base = $538 - $92.57 = $445.44
+  # NY match: 30% * $445.44 = $133.63
+  # minus household credit (capped at income tax)
+  period: 2021
+  absolute_error_margin: 5
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_eitc: 89
+
+- name: 2021 filer with child still gets NY EITC (ARPA unchanged for 1+ children)
+  period: 2021
+  absolute_error_margin: 5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Should be non-zero — ARPA didn't change amounts for filers with children
+    ny_eitc: 968

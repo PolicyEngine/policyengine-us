@@ -3,13 +3,14 @@
   input:
     cdcc: 0
     state_code: AR
-  output: 
+    ar_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
     ar_cdcc: 0
-
 - name: Some cdcc, 20%
   period: 2022
   input:
-    cdcc: 1_000
+    cdcc: 1000
     state_code: AR
-  output: 
+    ar_income_tax_before_non_refundable_credits_unit: 1000000
+  output:
     ar_cdcc: 200

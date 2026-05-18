@@ -1,0 +1,12 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2022
+  input:
+    state_code: SC
+    sc_income_tax_before_non_refundable_credits: 100
+    sc_cdcc_potential: 80
+    sc_eitc_potential: 40
+    sc_two_wage_earner_credit_potential: 30
+  output:
+    sc_cdcc: 80
+    sc_eitc: 20
+    sc_two_wage_earner_credit: 0

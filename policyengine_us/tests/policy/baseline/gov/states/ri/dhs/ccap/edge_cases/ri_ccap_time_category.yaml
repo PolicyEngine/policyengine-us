@@ -1,0 +1,46 @@
+# Edge cases for ri_ccap_time_category
+# Time authorization thresholds:
+#   0-9 hrs -> QUARTER_TIME
+#   10-19 hrs -> HALF_TIME
+#   20-29 hrs -> THREE_QUARTER_TIME
+#   30+ hrs -> FULL_TIME
+
+- name: Case 1, boundary at 19 hours is half time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 19
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 19 < 20 -> HALF_TIME
+    ri_ccap_time_category: HALF_TIME
+
+- name: Case 2, exactly 1 hour is quarter time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 1
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: QUARTER_TIME
+
+- name: Case 3, very high hours still full time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 60
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_ccap_time_category: FULL_TIME

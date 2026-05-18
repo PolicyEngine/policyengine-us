@@ -1,0 +1,41 @@
+- name: Case 1, married dependent below the itemizing spouse threshold is not required to file.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 4
+      person2:
+        age: 18
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        separate_filer_itemizes: true
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    medicaid_person_is_required_to_file: [false, false]
+
+- name: Case 2, married dependent at the itemizing spouse threshold is required to file.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 5
+      person2:
+        age: 18
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        separate_filer_itemizes: true
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    medicaid_person_is_required_to_file: [true, false]

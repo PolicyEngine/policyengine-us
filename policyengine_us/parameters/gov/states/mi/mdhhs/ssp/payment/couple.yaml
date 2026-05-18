@@ -1,0 +1,55 @@
+description: Michigan provides this amount as the monthly couple payment standard under the State Supplementary Payment program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Michigan SSP couple payment
+  breakdown:
+    - mi_ssp_payment_category
+  reference:
+    - title: MDHHS RFT 248, SSI Payment Levels
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2
+    - title: MDHHS BEM 660, State SSI Payment, Legal Base
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/BP/Public/BEM/660.pdf#page=4
+    - title: MCL 400.10, Social Welfare Act, supplementary payments
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-400-10
+    - title: SSA 2011 State Assistance Programs, Michigan baseline
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mi.html
+    - title: MDHHS RFT 248, SSI Payment Levels (RFB 2016-001 archive)
+      href: https://web.archive.org/web/20161223122049id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
+    - title: MDHHS RFT 248, SSI Payment Levels (RFB 2020-001 archive)
+      href: https://web.archive.org/web/20200923083110id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
+    - title: MDHHS RFT 248, SSI Payment Levels (RFB 2022-002 archive)
+      href: https://web.archive.org/web/20220309172236id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
+    - title: MDHHS RFT 248, SSI Payment Levels (RFB 2024-001 archive)
+      href: https://web.archive.org/web/20240112012718id_/https://dhhs.michigan.gov/OLMWEB/EX/RF/Public/RFT/248.pdf#page=2
+
+# Couple rates start at 2016-01-01. SSA 2011 baseline shows MI couple
+# rates were restructured between 2011 and 2016 (e.g. IL couple was $28
+# in 2011, $21 from 2016 onward); pre-2016 history is not modeled.
+INDEPENDENT_LIVING:
+  2016-01-01: 21
+HOUSEHOLD_OF_ANOTHER:
+  2016-01-01: 13.96
+DOMICILIARY_CARE:
+  2016-01-01: 540
+  2020-01-01: 565
+  2022-01-01: 595
+  2024-01-01: 645
+  2026-01-01: 671
+PERSONAL_CARE:
+  2016-01-01: 681
+  2020-01-01: 706
+  2022-01-01: 736
+  2024-01-01: 786
+  2026-01-01: 812
+HOME_FOR_AGED:
+  2016-01-01: 724.6
+  2020-01-01: 749.6
+  2022-01-01: 779.6
+  2024-01-01: 829.6
+  2026-01-01: 855.6
+INSTITUTION:
+  2016-01-01: 14
+NONE:
+  2016-01-01: 0

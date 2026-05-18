@@ -12,7 +12,9 @@ class mt_capital_gains_tax_applicable_threshold_indiv(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
-        capital_gains = person("long_term_capital_gains", period)
+        ltcg = person("long_term_capital_gains", period)
+        stcg = person("short_term_capital_gains", period)
+        capital_gains = max_(min_(ltcg, ltcg + stcg), 0)
         taxable_income = person("mt_taxable_income_indiv", period)
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",

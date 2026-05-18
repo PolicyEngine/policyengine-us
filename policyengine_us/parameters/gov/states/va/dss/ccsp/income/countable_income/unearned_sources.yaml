@@ -1,0 +1,31 @@
+description: Virginia counts these unearned income sources as countable income under the Child Care Subsidy Program. These sources are summed across all household members because 8VAC20-790-40(H)'s "earnings of a child younger than 18" exclusion applies only to earned income (wages and self-employment).
+values:
+  2023-01-01:
+    - child_support_received
+    - social_security
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - disability_benefits
+    - interest_income
+    - dividend_income
+    - rental_income
+    - alimony_income
+    # The following are excluded income per 8VAC20-790-40(H):
+    # ssi, tanf, snap, school meals, eitc, lump sums,
+    # education scholarships/loans/grants, tax refunds,
+    # monetary gifts, vendor payments, loans, capital gains,
+    # GI Bill benefits, reimbursements, Holocaust restitution,
+    # Agent Orange settlements, temporary census earnings,
+    # earnings under $25/month.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP countable unearned income sources
+  reference:
+    - title: 8VAC20-790-40(H) Excluded income
+      href: https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section40/
+    - title: Virginia Child Care Subsidy Program Guidance Manual Section 3.4 E
+      href: https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=63

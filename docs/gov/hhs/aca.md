@@ -8,6 +8,7 @@ It focuses on the mechanics of **premium determination**, **subsidy calculation*
 ## Key Definitions
 
 - **Second Lowest Cost Silver Plan (SLCSP)** – The silver‐tier plan with the second‐lowest premium in a rating area. It is the benchmark for premium tax credit (PTC) calculations.  
+- **Lowest Cost Bronze Plan (LCBP)** – The bronze‐tier plan with the lowest premium in a rating area. It shares the same age-curve and family-tier mechanics as SLCSP, but it is not used to compute the PTC itself.  
 - **Rating areas** – Geographic regions (usually groups of counties) in which insurers must charge the same premium for a given plan and age.  
 - **Premium tax credit (PTC)** – A refundable, advanceable credit that caps a household's net premium at a statutory percentage of income. PolicyEngine models the full statutory formula.  
 - **Age curves** – Multipliers published by the Centers for Medicare & Medicaid Services (CMS) that scale premiums by age, subject to a federal 3:1 limit (64‑year‑olds pay ≤ 3 × a 21‑year‑old).  
@@ -79,9 +80,9 @@ In non‑expansion states, PolicyEngine applies the IRA coverage‑gap fix above
 |--------------|--------|---------|--------------------|
 | **Federal age curve** | 45 CFR § 156.80(d); CMS *Market Rating Reforms – State-Specific Age Curve Variations* | 2018 + | `gov/aca/age_curves/default.yaml` |
 | **State-specific age curves** | CMS *Market Rating Reforms – State-Specific Age Curve Variations* | 2018 + | `gov/aca/age_curves/{state}.yaml`<br/>(AL, DC, MA, MN, MS, NY, OR, UT, VT) |
-| **SLCSP premiums by rating area** | Derived from batch scraping (e.g., KFF calculator) | PY 2025 | `gov/aca/state_rating_area_cost.yaml` |
+| **SLCSP premiums by rating area** | Derived from batch scraping (e.g., KFF calculator) | PY 2018-2026 | `gov/aca/state_rating_area_cost.yaml` |
+| **LCBP premiums by rating area** | Derived from representative-ZIP KFF bronze premiums | PY 2026 | `gov/aca/lcbp/state_rating_area_cost.yaml` |
 | **Family tier factors (NY/VT)** | CMS *Market Rating Reforms – State-Specific Age Curve Variations* | 2018 + | `gov/aca/family_tier_ratings/{state}.yaml` |
 | **Contribution % schedule (PTC phase-out)** | 26 U.S.C. § 36B(b)(3)(A) as amended by ARPA § 9661 & IRA § 12001 | 2015 – 2025 (with ARPA/IRA enhancements) | `gov/aca/required_contribution_percentage.yaml` |
 | **PTC income-eligibility thresholds** | ACA statutory requirements | By year | `gov/aca/ptc_income_eligibility.yaml` |
 | **FPL guidelines** | HHS Poverty Guidelines | Annual updates | `gov/hhs/poverty_guidelines.yaml` |
-
