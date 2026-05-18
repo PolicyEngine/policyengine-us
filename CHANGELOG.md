@@ -1,3 +1,10 @@
+## [1.693.4] - 2026-05-18
+
+### Fixed
+
+- Update 2026 Social Security benefit parameters to official SSA amounts and project wage-indexed thresholds with statutory NAWI formulas.
+
+
 ## [1.693.3] - 2026-05-18
 
 ### Fixed
