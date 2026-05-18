@@ -1,3 +1,81 @@
+## [1.693.4] - 2026-05-18
+
+### Fixed
+
+- Update 2026 Social Security benefit parameters to official SSA amounts and project wage-indexed thresholds with statutory NAWI formulas.
+
+
+## [1.693.3] - 2026-05-18
+
+### Fixed
+
+- Extend long-run dollar-input upraters through 2100 and limit the Trustees core threshold reform to federal wage-indexed tax parameters.
+
+
+## [1.693.2] - 2026-05-18
+
+### Fixed
+
+- Use HUD Section 8 income limits to determine housing assistance eligibility.
+
+
+## [1.693.1] - 2026-05-17
+
+### Changed
+
+- Compute the Supplemental Poverty Measure capped housing subsidy from housing assistance, the SPM threshold housing portion, and HUD tenant payment.
+
+
+## [1.693.0] - 2026-05-17
+
+### Added
+
+- Added a BEA NIPA proprietors' income mapping variable.
+
+
+## [1.692.1] - 2026-05-17
+
+### Changed
+
+- Gate housing assistance on a take-up input and use HUD Fair Market Rent as the national payment-standard fallback.
+
+
+## [1.692.0] - 2026-05-17
+
+### Added
+
+- Added the HUD Fair Market Rent CSV data store, a `hud_fair_market_rent` variable, and a `download_hud_fmr` helper script (Phase 1: county-level FY2025 with a placeholder seed row — full data refresh runs via the script with a free HUD API key).
+
+
+## [1.691.14] - 2026-05-17
+
+### Changed
+
+- Remove redundant uprating metadata and class-level aggregation metadata from variables that already define their computation explicitly.
+
+
+## [1.691.13] - 2026-05-17
+
+### Changed
+
+- Include child support received and workers' compensation in SPM resources, and keep SPM housing and energy subsidies on canonical input variables.
+
+
+## [1.691.12] - 2026-05-16
+
+### Fixed
+
+- Extend the CRFB non-refundable Social Security credit reform so it continues feeding into non-refundable credits after 2035.
+
+
+## [1.691.11] - 2026-05-16
+
+### Fixed
+
+- Subtract Form 4952 investment-income elections from net capital gain for the federal capital-gains tax.
+- Update the 2026 Social Security payroll cap to the official SSA contribution and benefit base.
+
+
 ## [1.691.10] - 2026-05-14
 
 ### Fixed

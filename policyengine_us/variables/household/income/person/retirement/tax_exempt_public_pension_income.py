@@ -8,3 +8,4 @@ class tax_exempt_public_pension_income(Variable):
     unit = USD
     documentation = "Tax-exempt income from government employee pensions."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.tax_exempt_pension_income"
