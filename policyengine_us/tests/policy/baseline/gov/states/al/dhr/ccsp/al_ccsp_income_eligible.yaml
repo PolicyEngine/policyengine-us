@@ -231,7 +231,8 @@
     people:
       person1:
         age: 30
-        employment_income: 75_146  # 85% SMI fam of 4 = 88,407 * 0.85 = 75,145.95; 75,146 is just over
+        # 85% SMI fam of 4 = 88,407 * 0.85 = 75,145.95; use +$0.01 above cap.
+        employment_income: 75_145.96
       person2:
         age: 28
       person3:
@@ -252,5 +253,5 @@
         members: [person1, person2, person3, person4]
         state_code: AL
   output:
-    # 75,146 > 75,145.95 (85% SMI cap) -> SMI cap fails by less than $1.
+    # 75,145.96 > 75,145.95 (85% SMI cap) -> SMI cap fails.
     al_ccsp_income_eligible: false

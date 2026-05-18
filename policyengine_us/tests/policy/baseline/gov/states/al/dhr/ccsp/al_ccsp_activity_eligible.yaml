@@ -102,9 +102,13 @@
   output:
     al_ccsp_activity_eligible: true
 
-- name: Disabled parent is activity eligible (SC/VA convention).
+- name: Disabled parent without modeled activity or CCDF fallback is ineligible.
   period: 2024-01
   input:
+    # Alabama's §2.2.2 does not list parental disability as an automatic
+    # activity exemption. Disabled parents must be marked via the
+    # meets_ccdf_activity_test fallback to capture a case-by-case
+    # good-cause exemption.
     people:
       person1:
         age: 40
@@ -125,7 +129,7 @@
         members: [person1, person2]
         state_code: AL
   output:
-    al_ccsp_activity_eligible: true
+    al_ccsp_activity_eligible: false
 
 - name: Two parents both meeting 15 hours is activity eligible.
   period: 2024-01
@@ -181,9 +185,13 @@
   output:
     al_ccsp_activity_eligible: false
 
-- name: Working parent plus disabled spouse is activity eligible (disabled-parent exemption).
+- name: Working parent plus non-working spouse fails activity test by default.
   period: 2024-01
   input:
+    # Per §2.2.2 each head/spouse must individually meet the 15hr work,
+    # student, or fallback test. Alabama's State Plan does NOT list
+    # parental disability as an automatic exemption (only protective
+    # services for children waives the activity test, §2.2.2(h)).
     people:
       person1:
         age: 30
@@ -202,6 +210,37 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    al_ccsp_activity_eligible: false
+
+- name: Working parent plus disabled spouse with CCDF fallback flag is activity eligible.
+  period: 2024-01
+  input:
+    # The fallback input (meets_ccdf_activity_test) is the supported
+    # pathway for case-by-case good-cause exemptions like disability.
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
     households:
       household:
         members: [person1, person2, person3]

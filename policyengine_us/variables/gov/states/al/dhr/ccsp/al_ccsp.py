@@ -20,18 +20,10 @@ class al_ccsp(Variable):
         is_eligible_child = person("al_ccsp_eligible_child", period)
         in_care = person("childcare_hours_per_week", period.this_year) > 0
         is_paying_child = is_eligible_child & in_care
-        n_paying = spm_unit.sum(is_paying_child)
 
-        weekly_family_copay = (
-            spm_unit("al_ccsp_weekly_copay_per_child", period) * n_paying
-        )
-        copay_waived = spm_unit("al_ccsp_copay_waived", period)
-        weekly_family_copay = where(copay_waived, 0, weekly_family_copay)
-
-        per_child_weekly_copay = where(
-            n_paying > 0, weekly_family_copay / where(n_paying > 0, n_paying, 1), 0
-        )
-        per_child_weekly_copay_broadcast = spm_unit.project(per_child_weekly_copay)
+        # al_ccsp_weekly_copay_per_child already applies the §3.3.1 waiver.
+        weekly_copay = spm_unit("al_ccsp_weekly_copay_per_child", period)
+        per_child_weekly_copay_broadcast = spm_unit.project(weekly_copay)
 
         # Per-child weekly pre-subsidy charge from annual expenses.
         annual_expense = person("pre_subsidy_childcare_expenses", period.this_year)

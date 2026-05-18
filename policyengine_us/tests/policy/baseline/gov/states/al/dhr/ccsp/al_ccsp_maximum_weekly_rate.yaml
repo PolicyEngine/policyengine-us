@@ -314,3 +314,179 @@
         county_str: MADISON_COUNTY_AL
   output:
     al_ccsp_maximum_weekly_rate: [0, 179]
+
+- name: Over-age child with full provider/quality settings gets zero rate.
+  # Regression: confirms `defined_for = al_ccsp_eligible_child` correctly
+  # masks the rate to zero based on the eligibility variable, not just on
+  # personhood (the existing adult-zero-rate test could pass even if
+  # `defined_for` were dropped).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_eligible_child: [false, false]
+    al_ccsp_maximum_weekly_rate: [0, 0]
+
+- name: CENTER TUSCALOOSA PRESCHOOL STAR_3 full-time is 144 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: BIBB_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 144]
+
+- name: CENTER FT_PAYNE PRESCHOOL STAR_3 full-time is 122 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: CHEROKEE_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 122]
+
+- name: CENTER DOTHAN PRESCHOOL STAR_3 full-time is 127 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: BARBOUR_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 127]
+
+- name: CENTER OPELIKA PRESCHOOL STAR_3 full-time is 149 per week.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: LEE_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 149]
+
+- name: INFORMAL provider ignores quality_tier (STAR_5 still hits $50 cap).
+  # Regression: INFORMAL bypasses the rate matrix entirely. The
+  # quality_tier input must not affect the $50/wk full-time cap.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        al_ccsp_provider_type: INFORMAL
+        al_ccsp_quality_tier: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_maximum_weekly_rate: [0, 50]

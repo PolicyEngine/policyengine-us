@@ -14,9 +14,10 @@ class al_ccsp_protective_services(Variable):
 
     def formula(spm_unit, period, parameters):
         # Foster care and homelessness are the modeled protective-service
-        # categories. Kinship is excluded per §2.2.2(f). EHS-CCP,
-        # child-welfare engagement, and TANF-Other Relative are not
-        # tracked at the moment and are documented as limitations.
+        # categories. §3.3.1(vi) also names kinship care as a copay-waiver
+        # trigger, but we don't track kinship care at the moment. EHS-CCP,
+        # child-welfare engagement, and TANF-Other Relative are also not
+        # tracked at the moment.
         has_foster_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
         is_homeless = spm_unit.household("is_homeless", period.this_year)
         return has_foster_child | is_homeless

@@ -18,4 +18,6 @@ class al_ccsp_weekly_copay_per_child(Variable):
         monthly_income = spm_unit("al_ccsp_countable_income", period)
         monthly_fpg = spm_unit("spm_unit_fpg", period)
         fpl_ratio = where(monthly_fpg > 0, monthly_income / monthly_fpg, 0)
-        return p.fee_by_fpl.calc(fpl_ratio)
+        fee = p.fee_by_fpl.calc(fpl_ratio)
+        copay_waived = spm_unit("al_ccsp_copay_waived", period)
+        return where(copay_waived, 0, fee)

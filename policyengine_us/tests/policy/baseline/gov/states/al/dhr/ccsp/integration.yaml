@@ -434,3 +434,45 @@
     # weekly charge = $96.15; min($96.15, $50) = $50
     # copay = $0; monthly = $50 * (52/12) = $216.67
     al_ccsp: 216.67
+
+# -- 2025 coverage check (parameters carry forward) --
+
+- name: Two-parent family at 150 FPL with center care in 2025 (same as 2024 baseline).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_730
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: STAR_3
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # State Plan covers FFY 2025-2027; parameter values carry forward
+    # from 2024-01-01 entries. This test guards against accidental
+    # parameter resets between 2024 and 2025.
+    al_ccsp_eligible: true

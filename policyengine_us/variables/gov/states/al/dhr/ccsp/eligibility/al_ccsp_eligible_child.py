@@ -24,5 +24,4 @@ class al_ccsp_eligible_child(Variable):
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )
-        is_dependent = person("is_tax_unit_dependent", period.this_year)
-        return age_eligible & immigration_eligible & is_dependent
+        return age_eligible & immigration_eligible

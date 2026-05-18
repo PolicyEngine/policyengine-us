@@ -107,6 +107,33 @@
   output:
     al_ccsp_eligible: true
 
+- name: Assets one dollar over 1 million is asset ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible: false
+
 # -- Care hours boundary tests (full-time / part-time) --
 
 - name: Care hours exactly 25 is part-time (half rate).
@@ -437,6 +464,10 @@
       household:
         members: [person1, person2]
         state_code: GA
+        county_str: AUTAUGA_COUNTY_AL
   output:
+    # Regression: non-AL household carrying an AL county string must not
+    # crash the region lookup; al_ccsp_region.py masks county lookup to
+    # AL households only.
     al_ccsp: 0
     al_ccsp_eligible: false

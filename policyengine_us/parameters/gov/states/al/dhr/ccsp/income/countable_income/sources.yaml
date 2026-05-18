@@ -13,12 +13,8 @@ values:
     - interest_income
     - dividend_income
     - alimony_income
-    - veterans_benefits
-    # TANF is excluded from the adds list to break a CCSP <-> TANF
-    # circular dependency through childcare_expenses. Operationally,
-    # families enrolled in TANF rarely reach the CCSP income test
-    # because TANF payment standards fall well below 180% FPL.
-    # - tanf
+    - veterans_benefits 
+    # - tanf exclude as of now to avoid circular reference error
     # Section 2.2.4(c) also lists inheritance and college work-study,
     # but no matching variables exist in policyengine-us at this time.
 
