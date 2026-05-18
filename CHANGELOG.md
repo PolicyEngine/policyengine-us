@@ -1,3 +1,10 @@
+## [1.693.5] - 2026-05-18
+
+### Fixed
+
+- Backdate Massachusetts TAFDC and EAEDC standard assistance amounts to include FY25 (April 2025) 10% increase. The FY24 raise scheduled for April 2024 was rescinded by 9C cuts in January 2024; the actual increase came from the FY25 budget.
+
+
 ## [1.693.4] - 2026-05-18
 
 ### Fixed
