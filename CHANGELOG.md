@@ -1,3 +1,10 @@
+## [1.693.3] - 2026-05-18
+
+### Fixed
+
+- Extend long-run dollar-input upraters through 2100 and limit the Trustees core threshold reform to federal wage-indexed tax parameters.
+
+
 ## [1.693.2] - 2026-05-18
 
 ### Fixed
