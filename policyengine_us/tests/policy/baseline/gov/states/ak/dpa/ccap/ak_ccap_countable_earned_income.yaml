@@ -3,7 +3,7 @@
 # Manual §4080-1 excludes earnings from children (age < 18).
 
 - name: Case 1, single adult earnings counted.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -22,7 +22,7 @@
     ak_ccap_countable_earned_income: 3_000
 
 - name: Case 2, minor's earnings excluded; adult's earnings counted.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -44,7 +44,7 @@
     ak_ccap_countable_earned_income: 2_000
 
 - name: Case 3, adult self-employment income counted.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -63,7 +63,7 @@
     ak_ccap_countable_earned_income: 1_500
 
 - name: Case 4, zero earnings returns zero.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

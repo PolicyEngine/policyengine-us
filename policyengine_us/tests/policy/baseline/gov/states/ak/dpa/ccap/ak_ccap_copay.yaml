@@ -3,7 +3,7 @@
 # One copay per family per Manual 4080.
 
 - name: Case 1, zero income produces zero copay.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -22,7 +22,7 @@
     ak_ccap_copay: 0
 
 - name: Case 2, family of 3 mid-income copay.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -47,7 +47,7 @@
     ak_ccap_copay: 150.00
 
 - name: Case 3, family of 4 in 7% band copay.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

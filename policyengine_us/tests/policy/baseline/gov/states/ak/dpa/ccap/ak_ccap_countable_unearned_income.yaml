@@ -3,7 +3,7 @@
 # Sources defined in countable_income/unearned_sources.yaml.
 
 - name: Case 1, social security counted as unearned.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -22,7 +22,7 @@
     ak_ccap_countable_unearned_income: 1_000
 
 - name: Case 2, child's unearned income counted (no age exclusion for unearned).
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -43,7 +43,7 @@
     ak_ccap_countable_unearned_income: 500
 
 - name: Case 3, zero unearned income returns zero.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

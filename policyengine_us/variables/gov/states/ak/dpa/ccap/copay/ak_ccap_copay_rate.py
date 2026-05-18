@@ -12,5 +12,7 @@ class ak_ccap_copay_rate(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ak.dpa.ccap.copay
-        smi_ratio = spm_unit("ak_ccap_smi_band", period)
+        countable = spm_unit("ak_ccap_countable_income", period)
+        monthly_smi = spm_unit("hhs_smi", period)
+        smi_ratio = where(monthly_smi > 0, countable / monthly_smi, 0)
         return p.sliding_scale.calc(smi_ratio)

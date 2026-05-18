@@ -6,7 +6,7 @@
 # Manual Section 4070-2 Eligible Child.
 
 - name: Case 1, child age 4 is age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -19,7 +19,7 @@
     ak_ccap_child_age_eligible: true
 
 - name: Case 2, child age 12 is age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -32,7 +32,7 @@
     ak_ccap_child_age_eligible: true
 
 - name: Case 3, child exactly age 13 is not age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -46,7 +46,7 @@
     ak_ccap_child_age_eligible: false
 
 - name: Case 4, child age 14 is not age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -59,7 +59,7 @@
     ak_ccap_child_age_eligible: false
 
 - name: Case 5, disabled child age 12 is age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -73,7 +73,7 @@
     ak_ccap_child_age_eligible: true
 
 - name: Case 6, disabled child age 13 is not age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -88,7 +88,7 @@
     ak_ccap_child_age_eligible: false
 
 - name: Case 7, adult is not age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -101,7 +101,7 @@
     ak_ccap_child_age_eligible: false
 
 - name: Case 8, newborn is age eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:

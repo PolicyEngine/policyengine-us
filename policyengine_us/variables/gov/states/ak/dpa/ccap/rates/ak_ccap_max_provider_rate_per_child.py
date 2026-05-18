@@ -59,4 +59,10 @@ class ak_ccap_max_provider_rate_per_child(Variable):
             ],
         )
 
-        return where(attending_days > 0, day_rate * attending_days, month_rate)
+        # Day-based schedules charge per attending day (zero days = $0).
+        # Month-based schedules charge a flat monthly rate regardless of
+        # attending days.
+        is_day_based = (care_schedule == AKCCAPCareSchedule.FT_DAY) | (
+            care_schedule == AKCCAPCareSchedule.PT_DAY
+        )
+        return where(is_day_based, day_rate * attending_days, month_rate)

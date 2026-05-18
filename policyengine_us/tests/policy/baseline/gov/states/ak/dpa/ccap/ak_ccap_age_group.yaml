@@ -7,7 +7,7 @@
 # Use age * MONTHS_IN_YEAR (not monthly_age) per NH CCAP lesson.
 
 - name: Case 1, newborn is infant.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -21,7 +21,7 @@
     ak_ccap_age_group: INFANT
 
 - name: Case 2, child at 1 year is still infant.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -35,7 +35,7 @@
     ak_ccap_age_group: INFANT
 
 - name: Case 3, child at 2 years is toddler.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -49,7 +49,7 @@
     ak_ccap_age_group: TODDLER
 
 - name: Case 4, child at 3 years is preschool.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -63,7 +63,7 @@
     ak_ccap_age_group: PRESCHOOL
 
 - name: Case 5, child at 4 years is preschool.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -77,7 +77,7 @@
     ak_ccap_age_group: PRESCHOOL
 
 - name: Case 6, child at 5 years is school age.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -91,7 +91,7 @@
     ak_ccap_age_group: SCHOOL_AGE
 
 - name: Case 7, child at 8 years is school age.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -104,7 +104,7 @@
     ak_ccap_age_group: SCHOOL_AGE
 
 - name: Case 8, child at 12 years is still school age.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:

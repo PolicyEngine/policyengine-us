@@ -5,7 +5,7 @@
 # OR if meets_ccdf_activity_test (federal fallback) is true.
 
 - name: Case 1, single working parent qualifies via employment income.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -27,7 +27,7 @@
     ak_ccap_parent_in_eligible_activity: true
 
 - name: Case 2, single non-working non-student parent fails activity test.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -52,7 +52,7 @@
     ak_ccap_parent_in_eligible_activity: false
 
 - name: Case 3, two-parent family with both parents working qualifies.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent1:
@@ -84,7 +84,7 @@
     ak_ccap_parent_in_eligible_activity: true
 
 - name: Case 4, two-parent family with only one working parent fails (all parents must qualify).
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent1:
@@ -119,7 +119,7 @@
     ak_ccap_parent_in_eligible_activity: false
 
 - name: Case 5, single full-time student parent qualifies.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -144,7 +144,7 @@
     ak_ccap_parent_in_eligible_activity: true
 
 - name: Case 6, single self-employed parent qualifies via self-employment income.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -169,7 +169,7 @@
     ak_ccap_parent_in_eligible_activity: true
 
 - name: Case 7, two-parent family fails when one parent is non-working (each parent rule).
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent1:
@@ -203,7 +203,7 @@
     ak_ccap_parent_in_eligible_activity: false
 
 - name: Case 8, parent with zero hours but meets_ccdf_activity_test qualifies via federal fallback.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -229,7 +229,7 @@
     ak_ccap_parent_in_eligible_activity: true
 
 - name: Case 9, two parents, one working, one in federal CCDF activity fallback both qualify.
-  period: 2024-01
+  period: 2022-01
   input:
     people:
       parent1:

@@ -1,18 +1,18 @@
 # ak_ccap_income_eligible: SPMUnit, bool, MONTH
-# countable_income <= ak_ccap_smi_threshold (85% of monthly Alaska SMI).
+# countable_income <= 85% of monthly Alaska SMI (hhs_smi for size).
 # Boundary: <= per "does not exceed" in Manual 4070-2.
 #
-# Family of 3 monthly 100% SMI (FICS rev Feb 21, 2022) = 7_285
-# 85% threshold (monthly) = 7_285 * 0.85 = 6_192.25
-# Annual income at threshold = 6_192.25 * 12 = 74_307.00
+# Family of 3 at 2022-01 (HHS SMI base $104_070, size factor 0.84):
+#   100% annual SMI = $87_418.80; monthly = $7_284.90
+#   85% annual threshold = $74_305.98; monthly = $6_192.16
 
-- name: Case 1, family of 3 below 85% SMI is eligible.
-  period: 2025-01
+- name: Case 1, family of 3 well below 85% SMI is eligible.
+  period: 2022-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 48_000  # 4_000/mo well below 6_192.25 threshold
+        employment_income: 48_000  # 4_000/mo well below threshold
       person2:
         age: 25
       person3:
@@ -25,17 +25,16 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # 4_000/mo <= 6_192.25 -> eligible
     ak_ccap_income_eligible: true
 
 - name: Case 2, family of 3 just below 85% SMI threshold is eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
         age: 30
-        # threshold - 0.01: avoids float32 round-trip drift at exact boundary
-        employment_income: 74_306.99  # annual = 6_192.2492/mo
+        # Annual just below the $74_305.98 threshold (monthly $6_191.67).
+        employment_income: 74_300
       person2:
         age: 25
       person3:
@@ -51,12 +50,12 @@
     ak_ccap_income_eligible: true
 
 - name: Case 3, family of 3 above 85% SMI is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 78_000  # 6_500/mo > 6_192.25
+        employment_income: 78_000  # 6_500/mo > 6_192.16
       person2:
         age: 25
       person3:
@@ -72,7 +71,7 @@
     ak_ccap_income_eligible: false
 
 - name: Case 4, zero income is eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:

@@ -5,7 +5,7 @@
 # Applies only when is_disabled AND ak_ccap_child_eligible.
 
 - name: Case 1, non-disabled eligible child receives no supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -27,7 +27,7 @@
     ak_ccap_special_needs_supplement: 0
 
 - name: Case 2, disabled eligible preschooler in Anchorage gets supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -51,7 +51,7 @@
     ak_ccap_special_needs_supplement: 1_019
 
 - name: Case 3, disabled but age-ineligible child gets no supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -74,7 +74,7 @@
     ak_ccap_special_needs_supplement: 0
 
 - name: Case 4, disabled adult gets no supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -96,7 +96,7 @@
     ak_ccap_special_needs_supplement: 0
 
 - name: Case 5, supplement uses authorized rate when charged is below state max.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -121,7 +121,7 @@
     ak_ccap_special_needs_supplement: 500
 
 - name: Case 6, disabled but undocumented child gets no supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

@@ -4,7 +4,7 @@
 # Unearned income counts for all members regardless of age.
 
 - name: Case 1, adult earned income only.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -23,7 +23,7 @@
     ak_ccap_countable_income: 3_000
 
 - name: Case 2, earned plus unearned income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -45,7 +45,7 @@
     ak_ccap_countable_income: 2_500
 
 - name: Case 3, minor child's earned income is excluded.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -69,7 +69,7 @@
     ak_ccap_countable_income: 3_000
 
 - name: Case 4, minor child unearned income counts.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -91,7 +91,7 @@
     ak_ccap_countable_income: 2_500
 
 - name: Case 5, child support paid is deducted.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -111,7 +111,7 @@
     ak_ccap_countable_income: 2_500
 
 - name: Case 6, child support deduction does not produce negative income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -131,7 +131,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 7, zero income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -148,7 +148,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 8, newly added unearned sources are counted (workers_comp, capital_gains).
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -169,7 +169,7 @@
     ak_ccap_countable_income: 1_500
 
 - name: Case 9, additional new unearned sources (interest, dividend).
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

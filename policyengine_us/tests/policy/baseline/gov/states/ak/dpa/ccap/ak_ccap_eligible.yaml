@@ -3,7 +3,7 @@
 # asset limit, and parent activity.
 
 - name: Case 1, low-income family with eligible child qualifies.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -24,7 +24,7 @@
     ak_ccap_eligible: true
 
 - name: Case 2, family above 85% SMI is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -45,7 +45,7 @@
     ak_ccap_eligible: false
 
 - name: Case 3, family at federal CCDF asset limit boundary is eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       parent:
@@ -67,7 +67,7 @@
     ak_ccap_eligible: true
 
 - name: Case 4, family above federal CCDF asset limit is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       parent:

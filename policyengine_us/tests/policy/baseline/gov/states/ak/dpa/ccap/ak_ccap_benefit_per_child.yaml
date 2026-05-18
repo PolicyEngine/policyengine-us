@@ -6,7 +6,7 @@
 # Supplement multiplier = 2 (7 AAC 41.060(b)); supplement = base × 1.
 
 - name: Case 1, default eligible child receives max state rate.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -28,7 +28,7 @@
     ak_ccap_benefit_per_child: 1_019
 
 - name: Case 2, charged rate below max state rate yields charged.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -51,7 +51,7 @@
     ak_ccap_benefit_per_child: 700
 
 - name: Case 3, disabled child with high charged rate captures supplement.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -76,7 +76,7 @@
     ak_ccap_benefit_per_child: 2_038
 
 - name: Case 4, disabled school-age child with charged between max and max*multiplier distinguishes new formula from old.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

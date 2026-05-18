@@ -1,9 +1,11 @@
-# ak_ccap_rate_region: SPMUnit, Enum (AKCCAPRateRegion), MONTH
-# Maps the household's county_str to one of the 29 rate regions
-# from the CCAP Provider Rate Schedule. Defaults to ANCHORAGE.
+# ak_ccap_rate_region: SPMUnit, Enum (County), MONTH
+# Returns the household's County for AK CCAP rate lookups. Copper River
+# is collapsed into Chugach because the rate schedule still publishes
+# one combined Valdez-Cordova column. Unknown counties fall back to
+# Anchorage so downstream rate lookups always hit a valid AK key.
 
-- name: Case 1, Anchorage county maps to ANCHORAGE.
-  period: 2025-01
+- name: Case 1, Anchorage maps to ANCHORAGE_MUNICIPALITY_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -17,10 +19,10 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    ak_ccap_rate_region: ANCHORAGE
+    ak_ccap_rate_region: ANCHORAGE_MUNICIPALITY_AK
 
-- name: Case 2, Fairbanks North Star county maps to FAIRBANKS_NORTH_STAR.
-  period: 2025-01
+- name: Case 2, Fairbanks North Star maps to FAIRBANKS_NORTH_STAR_BOROUGH_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -34,10 +36,10 @@
         state_code: AK
         county_str: FAIRBANKS_NORTH_STAR_BOROUGH_AK
   output:
-    ak_ccap_rate_region: FAIRBANKS_NORTH_STAR
+    ak_ccap_rate_region: FAIRBANKS_NORTH_STAR_BOROUGH_AK
 
-- name: Case 3, Matanuska-Susitna county maps to MATANUSKA_SUSITNA.
-  period: 2025-01
+- name: Case 3, Matanuska-Susitna maps to MATANUSKA_SUSITNA_BOROUGH_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -51,10 +53,10 @@
         state_code: AK
         county_str: MATANUSKA_SUSITNA_BOROUGH_AK
   output:
-    ak_ccap_rate_region: MATANUSKA_SUSITNA
+    ak_ccap_rate_region: MATANUSKA_SUSITNA_BOROUGH_AK
 
-- name: Case 4, Kodiak Island county maps to KODIAK_ISLAND.
-  period: 2025-01
+- name: Case 4, Kodiak Island maps to KODIAK_ISLAND_BOROUGH_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -68,10 +70,10 @@
         state_code: AK
         county_str: KODIAK_ISLAND_BOROUGH_AK
   output:
-    ak_ccap_rate_region: KODIAK_ISLAND
+    ak_ccap_rate_region: KODIAK_ISLAND_BOROUGH_AK
 
-- name: Case 5, rural Yukon-Koyukuk census area maps to YUKON_KOYUKUK.
-  period: 2025-01
+- name: Case 5, Yukon-Koyukuk maps to YUKON_KOYUKUK_CENSUS_AREA_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -85,10 +87,10 @@
         state_code: AK
         county_str: YUKON_KOYUKUK_CENSUS_AREA_AK
   output:
-    ak_ccap_rate_region: YUKON_KOYUKUK
+    ak_ccap_rate_region: YUKON_KOYUKUK_CENSUS_AREA_AK
 
-- name: Case 6, Chugach (post-2019 split) maps to VALDEZ_CORDOVA.
-  period: 2025-01
+- name: Case 6, Chugach (post-2019 split) shares the Valdez-Cordova rate column (CHUGACH_CENSUS_AREA_AK).
+  period: 2022-01
   input:
     people:
       person1:
@@ -102,10 +104,10 @@
         state_code: AK
         county_str: CHUGACH_CENSUS_AREA_AK
   output:
-    ak_ccap_rate_region: VALDEZ_CORDOVA
+    ak_ccap_rate_region: CHUGACH_CENSUS_AREA_AK
 
-- name: Case 7, Copper River (post-2019 split) maps to VALDEZ_CORDOVA.
-  period: 2025-01
+- name: Case 7, Copper River (post-2019 split) collapses into CHUGACH_CENSUS_AREA_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -119,10 +121,10 @@
         state_code: AK
         county_str: COPPER_RIVER_CENSUS_AREA_AK
   output:
-    ak_ccap_rate_region: VALDEZ_CORDOVA
+    ak_ccap_rate_region: CHUGACH_CENSUS_AREA_AK
 
-- name: Case 8, Bethel census area maps to BETHEL.
-  period: 2025-01
+- name: Case 8, Bethel maps to BETHEL_CENSUS_AREA_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -136,10 +138,10 @@
         state_code: AK
         county_str: BETHEL_CENSUS_AREA_AK
   output:
-    ak_ccap_rate_region: BETHEL
+    ak_ccap_rate_region: BETHEL_CENSUS_AREA_AK
 
-- name: Case 9, Juneau city and borough maps to JUNEAU.
-  period: 2025-01
+- name: Case 9, Juneau maps to JUNEAU_CITY_AND_BOROUGH_AK.
+  period: 2022-01
   input:
     people:
       person1:
@@ -153,4 +155,38 @@
         state_code: AK
         county_str: JUNEAU_CITY_AND_BOROUGH_AK
   output:
-    ak_ccap_rate_region: JUNEAU
+    ak_ccap_rate_region: JUNEAU_CITY_AND_BOROUGH_AK
+
+- name: Case 10, explicit UNKNOWN county falls back to ANCHORAGE_MUNICIPALITY_AK.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: UNKNOWN
+  output:
+    ak_ccap_rate_region: ANCHORAGE_MUNICIPALITY_AK
+
+- name: Case 11, non-AK household returns the default (Anchorage) via defined_for.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ak_ccap_rate_region: ANCHORAGE_MUNICIPALITY_AK

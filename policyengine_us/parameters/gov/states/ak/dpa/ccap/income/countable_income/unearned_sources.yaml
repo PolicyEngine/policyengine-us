@@ -1,6 +1,6 @@
 description: Alaska uses these unearned income sources for countable income under the Child Care Assistance Program. We don't include TANF (Manual §4080-3 ¶6.i) at the moment to avoid a circular dependency — `ak_atap` depends on `childcare_expenses` (via its childcare deduction), which depends on `ak_ccap`. We also don't include adoption assistance (Manual §4080-3 ¶6.c) or foster care payments (Manual §4080-3 ¶6.d) at the moment because we don't track those income types as variables.
 values:
-  2022-02-21:
+  2022-01-01:
     - child_support_received
     - alimony_income
     - social_security

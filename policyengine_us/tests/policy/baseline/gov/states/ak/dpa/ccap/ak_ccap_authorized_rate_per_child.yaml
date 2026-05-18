@@ -1,5 +1,5 @@
 - name: Case 1, no charged rate falls back to state maximum.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -21,7 +21,7 @@
     ak_ccap_authorized_rate_per_child: 1_019
 
 - name: Case 2, charged below max is the authorized amount.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -44,7 +44,7 @@
     ak_ccap_authorized_rate_per_child: 700
 
 - name: Case 3, charged above max is capped at max.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.01
   input:
     people:

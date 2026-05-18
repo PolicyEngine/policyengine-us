@@ -3,7 +3,7 @@
 # federal child_care_subsidy_programs list.
 
 - name: Case 1, AK CCAP recipient gets nonzero annual subsidy.
-  period: 2025
+  period: 2022
   absolute_error_margin: 0.1
   input:
     people:
@@ -19,7 +19,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # $1_200/mo, typical AK center
     households:
       household:
         members: [parent, child]
@@ -31,7 +31,7 @@
     ak_child_care_subsidies: 11_268
 
 - name: Case 2, non-AK family gets zero.
-  period: 2025
+  period: 2022
   absolute_error_margin: 0.1
   input:
     people:

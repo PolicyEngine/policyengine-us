@@ -4,7 +4,7 @@
 # Manual Section 4070-2 Eligible Child.
 
 - name: Case 1, citizen child age 4 is eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -18,7 +18,7 @@
     ak_ccap_child_eligible: true
 
 - name: Case 2, citizen child age 13 is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -33,7 +33,7 @@
     ak_ccap_child_eligible: false
 
 - name: Case 3, undocumented child age 4 is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -48,7 +48,7 @@
     ak_ccap_child_eligible: false
 
 - name: Case 4, disabled citizen child age 12 is eligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:
@@ -63,7 +63,7 @@
     ak_ccap_child_eligible: true
 
 - name: Case 5, adult citizen is ineligible.
-  period: 2025-01
+  period: 2022-01
   input:
     people:
       person1:

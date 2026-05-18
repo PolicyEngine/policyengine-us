@@ -4,7 +4,7 @@
 # unearned_sources.yaml, so the formula simply omits them.
 
 - name: Case 1, PFD does not count toward CCAP countable income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -22,7 +22,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 2, EITC does not count toward CCAP countable income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -43,7 +43,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 3, ATAP (TA Diversion) does not count toward CCAP countable income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -63,7 +63,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 4, SNAP and WIC do not count toward CCAP countable income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -85,7 +85,7 @@
     ak_ccap_countable_income: 0
 
 - name: Case 5, combined PFD + EITC + ATAP yields zero countable income.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:

@@ -19,7 +19,7 @@
 #   Family of 4: 8_673 * 0.85 = 7_372.05
 
 - name: Case 1, single parent one preschooler Anchorage licensed center.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -35,7 +35,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # $1_200/mo, AK center
     households:
       household:
         members: [person1, person2]
@@ -67,7 +67,7 @@
     ak_ccap: 939
 
 - name: Case 2, two parent family Fairbanks mixed care.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -93,7 +93,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        spm_unit_pre_subsidy_childcare_expenses: 28_800  # $2_400/mo for 2 kids
     households:
       household:
         members: [parent1, parent2, child1, child2]
@@ -125,15 +125,16 @@
     # Benefit = 2_070 - 120 = 1_950
     ak_ccap: 1_950
 
-- name: Case 3, ATAP-enrolled family has $0 copay (PASS I rule).
-  period: 2025-01
+- name: Case 3, TANF-enrolled family has $0 copay (PASS I rule).
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
       parent:
         age: 28
         immigration_status: CITIZEN
-        employment_income: 0  # qualifies for ATAP
+        employment_income: 0
+        weekly_hours_worked: 30  # activity test
       child:
         age: 6
         immigration_status: CITIZEN
@@ -142,8 +143,8 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        weekly_hours_worked: 30  # activity test
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        is_tanf_enrolled: true  # ATAP is Alaska's TANF; PASS I waives copay
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # $1_000/mo for school-age care
     households:
       household:
         members: [parent, child]
@@ -152,14 +153,14 @@
   output:
     ak_ccap_child_eligible: [false, true]
     ak_ccap_eligible: true
-    # ATAP-enrolled -> copay waived to 0
+    # is_tanf_enrolled=True -> copay waived to 0 per Manual §4040-3 D
     ak_ccap_copay: 0
     # Anchorage center FT_MONTH school age = 884
     # Benefit = 884 - 0 = 884
     ak_ccap: 884
 
 - name: Case 4, income just over 85% SMI is ineligible.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -188,7 +189,7 @@
     ak_ccap: 0
 
 - name: Case 5, special needs child gets supplement on top of standard child.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -207,12 +208,13 @@
         immigration_status: CITIZEN
         ak_ccap_provider_type: LICENSED_CENTER
         ak_ccap_care_schedule: FT_MONTH
+        ssi: 0  # focus test on SN supplement, not SSI deeming math
         # Provide a high charged rate so the SN supplement flows through.
         ak_ccap_charged_rate: 3_000
     spm_units:
       spm_unit:
         members: [parent, child_standard, child_sn]
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # $3_000/mo for SN + standard kids
     households:
       household:
         members: [parent, child_standard, child_sn]
@@ -222,9 +224,9 @@
     ak_ccap_child_eligible: [false, true, true]
     ak_ccap_eligible: true
 
-    # SN supplement applies only to disabled child
-    # Anchorage center FT_MONTH preschool = 1_019; school age = 884
-    # SN child base = 884; supplement = 1 * 884 = 884; max combined = 1_768
+    # SN supplement applies only to disabled child.
+    # Anchorage center FT_MONTH preschool = 1_019; school age = 884.
+    # SN child base = 884; supplement = 1 * 884 = 884; max combined = 1_768.
     ak_ccap_special_needs_supplement: [0, 0, 884]
 
     # benefit_per_child = min(charged, max_state_rate) + supplement
@@ -232,18 +234,18 @@
     #   SN child:       min(3_000, 884) + 884 = 884 + 884 = 1_768
     ak_ccap_benefit_per_child: [0, 1_019, 1_768]
 
-    # Family of 3 monthly SMI = 7_285
-    # Countable income ≈ 2_251 (earnings + SSI for disabled child, per §4080-3.1.b)
-    # ratio ≈ 2_251 / 7_285 = 0.3090 -> 4% band (>= 0.26, < 0.35)
+    # Countable income = 2_000/mo earnings; SSI explicitly 0 above.
+    # Family of 3 HHS SMI monthly (2022) = $7_284.90.
+    # Ratio = 2_000 / 7_284.90 = 0.2745 -> 4% band (>= 0.26, < 0.35).
     ak_ccap_copay_rate: 0.04
-    ak_ccap_copay: 90.04
+    ak_ccap_copay: 80
 
     # Total per-child = 1_019 + 1_768 = 2_787; expense cap not binding (10_000/mo)
-    # Total benefit = min(10_000, 2_787) - 90.04 = 2_787 - 90.04 ≈ 2_696.96
-    ak_ccap: 2_696.96
+    # Total benefit = min(10_000, 2_787) - 80 = 2_707
+    ak_ccap: 2_707
 
 - name: Case 6, Anchorage with Licensed Group Home falls back to 0 rate.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -274,7 +276,7 @@
     ak_ccap: 0
 
 - name: Case 7, 17-year-old in family does not count as eligible child.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.1
   input:
     people:
@@ -293,7 +295,7 @@
     spm_units:
       spm_unit:
         members: [parent, teen, child]
-        spm_unit_pre_subsidy_childcare_expenses: 120_000  # /yr; high enough not to bind cap
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # $1_000/mo for one school-age child
     households:
       household:
         members: [parent, teen, child]

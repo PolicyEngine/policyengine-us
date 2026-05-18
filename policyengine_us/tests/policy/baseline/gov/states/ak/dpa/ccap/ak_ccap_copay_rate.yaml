@@ -15,7 +15,7 @@
 # AK FICS monthly 100% SMI: Family of 2 = 5_897; Family of 3 = 7_285; Family of 4 = 8_673.
 
 - name: Case 1, zero income gets waived 0% copay.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -35,7 +35,7 @@
     ak_ccap_copay_rate: 0
 
 - name: Case 2, low income lands in 1% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -56,7 +56,7 @@
     ak_ccap_copay_rate: 0.01
 
 - name: Case 3, mid income family of 3 lands in 5% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -80,7 +80,7 @@
     ak_ccap_copay_rate: 0.05
 
 - name: Case 4, high income family near 85% SMI lands in 9% cap band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -104,7 +104,7 @@
     ak_ccap_copay_rate: 0.09
 
 - name: Case 5, family of 4 in 2% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -130,7 +130,7 @@
     ak_ccap_copay_rate: 0.02
 
 - name: Case 6, family of 4 in 7% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -156,7 +156,7 @@
     ak_ccap_copay_rate: 0.07
 
 - name: Case 7, family of 4 in 3% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -182,7 +182,7 @@
     ak_ccap_copay_rate: 0.03
 
 - name: Case 8, family of 4 in 4% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -208,7 +208,7 @@
     ak_ccap_copay_rate: 0.04
 
 - name: Case 9, family of 4 in 6% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -234,7 +234,7 @@
     ak_ccap_copay_rate: 0.06
 
 - name: Case 10, family of 4 in 8% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -260,7 +260,7 @@
     ak_ccap_copay_rate: 0.08
 
 - name: Case 11, family of 4 just below 0.18 boundary lands in 2% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
@@ -287,7 +287,7 @@
     ak_ccap_copay_rate: 0.02
 
 - name: Case 12, family of 4 just above 0.18 boundary lands in 3% band.
-  period: 2025-01
+  period: 2022-01
   absolute_error_margin: 0.001
   input:
     people:
