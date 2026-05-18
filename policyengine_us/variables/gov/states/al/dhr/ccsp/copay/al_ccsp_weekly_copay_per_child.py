@@ -12,7 +12,9 @@ class al_ccsp_weekly_copay_per_child(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.copay
-        monthly_income = spm_unit("al_ccsp_countable_income", period)
+        # Floor income at 0 so self-employment / farm losses land in the
+        # $0 copay band rather than producing a negative FPL ratio.
+        monthly_income = max_(spm_unit("al_ccsp_countable_income", period), 0)
         monthly_fpg = spm_unit("spm_unit_fpg", period)
         fpl_ratio = where(monthly_fpg > 0, monthly_income / monthly_fpg, 0)
         fee = p.fee_by_fpl.calc(fpl_ratio)

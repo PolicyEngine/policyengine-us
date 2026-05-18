@@ -5,20 +5,17 @@ class al_ccsp_activity_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for Alabama CCSP based on parental activity requirements"
-    documentation = (
-        "True when every head/spouse in the SPM unit meets §2.2.2 work or "
-        "full-time-student requirements, OR when meets_ccdf_activity_test "
-        "is set as an input override. The fallback is permissive: a unit "
-        "with one working and one non-working parent (which §2.2.2 would "
-        "deny) is treated as eligible when meets_ccdf_activity_test is True. "
-        "Users who need strict §2.2.2 enforcement should leave the override "
-        "unset."
-    )
     definition_period = MONTH
     defined_for = StateCode.AL
     reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=21"
 
     def formula(spm_unit, period, parameters):
+        # Alabama §2.2.2(d)(ii) applies the activity test to the parent(s)
+        # or in loco parentis caregiver(s). We approximate the caregiver
+        # set with is_tax_unit_head_or_spouse; grandparent / kinship /
+        # foster caregivers who aren't the tax-unit head won't be checked
+        # individually, so users should set meets_ccdf_activity_test in
+        # those cases.
         p = parameters(period).gov.states.al.dhr.ccsp.activity
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
@@ -28,10 +25,11 @@ class al_ccsp_activity_eligible(Variable):
         individually_eligible = meets_work_requirement | is_student
         has_head_or_spouse = spm_unit.sum(is_head_or_spouse) >= 1
         all_covered = spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
-        # Fallback input for approved activities not individually modeled
-        # (job search, education/training, SNAP E&T, temporary leave,
-        # disabled-parent good cause, etc.). Alabama's §2.2.2 only waives
-        # the activity test for children receiving protective services
-        # (§2.2.2(h)); other exemptions must be set via this fallback.
+        # Permissive fallback for approved activities not individually
+        # modeled (job search, education/training, SNAP E&T, temporary
+        # leave, disabled-parent good cause, in loco parentis caregivers,
+        # etc.). §2.2.2 only waives the activity test categorically for
+        # children receiving protective services (§2.2.2(h)); other
+        # exemptions must be set via this fallback input.
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
         return (has_head_or_spouse & all_covered) | fallback

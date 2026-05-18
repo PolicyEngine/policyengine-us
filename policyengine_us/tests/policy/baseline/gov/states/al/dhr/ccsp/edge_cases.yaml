@@ -471,3 +471,46 @@
     # AL households only.
     al_ccsp: 0
     al_ccsp_eligible: false
+
+# -- Negative countable income (self-employment loss) --
+
+- name: Self-employment loss floors copay at zero and does not inflate subsidy.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -$5K/month loss
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+        pre_subsidy_childcare_expenses: 20_000  # /year per child
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL  # Birmingham region
+  output:
+    # Negative countable income passes the FPL/SMI tests trivially.
+    al_ccsp_income_eligible: true
+    # fpl_ratio is floored at 0 -> lowest fee bracket (0)
+    al_ccsp_weekly_copay_per_child: 0
+    al_ccsp_copay: 0
+    # Weekly expense ($20K/52 = $384.62) capped at Birmingham CENTER
+    # PRESCHOOL BASE max rate ($180). Subsidy = $180 - $0 copay = $180/wk.
+    # Monthly: $180 * (52/12) = $780.
+    al_ccsp: 780
