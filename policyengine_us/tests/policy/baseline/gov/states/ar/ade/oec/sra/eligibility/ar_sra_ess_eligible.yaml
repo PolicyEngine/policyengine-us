@@ -114,3 +114,100 @@
         state_code: AR
   output:
     is_ar_sra_ess_eligible: true
+
+- name: Case 6, month 12 is the last Year-1 month and 20 hours satisfies the Year-1 threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 20
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 12
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 7, month 24 is the last in-window month and 25 hours satisfies the Year-2 threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 24
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: true
+
+- name: Case 8, month 25 is past the 24-month window so household is not ESS-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 25
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 25
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_ess_eligible: false
+
+- name: Case 9, a working teen does not satisfy the activity threshold when no adult does.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 10
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        weekly_hours_worked: 30
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Teen's 30 hours is masked out; adult max = 10 hr, below Year-1 threshold (20)
+    is_ar_sra_ess_eligible: false
