@@ -20,7 +20,7 @@ class ar_sra_income_tier(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra
         monthly_income = spm_unit("ar_sra_countable_income", period)
-        monthly_smi = spm_unit("hhs_smi", period.this_year) / MONTHS_IN_YEAR
+        monthly_smi = spm_unit("hhs_smi", period)
         ratio = where(monthly_smi > 0, monthly_income / monthly_smi, np.inf)
         return select(
             [
