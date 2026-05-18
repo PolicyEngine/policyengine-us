@@ -3,7 +3,6 @@
 
 - name: Case 1, all eligibility components met under the LI track.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -32,7 +31,6 @@
 
 - name: Case 2, household income above 85 percent SMI fails eligibility.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -62,7 +60,6 @@
 
 - name: Case 3, no eligible child fails eligibility.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -83,7 +80,6 @@
 
 - name: Case 4, parent activity below LI threshold and no ESS track fails eligibility.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -102,7 +98,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        was_tea_recipient: false
+        ar_was_tea_recipient: false
     households:
       household:
         members: [person1, person2]
@@ -113,7 +109,6 @@
 
 - name: Case 5, ESS track 20 hours per week makes household eligible even below LI threshold.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -132,8 +127,8 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        was_tea_recipient: true
-        months_since_tea_exit: 6
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
         ar_tea: 0
     households:
       household:

@@ -21,8 +21,7 @@ class ar_sra(Variable):
         attending_days = person("childcare_attending_days_per_month", period.this_year)
         monthly_max_state_payment = daily_state_payment * attending_days
         monthly_copay = daily_copay * attending_days
-        annual_expense = person("pre_subsidy_childcare_expenses", period.this_year)
-        monthly_expense = annual_expense / MONTHS_IN_YEAR
+        monthly_expense = person("pre_subsidy_childcare_expenses", period)
         subsidy = min_(
             max_(monthly_expense - monthly_copay, 0),
             monthly_max_state_payment,

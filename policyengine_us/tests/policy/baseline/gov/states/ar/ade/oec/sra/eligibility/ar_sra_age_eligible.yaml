@@ -1,6 +1,5 @@
 - name: Case 1, child age 5 is under 13 and age-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -17,7 +16,6 @@
 
 - name: Case 2, child age 12 at boundary is age-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -34,7 +32,6 @@
 
 - name: Case 3, child age 13 is not age-eligible (strict less than).
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -51,7 +48,6 @@
 
 - name: Case 4, infant age 0 is age-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

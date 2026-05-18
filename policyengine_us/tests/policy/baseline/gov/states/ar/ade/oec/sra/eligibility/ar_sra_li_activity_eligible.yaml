@@ -3,7 +3,6 @@
 
 - name: Case 1, single parent works 30 hours per week exactly is activity-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -24,7 +23,6 @@
 
 - name: Case 2, single parent works 29 hours per week is not activity-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -45,7 +43,6 @@
 
 - name: Case 3, single parent works 31 hours per week is activity-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -66,7 +63,6 @@
 
 - name: Case 4, two parents both at or above 30 hours per week are activity-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -90,7 +86,6 @@
 
 - name: Case 5, two-parent household with one parent below threshold fails activity test.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

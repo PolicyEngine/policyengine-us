@@ -2,7 +2,6 @@
 
 - name: Case 1, citizen child age 5 who is a dependent is eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -23,7 +22,6 @@
 
 - name: Case 2, child age 13 is not age-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -44,7 +42,6 @@
 
 - name: Case 3, undocumented child is not immigration-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -65,7 +62,6 @@
 
 - name: Case 4, refugee child age 4 is eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

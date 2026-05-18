@@ -6,7 +6,6 @@
 
 - name: Case 1, family income at 84.9 percent SMI is income-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -33,7 +32,6 @@
 
 - name: Case 2, family income just at 85 percent SMI is income-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -61,7 +59,6 @@
 
 - name: Case 3, family income at 85.1 percent SMI is not income-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -88,7 +85,6 @@
 
 - name: Case 4, family with zero income is income-eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

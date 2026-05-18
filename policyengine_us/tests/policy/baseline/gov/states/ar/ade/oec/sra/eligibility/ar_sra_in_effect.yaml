@@ -5,7 +5,6 @@
 
 - name: Case 1, period 2025-01 is before SRA effective date so household is not eligible.
   period: 2025-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -34,7 +33,6 @@
 
 - name: Case 2, period 2026-01 is the SRA effective date and household is eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -63,7 +61,6 @@
 
 - name: Case 3, period 2026-01 is well within the SRA era and household is eligible.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

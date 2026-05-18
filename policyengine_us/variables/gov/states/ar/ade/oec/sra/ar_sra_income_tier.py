@@ -15,15 +15,13 @@ class ar_sra_income_tier(Variable):
     definition_period = MONTH
     defined_for = StateCode.AR
     label = "Arkansas SRA family income tier (% SMI)"
-    reference = (
-        "https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf",
-    )
+    reference = "https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra
-        annual_income = spm_unit("ar_sra_countable_income", period) * MONTHS_IN_YEAR
-        smi = spm_unit("hhs_smi", period.this_year)
-        ratio = where(smi > 0, annual_income / smi, np.inf)
+        monthly_income = spm_unit("ar_sra_countable_income", period)
+        monthly_smi = spm_unit("hhs_smi", period.this_year) / MONTHS_IN_YEAR
+        ratio = where(monthly_smi > 0, monthly_income / monthly_smi, np.inf)
         return select(
             [
                 ratio <= p.rates.no_copay_smi_threshold,
