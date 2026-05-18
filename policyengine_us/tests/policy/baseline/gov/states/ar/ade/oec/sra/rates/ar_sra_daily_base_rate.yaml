@@ -225,7 +225,7 @@
   output:
     ar_sra_daily_base_rate: 36.30
 
-- name: Case 14, Statewide infant Night/Weekend with part-time hours uses the Night/Weekend FT rate (39.60) per OEC 5-category structure.
+- name: Case 14, Statewide infant Night/Weekend with part-time hours uses the PT Night/Weekend rate (19.80 = PT REGULAR 18 x 1.10).
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -240,10 +240,10 @@
         county_str: PULASKI_COUNTY_AR
         state_code: AR
   output:
-    # Per OEC Oct 7 2025 Provider Call: Night/Weekend is its own service category
-    # (110% of FT typical), not a FT/PT subdimension. PT hours still use the
-    # Night/Weekend FT rate.
-    ar_sra_daily_base_rate: 39.60
+    # Per OEC Oct 7 2025 Provider Call ("Weekend and night time rates are set
+    # at a standard 10% increase of typical rates"), PT Night/Weekend
+    # = PT REGULAR x 1.10 = 18 x 1.10 = 19.80.
+    ar_sra_daily_base_rate: 19.80
 
 - name: Case 15, Benton/Washington infant SN2 full time base rate is 53.20.
   period: 2026-01

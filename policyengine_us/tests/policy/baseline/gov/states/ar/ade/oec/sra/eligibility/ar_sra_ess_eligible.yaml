@@ -382,9 +382,10 @@
       person1:
         age: 28
         weekly_hours_worked: 15
-        # AR TEA income limit for 2-person SPM is well under $30k/year;
-        # $30k earnings make the family TEA-income-ineligible.
-        employment_income: 30_000
+        # AR TEA income limit is $513/month; $30k/yr ($2,500/mo) earnings
+        # make the family TEA-income-ineligible. tanf_gross_earned_income
+        # reads employment_income_before_lsr, so set that directly.
+        employment_income_before_lsr: 30_000
       person2:
         age: 2
         is_tax_unit_dependent: true

@@ -62,7 +62,7 @@
   output:
     is_ar_sra_age_eligible: [false, true]
 
-- name: Case 5, disabled child age 15 is age-eligible under the disability extension (under 18).
+- name: Case 5, disabled child age 15 is age-eligible under the disability extension (under 19).
   period: 2026-01
   input:
     people:
@@ -96,7 +96,7 @@
   output:
     is_ar_sra_age_eligible: [false, false]
 
-- name: Case 7, disabled child age 18 is at the disability extension boundary and not age-eligible (strict less than).
+- name: Case 7, disabled child age 18 is age-eligible (disability extension covers under 19).
   period: 2026-01
   input:
     people:
@@ -104,6 +104,25 @@
         age: 45
       person2:
         age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # FSU §5.6.1 / CCDF State Plan §2.2.1: disabled children eligible
+    # "under nineteen (19)".
+    is_ar_sra_age_eligible: [false, true]
+
+- name: Case 8, disabled child age 19 is at the disability extension boundary and not age-eligible (strict less than).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
         is_tax_unit_dependent: true
         is_disabled: true
     households:

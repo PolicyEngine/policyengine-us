@@ -19,10 +19,4 @@ class ar_sra_daily_base_rate(Variable):
         age_category = person("ar_sra_age_category", period)
         care_type = person("ar_sra_care_type", period)
         time_category = person("ar_sra_time_category", period)
-        rate = p.base_rate[zone][age_category][care_type][time_category]
-        # Per OEC Oct 7 2025 Provider Call: Night/Weekend is a separate
-        # 110%-of-FT category, not a FT/PT subdimension. Override with FT rate.
-        time_categories = time_category.possible_values
-        ft_rate = p.base_rate[zone][age_category][care_type][time_categories.FULL_TIME]
-        is_night_weekend = care_type == care_type.possible_values.NIGHT_WEEKEND
-        return where(is_night_weekend, ft_rate, rate)
+        return p.base_rate[zone][age_category][care_type][time_category]

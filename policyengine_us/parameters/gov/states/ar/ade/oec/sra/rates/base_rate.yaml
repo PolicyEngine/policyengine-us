@@ -1,7 +1,7 @@
 description: Arkansas provides these daily base reimbursement rates under the School Readiness Assistance program.
-# Source rate sheets have no Part-Time Night/Weekend row. PT NIGHT_WEEKEND
-# cells below mirror PT REGULAR as a fallback so the (zone × age × care_type
-# × time) lookup is complete; this is a modeling choice, not a source value.
+# Source rate sheets have no Part-Time Night/Weekend row. Per the October 7 2025
+# Provider Call ("Weekend and night time rates are set at a standard 10% increase
+# of typical rates"), PT NIGHT_WEEKEND cells below are derived as PT REGULAR × 1.10.
 metadata:
   period: day
   unit: currency-USD
@@ -32,7 +32,7 @@ BENTON_WASHINGTON:
       FULL_TIME:
         2025-11-01: 41.8
       PART_TIME:
-        2025-11-01: 19
+        2025-11-01: 20.9
     SN1:
       FULL_TIME:
         2025-11-01: 38
@@ -58,7 +58,7 @@ BENTON_WASHINGTON:
       FULL_TIME:
         2025-11-01: 40.7
       PART_TIME:
-        2025-11-01: 18.5
+        2025-11-01: 20.35
     SN1:
       FULL_TIME:
         2025-11-01: 37
@@ -84,7 +84,7 @@ BENTON_WASHINGTON:
       FULL_TIME:
         2025-11-01: 36.3
       PART_TIME:
-        2025-11-01: 16.5
+        2025-11-01: 18.15
     SN1:
       FULL_TIME:
         2025-11-01: 33
@@ -110,7 +110,7 @@ BENTON_WASHINGTON:
       FULL_TIME:
         2025-11-01: 30.8
       PART_TIME:
-        2025-11-01: 14
+        2025-11-01: 15.4
     SN1:
       FULL_TIME:
         2025-11-01: 28
@@ -138,7 +138,7 @@ STATEWIDE:
       FULL_TIME:
         2025-11-01: 39.6
       PART_TIME:
-        2025-11-01: 18
+        2025-11-01: 19.8
     SN1:
       FULL_TIME:
         2025-11-01: 36
@@ -164,7 +164,7 @@ STATEWIDE:
       FULL_TIME:
         2025-11-01: 38.5
       PART_TIME:
-        2025-11-01: 17.5
+        2025-11-01: 19.25
     SN1:
       FULL_TIME:
         2025-11-01: 35
@@ -190,7 +190,7 @@ STATEWIDE:
       FULL_TIME:
         2025-11-01: 36.3
       PART_TIME:
-        2025-11-01: 16.5
+        2025-11-01: 18.15
     SN1:
       FULL_TIME:
         2025-11-01: 33
@@ -216,7 +216,7 @@ STATEWIDE:
       FULL_TIME:
         2025-11-01: 30.8
       PART_TIME:
-        2025-11-01: 14
+        2025-11-01: 15.4
     SN1:
       FULL_TIME:
         2025-11-01: 28
