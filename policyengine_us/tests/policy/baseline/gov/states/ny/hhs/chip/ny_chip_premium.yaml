@@ -78,3 +78,30 @@
         state_code: NY
   output:
     ny_chip_premium: 1620
+
+- name: Case 5, New York Child Health Plus above 400 percent FPL pays the representative full premium.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      person4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_medicaid_income_level: 4.10
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_chip_premium: 9_725.04
