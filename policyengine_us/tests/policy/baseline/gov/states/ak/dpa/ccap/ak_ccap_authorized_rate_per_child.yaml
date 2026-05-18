@@ -1,0 +1,67 @@
+- name: Case 1, no charged rate falls back to state maximum.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # charged = 0 -> use max_state_rate = 1_019 (Anchorage center preschool FT_MONTH)
+    ak_ccap_authorized_rate_per_child: 1_019
+
+- name: Case 2, charged below max is the authorized amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 700
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # min(700, 1_019) = 700
+    ak_ccap_authorized_rate_per_child: 700
+
+- name: Case 3, charged above max is capped at max.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # min(2_000, 1_019) = 1_019
+    ak_ccap_authorized_rate_per_child: 1_019

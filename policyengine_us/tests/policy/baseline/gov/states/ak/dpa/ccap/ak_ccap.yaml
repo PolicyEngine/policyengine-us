@@ -217,3 +217,64 @@
     # benefit_per_child = min(3_500, 1_019) + 2_038 = 3_057 (supplement outside cap)
     # Total = 3_057 - copay ≈ 2_976.62
     ak_ccap: 2_976.62
+
+- name: Case 8, non-AK household returns zero (defined_for).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        county_str: KING_COUNTY_WA
+  output:
+    ak_ccap: 0
+
+- name: Case 9, mixed-status siblings — only citizen child counts as eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      child_citizen:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+      child_undocumented:
+        age: 3
+        immigration_status: UNDOCUMENTED
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child_citizen, child_undocumented]
+    households:
+      household:
+        members: [parent, child_citizen, child_undocumented]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Only citizen child counts as eligible
+    ak_ccap_child_eligible: [false, true, false]
+    ak_ccap_eligible: true
+    # Anchorage center FT_MONTH preschool = 1_019; family of 3 SMI = 8_514.38
+    # SMI ratio = 2_000 / 8_514.38 = 0.235 -> 3% band; copay = 60
+    # Benefit = 1_019 - 60 = 959
+    ak_ccap: 959

@@ -276,3 +276,66 @@
   output:
     # PT_DAY Anchorage PRESCHOOL = 35
     ak_ccap_max_provider_rate_per_child: 35
+
+- name: Case 14, licensed home Fairbanks toddler FT_DAY (non-Anchorage care unit coverage).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        ak_ccap_provider_type: LICENSED_HOME
+        ak_ccap_care_unit: FT_DAY
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: FAIRBANKS_NORTH_STAR_BOROUGH_AK
+  output:
+    # FT_DAY Fairbanks TODDLER licensed_home = 56
+    ak_ccap_max_provider_rate_per_child: 56
+
+- name: Case 15, approved relative Bethel infant (rural non-zero rate).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        ak_ccap_provider_type: APPROVED_RELATIVE_IN_HOME
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: BETHEL_CENSUS_AREA_AK
+  output:
+    # FT_MONTH Bethel INFANT approved_relative_in_home = 673
+    ak_ccap_max_provider_rate_per_child: 673
+
+- name: Case 16, licensed group home Aleutians East infant (rural non-zero, non-Anchorage).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        ak_ccap_provider_type: LICENSED_GROUP_HOME
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ALEUTIANS_EAST_BOROUGH_AK
+  output:
+    # FT_MONTH Aleutians East INFANT licensed_group_home = 1_208
+    ak_ccap_max_provider_rate_per_child: 1_208

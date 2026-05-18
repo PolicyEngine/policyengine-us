@@ -86,3 +86,71 @@
         county_str: YUKON_KOYUKUK_CENSUS_AREA_AK
   output:
     ak_ccap_rate_region: YUKON_KOYUKUK
+
+- name: Case 6, Chugach (post-2019 split) maps to VALDEZ_CORDOVA.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: CHUGACH_CENSUS_AREA_AK
+  output:
+    ak_ccap_rate_region: VALDEZ_CORDOVA
+
+- name: Case 7, Copper River (post-2019 split) maps to VALDEZ_CORDOVA.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: COPPER_RIVER_CENSUS_AREA_AK
+  output:
+    ak_ccap_rate_region: VALDEZ_CORDOVA
+
+- name: Case 8, Bethel census area maps to BETHEL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: BETHEL_CENSUS_AREA_AK
+  output:
+    ak_ccap_rate_region: BETHEL
+
+- name: Case 9, Juneau city and borough maps to JUNEAU.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: JUNEAU_CITY_AND_BOROUGH_AK
+  output:
+    ak_ccap_rate_region: JUNEAU

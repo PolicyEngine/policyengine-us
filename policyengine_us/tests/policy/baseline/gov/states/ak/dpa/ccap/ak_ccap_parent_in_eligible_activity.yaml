@@ -168,12 +168,16 @@
   output:
     ak_ccap_parent_in_eligible_activity: true
 
-- name: Case 7, non-working parent qualifies via meets_ccdf_activity_test fallback.
+- name: Case 7, two-parent family fails when one parent is non-working (each parent rule).
   period: 2024-01
   input:
     people:
-      parent:
-        age: 30
+      parent1:
+        age: 35
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      parent2:
+        age: 33
         employment_income: 0
         self_employment_income: 0
         weekly_hours_worked: 0
@@ -182,13 +186,18 @@
       child:
         age: 4
         immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
     spm_units:
       spm_unit:
-        members: [parent, child]
-        meets_ccdf_activity_test: true
+        members: [parent1, parent2, child]
     households:
       household:
-        members: [parent, child]
+        members: [parent1, parent2, child]
         state_code: AK
   output:
-    ak_ccap_parent_in_eligible_activity: true
+    ak_ccap_parent_in_eligible_activity: false

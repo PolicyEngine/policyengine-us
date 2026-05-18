@@ -95,3 +95,27 @@
   output:
     # within_window: 12 < 12 -> false
     ak_ccap_pass_2_eligible: false
+
+- name: Case 5, 11 months since exit is still within the transition window.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ak_was_atap_recipient: true
+        ak_months_since_atap_exit: 11
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # within_window: 11 < 12 -> true (last month inside the window)
+    ak_ccap_pass_2_eligible: true

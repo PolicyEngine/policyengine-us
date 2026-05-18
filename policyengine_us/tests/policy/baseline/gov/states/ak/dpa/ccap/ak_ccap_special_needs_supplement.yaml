@@ -93,3 +93,51 @@
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
     ak_ccap_special_needs_supplement: 0
+
+- name: Case 5, supplement uses authorized rate when charged is below state max.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+        ak_ccap_charged_rate: 500  # below max 1_019
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Authorized = min(500, 1_019) = 500; supplement = (3 - 1) * 500 = 1_000
+    # Not (3 - 1) * 1_019 = 2_038 — supplement scales with authorized, not max.
+    ak_ccap_special_needs_supplement: 1_000
+
+- name: Case 6, disabled but undocumented child gets no supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_unit: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Not ak_ccap_child_eligible (immigration) -> no supplement
+    ak_ccap_special_needs_supplement: 0

@@ -16,7 +16,7 @@ class ak_ccap_pass_category(Variable):
     label = "Alaska CCAP PASS eligibility category"
     defined_for = StateCode.AK
     reference = (
-        "https://casetext.com/regulation/alaska-administrative-code/title-7-health-and-social-services/part-1-administration/chapter-41-child-care-assistance-program/section-7-aac-41012-categories-of-assistance",
+        "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=846",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=144",
     )
 

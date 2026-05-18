@@ -9,7 +9,7 @@ class ak_ccap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.AK
     reference = (
-        "https://casetext.com/regulation/alaska-administrative-code/title-7-health-and-social-services/part-1-administration/chapter-41-child-care-assistance-program/section-7-aac-41335-family-income",
+        "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=907",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=242",
     )

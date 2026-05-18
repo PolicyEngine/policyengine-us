@@ -182,8 +182,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2: 85% SMI monthly threshold = 5_858.04
-    # 7_237.25 > 5_858.04 -> ineligible
+    # Family of 2: 85% SMI monthly threshold = 5_858.70
+    # 7_237.25 > 5_858.70 -> ineligible
     ak_ccap_income_eligible: false
     ak_ccap_eligible: false
     ak_ccap: 0
@@ -234,7 +234,7 @@
 
     # Family of 3 monthly SMI = 8_514.38
     # Countable income ≈ 2_251 (earnings + SSI for disabled child, per §4080-3.1.b)
-    # ratio ≈ 0.264 -> 4% band (>= 0.26, < 0.34)
+    # ratio ≈ 0.264 -> 4% band (>= 0.26, < 0.35)
     ak_ccap_copay_rate: 0.04
     ak_ccap_copay: 90.04
 

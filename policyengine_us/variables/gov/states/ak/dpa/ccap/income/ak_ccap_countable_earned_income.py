@@ -9,7 +9,7 @@ class ak_ccap_countable_earned_income(Variable):
     unit = USD
     defined_for = StateCode.AK
     reference = (
-        "https://casetext.com/regulation/alaska-administrative-code/title-7-health-and-social-services/part-1-administration/chapter-41-child-care-assistance-program/section-7-aac-41335-family-income",
+        "https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=907",
         "https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203",
     )
 
@@ -17,7 +17,5 @@ class ak_ccap_countable_earned_income(Variable):
         p = parameters(period).gov.states.ak.dpa.ccap.income.countable_income
         person = spm_unit.members
         is_adult = person("age", period.this_year) >= 18
-        # YEAR-defined earned-income variables are auto-divided to monthly
-        # values when read with a MONTH period.
         earned_per_person = sum(person(source, period) for source in p.earned_sources)
         return spm_unit.sum(earned_per_person * is_adult)
