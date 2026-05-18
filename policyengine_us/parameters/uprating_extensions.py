@@ -68,13 +68,18 @@ def extend_parameter_values(
 
 def round_social_security_payroll_cap(amount: float) -> float:
     """Round a contribution and benefit base to the statutory $300 increment."""
-    quotient = amount / 300
+    return round_social_security_amount(amount, 300)
+
+
+def round_social_security_amount(amount: float, increment: int) -> float:
+    """Round a Social Security automatic-determination amount."""
+    quotient = amount / increment
     floored = math.floor(quotient)
     fractional = quotient - floored
 
     if fractional < 0.5:
-        return floored * 300
-    return (floored + 1) * 300
+        return floored * increment
+    return (floored + 1) * increment
 
 
 def extend_social_security_payroll_cap(
@@ -114,6 +119,117 @@ def extend_social_security_payroll_cap(
 
     final_value = cap(f"{end_year}-01-01")
     cap.update(start=instant(f"{end_year}-01-01"), value=final_value)
+
+
+def extend_social_security_wage_indexed_parameters(
+    parameters: ParameterNode,
+    end_year: int,
+) -> None:
+    """Extend SSA wage-indexed benefit parameters with statutory lag and rounding."""
+    ssa = parameters.gov.ssa
+    social_security = ssa.social_security
+    nawi = ssa.nawi
+
+    wage_base = social_security.wage_base
+    payroll_cap = parameters.gov.irs.payroll.social_security.cap
+    qc_threshold = social_security.quarters_of_coverage_threshold
+    earnings_test = social_security.earnings_test
+    pia = social_security.pia.formula_factors
+    sga = ssa.sga
+
+    for year in range(2027, end_year + 1):
+        period = f"year:{year}-01-01:1"
+        determination_nawi = nawi(f"{year - 2}-01-01")
+
+        wage_base.update(
+            period=period,
+            value=payroll_cap(f"{year}-01-01"),
+        )
+
+        qc_threshold.update(
+            period=period,
+            value=max(
+                qc_threshold(f"{year - 1}-01-01"),
+                round_social_security_amount(
+                    250 * determination_nawi / nawi("1976-01-01"),
+                    10,
+                ),
+            ),
+        )
+
+        earnings_test.exempt_amount_under_fra.update(
+            period=period,
+            value=max(
+                earnings_test.exempt_amount_under_fra(f"{year - 1}-01-01"),
+                MONTHS_IN_YEAR
+                * round_social_security_amount(
+                    670 * determination_nawi / nawi("1992-01-01"),
+                    10,
+                ),
+            ),
+        )
+        earnings_test.exempt_amount_year_of_fra.update(
+            period=period,
+            value=max(
+                earnings_test.exempt_amount_year_of_fra(f"{year - 1}-01-01"),
+                MONTHS_IN_YEAR
+                * round_social_security_amount(
+                    2_500 * determination_nawi / nawi("2000-01-01"),
+                    10,
+                ),
+            ),
+        )
+
+        pia.brackets[1].threshold.update(
+            period=period,
+            value=round_social_security_amount(
+                180 * determination_nawi / nawi("1977-01-01"),
+                1,
+            ),
+        )
+        pia.brackets[2].threshold.update(
+            period=period,
+            value=round_social_security_amount(
+                1_085 * determination_nawi / nawi("1977-01-01"),
+                1,
+            ),
+        )
+
+        sga.non_blind.update(
+            period=period,
+            value=max(
+                sga.non_blind(f"{year - 1}-01-01"),
+                round_social_security_amount(
+                    700 * determination_nawi / nawi("1998-01-01"),
+                    10,
+                ),
+            ),
+        )
+        sga.blind.update(
+            period=period,
+            value=max(
+                sga.blind(f"{year - 1}-01-01"),
+                round_social_security_amount(
+                    930 * determination_nawi / nawi("1992-01-01"),
+                    10,
+                ),
+            ),
+        )
+
+    for parameter in (
+        wage_base,
+        qc_threshold,
+        earnings_test.exempt_amount_under_fra,
+        earnings_test.exempt_amount_year_of_fra,
+        pia.brackets[1].threshold,
+        pia.brackets[2].threshold,
+        sga.non_blind,
+        sga.blind,
+    ):
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
 
 
 def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
@@ -187,6 +303,11 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     extend_social_security_payroll_cap(
         parameters,
         last_projected_year=2035,
+        end_year=END_YEAR,
+    )
+
+    extend_social_security_wage_indexed_parameters(
+        parameters,
         end_year=END_YEAR,
     )
 
