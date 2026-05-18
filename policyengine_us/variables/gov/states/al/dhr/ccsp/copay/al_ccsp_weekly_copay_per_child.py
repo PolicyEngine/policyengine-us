@@ -8,10 +8,7 @@ class al_ccsp_weekly_copay_per_child(Variable):
     label = "Alabama CCSP weekly per-child parental fee"
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = (
-        "Alabama Child Care Fact Sheet (Parental Fee Chart)",
-        "https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.copay

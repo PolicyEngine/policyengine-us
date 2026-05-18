@@ -11,10 +11,7 @@ class al_ccsp_maximum_weekly_rate(Variable):
     label = "Alabama CCSP maximum weekly reimbursement rate per child"
     definition_period = MONTH
     defined_for = "al_ccsp_eligible_child"
-    reference = (
-        "Alabama DHR Provider Rate Chart",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.rates

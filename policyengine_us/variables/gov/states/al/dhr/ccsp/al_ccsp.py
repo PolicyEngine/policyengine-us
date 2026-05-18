@@ -8,10 +8,7 @@ class al_ccsp(Variable):
     label = "Alabama Child Care Subsidy Program benefit amount"
     definition_period = MONTH
     defined_for = "al_ccsp_eligible"
-    reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 3.1",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=40",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=40"
 
     def formula(spm_unit, period):
         person = spm_unit.members

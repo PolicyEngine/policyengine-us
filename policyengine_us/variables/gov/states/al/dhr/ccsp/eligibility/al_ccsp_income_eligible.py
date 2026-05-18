@@ -7,10 +7,7 @@ class al_ccsp_income_eligible(Variable):
     label = "Eligible for Alabama CCSP based on income"
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 2.2.4",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=24",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=24"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.income.limit

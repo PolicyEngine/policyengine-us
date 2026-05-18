@@ -7,10 +7,7 @@ class al_ccsp_protective_services(Variable):
     label = "Alabama CCSP protective services category"
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 2.2.2(f)",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=23",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=23"
 
     def formula(spm_unit, period, parameters):
         # Foster care and homelessness are the modeled protective-service

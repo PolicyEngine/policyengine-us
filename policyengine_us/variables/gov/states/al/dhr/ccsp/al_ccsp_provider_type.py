@@ -16,7 +16,4 @@ class al_ccsp_provider_type(Variable):
     definition_period = MONTH
     label = "Alabama CCSP child care provider type"
     defined_for = StateCode.AL
-    reference = (
-        "Alabama DHR Provider Rate Chart",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=2",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=2"

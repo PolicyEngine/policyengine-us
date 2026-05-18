@@ -21,10 +21,7 @@ class al_ccsp_region(Variable):
     definition_period = YEAR
     label = "Alabama CCSP rate-setting region"
     defined_for = StateCode.AL
-    reference = (
-        "Alabama DHR Provider Rate Chart, Regions and Counties Served",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1"
 
     def formula(household, period, parameters):
         county = household("county_str", period)

@@ -7,10 +7,7 @@ class al_ccsp_eligible_child(Variable):
     label = "Eligible child for Alabama CCSP"
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 2.2.1",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=20",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=20"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.age

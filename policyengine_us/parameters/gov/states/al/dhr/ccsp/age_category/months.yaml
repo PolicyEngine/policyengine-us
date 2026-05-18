@@ -1,7 +1,7 @@
 description: Alabama uses this age in months threshold to assign care level categories under the Child Care Subsidy Program.
-# 0 = INFANT_TODDLER (birth to 36 months)
-# 1 = PRESCHOOL (37 months to 5 years)
-# 2 = SCHOOL_AGE (5 years and older)
+# 0 = INFANT_TODDLER (birth through 36 months)
+# 1 = PRESCHOOL (37-59 months)
+# 2 = SCHOOL_AGE (5 years through age 12, or through age 18 if disabled)
 
 metadata:
   type: single_amount
@@ -12,8 +12,6 @@ metadata:
   reference:
     - title: Alabama DHR Child Care Subsidy Program Provider Rate Chart, Key to Care Level
       href: https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=2
-    - title: Ala. Admin. Code r. 660-5-20-.04 Child Care Program
-      href: https://www.law.cornell.edu/regulations/alabama/Ala-Admin-Code-r-660-5-20-.04
 
 brackets:
   - threshold:

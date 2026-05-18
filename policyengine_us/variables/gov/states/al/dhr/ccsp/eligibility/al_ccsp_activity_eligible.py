@@ -16,10 +16,7 @@ class al_ccsp_activity_eligible(Variable):
     )
     definition_period = MONTH
     defined_for = StateCode.AL
-    reference = (
-        "Alabama CCDF State Plan 2025-2027, Section 2.2.2",
-        "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=21",
-    )
+    reference = "https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=21"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.al.dhr.ccsp.activity
