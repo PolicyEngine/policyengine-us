@@ -21,7 +21,7 @@ class ar_sra_time_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.rates
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = person("childcare_hours_per_day", period.this_year)
         return where(
             hours >= p.full_time_hours_threshold,
             ArSraTimeCategory.FULL_TIME,

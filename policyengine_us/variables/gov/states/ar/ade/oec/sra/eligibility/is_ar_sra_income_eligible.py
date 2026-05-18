@@ -12,5 +12,6 @@ class is_ar_sra_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.eligibility
         monthly_income = spm_unit("ar_sra_countable_income", period)
+        # hhs_smi is YEAR-defined; bare period auto-divides annual → monthly.
         monthly_smi_limit = spm_unit("hhs_smi", period) * p.income_smi_rate
         return monthly_income <= monthly_smi_limit

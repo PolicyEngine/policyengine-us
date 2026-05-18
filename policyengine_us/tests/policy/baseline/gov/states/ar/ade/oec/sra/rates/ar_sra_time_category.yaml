@@ -1,13 +1,12 @@
-# Time category: >=35 hr/wk -> FULL_TIME, otherwise PART_TIME.
-# Threshold parameter: gov.states.ar.ade.oec.sra.rates.full_time_hours_threshold = 35
-# (approximates FSU §5.4.6 "7+ hours per day" as 5 days * 7 = 35 hr/week.)
+# Time category: childcare_hours_per_day >= 7 -> FULL_TIME, otherwise PART_TIME.
+# Per FSU §5.4.6 "7+ hours per day" (gov.states.ar.ade.oec.sra.rates.full_time_hours_threshold = 7).
 
-- name: Case 1, 35 hours per week is FULL_TIME at the threshold.
+- name: Case 1, 7 hours per day is FULL_TIME at the threshold.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 7
     households:
       household:
         members: [person1]
@@ -15,12 +14,12 @@
   output:
     ar_sra_time_category: FULL_TIME
 
-- name: Case 2, 40 hours per week is FULL_TIME.
+- name: Case 2, 8 hours per day is FULL_TIME.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -28,12 +27,12 @@
   output:
     ar_sra_time_category: FULL_TIME
 
-- name: Case 3, 25 hours per week is PART_TIME.
+- name: Case 3, 5 hours per day is PART_TIME.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 25
+        childcare_hours_per_day: 5
     households:
       household:
         members: [person1]
@@ -41,12 +40,12 @@
   output:
     ar_sra_time_category: PART_TIME
 
-- name: Case 4, 34 hours per week is PART_TIME just below the threshold.
+- name: Case 4, 6 hours per day is PART_TIME just below the threshold.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 34
+        childcare_hours_per_day: 6
     households:
       household:
         members: [person1]
@@ -54,15 +53,28 @@
   output:
     ar_sra_time_category: PART_TIME
 
-- name: Case 5, 0 hours per week is PART_TIME.
+- name: Case 5, 0 hours per day is PART_TIME.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
     households:
       household:
         members: [person1]
         state_code: AR
   output:
     ar_sra_time_category: PART_TIME
+
+- name: Case 6, 8 hours per day for 4 days per week (32 hours per week total) is FULL_TIME under the per-day rule.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_time_category: FULL_TIME

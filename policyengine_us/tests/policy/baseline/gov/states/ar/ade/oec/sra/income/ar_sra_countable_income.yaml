@@ -5,7 +5,7 @@
 
 - name: Case 1, parent employment income is fully counted (annual $30,000 = $2,500/month).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -26,7 +26,7 @@
 
 - name: Case 2, child SSI is excluded (annual $25,000 parent earnings = $2,083.33/month).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -50,7 +50,7 @@
 
 - name: Case 3, two adults combine earnings (annual $40,000 = $3,333.33/month).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -74,7 +74,7 @@
 
 - name: Case 4, zero-income family produces zero countable income.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:

@@ -10,8 +10,9 @@
 #   School-Aged FT LE_40 = 0.80 (always copay)
 #   School-Aged FT GT_60 = 0.30
 #
-# Arkansas SMI (2025-10-01, FFY 2026, 4-person): $90,280/year
-# 2-person SPM: SMI = 90,280 * 0.68 = $61,390.40 annual
+# Arkansas SMI (FFY 2026, uprated to 2026-01-01, 4-person): $95,201.95/year
+# 2-person SPM: SMI = 95,201.95 * 0.68 = $64,737.33 annual
+# Tier percentages quoted in test names are computed against the uprated SMI.
 
 - name: Case 1, toddler at 30 percent SMI gets state share 1.00 (no-copay floor).
   period: 2026-01
@@ -27,7 +28,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -55,7 +56,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -84,7 +85,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -113,7 +114,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -141,7 +142,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -170,7 +171,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -199,7 +200,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -228,7 +229,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         # Below 30 hr FT threshold
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -256,7 +257,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -284,7 +285,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -312,7 +313,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -340,7 +341,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -368,7 +369,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -396,7 +397,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -424,7 +425,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -452,7 +453,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -480,7 +481,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -508,7 +509,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -536,7 +537,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -564,7 +565,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -592,7 +593,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -620,7 +621,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -648,7 +649,7 @@
         age: 4
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -676,7 +677,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]

@@ -14,12 +14,12 @@
 
 - name: Case 1, Statewide infant full time base rate is 36.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -30,12 +30,12 @@
 
 - name: Case 2, Statewide toddler full time base rate is 35.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 2
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -46,12 +46,12 @@
 
 - name: Case 3, Statewide preschool full time base rate is 33.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 4
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -62,12 +62,12 @@
 
 - name: Case 4, Statewide school-aged full time base rate is 28.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 7
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -78,12 +78,12 @@
 
 - name: Case 5, Benton/Washington infant full time base rate is 38.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -94,12 +94,12 @@
 
 - name: Case 6, Benton/Washington toddler full time base rate is 37.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 2
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -110,12 +110,12 @@
 
 - name: Case 7, Statewide infant part time base rate is 18.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     households:
       household:
         members: [person1]
@@ -126,12 +126,12 @@
 
 - name: Case 8, Benton/Washington infant part time base rate is 19.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
     households:
       household:
         members: [person1]
@@ -142,12 +142,12 @@
 
 - name: Case 9, Statewide infant Night/Weekend full time base rate is 39.60.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: NIGHT_WEEKEND
     households:
       household:
@@ -159,12 +159,12 @@
 
 - name: Case 10, Statewide infant SN1 full time base rate is 36.00.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: SN1
     households:
       household:
@@ -176,12 +176,12 @@
 
 - name: Case 11, Statewide infant SN2 full time base rate is 50.40.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: SN2
     households:
       household:
@@ -193,12 +193,12 @@
 
 - name: Case 12, Statewide infant SN3 full time base rate is 50.40.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: SN3
     households:
       household:
@@ -210,12 +210,12 @@
 
 - name: Case 13, Statewide preschool Night/Weekend full time base rate is 36.30.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 4
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: NIGHT_WEEKEND
     households:
       household:
@@ -227,12 +227,12 @@
 
 - name: Case 14, Statewide infant Night/Weekend part time mirrors REGULAR PT (18.00 — modeling fallback).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 20
+        childcare_hours_per_day: 4
         ar_sra_care_type: NIGHT_WEEKEND
     households:
       household:
@@ -245,12 +245,12 @@
 
 - name: Case 15, Benton/Washington infant SN2 full time base rate is 53.20.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: SN2
     households:
       household:
@@ -262,12 +262,12 @@
 
 - name: Case 16, Benton/Washington toddler Night/Weekend full time base rate is 40.70.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 2
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         ar_sra_care_type: NIGHT_WEEKEND
     households:
       household:

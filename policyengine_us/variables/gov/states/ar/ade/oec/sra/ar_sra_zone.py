@@ -20,13 +20,12 @@ class ar_sra_zone(Variable):
     )
 
     def formula(household, period, parameters):
-        # Belt-and-suspenders: defined_for filters output but doesn't gate
-        # the lookup, so guard county_str against non-AR rows.
+        # Guard against non-AR rows: defined_for filters output but not the lookup.
         state = household("state_code_str", period.this_year)
         county = household("county_str", period.this_year)
-        in_benton_washington = (state == "AR") & (
-            (county == "BENTON_COUNTY_AR") | (county == "WASHINGTON_COUNTY_AR")
-        )
+        p = parameters(period).gov.states.ar.ade.oec.sra.rates
+        in_bw_county = np.isin(county, p.benton_washington_counties)
+        in_benton_washington = (state == "AR") & in_bw_county
         return where(
             in_benton_washington,
             ArSraZone.BENTON_WASHINGTON,

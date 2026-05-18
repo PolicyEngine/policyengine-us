@@ -106,3 +106,29 @@
         state_code: AR
   output:
     is_ar_sra_income_eligible: true
+
+- name: Case 5, family income one dollar below the 85 percent SMI cap is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 64,737.33 * 0.85 = $55,026.73; just-below boundary at $55,025.
+        employment_income: 55_025
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true

@@ -1,19 +1,13 @@
-description: Arkansas sets this weekly hours threshold for full-time child care under the School Readiness Assistance program.
-# FSU Procedural Manual §5.4.6 defines Full Time as 7+ hours per day. We
-# approximate as a per-week threshold of 35 (= 5 days * 7 hr/day) because
-# the model carries `childcare_hours_per_week`, not per-day hours. This
-# approximation misclassifies attendance patterns that diverge from a
-# 5-day week (e.g., 4 days * 8 hr = 32 hr/wk would be FT under FSU but
-# PT here).
+description: Arkansas sets this daily hours threshold for full-time child care under the School Readiness Assistance program.
 values:
-  2025-10-01: 35
+  2025-10-01: 7
 
 metadata:
   unit: hour
   period: year
-  label: Arkansas SRA full-time weekly hours threshold
+  label: Arkansas SRA full-time daily hours threshold
   reference:
-    - title: FSU Procedural Manual (June 2023), Section 5.4.6 Authorization Care Types
+    - title: FSU Procedural Manual (June 2023), Section 5.4.6 Level of Care Authorized
       href: https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=30
     - title: SRA Sliding Fee Scale - Statewide Full Time (Nov 1, 2025) - establishes Full Time category
       href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf

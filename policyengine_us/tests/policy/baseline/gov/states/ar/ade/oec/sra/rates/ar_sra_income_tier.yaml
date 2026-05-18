@@ -8,7 +8,6 @@
 
 - name: Case 1, family at 30 percent SMI is in the LE_40 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -35,7 +34,6 @@
 
 - name: Case 2, family at 50 percent SMI is in the GT_40_LE_60 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -62,7 +60,6 @@
 
 - name: Case 3, family at 75 percent SMI is in the GT_60 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -89,7 +86,6 @@
 
 - name: Case 4, family just under 40 percent SMI is in the LE_40 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -116,7 +112,6 @@
 
 - name: Case 5, family just above 40 percent SMI is in the GT_40_LE_60 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -143,7 +138,6 @@
 
 - name: Case 6, family just under 60 percent SMI is in the GT_40_LE_60 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -170,7 +164,6 @@
 
 - name: Case 7, family just above 60 percent SMI is in the GT_60 tier.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -197,7 +190,6 @@
 
 - name: Case 8, family at exactly 40 percent SMI is in the LE_40 tier (boundary is inclusive).
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -224,7 +216,6 @@
 
 - name: Case 9, family at exactly 60 percent SMI is in the GT_40_LE_60 tier (boundary is inclusive).
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     people:
       person1:

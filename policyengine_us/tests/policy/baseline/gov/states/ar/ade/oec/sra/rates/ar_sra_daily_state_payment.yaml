@@ -5,7 +5,7 @@
 
 - name: Case 1, Toddler Statewide FT at LE_40 SMI pays full base rate (no-copay).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -17,7 +17,7 @@
         age: 2
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -36,7 +36,7 @@
 
 - name: Case 2, School-Aged Statewide FT at LE_40 SMI has positive copay (share 0.80).
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -48,7 +48,7 @@
         age: 7
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -67,7 +67,7 @@
 
 - name: Case 3, Infant Benton/Washington FT at GT_60 SMI gets reduced share.
   period: 2026-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -79,7 +79,7 @@
         age: 0
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
     tax_units:
       tax_unit:
         members: [person1, person2]

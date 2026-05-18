@@ -352,7 +352,7 @@
   output:
     is_ar_sra_ess_eligible: true
 
-- name: Case 16, was_tea is true but months_since_tea_exit is 0 falls outside the ESS window.
+- name: Case 16, ESS window starts at month 1, so months_since_tea_exit of 0 (still receiving TEA) is not yet in the post-TEA window.
   period: 2026-01
   input:
     people:

@@ -27,16 +27,14 @@ class ar_sra(Variable):
             monthly_max_state_payment,
         )
         total_uncapped_subsidy = spm_unit.sum(uncapped_subsidy * is_eligible_child)
-        # CCDF State Plan §3.1.1 caps the family copay at 4% of gross income
-        # per family, regardless of the number of children. When rate-sheet
-        # copays sum above the cap, the state covers the gap.
+        # CCDF State Plan §3.1.1: per-family copay capped at 4% of gross income.
         p = parameters(period).gov.states.ar.ade.oec.sra.rates
         total_uncapped_copay = spm_unit.sum(monthly_copay * is_eligible_child)
-        # Clamp at 0 so a negative countable income (e.g. self-employment
-        # loss) doesn't inflate cap_savings.
+        # Clamp at 0 so negative countable income doesn't inflate cap_savings.
         countable_income = max_(spm_unit("ar_sra_countable_income", period), 0)
         copay_ceiling = p.max_copay_share_of_gross_income * countable_income
         cap_savings = max_(total_uncapped_copay - copay_ceiling, 0)
-        # State subsidy never exceeds the family's actual childcare cost.
+        # Clamp at actual expense: when a child has $0 expense, the rate-sheet
+        # copay still appears in total_uncapped_copay and could inflate cap_savings.
         total_expense = spm_unit.sum(monthly_expense * is_eligible_child)
         return min_(total_uncapped_subsidy + cap_savings, total_expense)
