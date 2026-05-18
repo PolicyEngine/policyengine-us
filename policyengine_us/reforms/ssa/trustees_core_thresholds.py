@@ -4,10 +4,6 @@ import math
 from typing import Any
 
 from policyengine_us.model_api import Reform
-from policyengine_us.reforms.ssa.trustees_2025 import (
-    TRUSTEES_2025_NAWI_ASSUMPTION,
-    apply_trustees_2025_economic_assumptions,
-)
 
 
 TRUSTEES_CORE_THRESHOLD_ASSUMPTION: dict[str, Any] = {
@@ -25,8 +21,7 @@ TRUSTEES_CORE_THRESHOLD_ASSUMPTION: dict[str, Any] = {
         "all_gov_irs_uprating_parameters",
     ],
     "uprating_parameter": "gov.irs.uprating",
-    "economic_assumption": TRUSTEES_2025_NAWI_ASSUMPTION["name"],
-    "income_uprating_assumption": "trustees-2025-soi-income-nawi-v1",
+    "wage_index": "gov.ssa.nawi",
     "not_default_current_law": True,
 }
 
@@ -152,11 +147,6 @@ def create_trustees_core_thresholds_reform(
     def modify_parameters(parameters):
         if not _parameters_have_long_run_projection(parameters, end_year):
             return parameters
-
-        apply_trustees_2025_economic_assumptions(
-            parameters,
-            end_year=end_year,
-        )
 
         seen = set()
         for root in _federal_income_tax_roots(parameters):
