@@ -2,9 +2,10 @@
 # 85% of monthly Alaska FICS SMI for the family size.
 #
 # Alaska FICS monthly 100% SMI (rev. Feb 21, 2022):
-#   Size 1: 5_897; Size 2: 7_285; Size 3: 8_673; Size 4: 10_060
-#   Size 5: 11_448; Size 6: 11_708; Size 7: 11_968; ...; Size 13: 13_528
-#   Sizes >13 use size-13 amount due to bracket cap.
+#   Size 2: 5_897; Size 3: 7_285; Size 4: 8_673; Size 5: 10_060
+#   Size 6: 11_448; Size 7: 11_708; Size 8: 11_968; ...; Size 15: 13_789
+#   Sizes >15 use size-15 amount due to bracket cap.
+#   FICS does not publish a 1-person value.
 
 - name: Case 1, family of 2.
   period: 2025-01
@@ -23,9 +24,9 @@
         members: [person1, person2]
         state_code: AK
   output:
-    # FICS size 2 monthly SMI = 7_285
-    # Monthly threshold = 7_285 * 0.85 = 6_192.25
-    ak_ccap_smi_threshold: 6_192.25
+    # FICS size 2 monthly SMI = 5_897
+    # Monthly threshold = 5_897 * 0.85 = 5_012.45
+    ak_ccap_smi_threshold: 5_012.45
 
 - name: Case 2, family of 3.
   period: 2025-01
@@ -46,9 +47,9 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # FICS size 3 monthly SMI = 8_673
-    # Monthly threshold = 8_673 * 0.85 = 7_372.05
-    ak_ccap_smi_threshold: 7_372.05
+    # FICS size 3 monthly SMI = 7_285
+    # Monthly threshold = 7_285 * 0.85 = 6_192.25
+    ak_ccap_smi_threshold: 6_192.25
 
 - name: Case 3, family of 4.
   period: 2025-01
@@ -71,11 +72,11 @@
         members: [person1, person2, person3, person4]
         state_code: AK
   output:
-    # FICS size 4 monthly SMI = 10_060
-    # Monthly threshold = 10_060 * 0.85 = 8_551.00
-    ak_ccap_smi_threshold: 8_551.00
+    # FICS size 4 monthly SMI = 8_673
+    # Monthly threshold = 8_673 * 0.85 = 7_372.05
+    ak_ccap_smi_threshold: 7_372.05
 
-- name: Case 4, family of 7 uses FICS size-7 amount.
+- name: Case 4, family of 7 uses FICS size-7 amount ($11,708).
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -104,6 +105,6 @@
           [person1, person2, person3, person4, person5, person6, person7]
         state_code: AK
   output:
-    # FICS size 7 monthly SMI = 11_968
-    # Monthly threshold = 11_968 * 0.85 = 10_172.80
-    ak_ccap_smi_threshold: 10_172.80
+    # FICS size 7 monthly SMI = 11_708
+    # Monthly threshold = 11_708 * 0.85 = 9_951.80
+    ak_ccap_smi_threshold: 9_951.80

@@ -28,7 +28,7 @@
     people:
       person1:
         age: 30
-        employment_income: 39_000  # 3_250/mo
+        employment_income: 36_000  # 3_000/mo
       person2:
         age: 25
       person3:
@@ -41,10 +41,10 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # Family of 3 monthly SMI = 8_673
-    # SMI ratio = 3_250 / 8_673 = 0.3748 -> 5% band (>= 0.35, < 0.43)
-    # copay = 3_250 * 0.05 = 162.50
-    ak_ccap_copay: 162.50
+    # Family of 3 monthly SMI = 7_285
+    # SMI ratio = 3_000 / 7_285 = 0.4118 -> 5% band (>= 0.35, < 0.43)
+    # copay = 3_000 * 0.05 = 150.00
+    ak_ccap_copay: 150.00
 
 - name: Case 3, family of 4 in 7% band copay.
   period: 2025-01
@@ -53,7 +53,7 @@
     people:
       person1:
         age: 35
-        employment_income: 66_000  # 5_500/mo
+        employment_income: 57_600  # 4_800/mo
       person2:
         age: 32
       person3:
@@ -68,7 +68,7 @@
         members: [person1, person2, person3, person4]
         state_code: AK
   output:
-    # Family of 4 monthly SMI = 10_060
-    # SMI ratio = 5_500 / 10_060 = 0.5467 -> 7% band (>= 0.52, < 0.61)
-    # copay = 5_500 * 0.07 = 385.00
-    ak_ccap_copay: 385.00
+    # Family of 4 monthly SMI = 8_673
+    # SMI ratio = 4_800 / 8_673 = 0.5534 -> 7% band (>= 0.52, < 0.61)
+    # copay = 4_800 * 0.07 = 336.00
+    ak_ccap_copay: 336.00

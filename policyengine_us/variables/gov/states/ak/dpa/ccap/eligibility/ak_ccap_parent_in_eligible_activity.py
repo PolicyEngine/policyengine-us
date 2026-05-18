@@ -17,8 +17,8 @@ class ak_ccap_parent_in_eligible_activity(Variable):
         # treated as meeting the AK requirement.
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        emp_income = person("employment_income", period.this_year)
-        se_income = person("self_employment_income", period.this_year)
+        emp_income = person("employment_income", period)
+        se_income = person("self_employment_income", period)
         hours_worked = person("weekly_hours_worked", period.this_year)
         is_student = person("is_full_time_student", period.this_year)
         individually_eligible = (

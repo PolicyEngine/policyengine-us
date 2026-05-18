@@ -26,8 +26,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2 monthly SMI = 7_285
-    # Income ratio = 2_000 / 7_285 = 0.2745 -> 4% band (>= 0.26, < 0.35)
+    # Family of 2 monthly SMI = 5_897
+    # Income ratio = 2_000 / 5_897 = 0.3392 -> 4% band (>= 0.26, < 0.35)
     # copay = 2_000 * 0.04 = 80
     # Anchorage center preschool FT_MONTH = 1_019
     # Expenses = 10_000/mo (does not bind cap)
@@ -94,15 +94,15 @@
         state_code: AK
         county_str: MATANUSKA_SUSITNA_BOROUGH_AK
   output:
-    # Family of 4 monthly SMI = 10_060
-    # Income ratio = 2_500 / 10_060 = 0.2485 -> 3% band (>= 0.18, < 0.26)
-    # copay = 2_500 * 0.03 = 75
+    # Family of 4 monthly SMI = 8_673
+    # Income ratio = 2_500 / 8_673 = 0.2882 -> 4% band (>= 0.26, < 0.35)
+    # copay = 2_500 * 0.04 = 100
     # Mat-Su licensed center FT_MONTH toddler = 760 (child1)
     # Mat-Su licensed home   FT_MONTH school age = 652 (child2)
     # Total per-child = 760 + 652 = 1_412
-    # Benefit = 1_412 - 75 = 1_337
+    # Benefit = 1_412 - 100 = 1_312
     ak_ccap_eligible: true
-    ak_ccap: 1_337
+    ak_ccap: 1_312
 
 - name: Case 4, age-ineligible only child yields zero benefit.
   period: 2025-01
@@ -156,8 +156,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2 monthly SMI = 7_285
-    # Income ratio = 1_500 / 7_285 = 0.2059 -> 3% band (>= 0.18, < 0.26)
+    # Family of 2 monthly SMI = 5_897
+    # Income ratio = 1_500 / 5_897 = 0.2544 -> 3% band (>= 0.18, < 0.26)
     # copay = 1_500 * 0.03 = 45
     # Anchorage licensed_home FT_MONTH preschool = 700
     # Benefit = min(10_000, 700) - 45 = 655
@@ -219,7 +219,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # SMI ratio ≈ 0.2915 -> 4% band (SSI received by disabled child is small but counted)
+    # Family of 2 monthly SMI = 5_897
+    # SMI ratio ≈ 0.34 -> 4% band (SSI received by disabled child is small but counted)
     # benefit_per_child = min(3_500, 1_019) + 1_019 = 2_038 (supplement outside cap, mult=2)
     # Total = min(10_000, 2_038) - copay ≈ 1_957.62
     ak_ccap: 1_957.62
@@ -281,7 +282,7 @@
     # Only citizen child counts as eligible
     ak_ccap_child_eligible: [false, true, false]
     ak_ccap_eligible: true
-    # Anchorage center FT_MONTH preschool = 1_019; family of 3 monthly SMI = 8_673
-    # SMI ratio = 2_000 / 8_673 = 0.2306 -> 3% band; copay = 60
-    # Benefit = min(10_000, 1_019) - 60 = 959
-    ak_ccap: 959
+    # Anchorage center FT_MONTH preschool = 1_019; family of 3 monthly SMI = 7_285
+    # SMI ratio = 2_000 / 7_285 = 0.2745 -> 4% band (>= 0.26, < 0.35); copay = 80
+    # Benefit = min(10_000, 1_019) - 80 = 939
+    ak_ccap: 939

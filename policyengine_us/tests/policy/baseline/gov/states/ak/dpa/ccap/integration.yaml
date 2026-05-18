@@ -9,14 +9,14 @@
 #     https://health.alaska.gov/media/wsvhl3v3/ccap-rate-schedule.pdf
 #
 # AK FICS monthly 100% SMI by family size:
-#   Family of 2: 7_285
-#   Family of 3: 8_673
-#   Family of 4: 10_060
+#   Family of 2: 5_897
+#   Family of 3: 7_285
+#   Family of 4: 8_673
 #
 # 85% SMI thresholds (monthly):
-#   Family of 2: 7_285 * 0.85 = 6_192.25
-#   Family of 3: 8_673 * 0.85 = 7_372.05
-#   Family of 4: 10_060 * 0.85 = 8_551.00
+#   Family of 2: 5_897 * 0.85 = 5_012.45
+#   Family of 3: 7_285 * 0.85 = 6_192.25
+#   Family of 4: 8_673 * 0.85 = 7_372.05
 
 - name: Case 1, single parent one preschooler Anchorage licensed center.
   period: 2025-01
@@ -53,8 +53,8 @@
     ak_ccap_countable_income: 2_000
 
     # === Copay ===
-    # Family of 2 monthly SMI = 7_285
-    # SMI ratio = 2_000 / 7_285 = 0.2745 -> 4% band (>= 0.26, < 0.35)
+    # Family of 2 monthly SMI = 5_897
+    # SMI ratio = 2_000 / 5_897 = 0.3392 -> 4% band (>= 0.26, < 0.35)
     ak_ccap_copay_rate: 0.04
     # copay = 2_000 * 0.04 = 80
     ak_ccap_copay: 80
@@ -110,8 +110,8 @@
     # All parents qualify -> activity passes
 
     # === Copay ===
-    # Family of 4 monthly SMI = 10_060
-    # SMI ratio = 3_000 / 10_060 = 0.2982 -> 4% band (>= 0.26, < 0.35)
+    # Family of 4 monthly SMI = 8_673
+    # SMI ratio = 3_000 / 8_673 = 0.3459 -> 4% band (>= 0.26, < 0.35)
     ak_ccap_copay_rate: 0.04
     # copay = 3_000 * 0.04 = 120
     ak_ccap_copay: 120
@@ -155,12 +155,14 @@
     ak_ccap_child_eligible: [false, true]
     ak_ccap_eligible: true
     ak_ccap_pass_category: PASS_II
-    # SMI ratio = 2_500 / 7_285 = 0.3432 -> 4% band (>= 0.26, < 0.35)
-    ak_ccap_copay_rate: 0.04
-    ak_ccap_copay: 100
+    # Family of 2 monthly SMI = 5_897
+    # SMI ratio = 2_500 / 5_897 = 0.4240 -> 5% band (>= 0.35, < 0.43)
+    ak_ccap_copay_rate: 0.05
+    # copay = 2_500 * 0.05 = 125
+    ak_ccap_copay: 125
     # Anchorage center FT_MONTH school age = 884
-    # Benefit = 884 - 100 = 784
-    ak_ccap: 784
+    # Benefit = 884 - 125 = 759
+    ak_ccap: 759
 
 - name: Case 4, income just over 85% SMI is ineligible.
   period: 2025-01
@@ -170,7 +172,7 @@
       parent:
         age: 30
         immigration_status: CITIZEN
-        employment_income: 86_847  # ~7_237.25/mo, well over 6_192.25 threshold
+        employment_income: 72_000  # 6_000/mo, well over 5_012.45 threshold
       child:
         age: 4
         immigration_status: CITIZEN
@@ -185,8 +187,8 @@
         state_code: AK
         county_str: ANCHORAGE_MUNICIPALITY_AK
   output:
-    # Family of 2: 85% SMI monthly threshold = 6_192.25
-    # 7_237.25 > 6_192.25 -> ineligible
+    # Family of 2: 85% SMI monthly threshold = 5_012.45
+    # 6_000 > 5_012.45 -> ineligible
     ak_ccap_income_eligible: false
     ak_ccap_eligible: false
     ak_ccap: 0
@@ -236,15 +238,15 @@
     #   SN child:       min(3_000, 884) + 884 = 884 + 884 = 1_768
     ak_ccap_benefit_per_child: [0, 1_019, 1_768]
 
-    # Family of 3 monthly SMI = 8_673
+    # Family of 3 monthly SMI = 7_285
     # Countable income ≈ 2_251 (earnings + SSI for disabled child, per §4080-3.1.b)
-    # ratio ≈ 0.2596 -> 3% band (>= 0.18, < 0.26)
-    ak_ccap_copay_rate: 0.03
-    ak_ccap_copay: 67.53
+    # ratio ≈ 2_251 / 7_285 = 0.3090 -> 4% band (>= 0.26, < 0.35)
+    ak_ccap_copay_rate: 0.04
+    ak_ccap_copay: 90.04
 
     # Total per-child = 1_019 + 1_768 = 2_787; expense cap not binding (10_000/mo)
-    # Total benefit = min(10_000, 2_787) - 67.53 = 2_787 - 67.53 ≈ 2_719.47
-    ak_ccap: 2_719.47
+    # Total benefit = min(10_000, 2_787) - 90.04 = 2_787 - 90.04 ≈ 2_696.96
+    ak_ccap: 2_696.96
 
 - name: Case 6, Anchorage with Licensed Group Home falls back to 0 rate.
   period: 2025-01
@@ -309,11 +311,12 @@
     ak_ccap_child_eligible: [false, false, true]
     ak_ccap_eligible: true
 
-    # Family of 3 monthly SMI = 8_673
-    # ratio = 3_000 / 8_673 = 0.3459 -> 4% band (>= 0.26, < 0.35)
-    ak_ccap_copay_rate: 0.04
-    ak_ccap_copay: 120
+    # Family of 3 monthly SMI = 7_285
+    # ratio = 3_000 / 7_285 = 0.4118 -> 5% band (>= 0.35, < 0.43)
+    ak_ccap_copay_rate: 0.05
+    # copay = 3_000 * 0.05 = 150
+    ak_ccap_copay: 150
 
     # Anchorage center FT_MONTH school age = 884
-    # Benefit = 884 - 120 = 764
-    ak_ccap: 764
+    # Benefit = 884 - 150 = 734
+    ak_ccap: 734

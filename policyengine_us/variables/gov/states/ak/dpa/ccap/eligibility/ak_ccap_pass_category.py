@@ -21,6 +21,12 @@ class ak_ccap_pass_category(Variable):
     )
 
     def formula(spm_unit, period):
+        # Manual §4000-2 lists four PASS categories. We model PASS II
+        # (post-ATAP transitional) and PASS III (general low-income).
+        # PASS I (ATAP-bundled, no independent income test) is subsumed
+        # by PASS III for income-eligible ATAP families. PASS IV (OCS
+        # Protective Services / child-only, §4000-2.4 PDF p.32) is not
+        # modeled at the moment because we don't track OCS custody.
         pass_2 = spm_unit("ak_ccap_pass_2_eligible", period)
         pass_3 = spm_unit("ak_ccap_pass_3_eligible", period)
         return select(

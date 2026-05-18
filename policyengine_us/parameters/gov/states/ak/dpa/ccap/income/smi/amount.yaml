@@ -1,4 +1,4 @@
-description: Alaska provides this amount as the monthly State Median Income by family size under the Child Care Assistance Program. Values come from the Family Income and Contribution Schedule (FICS), which is derived from a 5-year American Community Survey rolling average and is revised when new ACS estimates and the state's CCDF plan are released.
+description: Alaska provides this amount as the monthly State Median Income by family size under the Child Care Assistance Program. Values come from the Family Income and Contribution Schedule (FICS), which is derived from a 5-year American Community Survey rolling average and is revised when new ACS estimates and the state's CCDF plan are released. The FICS does not publish a 1-person value; the smallest published family size is 2.
 metadata:
   type: single_amount
   threshold_unit: person
@@ -9,57 +9,61 @@ metadata:
     - title: Alaska Family Income and Contribution Schedule (FICS), rev. Feb 21, 2022
       href: https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1
     - title: CCAP Policies and Procedures Manual, Section 4080-1 Income Eligibility (printed p.203)
-      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=230
+      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203
 brackets:
-  - threshold:
-      2022-02-21: 1
-    amount:
-      2022-02-21: 5_897
   - threshold:
       2022-02-21: 2
     amount:
-      2022-02-21: 7_285
+      2022-02-21: 5_897
   - threshold:
       2022-02-21: 3
     amount:
-      2022-02-21: 8_673
+      2022-02-21: 7_285
   - threshold:
       2022-02-21: 4
     amount:
-      2022-02-21: 10_060
+      2022-02-21: 8_673
   - threshold:
       2022-02-21: 5
     amount:
-      2022-02-21: 11_448
+      2022-02-21: 10_060
   - threshold:
       2022-02-21: 6
     amount:
-      2022-02-21: 11_708
+      2022-02-21: 11_448
   - threshold:
       2022-02-21: 7
     amount:
-      2022-02-21: 11_968
+      2022-02-21: 11_708
   - threshold:
       2022-02-21: 8
     amount:
-      2022-02-21: 12_228
+      2022-02-21: 11_968
   - threshold:
       2022-02-21: 9
     amount:
-      2022-02-21: 12_488
+      2022-02-21: 12_228
   - threshold:
       2022-02-21: 10
     amount:
-      2022-02-21: 12_748
+      2022-02-21: 12_488
   - threshold:
       2022-02-21: 11
     amount:
-      2022-02-21: 13_008
+      2022-02-21: 12_749
   - threshold:
       2022-02-21: 12
     amount:
-      2022-02-21: 13_268
+      2022-02-21: 13_009
   - threshold:
       2022-02-21: 13
     amount:
-      2022-02-21: 13_528
+      2022-02-21: 13_269
+  - threshold:
+      2022-02-21: 14
+    amount:
+      2022-02-21: 13_529
+  - threshold:
+      2022-02-21: 15
+    amount:
+      2022-02-21: 13_789

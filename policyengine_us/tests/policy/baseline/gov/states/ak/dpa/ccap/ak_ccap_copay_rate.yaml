@@ -12,7 +12,7 @@
 #   0.61 to 0.73  -> 8%
 #   >= 0.73       -> 9% (cap)
 #
-# AK FICS monthly 100% SMI: Family of 2 = 7_285; Family of 3 = 8_673; Family of 4 = 10_060.
+# AK FICS monthly 100% SMI: Family of 2 = 5_897; Family of 3 = 7_285; Family of 4 = 8_673.
 
 - name: Case 1, zero income gets waived 0% copay.
   period: 2025-01
@@ -42,7 +42,7 @@
       person1:
         age: 30
         employment_income: 6_000  # 500/mo
-        # SMI ratio = 500 / 7_285 = 0.0686 -> 1% band
+        # SMI ratio = 500 / 5_897 = 0.0848 -> 1% band
       person2:
         age: 4
     spm_units:
@@ -62,9 +62,9 @@
     people:
       person1:
         age: 30
-        employment_income: 39_000  # 3_250/mo
-        # Family of 3 monthly SMI = 8_673
-        # ratio = 3_250 / 8_673 = 0.3748 -> 5% band (>= 0.35, < 0.43)
+        employment_income: 36_000  # 3_000/mo
+        # Family of 3 monthly SMI = 7_285
+        # ratio = 3_000 / 7_285 = 0.4118 -> 5% band (>= 0.35, < 0.43)
       person2:
         age: 25
       person3:
@@ -86,9 +86,9 @@
     people:
       person1:
         age: 30
-        employment_income: 80_000  # ~6_666.67/mo
-        # Family of 3 monthly SMI = 8_673
-        # ratio = 6_666.67 / 8_673 = 0.7687 -> 9% band (>= 0.73)
+        employment_income: 72_000  # 6_000/mo
+        # Family of 3 monthly SMI = 7_285
+        # ratio = 6_000 / 7_285 = 0.8236 -> 9% band (>= 0.73)
       person2:
         age: 25
       person3:
@@ -110,15 +110,15 @@
     people:
       person1:
         age: 35
-        employment_income: 18_000  # 1_500/mo
+        employment_income: 14_400  # 1_200/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # Family of 4 monthly SMI = 10_060
-        # ratio = 1_500 / 10_060 = 0.1491 -> 2% band (>= 0.09, < 0.18)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 1_200 / 8_673 = 0.1384 -> 2% band (>= 0.09, < 0.18)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -136,14 +136,15 @@
     people:
       person1:
         age: 35
-        employment_income: 66_000  # 5_500/mo
+        employment_income: 57_600  # 4_800/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # ratio = 5_500 / 10_060 = 0.5467 -> 7% band (>= 0.52, < 0.61)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 4_800 / 8_673 = 0.5534 -> 7% band (>= 0.52, < 0.61)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -161,15 +162,15 @@
     people:
       person1:
         age: 35
-        employment_income: 25_000  # 2_083.33/mo
+        employment_income: 21_600  # 1_800/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # Family of 4 monthly SMI = 10_060
-        # ratio = 2_083.33 / 10_060 = 0.2071 -> 3% band (>= 0.18, < 0.26)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 1_800 / 8_673 = 0.2076 -> 3% band (>= 0.18, < 0.26)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -187,14 +188,15 @@
     people:
       person1:
         age: 35
-        employment_income: 36_000  # 3_000/mo
+        employment_income: 30_000  # 2_500/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # ratio = 3_000 / 10_060 = 0.2982 -> 4% band (>= 0.26, < 0.35)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 2_500 / 8_673 = 0.2882 -> 4% band (>= 0.26, < 0.35)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -212,14 +214,15 @@
     people:
       person1:
         age: 35
-        employment_income: 57_000  # 4_750/mo
+        employment_income: 48_000  # 4_000/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # ratio = 4_750 / 10_060 = 0.4721 -> 6% band (>= 0.43, < 0.52)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 4_000 / 8_673 = 0.4612 -> 6% band (>= 0.43, < 0.52)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -237,14 +240,15 @@
     people:
       person1:
         age: 35
-        employment_income: 80_000  # 6_666.67/mo
+        employment_income: 68_400  # 5_700/mo
       person2:
         age: 32
       person3:
         age: 8
       person4:
         age: 5
-        # ratio = 6_666.67 / 10_060 = 0.6627 -> 8% band (>= 0.61, < 0.73)
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 5_700 / 8_673 = 0.6572 -> 8% band (>= 0.61, < 0.73)
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -262,9 +266,9 @@
     people:
       person1:
         age: 35
-        # Family of 4 monthly SMI = 10_060; target ratio just below 0.18
-        # ratio = 20_677 / 12 / 10_060 = 0.1713 -> 2% band (< 0.18)
-        employment_income: 20_677
+        # Family of 4 monthly SMI = 8_673; target ratio just below 0.18
+        # ratio = 18_732 / 12 / 8_673 = 0.17993 -> 2% band (< 0.18)
+        employment_income: 18_732
       person2:
         age: 32
       person3:
@@ -289,9 +293,9 @@
     people:
       person1:
         age: 35
-        # Family of 4 monthly SMI = 10_060
-        # ratio = 23_110 / 12 / 10_060 = 0.1914 -> 3% band (>= 0.18)
-        employment_income: 23_110
+        # Family of 4 monthly SMI = 8_673
+        # ratio = 18_736 / 12 / 8_673 = 0.18001 -> 3% band (>= 0.18)
+        employment_income: 18_736
       person2:
         age: 32
       person3:

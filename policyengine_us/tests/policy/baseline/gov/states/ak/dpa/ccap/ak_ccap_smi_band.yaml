@@ -3,9 +3,9 @@
 # Used as input to the copay sliding scale.
 #
 # Uses AK FICS monthly 100% SMI by family size (gov/states/ak/dpa/ccap/income/smi/amount):
-#   Family of 2: 7_285
-#   Family of 3: 8_673
-#   Family of 4: 10_060
+#   Family of 2: 5_897
+#   Family of 3: 7_285
+#   Family of 4: 8_673
 
 - name: Case 1, zero income gives band 0.
   period: 2025-01
@@ -33,7 +33,7 @@
     people:
       person1:
         age: 30
-        employment_income: 52_038  # 50% SMI: 12 * 8_673 * 0.5 = 52_038
+        employment_income: 43_710  # 50% SMI: 12 * 7_285 * 0.5 = 43_710
       person2:
         age: 25
       person3:
@@ -46,7 +46,7 @@
         members: [person1, person2, person3]
         state_code: AK
   output:
-    # 4_336.50 / 8_673 = 0.5
+    # 3_642.50 / 7_285 = 0.5
     ak_ccap_smi_band: 0.5
 
 - name: Case 3, family of 4 at SMI cap.
@@ -56,7 +56,7 @@
     people:
       person1:
         age: 35
-        employment_income: 120_720  # 100% SMI for fam of 4: 12 * 10_060
+        employment_income: 104_076  # 100% SMI for fam of 4: 12 * 8_673
       person2:
         age: 32
       person3:
@@ -71,5 +71,5 @@
         members: [person1, person2, person3, person4]
         state_code: AK
   output:
-    # 10_060 / 10_060 = 1.0
+    # 8_673 / 8_673 = 1.0
     ak_ccap_smi_band: 1.0
