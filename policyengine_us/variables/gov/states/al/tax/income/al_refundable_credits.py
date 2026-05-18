@@ -8,3 +8,4 @@ class al_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AL
+    adds = "gov.states.al.tax.income.credits.refundable"
