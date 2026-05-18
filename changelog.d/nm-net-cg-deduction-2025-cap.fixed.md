@@ -1,1 +1,1 @@
-Capped the 40% element of the New Mexico net capital gains deduction at the first $1,000,000 of qualifying gain from 2025-01-01 per HB0037 (2024) amending NMSA 7-2-34(A)(2).
+Restricted the New Mexico net capital gains 40% deduction to zero from 2025-01-01 per HB0037 (2024), which amended NMSA 7-2-34(A)(2) to apply the 40% element only to gains from the sale of a business. The capped element (up to $1,000) continues to apply.
