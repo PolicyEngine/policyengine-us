@@ -1,0 +1,15 @@
+description: New Mexico limits the 40% net capital gain deduction to this amount of gain (max deduction of 40% of this cap) under HB0037 (2024), effective 2025.
+values:
+  2019-01-01: .inf
+  2025-01-01: 1_000_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Mexico net capital gain deduction uncapped-element gain cap
+  reference:
+    - title: NMSA 7-2-34(A)(2) (effective 2025-01-01)
+      href: https://law.justia.com/codes/new-mexico/chapter-7/article-2/section-7-2-34-d-1/
+    - title: HB0037 (2024 Regular Session) — amends NMSA 7-2-34
+      href: https://www.nmlegis.gov/Sessions/24%20Regular/bills/house/HB0037.HTML
+    - title: 2025 New Mexico PIT Packet, ADJ-5 Line 16
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/0558a902-6362-47ca-8e3b-7cca3bc69b9d/2025%20PIT%20Packet_Final.pdf#page=50

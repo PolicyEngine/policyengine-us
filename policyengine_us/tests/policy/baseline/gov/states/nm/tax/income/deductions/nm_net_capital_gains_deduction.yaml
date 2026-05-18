@@ -33,3 +33,54 @@
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 500
+
+# HB0037 (2024) cap regression tests — effective 2025-01-01.
+
+- name: 2025 single below the $1M cap — 40% applies to full gains
+  period: 2025
+  input:
+    filing_status: SINGLE
+    capital_gains: 500_000
+    state_code: NM
+  output:
+    # 40% of $500,000 = $200,000, greater than the $2,500 capped element.
+    nm_net_capital_gains_deduction: 200_000
+
+- name: 2025 single exactly at the $1M cap — deduction = $400,000
+  period: 2025
+  input:
+    filing_status: SINGLE
+    capital_gains: 1_000_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 400_000
+
+- name: 2025 single above the $1M cap — deduction stays at $400,000
+  period: 2025
+  input:
+    filing_status: SINGLE
+    capital_gains: 3_000_000
+    state_code: NM
+  output:
+    # Pre-fix would give 40% * $3M = $1.2M; HB0037 caps the gain at $1M
+    # so the 40% element maxes at $400,000.
+    nm_net_capital_gains_deduction: 400_000
+
+- name: 2025 separate above the $1M cap — half of $400,000 = $200,000
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    capital_gains: 2_000_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 200_000
+
+- name: 2024 above $1M — no cap (pre-HB0037)
+  period: 2024
+  input:
+    filing_status: SINGLE
+    capital_gains: 3_000_000
+    state_code: NM
+  output:
+    # Pre-2025 the 40% element is uncapped: 40% * $3M = $1,200,000.
+    nm_net_capital_gains_deduction: 1_200_000
