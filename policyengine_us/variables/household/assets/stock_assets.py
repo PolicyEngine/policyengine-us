@@ -7,6 +7,7 @@ class stock_assets(Variable):
     label = "Stock assets"
     documentation = "Value of stocks and mutual funds. Imputed from SIPP TVAL_STMF."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
     reference = "https://secure.ssa.gov/poms.nsf/lnx/0501140220"

@@ -1,0 +1,68 @@
+- name: 2025 single non-itemizer — $750 standard deduction addback only
+  period: 2025
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+    additional_senior_deduction: 0
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    auto_loan_interest_deduction: 0
+    state_code: SC
+  output:
+    # OBBBA federal std ded SINGLE 2025 = $15,750; pre-OBBBA uprated = $15,000.
+    sc_obbba_addback: 750
+
+- name: 2025 MFJ non-itemizer with one age-65 — $1,500 std ded + $6,000 senior
+  period: 2025
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    additional_senior_deduction: 6_000
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    auto_loan_interest_deduction: 0
+    state_code: SC
+  output:
+    sc_obbba_addback: 7_500
+
+- name: 2025 itemizer — no std ded addback but tip/overtime/auto loan still apply
+  period: 2025
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    additional_senior_deduction: 0
+    tip_income_deduction: 4_000
+    overtime_income_deduction: 2_000
+    auto_loan_interest_deduction: 1_500
+    state_code: SC
+  output:
+    sc_obbba_addback: 7_500
+
+- name: 2025 head of household non-itemizer — $1,125 std ded addback
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: false
+    additional_senior_deduction: 0
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    auto_loan_interest_deduction: 0
+    state_code: SC
+  output:
+    # OBBBA HOH 2025 = $23,625; pre-OBBBA uprated = $22,500.
+    sc_obbba_addback: 1_125
+
+- name: 2025 MFJ — phased-out senior deduction propagates through the addback
+  period: 2025
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    # additional_senior_deduction reflects already-phased-out federal amount.
+    additional_senior_deduction: 0
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+    auto_loan_interest_deduction: 0
+    state_code: SC
+  output:
+    # Only the $1,500 standard deduction increase remains.
+    sc_obbba_addback: 1_500

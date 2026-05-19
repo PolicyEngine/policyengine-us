@@ -54,3 +54,10 @@
   output:
     ss_covered_earnings_this_year: 160_200  # 2023 wage base
 
+- name: Test 2026 wage base
+  period: 2026
+  input:
+    employment_income: 200_000
+    self_employment_income: 0
+  output:
+    ss_covered_earnings_this_year: 184_500  # 2026 contribution and benefit base
