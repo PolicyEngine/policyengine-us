@@ -16,7 +16,7 @@ class ks_tanf_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         gross_income_eligible = spm_unit("ks_tanf_gross_income_eligible", period)
         net_income_eligible = spm_unit("ks_tanf_income_eligible", period)

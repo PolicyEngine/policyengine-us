@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class me_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maine main income tax (before credits and supplemental tax)"
+    label = "Maine income tax before credits"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
@@ -16,7 +16,7 @@ class me_income_tax_before_credits(Variable):
 
         p = parameters(period).gov.states.me.tax.income.main
 
-        return select(
+        main_income_tax = select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
@@ -32,3 +32,6 @@ class me_income_tax_before_credits(Variable):
                 p.separate.calc(taxable_income),
             ],
         )
+        surcharge = tax_unit("me_income_tax_surcharge", period)
+
+        return main_income_tax + surcharge

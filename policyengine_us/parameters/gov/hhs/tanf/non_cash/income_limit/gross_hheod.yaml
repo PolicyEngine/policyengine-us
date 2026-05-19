@@ -1,0 +1,134 @@
+description: Gross income limit as a percent of the poverty line for elderly or disabled households seeking TANF non-cash benefit used for SNAP BBCE, by state.
+
+AL:
+  2015-10-01: 2
+AK:
+  # Alaska had not elected BBCE in the ERS data through 2020.
+  2015-10-01: -.inf
+  2025-07-01: 2
+AZ:
+  2015-10-01: 1.85
+AR:
+  2015-10-01: -.inf
+CA:
+  2015-10-01: 2
+CO:
+  2015-10-01: 2
+CT:
+  2015-10-01: 1.85
+  2022-10-01: 2
+DE:
+  2015-10-01: 2
+DC:
+  2015-10-01: 2
+FL:
+  2015-10-01: 2
+GA:
+  2015-10-01: 2
+GU:
+  2015-10-01: 1.65
+HI:
+  2015-10-01: 2
+ID:
+  2015-10-01: .inf
+IL:
+  2015-10-01: 2
+IN:
+  2015-10-01: -.inf
+  2018-01-01: .inf
+IA:
+  2015-10-01: 1.6
+KS:
+  2015-10-01: -.inf
+KY:
+  2015-10-01: 2
+LA:
+  2015-10-01: -.inf
+  2020-04-01: 1.3
+  2022-07-01: 2
+ME:
+  2015-10-01: 1.85
+  2024-07-01: 2
+MD:
+  2015-10-01: 2
+MA:
+  2015-10-01: 2
+MI:
+  2015-10-01: 2
+MN:
+  2015-10-01: 1.65
+  2022-09-01: 2
+  2024-07-01: .inf
+MO:
+  2015-10-01: -.inf
+MS:
+  2015-10-01: .inf
+  2019-07-01: -.inf
+MT:
+  2015-10-01: 2
+NE:
+  2015-10-01: .inf
+NV:
+  2015-10-01: 2
+NH:
+  2015-10-01: 1.85
+  2023-01-01: 2
+NJ:
+  2015-10-01: 1.85
+NM:
+  2015-10-01: 1.65
+  2024-10-01: 2
+NY:
+  2015-10-01: 2
+NC:
+  2015-10-01: 2
+ND:
+  2015-10-01: 2
+OH:
+  2015-10-01: 2
+OK:
+  2015-10-01: .inf
+OR:
+  2015-10-01: 1.85
+  2022-01-01: 2
+PA:
+  2015-10-01: 2
+RI:
+  2015-10-01: 2
+SC:
+  2015-10-01: 2
+SD:
+  2015-10-01: -.inf
+TX:
+  2015-10-01: 1.65
+TN:
+  2015-10-01: -.inf
+UT:
+  2015-10-01: -.inf
+VT:
+  2015-10-01: 1.85
+VI:
+  2015-10-01: 2
+VA:
+  2015-10-01: -.inf
+  2021-07-01: 2
+WA:
+  2015-10-01: 2
+WV:
+  2015-10-01: 2
+WI:
+  2015-10-01: 2
+WY:
+  2015-10-01: -.inf
+
+metadata:
+  unit: /1
+  period: year
+  label: SNAP BBCE elderly or disabled household gross income limit
+  reference:
+    - title: SNAP Screener SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
+    - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)
+      href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
+  breakdown:
+  - state_code

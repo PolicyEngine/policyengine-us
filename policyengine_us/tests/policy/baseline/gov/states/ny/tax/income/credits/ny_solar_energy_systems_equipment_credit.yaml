@@ -1,23 +1,27 @@
 - name: 25% of expenditures, pre cap
   period: 2007
   input:
-    ny_qualified_solar_energy_systems_equipment_expenditures: 1_000
+    ny_qualified_solar_energy_systems_equipment_expenditures: 1000
     state_code: NY
+    ny_income_tax_before_credits: 1000000
+    ny_household_credit: 0
   output:
     ny_solar_energy_systems_equipment_credit: 250
-
 - name: 25% of expenditures, post cap
   period: 2007
   input:
-    ny_qualified_solar_energy_systems_equipment_expenditures: 100_000
+    ny_qualified_solar_energy_systems_equipment_expenditures: 100000
     state_code: NY
+    ny_income_tax_before_credits: 1000000
+    ny_household_credit: 0
   output:
-    ny_solar_energy_systems_equipment_credit: 5_000
-
+    ny_solar_energy_systems_equipment_credit: 5000
 - name: No expenditures
   period: 2007
   input:
     ny_qualified_solar_energy_systems_equipment_expenditures: 0
     state_code: NY
+    ny_income_tax_before_credits: 1000000
+    ny_household_credit: 0
   output:
     ny_solar_energy_systems_equipment_credit: 0

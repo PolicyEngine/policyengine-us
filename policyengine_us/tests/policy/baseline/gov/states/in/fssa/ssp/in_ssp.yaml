@@ -1,0 +1,50 @@
+- name: Case 1, SAPN-only eligible individual.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_eligible: true
+        in_ssp_sapn: 22
+        in_ssp_rcap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Combined = SAPN + RCAP = 22 + 0 = $22
+    in_ssp: 22
+
+- name: Case 2, RCAP-only eligible individual.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_eligible: true
+        in_ssp_sapn: 0
+        in_ssp_rcap: 1_501.06
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Combined = SAPN + RCAP = 0 + 1,501.06 = $1,501.06
+    in_ssp: 1_501.06
+
+- name: Case 3, ineligible person gets zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        in_ssp_eligible: false
+        in_ssp_sapn: 0
+        in_ssp_rcap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # defined_for = in_ssp_eligible, which is false
+    in_ssp: 0

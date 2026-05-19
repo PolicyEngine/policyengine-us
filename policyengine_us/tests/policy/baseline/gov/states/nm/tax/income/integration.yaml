@@ -62,6 +62,7 @@
     people:
       person1:
         age: 70
+        medicare_enrolled: false
         employment_income: 200_000
         ssi: 0
         ma_state_supplement: 0
@@ -173,3 +174,42 @@
         state_fips: 35
   output:
     nm_income_tax: -912.0
+
+- name: TAXSIM 907 — NM single 2025 with LTCG, aligns with TaxAct PIT-1
+  # Source: http://taxsim.nber.org/out2psl/907/ (TaxAct PIT-1/PIT-ADJ forms).
+  # Filer with interest + LTCG; under HB0037 (2024) the 40% net capital gains
+  # deduction is limited to business-sale gains, so only the $2,500 capped
+  # element of the deduction applies. TaxAct PIT-ADJ Line 16 = $2,500;
+  # PIT-1 Line 17 (NM taxable income) = $882,064; Line 22 (NM tax) = $49,400.
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 145_701.33
+        long_term_capital_gains: 754_613.38
+        ssi: 0
+        wic: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+        free_school_meals: 0
+        reduced_price_school_meals: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 35
+  output:
+    nm_net_capital_gains_deduction: 2_500
+    nm_taxable_income: 882_064
+    nm_income_tax_before_non_refundable_credits: 49_400

@@ -1,0 +1,23 @@
+description: Iowa caps the total Hawki monthly premium per family at this amount, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Iowa Hawki monthly premium family cap
+  reference:
+    - title: Iowa Hawki 2025 Income Guidelines
+      href: https://hhs.iowa.gov/media/10189/download?inline=
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.72
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 2.31
+    amount:
+      2021-01-01: 40

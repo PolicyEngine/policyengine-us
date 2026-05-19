@@ -1,0 +1,103 @@
+- name: Case 1, 10 hours per week, quarter-time.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 10
+    state_code: CT
+  output:
+    ct_c4k_care_level: QUARTER_TIME
+
+- name: Case 2, 15 hours per week, quarter-time boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 15
+    state_code: CT
+  output:
+    ct_c4k_care_level: QUARTER_TIME
+
+- name: Case 3, 16 hours per week, half-time boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 16
+    state_code: CT
+  output:
+    ct_c4k_care_level: HALF_TIME
+
+- name: Case 4, 25 hours per week, half-time.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 25
+    state_code: CT
+  output:
+    ct_c4k_care_level: HALF_TIME
+
+- name: Case 5, 35 hours per week, full-time boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 35
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME
+
+- name: Case 6, 40 hours per week, full-time.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 40
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME
+
+- name: Case 7, 51 hours per week, full-time plus boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 51
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME_PLUS
+
+- name: Case 8, 60 hours per week, full-time plus.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 60
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME_PLUS
+
+- name: Case 9, 0 hours per week, quarter-time.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 0
+    state_code: CT
+  output:
+    ct_c4k_care_level: QUARTER_TIME
+
+- name: Case 10, 1 hour per week, quarter-time minimum.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 1
+    state_code: CT
+  output:
+    ct_c4k_care_level: QUARTER_TIME
+
+- name: Case 11, 34 hours per week, half-time upper boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 34
+    state_code: CT
+  output:
+    ct_c4k_care_level: HALF_TIME
+
+- name: Case 12, 50 hours per week, full-time upper boundary.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 50
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME
+
+- name: Case 13, 65 hours per week, full-time plus maximum.
+  period: 2025-01
+  input:
+    childcare_hours_per_week: 65
+    state_code: CT
+  output:
+    ct_c4k_care_level: FULL_TIME_PLUS

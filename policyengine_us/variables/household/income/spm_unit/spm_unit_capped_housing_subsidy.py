@@ -7,11 +7,14 @@ class spm_unit_capped_housing_subsidy(Variable):
     label = "Housing subsidies"
     definition_period = YEAR
     unit = USD
+    reference = "https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf"
 
     def formula(spm_unit, period, parameters):
-        if parameters(period).gov.hud.abolition:
-            return 0
-        disabled_programs = parameters(period).simulation.disabled_programs
-        if "spm_unit_capped_housing_subsidy" in disabled_programs:
-            return spm_unit("spm_unit_capped_housing_subsidy_reported", period)
-        return 0
+        housing_assistance = spm_unit("housing_assistance", period)
+        housing_portion = spm_unit(
+            "spm_unit_spm_threshold_housing_portion",
+            period,
+        )
+        tenant_payment = spm_unit("hud_ttp", period)
+        cap = max_(housing_portion - tenant_payment, 0)
+        return min_(housing_assistance, cap)

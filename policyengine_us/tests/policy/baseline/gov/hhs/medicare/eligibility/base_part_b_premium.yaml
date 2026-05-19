@@ -13,3 +13,27 @@
     is_medicare_eligible: false
   output:
     base_part_b_premium: 0
+
+- name: unit test 3 - eligible in 2022
+  period: 2022
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 2_041.20  # $170.10 * 12 months
+
+- name: unit test 4 - eligible in 2023
+  period: 2023
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 1_978.80  # $164.90 * 12 months
+
+- name: unit test 5 - eligible in 2026
+  period: 2026
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 2_434.80  # $202.90 * 12 months

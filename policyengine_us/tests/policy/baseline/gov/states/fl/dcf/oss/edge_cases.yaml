@@ -1,0 +1,848 @@
+# Edge case tests for Florida OSS (Optional State Supplementation).
+# All FL OSS variables are MONTH-defined (Person entity).
+# ssi_countable_income and uncapped_ssi are YEAR-defined:
+#   in MONTH tests, provide ANNUAL input, formula reads monthly = annual / 12.
+
+# ──────────────────────────────────────────────────────────────
+# Income threshold boundary tests (Redesign, individual, 2025)
+# Income standard = $1,045.40/month = $12,544.80/year.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 1, income exactly at income standard boundary, Group 2 eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # Not an SSI recipient, but income exactly at income standard.
+        uncapped_ssi: -940
+        # $1,045.40/month * 12 = $12,544.80/year.
+        # Formula: countable_income ($1,045.40) <= income_standard ($1,045.40) → true.
+        ssi_countable_income: 12_544.80
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Total needs = $1,151.40/month.
+    # OSS = min(max(0, $1,151.40 - $1,045.40), $184.40) = min($106, $184.40) = $106.
+    fl_oss: [106]
+
+- name: Case 2, income one cent above income standard, Group 2 ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -950
+        # ($1,045.40 + $0.01)/month * 12 = $12,544.92/year.
+        # Formula: countable_income ($1,045.41) > income_standard ($1,045.40) → false.
+        # Also uncapped_ssi < 0 → not SSI recipient. Both groups fail → ineligible.
+        ssi_countable_income: 12_544.92
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+- name: Case 3, income one cent below income standard, Group 2 eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -930
+        # ($1,045.40 - $0.01)/month * 12 = $12,544.68/year.
+        # Formula: countable_income ($1,045.39) <= income_standard ($1,045.40) → true.
+        ssi_countable_income: 12_544.68
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # OSS = min(max(0, $1,151.40 - $1,045.39), $184.40) = min($106.01, $184.40) = $106.01.
+    fl_oss: [106.01]
+
+# ──────────────────────────────────────────────────────────────
+# Income = total_needs exactly → $0 benefit
+# Total needs (Redesign, I) = $1,151.40/month = $13,816.80/year.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 4, income equals total needs exactly, zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # SSI recipient (positive uncapped_ssi) to ensure eligibility via Group 1.
+        uncapped_ssi: 12
+        # $1,151.40/month * 12 = $13,816.80/year.
+        # Formula: max(0, $1,151.40 - $1,151.40) = $0.
+        ssi_countable_income: 13_816.80
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# Income = total_needs - max_oss exactly → benefit = max_oss
+# Redesign I: total_needs - max_oss = $1,151.40 - $184.40 = $967/month.
+# $967/month * 12 = $11,604/year.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 5, income at total needs minus max OSS, benefit exactly equals max OSS.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 12
+        # $967/month * 12 = $11,604/year.
+        # Formula: min(max(0, $1,151.40 - $967), $184.40) = min($184.40, $184.40) = $184.40.
+        ssi_countable_income: 11_604
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss: [184.40]
+
+- name: Case 6, income one cent above transition point, benefit just below max OSS.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 12
+        # ($967 + $0.01)/month * 12 = $11,604.12/year.
+        # Formula: min(max(0, $1,151.40 - $967.01), $184.40) = min($184.39, $184.40) = $184.39.
+        ssi_countable_income: 11_604.12
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss: [184.39]
+
+# ──────────────────────────────────────────────────────────────
+# Zero income → capped at max OSS
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 7, zero income Protected individual, capped at max OSS.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 11_604
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Total needs (Protected, I) = $1,312/month. Income = $0.
+    # Calculated = $1,312. Max = $345. Capped at $345.
+    fl_oss: [345]
+
+- name: Case 8, zero income Redesign couple, capped at max OSS per person.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 72
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 10_000
+        ssi_countable_income: 0
+      person2:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 10_000
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true, true]
+    # Per person total needs = $1,102.90. Income = $0.
+    # Uncapped per person = $1,102.90. Max per person = $368.80/2 = $184.40.
+    # Capped at $184.40 each.
+    fl_oss: [184.40, 184.40]
+
+# ──────────────────────────────────────────────────────────────
+# Very high income → $0 benefit (well above income standard)
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 9, very high income SSI recipient, income well above total needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # Still an SSI recipient (Group 1) but income very high.
+        uncapped_ssi: 12
+        # $5,000/month * 12 = $60,000/year.
+        ssi_countable_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Total needs = $1,151.40. Income = $5,000. max(0, $1,151.40 - $5,000) = $0.
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# PNA transition boundary: 2024-01 (PNA=$54) vs 2025-01 (PNA=$160)
+# The PNA changed 2024-07-01 from $54 to $160.
+# Jan 2024 test: PNA=$54. Jan 2025 test: PNA=$160.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 10, PNA at old rate (2024-01), Redesign individual.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_916
+        ssi_countable_income: 8_400
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # SSI FBR (I) 2024 = $943. Redesign offset = $24.40.
+    # Provider rate = $943 + $24.40 = $967.40/month.
+    fl_oss_provider_rate: [967.40]
+    # PNA = $54. Total needs = $967.40 + $54 = $1,021.40/month.
+    # Max OSS (Redesign, I, pre-Jul-2024) = $78.40.
+    # Income = $700/month. OSS = min(max(0, $1,021.40 - $700), $78.40)
+    # = min($321.40, $78.40) = $78.40.
+    fl_oss: [78.40]
+
+- name: Case 11, PNA at new rate (2025-01), same income scenario for comparison.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_004
+        ssi_countable_income: 8_400
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # SSI FBR (I) 2025 = $967. Redesign offset = $24.40.
+    # Provider rate = $967 + $24.40 = $991.40/month.
+    fl_oss_provider_rate: [991.40]
+    # PNA = $160. Total needs = $991.40 + $160 = $1,151.40/month.
+    # Max OSS (Redesign, I) = $184.40.
+    # Income = $700/month. OSS = min(max(0, $1,151.40 - $700), $184.40)
+    # = min($451.40, $184.40) = $184.40.
+    fl_oss: [184.40]
+
+# ──────────────────────────────────────────────────────────────
+# Protected track: params are 0 before 2024-07-01
+# Provider rate offset = $0, max OSS individual = $0, couple = $0.
+# This means Protected track effectively didn't exist before Jul 2024.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 12, Protected track before Jan 2023, ineligible (track not in effect).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_916
+        ssi_countable_income: 8_400
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Protected track not in effect before Jan 2023 (see 2024-06 Appendix A-12
+    # earliest shown column is Jan 2023).
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+- name: Case 13, Protected couple before Jan 2023, ineligible (track not in effect).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 2_000
+        ssi_countable_income: 7_200
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 42
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 2_000
+        ssi_countable_income: 7_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Protected track not in effect before Jan 2023.
+    fl_oss_eligible: [false, false]
+    fl_oss: [0, 0]
+
+# ──────────────────────────────────────────────────────────────
+# Protected track post Jul 2024 → nonzero max OSS
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 14, Protected individual after Jul 2024, full benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 11_604
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Provider rate = $967 + $185 = $1,152/month.
+    fl_oss_provider_rate: [1_152]
+    # Max OSS (Protected, I) = $345/month.
+    fl_oss_max_oss: [345]
+    # Total needs = $1,152 + $160 = $1,312. Income = $0.
+    # OSS = min($1,312, $345) = $345.
+    fl_oss: [345]
+
+# ──────────────────────────────────────────────────────────────
+# Protected track income standard boundary
+# Protected income standard = provider rate = $1,152/month = $13,824/year.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 15, Protected income exactly at income standard, Group 2 eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -200
+        # $1,152/month * 12 = $13,824/year.
+        # countable_income ($1,152) <= income_standard ($1,152) → Group 2 eligible.
+        ssi_countable_income: 13_824
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss_income_standard: [1_152]
+    # Total needs = $1,312. Income = $1,152.
+    # OSS = min(max(0, $1,312 - $1,152), $345) = min($160, $345) = $160.
+    fl_oss: [160]
+
+- name: Case 16, Protected income one cent above income standard, ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: -210
+        # ($1,152 + $0.01)/month * 12 = $13,824.12/year.
+        # countable_income ($1,152.01) > income_standard ($1,152) → Group 2 fails.
+        # Also uncapped_ssi < 0 → not Group 1. Ineligible.
+        ssi_countable_income: 13_824.12
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# All three facility types
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 17, AFCH facility type, Redesign individual.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 11_604
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss: [184.40]
+
+- name: Case 18, MHRTF facility type, Redesign individual.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: REDESIGN
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 11_604
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    fl_oss: [184.40]
+
+# ──────────────────────────────────────────────────────────────
+# Couple with Protected track, both eligible, post Jul 2024
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 19, Protected couple, zero income, max benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 72
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 10_000
+        ssi_countable_income: 0
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 10_000
+        ssi_countable_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true, true]
+    # Protected couple provider rate = 2 * $1,152 - $97 = $2,207/month.
+    # Per person = $2,207 / 2 = $1,103.50/month.
+    fl_oss_provider_rate: [1_103.50, 1_103.50]
+    # Max OSS (Protected, C) = $690. Per person = $345.
+    fl_oss_max_oss: [345, 345]
+    # Total needs per person = $1,103.50 + $160 = $1,263.50. Income = $0.
+    # OSS per person = min($1,263.50, $345) = $345.
+    fl_oss: [345, 345]
+
+# ──────────────────────────────────────────────────────────────
+# Couple: income at total_needs - max_oss boundary (Redesign)
+# Per person: total_needs = $1,102.90, max_oss = $193.40.
+# Boundary income = $1,102.90 - $193.40 = $909.50/month per person.
+# Annual per person = $909.50 * 12 = $10,914.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 20, couple income at total needs minus max OSS, benefit exactly equals max.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 72
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 12
+        # Per-person max couple OSS = $368.80/2 = $184.40.
+        # Target income = total_needs - max = $1,102.90 - $184.40 = $918.50/month.
+        # $918.50/month * 12 = $11,022/year.
+        ssi_countable_income: 11_022
+      person2:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: 12
+        ssi_countable_income: 11_022
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true, true]
+    # Per person: min(max(0, $1,102.90 - $918.50), $184.40) = min($184.40, $184.40) = $184.40.
+    fl_oss: [184.40, 184.40]
+
+# ──────────────────────────────────────────────────────────────
+# Couple income standard boundary (Redesign)
+# Per person income standard = $996.90/month = $11,962.80/year.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 21, couple income exactly at income standard, Group 2 eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 72
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: -100
+        # $996.90/month * 12 = $11,962.80/year.
+        ssi_countable_income: 11_962.80
+      person2:
+        fl_oss_community_care_type: AFCH
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        uncapped_ssi: -100
+        ssi_countable_income: 11_962.80
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Income ($996.90) <= income standard ($996.90) → Group 2 eligible.
+    fl_oss_eligible: [true, true]
+    fl_oss_income_standard: [996.90, 996.90]
+    # Per person: min(max(0, $1,102.90 - $996.90), $193.40) = min($106, $193.40) = $106.
+    fl_oss: [106, 106]
+
+# ──────────────────────────────────────────────────────────────
+# 2011 historical Protected track (offset=0, max=0 before Jul 2024)
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 22, 2011 Protected track, ineligible (track not in effect).
+  period: 2011-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_088
+        ssi_countable_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Protected track not in effect before Jul 2024.
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# Partial benefit: income between (total_needs - max_oss) and total_needs
+# Redesign I: total_needs = $1,151.40, max_oss = $184.40.
+# Transition at $967/month. Test $1,050/month → partial benefit.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 23, partial benefit between threshold and total needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 12
+        # $1,050/month * 12 = $12,600/year.
+        # Income standard = $1,045.40, but Group 1 (SSI recipient) so still eligible.
+        ssi_countable_income: 12_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Total needs = $1,151.40. Income = $1,050.
+    # OSS = min(max(0, $1,151.40 - $1,050), $184.40) = min($101.40, $184.40) = $101.40.
+    fl_oss: [101.40]
+
+# ──────────────────────────────────────────────────────────────
+# Group 1 SSI recipient with income above Group 2 income standard
+# SSI recipients (Group 1) can still receive OSS even if income > income standard,
+# because the eligibility formula is: receives_ssi | income_within_standard.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 24, SSI recipient with income above income standard but below total needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        # Income = $1,050/month > income standard $1,045.40 (would fail Group 2).
+        # But uncapped_ssi > 0 → SSI recipient → Group 1 eligible.
+        uncapped_ssi: 12
+        ssi_countable_income: 12_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]
+    # Income ($1,050) > income standard ($1,045.40) but Group 1 applies.
+    fl_oss_income_standard: [1_045.40]
+    # Total needs = $1,151.40. OSS = min(max(0, $1,151.40 - $1,050), $184.40)
+    # = min($101.40, $184.40) = $101.40.
+    fl_oss: [101.40]
+
+# ──────────────────────────────────────────────────────────────
+# Not SSI eligible (fails categorically_eligible)
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 25, not SSI eligible even with low income, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 40
+        # Not aged/blind/disabled → is_ssi_eligible = false.
+        is_ssi_eligible: false
+        ssi_claim_is_joint: false
+        uncapped_ssi: 0
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# Facility type set but track is NONE → has_track fails
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 26, facility type set but program track NONE, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: NONE
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_004
+        ssi_countable_income: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# Track set but facility type NONE → in_facility fails
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 27, program track set but facility type NONE, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: NONE
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 2_004
+        ssi_countable_income: 9_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [false]
+    fl_oss: [0]
+
+# ──────────────────────────────────────────────────────────────
+# Protected track in effect Jan 2023 through Jun 2024 (pre-Jul-2024 rates)
+# 2024-06 Appendix A-12: provider rate $1,128(I), max OSS $239(I), PNA $54.
+# ──────────────────────────────────────────────────────────────
+
+- name: Case 28, Protected individual Jan 2024, pre-Jul-2024 rates apply.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 45
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 1_200
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Protected in effect from Jan 2023 (per 2024-06 Appendix A-12).
+    fl_oss_eligible: [true]
+    # Provider rate = FBR 2024 $943 + $185 offset = $1,128.
+    fl_oss_provider_rate: [1_128]
+    # Max OSS (Protected, I) Jan 2024 = $239.
+    fl_oss_max_oss: [239]
+    # Total needs = $1,128 + $54 PNA = $1,182. Income = $0.
+    # OSS = min(max($1,182, 0), $239) = $239.
+    fl_oss: [239]

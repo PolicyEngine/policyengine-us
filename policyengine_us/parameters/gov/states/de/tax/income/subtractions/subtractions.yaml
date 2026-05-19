@@ -3,8 +3,14 @@ values:
   2021-01-01:
     - de_pension_exclusion # (3)
     - taxable_social_security # (4)
+    - us_govt_interest_person
     # The elderly or disabled income exclusion is computed separately
     # - de_elderly_or_disabled_income_exclusion # (2)
+  2022-01-01:
+    - de_pension_exclusion # (3)
+    - taxable_social_security # (4)
+    - us_govt_interest_person
+    - de_529_plan_subtraction # HB 145
 
 metadata:
   unit: list

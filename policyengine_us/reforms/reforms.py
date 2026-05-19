@@ -14,7 +14,6 @@ from .cbo.payroll import (
 from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
-from .federal import create_reported_state_income_tax_reform
 from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
@@ -44,6 +43,9 @@ from .congress.tlaib.boost import (
 )
 from .states.mn.walz import (
     create_mn_walz_hf1938_repeal_reform,
+)
+from .states.mn.hf4890 import (
+    create_mn_hf4890_reform,
 )
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
@@ -150,6 +152,9 @@ from .states.va.dependent_exemption.va_dependent_exemption_reform import (
 from .states.va.hb979.va_hb979_reform import (
     create_va_hb979_reform,
 )
+from .states.me.ld229 import (
+    create_me_ld229_reform,
+)
 from .states.ct.refundable_ctc import (
     create_ct_refundable_ctc_reform,
 )
@@ -186,17 +191,20 @@ from .congress.watca import (
 from .congress.mcdonald_rivet import (
     create_working_parents_tax_relief_act_reform,
 )
-from .states.wa.sb6346.sb6346 import (
-    create_wa_sb6346_reform,
-)
 from .states.nj.stay_nj import (
     create_nj_stay_nj_reform,
 )
 from .states.nj.anchor import (
     create_nj_anchor_reform,
 )
+from .refundable_credit_conversion import (
+    create_refundable_credit_conversion_reform,
+)
 
 
+from .states.ca.ab2591 import (
+    create_ca_ab2591_reform,
+)
 from .states.ga.sb520 import (
     create_ga_sb520_reform,
 )
@@ -205,6 +213,9 @@ from .states.hi.hb2306_cdcc import (
 )
 from .states.nc.eitc import (
     create_nc_eitc_reform,
+)
+from .states.nc.cdcc import (
+    create_nc_cdcc_reform,
 )
 from .states.mi.ctc import (
     create_mi_ctc_reform,
@@ -274,9 +285,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     abolish_payroll_tax = create_abolish_payroll_tax_reform(parameters, period)
-    reported_state_income_tax = create_reported_state_income_tax_reform(
-        parameters, period
-    )
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
@@ -306,6 +314,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
+    mn_hf4890 = create_mn_hf4890_reform(parameters, period)
 
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
@@ -393,6 +402,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     va_dependent_exemption = create_va_dependent_exemption_reform_fn(parameters, period)
     va_hb979 = create_va_hb979_reform(parameters, period)
+    me_ld229 = create_me_ld229_reform(parameters, period)
     ct_refundable_ctc = create_ct_refundable_ctc_reform(parameters, period)
     aca_ptc_additional_bracket = create_aca_ptc_additional_bracket_reform(
         parameters, period
@@ -416,12 +426,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
         parameters, period
     )
+    ca_ab2591 = create_ca_ab2591_reform(parameters, period)
     ga_sb520 = create_ga_sb520_reform(parameters, period)
     hi_hb2306_cdcc = create_hi_hb2306_cdcc_reform(parameters, period)
     nc_eitc = create_nc_eitc_reform(parameters, period)
+    nc_cdcc = create_nc_cdcc_reform(parameters, period)
     mi_ctc = create_mi_ctc_reform(parameters, period)
     watca = create_watca_reform(parameters, period)
-    wa_sb6346 = create_wa_sb6346_reform(parameters, period)
     al_eitc = create_al_eitc_reform(parameters, period)
     ar_eitc = create_ar_eitc_reform(parameters, period)
     az_eitc = create_az_eitc_reform(parameters, period)
@@ -442,6 +453,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
         parameters, period
     )
+    refundable_credit_conversion = create_refundable_credit_conversion_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -453,7 +467,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_expansion,
         abolish_federal_income_tax,
         abolish_payroll_tax,
-        reported_state_income_tax,
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
@@ -469,6 +482,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         edaa_end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
+        mn_hf4890,
         or_rebate_state_tax_exempt,
         family_security_act_2024_ctc,
         family_security_act_2024_eitc,
@@ -511,6 +525,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         or_dependent_exemption_credit,
         va_dependent_exemption,
         va_hb979,
+        me_ld229,
         ct_refundable_ctc,
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
@@ -526,12 +541,13 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_sb100,
         ct_tax_rebate_2026,
         al_hb527_overtime_deduction,
+        ca_ab2591,
         ga_sb520,
         hi_hb2306_cdcc,
         nc_eitc,
+        nc_cdcc,
         mi_ctc,
         watca,
-        wa_sb6346,
         al_eitc,
         ar_eitc,
         az_eitc,
@@ -548,6 +564,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         nj_stay_nj,
         nj_anchor,
         working_parents_tax_relief_act,
+        refundable_credit_conversion,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

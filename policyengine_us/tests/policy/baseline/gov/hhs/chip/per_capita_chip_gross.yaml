@@ -1,0 +1,52 @@
+- name: Texas gross per-capita CHIP is non-zero for an eligible person.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_chip_eligible: true
+    state_code: TX
+  output:
+    per_capita_chip_gross: 2_043.34
+
+- name: Missouri gross per-capita CHIP exceeds the net figure by the state's premium offset per enrollee.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_chip_eligible: true
+    state_code: MO
+  output:
+    per_capita_chip_gross: 3_345.61
+
+- name: Texas ineligible person has zero gross CHIP value.
+  period: 2024
+  input:
+    is_chip_eligible: false
+    state_code: TX
+  output:
+    per_capita_chip_gross: 0
+
+- name: Case 4, Florida gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_chip_eligible: true
+    state_code: FL
+  output:
+    per_capita_chip_gross: 3_055.90
+
+- name: Case 5, New York gross per-capita CHIP adds FY2024 cost-sharing offsets to FY2024 net spending.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_chip_eligible: true
+    state_code: NY
+  output:
+    per_capita_chip_gross: 3_146.05
+
+- name: Case 6, Maryland gross CHIP uses the same fallback denominator as net CHIP.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_chip_eligible: true
+    state_code: MD
+  output:
+    per_capita_chip_gross: 4_913.29

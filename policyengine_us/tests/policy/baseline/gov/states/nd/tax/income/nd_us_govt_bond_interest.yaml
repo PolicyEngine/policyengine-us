@@ -1,0 +1,7 @@
+- name: ND subtracts US government bond interest from taxable income
+  period: 2024
+  input:
+    state_code: ND
+    us_govt_interest: 5_000
+  output:
+    nd_subtractions: 5_000

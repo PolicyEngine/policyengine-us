@@ -1,0 +1,135 @@
+- name: Case 1, Group I county (Accomack).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ACCOMACK_COUNTY_VA
+  output:
+    va_ccsp_locality_group: GROUP_I
+
+- name: Case 2, Group II county (Henrico).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    va_ccsp_locality_group: GROUP_II
+
+- name: Case 3, Group III county (Arlington).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ARLINGTON_COUNTY_VA
+  output:
+    va_ccsp_locality_group: GROUP_III
+
+- name: Case 4, Group III city (Alexandria).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ALEXANDRIA_CITY_VA
+  output:
+    va_ccsp_locality_group: GROUP_III
+
+- name: Case 5, Group II city (Norfolk).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: NORFOLK_CITY_VA
+  output:
+    va_ccsp_locality_group: GROUP_II
+
+- name: Case 6, Group I city (Lynchburg).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: LYNCHBURG_CITY_VA
+  output:
+    va_ccsp_locality_group: GROUP_I
+
+- name: Case 7, Group III county (Fairfax).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_ccsp_locality_group: GROUP_III
+
+- name: Case 8, Group II city (Chesapeake).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: CHESAPEAKE_CITY_VA
+  output:
+    va_ccsp_locality_group: GROUP_II

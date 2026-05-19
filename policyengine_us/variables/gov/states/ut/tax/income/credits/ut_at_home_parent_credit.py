@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ut_at_home_parent_credit(Variable):
@@ -14,18 +17,14 @@ class ut_at_home_parent_credit(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
-        qualifying_child = (age < p.max_child_age) & is_dependent
-        count_qualifying_children = tax_unit.sum(qualifying_child)
-
-        # Multiply by each qualifying parent; they can claim it separately.
-        income_eligible_person = add(
+        ordered_credits = parameters(
+            period
+        ).gov.states.ut.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
             tax_unit,
             period,
-            ["ut_at_home_parent_credit_earned_income_eligible_person"],
+            ordered_credits,
+            "ut_income_tax_before_non_refundable_credits",
+            "ut_at_home_parent_credit",
+            "ut_at_home_parent_credit_potential",
         )
-
-        return p.amount * count_qualifying_children * income_eligible_person

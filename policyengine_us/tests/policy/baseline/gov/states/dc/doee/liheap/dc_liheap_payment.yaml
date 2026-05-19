@@ -3,7 +3,7 @@
   input:
     irs_gross_income: 0
     dc_liheap_heating_type: ELECTRICITY
-    pre_subsidy_electricity_expense: 999
+    heating_expense_person: 999
     dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 1
     state_code: DC
@@ -26,9 +26,38 @@
   input:
     irs_gross_income: 4_001
     dc_liheap_heating_type: GAS
+    heating_expense_person: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    dc_liheap_payment: 1_386
+
+# Legacy fallback tests — verify pre-PR-#7986 per-fuel inputs still cap the benefit.
+- name: Legacy fallback, electricity heating uses pre_subsidy_electricity_expense.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    dc_liheap_heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # heating_expense_person unset → falls back to pre_subsidy_electricity_expense (999)
+    # min(matrix_amount, 999) = 948
+    dc_liheap_payment: 948
+
+- name: Legacy fallback, gas heating uses gas_expense.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    dc_liheap_heating_type: GAS
     gas_expense: 1_400
     dc_liheap_housing_type: SINGLE_FAMILY
     spm_unit_size: 3
     state_code: DC
   output:
+    # heating_expense_person unset → falls back to gas_expense (1_400)
+    # min(matrix_amount, 1_400) = 1_386
     dc_liheap_payment: 1_386

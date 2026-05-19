@@ -16,7 +16,8 @@ class de_agi_joint(Variable):
         indv_exclusions = person(
             "de_elderly_or_disabled_income_exclusion_joint", period
         )
-        net_income = max_(pre_exclusions_agi - indv_exclusions, 0)
+        net_income = pre_exclusions_agi - indv_exclusions
+        joint_net_income = max_(person.tax_unit.sum(net_income), 0)
         # allocate any dependent gross income to tax unit head
         is_head = person("is_tax_unit_head", period)
-        return person.tax_unit.sum(net_income) * is_head
+        return joint_net_income * is_head

@@ -1,0 +1,109 @@
+- name: Case 1, low income household (0-50% FPG) gets max benefit capped by expenses.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 0
+  output:
+    tx_ceap: 2_400
+
+- name: Case 2, low income household with expenses below max gets actual expenses.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 5_000
+    spm_unit_size: 4
+    state_code: TX
+    electricity_expense: 1_000
+    gas_expense: 500
+  output:
+    tx_ceap: 1_500
+
+- name: Case 3, mid income household (51-75% FPG) gets mid-tier benefit.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 20_000
+    spm_unit_size: 4
+    state_code: TX
+    electricity_expense: 2_500
+    gas_expense: 500
+  output:
+    tx_ceap: 2_300
+
+- name: Case 4, high income household (76-150% FPG) gets lowest-tier benefit.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 40_000
+    spm_unit_size: 4
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 500
+  output:
+    tx_ceap: 2_200
+
+- name: Case 5, ineligible household gets zero.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 80_000
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 500
+    is_snap_eligible: false
+  output:
+    tx_ceap: 0
+
+- name: Case 6, zero energy expenses yields zero benefit.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 0
+    gas_expense: 0
+  output:
+    tx_ceap: 0
+
+- name: Case 7, gas-only expense is counted.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 0
+    gas_expense: 1_800
+  output:
+    tx_ceap: 1_800
+
+- name: Case 8, FY 2025 low income household gets updated benefit amount.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    irs_gross_income: 0
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 0
+  output:
+    tx_ceap: 1_800
+
+- name: Case 9, household at exactly 50% FPG gets low-income tier.
+  absolute_error_margin: 0.1
+  period: 2024
+  input:
+    # 50% FPG for HH of 4 = $15,600 (FPG 2024 = $31,200 * 0.5)
+    irs_gross_income: 15_600
+    spm_unit_size: 4
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 0
+  output:
+    tx_ceap: 2_400

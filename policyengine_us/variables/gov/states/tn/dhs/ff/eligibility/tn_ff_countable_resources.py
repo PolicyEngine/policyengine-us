@@ -11,6 +11,8 @@ class tn_ff_countable_resources(Variable):
     defined_for = StateCode.TN
 
     def formula(spm_unit, period, parameters):
-        assets = spm_unit("spm_unit_assets", period.this_year)
+        cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
+        vehicle_value = spm_unit.household("household_vehicles_value", period.this_year)
         p = parameters(period).gov.states.tn.dhs.ff.resources
-        return max_(assets - p.vehicle_exemption, 0)
+        countable_vehicle_value = max_(vehicle_value - p.vehicle_exemption, 0)
+        return cash_assets + countable_vehicle_value

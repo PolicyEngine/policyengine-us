@@ -1,0 +1,33 @@
+description: Washington sets this share of total real estate taxes as fully exempt for tier-3 claimants under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+values:
+  2008-01-01: 0.2
+  2018-01-01: 0.3
+  2027-01-01: 0.45
+
+metadata:
+  unit: /1
+  period: year
+  label: Washington senior/disabled property tax exemption full-exempt share
+  reference:
+    - title: RCW 84.36.381(5)(a)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381
+    - title: RCW 84.52.065
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.52.065
+    - title: EHB 2242, Chapter 13, Laws of 2017 3rd sp.s., Sec. 311 (adds additional state property tax Part 2 to tier-3 full exemption effective 2018)
+      href: https://lawfilesext.leg.wa.gov/biennium/2017-18/Pdf/Bills/Session%20Laws/House/2242.SL.pdf#page=37
+    - title: ESSB 6162, Chapter 163, Laws of 2026, Sec. 301 (consolidates state property tax effective 2027)
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/Senate/6162-S.SL.pdf#page=17
+# Values are PolicyEngine modeling approximations of the share of a typical
+# property tax bill that a tier-3 claimant is exempted from. Statutory basis
+# (RCW 84.36.381(5)(a)): exemption from excess (voter-approved) levies, the
+# consolidated state property tax (RCW 84.52.065), and qualifying RCW
+# 84.55.050 lid-lifts whose ballot identifies this exemption. The
+# 0.20 -> 0.30 -> 0.45 progression reflects the 2018 addition of state
+# property tax Part 2 (EHB 2242, Sec. 311) and the 2027 inclusion of the
+# consolidated state levy at $2.075355/$1,000 (ESSB 6162, Sec. 301).
+# Pre-2018: only excess + lid-lift (state Part 2 did not yet exist) -- ~20%.
+# 2018-2026: adds the additional state school levy Part 2 -- ~30%.
+# 2027+: ESSB 6162 consolidates the state levy into a single rate, so this
+# tier exempts the entire state property tax -- ~45%.
+# PolicyEngine's real_estate_taxes is a single number; this share allocates
+# it between fully-exempt and regular components.

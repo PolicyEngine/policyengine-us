@@ -2,7 +2,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: FCMP_NURSING_CARE
+    al_ssp_payment_category: FCMP_NURSING_CARE
   output:
     al_ssp: 100
 
@@ -10,7 +10,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: NURSING_CARE
+    al_ssp_payment_category: NURSING_CARE
   output:
     al_ssp: 60
 
@@ -18,7 +18,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
   output:
     al_ssp: 60
 
@@ -26,7 +26,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: IHC_LEVEL_B
+    al_ssp_payment_category: IHC_LEVEL_B
   output:
     al_ssp: 56
 
@@ -34,7 +34,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: FOSTER_CARE
+    al_ssp_payment_category: FOSTER_CARE
   output:
     al_ssp: 110
 
@@ -42,7 +42,7 @@
   period: 2025-01
   input:
     al_ssp_eligible: true
-    al_ssp_living_arrangement: CEREBRAL_PALSY
+    al_ssp_payment_category: CEREBRAL_PALSY
   output:
     al_ssp: 196
 
@@ -50,6 +50,6 @@
   period: 2025-01
   input:
     al_ssp_eligible: false
-    al_ssp_living_arrangement: IHC_LEVEL_A
+    al_ssp_payment_category: IHC_LEVEL_A
   output:
     al_ssp: 0

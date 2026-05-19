@@ -1,0 +1,33 @@
+description: Minnesota HF4890 levies income taxes at these rates for joint filers.
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota HF4890 joint income tax rates
+  reference:
+    - title: Minnesota HF4890 (2026), Sec. 1, Subd. 2c(a) -- joint/surviving spouse rate schedule (5 brackets, 5.35%-10.15%)
+      href: https://www.revisor.mn.gov/bills/94/2026/0/HF/4890/versions/0/pdf/#page=1
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.0535
+  - threshold:
+      2026-01-01: 48_700
+    rate:
+      2026-01-01: 0.068
+  - threshold:
+      2026-01-01: 193_480
+    rate:
+      2026-01-01: 0.0785
+  - threshold:
+      2026-01-01: 337_930
+    rate:
+      2026-01-01: 0.0985
+  - threshold:
+      2026-01-01: 1_000_000
+    rate:
+      2026-01-01: 0.1015

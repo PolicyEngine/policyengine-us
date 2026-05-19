@@ -8,7 +8,7 @@
     # $12,000 unearned -> ($1,000 - $20) = $980/month countable
     # $980 < $1,255 (100% FPL) -> QMB
     ssi_unearned_income: 12_000
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     base_part_a_premium: 6_060  # Annual Part A premium ($505/month * 12)
     base_part_b_premium: 2_096.40  # Annual Part B premium ($174.70/month * 12)
@@ -24,7 +24,7 @@
     # $16,500 unearned -> ($1,375 - $20) = $1,355/month countable
     # $1,255 < $1,355 < $1,506 (100-120% FPL) -> SLMB
     ssi_unearned_income: 16_500
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     base_part_a_premium: 0  # Assume premium-free Part A
     base_part_b_premium: 2_096.40
@@ -39,7 +39,7 @@
     # $19,440 unearned -> ($1,620 - $20) = $1,600/month countable
     # $1,506 < $1,600 < $1,694.25 (120-135% FPL) -> QI
     ssi_unearned_income: 19_440
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     base_part_a_premium: 0
     base_part_b_premium: 2_096.40
@@ -56,7 +56,7 @@
     # $24_000 unearned -> ($2,000 - $20) = $1,980/month countable
     # $1,980 > $1,694.25 (135% FPL) -> not eligible
     ssi_unearned_income: 24_000
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     base_part_a_premium: 0
     base_part_b_premium: 2_096.40
@@ -70,7 +70,7 @@
     is_medicare_eligible: true
     # Low income to qualify for QMB
     ssi_unearned_income: 12_000
-    spm_unit_cash_assets: 5_000
+    bank_account_assets: 5_000
     spm_unit_is_married: false
     # Explicitly provide quarters (no default in model)
     medicare_quarters_of_coverage: 40
@@ -80,3 +80,17 @@
     # With 40 quarters, Part A is premium-free ($0)
     # Part B base premium for 2025 is $185/month
     msp_benefit_value: 185
+
+- name: MSP benefit - integration test uses 2026 Medicare premiums
+  period: 2026-01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    ssi_unearned_income: 12_000
+    bank_account_assets: 5_000
+    spm_unit_is_married: false
+    medicare_quarters_of_coverage: 40
+  output:
+    # With 40 quarters, Part A is premium-free ($0)
+    # Part B base premium for 2026 is $202.90/month
+    msp_benefit_value: 202.90

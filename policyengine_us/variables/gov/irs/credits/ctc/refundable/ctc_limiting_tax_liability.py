@@ -13,6 +13,18 @@ class ctc_limiting_tax_liability(Variable):
         simulation = tax_unit.simulation
         no_salt_branch = simulation.get_branch("no_salt")
         no_salt_branch.set_input("salt_deduction", period, np.zeros(tax_unit.count))
+        # Propagate the parent's itemization determination so the
+        # no_salt branch doesn't re-enter
+        # `tax_unit_itemizes` -> `tax_liability_if_itemizing` ->
+        # `income_tax` -> `refundable_ctc`, which forms a cycle
+        # (issue #8059). The parent's value has already been computed
+        # by the time we get here: either set as input on the
+        # itemizing / not_itemizing branch, or computed and cached on
+        # the top-level sim before `refundable_ctc` was reached (the
+        # `income_tax_before_credits` branch of
+        # `income_tax_before_refundable_credits` runs first).
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        no_salt_branch.set_input("tax_unit_itemizes", period, itemizes)
         tax_liability_before_credits = no_salt_branch.calculate(
             "income_tax_before_credits", period
         )

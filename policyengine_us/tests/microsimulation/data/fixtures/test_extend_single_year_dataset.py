@@ -6,6 +6,8 @@ and helper functions so tests can run without loading the full policyengine-us
 tax-benefit system.
 """
 
+from typing import Optional
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -130,7 +132,7 @@ def build_mock_parameters(param_specs: dict[str, dict[str, float]]):
 class MockVariable:
     """Minimal stand-in for a policyengine Variable metadata object."""
 
-    def __init__(self, name: str, uprating: str | None = None):
+    def __init__(self, name: str, uprating: Optional[str] = None):
         self.name = name
         self.uprating = uprating
 

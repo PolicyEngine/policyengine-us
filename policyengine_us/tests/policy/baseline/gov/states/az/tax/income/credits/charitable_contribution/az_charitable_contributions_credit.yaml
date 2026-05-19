@@ -3,78 +3,84 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_charitable_contributions_to_qualifying_charitable_organizations: 2_000 #841
-    az_charitable_contributions_to_qualifying_foster_care_organizations: 1_100 #1051
+    az_charitable_contributions_to_qualifying_charitable_organizations: 2000
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 1100
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
-    az_charitable_contributions_credit: 1_892
-
+    az_charitable_contributions_credit: 1892
 - name: az_charitable_contributions_credit for qualifying forster (JOINT, below cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: JOINT
-    az_charitable_contributions_to_qualifying_charitable_organizations: 200 
-    az_charitable_contributions_to_qualifying_foster_care_organizations: 300 
+    az_charitable_contributions_to_qualifying_charitable_organizations: 200
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 300
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 500
-
-- name: az_charitable_contributions_credit for qualifying forster (JOINT, one below cap, one above cap)
+- name: az_charitable_contributions_credit for qualifying forster (JOINT, one below
+    cap, one above cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: JOINT
-    az_charitable_contributions_to_qualifying_charitable_organizations: 1_000
+    az_charitable_contributions_to_qualifying_charitable_organizations: 1000
     az_charitable_contributions_to_qualifying_foster_care_organizations: 500
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
-    az_charitable_contributions_credit: 1_341
-
-- name: az_charitable_contributions_credit for qualifying forster (SINGLE, one below cap, one above cap)
+    az_charitable_contributions_credit: 1341
+- name: az_charitable_contributions_credit for qualifying forster (SINGLE, one below
+    cap, one above cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_charitable_contributions_to_qualifying_charitable_organizations: 300 #421
-    az_charitable_contributions_to_qualifying_foster_care_organizations: 1_100 #526
+    az_charitable_contributions_to_qualifying_charitable_organizations: 300
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 1100
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 826
-
-- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, below cap)
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, below
+    cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: SEPARATE
-    az_charitable_contributions_to_qualifying_charitable_organizations: 200 
-    az_charitable_contributions_to_qualifying_foster_care_organizations: 300 
+    az_charitable_contributions_to_qualifying_charitable_organizations: 200
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 300
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 500
-
-- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, above cap)
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, above
+    cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: SEPARATE
     az_charitable_contributions_to_qualifying_charitable_organizations: 600
     az_charitable_contributions_to_qualifying_foster_care_organizations: 600
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 947
-
-
-- name: az_charitable_contributions_credit for qualifying organization (SEPARATE, one above cap, one below cap)
+- name: az_charitable_contributions_credit for qualifying organization (SEPARATE,
+    one above cap, one below cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: SEPARATE
     az_charitable_contributions_to_qualifying_charitable_organizations: 300
     az_charitable_contributions_to_qualifying_foster_care_organizations: 600
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 826
-  
-- name: az_charitable_contributions_credit for qualifying organization (SEPARATE, one above cap, one below cap)
+- name: az_charitable_contributions_credit for qualifying organization (SEPARATE,
+    one above cap, one below cap)
   period: 2023
   input:
     state_code: AZ
     filing_status: SEPARATE
     az_charitable_contributions_to_qualifying_charitable_organizations: 500
     az_charitable_contributions_to_qualifying_foster_care_organizations: 400
+    az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 821

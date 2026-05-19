@@ -1,0 +1,86 @@
+- name: my_friend_ben (2025)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      '2021359':
+        age: 49
+        is_pregnant: true
+        ssi_countable_resources: 200
+        is_disabled: false
+        employment_income: 0
+        self_employment_income: 0
+        rental_income: 0
+        taxable_pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        capital_gains: 0
+        taxable_ira_distributions: 0
+        ssi_reported: 0
+        is_blind: false
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        is_tax_unit_spouse: false
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        current_pregnancies: 1
+        child_support_expense: 0
+        real_estate_taxes: 0
+        other_medical_expenses: 0
+        is_snap_ineligible_student: true
+        is_full_time_college_student: true
+    households:
+      household:
+        members:
+          - '2021359'
+        state_code: CO
+    families:
+      family:
+        members:
+          - '2021359'
+    spm_units:
+      spm_unit:
+        members:
+          - '2021359'
+        school_meal_countable_income: 0
+        snap_unearned_income: 0
+        snap_earned_income: 0
+        snap_assets: 200
+        snap_emergency_allotment: 0
+        housing_cost: 0
+        has_phone_expense: false
+        has_heating_cooling_expense: false
+        heating_cooling_expense: 0
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        water_expense: 0
+        phone_expense: 0
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        co_tanf_countable_gross_earned_income: 0
+        co_tanf_countable_gross_unearned_income: 0
+        broadband_cost: 500
+    tax_units:
+      main_tax_unit:
+        members:
+          - '2021359'
+  output:
+    people:
+      '2021359':
+        medicaid: 4580.0
+        medicaid_category: 6
+        is_optional_senior_or_disabled_for_medicaid: false
+        co_state_supplement: 0.0
+        co_oap: 0.0
+        co_chp_eligible: false
+        wic: 1004.89
+        wic_category: 0
+        commodity_supplemental_food_program: 0.0
+        ssi: 0.0
+    spm_units:
+      spm_unit:
+        snap:
+          2025-01: 0.0
+        co_tanf: 5712.0
+        lifeline: 111.0
+        school_meal_daily_subsidy: 7.06
+        school_meal_tier: 0

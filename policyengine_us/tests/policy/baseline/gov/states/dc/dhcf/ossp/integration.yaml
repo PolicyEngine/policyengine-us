@@ -1,0 +1,155 @@
+- name: Case 1, aged individual in small AFC with no income.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # SSI chain: aged (70) → is_ssi_aged_blind_disabled = true
+    # No income → SSI = $994/month FBR
+    is_ssi_eligible: true
+    ssi: 994
+    # DC OSSP: AFC ≤50 beds → OS-A, individual $681/month
+    dc_ossp_living_arrangement: OS_A
+    dc_ossp_eligible: true
+    dc_ossp: 681
+
+- name: Case 2, aged individual in Medicaid facility with no income.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # SSI chain: Code D → SSI = $30/month institutional rate
+    ssi: 30
+    # DC OSSP: federal Code D → OS-G, individual $79/month
+    dc_ossp_living_arrangement: OS_G
+    dc_ossp_eligible: true
+    dc_ossp: 79
+
+- name: Case 3, aged individual in small AFC with Social Security income.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_000
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 40
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # SSI chain: $6,000/year SS = $500/month
+    # SSI countable unearned: $500 - $20 general exclusion = $480
+    # SSI = max(0, $994 - $480) = $514/month
+    ssi: 514
+    # DC OSSP: AFC ≤50 beds → OS-A, individual $681/month
+    dc_ossp_living_arrangement: OS_A
+    dc_ossp_eligible: true
+    dc_ossp: 681
+
+- name: Case 4, income above combined FBR+OSSP level means no OSSP payment.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 24_000
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # YEAR-defined variables are shown here as monthly values (the
+    # test period is 2026-01, so policyengine-core divides by 12).
+    # ssi_amount_if_eligible = $994 FBR (monthly)
+    # ssi_countable_income   = $24,000/12 − $20 = $1,980 (monthly)
+    # uncapped_ssi           = $994 − $1,980 = −$986 (monthly)
+    # ssi                    = max(0, uncapped_ssi) = $0
+    # Categorically SSI-eligible, so dc_ossp_eligible stays true
+    # (POMS SI 01401.001 "state supplement only" cases).
+    # income_excess = max(0, −(−986)) = $986 > OS-A $681
+    # → dc_ossp = max(0, $681 − $986) = 0.
+    ssi_amount_if_eligible: 994
+    ssi_countable_income: 1_980
+    uncapped_ssi: -986
+    ssi: 0
+    dc_ossp_eligible: true
+    dc_ossp_payment_amount: 681
+    dc_ossp: 0
+
+- name: Case 5, couple both in Medicaid facility with no income.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 75
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 73
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Both in Code D → SSI = $30/month each
+    ssi: [30, 30]
+    # DC OSSP: OS-G couple rate $158 / 2 = $79 per person
+    dc_ossp_living_arrangement: [OS_G, OS_G]
+    dc_ossp: [79, 79]
+
+- name: Case 6, mixed couple one in AFC one not.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      person2:
+        age: 68
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Person1: in AFC → OS-A, person2: not in facility → NONE
+    dc_ossp_living_arrangement: [OS_A, NONE]
+    # Person1: eligible, person2: ineligible (no facility)
+    dc_ossp_eligible: [true, false]
+    # Spouse not OSSP-eligible → individual rate $681
+    dc_ossp: [681, 0]

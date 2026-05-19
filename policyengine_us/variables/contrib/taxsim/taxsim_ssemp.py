@@ -11,5 +11,5 @@ class taxsim_ssemp(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_primary = person("is_tax_unit_spouse", period)
-        semp = person("self_employment_income", period)
+        semp = person("total_self_employment_income", period)
         return tax_unit.sum(semp * is_primary)

@@ -13,7 +13,7 @@ class ak_ssp_payment_standard(Variable):
     )
 
     def formula(person, period, parameters):
-        living_arrangement = person.household("ak_ssp_living_arrangement", period)
+        living_arrangement = person("ak_ssp_living_arrangement", period)
         claim_type = person("ak_ssp_claim_type", period)
         p = parameters(period).gov.states.ak.dpa.ssp.payment_standard
         monthly_amount = p[living_arrangement][claim_type]

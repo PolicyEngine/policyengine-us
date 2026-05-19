@@ -11,7 +11,15 @@ class wa_tanf_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
-        has_citizen = add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+        has_tanf_eligible_immigrant = (
+            add(spm_unit, period, ["wa_tanf_immigration_status_eligible"]) > 0
+        )
+        show_all = spm_unit("wa_show_all_cash_assistance_programs", period)
         income_eligible = spm_unit("wa_tanf_income_eligible", period)
         resources_eligible = spm_unit("wa_tanf_resources_eligible", period.this_year)
-        return demographic_eligible & has_citizen & income_eligible & resources_eligible
+        return (
+            demographic_eligible
+            & (has_tanf_eligible_immigrant | show_all)
+            & income_eligible
+            & resources_eligible
+        )

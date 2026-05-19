@@ -15,7 +15,7 @@ class nv_tanf_eligible(Variable):
 
         # Must have at least one U.S. citizen or qualified immigrant
         immigration_eligible = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
 
         # Must meet income eligibility

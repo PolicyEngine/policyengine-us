@@ -24,6 +24,12 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
+    {
+        "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/reform",
+    }
+)
 
 
 class SelectiveTestRunner:
@@ -169,13 +175,15 @@ class SelectiveTestRunner:
 
     @staticmethod
     def is_test_infrastructure_file(path: str) -> bool:
-        return path.endswith(TEST_INFRASTRUCTURE_FILES)
+        return Path(path).name in TEST_INFRASTRUCTURE_FILES
 
     def get_direct_changed_tests(self, changed_files: Set[str]) -> Set[str]:
         return {
             file
             for file in changed_files
-            if self.is_test_file(file) and not self.is_test_infrastructure_file(file)
+            if self.is_test_file(file)
+            and not self.is_test_infrastructure_file(file)
+            and Path(file).exists()
         }
 
     def get_diff_files(self, base_ref: str):
@@ -266,7 +274,7 @@ class SelectiveTestRunner:
         for file in changed_files:
             # Changed test files are already the most precise signal.
             if self.is_test_file(file):
-                if not self.is_test_infrastructure_file(file):
+                if not self.is_test_infrastructure_file(file) and Path(file).exists():
                     test_paths.add(file)
                 continue
 
@@ -333,6 +341,15 @@ class SelectiveTestRunner:
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
+        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        if deferred_paths:
+            deferred_list = ", ".join(sorted(deferred_paths))
+            print(
+                "\nQuick Feedback is deferring slow directory target(s) "
+                f"to the full suite jobs: {deferred_list}."
+            )
+            test_paths = test_paths - deferred_paths
+
         total_test_files = self.count_test_files(test_paths)
         if (
             len(test_paths) <= self.max_test_targets
@@ -449,7 +466,9 @@ class SelectiveTestRunner:
             )
         else:
             pytest_args = [
-                "policyengine-core",
+                sys.executable,
+                "-m",
+                "policyengine_core.scripts.policyengine_command",
                 "test",
                 "-c",
                 "policyengine_us",
@@ -468,7 +487,9 @@ class SelectiveTestRunner:
     def run_all_tests(self) -> int:
         """Run all tests (fallback option)."""
         print("Running all tests...")
-        result = subprocess.run(["pytest", "policyengine_us/tests"])
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "policyengine_us/tests"]
+        )
         return result.returncode
 
     def generate_test_plan(self, changed_files: Set[str]) -> Dict[str, List[str]]:

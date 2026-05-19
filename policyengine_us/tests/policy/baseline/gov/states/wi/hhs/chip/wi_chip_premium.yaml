@@ -1,0 +1,56 @@
+- name: Wisconsin BadgerCare Plus below 201 percent FPL owes no premium.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.90
+    households:
+      household:
+        members: [child]
+        state_code: WI
+  output:
+    wi_chip_premium: 0
+
+- name: Wisconsin BadgerCare Plus low tier tax unit pays 10 dollars monthly per child.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.20
+    households:
+      household:
+        members: [child]
+        state_code: WI
+  output:
+    wi_chip_premium: 120
+
+- name: Wisconsin BadgerCare Plus top tier tax unit with two children pays full no-cap premium.
+  period: 2024
+  input:
+    people:
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [c1, c2]
+        tax_unit_medicaid_income_level: 3.05
+    households:
+      household:
+        members: [c1, c2]
+        state_code: WI
+  output:
+    wi_chip_premium: 2340.72

@@ -1,0 +1,166 @@
+# Virginia CCSP activity eligibility edge case tests
+# Focus: zero hours worked, exactly 1 hour, two-parent mixed, child hours ignored
+#
+# Activity test: all heads/spouses must have (weekly_hours_worked >= 8) OR is_in_k12_school
+
+- name: Case 1, parent with exactly 8 hours worked (at threshold).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 8
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 8 >= 8 -> meets activity requirement
+    va_ccsp_activity_eligible: true
+
+- name: Case 2, parent with zero hours and not in school.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_in_k12_school: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 0 hours, not in school -> fails
+    va_ccsp_activity_eligible: false
+
+- name: Case 3, two parents where one works and one is in school.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+        is_in_k12_school: false
+      person2:
+        age: 30
+        weekly_hours_worked: 0
+        is_in_k12_school: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Person1: works 40hrs -> active
+    # Person2: in school -> active
+    # Both parents active -> eligible
+    va_ccsp_activity_eligible: true
+
+- name: Case 4, child hours do not affect activity test.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 8
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        weekly_hours_worked: 0
+        is_in_k12_school: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Only heads/spouses matter for activity test
+    # Child's zero hours are irrelevant
+    # Person1 works 8hrs -> active
+    va_ccsp_activity_eligible: true
+
+- name: Case 5, two parents both zero hours both not in school.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 0
+        is_in_k12_school: false
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_in_k12_school: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Both parents fail activity test
+    va_ccsp_activity_eligible: false
+
+- name: Case 6, single parent in school with zero work hours.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_in_k12_school: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # In school -> active, even with zero work hours
+    va_ccsp_activity_eligible: true
