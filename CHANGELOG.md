@@ -1,3 +1,31 @@
+## [1.696.0] - 2026-05-19
+
+### Added
+
+- Added Utah Homeowner's/Renter's Relief.
+
+
+## [1.695.0] - 2026-05-19
+
+### Added
+
+- Implemented Minnesota's renter's credit under Minn. Stat. §290.0693 for tax year 2024 onward, including household-income adjustments, rent constituting property taxes, refundable credit integration, and TAXSIM state property tax credit coverage.
+
+
+## [1.694.0] - 2026-05-19
+
+### Added
+
+- Add SC OBBBA non-conformity addition for 2025 (standard deduction increase, senior deduction, tip/overtime/auto loan deductions).
+
+
+## [1.693.6] - 2026-05-18
+
+### Fixed
+
+- Restricted the New Mexico net capital gains 40% deduction to zero from 2025-01-01 per HB0037 (2024), which amended NMSA 7-2-34(A)(2) to apply the 40% element only to gains from the sale of a business. The capped element (up to $1,000) continues to apply.
+
+
 ## [1.693.5] - 2026-05-18
 
 ### Fixed
