@@ -8,7 +8,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 40_000
+        adjusted_gross_income:
+          2024: 40_000
     households:
       household:
         members: [person1]
@@ -26,7 +27,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 40_000
+        adjusted_gross_income:
+          2024: 40_000
     households:
       household:
         members: [person1]
