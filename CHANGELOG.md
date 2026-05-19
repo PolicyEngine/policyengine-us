@@ -1,3 +1,10 @@
+## [1.695.0] - 2026-05-19
+
+### Added
+
+- Implemented Minnesota's renter's credit under Minn. Stat. §290.0693 for tax year 2024 onward, including household-income adjustments, rent constituting property taxes, refundable credit integration, and TAXSIM state property tax credit coverage.
+
+
 ## [1.694.0] - 2026-05-19
 
 ### Added
